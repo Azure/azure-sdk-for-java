@@ -10,11 +10,14 @@ import java.util.stream.StreamSupport;
 
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.models.*;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.identity.implementation.models.TeamsUserExchangeTokenRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.util.RequestModelCreator;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -234,9 +237,17 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessToken getTokenForTeamsUser(String teamsUserAadToken, String appId, String userId) {
-        TeamsUserExchangeTokenRequest requestBody = RequestModelCreator.createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
+        TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
         CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
+    }
+
+    private TeamsUserExchangeTokenRequest createTeamsUserExchangeTokenRequest(String teamsUserAadToken, String appId, String userId) {
+        TeamsUserExchangeTokenRequest requestBody = new TeamsUserExchangeTokenRequest();
+        requestBody.setToken(teamsUserAadToken);
+        requestBody.setAppId(appId);
+        requestBody.setUserId(userId);
+        return requestBody;
     }
 
     /**
@@ -252,7 +263,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessToken> getTokenForTeamsUserWithResponse(String teamsUserAadToken, String appId, String userId, Context context) {
         context = context == null ? Context.NONE : context;
-        TeamsUserExchangeTokenRequest requestBody = RequestModelCreator.createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
+        TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
         Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
             .block();
         if (response == null || response.getValue() == null) {

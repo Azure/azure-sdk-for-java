@@ -6,13 +6,17 @@ package com.azure.communication.identity;
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.converters.IdentityErrorConverter;
-import com.azure.communication.identity.implementation.models.*;
+import com.azure.communication.identity.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
+import com.azure.communication.identity.implementation.models.TeamsUserExchangeTokenRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.IdentityError;
 import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.util.RequestModelCreator;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -290,7 +294,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getTokenForTeamsUser(String teamsUserAadToken, String appId, String userId) {
         try {
-            TeamsUserExchangeTokenRequest requestBody = RequestModelCreator.createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
+            TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
             return client.exchangeTeamsUserAccessTokenAsync(requestBody)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
@@ -299,6 +303,14 @@ public final class CommunicationIdentityAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private TeamsUserExchangeTokenRequest createTeamsUserExchangeTokenRequest(String teamsUserAadToken, String appId, String userId) {
+        TeamsUserExchangeTokenRequest requestBody = new TeamsUserExchangeTokenRequest();
+        requestBody.setToken(teamsUserAadToken);
+        requestBody.setAppId(appId);
+        requestBody.setUserId(userId);
+        return requestBody;
     }
 
     /**
@@ -312,7 +324,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenForTeamsUserWithResponse(String teamsUserAadToken, String appId, String userId) {
         try {
-            TeamsUserExchangeTokenRequest requestBody = RequestModelCreator.createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
+            TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
             return client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
