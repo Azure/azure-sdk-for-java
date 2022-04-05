@@ -1,16 +1,16 @@
 # Release History
 
-## 1.5.0-beta.3 (Unreleased)
+## 1.5.0 (2022-04-05)
 
-### Features Added
+### Breaking Changes
+Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
 
-### Breaking Changes from 1.5.0-beta.2
-Removed `disableAuthoriyValidaionSafetyCheck` for GA, will reintroduce in next beta.
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.27.0
 
 ### Bugs Fixed
 Correctly use an `AppServiceMsiCredential` in the case both `IDENTITY_ENDPOINT` and `IDENTITY_HEADER` are set.
-
-### Other Changes
 
 ## 1.5.0-beta.2 (2022-03-21)
 

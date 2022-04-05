@@ -1203,11 +1203,13 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
             if (clientId != null) {
+                LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
             }
 
             if (resourceId != null) {
+                LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&mi_res_id=");
                 payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
             }
@@ -1285,11 +1287,19 @@ public class IdentityClient {
                 if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
                     payload.append("&client_id=");
                 } else {
+                    if (headerValue == null) {
+                        // This is the Cloud Shell case. If a clientId is specified, warn the user.
+                        LOGGER.warning("User assigned managed identities are not supported in the Cloud Shell environment.");
+                    }
                     payload.append("&clientid=");
                 }
                 payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
             }
             if (resourceId != null) {
+                if (endpointVersion.equals(MSI_ENDPOINT_VERSION) && headerValue == null) {
+                    // This is the Cloud Shell case. If a clientId is specified, warn the user.
+                    LOGGER.warning("User assigned managed identities are not supported in the Cloud Shell environment.");
+                }
                 payload.append("&mi_res_id=");
                 payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
             }
