@@ -1,6 +1,16 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.8.0 (2022-04-01)
 
 ### Features Added
  - Added `followRedirects` property on the `OkHttpClientBuilder`.
@@ -16,9 +26,11 @@
         .build();
     ```
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
 
 ## 1.7.10 (2022-03-04)
 
