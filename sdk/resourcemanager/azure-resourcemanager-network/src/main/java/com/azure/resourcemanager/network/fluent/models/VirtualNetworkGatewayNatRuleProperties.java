@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnNatRuleMapping;
 import com.azure.resourcemanager.network.models.VpnNatRuleMode;
 import com.azure.resourcemanager.network.models.VpnNatRuleType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for VirtualNetworkGatewayNatRule. */
 @Fluent
 public final class VirtualNetworkGatewayNatRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayNatRuleProperties.class);
-
     /*
      * The provisioning state of the NAT Rule resource.
      */

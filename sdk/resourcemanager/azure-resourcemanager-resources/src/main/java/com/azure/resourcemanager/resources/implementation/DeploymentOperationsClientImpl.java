@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInner;
 import com.azure.resourcemanager.resources.models.DeploymentOperationsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeploymentOperationsClient. */
 public final class DeploymentOperationsClientImpl implements DeploymentOperationsClient {
-    private final ClientLogger logger = new ClientLogger(DeploymentOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DeploymentOperationsService service;
 

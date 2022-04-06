@@ -149,7 +149,7 @@ public final class ClientStore {
 
     /**
      * Gets the Configuration Setting for the given config store that match the Setting Selector criteria. Follows
-     * retry-after-ms heards.
+     * retry-after-ms header.
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.
@@ -183,6 +183,11 @@ public final class ClientStore {
         return getClient(storeName).listConfigurationSettings(settingSelector);
     }
 
+    /**
+     * Update the sync token for a client store.
+     * @param storeName the name of the client store.
+     * @param syncToken the sync token.
+     */
     public void updateSyncToken(String storeName, String syncToken) {
         if (syncToken != null) {
             getClient(storeName).updateSyncToken(syncToken);

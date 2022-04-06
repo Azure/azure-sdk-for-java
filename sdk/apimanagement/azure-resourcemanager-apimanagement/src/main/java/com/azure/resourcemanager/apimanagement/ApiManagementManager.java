@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -55,6 +56,7 @@ import com.azure.resourcemanager.apimanagement.implementation.GatewayApisImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GatewayCertificateAuthoritiesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GatewayHostnameConfigurationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GatewaysImpl;
+import com.azure.resourcemanager.apimanagement.implementation.GlobalSchemasImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GroupUsersImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GroupsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.IdentityProvidersImpl;
@@ -67,10 +69,12 @@ import com.azure.resourcemanager.apimanagement.implementation.NotificationRecipi
 import com.azure.resourcemanager.apimanagement.implementation.NotificationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.OpenIdConnectProvidersImpl;
 import com.azure.resourcemanager.apimanagement.implementation.OperationsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.OutboundNetworkDependenciesEndpointsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PoliciesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PolicyDescriptionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PortalRevisionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PortalSettingsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductApisImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductGroupsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductPoliciesImpl;
@@ -80,6 +84,7 @@ import com.azure.resourcemanager.apimanagement.implementation.QuotaByCounterKeys
 import com.azure.resourcemanager.apimanagement.implementation.QuotaByPeriodKeysImpl;
 import com.azure.resourcemanager.apimanagement.implementation.RegionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ReportsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.apimanagement.implementation.SignInSettingsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.SignUpSettingsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.SubscriptionsImpl;
@@ -127,6 +132,7 @@ import com.azure.resourcemanager.apimanagement.models.GatewayApis;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorities;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurations;
 import com.azure.resourcemanager.apimanagement.models.Gateways;
+import com.azure.resourcemanager.apimanagement.models.GlobalSchemas;
 import com.azure.resourcemanager.apimanagement.models.GroupUsers;
 import com.azure.resourcemanager.apimanagement.models.Groups;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviders;
@@ -139,10 +145,12 @@ import com.azure.resourcemanager.apimanagement.models.NotificationRecipientUsers
 import com.azure.resourcemanager.apimanagement.models.Notifications;
 import com.azure.resourcemanager.apimanagement.models.OpenIdConnectProviders;
 import com.azure.resourcemanager.apimanagement.models.Operations;
+import com.azure.resourcemanager.apimanagement.models.OutboundNetworkDependenciesEndpoints;
 import com.azure.resourcemanager.apimanagement.models.Policies;
 import com.azure.resourcemanager.apimanagement.models.PolicyDescriptions;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisions;
 import com.azure.resourcemanager.apimanagement.models.PortalSettings;
+import com.azure.resourcemanager.apimanagement.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.apimanagement.models.ProductApis;
 import com.azure.resourcemanager.apimanagement.models.ProductGroups;
 import com.azure.resourcemanager.apimanagement.models.ProductPolicies;
@@ -152,6 +160,7 @@ import com.azure.resourcemanager.apimanagement.models.QuotaByCounterKeys;
 import com.azure.resourcemanager.apimanagement.models.QuotaByPeriodKeys;
 import com.azure.resourcemanager.apimanagement.models.Regions;
 import com.azure.resourcemanager.apimanagement.models.Reports;
+import com.azure.resourcemanager.apimanagement.models.ResourceProviders;
 import com.azure.resourcemanager.apimanagement.models.SignInSettings;
 import com.azure.resourcemanager.apimanagement.models.SignUpSettings;
 import com.azure.resourcemanager.apimanagement.models.Subscriptions;
@@ -171,6 +180,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to ApiManagementManager. ApiManagement Client. */
 public final class ApiManagementManager {
@@ -215,6 +225,8 @@ public final class ApiManagementManager {
     private Caches caches;
 
     private Certificates certificates;
+
+    private ResourceProviders resourceProviders;
 
     private ContentTypes contentTypes;
 
@@ -262,6 +274,8 @@ public final class ApiManagementManager {
 
     private OpenIdConnectProviders openIdConnectProviders;
 
+    private OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints;
+
     private Policies policies;
 
     private PolicyDescriptions policyDescriptions;
@@ -275,6 +289,8 @@ public final class ApiManagementManager {
     private SignUpSettings signUpSettings;
 
     private DelegationSettings delegationSettings;
+
+    private PrivateEndpointConnections privateEndpointConnections;
 
     private Products products;
 
@@ -293,6 +309,8 @@ public final class ApiManagementManager {
     private Regions regions;
 
     private Reports reports;
+
+    private GlobalSchemas globalSchemas;
 
     private TenantSettings tenantSettings;
 
@@ -356,7 +374,7 @@ public final class ApiManagementManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -430,9 +448,11 @@ public final class ApiManagementManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -454,7 +474,7 @@ public final class ApiManagementManager {
                 .append("-")
                 .append("com.azure.resourcemanager.apimanagement")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -477,11 +497,24 @@ public final class ApiManagementManager {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -659,6 +692,14 @@ public final class ApiManagementManager {
             this.certificates = new CertificatesImpl(clientObject.getCertificates(), this);
         }
         return certificates;
+    }
+
+    /** @return Resource collection API of ResourceProviders. */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
     }
 
     /** @return Resource collection API of ContentTypes. */
@@ -852,6 +893,16 @@ public final class ApiManagementManager {
         return openIdConnectProviders;
     }
 
+    /** @return Resource collection API of OutboundNetworkDependenciesEndpoints. */
+    public OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints() {
+        if (this.outboundNetworkDependenciesEndpoints == null) {
+            this.outboundNetworkDependenciesEndpoints =
+                new OutboundNetworkDependenciesEndpointsImpl(
+                    clientObject.getOutboundNetworkDependenciesEndpoints(), this);
+        }
+        return outboundNetworkDependenciesEndpoints;
+    }
+
     /** @return Resource collection API of Policies. */
     public Policies policies() {
         if (this.policies == null) {
@@ -906,6 +957,15 @@ public final class ApiManagementManager {
             this.delegationSettings = new DelegationSettingsImpl(clientObject.getDelegationSettings(), this);
         }
         return delegationSettings;
+    }
+
+    /** @return Resource collection API of PrivateEndpointConnections. */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
     }
 
     /** @return Resource collection API of Products. */
@@ -978,6 +1038,14 @@ public final class ApiManagementManager {
             this.reports = new ReportsImpl(clientObject.getReports(), this);
         }
         return reports;
+    }
+
+    /** @return Resource collection API of GlobalSchemas. */
+    public GlobalSchemas globalSchemas() {
+        if (this.globalSchemas == null) {
+            this.globalSchemas = new GlobalSchemasImpl(clientObject.getGlobalSchemas(), this);
+        }
+        return globalSchemas;
     }
 
     /** @return Resource collection API of TenantSettings. */

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information gained from troubleshooting of specified resource. */
 @Fluent
 public final class TroubleshootingDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingDetails.class);
-
     /*
      * The id of the get troubleshoot operation.
      */

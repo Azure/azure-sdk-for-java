@@ -1018,7 +1018,7 @@ public class BlobAsyncClientBase {
         try {
             new URL(options.getCopySource());
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url.", ex));
         }
         String sourceAuth = options.getSourceAuthorization() == null
             ? null : options.getSourceAuthorization().toString();

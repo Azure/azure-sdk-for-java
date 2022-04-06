@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.MappingDataFlowTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("MappingDataFlow")
 @Fluent
 public final class MappingDataFlow extends DataFlow {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MappingDataFlow.class);
-
     /*
      * Mapping data flow type properties.
      */

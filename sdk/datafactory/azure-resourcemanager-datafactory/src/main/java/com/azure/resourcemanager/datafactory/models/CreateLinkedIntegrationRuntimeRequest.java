@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The linked integration runtime information. */
 @Fluent
 public final class CreateLinkedIntegrationRuntimeRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateLinkedIntegrationRuntimeRequest.class);
-
     /*
      * The name of the linked integration runtime.
      */

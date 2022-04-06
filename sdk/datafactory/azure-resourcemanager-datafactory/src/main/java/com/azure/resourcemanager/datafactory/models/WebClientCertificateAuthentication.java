@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ClientCertificate")
 @Fluent
 public final class WebClientCertificateAuthentication extends WebLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebClientCertificateAuthentication.class);
-
     /*
      * Base64-encoded contents of a PFX file.
      */
@@ -89,7 +86,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     public void validate() {
         super.validate();
         if (pfx() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property pfx in model WebClientCertificateAuthentication"));
@@ -97,7 +94,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
             pfx().validate();
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property password in model WebClientCertificateAuthentication"));
@@ -105,4 +102,6 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebClientCertificateAuthentication.class);
 }

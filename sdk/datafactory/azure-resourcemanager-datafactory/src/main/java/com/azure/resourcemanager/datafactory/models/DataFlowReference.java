@@ -17,8 +17,6 @@ import java.util.Map;
 /** Data flow reference type. */
 @Fluent
 public final class DataFlowReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowReference.class);
-
     /*
      * Data flow reference type.
      */
@@ -170,9 +168,11 @@ public final class DataFlowReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property referenceName in model DataFlowReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowReference.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscription policies. */
 @Immutable
 public final class SubscriptionPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionPolicies.class);
-
     /*
      * The subscription location placement ID. The ID indicates which regions
      * are visible for a subscription. For example, a subscription with a

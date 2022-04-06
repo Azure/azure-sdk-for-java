@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS access credential. */
 @Fluent
 public final class SsisAccessCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisAccessCredential.class);
-
     /*
      * Domain for windows authentication.
      */
@@ -99,21 +96,23 @@ public final class SsisAccessCredential {
      */
     public void validate() {
         if (domain() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property domain in model SsisAccessCredential"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property username in model SsisAccessCredential"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property password in model SsisAccessCredential"));
         } else {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SsisAccessCredential.class);
 }
