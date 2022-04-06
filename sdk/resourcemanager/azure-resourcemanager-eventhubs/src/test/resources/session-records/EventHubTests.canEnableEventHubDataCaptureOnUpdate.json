@@ -196,7 +196,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.10.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b65f7177-9c4f-4fab-b318-758bf5514229",
@@ -220,12 +220,12 @@
       "Body" : "",
       "x-ms-client-request-id" : "b65f7177-9c4f-4fab-b318-758bf5514229",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/b05dd380-e750-485e-9295-e2b35be360c6?monitor=true&api-version=2021-08-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/b05dd380-e750-485e-9295-e2b35be360c6?monitor=true&api-version=2021-09-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/b05dd380-e750-485e-9295-e2b35be360c6?monitor=true&api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/b05dd380-e750-485e-9295-e2b35be360c6?monitor=true&api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "02e65a1c-ecf6-401c-88be-e8c3d15f0cf0"
@@ -252,7 +252,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.10.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a7843bba-17ad-4d02-a94b-b4f15cef8ff2",
@@ -280,7 +280,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780/blobServices/default/containers/eventctr?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780/blobServices/default/containers/eventctr?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.10.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "219b57a2-4ee4-4d6c-ab6e-d8bd735c3e88",
@@ -308,7 +308,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780/blobServices/default/containers/eventctr?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg69472/providers/Microsoft.Storage/storageAccounts/stg07586780/blobServices/default/containers/eventctr?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.10.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "39b1a66e-9e6b-4b9b-a60e-504dcf5678f8",

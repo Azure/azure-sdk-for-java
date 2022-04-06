@@ -84,11 +84,12 @@
             "matcher": "java-package",
             "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
-            "class com\\.azure\\.spring\\.cloud\\.config\\.State",
-            "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationRefresh",
-            "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
-            "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
-            "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationRefresh",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
@@ -100,6 +101,18 @@
           {
             "matcher": "java-package",
             "match": "/org\\.junit(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.apache.commons(..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.slf4j(..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.springframework(..*)?/"
           }
         ]
       }
@@ -112,33 +125,15 @@
       "differences": [
         {
           "regex": true,
-          "code": "java.class.defaultSerializationChanged",
-          "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
-          "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
-        },
-        {
-          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
           "justification": "We allow this in azure.spring.messaging."
         },
         {
           "regex": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
-          "justification": "springframework are allowed to add methods.."
-        },
-        {
-          "regex": true,
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "(class|interface) org.springframework..*",
-          "justification": "We allow this in springframework"
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation)",
-          "new": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation, org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
-          "justification": "In order to support configuration of error handler for message listener container"
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.spring.(messaging|integration|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
+          "justification": "azure.spring classes are allowed to be exposed."
         },
         {
           "regex": true,

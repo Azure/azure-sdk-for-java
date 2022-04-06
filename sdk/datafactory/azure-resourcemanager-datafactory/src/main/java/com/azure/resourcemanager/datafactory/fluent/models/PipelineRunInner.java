@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.PipelineRunInvokedBy;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** Information about a pipeline run. */
 @Fluent
 public final class PipelineRunInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineRunInner.class);
-
     /*
      * Identifier of a run.
      */

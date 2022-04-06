@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for Oracle source partitioning. */
 @Fluent
 public final class OraclePartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OraclePartitionSettings.class);
-
     /*
      * Names of the physical partitions of Oracle table.
      */

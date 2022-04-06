@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
 import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -15,15 +14,12 @@ import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Public IP address properties. */
 @Fluent
 public final class PublicIpAddressPropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressPropertiesFormatInner.class);
-
     /*
      * The public IP address allocation method.
      */

@@ -19,7 +19,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByApi(String resourceGroupName, String serviceName, String filter);
 
@@ -36,7 +36,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByApi(
         String resourceGroupName,
@@ -67,7 +67,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByUser(String resourceGroupName, String serviceName, String filter);
 
@@ -95,7 +95,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByUser(
         String resourceGroupName,
@@ -126,7 +126,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByOperation(String resourceGroupName, String serviceName, String filter);
 
@@ -154,7 +154,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByOperation(
         String resourceGroupName,
@@ -184,7 +184,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByProduct(String resourceGroupName, String serviceName, String filter);
 
@@ -211,7 +211,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByProduct(
         String resourceGroupName,
@@ -241,7 +241,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByGeo(String resourceGroupName, String serviceName, String filter);
 
@@ -267,7 +267,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByGeo(
         String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
@@ -291,7 +291,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listBySubscription(String resourceGroupName, String serviceName, String filter);
 
@@ -318,7 +318,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listBySubscription(
         String resourceGroupName,
@@ -351,7 +351,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByTime(
         String resourceGroupName, String serviceName, String filter, Duration interval);
@@ -382,7 +382,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReportRecordContract> listByTime(
         String resourceGroupName,
@@ -407,7 +407,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RequestReportRecordContract> listByRequest(
         String resourceGroupName, String serviceName, String filter);
@@ -428,7 +428,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Report records list representation.
+     * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RequestReportRecordContract> listByRequest(
         String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);

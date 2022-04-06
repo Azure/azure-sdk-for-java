@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRewriteRuleSetPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Rewrite rule set of an application gateway. */
 @Fluent
 public final class ApplicationGatewayRewriteRuleSet extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleSet.class);
-
     /*
      * Properties of the application gateway rewrite rule set.
      */

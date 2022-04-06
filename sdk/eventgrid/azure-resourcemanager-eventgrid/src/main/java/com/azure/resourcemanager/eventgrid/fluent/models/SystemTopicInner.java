@@ -7,18 +7,14 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** EventGrid System Topic. */
 @Fluent
 public final class SystemTopicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemTopicInner.class);
-
     /*
      * Properties of the system topic.
      */
@@ -26,16 +22,16 @@ public final class SystemTopicInner extends Resource {
     private SystemTopicProperties innerProperties;
 
     /*
-     * Identity information for the resource.
-     */
-    @JsonProperty(value = "identity")
-    private IdentityInfo identity;
-
-    /*
      * The system metadata relating to System Topic resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Identity information for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
 
     /**
      * Get the innerProperties property: Properties of the system topic.
@@ -44,6 +40,15 @@ public final class SystemTopicInner extends Resource {
      */
     private SystemTopicProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: The system metadata relating to System Topic resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -64,15 +69,6 @@ public final class SystemTopicInner extends Resource {
     public SystemTopicInner withIdentity(IdentityInfo identity) {
         this.identity = identity;
         return this;
-    }
-
-    /**
-     * Get the systemData property: The system metadata relating to System Topic resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /** {@inheritDoc} */

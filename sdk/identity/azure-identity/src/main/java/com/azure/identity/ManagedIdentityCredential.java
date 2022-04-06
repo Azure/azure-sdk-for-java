@@ -23,7 +23,7 @@ import java.time.Duration;
 public final class ManagedIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredential.class);
 
-    private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
+    final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final IdentityClientOptions identityClientOptions;
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
@@ -48,6 +48,19 @@ public final class ManagedIdentityCredential implements TokenCredential {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
+
+        /*
+         * Choose credential based on available environment variables in this order:
+         *
+         * Azure Arc: IDENTITY_ENDPOINT, IMDS_ENDPOINT
+         * Service Fabric: IDENTITY_ENDPOINT, IDENTITY_HEADER, IDENTITY_SERVER_THUMBPRINT
+         * App Service 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER (MSI_ENDPOINT and MSI_SECRET will also be set.)
+         * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
+         * Cloud Shell: MSI_ENDPOINT
+         * Pod Identity V2 (AksExchangeToken): AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE
+         * IMDS/Pod Identity V1: No variables set.
+         */
+
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder.build());
         } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
@@ -55,7 +68,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
                     managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder.build());
                 } else {
-                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
+                    managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder.build());
                 }
             } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
                 managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder.build());
@@ -92,7 +105,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
                    + "The Target Azure platform could not be determined from environment variables."
                     + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
-                    + " https://aka.ms/azsdk/net/identity/managedidentitycredential/troubleshoot")));
+                    + " https://aka.ms/azsdk/java/identity/managedidentitycredential/troubleshoot")));
         }
         return managedIdentityServiceCredential.authenticate(request)
             .doOnSuccess(t -> LOGGER.info("Azure Identity => Managed Identity environment: {}",

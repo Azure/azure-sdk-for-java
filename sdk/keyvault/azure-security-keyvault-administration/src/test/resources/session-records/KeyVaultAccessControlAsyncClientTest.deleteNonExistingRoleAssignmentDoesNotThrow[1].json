@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/ee67c7cc-b17f-41ef-98e6-ca965ecf4eb0?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/94c51cc6-dff4-4902-8d28-a252087c8003?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
@@ -14,12 +14,12 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "404",
-      "x-ms-request-id" : "4db80976-1dbf-11ec-afdf-000d3a9f7bf5",
-      "Body" : "{\"error\":{\"code\":\"RoleAssignmentNotFound\",\"message\":\"Requested role assignment not found (Activity ID: 4db80976-1dbf-11ec-afdf-000d3a9f7bf5)\"}}",
-      "x-ms-server-latency" : "1",
+      "x-ms-request-id" : "9a3de842-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"error\":{\"code\":\"RoleAssignmentNotFound\",\"message\":\"Requested role assignment not found (Activity ID: 9a3de842-af00-11ec-99c9-002248787e69)\"}}",
+      "x-ms-server-latency" : "0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     },
     "Exception" : null
   } ],
-  "variables" : [ "ee67c7cc-b17f-41ef-98e6-ca965ecf4eb0" ]
+  "variables" : [ "94c51cc6-dff4-4902-8d28-a252087c8003" ]
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Transformation for data flow sink. */
 @Fluent
 public class DataFlowSink extends Transformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowSink.class);
-
     /*
      * Schema linked service reference.
      */
