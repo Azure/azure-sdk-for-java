@@ -32,26 +32,27 @@ public final class NumberInput
      *
      * @return Decoded {@code int} value
      */
+    @SuppressWarnings("fallthrough")
     public static int parseInt(char[] ch, int off, int len)
     {
         int num = ch[off + len - 1] - '0';
-        
+
         switch(len) {
-        case 9: 
+        case 9:
           num += (ch[off++] - '0') * 100000000;
-        case 8: 
+        case 8:
           num += (ch[off++] - '0') * 10000000;
-        case 7: 
+        case 7:
           num += (ch[off++] - '0') * 1000000;
-        case 6: 
+        case 6:
           num += (ch[off++] - '0') * 100000;
-        case 5: 
+        case 5:
           num += (ch[off++] - '0') * 10000;
-        case 4: 
+        case 4:
           num += (ch[off++] - '0') * 1000;
-        case 3: 
+        case 3:
           num += (ch[off++] - '0') * 100;
-        case 2: 
+        case 2:
           num += (ch[off] - '0') * 10;
         }
         return num;
@@ -284,7 +285,7 @@ public final class NumberInput
         } catch (NumberFormatException e) { }
         return def;
     }
-    
+
     public static double parseAsDouble(String s, double def)
     {
         if (s == null) { return def; }

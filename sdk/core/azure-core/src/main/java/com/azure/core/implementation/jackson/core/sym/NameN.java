@@ -39,16 +39,16 @@ public final class NameN extends Name
         int rem = qlen - 4;
 
         int[] buf;
-        
+
         if (rem > 0) {
             buf = Arrays.copyOfRange(q, 4, qlen);
         } else {
             buf = null;
         }
         return new NameN(name, hash, q1, q2, q3, q4, buf, qlen);
-        
+
     }
-    
+
     // Implies quad length == 1, never matches
     @Override
     public boolean equals(int quad) { return false; }
@@ -60,7 +60,7 @@ public final class NameN extends Name
     // Implies quad length == 3, never matches
     @Override
     public boolean equals(int quad1, int quad2, int quad3) { return false; }
-
+    @SuppressWarnings("fallthrough")
     @Override
     public boolean equals(int[] quads, int len) {
         if (len != qlen) { return false; }

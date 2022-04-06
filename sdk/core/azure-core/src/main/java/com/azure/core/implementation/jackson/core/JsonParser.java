@@ -28,7 +28,7 @@ public abstract class JsonParser
 {
     private final static int MIN_BYTE_I = (int) Byte.MIN_VALUE;
     // as per [JACKSON-804], allow range up to and including 255
-    private final static int MAX_BYTE_I = (int) 255;
+    private final static int MAX_BYTE_I = 255;
 
     private final static int MIN_SHORT_I = (int) Short.MIN_VALUE;
     private final static int MAX_SHORT_I = (int) Short.MAX_VALUE;
@@ -169,7 +169,7 @@ public abstract class JsonParser
 
         /**
          * Feature that determines whether parser will allow
-         * JSON integral numbers to start with additional (ignorable) 
+         * JSON integral numbers to start with additional (ignorable)
          * zeroes (like: 000001). If enabled, no exception is thrown, and extra
          * nulls are silently ignored (and not included in textual representation
          * exposed via {@link JsonParser#getText}).
@@ -220,11 +220,11 @@ public abstract class JsonParser
           * in data-binding.
           * <p>
           * For example, enabling this feature will represent a JSON array <code>["value1",,"value3",]</code>
-          * as <code>["value1", null, "value3", null]</code> 
+          * as <code>["value1", null, "value3", null]</code>
           * <p>
           * Since the JSON specification does not allow missing values this is a non-compliant JSON
           * feature and is disabled by default.
-          * 
+          *
           * @since 2.8
           *
           * @deprecated Since 2.10 use {@link com.azure.core.implementation.jackson.core.json.JsonReadFeature#ALLOW_MISSING_VALUES} instead
@@ -259,7 +259,7 @@ public abstract class JsonParser
          ALLOW_TRAILING_COMMA(false),
 
          // // // Validity checks
-         
+
          /**
           * Feature that determines whether {@link JsonParser} will explicitly
           * check that no duplicate JSON Object field names are encountered.
@@ -273,7 +273,7 @@ public abstract class JsonParser
           * Note that enabling this feature will incur performance overhead
           * due to having to store and check additional information: this typically
           * adds 20-30% to execution time for basic parsing.
-          * 
+          *
           * @since 2.3
           */
          STRICT_DUPLICATE_DETECTION(false),
@@ -333,7 +333,7 @@ public abstract class JsonParser
         private final boolean _defaultState;
 
         private final int _mask;
-        
+
         /**
          * Method that calculates bit set (flags) of all features that
          * are enabled by default.
@@ -375,7 +375,7 @@ public abstract class JsonParser
      * are enabled.
      */
     protected int _features;
-    
+
     /**
      * Optional container that holds the request payload which will be displayed on JSON parsing error.
      *
@@ -439,7 +439,7 @@ public abstract class JsonParser
     public void setRequestPayloadOnError(RequestPayload payload) {
         _requestPayload = payload;
     }
-    
+
     /**
      * Sets the byte[] request payload and the charset
      *
@@ -478,9 +478,9 @@ public abstract class JsonParser
      *<p>
      * If parser does not support specified schema, {@link UnsupportedOperationException}
      * is thrown.
-     * 
+     *
      * @param schema Schema to use
-     * 
+     *
      * @throws UnsupportedOperationException if parser does not support schema
      */
     public void setSchema(FormatSchema schema) {
@@ -497,13 +497,13 @@ public abstract class JsonParser
      * @since 2.1
      */
     public FormatSchema getSchema() { return null; }
-    
+
     /**
      * Method that can be used to verify that given schema can be used with
      * this parser (using {@link #setSchema}).
-     * 
+     *
      * @param schema Schema to check
-     * 
+     *
      * @return True if this parser can use given schema; false if not
      */
     public boolean canUseSchema(FormatSchema schema) { return false; }
@@ -513,17 +513,17 @@ public abstract class JsonParser
     /* Capability introspection
     /**********************************************************
      */
-    
+
     /**
      * Method that can be called to determine if a custom
      * {@link ObjectCodec} is needed for binding data parsed
      * using {@link JsonParser} constructed by this factory
      * (which typically also implies the same for serialization
      * with {@link JsonGenerator}).
-     * 
+     *
      * @return True if format-specific codec is needed with this parser; false if a general
      *   {@link ObjectCodec} is enough
-     * 
+     *
      * @since 2.1
      */
     public boolean requiresCustomCodec() { return false;}
@@ -537,8 +537,8 @@ public abstract class JsonParser
      * If non-blocking decoding is (@code true}, it is possible to call
      * {@link #getNonBlockingInputFeeder()} to obtain object to use
      * for feeding input; otherwise (<code>false</code> returned)
-     * input is read by blocking 
-     * 
+     * input is read by blocking
+     *
      * @return True if this is a non-blocking ("asynchronous") parser
      *
      * @since 2.9
@@ -805,7 +805,7 @@ public abstract class JsonParser
      *    otherwise number of chars released (0 if there was nothing to release)
      *
      * @throws IOException if write using Writer threw exception
-     */    
+     */
     public int releaseBuffered(Writer w) throws IOException { return -1; }
 
     /*
@@ -853,7 +853,7 @@ public abstract class JsonParser
         if (state) enable(f); else disable(f);
         return this;
     }
-    
+
     /**
      * Method for checking whether specified {@link Feature} is enabled.
      *
@@ -873,10 +873,10 @@ public abstract class JsonParser
      * @since 2.10
      */
     public boolean isEnabled(StreamReadFeature f) { return f.mappedFeature().enabledIn(_features); }
-    
+
     /**
      * Bulk access method for getting state of all standard {@link Feature}s.
-     * 
+     *
      * @return Bit mask that defines current states of all standard {@link Feature}s.
      *
      * @since 2.3
@@ -908,7 +908,7 @@ public abstract class JsonParser
      *    setFeatureMask(newState);
      *</code>
      * but preferred as this lets caller more efficiently specify actual changes made.
-     * 
+     *
      * @param values Bit mask of set/clear state for features to change
      * @param mask Bit mask of features to change
      *
@@ -924,15 +924,15 @@ public abstract class JsonParser
     /**
      * Bulk access method for getting state of all {@link FormatFeature}s, format-specific
      * on/off configuration settings.
-     * 
+     *
      * @return Bit mask that defines current states of all standard {@link FormatFeature}s.
-     * 
+     *
      * @since 2.6
      */
     public int getFormatFeatures() {
         return 0;
     }
-    
+
     /**
      * Bulk set method for (re)setting states of {@link FormatFeature}s,
      * by specifying values (set / clear) along with a mask, to determine
@@ -945,7 +945,7 @@ public abstract class JsonParser
      * @param mask Bit mask of features to change
      *
      * @return This parser, to allow call chaining
-     * 
+     *
      * @since 2.6
      */
     public JsonParser overrideFormatFeatures(int values, int mask) {
@@ -1007,7 +1007,7 @@ public abstract class JsonParser
      *</pre>
      * but may be faster for parser to verify, and can therefore be used if caller
      * expects to get such a property name from input next.
-     * 
+     *
      * @param str Property name to compare next token to (if next token is
      *   <code>JsonToken.FIELD_NAME</code>)
      *
@@ -1141,7 +1141,7 @@ public abstract class JsonParser
     /**
      * Method that will skip all child tokens of an array or
      * object token that the parser currently points to,
-     * iff stream points to 
+     * iff stream points to
      * {@link JsonToken#START_OBJECT} or {@link JsonToken#START_ARRAY}.
      * If not, it will do nothing.
      * After skipping, stream will point to <b>matching</b>
@@ -1213,7 +1213,7 @@ public abstract class JsonParser
      * to profile performance before deciding to use this method.
      *
      * @since 2.8
-     * 
+     *
      * @return {@code int} matching one of constants from {@link JsonTokenId}.
      */
     public int currentTokenId() {
@@ -1338,7 +1338,7 @@ public abstract class JsonParser
      * @since 2.12
      */
     public boolean isExpectedNumberIntToken() { return currentToken() == JsonToken.VALUE_NUMBER_INT; }
-    
+
     /**
      * Access for checking whether current token is a numeric value token, but
      * one that is of "not-a-number" (NaN) variety (including both "NaN" AND
@@ -1390,7 +1390,7 @@ public abstract class JsonParser
      * @return Last cleared token, if any; {@code null} otherwise
      */
     public abstract JsonToken getLastClearedToken();
-    
+
     /**
      * Method that can be used to change what is considered to be
      * the current (field) name.
@@ -1399,7 +1399,7 @@ public abstract class JsonParser
      *<p>
      * Note that use of this method should only be done as sort of last
      * resort, as it is a work-around for regular operation.
-     * 
+     *
      * @param name Name to use as the current name; may be null.
      */
     public abstract void overrideCurrentName(String name);
@@ -1454,7 +1454,7 @@ public abstract class JsonParser
     public abstract String getText() throws IOException;
 
     /**
-     * Method to read the textual representation of the current token in chunks and 
+     * Method to read the textual representation of the current token in chunks and
      * pass it to the given Writer.
      * Conceptually same as calling:
      *<pre>
@@ -1548,14 +1548,14 @@ public abstract class JsonParser
      * {@link #getTextCharacters} would be the most efficient
      * way to access textual content for the event parser currently
      * points to.
-     *<p> 
+     *<p>
      * Default implementation simply returns false since only actual
      * implementation class has knowledge of its internal buffering
      * state.
      * Implementations are strongly encouraged to properly override
      * this method, to allow efficient copying of content by other
      * code.
-     * 
+     *
      * @return True if parser currently has character array that can
      *   be efficiently returned via {@link #getTextCharacters}; false
      *   means that it may or may not exist
@@ -1608,7 +1608,7 @@ public abstract class JsonParser
     }
 
     /**
-     * If current token is of type 
+     * If current token is of type
      * {@link JsonToken#VALUE_NUMBER_INT} or
      * {@link JsonToken#VALUE_NUMBER_FLOAT}, returns
      * one of {@link NumberType} constants; otherwise returns null.
@@ -1808,7 +1808,7 @@ public abstract class JsonParser
     /* Public API, access to token information, other
     /**********************************************************
      */
-    
+
     /**
      * Convenience accessor that can be called when the current
      * token is {@link JsonToken#VALUE_TRUE} or
@@ -1907,9 +1907,9 @@ public abstract class JsonParser
      * is that content will NOT remain accessible after method returns: any content
      * processed will be consumed and is not buffered in any way. If caller needs
      * buffering, it has to implement it.
-     * 
+     *
      * @param out Output stream to use for passing decoded binary data
-     * 
+     *
      * @return Number of bytes that were decoded and written via {@link OutputStream}
      *
      * @throws IOException for low-level read issues, or
@@ -1924,10 +1924,10 @@ public abstract class JsonParser
     /**
      * Similar to {@link #readBinaryValue(OutputStream)} but allows explicitly
      * specifying base64 variant to use.
-     * 
+     *
      * @param bv base64 variant to use
      * @param out Output stream to use for passing decoded binary data
-     * 
+     *
      * @return Number of bytes that were decoded and written via {@link OutputStream}
      *
      * @throws IOException for low-level read issues, or
@@ -1939,13 +1939,13 @@ public abstract class JsonParser
         _reportUnsupportedOperation();
         return 0; // never gets here
     }
-    
+
     /*
     /**********************************************************
     /* Public API, access to token information, coercion/conversion
     /**********************************************************
      */
-    
+
     /**
      * Method that will try to convert value of current token to a
      * Java {@code int} value.
@@ -1966,7 +1966,7 @@ public abstract class JsonParser
     public int getValueAsInt() throws IOException {
         return getValueAsInt(0);
     }
-    
+
     /**
      * Method that will try to convert value of current token to a
      * <b>int</b>.
@@ -2007,7 +2007,7 @@ public abstract class JsonParser
     public long getValueAsLong() throws IOException {
         return getValueAsLong(0);
     }
-    
+
     /**
      * Method that will try to convert value of current token to a
      * <b>long</b>.
@@ -2029,7 +2029,7 @@ public abstract class JsonParser
     public long getValueAsLong(long def) throws IOException {
         return def;
     }
-    
+
     /**
      * Method that will try to convert value of current token to a Java
      * <b>double</b>.
@@ -2050,7 +2050,7 @@ public abstract class JsonParser
     public double getValueAsDouble() throws IOException {
         return getValueAsDouble(0.0);
     }
-    
+
     /**
      * Method that will try to convert value of current token to a
      * Java <b>double</b>.
@@ -2135,7 +2135,7 @@ public abstract class JsonParser
     public String getValueAsString() throws IOException {
         return getValueAsString(null);
     }
-    
+
     /**
      * Method that will try to convert value of current token to a
      * {@link java.lang.String}.
@@ -2191,7 +2191,7 @@ public abstract class JsonParser
      *
      * @return {@code True} if the format being read supports native Type Ids;
      *    {@code false} if not
-     * 
+     *
      * @since 2.3
      */
     public boolean canReadTypeId() { return false; }
@@ -2269,7 +2269,7 @@ public abstract class JsonParser
      *    deserializes content)
      *
      * @return Java value read from content
-     * 
+     *
      * @throws IOException if there is either an underlying I/O problem or decoding
      *    issue at format layer
      */
@@ -2281,7 +2281,7 @@ public abstract class JsonParser
      * Method to deserialize JSON content into a Java type, reference
      * to which is passed as argument. Type is passed using so-called
      * "super type token"
-     * and specifically needs to be used if the root type is a 
+     * and specifically needs to be used if the root type is a
      * parameterized (generic) container type.
      * <b>Note</b>: method can only be called if the parser has
      * an object codec assigned; this is true for parsers constructed
@@ -2345,7 +2345,7 @@ public abstract class JsonParser
     public <T> Iterator<T> readValuesAs(TypeReference<T> valueTypeRef) throws IOException {
         return _codec().readValues(this, valueTypeRef);
     }
-    
+
     /**
      * Method to deserialize JSON content into equivalent "tree model",
      * represented by root {@link TreeNode} of resulting model.
@@ -2372,7 +2372,7 @@ public abstract class JsonParser
         }
         return c;
     }
-    
+
     /*
     /**********************************************************
     /* Internal methods

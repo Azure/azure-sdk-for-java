@@ -40,7 +40,7 @@ public final class ByteQuadsCanonicalizer
     /**
      * Let's not expand symbol tables past some maximum size;
      * with unique (~= random) names.
-     * Size is in 
+     * Size is in
      */
     private static final int MAX_T_SIZE = 0x10000; // 64k entries == 2M mem hash area
 
@@ -48,7 +48,7 @@ public final class ByteQuadsCanonicalizer
      * No point in trying to construct tiny tables, just need to resize soon.
      */
     private final static int MIN_HASH_SIZE = 16;
-    
+
     /**
      * Let's only share reasonably sized symbol tables. Max size set to 3/4 of 8k;
      * this corresponds to 256k main hash index. This should allow for enough distinct
@@ -76,7 +76,7 @@ public final class ByteQuadsCanonicalizer
      * Child tables do NOT use the reference.
      */
     protected final AtomicReference<TableInfo> _tableInfo;
-    
+
     /**
      * Seed value we use as the base to make hash codes non-static between
      * different runs, but still stable for lifetime of a single symbol table
@@ -102,13 +102,13 @@ public final class ByteQuadsCanonicalizer
     protected final boolean _intern;
 
     /**
-     * Flag that indicates whether we should throw an exception if enough 
+     * Flag that indicates whether we should throw an exception if enough
      * hash collisions are detected (true); or just worked around (false).
-     * 
+     *
      * @since 2.4
      */
     protected final boolean _failOnDoS;
-    
+
     /*
     /**********************************************************
     /* First, main hash area info
@@ -140,7 +140,7 @@ public final class ByteQuadsCanonicalizer
      * Offset within {@link #_hashArea} where tertiary entries start
      */
     protected int _tertiaryStart;
-    
+
     /**
      * Constant that determines size of buckets for tertiary entries:
      * <code>1 &lt;&lt; _tertiaryShift</code> is the size, and shift value
@@ -218,7 +218,7 @@ public final class ByteQuadsCanonicalizer
     /**
      * Constructor used for creating per-{@code TokeanStreamFactory} "root"
      * symbol tables: ones used for merging and sharing common symbols
-     * 
+     *
      * @param sz Initial primary hash area size
      * @param seed Random seed valued used to make it more difficult to cause
      *   collisions (used for collision-based DoS attacks).
@@ -270,7 +270,7 @@ public final class ByteQuadsCanonicalizer
         _secondaryStart = _hashSize << 2; // right after primary area
         _tertiaryStart = _secondaryStart + (_secondaryStart >> 1); // right after secondary
         _tertiaryShift = state.tertiaryShift;
-        
+
         _hashArea = state.mainHash;
         _names = state.names;
 
@@ -328,12 +328,12 @@ public final class ByteQuadsCanonicalizer
     /* Life-cycle: factory methods, merging
     /**********************************************************
      */
-    
+
     /**
      * Factory method to call to create a symbol table instance with a
      * randomized seed value.
      *
-     * @return Root instance to use for constructing new child instances 
+     * @return Root instance to use for constructing new child instances
      */
     public static ByteQuadsCanonicalizer createRoot() {
         // Need to use a variable seed, to thwart hash-collision based attacks.
@@ -679,7 +679,7 @@ public final class ByteQuadsCanonicalizer
         final int[] hashArea = _hashArea;
 
         final int len = hashArea[offset+3];
-        
+
         if ((hash == hashArea[offset]) && (len == qlen)) {
             // probable but not guaranteed: verify
             if (_verifyLongName(q, qlen, hashArea[offset+1])) {
@@ -700,7 +700,7 @@ public final class ByteQuadsCanonicalizer
         }
         return _findSecondary(offset, hash, q, qlen);
     }
-    
+
     private final int _calcOffset(int hash)
     {
         // NOTE: simple for initial impl, but we may want to interleave it a bit
@@ -819,7 +819,7 @@ public final class ByteQuadsCanonicalizer
         }
         return null;
     }
-    
+    @SuppressWarnings("fallthrough")
     private boolean _verifyLongName(int[] q, int qlen, int spillOffset)
     {
         final int[] hashArea = _hashArea;
@@ -918,7 +918,7 @@ public final class ByteQuadsCanonicalizer
             name = InternCache.instance.intern(name);
         }
         int offset;
-        
+
         switch (qlen) {
         case 1:
         {
@@ -1019,7 +1019,7 @@ public final class ByteQuadsCanonicalizer
         _spilloverEnd += 4;
 
 //System.err.printf(" SPIll-over at x%X; start x%X; end x%X, hash %X\n", offset, _spilloverStart(), _hashArea.length, (hash & 0x7F));
-        
+
         // one caveat: in the unlikely event if spill-over filling up,
         // check if that could be considered a DoS attack; handle appropriately
         // (NOTE: approximate for now; we could verify details if that becomes necessary)
@@ -1041,7 +1041,7 @@ public final class ByteQuadsCanonicalizer
     {
         // First things first: we need to resize+rehash (or, if too big, nuke contents)
         rehash();
-        
+
         // Copy of main _findOffsetForAdd except for checks to resize: can not be needed
         int offset = _calcOffset(hash);
         final int[] hashArea = _hashArea;
@@ -1076,11 +1076,11 @@ public final class ByteQuadsCanonicalizer
         }
         return false;
     }
-    
+
     private int _appendLongName(int[] quads, int qlen)
     {
         int start = _longNameOffset;
-        
+
         // note: at this point we must already be shared. But may not have enough space
         if ((start + qlen) > _hashArea.length) {
             // try to increment in reasonable chunks; at least space that we need
@@ -1108,14 +1108,14 @@ public final class ByteQuadsCanonicalizer
      * and add bit of shifting. And other part is to make this
      * non-linear, at least for shorter symbols.
      */
-    
+
     // JDK uses 31; other fine choices are 33 and 65599, let's use 33
     // as it seems to give fewest collisions for us
     // (see [http://www.cse.yorku.ca/~oz/hash.html] for details)
     private final static int MULT = 33;
     private final static int MULT2 = 65599;
     private final static int MULT3 = 31;
-    
+
     public int calcHash(int q1)
     {
         int hash = q1 ^ _seed;
@@ -1143,7 +1143,7 @@ public final class ByteQuadsCanonicalizer
         hash += (hash >>> 16); // and shuffle some more
         hash ^= (hash >>> 4);
         hash += (hash << 3);
-        
+
         return hash;
     }
 
@@ -1189,7 +1189,7 @@ public final class ByteQuadsCanonicalizer
             hash += next;
         }
         hash *= MULT2;
-        
+
         // and finally shuffle some more once done
         hash += (hash >>> 19);
         hash ^= (hash << 5);
@@ -1229,7 +1229,7 @@ public final class ByteQuadsCanonicalizer
         _secondaryStart = (newSize << 2); // 4 ints per entry
         _tertiaryStart = _secondaryStart + (_secondaryStart >> 1); // right after secondary
         _tertiaryShift = _calcTertiaryShift(newSize);
-        
+
         // and simply double up name array
         _names = new String[oldNames.length << 1];
         nukeSymbols(false);
@@ -1331,7 +1331,7 @@ public final class ByteQuadsCanonicalizer
     {
         // first: we only get 1/4 of slots of primary, to divide
         int tertSlots = (primarySlots) >> 2;
-        
+
         // default is for buckets of 4 slots (each 4 ints, i.e. 1 << 4)
         if (tertSlots < 64) {
             return 4;
@@ -1356,7 +1356,7 @@ public final class ByteQuadsCanonicalizer
      * Immutable value class used for sharing information as efficiently
      * as possible, by only require synchronization of reference manipulation
      * but not access to contents.
-     * 
+     *
      * @since 2.1
      */
     private final static class TableInfo
@@ -1369,7 +1369,7 @@ public final class ByteQuadsCanonicalizer
         public final int spilloverEnd;
         public final int longNameOffset;
 
-        public TableInfo(int size, int count, int tertiaryShift, 
+        public TableInfo(int size, int count, int tertiaryShift,
                 int[] mainHash, String[] names, int spilloverEnd, int longNameOffset)
         {
             this.size = size;
