@@ -840,7 +840,7 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found from https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits.
+     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found at https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits#size-limits.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.
