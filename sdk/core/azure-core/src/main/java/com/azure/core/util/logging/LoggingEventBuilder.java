@@ -4,8 +4,8 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.implementation.jackson.core.io.JsonStringEncoder;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
