@@ -2,8 +2,12 @@
 
 ## 1.5.0 (2022-04-05)
 
+### Features Added
+- Added `enableAccountIdentifierLogging` setter on the credential builders to support logging account identifiers for debugging purposes.
+
 ### Breaking Changes
-Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
+- Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
+- Replaced `identityLogOptions` setter with the `enableAccountIdentifierLogging` setter on the credential builders. This is not a breaking change from last GA.
 
 ### Other Changes
 #### Dependency Updates
