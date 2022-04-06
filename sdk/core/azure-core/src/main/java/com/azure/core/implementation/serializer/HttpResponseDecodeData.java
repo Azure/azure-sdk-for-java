@@ -108,4 +108,13 @@ public interface HttpResponseDecodeData {
     default Type getReturnEntityType() {
         return TypeUtil.getReturnEntityType(getReturnType());
     }
+
+    /**
+     * Gets the wire response type based on the {@link #getReturnEntityType()} and {@link #getReturnValueWireType()}.
+     * *
+     * @return The {@link Type} that will be returned by the REST method call.
+     */
+    default Type getWireResponseType() {
+        return TypeUtil.getWireResponseType(getReturnEntityType(), getReturnValueWireType());
+    }
 }

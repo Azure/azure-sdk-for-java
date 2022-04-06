@@ -85,6 +85,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final Type returnType;
     private final Type returnValueWireType;
     private final Type returnEntityType;
+    private final Type wireResponseType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
     private final int contextPosition;
     private final int requestOptionsPosition;
@@ -144,6 +145,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
 
         this.returnValueWireType = extractReturnValueWireType(swaggerMethod);
         this.returnEntityType = TypeUtil.getReturnEntityType(returnType);
+        this.wireResponseType = TypeUtil.getWireResponseType(returnEntityType, returnValueWireType);
 
         extractHeadersAnnotation(swaggerMethod);
 
@@ -483,6 +485,11 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public Type getReturnEntityType() {
         return returnEntityType;
+    }
+
+    @Override
+    public Type getWireResponseType() {
+        return wireResponseType;
     }
 
     @Override

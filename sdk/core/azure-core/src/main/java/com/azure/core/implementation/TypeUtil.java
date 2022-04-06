@@ -3,10 +3,13 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,6 +18,7 @@ import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -383,6 +387,47 @@ public final class TypeUtil {
         }
 
         return returnType;
+    }
+
+    /**
+     * Gets the wire response type based on the result type and the wire type.
+     * <p>
+     * The returned type changes based on whether the {@code resultType} was the expected return type, the type
+     * returned by the REST interface method, or was the unexpected return type, the type indicated by
+     * {@link UnexpectedResponseExceptionType#value()}.
+     *
+     * @param returnEntityType The {@link Type} returned by either the REST interface method or the
+     * {@link UnexpectedResponseExceptionType}.
+     * @param returnValueWireType The {@link Type} returned by the REST response body.
+     * @return The {@link Type} that will be returned by the REST method call.
+     */
+    public static Type getWireResponseType(Type returnEntityType, Type returnValueWireType) {
+        if (returnEntityType == byte[].class) {
+            if (returnValueWireType == Base64Url.class) {
+                return Base64Url.class;
+            }
+        } else if (returnEntityType == OffsetDateTime.class) {
+            if (returnValueWireType == DateTimeRfc1123.class) {
+                return DateTimeRfc1123.class;
+            } else if (returnValueWireType == UnixTime.class) {
+                return UnixTime.class;
+            }
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnEntityType, List.class)) {
+            final Type resultElementType = TypeUtil.getTypeArgument(returnEntityType);
+            final Type wireResponseElementType = getWireResponseType(resultElementType, returnValueWireType);
+
+            return TypeUtil.createParameterizedType(((ParameterizedType) returnEntityType).getRawType(),
+                wireResponseElementType);
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnEntityType, Map.class)) {
+            final Type[] typeArguments = TypeUtil.getTypeArguments(returnEntityType);
+            final Type resultValueType = typeArguments[1];
+            final Type wireResponseValueType = getWireResponseType(resultValueType, returnValueWireType);
+
+            return TypeUtil.createParameterizedType(((ParameterizedType) returnEntityType).getRawType(),
+                typeArguments[0], wireResponseValueType);
+        }
+
+        return returnEntityType;
     }
 
     // Private Ctr

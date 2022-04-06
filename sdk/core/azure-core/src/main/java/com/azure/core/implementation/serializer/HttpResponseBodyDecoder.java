@@ -18,7 +18,6 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -68,11 +67,11 @@ public final class HttpResponseBodyDecoder {
                 Mono<byte[]> bodyMono = body == null ? httpResponse.getBodyAsByteArray() : Mono.just(body);
                 return bodyMono.flatMap(bodyAsByteArray -> {
                     try {
-                        final Object decodedErrorEntity = deserializeBody(bodyAsByteArray,
+                        final Object errorBody = serializer.deserialize(bodyAsByteArray,
                             decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
-                            null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+                            SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
 
-                        return Mono.justOrEmpty(decodedErrorEntity);
+                        return Mono.justOrEmpty(errorBody);
                     } catch (IOException | MalformedValueException ex) {
                         // This translates in RestProxy as a RestException with no deserialized body.
                         // The response content will still be accessible via the .response() member.
@@ -93,7 +92,8 @@ public final class HttpResponseBodyDecoder {
                     try {
                         final Object decodedSuccessEntity = deserializeBody(bodyAsByteArray,
                             decodeData.getReturnEntityType(), decodeData.getReturnValueWireType(),
-                            serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+                            decodeData.getWireResponseType(), serializer,
+                            SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
 
                         return Mono.justOrEmpty(decodedSuccessEntity);
                     } catch (MalformedValueException e) {
@@ -151,60 +151,17 @@ public final class HttpResponseBodyDecoder {
      * @throws IOException When the body cannot be deserialized
      */
     private static Object deserializeBody(final byte[] value, final Type resultType, final Type wireType,
-        final SerializerAdapter serializer, final SerializerEncoding encoding) throws IOException {
+        final Type wireResponseType, final SerializerAdapter serializer, final SerializerEncoding encoding)
+        throws IOException {
         if (wireType == null) {
             return serializer.deserialize(value, resultType, encoding);
         } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
             return deserializePage(value, resultType, wireType, serializer, encoding);
         } else {
-            final Type wireResponseType = constructWireResponseType(resultType, wireType);
             final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
 
             return convertToResultType(wireResponse, resultType, wireType);
         }
-    }
-
-    /**
-     * Given: (1). the {@code java.lang.reflect.Type} (resultType) of java proxy method return value (2). and {@link
-     * ReturnValueWireType} annotation value indicating 'entity type' (wireType) of same REST API's wire response body
-     * this method construct 'response body Type'.
-     *
-     * Note: When {@link ReturnValueWireType} annotation is applied to a proxy method, then the raw HTTP response
-     * content will need to parsed using the derived 'response body Type' then converted to actual {@code returnType}.
-     *
-     * @param resultType the {@code java.lang.reflect.Type} of java proxy method return value
-     * @param wireType the {@code java.lang.reflect.Type} of entity in REST API response body
-     * @return the {@code java.lang.reflect.Type} of REST API response body
-     */
-    private static Type constructWireResponseType(Type resultType, Type wireType) {
-        Objects.requireNonNull(wireType);
-
-        if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                return Base64Url.class;
-            }
-        } else if (resultType == OffsetDateTime.class) {
-            if (wireType == DateTimeRfc1123.class) {
-                return DateTimeRfc1123.class;
-            } else if (wireType == UnixTime.class) {
-                return UnixTime.class;
-            }
-        } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
-            final Type resultElementType = TypeUtil.getTypeArgument(resultType);
-            final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
-
-            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(),
-                wireResponseElementType);
-        } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
-            final Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
-            final Type resultValueType = typeArguments[1];
-            final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
-
-            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(),
-                typeArguments[0], wireResponseValueType);
-        }
-
-        return resultType;
     }
 
     /**
