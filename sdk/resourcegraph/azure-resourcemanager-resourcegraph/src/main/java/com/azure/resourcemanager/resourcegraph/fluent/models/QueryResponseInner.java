@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcegraph.models.Facet;
 import com.azure.resourcemanager.resourcegraph.models.ResultTruncated;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Query result. */
 @Fluent
 public final class QueryResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryResponseInner.class);
-
     /*
      * Number of total records matching the query.
      */
@@ -187,13 +184,13 @@ public final class QueryResponseInner {
      */
     public void validate() {
         if (resultTruncated() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resultTruncated in model QueryResponseInner"));
         }
         if (data() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property data in model QueryResponseInner"));
         }
@@ -201,4 +198,6 @@ public final class QueryResponseInner {
             facets().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueryResponseInner.class);
 }
