@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.1-beta.17 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.2.1-beta.16 (2020-10-16)
 
 - Demo for training
