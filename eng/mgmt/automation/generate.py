@@ -165,6 +165,7 @@ def sdk_automation(input_file: str, output_file: str):
                 'artifacts': ['{0}/pom.xml'.format(output_folder)] +
                              [jar for jar in glob.glob('{0}/target/*.jar'.format(output_folder))],
                 'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(output_folder))), None),
+                'language': 'Java',
                 'result': 'succeeded' if succeeded else 'failed',
             })
 

@@ -124,6 +124,7 @@ def sdk_automation_readme(readme_file_abspath: str,
             ],
             'artifacts': artifacts,
             'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(generated_folder))), None),
+            'language': 'Java',
             'result': result,
         })
 
