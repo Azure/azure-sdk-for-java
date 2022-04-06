@@ -267,8 +267,10 @@ public class SpringAppDeploymentImpl
     public SpringAppDeploymentImpl withTargetModule(String moduleName) {
         ensureSource(UserSourceType.SOURCE);
         UserSourceInfo userSourceInfo = innerModel().properties().source();
-        SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
-        sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
+        if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
+            SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
+            sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
+        }
         return this;
     }
 
@@ -276,8 +278,10 @@ public class SpringAppDeploymentImpl
     public SpringAppDeploymentImpl withSingleModule() {
         ensureSource(UserSourceType.SOURCE);
         UserSourceInfo userSourceInfo = innerModel().properties().source();
-        SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
-        sourceUploadedUserSourceInfo.withArtifactSelector(null);
+        if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
+            SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
+            sourceUploadedUserSourceInfo.withArtifactSelector(null);
+        }
         return this;
     }
 
@@ -333,8 +337,10 @@ public class SpringAppDeploymentImpl
     public SpringAppDeploymentImpl withJvmOptions(String jvmOptions) {
         ensureSource(UserSourceType.JAR);
         UserSourceInfo userSourceInfo = innerModel().properties().source();
-        JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
-        uploadedUserSourceInfo.withJvmOptions(jvmOptions);
+        if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+            JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
+            uploadedUserSourceInfo.withJvmOptions(jvmOptions);
+        }
         return this;
     }
 
