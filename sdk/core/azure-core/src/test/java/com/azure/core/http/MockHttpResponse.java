@@ -71,7 +71,7 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public HttpHeaders getHeaders() {
-        return this.headers ;
+        return this.headers;
     }
 
     @Override
