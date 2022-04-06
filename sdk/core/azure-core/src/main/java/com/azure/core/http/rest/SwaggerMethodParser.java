@@ -36,6 +36,8 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -78,12 +80,16 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
+    private final Type headersType;
     private final BitSet expectedStatusCodes;
     private final Type returnType;
     private final Type returnValueWireType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
     private final int contextPosition;
     private final int requestOptionsPosition;
+
+    private final boolean eagerlyReadResponse;
+    private final boolean returnTypeDecodable;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -231,6 +237,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyContentMethodParameterIndex = bodyContentMethodParameterIndex;
         this.bodyContentType = bodyContentType;
         this.bodyJavaType = bodyJavaType;
+        this.headersType = TypeUtil.getHeadersType(returnType);
 
         Class<?>[] parameterTypes = swaggerMethod.getParameterTypes();
         int contextPosition = -1;
@@ -248,6 +255,9 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
 
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
+
+        this.eagerlyReadResponse = TypeUtil.shouldEagerlyReadResponse(returnType);
+        this.returnTypeDecodable = TypeUtil.isReturnTypeDecodable(returnType);
     }
 
     /**
@@ -480,6 +490,10 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         return returnType;
     }
 
+    @Override
+    public Type getHeadersType() {
+        return headersType;
+    }
 
     /**
      * Get the type of the body parameter to this method, if present.
@@ -500,6 +514,31 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public Type getReturnValueWireType() {
         return returnValueWireType;
+    }
+
+    @Override
+    public boolean isReturnTypeDecodable() {
+        return returnTypeDecodable;
+    }
+
+    /**
+     * Checks if the network response body should be eagerly read based on its {@link #getReturnType() return type}.
+     * <p>
+     * The following types, including subtypes, aren't eagerly read from the network:
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Flag indicating if the network response body should be eagerly read.
+     */
+    public boolean isEagerlyReadResponse() {
+        return eagerlyReadResponse;
     }
 
     private static void addSerializedQueryParameter(SerializerAdapter adapter, Object value, boolean shouldEncode,

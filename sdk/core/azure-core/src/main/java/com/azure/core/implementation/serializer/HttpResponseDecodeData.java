@@ -3,12 +3,13 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.annotation.HeaderCollection;
-
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
@@ -25,31 +26,18 @@ public interface HttpResponseDecodeData {
     Type getReturnType();
 
     /**
-     * Get the type of the entity to be used to deserialize 'Matching' headers.
+     * Get the type that {@link HttpHeaders} will be deserialized to when returned.
+     * <p>
+     * {@code returnType} isn't required to have a headers type, in that case the {@link HttpHeaders} won't be
+     * deserialized.
+     * <p>
+     * If the return type is a {@link Mono} its generic type will be inspected. Only return types that are or are a
+     * subtype of {@link ResponseBase} will have a headers type.
      *
-     * The 'header entity' is optional and client can choose it when a strongly typed model is needed for headers.
-     *
-     * 'Matching' headers are the HTTP response headers those with:
-     * 1. header names same as name of a properties in the 'header entity'.
-     * 2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the 'header
-     * entity'.
-     *
-     * @return headers entity type
+     * @return The {@code returnType} headers type if set, otherwise null.
      */
     default Type getHeadersType() {
-        Type token = this.getReturnType();
-        Type headersType = null;
-
-        if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
-            token = TypeUtil.getTypeArgument(token);
-        }
-
-        // Only the RestResponseBase class supports a custom header type. All other RestResponse subclasses do not.
-        if (TypeUtil.isTypeOrSubTypeOf(token, ResponseBase.class)) {
-            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, ResponseBase.class))[0];
-        }
-
-        return headersType;
+        return TypeUtil.getHeadersType(getReturnType());
     }
 
     /**
@@ -83,5 +71,27 @@ public interface HttpResponseDecodeData {
      */
     default UnexpectedExceptionInformation getUnexpectedException(int code) {
         return new UnexpectedExceptionInformation(HttpResponseException.class);
+    }
+
+    /**
+     * Checks if the {@link #getReturnType() return type} is a decode-able type.
+     * <p>
+     * Types that aren't decode-able are the following (including sub-types):
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Flag indicating if the return type is decode-able.
+     */
+    default boolean isReturnTypeDecodable() {
+        return TypeUtil.isReturnTypeDecodable(getReturnType());
     }
 }

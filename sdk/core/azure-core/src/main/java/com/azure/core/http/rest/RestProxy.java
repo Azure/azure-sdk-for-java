@@ -55,8 +55,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
-
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  *
@@ -132,7 +130,7 @@ public final class RestProxy implements InvocationHandler {
             context = mergeRequestOptionsContext(context, options);
 
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
+                .addData("azure-eagerly-read-response", methodParser.isEagerlyReadResponse());
             context = startTracingSpan(method, context);
 
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
