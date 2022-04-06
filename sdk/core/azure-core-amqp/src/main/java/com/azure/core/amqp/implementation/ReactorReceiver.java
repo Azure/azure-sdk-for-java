@@ -83,6 +83,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 return Mono.create(sink -> {
                     try {
                         this.dispatcher.invoke(() -> {
+                            if (isDisposed()) {
+                                sink.error(new IllegalStateException(
+                                    "Cannot decode delivery when ReactorReceiver instance is closed."));
+                                return;
+                            }
                             final Message message = decodeDelivery(delivery);
                             final int creditsLeft = receiver.getRemoteCredit();
 

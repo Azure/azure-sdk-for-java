@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.6 (Unreleased)
+## 4.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.1.0 (2022-03-31)
+
+### Features Added
+- Added support for service version `7.3`.
+- Added the following values to `KeyVaultDataAction`:
+  - `WRITE_ROLE_DEFINITION`
+  - `DELETE_ROLE_DEFINITION`
+  - `RELEASE_KEY`
+  - `DOWNLOAD_HSM_SECURITY_DOMAIN_STATUS`
+  - `RANDOM_NUMBERS_GENERATE`
+- Implemented new traits (micro-interfaces) in `KeyVaultAccessControlClientBuilder` and `KeyVaultBackupClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ## 4.0.8 (2022-03-17)
 

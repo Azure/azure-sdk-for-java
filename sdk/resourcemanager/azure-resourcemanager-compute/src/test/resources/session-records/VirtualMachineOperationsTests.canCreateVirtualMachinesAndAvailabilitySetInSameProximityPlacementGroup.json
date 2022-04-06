@@ -288,7 +288,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25375/providers/Microsoft.Storage/storageAccounts/stg17267562bde0c?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25375/providers/Microsoft.Storage/storageAccounts/stg17267562bde0c?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f2996393-091d-4cea-a5fd-ba025d6354de",
@@ -312,7 +312,7 @@
       "Body" : "",
       "x-ms-client-request-id" : "f2996393-091d-4cea-a5fd-ba025d6354de",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-08-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-09-01"
     },
     "Exception" : null
   }, {
@@ -436,7 +436,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1fca983e-091c-4e6e-a0a7-8be7904b9a73"
@@ -459,12 +459,12 @@
       "Body" : "",
       "x-ms-client-request-id" : "1fca983e-091c-4e6e-a0a7-8be7904b9a73",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-08-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-09-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus/asyncoperations/b9ecc165-6335-40c5-a48c-07f08155f7a1?monitor=true&api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "25a10538-5ea2-4f19-a6c5-c5aa9389d8d0"
@@ -491,7 +491,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25375/providers/Microsoft.Storage/storageAccounts/stg17267562bde0c?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25375/providers/Microsoft.Storage/storageAccounts/stg17267562bde0c?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "35b96e45-1b80-4f1f-9622-e7f75d498993",

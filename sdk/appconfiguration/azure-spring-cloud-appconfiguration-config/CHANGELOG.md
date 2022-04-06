@@ -1,11 +1,26 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.5.0 (2022-03-28)
+This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5.
+
+### Features Added
 * Added refresh interval parameter to `spring.cloud.azure.appconfiguraiton` to force refreshes on a given interval. Can be used to make sure secrets are kept up to date.
 * Added BackoffTimeCalculator, which sets the next refresh period to sooner if a refresh fails.
 
-### Other Changes
+### Dependency Upgrades
+- Regular updates for Azure SDK dependency versions.
+- Upgrade external dependencies' version according to [spring-boot-dependencies:2.6.3](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.3/spring-boot-dependencies-2.6.3.pom) and [spring-cloud-dependencies:2021.0.1](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2021.0.1/).
+
 
 ## 2.4.0 (2022-03-01)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.

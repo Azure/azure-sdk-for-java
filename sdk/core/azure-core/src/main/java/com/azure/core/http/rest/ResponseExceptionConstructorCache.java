@@ -40,18 +40,30 @@ final class ResponseExceptionConstructorCache {
                 exceptionBodyType);
 
             return lookupToUse.unreflectConstructor(constructor);
-        } catch (Throwable t) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(t));
+        } catch (Exception ex) {
+            if (ex instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) ex);
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 
     @SuppressWarnings("unchecked")
-    <T extends HttpResponseException> T invoke(MethodHandle handle, String exceptionMessage, HttpResponse httpResponse,
-        Object exceptionBody) {
+    static <T extends HttpResponseException> T invoke(MethodHandle handle, String exceptionMessage,
+        HttpResponse httpResponse, Object exceptionBody) {
         try {
             return (T) handle.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
-        } catch (Throwable t) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(t));
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            }
+
+            if (throwable instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) throwable);
+            }
+
+            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, throwable));
         }
     }
 }
