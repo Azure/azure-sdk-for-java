@@ -146,8 +146,7 @@ public final class TypeUtil {
     }
 
     /**
-     * Get the super type for a type in its super type chain, which has
-     * a raw class that matches the specified class.
+     * Get the super type for a type in its super type chain, which has a raw class that matches the specified class.
      *
      * @param subType the subtype to find super type for
      * @param rawSuperType the raw class for the super type
@@ -198,8 +197,8 @@ public final class TypeUtil {
     }
 
     /**
-     * Returns whether the rest response expects to have a body (by checking if the body parameter type is set to
-     * Void, in which case a body isn't expected).
+     * Returns whether the rest response expects to have a body (by checking if the body parameter type is set to Void,
+     * in which case a body isn't expected).
      *
      * @param restResponseReturnType The RestResponse subtype containing the type arguments we are inspecting.
      * @return True if a body is expected, false if a Void body is expected.
@@ -362,6 +361,28 @@ public final class TypeUtil {
         }
 
         return type;
+    }
+
+    /**
+     * Gets the return entity type from the {@code returnType}.
+     * <p>
+     * The entity type is the {@code returnType} itself if it isn't {@code Mono<T>} or {@code Response<T>}. Otherwise,
+     * if the return type is {@code Mono<T>} the {@code T} type will be extracted, then if {@code T} is {@code
+     * Response<S>} the {@code S} type will be extracted and returned or if it isn't a {@code Response<S>} {@code T}
+     * will be returned.
+     *
+     * @return The return type entity type.
+     */
+    public static Type getReturnEntityType(Type returnType) {
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
+            returnType = TypeUtil.getTypeArgument(returnType);
+        }
+
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+            returnType = TypeUtil.getRestResponseBodyType(returnType);
+        }
+
+        return returnType;
     }
 
     // Private Ctr

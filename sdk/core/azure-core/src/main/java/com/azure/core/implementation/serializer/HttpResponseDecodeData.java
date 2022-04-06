@@ -94,4 +94,18 @@ public interface HttpResponseDecodeData {
     default boolean isReturnTypeDecodable() {
         return TypeUtil.isReturnTypeDecodable(getReturnType());
     }
+
+    /**
+     * Gets the return entity type from the {@link #getReturnType() return type}.
+     * <p>
+     * The entity type is the {@link #getReturnType() return type} itself if it isn't {@code Mono<T>} or
+     * {@code Response<T>}. Otherwise, if the return type is {@code Mono<T>} the {@code T} type will be extracted,
+     * then if {@code T} is {@code Response<S>} the {@code S} type will be extracted and returned or if it isn't a
+     * {@code Response<S>} {@code T} will be returned.
+     *
+     * @return The return type entity type.
+     */
+    default Type getReturnEntityType() {
+        return TypeUtil.getReturnEntityType(getReturnType());
+    }
 }

@@ -8,8 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
@@ -94,7 +92,7 @@ public final class HttpResponseBodyDecoder {
                 return bodyMono.flatMap(bodyAsByteArray -> {
                     try {
                         final Object decodedSuccessEntity = deserializeBody(bodyAsByteArray,
-                            extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
+                            decodeData.getReturnEntityType(), decodeData.getReturnValueWireType(),
                             serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
 
                         return Mono.justOrEmpty(decodedSuccessEntity);
@@ -123,7 +121,7 @@ public final class HttpResponseBodyDecoder {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;
         } else {
-            return decodeData.isReturnTypeDecodable() ? extractEntityTypeFromReturnType(decodeData) : null;
+            return decodeData.isReturnTypeDecodable() ? decodeData.getReturnEntityType() : null;
         }
     }
 
@@ -291,37 +289,6 @@ public final class HttpResponseBodyDecoder {
         }
 
         return wireResponse;
-    }
-
-    /**
-     * Get the {@link Type} of the REST API 'returned entity'.
-     *
-     * In the declaration of a java proxy method corresponding to the REST API, the 'returned entity' can be:
-     *
-     * 1. emission value of the reactor publisher returned by proxy method
-     *
-     * e.g. {@code Mono<Foo> getFoo(args);} {@code Flux<Foo> getFoos(args);} where Foo is the REST API 'returned
-     * entity'.
-     *
-     * 2. OR content (value) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method
-     *
-     * e.g. {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);} {@code Flux<RestResponseBase<headers, Foo>>
-     * getFoos(args);} where Foo is the REST API return entity.
-     *
-     * @return the entity type.
-     */
-    private static Type extractEntityTypeFromReturnType(HttpResponseDecodeData decodeData) {
-        Type token = decodeData.getReturnType();
-
-        if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
-            token = TypeUtil.getTypeArgument(token);
-        }
-
-        if (TypeUtil.isTypeOrSubTypeOf(token, Response.class)) {
-            token = TypeUtil.getRestResponseBodyType(token);
-        }
-
-        return token;
     }
 
     /**

@@ -84,6 +84,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final BitSet expectedStatusCodes;
     private final Type returnType;
     private final Type returnValueWireType;
+    private final Type returnEntityType;
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
     private final int contextPosition;
     private final int requestOptionsPosition;
@@ -141,46 +142,10 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
 
         returnType = swaggerMethod.getGenericReturnType();
 
-        final ReturnValueWireType returnValueWireTypeAnnotation =
-            swaggerMethod.getAnnotation(ReturnValueWireType.class);
-        if (returnValueWireTypeAnnotation != null) {
-            Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
-            if (returnValueWireType == Base64Url.class
-                || returnValueWireType == UnixTime.class
-                || returnValueWireType == DateTimeRfc1123.class) {
-                this.returnValueWireType = returnValueWireType;
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
-                this.returnValueWireType = returnValueWireType;
-            } else {
-                this.returnValueWireType = null;
-            }
-        } else {
-            this.returnValueWireType = null;
-        }
+        this.returnValueWireType = extractReturnValueWireType(swaggerMethod);
+        this.returnEntityType = TypeUtil.getReturnEntityType(returnType);
 
-        if (swaggerMethod.isAnnotationPresent(Headers.class)) {
-            final Headers headersAnnotation = swaggerMethod.getAnnotation(Headers.class);
-            final String[] headers = headersAnnotation.value();
-            for (final String header : headers) {
-                final int colonIndex = header.indexOf(":");
-                if (colonIndex >= 0) {
-                    final String headerName = header.substring(0, colonIndex).trim();
-                    if (!headerName.isEmpty()) {
-                        final String headerValue = header.substring(colonIndex + 1).trim();
-                        if (!headerValue.isEmpty()) {
-                            if (headerValue.contains(",")) {
-                                // there are multiple values for this header, so we split them out.
-                                this.headers.set(headerName, Arrays.asList(headerValue.split(",")));
-                            } else {
-                                this.headers.set(headerName, headerValue);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        extractHeadersAnnotation(swaggerMethod);
 
         final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
         if (expectedResponses != null && expectedResponses.value().length > 0) {
@@ -505,7 +470,6 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     *
      * Get the type that the return value will be sent across the network as. If returnValueWireType is not null, then
      * the raw HTTP response body will need to parsed to this type and then converted to the actual returnType.
      *
@@ -514,6 +478,11 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public Type getReturnValueWireType() {
         return returnValueWireType;
+    }
+
+    @Override
+    public Type getReturnEntityType() {
+        return returnEntityType;
     }
 
     @Override
@@ -641,5 +610,57 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return exceptionHashMap;
+    }
+
+    private Type extractReturnValueWireType(Method swaggerMethod) {
+        ReturnValueWireType returnValueWireTypeAnnotation = swaggerMethod.getAnnotation(ReturnValueWireType.class);
+        if (returnValueWireTypeAnnotation == null) {
+            return null;
+        }
+
+        Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
+        if (returnValueWireType == Base64Url.class
+            || returnValueWireType == UnixTime.class
+            || returnValueWireType == DateTimeRfc1123.class) {
+            return returnValueWireType;
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+            return returnValueWireType.getGenericInterfaces()[0];
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, Page.class)) {
+            return returnValueWireType;
+        } else {
+            return null;
+        }
+    }
+
+    private void extractHeadersAnnotation(Method swaggerMethod) {
+        if (!swaggerMethod.isAnnotationPresent(Headers.class)) {
+            return;
+        }
+
+        final Headers headersAnnotation = swaggerMethod.getAnnotation(Headers.class);
+        final String[] headers = headersAnnotation.value();
+        for (final String header : headers) {
+            final int colonIndex = header.indexOf(":");
+            if (colonIndex < 0) {
+                continue;
+            }
+
+            final String headerName = header.substring(0, colonIndex).trim();
+            if (headerName.isEmpty()) {
+                continue;
+            }
+
+            final String headerValue = header.substring(colonIndex + 1).trim();
+            if (headerValue.isEmpty()) {
+                continue;
+            }
+
+            if (headerValue.contains(",")) {
+                // there are multiple values for this header, so we split them out.
+                this.headers.set(headerName, Arrays.asList(headerValue.split(",")));
+            } else {
+                this.headers.set(headerName, headerValue);
+            }
+        }
     }
 }
