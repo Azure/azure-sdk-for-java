@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.WorkItemConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkItemConfigurationInner;
 import com.azure.resourcemanager.applicationinsights.models.WorkItemConfigurationErrorException;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkItemConfigurationsClient. */
 public final class WorkItemConfigurationsClientImpl implements WorkItemConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(WorkItemConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkItemConfigurationsService service;
 
@@ -275,7 +272,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkItemConfigurationInner> listAsync(String resourceGroupName, String resourceName) {
@@ -291,7 +289,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkItemConfigurationInner> listAsync(
@@ -307,7 +306,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkItemConfigurationInner> list(String resourceGroupName, String resourceName) {
@@ -323,7 +323,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkItemConfigurationInner> list(

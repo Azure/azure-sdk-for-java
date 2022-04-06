@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The LegalHold property of a blob container. */
 @Fluent
 public final class LegalHoldProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegalHoldProperties.class);
-
     /*
      * The hasLegalHold public property is set to true by SRP if there are at
      * least one existing tag. The hasLegalHold public property is set to false

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed Identity used for CMK. */
 @Fluent
 public final class CmkIdentityDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CmkIdentityDefinition.class);
-
     /*
      * The resource id of the user assigned identity to authenticate to
      * customer's key vault.

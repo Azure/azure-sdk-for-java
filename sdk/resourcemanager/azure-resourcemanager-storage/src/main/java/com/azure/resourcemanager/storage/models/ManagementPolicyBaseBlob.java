@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Management policy action for base blob. */
 @Fluent
 public final class ManagementPolicyBaseBlob {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyBaseBlob.class);
-
     /*
      * The function to tier blobs to cool storage. Support blobs currently at
      * Hot tier

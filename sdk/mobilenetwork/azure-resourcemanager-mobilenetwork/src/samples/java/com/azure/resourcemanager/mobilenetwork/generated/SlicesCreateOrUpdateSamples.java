@@ -9,7 +9,7 @@ import com.azure.resourcemanager.mobilenetwork.models.Snssai;
 /** Samples for Slices CreateOrUpdate. */
 public final class SlicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SliceCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SliceCreate.json
      */
     /**
      * Sample code: Create mobile network slice.

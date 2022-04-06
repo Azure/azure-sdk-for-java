@@ -6,16 +6,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Issue Comment Contract details. */
 @Fluent
 public final class IssueCommentContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IssueCommentContractInner.class);
-
     /*
      * Properties of the Issue Comment.
      */

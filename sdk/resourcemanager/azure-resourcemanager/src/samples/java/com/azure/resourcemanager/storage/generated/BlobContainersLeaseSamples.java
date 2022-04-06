@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.LeaseContainerRequestAction;
 /** Samples for BlobContainers Lease. */
 public final class BlobContainersLeaseSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersLease_Break.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersLease_Break.json
      */
     /**
      * Sample code: Break a lease on a container.
@@ -35,7 +35,7 @@ public final class BlobContainersLeaseSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersLease_Acquire.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersLease_Acquire.json
      */
     /**
      * Sample code: Acquire a lease on a container.

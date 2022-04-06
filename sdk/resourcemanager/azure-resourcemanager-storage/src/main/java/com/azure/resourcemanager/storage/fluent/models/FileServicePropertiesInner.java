@@ -6,19 +6,15 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.azure.resourcemanager.storage.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of File services in storage account. */
 @Fluent
 public final class FileServicePropertiesInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServicePropertiesInner.class);
-
     /*
      * The properties of File services in storage account.
      */

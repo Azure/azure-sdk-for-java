@@ -7,15 +7,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Storage Account ManagementPolicy properties. */
 @Fluent
 public final class ManagementPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyProperties.class);
-
     /*
      * Returns the date and time the ManagementPolicies was last modified.
      */
@@ -68,7 +65,7 @@ public final class ManagementPolicyProperties {
      */
     public void validate() {
         if (policy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property policy in model ManagementPolicyProperties"));
@@ -76,4 +73,6 @@ public final class ManagementPolicyProperties {
             policy().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementPolicyProperties.class);
 }

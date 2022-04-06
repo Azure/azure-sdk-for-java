@@ -12,7 +12,6 @@ import com.azure.resourcemanager.datafactory.models.SsisExecutionParameter;
 import com.azure.resourcemanager.datafactory.models.SsisLogLocation;
 import com.azure.resourcemanager.datafactory.models.SsisPackageLocation;
 import com.azure.resourcemanager.datafactory.models.SsisPropertyOverride;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** Execute SSIS package activity properties. */
 @Fluent
 public final class ExecuteSsisPackageActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecuteSsisPackageActivityTypeProperties.class);
-
     /*
      * SSIS package location.
      */
@@ -361,7 +358,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
      */
     public void validate() {
         if (packageLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property packageLocation in model ExecuteSsisPackageActivityTypeProperties"));
@@ -372,7 +369,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
             executionCredential().validate();
         }
         if (connectVia() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectVia in model ExecuteSsisPackageActivityTypeProperties"));
@@ -447,4 +444,6 @@ public final class ExecuteSsisPackageActivityTypeProperties {
             logLocation().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecuteSsisPackageActivityTypeProperties.class);
 }

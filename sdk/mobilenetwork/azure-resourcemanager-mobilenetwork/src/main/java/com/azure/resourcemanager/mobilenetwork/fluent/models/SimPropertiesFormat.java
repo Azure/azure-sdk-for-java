@@ -6,20 +6,17 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mobilenetwork.models.ConfigurationState;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Sim properties. */
 @Fluent
 public final class SimPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SimPropertiesFormat.class);
-
     /*
      * The provisioning state of the sim resource.
      */
@@ -27,10 +24,10 @@ public final class SimPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The configuration state of the sim resource - complete or incomplete.
+     * The state of the sim resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
-    private ConfigurationState configurationState;
+    @JsonProperty(value = "simState", access = JsonProperty.Access.WRITE_ONLY)
+    private SimState simState;
 
     /*
      * The International Mobile Subscriber Identity (IMSI) for the sim.
@@ -94,12 +91,12 @@ public final class SimPropertiesFormat {
     }
 
     /**
-     * Get the configurationState property: The configuration state of the sim resource - complete or incomplete.
+     * Get the simState property: The state of the sim resource.
      *
-     * @return the configurationState value.
+     * @return the simState value.
      */
-    public ConfigurationState configurationState() {
-        return this.configurationState;
+    public SimState simState() {
+        return this.simState;
     }
 
     /**
@@ -277,7 +274,7 @@ public final class SimPropertiesFormat {
      */
     public void validate() {
         if (internationalMobileSubscriberIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property internationalMobileSubscriberIdentity in model"
@@ -293,4 +290,6 @@ public final class SimPropertiesFormat {
             staticIpConfiguration().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SimPropertiesFormat.class);
 }

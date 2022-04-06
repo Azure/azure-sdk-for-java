@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Entity Name is handled properly when passed in as part of connection string in `ServiceBusClientBuilder`. ([#27509](https://github.com/azure/azure-sdk-for-java/issues/27509))
+- Fixed a bug that when the current `SynchronousReceiveWork` is completed, the queued `SynchronousReceiveWork` is not updated. ([#27578](https://github.com/Azure/azure-sdk-for-java/issues/27578))
 
 ### Other Changes
 

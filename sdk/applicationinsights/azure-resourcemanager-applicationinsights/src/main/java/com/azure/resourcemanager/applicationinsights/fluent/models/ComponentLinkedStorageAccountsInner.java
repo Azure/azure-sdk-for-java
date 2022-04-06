@@ -6,15 +6,11 @@ package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Application Insights component linked storage accounts. */
 @Fluent
 public final class ComponentLinkedStorageAccountsInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentLinkedStorageAccountsInner.class);
-
     /*
      * The properties of the linked storage accounts.
      */

@@ -3,8 +3,18 @@
 ## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
+ - Added `followRedirects` property on the `OkHttpClientBuilder`.
 
 ### Breaking Changes
+
+- Okhttp-backed `HttpClient` client will no longer follow redirects automatically. ([#27960](https://github.com/Azure/azure-sdk-for-java/pull/27960)).
+  <br>To get the older behavior please create an instance of `HttpClient` as follows
+
+    ```java
+    HttpClient client = new OkHttpAsyncHttpClientBuilder()
+        .followRedirects(true)
+        .build();
+    ```
 
 ### Bugs Fixed
 
