@@ -232,8 +232,7 @@ def main():
             compare_with_maven_package(sdk_root, service, stable_version,
                                        current_version, module)
 
-            if args.get('auto_commit_external_change') and args.get(
-                'user_name') and args.get('user_email'):
+            if args.get('auto_commit_external_change') and args.get('user_name') and args.get('user_email'):
                 pwd = os.getcwd()
                 try:
                     os.chdir(sdk_root)
