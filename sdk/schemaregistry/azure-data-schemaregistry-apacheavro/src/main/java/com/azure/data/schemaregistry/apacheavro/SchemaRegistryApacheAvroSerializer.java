@@ -66,7 +66,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
      *     argument constructor. Or if the schema could not be fetched from {@code T}.
-     * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
+     * @throws SchemaRegistryAvroException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
