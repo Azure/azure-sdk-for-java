@@ -241,6 +241,20 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.nowAbstract",
+          "old": "method boolean java.lang.Object::equals(java.lang.Object) @ com.azure.messaging.servicebus.administration.models.RuleFilter",
+          "new": "method boolean com.azure.messaging.servicebus.administration.models.RuleFilter::equals(java.lang.Object)",
+          "justification": "Abstract class needs subclasses to implement object method overrides"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.nowAbstract",
+          "old": "method int java.lang.Object::hashCode() @ com.azure.messaging.servicebus.administration.models.RuleFilter",
+          "new": "method int com.azure.messaging.servicebus.administration.models.RuleFilter::hashCode()",
+          "justification": "Abstract class needs subclasses to implement object method overrides"
         }
       ]
     }
