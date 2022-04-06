@@ -50,7 +50,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param userAgent The user agent string to add to request headers.
      */
     public UserAgentPolicy(String userAgent) {
-        // TODO: should a custom useragent string be allowed?
         if (userAgent != null) {
             this.userAgent = userAgent;
         } else {

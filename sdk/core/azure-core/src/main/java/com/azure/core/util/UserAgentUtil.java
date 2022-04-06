@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import java.util.regex.Pattern;
+
 /**
  * Utility for building user agent string for Azure client libraries as specified in the
  * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">design guidelines</a>.
@@ -12,6 +14,7 @@ public final class UserAgentUtil {
     private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
+    private static final Pattern AZURE_PREFIX = Pattern.compile("^azure-");
 
     /**
      * Default {@code UserAgent} header.
@@ -59,10 +62,10 @@ public final class UserAgentUtil {
 
         // Add the required default User-Agent string.
         userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
-            .append("-")
-            .append(sdkName)
-            .append("/")
-            .append(sdkVersion);
+                .append("-")
+                .append(standardizeSdkName(sdkName))
+                .append("/")
+                .append(sdkVersion);
 
         // Only add the platform telemetry if it is allowed as it is optional.
         if (!isTelemetryDisabled(configuration)) {
@@ -73,6 +76,20 @@ public final class UserAgentUtil {
         }
 
         return userAgentBuilder.toString();
+    }
+
+    /**
+     * Removes azure- prefix from the SDK name in accordance with the
+     * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">User Agent format guidance</a>.
+     *
+     * @param sdkName The original SDK name.
+     * @return The updated SDK name without the azure- prefix.
+     */
+    private static String standardizeSdkName(String sdkName) {
+        if (CoreUtils.isNullOrEmpty(sdkName)) {
+            return sdkName;
+        }
+        return AZURE_PREFIX.matcher(sdkName).replaceFirst("");
     }
 
     /**
