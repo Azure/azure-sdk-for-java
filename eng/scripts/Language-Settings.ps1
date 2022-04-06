@@ -183,7 +183,10 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
+      Write-Host "Getting Release Tag"
       $releaseTag = RetrieveReleaseTag $PublicArtifactLocation
+      Write-Host "ReleaseTag $($releaseTag)"
+      Write-Host "Calling Upload-Blob"
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
     }
     Finally
