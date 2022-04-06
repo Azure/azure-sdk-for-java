@@ -48,7 +48,7 @@ import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
-import com.azure.storage.file.datalake.models.CpkInfo;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;

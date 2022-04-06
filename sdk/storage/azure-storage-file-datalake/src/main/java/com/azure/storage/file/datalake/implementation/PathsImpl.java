@@ -47,7 +47,7 @@ import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryRespo
 import com.azure.storage.file.datalake.implementation.models.PathsUndeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.models.CpkInfo;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;

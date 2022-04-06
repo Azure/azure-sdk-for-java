@@ -41,7 +41,8 @@ import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
-import com.azure.storage.file.datalake.models.CpkInfo;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -262,8 +263,12 @@ public class DataLakePathAsyncClient {
      *
      * @return the customer provided key used for encryption.
      */
-    public CpkInfo getCustomerProvidedKey() {
-        return customerProvidedKey;
+    public CustomerProvidedKey getCustomerProvidedKey() {
+        return new CustomerProvidedKey(customerProvidedKey.getEncryptionKey());
+    }
+
+    CpkInfo getCpkInfo() {
+        return this.customerProvidedKey;
     }
 
     /**

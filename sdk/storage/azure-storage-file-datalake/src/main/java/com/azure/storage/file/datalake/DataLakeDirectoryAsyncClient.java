@@ -25,7 +25,7 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsListPath
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
-import com.azure.storage.file.datalake.models.CpkInfo;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -87,7 +87,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
             dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient(),
-            dataLakePathAsyncClient.getCustomerProvidedKey());
+            dataLakePathAsyncClient.getCpkInfo());
     }
 
     /**
@@ -201,7 +201,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
             getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
-            + Utility.urlDecode(fileName)), blockBlobAsyncClient, getCustomerProvidedKey());
+            + Utility.urlDecode(fileName)), blockBlobAsyncClient, getCpkInfo());
     }
 
     /**
@@ -385,7 +385,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(),
             Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient,
-            getCustomerProvidedKey());
+            getCpkInfo());
     }
 
     /**

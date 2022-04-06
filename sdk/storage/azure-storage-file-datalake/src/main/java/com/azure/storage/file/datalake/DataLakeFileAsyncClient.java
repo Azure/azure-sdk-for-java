@@ -31,7 +31,7 @@ import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
-import com.azure.storage.file.datalake.models.CpkInfo;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileExpirationOffset;
@@ -121,7 +121,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
             Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE,
-            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getCustomerProvidedKey());
+            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getCpkInfo());
     }
 
     /**
@@ -782,7 +782,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(contentMd5);
 
         return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(data, fileOffset, null, length, null, null,
-            headers, leaseAccessConditions, getCustomerProvidedKey(), context)
+            headers, leaseAccessConditions, getCpkInfo(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -908,7 +908,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, retainUncommittedData, close,
-            (long) 0, null, httpHeaders, lac, mac, getCustomerProvidedKey(),
+            (long) 0, null, httpHeaders, lac, mac, getCpkInfo(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));

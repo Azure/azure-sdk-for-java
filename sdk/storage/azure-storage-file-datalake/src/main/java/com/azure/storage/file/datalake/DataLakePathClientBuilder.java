@@ -33,7 +33,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
-import com.azure.storage.file.datalake.models.CpkInfo;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 
 import java.net.MalformedURLException;
