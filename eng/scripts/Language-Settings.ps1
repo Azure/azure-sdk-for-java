@@ -64,7 +64,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
   try
   {
-    $uri = "https://oss.sonatype.org/content/repositories/releases/$groupId/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+    $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
     $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -Method "GET" -uri $uri
 
     if ($pomContent -ne $null -or $pomContent.Length -eq 0)
