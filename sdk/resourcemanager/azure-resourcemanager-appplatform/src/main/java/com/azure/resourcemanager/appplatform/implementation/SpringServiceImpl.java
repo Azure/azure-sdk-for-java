@@ -139,7 +139,9 @@ public class SpringServiceImpl
     public SpringServiceImpl withSku(Sku sku) {
         innerModel().withSku(sku);
         if (isInUpdateMode()) {
-            patchToUpdate.withSku(sku);
+            if (patchToUpdate != null) {
+                patchToUpdate.withSku(sku);
+            }
         }
         return this;
     }

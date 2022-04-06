@@ -195,8 +195,9 @@ public class SpringAppDeploymentImpl
     }
 
     private Mono<Void> uploadToStorage(File source, ResourceUploadDefinition option) {
-        if (innerModel().properties().source() instanceof UploadedUserSourceInfo) {
-            UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
+        UserSourceInfo userSourceInfo = innerModel().properties().source();
+        if (userSourceInfo instanceof UploadedUserSourceInfo) {
+            UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) userSourceInfo;
             try {
                 uploadedUserSourceInfo.withRelativePath(option.relativePath());
                 ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
@@ -265,7 +266,8 @@ public class SpringAppDeploymentImpl
     @Override
     public SpringAppDeploymentImpl withTargetModule(String moduleName) {
         ensureSource(UserSourceType.SOURCE);
-        SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) innerModel().properties().source();
+        UserSourceInfo userSourceInfo = innerModel().properties().source();
+        SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
         sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
         return this;
     }
@@ -273,7 +275,8 @@ public class SpringAppDeploymentImpl
     @Override
     public SpringAppDeploymentImpl withSingleModule() {
         ensureSource(UserSourceType.SOURCE);
-        SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) innerModel().properties().source();
+        UserSourceInfo userSourceInfo = innerModel().properties().source();
+        SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
         sourceUploadedUserSourceInfo.withArtifactSelector(null);
         return this;
     }
@@ -312,14 +315,15 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withRuntime(RuntimeVersion version) {
-        if (innerModel().properties().source() instanceof JarUploadedUserSourceInfo) {
-            JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) innerModel().properties().source();
+        UserSourceInfo userSourceInfo = innerModel().properties().source();
+        if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+            JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
             uploadedUserSourceInfo.withRuntimeVersion(version.toString());
-        } else if (innerModel().properties().source() instanceof NetCoreZipUploadedUserSourceInfo) {
-            NetCoreZipUploadedUserSourceInfo uploadedUserSourceInfo = (NetCoreZipUploadedUserSourceInfo) innerModel().properties().source();
+        } else if (userSourceInfo instanceof NetCoreZipUploadedUserSourceInfo) {
+            NetCoreZipUploadedUserSourceInfo uploadedUserSourceInfo = (NetCoreZipUploadedUserSourceInfo) userSourceInfo;
             uploadedUserSourceInfo.withRuntimeVersion(version.toString());
-        } else if (innerModel().properties().source() instanceof SourceUploadedUserSourceInfo) {
-            SourceUploadedUserSourceInfo uploadedUserSourceInfo = (SourceUploadedUserSourceInfo) innerModel().properties().source();
+        } else if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
+            SourceUploadedUserSourceInfo uploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
             uploadedUserSourceInfo.withRuntimeVersion(version.toString());
         }
         return this;
@@ -328,7 +332,8 @@ public class SpringAppDeploymentImpl
     @Override
     public SpringAppDeploymentImpl withJvmOptions(String jvmOptions) {
         ensureSource(UserSourceType.JAR);
-        JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) innerModel().properties().source();
+        UserSourceInfo userSourceInfo = innerModel().properties().source();
+        JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
         uploadedUserSourceInfo.withJvmOptions(jvmOptions);
         return this;
     }
