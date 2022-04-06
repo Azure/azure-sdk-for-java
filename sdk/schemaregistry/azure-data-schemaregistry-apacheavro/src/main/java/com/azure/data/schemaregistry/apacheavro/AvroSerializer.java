@@ -23,7 +23,6 @@ import org.apache.avro.util.ByteBufferInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -187,7 +186,7 @@ class AvroSerializer {
             try {
                 return messageDecoder.decode(contents);
             } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(
+                throw logger.logExceptionAsError(new SchemaRegistryAvroException(
                     "Unable to deserialize Avro schema object using binary message decoder.", e));
             }
         } else {
@@ -198,7 +197,8 @@ class AvroSerializer {
                     return reader.read(null, decoderFactory.binaryDecoder(input, null));
                 }
             } catch (IOException | RuntimeException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
+                throw logger.logExceptionAsError(new SchemaRegistryAvroException(
+                    "Error deserializing raw Avro message.", e));
             }
         }
     }
