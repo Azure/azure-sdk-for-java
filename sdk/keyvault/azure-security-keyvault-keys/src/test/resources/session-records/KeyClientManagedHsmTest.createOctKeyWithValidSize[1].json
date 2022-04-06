@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey30043e0/create?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey55923bc/create?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "431",
+      "content-length" : "430",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "338",
+      "x-ms-server-latency" : "184",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "1b2f6384-25b5-11ec-b357-000d3a4326f9",
-      "Body" : "{\"attributes\":{\"created\":1633422031,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1633422031},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/testoctkey30043e0/a39cb1b311f806178c5673efe6523ffa\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
+      "x-ms-request-id" : "fc551324-af0b-11ec-a514-0022487870d4",
+      "Body" : "{\"attributes\":{\"created\":1648522655,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1648522655},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://azsdktestshsm.managedhsm.azure.net/keys/testoctkey55923bc/75ad76fb0bc5409f100733ee93b351d7\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testoctkey30043e0" ]
+  "variables" : [ "testoctkey55923bc" ]
 }

@@ -33,7 +33,7 @@ public interface NotificationRecipientEmails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Notification Recipient Emails subscribed to a notification.
+     * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response}.
      */
     Response<RecipientEmailCollection> listByNotificationWithResponse(
         String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
@@ -64,7 +64,7 @@ public interface NotificationRecipientEmails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return whether resource exists along with {@link Response}.
      */
     Response<Boolean> checkEntityExistsWithResponse(
         String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
@@ -95,7 +95,7 @@ public interface NotificationRecipientEmails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient Email details.
+     * @return recipient Email details along with {@link Response}.
      */
     Response<RecipientEmailContract> createOrUpdateWithResponse(
         String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
@@ -124,7 +124,7 @@ public interface NotificationRecipientEmails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);

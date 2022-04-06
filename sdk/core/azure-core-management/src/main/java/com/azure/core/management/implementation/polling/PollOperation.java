@@ -238,7 +238,7 @@ public final class PollOperation {
     @SuppressWarnings("unchecked")
     public static <U> U deserialize(SerializerAdapter serializerAdapter, String value, Type type) {
         if (value == null || "".equalsIgnoreCase(value)) {
-            LOGGER.info("Ignoring decoding of null or empty value to:" + type.getTypeName());
+            LOGGER.verbose("Ignoring decoding of null or empty value to:" + type.getTypeName());
             return null;
         } else {
             try {

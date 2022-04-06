@@ -13,10 +13,9 @@ import com.azure.resourcemanager.resourcehealth.fluent.AvailabilityStatusesClien
 import com.azure.resourcemanager.resourcehealth.fluent.models.AvailabilityStatusInner;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatuses;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AvailabilityStatusesImpl implements AvailabilityStatuses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityStatusesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailabilityStatusesImpl.class);
 
     private final AvailabilityStatusesClient innerClient;
 

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ResourceLocationDataContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the Gateway contract. */
 @Fluent
 public final class GatewayContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayContractProperties.class);
-
     /*
      * Gateway location.
      */
