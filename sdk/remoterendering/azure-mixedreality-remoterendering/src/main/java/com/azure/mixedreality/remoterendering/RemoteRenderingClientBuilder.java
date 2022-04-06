@@ -100,7 +100,7 @@ public final class RemoteRenderingClientBuilder {
         try {
             this.accountId = UUID.fromString(accountId);
         } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The 'accountId' must be a UUID formatted value.", ex));
+            throw logger.logExceptionAsError(new IllegalArgumentException("The 'accountId' must be a UUID formatted value."));
         }
 
         this.stsBuilder.accountId(accountId);
