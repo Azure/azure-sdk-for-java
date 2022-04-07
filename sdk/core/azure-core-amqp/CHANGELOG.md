@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
 
 ### Other Changes
 
