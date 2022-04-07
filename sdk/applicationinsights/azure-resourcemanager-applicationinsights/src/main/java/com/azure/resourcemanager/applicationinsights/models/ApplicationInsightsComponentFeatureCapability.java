@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Application Insights component feature capability. */
 @Immutable
 public final class ApplicationInsightsComponentFeatureCapability {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentFeatureCapability.class);
-
     /*
      * The name of the capability.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specification for a Kubernetes Environment to use for this resource. */
 @Fluent
 public final class KubeEnvironmentProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KubeEnvironmentProfile.class);
-
     /*
      * Resource ID of the Kubernetes Environment.
      */

@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.FileServicesClient;
 import com.azure.resourcemanager.storage.fluent.models.FileServiceItemsInner;
 import com.azure.resourcemanager.storage.fluent.models.FileServicePropertiesInner;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileServicesClient. */
 public final class FileServicesClientImpl implements FileServicesClient {
-    private final ClientLogger logger = new ClientLogger(FileServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FileServicesService service;
 

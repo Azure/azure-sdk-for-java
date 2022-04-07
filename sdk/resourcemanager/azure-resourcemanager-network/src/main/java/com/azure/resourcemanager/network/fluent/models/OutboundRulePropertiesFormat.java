@@ -9,15 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Outbound rule of the load balancer. */
 @Fluent
 public final class OutboundRulePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundRulePropertiesFormat.class);
-
     /*
      * The number of outbound ports to be used for NAT.
      */
@@ -203,22 +200,24 @@ public final class OutboundRulePropertiesFormat {
      */
     public void validate() {
         if (frontendIpConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property frontendIpConfigurations in model OutboundRulePropertiesFormat"));
         }
         if (backendAddressPool() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property backendAddressPool in model OutboundRulePropertiesFormat"));
         }
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model OutboundRulePropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OutboundRulePropertiesFormat.class);
 }

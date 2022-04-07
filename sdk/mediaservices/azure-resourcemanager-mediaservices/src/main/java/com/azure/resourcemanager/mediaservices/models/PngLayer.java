@@ -5,20 +5,10 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Describes the settings to produce a PNG image from the input video. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
-@JsonTypeName("#Microsoft.Media.PngLayer")
-@JsonFlatten
 @Fluent
-public class PngLayer extends Layer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PngLayer.class);
-
+public final class PngLayer extends Layer {
     /** {@inheritDoc} */
     @Override
     public PngLayer withWidth(String width) {

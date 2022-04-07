@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -108,13 +107,14 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(selectedKeys.getKeyFilter() + configStore.getEndpoint() + "/" + selectedKeys.getLabelFilterText(profiles));
+        super(
+            selectedKeys.getKeyFilter() + configStore.getEndpoint() + "/" + selectedKeys.getLabelFilterText(profiles));
         this.configStore = configStore;
         this.selectedKeys = selectedKeys;
         this.profiles = profiles;
         this.appConfigurationProperties = appConfigurationProperties;
         this.appProperties = appProperties;
-        this.keyVaultClients = new HashMap<String, KeyVaultClient>();
+        this.keyVaultClients = new HashMap<>();
         this.clients = clients;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
@@ -157,7 +157,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      */
     FeatureSet initProperties(FeatureSet featureSet) throws IOException {
         String storeName = configStore.getEndpoint();
-        Date date = new Date();
         SettingSelector settingSelector = new SettingSelector();
 
         PagedIterable<ConfigurationSetting> features = null;
@@ -167,9 +166,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
             features = clients.listSettings(settingSelector, storeName);
 
-            if (features == null) {
-                throw new IOException("Unable to load properties from App Configuration Store.");
-            }
         }
 
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
@@ -181,10 +177,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
             // * for wildcard match
             PagedIterable<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
-
-            if (settings == null) {
-                throw new IOException("Unable to load properties from App Configuration Store.");
-            }
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
@@ -207,7 +199,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 }
             }
         }
-        return addToFeatureSet(featureSet, features, date);
+        return addToFeatureSet(featureSet, features);
     }
 
     /**
@@ -259,7 +251,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date)
+    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features)
         throws IOException {
         if (features == null) {
             return featureSet;
@@ -268,9 +260,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting) {
                 Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
-                if (feature != null) {
-                    featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
-                }
+                featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
             }
         }
         return featureSet;

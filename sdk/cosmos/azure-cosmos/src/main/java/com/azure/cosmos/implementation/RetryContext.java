@@ -19,6 +19,16 @@ public class RetryContext {
 
     private List<int[]> statusAndSubStatusCodes;
 
+    public RetryContext() {}
+
+    public RetryContext(RetryContext toBeCloned) {
+        this.retryStartTime = toBeCloned.retryStartTime;
+        this.retryEndTime = toBeCloned.retryEndTime;
+        if (toBeCloned.statusAndSubStatusCodes != null) {
+            statusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>(toBeCloned.statusAndSubStatusCodes));
+        }
+    }
+
     public void addStatusAndSubStatusCode(int statusCode, int subStatusCode) {
         if (statusAndSubStatusCodes == null) {
             statusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());

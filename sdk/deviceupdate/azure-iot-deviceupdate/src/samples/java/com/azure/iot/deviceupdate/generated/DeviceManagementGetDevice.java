@@ -9,17 +9,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
-import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
+import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementGetDevice {
     public static void main(String[] args) {
-        DeviceManagementClient client =
-                new DeviceUpdateClientBuilder()
+        // BEGIN: com.azure.iot.deviceupdate.generated.devicemanagementgetdevice.devicemanagementgetdevice
+        DeviceManagementClient deviceManagementClient =
+                new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
-                        .buildDeviceManagementClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getDeviceWithResponse("deviceId", requestOptions);
+        Response<BinaryData> response = deviceManagementClient.getDeviceWithResponse("deviceId", requestOptions);
+        // END: com.azure.iot.deviceupdate.generated.devicemanagementgetdevice.devicemanagementgetdevice
     }
 }

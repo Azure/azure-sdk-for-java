@@ -22,7 +22,6 @@ public class StoreClientFactory implements AutoCloseable {
     private final Configs configs;
     private final TransportClient transportClient;
     private volatile boolean isClosed;
-    private final ClientTelemetry clientTelemetry;
 
     public StoreClientFactory(
         IAddressResolver addressResolver,
@@ -34,7 +33,6 @@ public class StoreClientFactory implements AutoCloseable {
         ClientTelemetry clientTelemetry) {
 
         this.configs = configs;
-        this.clientTelemetry = clientTelemetry;
         Protocol protocol = configs.getProtocol();
         if (enableTransportClientSharing) {
             this.transportClient = SharedTransportClient.getOrCreateInstance(

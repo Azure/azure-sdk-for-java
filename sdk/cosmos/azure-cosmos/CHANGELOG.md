@@ -1,16 +1,34 @@
 ## Release History
 
-### 4.27.0-beta.1 (Unreleased)
+### 4.29.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue in `CosmosPagedIterable` resulting in excessive memory consumption due to unbounded prefetch of pages when converting the `CosmosPagedIterable` into an `Iterator<FeedResponse<T>>`. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237) and [PR 27299](https://github.com/Azure/azure-sdk-for-java/pull/27299)
-* Fixed a `NullPointerException` in `CosmosDiagnostics isDiagnosticsCapturedInPagedFlux` - See [PR 27261](https://github.com/Azure/azure-sdk-for-java/pull/27261)
 
 #### Other Changes
+
+### 4.28.0 (2022-03-18)
+#### Features Added
+* Added the "VM Unique ID" - see [Accessing and Using Azure VM Unique ID](https://azure.microsoft.com/blog/accessing-and-using-azure-vm-unique-id/) - to the request diagnostics. This information helps to simplify investigating any network issues between an application hosted in Azure and the corresponding Cosmos DB service endpoint. - See [PR 27692](https://github.com/Azure/azure-sdk-for-java/pull/27692)
+* Added overload of read api on ClientEncryptionKey with request options for cosmos encrytion project. - See [PR 27210](https://github.com/Azure/azure-sdk-for-java/pull/27210)
+
+#### Key Bugs Fixes
+* Added `decodeTime` in `CosmosDiagnostics` - See [PR 22808](https://github.com/Azure/azure-sdk-for-java/pull/22808)
+
+#### Other Changes
+* Reduced CPU usage for some String operations by switching to APIs that don't compile a pattern for each call. - See [PR 27654](https://github.com/Azure/azure-sdk-for-java/pull/27654)
+* Reduced GC (Garbage Collection) pressure when executing queries returning many documents by pushing down type conversion. - See [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440)
+
+### 4.27.0 (2022-03-10)
+#### Key Bugs Fixes
+* Fixed an issue in `CosmosPagedIterable` resulting in excessive memory consumption due to unbounded prefetch of pages when converting the `CosmosPagedIterable` into an `Iterator<FeedResponse<T>>`. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237) and [PR 27299](https://github.com/Azure/azure-sdk-for-java/pull/27299)
+* Fixed a `NullPointerException` in `CosmosDiagnostics isDiagnosticsCapturedInPagedFlux` - See [PR 27261](https://github.com/Azure/azure-sdk-for-java/pull/27261)
+* Fixed an issue with allowing null values for add, set and replace operations in Patch API - See [PR 27501](https://github.com/Azure/azure-sdk-for-java/pull/27501)
+* Fixed an issue with top query when top x is greater than the total number of items in the database - See [PR 27377](https://github.com/Azure/azure-sdk-for-java/pull/27377)
+* Fixed synchronized lists and maps for order by query race condition - See [PR 27142](https://github.com/Azure/azure-sdk-for-java/pull/27142)
 
 ### 4.26.0 (2022-02-11)
 #### Features Added
@@ -21,10 +39,9 @@
 
 #### Key Bug Fixes
 * Fixed an issue in `ChangeFeedProcessor` related to `leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
-* Fixed an issue with `QueryPlan` caching double initialization - See [PR 26825](https://github.com/Azure/azure-sdk-for-java/pull/26825)
+* Fixed an issue with `query plan` caching double initialization - See [PR 26825](https://github.com/Azure/azure-sdk-for-java/pull/26825)
 
 ### 4.26.0-beta.1 (2022-01-25)
-
 #### Features Added
 * Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
 
@@ -66,12 +83,29 @@
 
 ### 4.21.0 (2021-11-12)
 #### Features Added
-* GA of `Patch`, `Batch` and `Bulk` API.
+* GA of `CosmosPatch`, `CosmosBatch` and `CosmosBulk` API.
 * GA of `ChangeFeedProcessorState` API.
 * Added `networkRequestTimeout` API for `DirectConnectionConfig`.
 
 #### Key Bug Fixes
 * Override the default keep-alive config on linux to keep connections open and detect a broken connection faster.
+
+#### Other Changes
+* Removed deprecated `BulkExecutionOptions`.
+* Removed deprecated `BulkExecutionThresholds`.
+* Removed deprecated `BulkItemRequestOptions`.
+* Removed deprecated `BulkItemRequestOptionsBase`.
+* Removed deprecated `BulkOperations`.
+* Removed deprecated `BulkPatchItemRequestOptions`.
+* Removed deprecated `BulkProcessingOptions`.
+* Removed deprecated `BulkProcessingThresholds`.
+* Removed deprecated `TransactionalBatch`.
+* Removed deprecated `TransactionalBatchItemRequestOptions`.
+* Removed deprecated `TransactionalBatchItemRequestOptionsBase`.
+* Removed deprecated `TransactionalBatchOperationResult`.
+* Removed deprecated `TransactionalBatchPatchItemRequestOptions`.
+* Removed deprecated `TransactionalBatchRequestOptions`.
+* Removed deprecated `TransactionalBatchResponse`.
 
 ### 4.20.1 (2021-10-27)
 #### Key Bug Fixes
@@ -80,7 +114,7 @@
 
 ### 4.20.0 (2021-10-14)
 #### Features Added
-* Enabling `queryplan` cache by default.
+* Enabling `query plan` cache by default.
 
 #### Key Bug Fixes
 * Fixed issue with bulk reads when `contentResponseOnWrite` is not explicitly enabled on the cosmos client.
@@ -107,6 +141,28 @@
 * Added support to switch off IO thread for response processing.
 * Fixed issue for resuming order by queries from continuation token that includes undefined/null.
 
+#### Other Changes
+* Renamed `BulkExecutionOptions` to `CosmosBulkExecutionOptions`.
+* Renamed `BulkExecutionThresholds` to `CosmosBulkExecutionThresholdsState`.
+* Renamed `BulkItemRequestOptions` to `CosmosBulkItemRequestOptions`.
+* Renamed `BulkItemRequestOptionsBase` to `CosmosBulkItemRequestOptionsBase`.
+* Renamed `BulkOperations` to `CosmosBulkOperations`.
+* Renamed `BulkPatchItemRequestOptions` to `CosmosBulkPatchItemRequestOptions`.
+* Renamed `TransactionalBatch` to `CosmosBatch`.
+* Renamed `TransactionalBatchItemRequestOptions` to `CosmosBatchItemRequestOptions`.
+* Renamed `TransactionalBatchItemRequestOptionsBase` to `CosmosBatchItemRequestOptionsBase`.
+* Renamed `TransactionalBatchOperationResult` to `CosmosBatchOperationResult`.
+* Renamed `TransactionalBatchPatchItemRequestOptions` to `CosmosBatchPatchItemRequestOptions`.
+* Renamed `TransactionalBatchRequestOptions` to `CosmosBatchRequestOptions`.
+* Renamed `TransactionalBatchResponse` to `CosmosBatchResponse`.
+* Renamed `processBulkOperations` to `executeBulkOperations` API.
+* Renamed `executeTransactionalBatch` to `executeCosmosBatch` API.
+* Moved `CosmosBulkItemResponse.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosBulkOperationResponse.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosItemOperation.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosItemOperationType.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosPatchOperations.java` to `com.azure.cosmos.models` package.
+
 ### 4.19.0-beta.1 (2021-09-02)
 #### Key Bug Fixes
 * Added support to switch off IO thread for response processing.
@@ -118,7 +174,7 @@
 * Integrated cosmos diagnostics with open telemetry tracer.
 
 #### Key Bug Fixes
-* Added reactor netty timeline to query plan calls.
+* Added reactor netty timeline to `query plan` calls.
 * Fixed serialization warning on `clientSideRequestDiagnostics`.
 * Fixed an issue when `IdleEndpointTimeout` is set to 0 in `DirectConnectionConfig`.
 * Added retry for `PrematureCloseException`.
@@ -207,11 +263,11 @@
 * Added connection endpoint rediscovery feature to help reduce and spread-out high latency spikes.
 * Added changeFeed pull model beta API.
 * Added support for resuming query from a pre split continuation token after partition split.
-* Optimized query execution time by caching query plan for single partition queries with filters and orderby.
+* Optimized query execution time by caching `query plan` for single partition queries with filters and orderby.
 
 #### Key Bug Fixes
 * Fixed telemetry deserialization issue.
-* Skip session token for query plan, trigger and UDF.
+* Skip session token for `query plan`, trigger and UDF.
 * Improved session timeout 404/1002 exception handling.
 
 ### 4.11.0 (2021-01-15)
@@ -313,7 +369,7 @@
 #### Key Bug Fixes
 * Fixed issue with `GROUP BY` query, where it was returning only one page.
 * Fixed user agent string format to comply with central SDK guidelines.
-* Enhanced diagnostics information to include query plan diagnostics.
+* Enhanced diagnostics information to include `query plan` diagnostics.
 
 ### 4.3.0 (2020-07-29)
 #### New Features

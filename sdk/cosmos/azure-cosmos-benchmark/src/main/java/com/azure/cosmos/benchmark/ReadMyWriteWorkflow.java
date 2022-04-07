@@ -275,7 +275,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
 
-        return client.<Document>queryDocuments(getCollectionLink(), query, options)
+        return client.<Document>queryDocuments(getCollectionLink(), query, options, Document.class)
                 .flatMap(p -> Flux.fromIterable(p.getResults()));
     }
 
@@ -293,7 +293,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(String.format("Select top 100 * from c where c.%s = '%s'",
                                                                    QUERY_FIELD_NAME,
                                                                    d.getString(QUERY_FIELD_NAME)));
-        return client.<Document>queryDocuments(getCollectionLink(), sqlQuerySpec, options)
+        return client.<Document>queryDocuments(getCollectionLink(), sqlQuerySpec, options, Document.class)
                 .flatMap(p -> Flux.fromIterable(p.getResults()));
     }
 

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The effective network security group association. */
 @Fluent
 public final class EffectiveNetworkSecurityGroupAssociation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroupAssociation.class);
-
     /*
      * The ID of the Azure network manager if assigned.
      */

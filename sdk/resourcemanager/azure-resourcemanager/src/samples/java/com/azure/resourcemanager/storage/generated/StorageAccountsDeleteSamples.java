@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageAccounts Delete. */
 public final class StorageAccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountDelete.json
      */
     /**
      * Sample code: StorageAccountDelete.

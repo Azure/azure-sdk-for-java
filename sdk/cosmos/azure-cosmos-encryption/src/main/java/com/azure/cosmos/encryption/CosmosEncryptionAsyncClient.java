@@ -11,9 +11,12 @@ import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
@@ -41,6 +44,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
     private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
     private final String keyEncryptionKeyResolverName;
     private final EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
+    private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
 
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 KeyEncryptionKeyResolver keyEncryptionKeyResolver,
@@ -114,31 +118,45 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
         String clientEncryptionKeyId,
         String databaseRid,
         CosmosAsyncContainer cosmosAsyncContainer,
-        boolean shouldForceRefresh) {
+        boolean shouldForceRefresh,
+        String ifNoneMatchEtag,
+        boolean shouldForceRefreshGateway) {
         /// Client Encryption key Id is unique within a Database.
         String cacheKey = databaseRid + "/" + clientEncryptionKeyId;
-        if (!shouldForceRefresh) {
+
+        // this allows us to read from the Gateway Cache. If an IfNoneMatchEtag is passed the logic around the gateway
+        // cache allows us to fetch the latest ClientEncryptionKeyProperties from the servers if the gateway cache has
+        // a stale value. This can happen if a client connected via different Gateway has re wrapped the key.
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setHeader(Constants.ALLOW_CACHED_READS_HEADER, String.valueOf(true));
+        requestOptions.setHeader(Constants.DATABASE_RID_HEADER, databaseRid);
+
+        if (StringUtils.isNotEmpty(ifNoneMatchEtag)) {
+            requestOptions.setIfNoneMatchETag(ifNoneMatchEtag);
+        }
+
+        if (!shouldForceRefresh && !shouldForceRefreshGateway) {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () -> {
                 return this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId);
+                    clientEncryptionKeyId, requestOptions);
             });
         } else {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId)
+                    clientEncryptionKeyId, requestOptions)
             ).flatMap(cachedClientEncryptionProperties -> this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, cachedClientEncryptionProperties, () ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId)));
+                    clientEncryptionKeyId, requestOptions)));
         }
     }
 
     Mono<CosmosClientEncryptionKeyProperties> fetchClientEncryptionKeyPropertiesAsync(
         CosmosAsyncContainer container,
-        String clientEncryptionKeyId) {
+        String clientEncryptionKeyId, RequestOptions requestOptions) {
         CosmosAsyncClientEncryptionKey clientEncryptionKey =
             container.getDatabase().getClientEncryptionKey(clientEncryptionKeyId);
 
-        return clientEncryptionKey.read().map(cosmosClientEncryptionKeyResponse ->
+        return cosmosAsyncClientEncryptionKeyAccessor.readClientEncryptionKey(clientEncryptionKey, requestOptions).map(cosmosClientEncryptionKeyResponse ->
             cosmosClientEncryptionKeyResponse.getProperties()
         ).onErrorResume(throwable -> {
             if (!(throwable instanceof Exception)) {
@@ -215,9 +233,10 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
     static {
         EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.seCosmosEncryptionAsyncClientAccessor(new EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor() {
             @Override
-            public Mono<CosmosClientEncryptionKeyProperties> getClientEncryptionPropertiesAsync(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient, String clientEncryptionKeyId, String databaseRid, CosmosAsyncContainer cosmosAsyncContainer, boolean shouldForceRefresh) {
+            public Mono<CosmosClientEncryptionKeyProperties> getClientEncryptionPropertiesAsync(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient, String clientEncryptionKeyId, String databaseRid, CosmosAsyncContainer cosmosAsyncContainer, boolean shouldForceRefresh, String ifNoneMatchEtag,
+                                                                                                boolean shouldForceRefreshGateway) {
                 return cosmosEncryptionAsyncClient.getClientEncryptionPropertiesAsync(clientEncryptionKeyId,
-                    databaseRid, cosmosAsyncContainer, shouldForceRefresh);
+                    databaseRid, cosmosAsyncContainer, shouldForceRefresh, ifNoneMatchEtag, shouldForceRefreshGateway);
             }
 
             @Override

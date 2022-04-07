@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ProductEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.ProductState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Product profile. */
 @Fluent
 public final class ProductContractProperties extends ProductEntityBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductContractProperties.class);
-
     /*
      * Product name.
      */
@@ -93,10 +90,12 @@ public final class ProductContractProperties extends ProductEntityBaseParameters
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model ProductContractProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProductContractProperties.class);
 }

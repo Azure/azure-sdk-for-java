@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for SimPolicies CreateOrUpdate. */
 public final class SimPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimPolicyCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimPolicyCreate.json
      */
     /**
      * Sample code: Create sim policy.

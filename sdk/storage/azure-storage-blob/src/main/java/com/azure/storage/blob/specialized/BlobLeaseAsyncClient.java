@@ -68,7 +68,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = BlobLeaseClientBuilder.class, isAsync = true)
 public final class BlobLeaseAsyncClient {
-    private final ClientLogger logger = new ClientLogger(BlobLeaseAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobLeaseAsyncClient.class);
 
     private final String containerName;
     private final String blobName;
@@ -117,7 +117,7 @@ public final class BlobLeaseAsyncClient {
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds or -1 for
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 and 60 seconds or -1 for
      * an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
@@ -128,20 +128,16 @@ public final class BlobLeaseAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobLeaseAsyncClient.acquireLease#int -->
      *
-     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> acquireLease(int duration) {
-        try {
-            return acquireLeaseWithResponse(duration, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return acquireLeaseWithResponse(duration, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds, or -1 for
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 and 60 seconds, or -1 for
      * an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
@@ -156,7 +152,7 @@ public final class BlobLeaseAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobLeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions -->
      *
-     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
@@ -164,17 +160,12 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions) {
-        try {
-            return withContext(context -> acquireLeaseWithResponse(new BlobAcquireLeaseOptions(duration)
-                .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return acquireLeaseWithResponse(new BlobAcquireLeaseOptions(duration)
+            .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)));
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds, or -1 for
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 and 60 seconds, or -1 for
      * an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
@@ -200,7 +191,7 @@ public final class BlobLeaseAsyncClient {
         try {
             return withContext(context -> acquireLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -245,11 +236,7 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> renewLease() {
-        try {
-            return renewLeaseWithResponse((RequestConditions) null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return renewLeaseWithResponse((RequestConditions) null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -274,13 +261,8 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
-        try {
-            return withContext(context -> renewLeaseWithResponse(new BlobRenewLeaseOptions()
-                    .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return renewLeaseWithResponse(new BlobRenewLeaseOptions()
+            .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)));
     }
 
     /**
@@ -309,7 +291,7 @@ public final class BlobLeaseAsyncClient {
         try {
             return withContext(context -> renewLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -353,11 +335,7 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releaseLease() {
-        try {
-            return releaseLeaseWithResponse((RequestConditions) null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return releaseLeaseWithResponse((RequestConditions) null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -382,13 +360,8 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions) {
-        try {
-            return withContext(context -> releaseLeaseWithResponse(new BlobReleaseLeaseOptions()
-                    .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return releaseLeaseWithResponse(new BlobReleaseLeaseOptions()
+            .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)));
     }
 
     /**
@@ -417,7 +390,7 @@ public final class BlobLeaseAsyncClient {
         try {
             return withContext(context -> releaseLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -458,11 +431,7 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Integer> breakLease() {
-        try {
-            return breakLeaseWithResponse((Integer) null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return breakLeaseWithResponse((Integer) null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -496,14 +465,9 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedRequestConditions) {
-        try {
-            return withContext(context -> breakLeaseWithResponse(new BlobBreakLeaseOptions()
-                .setBreakPeriod(breakPeriodInSeconds == null ? null : Duration.ofSeconds(breakPeriodInSeconds))
-                .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return breakLeaseWithResponse(new BlobBreakLeaseOptions()
+            .setBreakPeriod(breakPeriodInSeconds == null ? null : Duration.ofSeconds(breakPeriodInSeconds))
+            .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)));
     }
 
     /**
@@ -537,7 +501,7 @@ public final class BlobLeaseAsyncClient {
         try {
             return withContext(context -> breakLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -580,11 +544,7 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> changeLease(String proposedId) {
-        try {
-            return changeLeaseWithResponse(proposedId, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return changeLeaseWithResponse(proposedId, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -611,13 +571,8 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
         RequestConditions modifiedRequestConditions) {
-        try {
-            return withContext(context -> changeLeaseWithResponse(new BlobChangeLeaseOptions(proposedId)
-                .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return changeLeaseWithResponse(new BlobChangeLeaseOptions(proposedId)
+            .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)));
     }
 
     /**
@@ -646,7 +601,7 @@ public final class BlobLeaseAsyncClient {
         try {
             return withContext(context -> changeLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

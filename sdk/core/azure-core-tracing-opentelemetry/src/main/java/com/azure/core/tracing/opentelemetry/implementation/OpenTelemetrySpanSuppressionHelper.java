@@ -47,8 +47,8 @@ public class OpenTelemetrySpanSuppressionHelper {
                 agentDiscovered = false;
             }
 
-        } catch (Throwable ignored) {
-            LOGGER.verbose("Failed to discover OpenTelemetry agent classes, HTTP spans may be duplicated");
+        } catch (Exception ex) {
+            LOGGER.verbose("Failed to discover OpenTelemetry agent classes, HTTP spans may be duplicated", ex);
             agentDiscovered = false;
         }
     }
@@ -66,9 +66,9 @@ public class OpenTelemetrySpanSuppressionHelper {
                     clientSpanKey,
                     getAgentContextMethod.invoke(null, traceContext),
                     getAgentSpanMethod.invoke(null, Span.fromContext(traceContext)));
-            } catch (Throwable t) {
+            } catch (Exception ex) {
                 // should not happen, If it does, we'll log it once.
-                LOGGER.warning("Failed to register client span on OpenTelemetry agent");
+                LOGGER.warning("Failed to register client span on OpenTelemetry agent", ex);
                 agentDiscovered = false;
             }
         }
@@ -87,9 +87,9 @@ public class OpenTelemetrySpanSuppressionHelper {
         if (agentDiscovered && agentContext != null) {
             try {
                 return (AutoCloseable) agentContextMakeCurrentMethod.invoke(agentContext);
-            } catch (Throwable t) {
+            } catch (Exception ex) {
                 // should not happen, If it does, we'll log it once.
-                LOGGER.warning("Failed to make OpenTelemetry agent context current");
+                LOGGER.warning("Failed to make OpenTelemetry agent context current", ex);
                 agentDiscovered = false;
             }
         }

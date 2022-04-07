@@ -416,6 +416,37 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertArrayEquals(kubeConfigContent1, kubeConfigContent3);
     }
 
+    @Test
+    public void testKubernetesClusterAzureRbac() {
+        final String aksName = generateRandomResourceName("aks", 15);
+        final String dnsPrefix = generateRandomResourceName("dns", 10);
+        final String agentPoolName = generateRandomResourceName("ap0", 10);
+
+        // Azure AD integration with Azure RBAC
+        KubernetesCluster kubernetesCluster = containerServiceManager
+            .kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_WEST3)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withSystemAssignedManagedServiceIdentity()
+            .enableAzureRbac()
+            .disableLocalAccounts()
+            .defineAgentPool(agentPoolName)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withOSDiskSizeInGB(30)
+            .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .create();
+
+        Assertions.assertEquals(0, kubernetesCluster.azureActiveDirectoryGroupIds().size());
+        Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
+        Assertions.assertTrue(kubernetesCluster.isAzureRbacEnabled());
+        Assertions.assertTrue(kubernetesCluster.enableRBAC());
+    }
+
     /**
      * Parse azure auth to hashmap
      *

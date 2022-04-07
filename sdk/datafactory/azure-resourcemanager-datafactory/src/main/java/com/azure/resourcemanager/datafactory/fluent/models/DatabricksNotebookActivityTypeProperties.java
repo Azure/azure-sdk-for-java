@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.Map;
 /** Databricks Notebook activity properties. */
 @Fluent
 public final class DatabricksNotebookActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabricksNotebookActivityTypeProperties.class);
-
     /*
      * The absolute path of the notebook to be run in the Databricks Workspace.
      * This path must begin with a slash. Type: string (or Expression with
@@ -112,10 +109,12 @@ public final class DatabricksNotebookActivityTypeProperties {
      */
     public void validate() {
         if (notebookPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property notebookPath in model DatabricksNotebookActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabricksNotebookActivityTypeProperties.class);
 }

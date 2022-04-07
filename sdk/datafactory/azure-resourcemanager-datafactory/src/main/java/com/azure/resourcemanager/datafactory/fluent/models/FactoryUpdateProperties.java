@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Factory update resource properties. */
 @Fluent
 public final class FactoryUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryUpdateProperties.class);
-
     /*
      * Whether or not public network access is allowed for the data factory.
      */

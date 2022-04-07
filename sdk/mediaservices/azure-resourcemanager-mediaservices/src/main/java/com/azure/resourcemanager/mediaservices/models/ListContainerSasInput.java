@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The parameters to the list SAS request. */
 @Fluent
 public final class ListContainerSasInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListContainerSasInput.class);
-
     /*
      * The permissions to set on the SAS URL.
      */

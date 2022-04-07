@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The input to the sync storage keys request. */
 @Fluent
 public final class SyncStorageKeysInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncStorageKeysInput.class);
-
     /*
      * The ID of the storage account resource.
      */

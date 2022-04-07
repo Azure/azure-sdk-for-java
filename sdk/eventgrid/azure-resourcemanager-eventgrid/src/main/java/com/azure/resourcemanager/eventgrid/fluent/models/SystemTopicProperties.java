@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the System Topic. */
 @Fluent
 public final class SystemTopicProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemTopicProperties.class);
-
     /*
      * Provisioning state of the system topic.
      */

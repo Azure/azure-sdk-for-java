@@ -7,25 +7,51 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.microsoft.aad.msal4j.HttpRequest;
 import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.IHttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
  * Adapts an HttpPipeline to an instance of IHttpClient in the MSAL4j pipeline.
  */
 class HttpPipelineAdapter implements IHttpClient {
+    private static final ClientLogger CLIENT_LOGGER = new ClientLogger(HttpPipelineAdapter.class);
+//    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonFactory JSON_FACTORY = new JsonFactory();
+    private static final String ACCOUNT_IDENTIFIER_LOG_MESSAGE = "[Authenticated account] Client ID: {0}, Tenant ID: {1}"
+        + ", User Principal Name: {2}, Object ID (user): {3})";
+    private static final String APPLICATION_IDENTIFIER = "Application Identifier";
+    private static final String OBJECT_ID = "Object Id";
+    private static final String TENANT_ID = "Tenant Id";
+    private static final String USER_PRINCIPAL_NAME = "User Principal Name";
+    private static final String ACCESS_TOKEN_JSON_KEY = "access_token";
+    private static final String APPLICATION_ID_JSON_KEY = "appid";
+    private static final String OBJECT_ID_JSON_KEY = "oid";
+    private static final String TENANT_ID_JSON_KEY = "tid";
+    private static final String USER_PRINCIPAL_NAME_JSON_KEY = "upn";
     private final HttpPipeline httpPipeline;
+    private IdentityClientOptions identityClientOptions;
 
-    HttpPipelineAdapter(HttpPipeline httpPipeline) {
+    HttpPipelineAdapter(HttpPipeline httpPipeline, IdentityClientOptions identityClientOptions) {
         this.httpPipeline = httpPipeline;
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
-    public IHttpResponse send(HttpRequest httpRequest) throws Exception {
+    public IHttpResponse send(HttpRequest httpRequest) {
         // convert request
         com.azure.core.http.HttpRequest request = new com.azure.core.http.HttpRequest(
             HttpMethod.valueOf(httpRequest.httpMethod().name()),
@@ -40,6 +66,7 @@ class HttpPipelineAdapter implements IHttpClient {
         return httpPipeline.send(request)
             .flatMap(response -> response.getBodyAsString()
                 .map(body -> {
+                    logAccountIdentifiersIfConfigured(body);
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .body(body)
                         .statusCode(response.getStatusCode());
@@ -56,5 +83,79 @@ class HttpPipelineAdapter implements IHttpClient {
                     return Mono.just(httpResponse);
                 })))
             .block();
+    }
+
+    private void logAccountIdentifiersIfConfigured(String body) {
+        if (identityClientOptions == null
+            || !identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
+            return;
+        }
+        try {
+            JsonParser responseParser = JSON_FACTORY.createParser(body);
+            String accessToken = getTargetFieldValueFromJsonParser(responseParser, ACCESS_TOKEN_JSON_KEY);
+            responseParser.close();
+            if (accessToken != null) {
+                String[] base64Metadata = accessToken.split("\\.");
+                if (base64Metadata.length > 1) {
+                    byte[] decoded = Base64.getDecoder().decode(base64Metadata[1]);
+                    String data = new String(decoded, StandardCharsets.UTF_8);
+                    JsonParser jsonParser = JSON_FACTORY.createParser(data);
+                    HashMap<String, String> jsonMap = parseJsonIntoMap(jsonParser);
+                    jsonParser.close();
+                    String appId = jsonMap.containsKey(APPLICATION_ID_JSON_KEY)
+                        ? jsonMap.get(APPLICATION_ID_JSON_KEY) : null;
+                    String objectId = jsonMap.containsKey(OBJECT_ID_JSON_KEY)
+                        ? jsonMap.get(OBJECT_ID_JSON_KEY) : null;
+                    String tenantId = jsonMap.containsKey(TENANT_ID_JSON_KEY)
+                        ? jsonMap.get(TENANT_ID_JSON_KEY) : null;
+                    String userPrincipalName = jsonMap.containsKey(USER_PRINCIPAL_NAME_JSON_KEY)
+                        ? jsonMap.get(USER_PRINCIPAL_NAME_JSON_KEY) : null;
+
+                    CLIENT_LOGGER.log(LogLevel.INFORMATIONAL, () -> MessageFormat
+                        .format(ACCOUNT_IDENTIFIER_LOG_MESSAGE,
+                            getAccountIdentifierMessage(APPLICATION_IDENTIFIER, appId),
+                            getAccountIdentifierMessage(TENANT_ID, tenantId),
+                            getAccountIdentifierMessage(USER_PRINCIPAL_NAME, userPrincipalName),
+                            getAccountIdentifierMessage(OBJECT_ID, objectId)));
+                }
+            }
+        } catch (IOException e) {
+            CLIENT_LOGGER.log(LogLevel.WARNING, () -> "allowLoggingAccountIdentifiers Log option was set,"
+                    + " but the account information could not be logged.", e);
+        }
+    }
+
+    private String getAccountIdentifierMessage(String identifierName, String identifierValue) {
+        if (identifierValue == null) {
+            return "No " + identifierName + " available.";
+        }
+        return identifierValue;
+    }
+
+    private String getTargetFieldValueFromJsonParser(JsonParser jsonParser, String targetField) throws IOException {
+        while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = jsonParser.getCurrentName();
+            if (targetField.equals(fieldName)) {
+                jsonParser.nextToken();
+                return jsonParser.getText();
+            }
+        }
+        return null;
+    }
+
+    private HashMap<String, String> parseJsonIntoMap(JsonParser jsonParser) throws IOException {
+        HashMap<String, String> output = new HashMap<>();
+        JsonToken currentToken = jsonParser.nextToken();
+        if (jsonParser.getCurrentName() == null) {
+            currentToken = jsonParser.nextToken();
+        }
+        while (currentToken != JsonToken.END_OBJECT) {
+            String fieldName = jsonParser.getCurrentName();
+            jsonParser.nextToken();
+            String value = jsonParser.getText();
+            output.put(fieldName, value);
+            currentToken = jsonParser.nextToken();
+        }
+        return output;
     }
 }

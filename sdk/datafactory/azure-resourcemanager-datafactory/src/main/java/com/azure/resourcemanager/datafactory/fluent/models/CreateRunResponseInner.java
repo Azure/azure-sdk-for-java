@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response body with a run identifier. */
 @Fluent
 public final class CreateRunResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateRunResponseInner.class);
-
     /*
      * Identifier of a run.
      */
@@ -47,9 +44,11 @@ public final class CreateRunResponseInner {
      */
     public void validate() {
         if (runId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property runId in model CreateRunResponseInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateRunResponseInner.class);
 }

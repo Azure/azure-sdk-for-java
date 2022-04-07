@@ -1,6 +1,6 @@
 # Release History
 
-## 1.27.0-beta.1 (Unreleased)
+## 1.28.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.27.0 (2022-04-01)
+
+### Features Added
+
+- Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
+  at once during construction.
+- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcPollingStrategy` and `LocationPollingStrategy`.  
+
+### Other Changes
+
+- Reduced usage of reflection when sending requests and receiving responses in `RestProxy`.
+- Improved handling for catching and rethrowing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.2` to `2.13.2.1`.
 
 ## 1.26.0 (2022-03-04)
 

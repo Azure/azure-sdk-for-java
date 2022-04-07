@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.AvailableResourceGroupDelegationsClient;
 import com.azure.resourcemanager.network.fluent.models.AvailableDelegationInner;
 import com.azure.resourcemanager.network.models.AvailableDelegationsResult;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in AvailableResourceGroupDelegationsClient.
  */
 public final class AvailableResourceGroupDelegationsClientImpl implements AvailableResourceGroupDelegationsClient {
-    private final ClientLogger logger = new ClientLogger(AvailableResourceGroupDelegationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AvailableResourceGroupDelegationsService service;
 

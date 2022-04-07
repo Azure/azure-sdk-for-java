@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object that wraps the Lifecycle rule. Each rule is uniquely defined by name. */
 @Fluent
 public final class ManagementPolicyRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyRule.class);
-
     /*
      * Rule is enabled if set to true.
      */
@@ -128,21 +125,23 @@ public final class ManagementPolicyRule {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ManagementPolicyRule"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ManagementPolicyRule"));
         }
         if (definition() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property definition in model ManagementPolicyRule"));
         } else {
             definition().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementPolicyRule.class);
 }

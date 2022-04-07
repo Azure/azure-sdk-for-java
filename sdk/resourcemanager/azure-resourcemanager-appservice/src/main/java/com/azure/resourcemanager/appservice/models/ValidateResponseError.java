@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error details for when validation fails. */
 @Fluent
 public final class ValidateResponseError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateResponseError.class);
-
     /*
      * Validation error code.
      */

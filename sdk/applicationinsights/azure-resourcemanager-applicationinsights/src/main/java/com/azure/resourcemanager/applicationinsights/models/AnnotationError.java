@@ -6,15 +6,11 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error associated with trying to create annotation with Id that already exist. */
 @Immutable
 public final class AnnotationError extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AnnotationError.class);
-
     /*
      * Inner error
      */

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Route Filter Resource. */
 @Fluent
 public final class RouteFilterPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterPropertiesFormat.class);
-
     /*
      * Collection of RouteFilterRules contained within a route filter.
      */

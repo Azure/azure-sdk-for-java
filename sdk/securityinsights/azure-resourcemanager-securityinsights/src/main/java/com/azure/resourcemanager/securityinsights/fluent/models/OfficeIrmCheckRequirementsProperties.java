@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** OfficeIRM (Microsoft Insider Risk Management) requirements check properties. */
 @Fluent
 public final class OfficeIrmCheckRequirementsProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OfficeIrmCheckRequirementsProperties.class);
-
     /** {@inheritDoc} */
     @Override
     public OfficeIrmCheckRequirementsProperties withTenantId(String tenantId) {

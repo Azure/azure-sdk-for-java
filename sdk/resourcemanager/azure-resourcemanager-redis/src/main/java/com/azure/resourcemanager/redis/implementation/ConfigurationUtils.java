@@ -3,22 +3,22 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
-import com.azure.resourcemanager.redis.models.RedisCommonPropertiesRedisConfiguration;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
 
 class ConfigurationUtils {
 
-    static RedisCommonPropertiesRedisConfiguration toConfiguration(Map<String, String> configuration) {
-        RedisCommonPropertiesRedisConfiguration c = new RedisCommonPropertiesRedisConfiguration();
+    static RedisConfiguration toConfiguration(Map<String, String> configuration) {
+        RedisConfiguration c = new RedisConfiguration();
         if (configuration != null) {
             configuration.forEach((k, v) -> putConfiguration(c, k, v));
         }
         return c;
     }
 
-    static Map<String, String> toMap(RedisCommonPropertiesRedisConfiguration configuration) {
+    static Map<String, String> toMap(RedisConfiguration configuration) {
         Map<String, String> map = new HashMap<>();
         if (configuration != null) {
             if (configuration.maxmemoryPolicy() != null) {
@@ -64,13 +64,13 @@ class ConfigurationUtils {
                 map.put("rdb-backup-frequency", configuration.rdbBackupFrequency());
             }
             if (configuration.additionalProperties() != null) {
-                configuration.additionalProperties().forEach((key1, value) -> map.put(key1, value.toString()));
+                map.putAll(configuration.additionalProperties());
             }
         }
         return map;
     }
 
-    static void putConfiguration(RedisCommonPropertiesRedisConfiguration configuration,
+    static void putConfiguration(RedisConfiguration configuration,
                                  String key, String value) {
         if (configuration == null) {
             return;
@@ -115,7 +115,7 @@ class ConfigurationUtils {
         }
     }
 
-    static void removeConfiguration(RedisCommonPropertiesRedisConfiguration configuration, String key) {
+    static void removeConfiguration(RedisConfiguration configuration, String key) {
         if (configuration == null) {
             return;
         }

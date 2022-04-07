@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.PrivateEndpointConnectionOperationsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnectionResourceInner;
 import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionApprovalRequestResource;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionOperationsClient.
  */
 public final class PrivateEndpointConnectionOperationsClientImpl implements PrivateEndpointConnectionOperationsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointConnectionOperationsService service;
 

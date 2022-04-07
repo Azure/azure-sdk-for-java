@@ -23,12 +23,18 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.SourceControlConfigurationClient;
 import com.azure.resourcemanager.kubernetesconfiguration.implementation.ExtensionsImpl;
+import com.azure.resourcemanager.kubernetesconfiguration.implementation.FluxConfigOperationStatusImpl;
+import com.azure.resourcemanager.kubernetesconfiguration.implementation.FluxConfigurationsImpl;
 import com.azure.resourcemanager.kubernetesconfiguration.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.kubernetesconfiguration.implementation.OperationsImpl;
 import com.azure.resourcemanager.kubernetesconfiguration.implementation.SourceControlConfigurationClientBuilder;
+import com.azure.resourcemanager.kubernetesconfiguration.implementation.SourceControlConfigurationsImpl;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Extensions;
+import com.azure.resourcemanager.kubernetesconfiguration.models.FluxConfigOperationStatus;
+import com.azure.resourcemanager.kubernetesconfiguration.models.FluxConfigurations;
 import com.azure.resourcemanager.kubernetesconfiguration.models.OperationStatus;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Operations;
+import com.azure.resourcemanager.kubernetesconfiguration.models.SourceControlConfigurations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -41,6 +47,12 @@ public final class SourceControlConfigurationManager {
     private Extensions extensions;
 
     private OperationStatus operationStatus;
+
+    private FluxConfigurations fluxConfigurations;
+
+    private FluxConfigOperationStatus fluxConfigOperationStatus;
+
+    private SourceControlConfigurations sourceControlConfigurations;
 
     private Operations operations;
 
@@ -84,7 +96,7 @@ public final class SourceControlConfigurationManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -158,9 +170,11 @@ public final class SourceControlConfigurationManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -182,7 +196,7 @@ public final class SourceControlConfigurationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kubernetesconfiguration")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -248,6 +262,32 @@ public final class SourceControlConfigurationManager {
             this.operationStatus = new OperationStatusImpl(clientObject.getOperationStatus(), this);
         }
         return operationStatus;
+    }
+
+    /** @return Resource collection API of FluxConfigurations. */
+    public FluxConfigurations fluxConfigurations() {
+        if (this.fluxConfigurations == null) {
+            this.fluxConfigurations = new FluxConfigurationsImpl(clientObject.getFluxConfigurations(), this);
+        }
+        return fluxConfigurations;
+    }
+
+    /** @return Resource collection API of FluxConfigOperationStatus. */
+    public FluxConfigOperationStatus fluxConfigOperationStatus() {
+        if (this.fluxConfigOperationStatus == null) {
+            this.fluxConfigOperationStatus =
+                new FluxConfigOperationStatusImpl(clientObject.getFluxConfigOperationStatus(), this);
+        }
+        return fluxConfigOperationStatus;
+    }
+
+    /** @return Resource collection API of SourceControlConfigurations. */
+    public SourceControlConfigurations sourceControlConfigurations() {
+        if (this.sourceControlConfigurations == null) {
+            this.sourceControlConfigurations =
+                new SourceControlConfigurationsImpl(clientObject.getSourceControlConfigurations(), this);
+        }
+        return sourceControlConfigurations;
     }
 
     /** @return Resource collection API of Operations. */

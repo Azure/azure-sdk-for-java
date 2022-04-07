@@ -62,7 +62,6 @@ public final class CommunicationRelayClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationRelayConfiguration getRelayConfiguration(GetRelayConfigurationOptions options) {
         return client.getRelayConfiguration(options).block();
-
     }
 
     /**

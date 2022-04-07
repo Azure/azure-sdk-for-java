@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.ParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.PipelineFolder;
 import com.azure.resourcemanager.datafactory.models.PipelinePolicy;
 import com.azure.resourcemanager.datafactory.models.VariableSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** A data factory pipeline. */
 @Fluent
 public final class Pipeline {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Pipeline.class);
-
     /*
      * The description of the pipeline.
      */

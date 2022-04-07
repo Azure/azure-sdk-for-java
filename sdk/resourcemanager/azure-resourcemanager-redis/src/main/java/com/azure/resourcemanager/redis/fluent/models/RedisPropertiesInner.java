@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
-import com.azure.resourcemanager.redis.models.RedisCommonPropertiesRedisConfiguration;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
@@ -166,7 +166,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /** {@inheritDoc} */
     @Override
-    public RedisPropertiesInner withRedisConfiguration(RedisCommonPropertiesRedisConfiguration redisConfiguration) {
+    public RedisPropertiesInner withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }

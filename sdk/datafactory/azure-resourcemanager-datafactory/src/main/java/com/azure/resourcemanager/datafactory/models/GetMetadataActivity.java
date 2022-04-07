@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GetMetadataActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.List;
 @JsonTypeName("GetMetadata")
 @Fluent
 public final class GetMetadataActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetMetadataActivity.class);
-
     /*
      * GetMetadata activity properties.
      */
@@ -178,7 +175,7 @@ public final class GetMetadataActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model GetMetadataActivity"));
@@ -186,4 +183,6 @@ public final class GetMetadataActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GetMetadataActivity.class);
 }

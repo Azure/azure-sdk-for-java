@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.ThreatIntelligenceIndicatorMetricsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceMetricsListInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ThreatIntelligenceIndicatorMetricsClient.
  */
 public final class ThreatIntelligenceIndicatorMetricsClientImpl implements ThreatIntelligenceIndicatorMetricsClient {
-    private final ClientLogger logger = new ClientLogger(ThreatIntelligenceIndicatorMetricsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ThreatIntelligenceIndicatorMetricsService service;
 
