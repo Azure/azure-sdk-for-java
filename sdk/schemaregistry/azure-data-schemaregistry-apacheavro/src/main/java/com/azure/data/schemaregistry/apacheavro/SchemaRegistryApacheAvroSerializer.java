@@ -72,6 +72,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     problem encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryAvroException if the object could not be serialized.
+     * @throws ResourceNotFoundException if the schema could not be found and {@link
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
     public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference) {
         return serializeMessageDataAsync(object, typeReference).block();
@@ -93,6 +96,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryAvroException if the object could not be serialized.
+     * @throws ResourceNotFoundException if the schema could not be found and {@link
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
     public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
@@ -114,6 +120,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryAvroException if the object could not be serialized.
+     * @throws ResourceNotFoundException if the schema could not be found and {@link
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
     public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference) {
@@ -138,6 +147,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryAvroException if the object could not be serialized.
+     * @throws ResourceNotFoundException if the schema could not be found and {@link
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
     public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
@@ -208,6 +220,14 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @return The message deserialized.
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
+     * @throws IllegalArgumentException if the message does not have a content type to use for deserialization. If
+     *     the mime-type in the content type cannot be parsed or the type is not avro/binary.
+     * @throws ResourceNotFoundException if a schema with a matching schema id could not be found.
+     * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws SchemaRegistryAvroException if the message could not be deserialized.
+     * @throws ResourceNotFoundException if the schema could not be found and {@link
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
     public <T> T deserializeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
         return deserializeMessageDataAsync(message, typeReference).block();
@@ -229,6 +249,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @throws ResourceNotFoundException if a schema with a matching schema id could not be found.
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
      * @throws SchemaRegistryAvroException if the message could not be deserialized.
+     * @throws ResourceNotFoundException if the schema could not be found and {@link
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
     public <T> Mono<T> deserializeMessageDataAsync(MessageWithMetadata message, TypeReference<T> typeReference) {
         if (message == null) {
