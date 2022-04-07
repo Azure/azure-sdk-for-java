@@ -10,7 +10,7 @@ import com.azure.core.util.BinaryData;
  * An abstraction for a message containing a content type along with its data.
  */
 @Fluent
-public class MessageWithMetadata {
+public class MessageContent {
     private BinaryData binaryData;
     private String contentType;
 
@@ -28,9 +28,9 @@ public class MessageWithMetadata {
      *
      * @param binaryData The message body.
      *
-     * @return The updated {@link MessageWithMetadata} object.
+     * @return The updated {@link MessageContent} object.
      */
-    public MessageWithMetadata setBodyAsBinaryData(BinaryData binaryData) {
+    public MessageContent setBodyAsBinaryData(BinaryData binaryData) {
         this.binaryData = binaryData;
         return this;
     }
@@ -49,9 +49,9 @@ public class MessageWithMetadata {
      *
      * @param contentType The content type.
      *
-     * @return The updated {@link MessageWithMetadata} object.
+     * @return The updated {@link MessageContent} object.
      */
-    public MessageWithMetadata setContentType(String contentType) {
+    public MessageContent setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
