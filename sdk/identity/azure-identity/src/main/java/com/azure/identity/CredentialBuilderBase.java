@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 
@@ -109,20 +108,22 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Sets the {@link IdentityLogOptions} which enables identity logging options to be set on the client. For example
-     * configuring {@code accountIdentifierLogging} using
-     * {@link com.azure.identity.IdentityLogOptions#setLoggingAccountIdentifiersAllowed(boolean)} to allow account
-     * identifier logs to be enabled on client side debugging/monitoring purposes.
+     * Enables account identifiers to be logged on client side for debugging/monitoring purposes.
+     * By default, it is disabled.
+     * <p>
+     * The Account Identifier logs can contain sensitive information and should be enabled on protected machines only.
+     * Enabling this logs Application ID, Object ID, Tenant ID and User Principal Name at INFO level when an
+     * access token is successfully retrieved. Ensure that INFO level logs are enabled to
+     * see the account identifier logs.
+     * </p>
      *
-     * @param identityLogOptions the {@link IdentityLogOptions} to be set on the credential client.
-     *
-     * @return An updated instance of this builder with the {@link ClientOptions} set as specified.
+     * @return An updated instance of this builder.
      */
     @SuppressWarnings("unchecked")
-    public T identityLogOptions(IdentityLogOptions identityLogOptions) {
+    public T enableAccountIdentifierLogging() {
         identityClientOptions
             .getIdentityLogOptionsImpl()
-            .setLoggingAccountIdentifiersAllowed(identityLogOptions.isLoggingAccountIdentifiersAllowed());
+            .setLoggingAccountIdentifiersAllowed(true);
         return (T) this;
     }
 }
