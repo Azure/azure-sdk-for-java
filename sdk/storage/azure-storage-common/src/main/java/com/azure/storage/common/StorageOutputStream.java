@@ -16,7 +16,7 @@ import java.io.OutputStream;
  * StorageOutputStream allows for uploading data to an Azure Storage service using stream concepts.
  */
 public abstract class StorageOutputStream extends OutputStream {
-    private static final ClientLogger LOGGER = new ClientLogger(StorageOutputStream.class);
+    final ClientLogger logger = new ClientLogger(StorageOutputStream.class);
 
     /*
      * Holds the write threshold of number of bytes to buffer prior to dispatching a write. For block blob this is the
@@ -89,7 +89,7 @@ public abstract class StorageOutputStream extends OutputStream {
      */
     protected void checkStreamState()  {
         if (this.lastError != null) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
         }
     }
 
@@ -123,7 +123,7 @@ public abstract class StorageOutputStream extends OutputStream {
     @Override
     public void write(@NonNull final byte[] data, final int offset, final int length) {
         if (offset < 0 || length < 0 || length > data.length - offset) {
-            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException());
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
         }
 
         this.writeInternal(data, offset, length);
