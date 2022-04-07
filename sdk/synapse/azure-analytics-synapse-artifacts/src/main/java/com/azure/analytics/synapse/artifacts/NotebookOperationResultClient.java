@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.NotebookOperationResultsImpl;
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,7 +19,7 @@ public final class NotebookOperationResultClient {
     @Generated private final NotebookOperationResultsImpl serviceClient;
 
     /**
-     * Initializes an instance of NotebookOperationResults client.
+     * Initializes an instance of NotebookOperationResultClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -33,7 +33,7 @@ public final class NotebookOperationResultClient {
      *
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -48,7 +48,7 @@ public final class NotebookOperationResultClient {
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook operation result along with {@link Response}.
      */

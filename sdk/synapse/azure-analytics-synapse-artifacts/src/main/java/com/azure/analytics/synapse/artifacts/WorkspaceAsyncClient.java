@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.WorkspacesImpl;
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.Workspace;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -20,7 +20,7 @@ public final class WorkspaceAsyncClient {
     @Generated private final WorkspacesImpl serviceClient;
 
     /**
-     * Initializes an instance of Workspaces client.
+     * Initializes an instance of WorkspaceAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -32,7 +32,7 @@ public final class WorkspaceAsyncClient {
     /**
      * Get Workspace.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -45,7 +45,7 @@ public final class WorkspaceAsyncClient {
     /**
      * Get Workspace.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace on successful completion of {@link Mono}.
      */

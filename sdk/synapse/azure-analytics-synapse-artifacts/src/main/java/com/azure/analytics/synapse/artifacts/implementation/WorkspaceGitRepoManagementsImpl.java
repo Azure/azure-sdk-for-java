@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.GitHubAccessTokenRequest;
 import com.azure.analytics.synapse.artifacts.models.GitHubAccessTokenResponse;
 import com.azure.core.annotation.BodyParam;
@@ -17,7 +18,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -55,7 +55,7 @@ public final class WorkspaceGitRepoManagementsImpl {
     private interface WorkspaceGitRepoManagementsService {
         @Post("/getGitHubAccessToken")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessToken(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") String clientRequestId,
@@ -71,7 +71,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -98,7 +98,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -117,7 +117,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token on successful completion of {@link Mono}.
      */
@@ -140,7 +140,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      *
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token on successful completion of {@link Mono}.
      */
@@ -166,7 +166,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token on successful completion of {@link Mono}.
      */
@@ -190,7 +190,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token.
      */
@@ -205,7 +205,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      *
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token.
      */
@@ -222,7 +222,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the GitHub access token along with {@link Response}.
      */

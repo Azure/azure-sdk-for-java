@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.MetastoresImpl;
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.MetastoreRegisterObject;
 import com.azure.analytics.synapse.artifacts.models.MetastoreRegistrationResponse;
 import com.azure.analytics.synapse.artifacts.models.MetastoreRequestSuccessResponse;
@@ -24,7 +24,7 @@ public final class MetastoreClient {
     @Generated private final MetastoresImpl serviceClient;
 
     /**
-     * Initializes an instance of Metastores client.
+     * Initializes an instance of MetastoreClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -40,7 +40,7 @@ public final class MetastoreClient {
      *     not exceed 24 characters.
      * @param registerBody The body for the register request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -58,7 +58,7 @@ public final class MetastoreClient {
      * @param registerBody The body for the register request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -74,7 +74,7 @@ public final class MetastoreClient {
      *
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of the database.
      */
@@ -90,7 +90,7 @@ public final class MetastoreClient {
      * @param id The id parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of the database along with {@link Response}.
      */
@@ -106,7 +106,7 @@ public final class MetastoreClient {
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -123,7 +123,7 @@ public final class MetastoreClient {
      * @param updateBody The body for the update request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -139,7 +139,7 @@ public final class MetastoreClient {
      *
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -154,7 +154,7 @@ public final class MetastoreClient {
      * @param id The id parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */

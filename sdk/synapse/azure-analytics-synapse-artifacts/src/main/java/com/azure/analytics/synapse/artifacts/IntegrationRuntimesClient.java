@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.IntegrationRuntimesImpl;
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeListResponse;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeResource;
 import com.azure.core.annotation.Generated;
@@ -21,7 +21,7 @@ public final class IntegrationRuntimesClient {
     @Generated private final IntegrationRuntimesImpl serviceClient;
 
     /**
-     * Initializes an instance of IntegrationRuntimes client.
+     * Initializes an instance of IntegrationRuntimesClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -33,7 +33,7 @@ public final class IntegrationRuntimesClient {
     /**
      * List Integration Runtimes.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources.
      */
@@ -48,7 +48,7 @@ public final class IntegrationRuntimesClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources along with {@link Response}.
      */
@@ -63,7 +63,7 @@ public final class IntegrationRuntimesClient {
      *
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime.
      */
@@ -79,7 +79,7 @@ public final class IntegrationRuntimesClient {
      * @param integrationRuntimeName The Integration Runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime along with {@link Response}.
      */

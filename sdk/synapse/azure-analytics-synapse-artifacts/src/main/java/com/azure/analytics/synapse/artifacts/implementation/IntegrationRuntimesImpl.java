@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeListResponse;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeResource;
 import com.azure.core.annotation.ExpectedResponses;
@@ -53,7 +53,7 @@ public final class IntegrationRuntimesImpl {
     private interface IntegrationRuntimesService {
         @Get("/integrationRuntimes")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<IntegrationRuntimeListResponse>> list(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -62,7 +62,7 @@ public final class IntegrationRuntimesImpl {
 
         @Get("/integrationRuntimes/{integrationRuntimeName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<IntegrationRuntimeResource>> get(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -74,7 +74,7 @@ public final class IntegrationRuntimesImpl {
     /**
      * List Integration Runtimes.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources along with {@link Response} on successful completion of {@link
      *     Mono}.
@@ -91,7 +91,7 @@ public final class IntegrationRuntimesImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources along with {@link Response} on successful completion of {@link
      *     Mono}.
@@ -106,7 +106,7 @@ public final class IntegrationRuntimesImpl {
     /**
      * List Integration Runtimes.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources on successful completion of {@link Mono}.
      */
@@ -128,7 +128,7 @@ public final class IntegrationRuntimesImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources on successful completion of {@link Mono}.
      */
@@ -148,7 +148,7 @@ public final class IntegrationRuntimesImpl {
     /**
      * List Integration Runtimes.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources.
      */
@@ -162,7 +162,7 @@ public final class IntegrationRuntimesImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources along with {@link Response}.
      */
@@ -176,7 +176,7 @@ public final class IntegrationRuntimesImpl {
      *
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -194,7 +194,7 @@ public final class IntegrationRuntimesImpl {
      * @param integrationRuntimeName The Integration Runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -211,7 +211,7 @@ public final class IntegrationRuntimesImpl {
      *
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime on successful completion of {@link Mono}.
      */
@@ -234,7 +234,7 @@ public final class IntegrationRuntimesImpl {
      * @param integrationRuntimeName The Integration Runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime on successful completion of {@link Mono}.
      */
@@ -256,7 +256,7 @@ public final class IntegrationRuntimesImpl {
      *
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime.
      */
@@ -271,7 +271,7 @@ public final class IntegrationRuntimesImpl {
      * @param integrationRuntimeName The Integration Runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime along with {@link Response}.
      */

@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.SqlPoolsImpl;
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.SqlPool;
 import com.azure.analytics.synapse.artifacts.models.SqlPoolInfoListResult;
 import com.azure.core.annotation.Generated;
@@ -21,7 +21,7 @@ public final class SqlPoolsClient {
     @Generated private final SqlPoolsImpl serviceClient;
 
     /**
-     * Initializes an instance of SqlPools client.
+     * Initializes an instance of SqlPoolsClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -33,7 +33,7 @@ public final class SqlPoolsClient {
     /**
      * List Sql Pools.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection.
      */
@@ -48,7 +48,7 @@ public final class SqlPoolsClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection along with {@link Response}.
      */
@@ -63,7 +63,7 @@ public final class SqlPoolsClient {
      *
      * @param sqlPoolName The Sql Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool.
      */
@@ -79,7 +79,7 @@ public final class SqlPoolsClient {
      * @param sqlPoolName The Sql Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool along with {@link Response}.
      */

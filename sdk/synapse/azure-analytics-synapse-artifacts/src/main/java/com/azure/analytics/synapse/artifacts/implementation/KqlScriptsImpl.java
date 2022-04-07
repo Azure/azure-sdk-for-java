@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.KqlScriptResource;
 import com.azure.analytics.synapse.artifacts.models.KqlScriptsResourceCollectionResponse;
 import com.azure.core.annotation.ExpectedResponses;
@@ -56,7 +56,7 @@ public final class KqlScriptsImpl {
     private interface KqlScriptsService {
         @Get("/kqlScripts")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<KqlScriptsResourceCollectionResponse>> getAll(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -65,7 +65,7 @@ public final class KqlScriptsImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<KqlScriptsResourceCollectionResponse>> getAllNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -76,7 +76,7 @@ public final class KqlScriptsImpl {
     /**
      * Get all KQL scripts.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -101,7 +101,7 @@ public final class KqlScriptsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -124,7 +124,7 @@ public final class KqlScriptsImpl {
     /**
      * Get all KQL scripts.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts as paginated response with {@link PagedFlux}.
      */
@@ -138,7 +138,7 @@ public final class KqlScriptsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts as paginated response with {@link PagedFlux}.
      */
@@ -151,7 +151,7 @@ public final class KqlScriptsImpl {
     /**
      * Get all KQL scripts.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts as paginated response with {@link PagedIterable}.
      */
@@ -165,7 +165,7 @@ public final class KqlScriptsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts as paginated response with {@link PagedIterable}.
      */
@@ -179,7 +179,7 @@ public final class KqlScriptsImpl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -204,7 +204,7 @@ public final class KqlScriptsImpl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */

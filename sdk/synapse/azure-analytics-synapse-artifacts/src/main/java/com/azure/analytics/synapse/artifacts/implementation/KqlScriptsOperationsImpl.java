@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts.implementation;
 
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
-import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.KqlScriptResource;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -56,7 +56,7 @@ public final class KqlScriptsOperationsImpl {
     private interface KqlScriptsService {
         @Put("/kqlScripts/{kqlScriptName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<KqlScriptResource>> createOrUpdate(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("kqlScriptName") String kqlScriptName,
@@ -67,7 +67,7 @@ public final class KqlScriptsOperationsImpl {
 
         @Get("/kqlScripts/{kqlScriptName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<KqlScriptResource>> getByName(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("kqlScriptName") String kqlScriptName,
@@ -77,7 +77,7 @@ public final class KqlScriptsOperationsImpl {
 
         @Delete("/kqlScripts/{kqlScriptName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteByName(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("kqlScriptName") String kqlScriptName,
@@ -87,7 +87,7 @@ public final class KqlScriptsOperationsImpl {
 
         @Post("/kqlScripts/{kqlScriptName}/rename")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> rename(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("kqlScriptName") String kqlScriptName,
@@ -103,7 +103,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -125,7 +125,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScript KQL script.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -143,7 +143,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -167,7 +167,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScript KQL script.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -191,7 +191,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -207,7 +207,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScript KQL script.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -222,7 +222,7 @@ public final class KqlScriptsOperationsImpl {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -240,7 +240,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -256,7 +256,7 @@ public final class KqlScriptsOperationsImpl {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name on successful completion of {@link Mono}.
      */
@@ -279,7 +279,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name on successful completion of {@link Mono}.
      */
@@ -301,7 +301,7 @@ public final class KqlScriptsOperationsImpl {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name.
      */
@@ -316,7 +316,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name along with {@link Response}.
      */
@@ -330,7 +330,7 @@ public final class KqlScriptsOperationsImpl {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -348,7 +348,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -364,7 +364,7 @@ public final class KqlScriptsOperationsImpl {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -379,7 +379,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -393,7 +393,7 @@ public final class KqlScriptsOperationsImpl {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -407,7 +407,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -422,7 +422,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -443,7 +443,7 @@ public final class KqlScriptsOperationsImpl {
      * @param renameRequest Rename request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -461,7 +461,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -477,7 +477,7 @@ public final class KqlScriptsOperationsImpl {
      * @param renameRequest Rename request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -493,7 +493,7 @@ public final class KqlScriptsOperationsImpl {
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -508,7 +508,7 @@ public final class KqlScriptsOperationsImpl {
      * @param renameRequest Rename request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
