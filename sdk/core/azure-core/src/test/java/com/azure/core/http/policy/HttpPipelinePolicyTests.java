@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -16,7 +17,9 @@ import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -96,6 +99,28 @@ public class HttpPipelinePolicyTests {
             .build();
 
         assertThrows(IllegalStateException.class, () -> pipeline.send(new HttpRequest(HttpMethod.GET, url)).block());
+    }
+
+    /**
+     * This is to cover case when reactor could complain about blocking on non blocking thread.
+     * @throws MalformedURLException ignored.
+     */
+    @Test
+    public void doesntThrowThatThreadIsNonBlocking() throws MalformedURLException {
+        SyncAsyncPolicy policy1 = new SyncAsyncPolicy();
+        HttpPipelinePolicy badPolicy1 = (context, next) -> Mono.delay(Duration.ofMillis(10))
+            .flatMap(l -> next.process());
+        HttpPipelinePolicy badPolicy2 = (context, next) -> Mono.delay(Duration.ofMillis(10))
+            .flatMap(l -> next.process());
+        HttpClient badClient = request -> Mono.delay(Duration.ofMillis(10)).flatMap(i -> Mono.empty());
+        URL url = new URL("http://localhost/");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(badClient)
+            .policies(policy1, badPolicy1, badPolicy2)
+            .build();
+
+        pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, url));
     }
 
 
