@@ -200,6 +200,8 @@ public class RequestResponseChannel implements AsyncCloseable {
                 onTerminalState("SendLinkHandler");
             }),
 
+            // To ensure graceful closure of request-response-channel instance that won the race between
+            // its creation and its parent connection close.
             amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("Shutdown signal received.");
                 return closeAsync();
