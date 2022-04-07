@@ -81,7 +81,6 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b2098c19355859f41e88b2d8b43b04dde887af6/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b2098c19355859f41e88b2d8b43b04dde887af6/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b2098c19355859f41e88b2d8b43b04dde887af6/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b2098c19355859f41e88b2d8b43b04dde887af6/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b2098c19355859f41e88b2d8b43b04dde887af6/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b2098c19355859f41e88b2d8b43b04dde887af6/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b2098c19355859f41e88b2d8b43b04dde887af6/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
@@ -256,8 +255,20 @@ public class EventGridCustomization extends Customization {
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/messaging/eventgrid/implementation/SystemEventMappingNames.java", sb.toString());
+
+        replaceClassAnnotation(customization);
     }
 
+    public void replaceClassAnnotation(LibraryCustomization customization) {
+        // HealthcareFhirResource Events
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable")
+            .addAnnotation("@Fluent");
+        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable")
+            .addAnnotation("@Fluent");
+        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable")
+            .addAnnotation("@Fluent");
+    }
     public static String getConstantName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return name;
