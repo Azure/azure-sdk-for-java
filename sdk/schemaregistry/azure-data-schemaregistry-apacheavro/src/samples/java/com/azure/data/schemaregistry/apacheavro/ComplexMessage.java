@@ -17,6 +17,7 @@ public class ComplexMessage extends MessageWithMetadata {
      * Creates a message with the id.
      *
      * @param id The id to use.
+     * @param creationTime Time message was created.
      */
     public ComplexMessage(String id, OffsetDateTime creationTime) {
         this.id = id;

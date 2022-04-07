@@ -32,6 +32,21 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Creating a {@link SchemaRegistryApacheAvroSerializer}</strong></p>
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ * <pre>
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .credential&#40;tokenCredential&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;&#123;schema-registry-endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
+ * &#47;&#47; added to the instance. By default, this is false, so it will error if the schema is not found.
+ * SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder&#40;&#41;
+ *     .schemaRegistryAsyncClient&#40;schemaRegistryAsyncClient&#41;
+ *     .autoRegisterSchema&#40;true&#41;
+ *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
+ *     .buildSerializer&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
  *
  * <p><strong>Serialize an object</strong></p>
@@ -41,10 +56,39 @@ import static com.azure.core.util.FluxUtil.monoError;
  * the overload which takes a message factory function, {@link #serializeMessageData(Object, TypeReference, Function)}.
  *
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
+ * <pre>
+ * &#47;&#47; The object to encode. The avro schema is:
+ * &#47;&#47; &#123;
+ * &#47;&#47;     &quot;namespace&quot;: &quot;com.azure.data.schemaregistry.apacheavro.generatedtestsources&quot;,
+ * &#47;&#47;     &quot;type&quot;: &quot;record&quot;,
+ * &#47;&#47;     &quot;name&quot;: &quot;Person&quot;,
+ * &#47;&#47;     &quot;fields&quot;: [
+ * &#47;&#47;         &#123;&quot;name&quot;:&quot;name&quot;, &quot;type&quot;: &quot;string&quot;&#125;,
+ * &#47;&#47;         &#123;&quot;name&quot;:&quot;favourite_number&quot;, &quot;type&quot;: [&quot;int&quot;, &quot;null&quot;]&#125;,
+ * &#47;&#47;         &#123;&quot;name&quot;:&quot;favourite_colour&quot;, &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;]&#125;
+ * &#47;&#47;   ]
+ * &#47;&#47; &#125;
+ * Person person = Person.newBuilder&#40;&#41;
+ *     .setName&#40;&quot;Alina&quot;&#41;
+ *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
+ *     .build&#40;&#41;;
+ *
+ * MessageWithMetadata message = serializer.serializeMessageData&#40;person,
+ *     TypeReference.createInstance&#40;MessageWithMetadata.class&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
  *
  * <p><strong>Deserialize an object</strong></p>
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
+ * <pre>
+ * &#47;&#47; Message to deserialize. Assume that the body contains data which has been serialized using an Avro encoder.
+ * MessageWithMetadata message = new MessageWithMetadata&#40;&#41;
+ *     .setBodyAsBinaryData&#40;BinaryData.fromBytes&#40;new byte[0]&#41;&#41;
+ *     .setContentType&#40;&quot;avro&#47;binary+&#123;schema-id&#125;&quot;&#41;;
+ *
+ * &#47;&#47; This is an object generated from the Avro schema used in the serialization sample.
+ * Person person = serializer.deserializeMessageData&#40;message, TypeReference.createInstance&#40;Person.class&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
  *
  * <p><strong>Serialize an object using a message factory</strong></p>
@@ -52,8 +96,31 @@ import static com.azure.core.util.FluxUtil.monoError;
  * instantiate and populate the type.
  *
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory -->
+ * <pre>
+ * &#47;&#47; The object to encode. The avro schema is:
+ * &#47;&#47; &#123;
+ * &#47;&#47;     &quot;namespace&quot;: &quot;com.azure.data.schemaregistry.apacheavro.generatedtestsources&quot;,
+ * &#47;&#47;     &quot;type&quot;: &quot;record&quot;,
+ * &#47;&#47;     &quot;name&quot;: &quot;Person&quot;,
+ * &#47;&#47;     &quot;fields&quot;: [
+ * &#47;&#47;         &#123;&quot;name&quot;:&quot;name&quot;, &quot;type&quot;: &quot;string&quot;&#125;,
+ * &#47;&#47;         &#123;&quot;name&quot;:&quot;favourite_number&quot;, &quot;type&quot;: [&quot;int&quot;, &quot;null&quot;]&#125;,
+ * &#47;&#47;         &#123;&quot;name&quot;:&quot;favourite_colour&quot;, &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;]&#125;
+ * &#47;&#47;   ]
+ * &#47;&#47; &#125;
+ * Person person = Person.newBuilder&#40;&#41;
+ *     .setName&#40;&quot;Alina&quot;&#41;
+ *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
+ *     .build&#40;&#41;;
+ *
+ * &#47;&#47; Serializes and creates an instance of ComplexMessage using the messageFactory function.
+ * ComplexMessage message = serializer.serializeMessageData&#40;person,
+ *     TypeReference.createInstance&#40;ComplexMessage.class&#41;,
+ *     &#40;encodedData&#41; -&gt; &#123;
+ *         return new ComplexMessage&#40;&quot;unique-id&quot;, OffsetDateTime.now&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory -->
- * <p>
  */
 public final class SchemaRegistryApacheAvroSerializer {
     static final String AVRO_MIME_TYPE = "avro/binary";
