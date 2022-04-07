@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ```yaml
-branch: f2fb403f64e0fcb1a799c60daf980f0cde495f8f
+branch: 8ee804c1c8f5af24034d3565085b98a411e753a8
 repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```
 
@@ -41,5 +41,5 @@ required-parameter-client-methods: true
 credential-types: tokencredential
 credential-scopes: https://dev.azuresynapse.net/.default
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/$(branch)/specification/synapse/data-plane/readme.md
-tag: package-artifacts-composite-v3
+tag: package-artifacts-composite-v4
 ```
