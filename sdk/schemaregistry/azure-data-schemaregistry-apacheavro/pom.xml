@@ -47,12 +47,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.27.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+      <version>1.0.0-beta.26</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -106,13 +106,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.9</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.10</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
