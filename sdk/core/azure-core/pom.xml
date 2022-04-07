@@ -74,8 +74,9 @@
       --add-reads com.azure.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
-    <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
-    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
+    <!-- If JMH benchmarking was run Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
+    <!-- Also ignore the shaded jackson-core code. -->
+    <checkstyle.excludes>**/generated/**/*.java,**/jackson/core/**/*.java</checkstyle.excludes>
   </properties>
 
   <developers>
@@ -285,6 +286,7 @@
         <configuration>
           <excludes>
             <exclude>META-INF/**</exclude>
+            <exclude>**/com/azure/core/implementation/jackson/core/**</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -405,6 +407,59 @@
                   <version>1.22</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
                 </path>
               </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.core.implementation.jackson.core -->
+    <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded jackson-core code needs to be updated. -->
+    <!-- -->
+    <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
+    <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
+    <!-- Copy this code into the com.azure.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <profile>
+      <id>shade-jackson-core</id>
+      <activation>
+        <property>
+          <name>shade-jackson-core</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+
+            <executions>
+              <execution>
+                <id>shade</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+              </execution>
+            </executions>
+
+            <configuration>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+
+              <artifactSet>
+                <includes>
+                  <include>com.fasterxml.jackson.core:jackson-core</include>
+                </includes>
+              </artifactSet>
+
+              <relocations>
+                <relocation>
+                  <pattern>com.fasterxml.jackson.core</pattern>
+                  <shadedPattern>com.azure.core.implementation.jackson.core</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </plugin>
         </plugins>
