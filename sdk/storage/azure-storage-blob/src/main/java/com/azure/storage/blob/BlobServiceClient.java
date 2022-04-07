@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -166,10 +167,10 @@ public final class BlobServiceClient {
      * @param containerName Name of the container to create
      * @return The {@link BlobContainerClient} used to interact with the container created.
      * The {@link BlobContainerClient} will be null if a container already exists at this location.
-     *      */
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainerClient createBlobContainerIfNotExists(String containerName) {
-        Response<BlobContainerClient> response = createBlobContainerIfNotExistsWithResponse(containerName, null, null, Context.NONE);
+        Response<BlobContainerClient> response = createBlobContainerIfNotExistsWithResponse(containerName, null, Context.NONE);
         return response == null ? null : response.getValue();
     }
 
@@ -179,29 +180,26 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType-Context -->
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions-Context -->
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
+     *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
      *
-     * Response&lt;BlobContainerClient&gt; response = client.createBlobContainerIfNotExistsWithResponse&#40;
-     *     &quot;containerName&quot;,
-     *     metadata,
-     *     PublicAccessType.CONTAINER,
-     *     context&#41;;
+     * Response&lt;BlobContainerClient&gt; response = client.createBlobContainerIfNotExistsWithResponse&#40;&quot;containerName&quot;,
+     *     options, context&#41;;
+     *
      * if &#40;response == null&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType-Context -->
+     * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions-Context -->
      *
      * @param containerName Name of the container to create
-     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     * @param accessType Specifies how the data in this container is available to the public. See the
-     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param options {@link BlobContainerCreateOptions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
      * to interact with the container created. The {@link BlobContainerClient} will be null if a container already
@@ -209,9 +207,9 @@ public final class BlobServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerClient> createBlobContainerIfNotExistsWithResponse(String containerName,
-        Map<String, String> metadata, PublicAccessType accessType, Context context) {
+        BlobContainerCreateOptions options, Context context) {
         BlobContainerClient client = getBlobContainerClient(containerName);
-        Response<Void> response = client.createIfNotExistsWithResponse(metadata, accessType, null, context);
+        Response<Void> response = client.createIfNotExistsWithResponse(options, null, context);
         return response == null ? null : new SimpleResponse<>(response, client);
     }
 

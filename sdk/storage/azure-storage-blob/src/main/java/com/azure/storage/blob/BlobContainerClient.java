@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -336,7 +337,7 @@ public final class BlobContainerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
-        Response<Void> response = createIfNotExistsWithResponse(null, null, null, null);
+        Response<Void> response = createIfNotExistsWithResponse(null, null, null);
         return response != null && response.getStatusCode() == 201;
     }
 
@@ -346,34 +347,33 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
+     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context -->
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
+     *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
      *
-     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;;
+     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, context&#41;;
      * if &#40;response == null&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
+     * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context -->
      *
-     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     * @param accessType Specifies how the data in this container is available to the public. See the
-     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param options {@link BlobContainerCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the new
      * container was created successfully, {@code null} indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
-        Duration timeout, Context context) {
+    public Response<Void> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,
+        Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(client.
-            createIfNotExistsWithResponse(metadata, accessType, context), timeout);
+            createIfNotExistsWithResponse(options, context), timeout);
     }
 
     /**

@@ -2807,6 +2807,28 @@ class BlobAPITest extends APISpec {
         bc.deleteIfExistsWithResponse(null, null, null, null).getStatusCode() == 202
     }
 
+    def "Delete if exists blob that does not exist"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName())
+
+        when:
+        def response = bc.deleteIfExistsWithResponse(null, null, null, null)
+
+        then:
+        response == null
+    }
+
+    def "Delete if exists container that was already deleted"() {
+        when:
+        def initialResponse = bc.deleteIfExistsWithResponse(null, null, null, null)
+        def secondResponse = bc.deleteIfExistsWithResponse(null, null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 202
+        secondResponse == null
+
+    }
+
     @Unroll
     def "Delete if exists options"() {
         setup:

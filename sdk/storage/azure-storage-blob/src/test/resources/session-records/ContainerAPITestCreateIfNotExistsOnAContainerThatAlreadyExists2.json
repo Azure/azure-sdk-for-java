@@ -1,53 +1,53 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.blob.core.windows.net/2443c3ff02443c3ff1fa7625716d2033958f640fc94e?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/2443c3ff02443c3ff84c389046d3edcb4cd9d41638b5?restype=container",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7d065f8e-b0fd-4e3d-9659-df2a6c690bcd"
+      "x-ms-client-request-id" : "32a8845c-8eb8-455f-8b63-893c36a07169"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA12A050E14362",
-      "Last-Modified" : "Wed, 30 Mar 2022 22:54:58 GMT",
+      "eTag" : "0x8DA1821627FD818",
+      "Last-Modified" : "Wed, 06 Apr 2022 23:01:29 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ff7be13a-701e-0022-3f89-44d7e7000000",
-      "x-ms-client-request-id" : "7d065f8e-b0fd-4e3d-9659-df2a6c690bcd",
-      "Date" : "Wed, 30 Mar 2022 22:54:58 GMT"
+      "x-ms-request-id" : "49ca083e-f01e-0022-270a-4a3ae2000000",
+      "x-ms-client-request-id" : "32a8845c-8eb8-455f-8b63-893c36a07169",
+      "Date" : "Wed, 06 Apr 2022 23:01:28 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.blob.core.windows.net/2443c3ff12443c3ff1fa966090feb082d3b1346e686c?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/2443c3ff12443c3ff84c83656ec2e8625a7aa4f08954?restype=container",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "591f68ed-7c50-4e21-84c1-2420cfdc382d"
+      "x-ms-client-request-id" : "bbd24c3a-b31f-487f-9daf-d1a7b4051e7e"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA12A05102B91E",
-      "Last-Modified" : "Wed, 30 Mar 2022 22:54:58 GMT",
+      "eTag" : "0x8DA182162B65F20",
+      "Last-Modified" : "Wed, 06 Apr 2022 23:01:29 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "5e24aca2-101e-0079-2e89-44eedc000000",
-      "x-ms-client-request-id" : "591f68ed-7c50-4e21-84c1-2420cfdc382d",
-      "Date" : "Wed, 30 Mar 2022 22:54:58 GMT"
+      "x-ms-request-id" : "b4db1067-101e-0001-140a-4a5529000000",
+      "x-ms-client-request-id" : "bbd24c3a-b31f-487f-9daf-d1a7b4051e7e",
+      "Date" : "Wed, 06 Apr 2022 23:01:28 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.blob.core.windows.net/2443c3ff12443c3ff1fa966090feb082d3b1346e686c?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/2443c3ff12443c3ff84c83656ec2e8625a7aa4f08954?restype=container",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a8aa7dc9-a8f8-46f0-8d92-9c2aa2b103b8"
+      "x-ms-client-request-id" : "b72974e4-a66c-45cc-9870-0cf9692714d1"
     },
     "Response" : {
       "content-length" : "230",
@@ -56,13 +56,13 @@
       "x-ms-error-code" : "ContainerAlreadyExists",
       "retry-after" : "0",
       "StatusCode" : "409",
-      "x-ms-request-id" : "18afb071-b01e-0070-2389-44ab0f000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:18afb071-b01e-0070-2389-44ab0f000000\nTime:2022-03-30T22:54:58.9822047Z</Message></Error>",
-      "x-ms-client-request-id" : "a8aa7dc9-a8f8-46f0-8d92-9c2aa2b103b8",
-      "Date" : "Wed, 30 Mar 2022 22:54:58 GMT",
+      "x-ms-request-id" : "ef38a210-201e-0009-030a-4a4e5a000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:ef38a210-201e-0009-030a-4a4e5a000000\nTime:2022-04-06T23:01:29.6032029Z</Message></Error>",
+      "x-ms-client-request-id" : "b72974e4-a66c-45cc-9870-0cf9692714d1",
+      "Date" : "Wed, 06 Apr 2022 23:01:29 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "2443c3ff02443c3ff1fa7625716d2033958f640fc94e", "2443c3ff346998ba", "2443c3ff11982e50", "2443c3ff12443c3ff1fa966090feb082d3b1346e686c" ]
+  "variables" : [ "2443c3ff02443c3ff84c389046d3edcb4cd9d41638b5", "2443c3ff39321939", "2443c3ff47010cbe", "2443c3ff12443c3ff84c83656ec2e8625a7aa4f08954" ]
 }

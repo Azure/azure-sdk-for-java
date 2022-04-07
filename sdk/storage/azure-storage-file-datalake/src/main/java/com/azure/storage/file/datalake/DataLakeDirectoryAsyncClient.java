@@ -204,8 +204,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions()))
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions())
             .map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
@@ -523,8 +522,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
@@ -856,9 +854,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
-        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, new DataLakePathDeleteOptions()
-            .setIsRecursive(false).setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
-            .switchIfEmpty(Mono.just(false));
+        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, new DataLakePathDeleteOptions())
+            .map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**

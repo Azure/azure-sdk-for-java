@@ -443,6 +443,16 @@ class DirectoryAPITest extends APISpec {
         response.getStatusCode() == 200
     }
 
+    def "Delete if exists dir that was already deleted"() {
+        when:
+        def initialResponse = dc.deleteIfExistsWithResponse(null, null, null)
+        def secondResponse = dc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 200
+        secondResponse == null
+    }
+
     @Unroll
     def "Delete if exists AC"() {
         setup:

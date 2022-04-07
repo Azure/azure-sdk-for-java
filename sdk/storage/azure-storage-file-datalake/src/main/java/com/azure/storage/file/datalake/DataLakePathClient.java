@@ -321,8 +321,7 @@ public class DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions()), null, null);
+        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, null);
         return response != null && response.getStatusCode() == 200;
     }
 

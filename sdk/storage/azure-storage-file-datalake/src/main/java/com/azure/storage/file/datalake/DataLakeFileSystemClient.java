@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -332,8 +333,10 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(Transforms.toBlobPublicAccessType(accessType));
         return DataLakeImplUtils.returnOrConvertException(() -> blobContainerClient.createIfNotExistsWithResponse(
-            metadata, Transforms.toBlobPublicAccessType(accessType), timeout, context), LOGGER);
+            options, timeout, context), LOGGER);
     }
 
     /**
@@ -409,8 +412,7 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions()
-            .setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
+        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, Context.NONE);
         return response != null && response.getStatusCode() == 202;
     }
 
@@ -448,8 +450,8 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
         Context context) {
-        options = options == null ? new DataLakePathDeleteOptions() : options;
-        DataLakeRequestConditions requestConditions = options.getRequestConditions();
+        DataLakeRequestConditions requestConditions = options == null ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
         return DataLakeImplUtils.returnOrConvertException(() -> blobContainerClient.deleteIfExistsWithResponse(
             Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
 
@@ -905,8 +907,8 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteFileIfExists(String fileName) {
-        Response<Void> response = deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()
-            .setIsRecursive(false).setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
+        Response<Void> response = deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions(), null,
+            Context.NONE);
         return response != null && response.getStatusCode() == 200;
     }
 

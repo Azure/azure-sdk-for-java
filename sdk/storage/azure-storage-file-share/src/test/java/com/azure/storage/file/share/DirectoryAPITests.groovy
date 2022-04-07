@@ -384,6 +384,20 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.exists() == false
     }
 
+    def "Delete if exists directory that was already deleted"() {
+        setup:
+        primaryDirectoryClient.create()
+
+        when:
+        def initialResponse = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
+        def secondResponse = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
+
+        then:
+        initialResponse.getStatusCode() == 202
+        secondResponse == null
+
+    }
+
     def "Get properties"() {
         given:
         primaryDirectoryClient.create()

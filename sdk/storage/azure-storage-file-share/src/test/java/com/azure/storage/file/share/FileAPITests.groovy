@@ -1018,6 +1018,19 @@ class FileAPITests extends APISpec {
         client.exists() == false
     }
 
+    def "Delete if exists file that was already deleted"() {
+        setup:
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
+
+        when:
+        def result1 = primaryFileClient.deleteIfExists()
+        def result2 = primaryFileClient.deleteIfExists()
+
+        then:
+        result1
+        !result2
+    }
+
     def "Get properties"() {
         given:
         primaryFileClient.create(1024)

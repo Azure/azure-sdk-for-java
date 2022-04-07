@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -461,7 +462,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobContainerClient#createIfNotExists()} and
-     * {@link BlobContainerClient#createIfNotExistsWithResponse(Map, PublicAccessType, Duration, Context)}
+     * {@link BlobContainerClient#createIfNotExistsWithResponse(BlobContainerCreateOptions, Duration, Context)}
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExists
@@ -469,17 +470,19 @@ public class BlobContainerClientJavaDocCodeSnippets {
         System.out.println("Create completed: " + result);
         // END: com.azure.storage.blob.BlobContainerClient.createIfNotExists
 
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
 
-        Response<Void> response = client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context);
+        Response<Void> response = client.createIfNotExistsWithResponse(options, timeout, context);
         if (response == null) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
-        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context
     }
 
     /**

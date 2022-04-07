@@ -17,6 +17,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -381,8 +382,9 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata,
         PublicAccessType accessType) {
         try {
-            return blobContainerAsyncClient.createIfNotExistsWithResponse(metadata,
-                    Transforms.toBlobPublicAccessType(accessType))
+            BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+                .setPublicAccessType(Transforms.toBlobPublicAccessType(accessType));
+            return blobContainerAsyncClient.createIfNotExistsWithResponse(options)
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -464,8 +466,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
@@ -1055,8 +1056,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
@@ -1353,8 +1353,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteDirectoryIfExists(String directoryName) {
-        return deleteDirectoryIfExistsWithResponse(directoryName, new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+        return deleteDirectoryIfExistsWithResponse(directoryName, new DataLakePathDeleteOptions()).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 

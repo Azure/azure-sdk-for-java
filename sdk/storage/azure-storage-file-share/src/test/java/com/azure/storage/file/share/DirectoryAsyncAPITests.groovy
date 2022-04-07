@@ -254,6 +254,19 @@ class DirectoryAsyncAPITests extends APISpec {
         !client.exists().block()
     }
 
+    def "Delete if exists directory that was already deleted"() {
+        setup:
+        primaryDirectoryAsyncClient.create().block()
+
+        when:
+        def initialResponse = primaryDirectoryAsyncClient.deleteIfExistsWithResponse().block()
+        def secondResponse = primaryDirectoryAsyncClient.deleteIfExistsWithResponse().block()
+
+        then:
+        initialResponse.getStatusCode() == 202
+        secondResponse == null
+    }
+
     def "Get properties"() {
         given:
         primaryDirectoryAsyncClient.create().block()

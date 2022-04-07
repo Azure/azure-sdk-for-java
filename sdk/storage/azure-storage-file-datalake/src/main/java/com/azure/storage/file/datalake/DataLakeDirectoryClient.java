@@ -161,8 +161,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
+        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, Context.NONE);
         return response != null && response.getStatusCode() == 200;
     }
 

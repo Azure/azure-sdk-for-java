@@ -27,13 +27,13 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobContainerCreateOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -138,7 +138,7 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
-        def response = cc.createIfNotExistsWithResponse(null, null, null, null)
+        def response = cc.createIfNotExistsWithResponse(null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -164,7 +164,8 @@ class ContainerAPITest extends APISpec {
 
     def "Create if not exists with response"() {
         when:
-        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(generateContainerName(), null, null, null)
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(generateContainerName(),
+            null, null)
 
         then:
         response.getStatusCode() == 201
@@ -174,8 +175,8 @@ class ContainerAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         when:
-        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null, null)
-        def secondResponse = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null, null)
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+        def secondResponse = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -193,9 +194,10 @@ class ContainerAPITest extends APISpec {
         if (key2 != null) {
             metadata.put(key2, value2)
         }
+        def options = new BlobContainerCreateOptions().setMetadata(metadata)
 
         when:
-        cc.createIfNotExistsWithResponse(metadata, null, null, null)
+        cc.createIfNotExistsWithResponse(options, null, null)
         def response = cc.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -214,7 +216,7 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
-        cc.createWithResponse(null, publicAccess, null, null)
+        cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions().setPublicAccessType(publicAccess), null, null)
         def access = cc.getProperties().getBlobPublicAccess()
 
         then:
@@ -232,16 +234,16 @@ class ContainerAPITest extends APISpec {
         boolean result = cc.createIfNotExists()
 
         then:
-        result == false
+        !result
     }
 
     def "Create if not exists on a container that already exists 2"() {
         setup:
         def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        def initialResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
+        def initialResponse = cc.createIfNotExistsWithResponse(null, null, null)
 
         when:
-        def secondResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
+        def secondResponse = cc.createIfNotExistsWithResponse(null, null, null)
 
         then:
         initialResponse.getStatusCode() == 201
@@ -711,7 +713,7 @@ class ContainerAPITest extends APISpec {
         boolean result = cc.deleteIfExists()
 
         then:
-        result == true
+        result
         !cc.exists()
     }
 

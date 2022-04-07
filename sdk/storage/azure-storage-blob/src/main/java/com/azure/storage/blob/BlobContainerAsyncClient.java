@@ -40,6 +40,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -451,8 +452,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null, null, null).map(response -> true)
-            .switchIfEmpty(Mono.just(false));
+        return createIfNotExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -464,33 +464,34 @@ public final class BlobContainerAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
+     *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
      *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      *
-     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     * @param accessType Specifies how the data in this container is available to the public. See the
-     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param options {@link BlobContainerCreateOptions}
      * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
      * container was created. An empty {@code Mono} indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
+    public Mono<Response<Void>> createIfNotExistsWithResponse(BlobContainerCreateOptions options) {
         try {
-            return createIfNotExistsWithResponse(metadata, accessType, null);
+            return createIfNotExistsWithResponse(options, null);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType, Context context) {
+    Mono<Response<Void>> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Context context) {
         try {
-            return createWithResponse(metadata, accessType, context)
-                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
-                    t -> Mono.empty());
+            options = options == null ? new BlobContainerCreateOptions() : options;
+            return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
+                    .getStatusCode() == 409, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

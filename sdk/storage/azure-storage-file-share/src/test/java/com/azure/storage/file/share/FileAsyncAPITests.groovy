@@ -890,6 +890,19 @@ class FileAsyncAPITests extends APISpec {
         client.exists().block() == false
     }
 
+    def "Delete if exists file that was already deleted"() {
+        setup:
+        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null, null, null).block()
+
+        when:
+        def result1 = primaryFileAsyncClient.deleteIfExists().block()
+        def result2 = primaryFileAsyncClient.deleteIfExists().block()
+
+        then:
+        result1
+        !result2
+    }
+
     def "Delete if exists file lease"() {
         given:
         primaryFileAsyncClient.create(1024).block()

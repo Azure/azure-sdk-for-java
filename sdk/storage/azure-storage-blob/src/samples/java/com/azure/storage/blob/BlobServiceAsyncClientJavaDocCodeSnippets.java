@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -338,7 +339,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobServiceAsyncClient#createBlobContainerIfNotExists(String)} and
-     * {@link BlobServiceAsyncClient#createBlobContainerIfNotExistsWithResponse(String, Map, PublicAccessType)}
+     * {@link BlobServiceAsyncClient#createBlobContainerIfNotExistsWithResponse(String, BlobContainerCreateOptions)}
      */
     public void createContainerIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String
@@ -346,19 +347,19 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
             client.createBlobContainerIfNotExists("containerName").block();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String
 
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
 
         Response<BlobContainerAsyncClient> response = client.createBlobContainerIfNotExistsWithResponse(
-            "containerName",
-            metadata,
-            PublicAccessType.CONTAINER).block();
+            "containerName", options).block();
         if (response == null) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions
     }
 
     /**

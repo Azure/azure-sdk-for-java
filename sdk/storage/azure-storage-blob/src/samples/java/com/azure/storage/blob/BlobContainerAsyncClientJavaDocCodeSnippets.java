@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -444,7 +445,7 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobContainerAsyncClient#createIfNotExists()} and
-     * {@link BlobContainerAsyncClient#createIfNotExistsWithResponse(Map, PublicAccessType)}
+     * {@link BlobContainerAsyncClient#createIfNotExistsWithResponse(BlobContainerCreateOptions)}
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
@@ -459,7 +460,10 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER).switchIfEmpty(Mono.<Response<Void>>empty()
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
+
+        client.createIfNotExistsWithResponse(options).switchIfEmpty(Mono.<Response<Void>>empty()
                 .doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType

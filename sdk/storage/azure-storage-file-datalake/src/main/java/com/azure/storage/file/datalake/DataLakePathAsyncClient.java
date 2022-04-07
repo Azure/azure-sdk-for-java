@@ -506,8 +506,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
-            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
