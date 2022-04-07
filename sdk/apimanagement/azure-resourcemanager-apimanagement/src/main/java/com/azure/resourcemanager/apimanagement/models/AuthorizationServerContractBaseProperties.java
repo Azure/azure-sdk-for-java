@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** External OAuth authorization server Update settings contract. */
 @Fluent
 public class AuthorizationServerContractBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationServerContractBaseProperties.class);
-
     /*
      * Description of the authorization server. Can contain HTML formatting
      * tags.

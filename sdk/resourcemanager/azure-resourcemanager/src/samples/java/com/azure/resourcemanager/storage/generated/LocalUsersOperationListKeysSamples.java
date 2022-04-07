@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LocalUsersOperation ListKeys. */
 public final class LocalUsersOperationListKeysSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/LocalUserListKeys.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/LocalUserListKeys.json
      */
     /**
      * Sample code: ListLocalUserKeys.

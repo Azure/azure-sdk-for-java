@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Summary of revision metadata. */
 @Immutable
 public final class ApiRevisionContractInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiRevisionContractInner.class);
-
     /*
      * Identifier of the API Revision.
      */

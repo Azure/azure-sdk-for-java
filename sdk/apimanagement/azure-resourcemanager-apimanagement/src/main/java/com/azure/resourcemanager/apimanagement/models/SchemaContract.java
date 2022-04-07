@@ -51,11 +51,18 @@ public interface SchemaContract {
     String value();
 
     /**
-     * Gets the definitions property: Types definitions. Used for Swagger/OpenAPI schemas only, null otherwise.
+     * Gets the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
      *
      * @return the definitions value.
      */
     Object definitions();
+
+    /**
+     * Gets the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
+     *
+     * @return the components value.
+     */
+    Object components();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner object.
@@ -94,6 +101,7 @@ public interface SchemaContract {
             extends DefinitionStages.WithContentType,
                 DefinitionStages.WithValue,
                 DefinitionStages.WithDefinitions,
+                DefinitionStages.WithComponents,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -145,13 +153,24 @@ public interface SchemaContract {
         /** The stage of the SchemaContract definition allowing to specify definitions. */
         interface WithDefinitions {
             /**
-             * Specifies the definitions property: Types definitions. Used for Swagger/OpenAPI schemas only, null
+             * Specifies the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null
              * otherwise..
              *
-             * @param definitions Types definitions. Used for Swagger/OpenAPI schemas only, null otherwise.
+             * @param definitions Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
              * @return the next definition stage.
              */
             WithCreate withDefinitions(Object definitions);
+        }
+        /** The stage of the SchemaContract definition allowing to specify components. */
+        interface WithComponents {
+            /**
+             * Specifies the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null
+             * otherwise..
+             *
+             * @param components Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
+             * @return the next definition stage.
+             */
+            WithCreate withComponents(Object components);
         }
         /** The stage of the SchemaContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -178,6 +197,7 @@ public interface SchemaContract {
         extends UpdateStages.WithContentType,
             UpdateStages.WithValue,
             UpdateStages.WithDefinitions,
+            UpdateStages.WithComponents,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -231,13 +251,24 @@ public interface SchemaContract {
         /** The stage of the SchemaContract update allowing to specify definitions. */
         interface WithDefinitions {
             /**
-             * Specifies the definitions property: Types definitions. Used for Swagger/OpenAPI schemas only, null
+             * Specifies the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null
              * otherwise..
              *
-             * @param definitions Types definitions. Used for Swagger/OpenAPI schemas only, null otherwise.
+             * @param definitions Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
              * @return the next definition stage.
              */
             Update withDefinitions(Object definitions);
+        }
+        /** The stage of the SchemaContract update allowing to specify components. */
+        interface WithComponents {
+            /**
+             * Specifies the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null
+             * otherwise..
+             *
+             * @param components Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
+             * @return the next definition stage.
+             */
+            Update withComponents(Object components);
         }
         /** The stage of the SchemaContract update allowing to specify ifMatch. */
         interface WithIfMatch {

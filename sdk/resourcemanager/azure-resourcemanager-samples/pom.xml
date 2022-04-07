@@ -52,12 +52,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.27.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
@@ -108,7 +108,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.2.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

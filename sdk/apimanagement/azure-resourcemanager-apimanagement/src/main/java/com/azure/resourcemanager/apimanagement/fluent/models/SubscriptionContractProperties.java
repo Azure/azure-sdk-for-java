@@ -7,15 +7,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Subscription details. */
 @Fluent
 public final class SubscriptionContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionContractProperties.class);
-
     /*
      * The user resource identifier of the subscription owner. The value is a
      * valid relative URL in the format of /users/{userId} where {userId} is a
@@ -419,16 +416,18 @@ public final class SubscriptionContractProperties {
      */
     public void validate() {
         if (scope() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property scope in model SubscriptionContractProperties"));
         }
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property state in model SubscriptionContractProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionContractProperties.class);
 }

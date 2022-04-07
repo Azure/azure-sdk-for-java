@@ -688,7 +688,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv7056275/providers/Microsoft.Storage/storageAccounts/st448210502e?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv7056275/providers/Microsoft.Storage/storageAccounts/st448210502e?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "9c62f440-2c86-4f92-bab1-eb9fa58948ec",

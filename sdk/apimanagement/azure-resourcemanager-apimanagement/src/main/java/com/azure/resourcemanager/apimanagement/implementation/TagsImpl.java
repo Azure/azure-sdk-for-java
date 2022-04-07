@@ -22,10 +22,9 @@ import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByOperat
 import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateByProductResponse;
 import com.azure.resourcemanager.apimanagement.models.TagsGetEntityStateResponse;
 import com.azure.resourcemanager.apimanagement.models.TagsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TagsImpl implements Tags {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TagsImpl.class);
 
     private final TagsClient innerClient;
 
@@ -377,7 +376,7 @@ public final class TagsImpl implements Tags {
     public TagContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -385,14 +384,14 @@ public final class TagsImpl implements Tags {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String tagId = Utils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));
@@ -403,7 +402,7 @@ public final class TagsImpl implements Tags {
     public Response<TagContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -411,14 +410,14 @@ public final class TagsImpl implements Tags {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String tagId = Utils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));
@@ -429,7 +428,7 @@ public final class TagsImpl implements Tags {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -437,26 +436,26 @@ public final class TagsImpl implements Tags {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String tagId = Utils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));
         }
         String localIfMatch = null;
-        this.deleteWithResponse(resourceGroupName, serviceName, tagId, localIfMatch, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, serviceName, tagId, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -464,14 +463,14 @@ public final class TagsImpl implements Tags {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String tagId = Utils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));
