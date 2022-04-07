@@ -36,7 +36,7 @@ import java.util.function.Supplier;
  */
 @Deprecated
 final class ReliableDownload {
-    private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReliableDownload.class);
 
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
     private final StreamResponse rawResponse;
@@ -58,7 +58,7 @@ final class ReliableDownload {
         this.getter = getter;
         /*
         If the customer did not specify a count, they are reading to the end of the blob. Extract this value
-        from the response for better book keeping towards the end.
+        from the response for better book-keeping towards the end.
          */
         if (this.info.getCount() == null) {
             long blobLength = ModelHelper.getBlobLength(
@@ -145,7 +145,7 @@ final class ReliableDownload {
                  of the stream.
                  */
                 if (this.info.getCount() != null && this.info.getCount() == 0) {
-                    logger.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                    LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
                         + "but before stream signaled completion. Returning success as all data was downloaded. "
                         + "Exception message: " + t2.getMessage());
                     return Flux.empty();
