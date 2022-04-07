@@ -1,11 +1,9 @@
-package com.azure.spring.cloud.config.app;
+package com.azure.spring.cloud.config;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 
-public class MyCredentials implements AppConfigurationCredentialProvider, KeyVaultCredentialProvider{
+public class MyCredentials implements AppConfigurationCredentialProvider, KeyVaultCredentialProvider {
 
     @Override
     public TokenCredential getKeyVaultCredential(String uri) {
@@ -18,7 +16,7 @@ public class MyCredentials implements AppConfigurationCredentialProvider, KeyVau
     }
 
     TokenCredential buildCredential() {
-            return  new EnvironmentCredentialBuilder().build();
+        return new EnvironmentCredentialBuilder().build();
     }
 
 }
