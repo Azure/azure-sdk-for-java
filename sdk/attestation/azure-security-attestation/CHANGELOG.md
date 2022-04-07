@@ -5,7 +5,6 @@
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
 
 ## 1.1.0 (2022-03-11)
