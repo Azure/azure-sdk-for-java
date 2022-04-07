@@ -3,13 +3,8 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.amqp.exception.AmqpErrorCondition;
-import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
 
 import static com.azure.core.amqp.ProxyOptions.SYSTEM_DEFAULTS;
 
