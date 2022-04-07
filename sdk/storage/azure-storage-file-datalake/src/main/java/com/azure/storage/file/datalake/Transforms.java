@@ -800,6 +800,9 @@ class Transforms {
 
     static CustomerProvidedKey toBlobCustomerProvidedKey(
         com.azure.storage.file.datalake.models.CustomerProvidedKey key) {
+        if (key == null) {
+            return null;
+        }
         return new CustomerProvidedKey(key.getKey());
     }
 
