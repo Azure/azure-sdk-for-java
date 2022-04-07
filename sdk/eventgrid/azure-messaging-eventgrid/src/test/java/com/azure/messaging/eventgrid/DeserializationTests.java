@@ -1306,10 +1306,10 @@ public class DeserializationTests {
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
         HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
-        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getResourceType());
-        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getResourceFhirAccount());
-        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getResourceFhirId());
-        assertEquals(1, eventData.getResourceVersionId());
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
     }
 
     @Test
@@ -1318,10 +1318,10 @@ public class DeserializationTests {
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
         HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
-        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getResourceType());
-        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getResourceFhirAccount());
-        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getResourceFhirId());
-        assertEquals(1, eventData.getResourceVersionId());
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
     }
 
     @Test
@@ -1330,10 +1330,10 @@ public class DeserializationTests {
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
         HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
-        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getResourceType());
-        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getResourceFhirAccount());
-        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getResourceFhirId());
-        assertEquals(1, eventData.getResourceVersionId());
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
     }
 
     @Test
@@ -1343,10 +1343,10 @@ public class DeserializationTests {
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
         HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
-        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getResourceType());
-        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getResourceFhirAccount());
-        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getResourceFhirId());
-        assertEquals(1, eventData.getResourceVersionId());
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
     }
 
     @Test
@@ -1356,10 +1356,10 @@ public class DeserializationTests {
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
         HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
-        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getResourceType());
-        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getResourceFhirAccount());
-        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getResourceFhirId());
-        assertEquals(1, eventData.getResourceVersionId());
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
     }
 
     @Test
@@ -1369,10 +1369,10 @@ public class DeserializationTests {
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
         HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
-        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getResourceType());
-        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getResourceFhirAccount());
-        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getResourceFhirId());
-        assertEquals(1, eventData.getResourceVersionId());
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
     }
 
     // End of healthcare FHIR
