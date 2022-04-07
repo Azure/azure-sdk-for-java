@@ -162,7 +162,7 @@ class AvroSerializer {
             return outputStream.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
-            throw logger.logExceptionAsError(new SchemaRegistryAvroException(
+            throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
                 "An error occurred while attempting to serialize to Avro.", e, schemaId));
         }
     }
@@ -186,7 +186,7 @@ class AvroSerializer {
             try {
                 return messageDecoder.decode(contents);
             } catch (IOException e) {
-                throw logger.logExceptionAsError(new SchemaRegistryAvroException(
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
                     "Unable to deserialize Avro schema object using binary message decoder.", e));
             }
         } else {
@@ -197,7 +197,7 @@ class AvroSerializer {
                     return reader.read(null, decoderFactory.binaryDecoder(input, null));
                 }
             } catch (IOException | RuntimeException e) {
-                throw logger.logExceptionAsError(new SchemaRegistryAvroException(
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
                     "Error deserializing raw Avro message.", e));
             }
         }

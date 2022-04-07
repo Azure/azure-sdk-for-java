@@ -8,7 +8,7 @@ import com.azure.core.exception.AzureException;
 /**
  * Represents an exception that is thrown when Avro serialization or deserialization fails.
  */
-public class SchemaRegistryAvroException extends AzureException {
+public class SchemaRegistryApacheAvroException extends AzureException {
     private final String schemaId;
 
     /**
@@ -16,7 +16,7 @@ public class SchemaRegistryAvroException extends AzureException {
      *
      * @param message The exception message.
      */
-    public SchemaRegistryAvroException(String message) {
+    public SchemaRegistryApacheAvroException(String message) {
         super(message);
 
         this.schemaId = null;
@@ -28,7 +28,7 @@ public class SchemaRegistryAvroException extends AzureException {
      * @param message The exception message.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
-    public SchemaRegistryAvroException(String message, Throwable cause) {
+    public SchemaRegistryApacheAvroException(String message, Throwable cause) {
         super(message, cause);
 
         this.schemaId = null;
@@ -42,7 +42,7 @@ public class SchemaRegistryAvroException extends AzureException {
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
-    public SchemaRegistryAvroException(String message, Throwable cause, boolean enableSuppression,
+    public SchemaRegistryApacheAvroException(String message, Throwable cause, boolean enableSuppression,
         boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
 
@@ -57,7 +57,7 @@ public class SchemaRegistryAvroException extends AzureException {
      * @param schemaId The id of the schema being processed when this exception occurred. {@code null} if there was
      *     none.
      */
-    public SchemaRegistryAvroException(String message, Throwable cause, String schemaId) {
+    public SchemaRegistryApacheAvroException(String message, Throwable cause, String schemaId) {
         super(message, cause);
         this.schemaId = schemaId;
     }

@@ -158,12 +158,12 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @return The message encoded or {@code null} if the message could not be serialized.
      *
-     * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not be fetched from {@code T}.
-     * @throws SchemaRegistryAvroException if an instance of {@code T} could not be instantiated. Or there was a
-     *     problem encoding the object.
+     * @throws IllegalArgumentException if {@code T} does not have a no argument constructor. Or if the schema could not
+     *     be fetched from {@code T}.
+     * @throws RuntimeException if an instance of {@code T} could not be instantiated.
+     * @throws SchemaRegistryApacheAvroException if an instance of {@code T} could not be instantiated or there was a
+     *     problem serializing the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
-     * @throws SchemaRegistryAvroException if the object could not be serialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
@@ -184,10 +184,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
      *     argument constructor. Or if the schema could not be fetched from {@code T}.
-     * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
-     *     encoding the object.
+     * @throws RuntimeException if an instance of {@code T} could not be instantiated.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
-     * @throws SchemaRegistryAvroException if the object could not be serialized.
+     * @throws SchemaRegistryApacheAvroException if the object could not be serialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
@@ -206,12 +205,11 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @return A Mono that completes with the serialized message.
      *
-     * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not be fetched from {@code T}.
-     * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
-     *     encoding the object.
+     * @throws IllegalArgumentException if {@code T} does not have a no argument constructor. Or if the schema could not
+     *     be fetched from {@code T}.
+     * @throws RuntimeException if an instance of {@code T} could not be instantiated.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
-     * @throws SchemaRegistryAvroException if the object could not be serialized.
+     * @throws SchemaRegistryApacheAvroException if the object could not be serialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
@@ -235,10 +233,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
      *     argument constructor. Or if the schema could not be fetched from {@code T}.
-     * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
-     *     encoding the object.
+     * @throws RuntimeException if an instance of {@code T} could not be instantiated.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
-     * @throws SchemaRegistryAvroException if the object could not be serialized.
+     * @throws SchemaRegistryApacheAvroException if the object could not be serialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
@@ -291,12 +288,12 @@ public final class SchemaRegistryApacheAvroSerializer {
 
                     sink.next(serializedMessage);
                     sink.complete();
-                } catch (SchemaRegistryAvroException e) {
+                } catch (SchemaRegistryApacheAvroException e) {
                     // If an exception happens in the avro library while calling serializer.serialize(object, schemaId)
                     // we already wrap in an exception, so we don't want to wrap it again.
                     sink.error(e);
                 } catch (Exception e) {
-                    sink.error(new SchemaRegistryAvroException(String.format(
+                    sink.error(new SchemaRegistryApacheAvroException(String.format(
                         "Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e, schemaId));
                 }
             });
@@ -316,7 +313,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     the mime-type in the content type cannot be parsed or the type is not avro/binary.
      * @throws ResourceNotFoundException if a schema with a matching schema id could not be found.
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
-     * @throws SchemaRegistryAvroException if the message could not be deserialized.
+     * @throws SchemaRegistryApacheAvroException if the message could not be deserialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
@@ -340,7 +337,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     the mime-type in the content type cannot be parsed or the type is not avro/binary.
      * @throws ResourceNotFoundException if a schema with a matching schema id could not be found.
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
-     * @throws SchemaRegistryAvroException if the message could not be deserialized.
+     * @throws SchemaRegistryApacheAvroException if the message could not be deserialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
