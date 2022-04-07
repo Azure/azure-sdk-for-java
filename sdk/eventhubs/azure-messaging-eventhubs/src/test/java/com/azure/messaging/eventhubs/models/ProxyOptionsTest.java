@@ -26,8 +26,8 @@ public class ProxyOptionsTest {
     private static Proxy proxyAddress = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
     @Test
-    public void nullProxyConfiguration() {
-        Assertions.assertNull(SYSTEM_DEFAULTS.getAuthentication());
+    public void systemDefaultProxyConfiguration() {
+        Assertions.assertEquals(ProxyAuthenticationType.NONE, SYSTEM_DEFAULTS.getAuthentication());
         Assertions.assertNull(SYSTEM_DEFAULTS.getCredential());
         Assertions.assertNull(SYSTEM_DEFAULTS.getProxyAddress());
     }
