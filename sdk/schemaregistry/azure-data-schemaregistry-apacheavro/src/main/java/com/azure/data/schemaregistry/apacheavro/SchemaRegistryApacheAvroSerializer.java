@@ -414,7 +414,7 @@ public final class SchemaRegistryApacheAvroSerializer {
                 final byte[] payloadSchema = registryObject.getDefinition().getBytes(StandardCharsets.UTF_8);
 
                 try {
-                    final T decode = avroSerializer.decode(contents, payloadSchema, typeReference);
+                    final T decode = avroSerializer.deserialize(contents, payloadSchema, typeReference);
                     sink.next(decode);
                 } catch (Exception e) {
                     sink.error(e);

@@ -173,7 +173,7 @@ class AvroSerializer {
      *
      * @return deserialized object
      */
-    <T> T decode(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
+    <T> T deserialize(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
         Objects.requireNonNull(contents, "'bytes' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 

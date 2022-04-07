@@ -150,7 +150,7 @@ public class AvroSerializerTest {
 
     /**
      * Tests that we can encode and decode an object using {@link AvroSerializer#serialize(Object, String)} and
-     * {@link AvroSerializer#decode(ByteBuffer, byte[], TypeReference)}.
+     * {@link AvroSerializer#deserialize(ByteBuffer, byte[], TypeReference)}.
      */
     @Test
     public void encodesAndDecodesObject() {
@@ -170,7 +170,7 @@ public class AvroSerializerTest {
         final byte[] schemaBytes = expected.getSchema().toString().getBytes(StandardCharsets.UTF_8);
 
         // Act
-        final PlayingCard actual = registryUtils.decode(ByteBuffer.wrap(encoded), schemaBytes,
+        final PlayingCard actual = registryUtils.deserialize(ByteBuffer.wrap(encoded), schemaBytes,
                 TypeReference.createInstance(PlayingCard.class));
 
         // Assert
@@ -205,7 +205,7 @@ public class AvroSerializerTest {
         final byte[] schemaBytes = schemaString.getBytes(StandardCharsets.UTF_8);
 
         // Act
-        final HandOfCards actual = registryUtils.decode(expectedData, schemaBytes,
+        final HandOfCards actual = registryUtils.deserialize(expectedData, schemaBytes,
             TypeReference.createInstance(HandOfCards.class));
 
         // Assert
