@@ -141,10 +141,10 @@ public class UserAgentTests {
             Configuration.getGlobalConfiguration().get("os.version"));
 
         Configuration enabledTelemetryConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                new TestConfigurationSource().add(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false"))
+                new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false"))
             .build();
         Configuration disabledTelemetryConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                new TestConfigurationSource().add(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true"))
+                new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true"))
             .build();
 
         return Stream.of(

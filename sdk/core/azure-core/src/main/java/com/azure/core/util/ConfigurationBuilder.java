@@ -5,6 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Objects;
  */
 @Fluent
 public final class ConfigurationBuilder {
-
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationBuilder.class);
     private final MutableConfigurationSource mutableSource;
     private final EnvironmentConfiguration environmentConfiguration;
     private String rootPath;
@@ -25,11 +26,10 @@ public final class ConfigurationBuilder {
     /**
      * Creates {@code ConfigurationBuilder}.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#addProperty -->
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
-     * &#47;&#47; Creates Configuration with manually added properties.
-     * configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .addProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     * configuration = new ConfigurationBuilder&#40;&#41;
+     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
@@ -38,7 +38,7 @@ public final class ConfigurationBuilder {
      *
      * System.out.println&#40;configuration.get&#40;connectionStringProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.com.azure.core.util.ConfigurationBuilder#addProperty -->
+     * <!-- end com.com.azure.core.util.ConfigurationBuilder#putProperty -->
      */
     public ConfigurationBuilder() {
         this.mutableSource = new MutableConfigurationSource();
@@ -50,7 +50,6 @@ public final class ConfigurationBuilder {
      *
      * <!-- src_embed com.azure.core.util.Configuration -->
      * <pre>
-     * &#47;&#47; Creates Configuration with configured root path to shared properties
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
@@ -86,30 +85,31 @@ public final class ConfigurationBuilder {
 
     /**
      * Add property to the configuration source.
+     * In case the source already contains property with the same name, the value will be overwritten with the new value passed.
      *
-     * <!-- src_embed com.azure.core.util.Configuration -->
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
-     * &#47;&#47; Creates Configuration with configured root path to shared properties
-     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     * configuration = new ConfigurationBuilder&#40;&#41;
+     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
-     * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
-     *     .shared&#40;true&#41;
+     * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
      *     .build&#40;&#41;;
-     * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+     *
+     * System.out.println&#40;configuration.get&#40;connectionStringProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.com.azure.core.util.Configuration -->
+     * <!-- end com.azure.core.util.ConfigurationBuilder#putProperty -->
      *
      * @param name Property name.
      * @param value Property value.
      * @return {@code ConfigurationBuilder} instance for chaining.
      */
-    public ConfigurationBuilder addProperty(String name, String value) {
+    public ConfigurationBuilder putProperty(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
 
-        mutableSource.add(name, value);
+        mutableSource.put(name, value);
         sharedConfiguration = null;
         return this;
     }
@@ -120,7 +120,6 @@ public final class ConfigurationBuilder {
      *
      * <!-- src_embed com.azure.core.util.Configuration -->
      * <pre>
-     * &#47;&#47; Creates Configuration with configured root path to shared properties
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
@@ -206,8 +205,7 @@ public final class ConfigurationBuilder {
         private Map<String, String> additionalConfigurations;
 
         private MutableConfigurationSource() {
-            this.originalSource = null;
-            this.additionalConfigurations = null;
+            this(null);
         }
 
         private MutableConfigurationSource(ConfigurationSource originalSource) {
@@ -215,9 +213,15 @@ public final class ConfigurationBuilder {
             this.additionalConfigurations = null;
         }
 
-        MutableConfigurationSource add(String key, String value) {
+        MutableConfigurationSource put(String key, String value) {
             if (additionalConfigurations == null) {
                 additionalConfigurations = new HashMap<>();
+            }
+
+            if (additionalConfigurations.containsKey(key)) {
+                LOGGER.atWarning()
+                    .addKeyValue("name", key)
+                    .log("Property with the same name already exists, value will be overwritten.");
             }
 
             additionalConfigurations.put(key, value);
@@ -234,6 +238,12 @@ public final class ConfigurationBuilder {
 
             Map<String, String> allConfigurations = new HashMap<>(original);
             for (Map.Entry<String, String> prop : additionalConfigurations.entrySet()) {
+                if (allConfigurations.containsKey(prop.getKey())) {
+                    LOGGER.atWarning()
+                        .addKeyValue("name", prop.getKey())
+                        .log("Property with the same name already exists, value will be overwritten.");
+                }
+
                 if (hasPrefix(prop.getKey(), source)) {
                     allConfigurations.put(prop.getKey(), prop.getValue());
                 }

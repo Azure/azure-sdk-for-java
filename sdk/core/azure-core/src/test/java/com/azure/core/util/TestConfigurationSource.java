@@ -10,19 +10,11 @@ import java.util.stream.Collectors;
 public class TestConfigurationSource implements ConfigurationSource {
     private Map<String, String> testData;
 
-    public TestConfigurationSource(String... testData) {
+    public TestConfigurationSource() {
         this.testData = new HashMap<>();
-
-        if (testData == null) {
-            return;
-        }
-
-        for (int i = 0; i < testData.length; i += 2) {
-            this.testData.put(testData[i], testData[i + 1]);
-        }
     }
 
-    public TestConfigurationSource add(String key, String value) {
+    public TestConfigurationSource put(String key, String value) {
         this.testData.put(key, value);
         return this;
     }

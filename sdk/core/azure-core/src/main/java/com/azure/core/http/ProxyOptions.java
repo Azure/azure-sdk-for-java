@@ -32,31 +32,33 @@ public class ProxyOptions {
      *
      * Default value is {@code null}
      */
-    public static final String HTTP_PROXY_NON_PROXY_HOSTS = "http.proxy.non-proxy-hosts";
+    public static final String HTTP_PROXY_NON_PROXY_HOSTS_PROPERTY = "http.proxy.non-proxy-hosts";
 
     /**
      * The HTTP host name of the proxy server.
+     *
      * Default value is {@code null}.
      */
-    public static final String HTTP_PROXY_HOST = "http.proxy.hostname";
+    public static final String HTTP_PROXY_HOST_PROPERTY = "http.proxy.hostname";
 
     /**
      * The port number of the proxy server.
-     * Default value is 443.
+     *
+     * Default value is {@code 443}.
      */
-    public static final String HTTP_PROXY_PORT = "http.proxy.port";
+    public static final String HTTP_PROXY_PORT_PROPERTY = "http.proxy.port";
 
     /**
      * The HTTP proxy server user.
      * Default value is {@code null}.
      */
-    public static final String HTTP_PROXY_USER = "http.proxy.username";
+    public static final String HTTP_PROXY_USER_PROPERTY = "http.proxy.username";
 
     /**
      * The HTTP proxy server password.
      * Default value is {@code null}.
      */
-    public static final String HTTP_PROXY_PASSWORD = "http.proxy.password";
+    public static final String HTTP_PROXY_PASSWORD_PROPERTY = "http.proxy.password";
 
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final String INVALID_AZURE_PROXY_URL = "Configuration {} is an invalid URL and is being ignored.";
@@ -95,23 +97,23 @@ public class ProxyOptions {
     private static final Pattern UNESCAPED_PERIOD = Pattern.compile("(?<!\\\\)\\.");
     private static final Pattern ANY = Pattern.compile("\\*");
 
-    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_NON_PROXY_HOSTS)
+    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_NON_PROXY_HOSTS_PROPERTY)
         .shared(true)
         .logValue(true)
         .build();
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_HOST)
+    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_HOST_PROPERTY)
         .shared(true)
         .logValue(true)
         .build();
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(HTTP_PROXY_PORT)
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(HTTP_PROXY_PORT_PROPERTY)
         .shared(true)
         .defaultValue(DEFAULT_HTTPS_PORT)
         .build();
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_USER)
+    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_USER_PROPERTY)
         .shared(true)
         .logValue(true)
         .build();
-    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_PASSWORD)
+    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(HTTP_PROXY_PASSWORD_PROPERTY)
         .shared(true)
         .build();
 

@@ -16,7 +16,7 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void buildRoot() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource("foo", "bar"));
+        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource().put("foo", "bar"));
         assertEquals("bar", builder.build().get(FOO_PROPERTY));
 
         // check if we can get root again
@@ -27,7 +27,9 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void buildRootWithPath() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource("az.foo", "az", "xyz.foo", "xyz"))
+        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource()
+            .put("az.foo", "az")
+            .put("xyz.foo", "xyz"))
             .root("az");
         assertEquals("az", builder.build().get(FOO_PROPERTY));
 
@@ -37,7 +39,9 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void buildSection() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource("az.foo", "az", "az.local.bar", "az.local"))
+        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource()
+            .put("az.foo", "az")
+            .put("az.local.bar", "az.local"))
             .root("az");
 
         ConfigurationProperty<String> bar = ConfigurationPropertyBuilder.ofString("bar").build();
@@ -49,9 +53,12 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void nullOrEmptyProps() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource("null", null, "empty", ""));
-        assertFalse(builder.build().contains("null"));
-        assertFalse(builder.build().contains("empty"));
+        Configuration config = new ConfigurationBuilder(new TestConfigurationSource()
+            .put("null", null)
+            .put("empty", ""))
+            .build();
+        assertFalse(config.contains("null"));
+        assertFalse(config.contains("empty"));
     }
 
     @Test
@@ -68,7 +75,7 @@ public class ConfigurationBuilderTests {
     @Test
     public void emptySourceAddProperty() {
         ConfigurationBuilder builder = new ConfigurationBuilder()
-            .addProperty("foo", "bar");
+            .putProperty("foo", "bar");
         assertEquals("bar", builder.build().get(FOO_PROPERTY));
     }
 
@@ -80,29 +87,29 @@ public class ConfigurationBuilderTests {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         assertNull(builder.build().get(property1));
 
-        builder.addProperty("az.foo2", "az.bar2");
+        builder.putProperty("az.foo2", "az.bar2");
         assertEquals("az.bar2", builder.buildSection("az").get(property2));
         assertEquals("az.bar2", builder.root("az").build().get(property2));
     }
 
     @Test
     public void sourceAddPropertyBuildSection() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource("az.foo1", "bar1"))
-            .addProperty("az.foo2", "bar2");
+        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource().put("az.foo1", "bar1"))
+            .putProperty("az.foo2", "bar2");
         assertEquals("bar1", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo1").build()));
         assertEquals("bar2", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo2").build()));
     }
 
     @Test
     public void sourceAddPropertySameName() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource("foo", "bar1"))
-            .addProperty("foo", "bar2");
+        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource().put("foo", "bar1"))
+            .putProperty("foo", "bar2");
         assertEquals("bar2", builder.build().get(FOO_PROPERTY));
     }
 
     @Test
     public void environmentSource() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource("foo", "bar"));
+        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put("foo", "bar"));
 
         Configuration root = builder.build();
         assertNull(root.get(FOO_PROPERTY));
@@ -115,7 +122,8 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void systemPropertiesSource() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, new TestConfigurationSource("foo", "bar"), EMPTY_SOURCE);
+        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, new TestConfigurationSource()
+            .put("foo", "bar"), EMPTY_SOURCE);
 
         Configuration root = builder.build();
         assertNull(root.get(FOO_PROPERTY));
@@ -130,11 +138,11 @@ public class ConfigurationBuilderTests {
     public void systemPropertiesOverEnvironmentVariablesSource() {
         ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE,
             new TestConfigurationSource()
-                    .add("fooSys", "s1")
-                    .add("foo", "sys"),
+                    .put("fooSys", "s1")
+                    .put("foo", "sys"),
             new TestConfigurationSource()
-                .add("fooEnv", "e1")
-                .add("foo", "env"));
+                .put("fooEnv", "e1")
+                .put("foo", "env"));
 
         Configuration root = builder.build();
         assertEquals("sys", root.get("foo"));
@@ -148,7 +156,19 @@ public class ConfigurationBuilderTests {
         assertThrows(NullPointerException.class, () -> new ConfigurationBuilder(null, EMPTY_SOURCE, EMPTY_SOURCE));
         assertThrows(NullPointerException.class, () -> new ConfigurationBuilder(EMPTY_SOURCE, null, EMPTY_SOURCE));
         assertThrows(NullPointerException.class, () -> new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, null));
-        assertThrows(NullPointerException.class, () -> new ConfigurationBuilder().addProperty(null, "val"));
-        assertThrows(NullPointerException.class, () -> new ConfigurationBuilder().addProperty("key", null));
+        assertThrows(NullPointerException.class, () -> new ConfigurationBuilder().putProperty(null, "val"));
+        assertThrows(NullPointerException.class, () -> new ConfigurationBuilder().putProperty("key", null));
+    }
+
+    @Test
+    public void invalidPropertiesFromSource() {
+
+        // does not throw
+        Configuration configuration = new ConfigurationBuilder(new TestConfigurationSource()
+                .put("keyNullValue", null)
+                .put(null, "nullKey"))
+            .build();
+
+        assertFalse(configuration.contains(ConfigurationPropertyBuilder.ofString("keyNullValue").build()));
     }
 }

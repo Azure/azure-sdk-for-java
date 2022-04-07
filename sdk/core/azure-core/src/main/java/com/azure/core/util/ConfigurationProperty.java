@@ -3,6 +3,9 @@
 
 package com.azure.core.util;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -12,12 +15,12 @@ import java.util.function.Function;
  *
  * @param <T> Type of property value.
  */
-public class ConfigurationProperty<T> {
+public final class ConfigurationProperty<T> {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
 
     private final String name;
-    private final String[] aliases;
+    private final List<String> aliases;
     private final String environmentVariable;
     private final String systemProperty;
     private final Function<String, T> converter;
@@ -45,7 +48,7 @@ public class ConfigurationProperty<T> {
         this.converter = Objects.requireNonNull(converter, "'converter' cannot be null");
         this.environmentVariable = environmentVariable;
         this.systemProperty = systemProperty;
-        this.aliases = aliases == null ? EMPTY_ARRAY : aliases;
+        this.aliases = aliases == null ? Collections.emptyList() : Arrays.asList(aliases);
         this.defaultValue = defaultValue;
         this.isRequired = isRequired;
         this.isShared = isShared;
@@ -53,66 +56,84 @@ public class ConfigurationProperty<T> {
     }
 
     /**
-     * Returns true if property can be shared between clients and configuration should
-     * look for it in per-client and root sections.
+     * Returns true if property can be shared between clients and {@link Configuration#get(ConfigurationProperty)}
+     * should look for it in per-client and root sections.
+     *
+     * @return flag indicating if the property is shared.
      */
-    boolean isShared() {
+    public boolean isShared() {
         return isShared;
     }
 
     /**
-     * Returns true if property value can be securely logged.
+     * Returns property value sanitizer that is used to securely log property value.
+     *
+     * @return function that sanitizes property value.
      */
-    Function<String, String> getValueSanitizer() {
+    public Function<String, String> getValueSanitizer() {
         return valueSanitizer;
     }
 
     /**
      * Returns true if property is required, used for validation purposes.
+     *
+     * @return flag indicating if the property is required.
      */
-    boolean isRequired() {
+    public boolean isRequired() {
         return isRequired;
     }
 
     /**
      * Gets full property name including relative path to it.
+     *
+     * @return property name.
      */
-    String getName() {
+    public String getName() {
         return name;
     }
 
     /**
      * Gets converter for property value.
+     *
+     * @return property value converter.
      */
-    Function<String, T> getConverter() {
+    public Function<String, T> getConverter() {
         return converter;
     }
 
     /**
      * Gets property default value to be used when property is missing in the configuration.
+     *
+     * @return default value.
      */
-    T getDefaultValue() {
+    public T getDefaultValue() {
         return defaultValue;
     }
 
     /**
      * Gets property aliases - alternative names property can have.
+     *
+     * @return array of name aliases.
      */
-    String[] getAliases() {
+    public Iterable<String> getAliases() {
         return aliases;
     }
 
     /**
      * Gets name of environment variables this property can be configured with.
+     *
+     * @return environment variable name.
      */
-    String getEnvironmentVariableName() {
+    public String getEnvironmentVariableName() {
         return environmentVariable;
     }
 
     /**
      * Gets name of system property this property can be configured with.
+     *
+     * @return system property name.
      */
-    String getSystemPropertyName() {
+    public String getSystemPropertyName() {
         return systemProperty;
     }
 }

@@ -17,21 +17,9 @@ public final class TestConfigurationSource implements ConfigurationSource {
 
     /**
      * Creates TestConfigurationSource with given property names and values.
-     *
-     * @param testProperties array of interleaved key-value pairs.
-     * @throws IllegalArgumentException if test properties' length is odd.
      */
-    public TestConfigurationSource(String... testProperties) {
+    public TestConfigurationSource() {
         this.testData = new HashMap<>();
-
-        if (testProperties != null) {
-            if (testProperties.length % 2 != 0) {
-                throw new IllegalArgumentException("Configuration 'testData' length is odd, expected to be even to represent names and values of properties");
-            }
-            for (int i = 0; i < testProperties.length; i += 2) {
-                this.testData.put(testProperties[i], testProperties[i + 1]);
-            }
-        }
     }
 
     /**
@@ -41,7 +29,7 @@ public final class TestConfigurationSource implements ConfigurationSource {
      * @param value property value
      * @return this {@code TestConfigurationSource} for chaining.
      */
-    public TestConfigurationSource add(String name, String value) {
+    public TestConfigurationSource put(String name, String value) {
         this.testData.put(name, value);
         return this;
     }

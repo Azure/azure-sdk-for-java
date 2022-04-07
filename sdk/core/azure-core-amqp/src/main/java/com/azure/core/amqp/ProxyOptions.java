@@ -39,75 +39,79 @@ public class ProxyOptions implements AutoCloseable {
      */
     public static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
 
-
     /**
      * The AMQP proxy server authentication type that match {@link ProxyAuthenticationType} enum.
      * Supported values are {@code NONE} (no authentication), {@code BASIC} or {@code DIGEST}.
+     * If unsupported value is provided, {@link IllegalArgumentException} will be thrown at retrieval time in
+     * {@link ProxyOptions#fromConfiguration(Configuration)}
+     *
      * Default value is {@code NONE}.
      */
-    public static final String AMQP_PROXY_AUTHENTICATION_TYPE = "amqp.proxy.authentication-type";
+    public static final String AMQP_PROXY_AUTHENTICATION_TYPE_PROPERTY = "amqp.proxy.authentication-type";
 
     /**
      * The AMQP proxy server type that match {@link Proxy.Type} enum.
      * Supported values are {@code HTTP} or {@code SOCKS}.
+     * If unsupported value is provided, {@link IllegalArgumentException} will be thrown at retrieval time in
+     * {@link ProxyOptions#fromConfiguration(Configuration)}
+     *
      * Default value is {@code DIRECT} (no proxy).
      */
-    public static final String AMQP_PROXY_TYPE = "amqp.proxy.type";
+    public static final String AMQP_PROXY_TYPE_PROPERTY = "amqp.proxy.type";
 
     /**
      * The AMQP host name of the proxy server.
      * Default value is {@code null}.
      */
-    public static final String AMQP_PROXY_HOST = "amqp.proxy.hostname";
+    public static final String AMQP_PROXY_HOST_PROPERTY = "amqp.proxy.hostname";
 
     /**
      * The port number of the AMQP proxy server.
      * Required if {@code amqp.proxy.hostname} is set.
      */
-    public static final String AMQP_PROXY_PORT = "amqp.proxy.port";
+    public static final String AMQP_PROXY_PORT_PROPERTY = "amqp.proxy.port";
 
     /**
      * The AMQP proxy server user.
      * Default value is {@code null}.
      */
-    public static final String AMQP_PROXY_USER = "amqp.proxy.username";
+    public static final String AMQP_PROXY_USER_PROPERTY = "amqp.proxy.username";
 
     /**
      * The AMQP proxy server password.
      * Default value is {@code null}.
      */
-    public static final String AMQP_PROXY_PASSWORD = "amqp.proxy.password";
+    public static final String AMQP_PROXY_PASSWORD_PROPERTY = "amqp.proxy.password";
 
     private static final ConfigurationProperty<ProxyAuthenticationType> AUTH_TYPE_PROPERTY =
-        new ConfigurationPropertyBuilder<>(AMQP_PROXY_AUTHENTICATION_TYPE, s -> ProxyAuthenticationType.valueOf(s))
+        new ConfigurationPropertyBuilder<>(AMQP_PROXY_AUTHENTICATION_TYPE_PROPERTY, s -> ProxyAuthenticationType.valueOf(s))
             .shared(true)
             .logValue(true)
             .defaultValue(ProxyAuthenticationType.NONE)
             .build();
 
-    static final ConfigurationProperty<Proxy.Type> TYPE_PROPERTY =
-        new ConfigurationPropertyBuilder<>(AMQP_PROXY_TYPE, s -> Proxy.Type.valueOf(s))
+    private static final ConfigurationProperty<Proxy.Type> TYPE_PROPERTY = new ConfigurationPropertyBuilder<>(AMQP_PROXY_TYPE_PROPERTY, s -> Proxy.Type.valueOf(s))
             .shared(true)
             .logValue(true)
             .defaultValue(Proxy.Type.DIRECT)
             .build();
 
-    static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(AMQP_PROXY_HOST)
+    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(AMQP_PROXY_HOST_PROPERTY)
         .shared(true)
         .logValue(true)
         .build();
 
-    static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(AMQP_PROXY_PORT)
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(AMQP_PROXY_PORT_PROPERTY)
         .shared(true)
         .required(true)
         .build();
 
-    static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(AMQP_PROXY_USER)
+    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(AMQP_PROXY_USER_PROPERTY)
         .shared(true)
         .logValue(true)
         .build();
 
-    static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(AMQP_PROXY_PASSWORD)
+    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(AMQP_PROXY_PASSWORD_PROPERTY)
         .shared(true)
         .build();
 

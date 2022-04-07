@@ -186,8 +186,8 @@ public class JdkAsyncHttpClientBuilderTests {
 
             Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
                 new TestConfigurationSource()
-                    .add(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
-                    .add("java.net.useSystemProxies", "true"))
+                    .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
+                    .put("java.net.useSystemProxies", "true"))
                 .build();
 
             configurationProxyTest(configuration);
@@ -204,8 +204,8 @@ public class JdkAsyncHttpClientBuilderTests {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
             Configuration configuration = new ConfigurationBuilder()
-                .addProperty("http.proxy.hostname", proxyEndpoint.getHost())
-                .addProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
+                .putProperty("http.proxy.hostname", proxyEndpoint.getHost())
+                .putProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
                 .build();
 
             configurationProxyTest(configuration);
@@ -266,16 +266,16 @@ public class JdkAsyncHttpClientBuilderTests {
 
         final Configuration envConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource()
-                .add(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
-                .add(Configuration.PROPERTY_NO_PROXY, "localhost"))
+                .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+                .put(Configuration.PROPERTY_NO_PROXY, "localhost"))
             .build();
 
         arguments.add(Arguments.of(envConfiguration));
 
         final Configuration explicitConfiguration = new ConfigurationBuilder()
-            .addProperty("http.proxy.hostname", "localhost")
-            .addProperty("http.proxy.port", "42")
-            .addProperty("http.proxy.non-proxy-hosts", "localhost")
+            .putProperty("http.proxy.hostname", "localhost")
+            .putProperty("http.proxy.port", "42")
+            .putProperty("http.proxy.non-proxy-hosts", "localhost")
             .build();
 
         arguments.add(Arguments.of(explicitConfiguration));
@@ -299,7 +299,7 @@ public class JdkAsyncHttpClientBuilderTests {
     @Test
     void testAllowedHeadersFromConfiguration() {
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
-                new TestConfigurationSource("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
+                new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
                 EMPTY_SOURCE)
             .build();
 
@@ -319,7 +319,7 @@ public class JdkAsyncHttpClientBuilderTests {
     @Test
     void testAllowedHeadersFromBoth() {
         Configuration configuration = new ConfigurationBuilder(new TestConfigurationSource(),
-                new TestConfigurationSource("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
+                new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
                 new TestConfigurationSource())
             .build();
 

@@ -5,7 +5,6 @@ package com.azure.core.util;
 
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import java.util.function.Function;
  *
  * <!-- src_embed com.azure.core.util.Configuration -->
  * <pre>
- * &#47;&#47; Creates Configuration with configured root path to shared properties
  * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
  *     .root&#40;&quot;azure.sdk&quot;&#41;
  *     .buildSection&#40;&quot;client-name&quot;&#41;;
@@ -452,40 +450,38 @@ public class Configuration implements Cloneable {
         } catch (RuntimeException ex) {
             throw LOGGER.atError()
                 .addKeyValue("name", property.getName())
+                .addKeyValue("path", path)
                 .addKeyValue("value", property.getValueSanitizer().apply(value))
                 .log(ex);
         }
     }
 
-    private String getLocalProperty(String name, String[] aliases, Function<String, String> valueSanitizer) {
+    private String getLocalProperty(String name, Iterable<String> aliases, Function<String, String> valueSanitizer) {
         if (this.isEmpty) {
             return null;
         }
 
-        String value = configurations.get(name);
+        final String value = configurations.get(name);
         if (value != null) {
-            if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
-                LOGGER.atVerbose()
-                    .addKeyValue("name", name)
-                    .addKeyValue("path", path)
-                    .addKeyValue("value", valueSanitizer.apply(value))
-                    .log("Got property value by name.");
-            }
+            LOGGER.atVerbose()
+                .addKeyValue("name", name)
+                .addKeyValue("path", path)
+                .addKeyValue("value", () -> valueSanitizer.apply(value))
+                .log("Got property value by name.");
+
             return value;
         }
 
         for (String alias : aliases) {
-            value = configurations.get(alias);
-            if (value != null) {
-                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
-                    LOGGER.atVerbose()
-                        .addKeyValue("name", name)
-                        .addKeyValue("path", path)
-                        .addKeyValue("alias", alias)
-                        .addKeyValue("value", valueSanitizer.apply(value))
-                        .log("Got property value by alias.");
-                }
-                return value;
+            final String valueByAlias = configurations.get(alias);
+            if (valueByAlias != null) {
+                LOGGER.atVerbose()
+                    .addKeyValue("name", name)
+                    .addKeyValue("path", path)
+                    .addKeyValue("alias", alias)
+                    .addKeyValue("value", () -> valueSanitizer.apply(valueByAlias))
+                    .log("Got property value by alias.");
+                return valueByAlias;
             }
         }
 
@@ -513,30 +509,26 @@ public class Configuration implements Cloneable {
     private <T> String getFromEnvironment(ConfigurationProperty<T> property) {
         String systemProperty = property.getSystemPropertyName();
         if (systemProperty != null) {
-            String value = environmentConfiguration.getSystemProperty(systemProperty);
+            final String value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
-                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
-                    LOGGER.atVerbose()
-                        .addKeyValue("name", property.getName())
-                        .addKeyValue("systemProperty", systemProperty)
-                        .addKeyValue("value", property.getValueSanitizer().apply(value))
-                        .log("Got property from system property.");
-                }
+                LOGGER.atVerbose()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("systemProperty", systemProperty)
+                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .log("Got property from system property.");
                 return value;
             }
         }
 
         String envVar = property.getEnvironmentVariableName();
         if (envVar != null) {
-            String value = environmentConfiguration.getEnvironmentVariable(envVar);
+            final String value = environmentConfiguration.getEnvironmentVariable(envVar);
             if (value != null) {
-                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
-                    LOGGER.atVerbose()
-                        .addKeyValue("name", property.getName())
-                        .addKeyValue("envVar", envVar)
-                        .addKeyValue("value", property.getValueSanitizer().apply(value))
-                        .log("Got property from environment variable.");
-                }
+                LOGGER.atVerbose()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("envVar", envVar)
+                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .log("Got property from environment variable.");
                 return value;
             }
         }
@@ -560,15 +552,14 @@ public class Configuration implements Cloneable {
 
             LOGGER.atVerbose()
                 .addKeyValue("name", prop.getKey())
-                .addKeyValue("value", value)
                 .log("Got property from configuration source.");
 
-            if (!CoreUtils.isNullOrEmpty(value)) {
+            if (key != null && value != null) {
                 props.put(key, value);
             } else {
                 LOGGER.atWarning()
                     .addKeyValue("name", prop.getKey())
-                    .log("Property value is null");
+                    .log("Key or value is null, property is ignored.");
             }
         }
 
