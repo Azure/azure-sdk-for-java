@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Query results for table insights query. */
 @Fluent
 public final class InsightsTableResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InsightsTableResult.class);
-
     /*
      * Columns Metadata of the table
      */

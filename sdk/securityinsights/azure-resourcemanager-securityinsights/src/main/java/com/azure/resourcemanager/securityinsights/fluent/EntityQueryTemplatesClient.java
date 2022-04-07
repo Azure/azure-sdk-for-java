@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryTemplateInner;
-import com.azure.resourcemanager.securityinsights.models.Constant69;
+import com.azure.resourcemanager.securityinsights.models.Constant74;
 
 /** An instance of this class provides access to all the operations defined in EntityQueryTemplatesClient. */
 public interface EntityQueryTemplatesClient {
@@ -22,7 +22,7 @@ public interface EntityQueryTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity query templates.
+     * @return all entity query templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EntityQueryTemplateInner> list(String resourceGroupName, String workspaceName);
@@ -37,11 +37,11 @@ public interface EntityQueryTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity query templates.
+     * @return all entity query templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EntityQueryTemplateInner> list(
-        String resourceGroupName, String workspaceName, Constant69 kind, Context context);
+        String resourceGroupName, String workspaceName, Constant74 kind, Context context);
 
     /**
      * Gets an entity query.

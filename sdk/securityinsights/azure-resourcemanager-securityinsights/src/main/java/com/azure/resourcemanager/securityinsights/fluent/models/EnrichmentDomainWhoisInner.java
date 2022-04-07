@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EnrichmentDomainWhoisDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Whois information for a given domain and associated metadata. */
 @Fluent
 public final class EnrichmentDomainWhoisInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrichmentDomainWhoisInner.class);
-
     /*
      * The domain for this whois record
      */

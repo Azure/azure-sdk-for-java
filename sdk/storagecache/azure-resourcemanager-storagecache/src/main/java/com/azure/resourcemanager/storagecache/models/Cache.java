@@ -141,6 +141,14 @@ public interface Cache {
     CacheDirectorySettings directoryServicesSettings();
 
     /**
+     * Gets the zones property: Availability zones for resources. This field should only contain a single element in the
+     * array.
+     *
+     * @return the zones value.
+     */
+    List<String> zones();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -214,7 +222,8 @@ public interface Cache {
                 DefinitionStages.WithNetworkSettings,
                 DefinitionStages.WithEncryptionSettings,
                 DefinitionStages.WithSecuritySettings,
-                DefinitionStages.WithDirectoryServicesSettings {
+                DefinitionStages.WithDirectoryServicesSettings,
+                DefinitionStages.WithZones {
             /**
              * Executes the create request.
              *
@@ -319,6 +328,18 @@ public interface Cache {
              * @return the next definition stage.
              */
             WithCreate withDirectoryServicesSettings(CacheDirectorySettings directoryServicesSettings);
+        }
+        /** The stage of the Cache definition allowing to specify zones. */
+        interface WithZones {
+            /**
+             * Specifies the zones property: Availability zones for resources. This field should only contain a single
+             * element in the array..
+             *
+             * @param zones Availability zones for resources. This field should only contain a single element in the
+             *     array.
+             * @return the next definition stage.
+             */
+            WithCreate withZones(List<String> zones);
         }
     }
     /**

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DataFlowSink;
 import com.azure.resourcemanager.datafactory.models.DataFlowSource;
 import com.azure.resourcemanager.datafactory.models.Transformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Mapping data flow type properties. */
 @Fluent
 public final class MappingDataFlowTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MappingDataFlowTypeProperties.class);
-
     /*
      * List of sources in data flow.
      */

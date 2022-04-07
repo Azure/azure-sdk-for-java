@@ -81,7 +81,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
-    private final ClientLogger logger = new ClientLogger(PageBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PageBlobAsyncClient.class);
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -162,8 +162,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a page blob of the specified length. By default this method will not overwrite an existing blob.
-     * Call PutPage to upload data data to a page blob. For more information, see the
+     * Creates a page blob of the specified length. By default, this method will not overwrite an existing blob.
+     * Call PutPage to upload data to a page blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -182,15 +182,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> create(long size) {
-        try {
-            return create(size, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return create(size, false);
     }
 
     /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * Creates a page blob of the specified length. Call PutPage to upload data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
@@ -206,24 +202,20 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the created page blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> create(long size, boolean overwrite) {
-        try {
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (!overwrite) {
-                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return createWithResponse(size, null, null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return createWithResponse(size, null, null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * Creates a page blob of the specified length. Call PutPage to upload data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
@@ -266,7 +258,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * Creates a page blob of the specified length. Call PutPage to upload data to a page blob. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      * <p>
@@ -298,10 +290,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options) {
         try {
-            return withContext(context ->
-                createWithResponse(options, context));
+            return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -313,13 +304,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         if (options.getSize() % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         if (options.getSequenceNumber() != null && options.getSequenceNumber() < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         context = context == null ? Context.NONE : context;
@@ -344,7 +335,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes one or more pages to the page blob. The write size must be a multiple of 512. For more information, see
+     * Writes one or more pages to the page blob. Write size must be a multiple of 512. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
@@ -373,15 +364,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
-        try {
-            return uploadPagesWithResponse(pageRange, body, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadPagesWithResponse(pageRange, body, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Writes one or more pages to the page blob. The write size must be a multiple of 512. For more information, see
+     * Writes one or more pages to the page blob. Write size must be a multiple of 512. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
@@ -425,7 +412,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             return withContext(context -> uploadPagesWithResponse(pageRange, body, contentMd5,
                 pageBlobRequestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -438,7 +425,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
         context = context == null ? Context.NONE : context;
@@ -463,7 +450,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * Writes one or more pages from the source page blob to this page blob. Write size must be a multiple of 512.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
@@ -495,16 +482,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> uploadPagesFromUrl(PageRange range, String sourceUrl, Long sourceOffset) {
-        try {
-            return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * Writes one or more pages from the source page blob to this page blob. Write size must be a multiple of 512.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
@@ -550,18 +533,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl,
             Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
             BlobRequestConditions sourceRequestConditions) {
-        try {
-            return withContext(context -> uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(range, sourceUrl)
-                .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMd5)
-                .setDestinationRequestConditions(destRequestConditions)
-                .setSourceRequestConditions(sourceRequestConditions), context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(range, sourceUrl)
+            .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMd5)
+            .setDestinationRequestConditions(destRequestConditions)
+            .setSourceRequestConditions(sourceRequestConditions));
     }
 
     /**
-     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * Writes one or more pages from the source page blob to this page blob. Write size must be a multiple of 512.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
@@ -597,7 +576,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> uploadPagesFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -605,7 +584,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         if (options.getRange() == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("range cannot be null."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("range cannot be null."));
         }
 
         String rangeString = pageRangeToString(options.getRange());
@@ -624,7 +603,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
         String sourceAuth = options.getSourceAuthorization() == null
@@ -673,11 +652,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> clearPages(PageRange pageRange) {
-        try {
-            return clearPagesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return clearPagesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -711,10 +686,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
         PageBlobRequestConditions pageBlobRequestConditions) {
         try {
-            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobRequestConditions,
-                context));
+            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobRequestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -726,7 +700,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
         context = context == null ? Context.NONE : context;
@@ -774,11 +748,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageList> getPageRanges(BlobRange blobRange) {
-        try {
-            return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -810,10 +780,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> getPageRangesWithResponse(blobRange, requestConditions,
-                context));
+            return withContext(context -> getPageRangesWithResponse(blobRange, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -823,11 +792,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().getPageRangesWithResponseAsync(containerName, blobName, getSnapshotId(), null,
-            blobRange.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getPageBlobs().getPageRangesWithResponseAsync(containerName, blobName,
+                getSnapshotId(), null, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -861,11 +831,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        try {
-            return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -907,7 +873,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             return withContext(context -> getPageRangesDiffWithResponse(blobRange, prevSnapshot, null,
                 requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -943,11 +909,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageList> getManagedDiskPageRangesDiff(BlobRange blobRange, String prevSnapshotUrl) {
-        try {
-            return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getManagedDiskPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -989,10 +951,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         String prevSnapshotUrl, BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions,
-                    context));
+                getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1002,22 +963,23 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         if (prevSnapshotUrl == null && prevSnapshot == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
         }
         if (prevSnapshotUrl != null) {
             try {
                 new URL(prevSnapshotUrl);
             } catch (MalformedURLException ex) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url.", ex));
             }
         }
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponseAsync(containerName, blobName,
-            getSnapshotId(), null, prevSnapshot, prevSnapshotUrl, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
-            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
-            null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                getSnapshotId(), null, prevSnapshot, prevSnapshotUrl, blobRange.toHeaderValue(),
+                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -1041,11 +1003,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> resize(long size) {
-        try {
-            return resizeWithResponse(size, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return resizeWithResponse(size, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1076,7 +1034,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> resizeWithResponse(size, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1085,7 +1043,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
@@ -1128,11 +1086,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action, Long sequenceNumber) {
-        try {
-            return updateSequenceNumberWithResponse(action, sequenceNumber, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return updateSequenceNumberWithResponse(action, sequenceNumber, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1166,7 +1120,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             return withContext(context -> updateSequenceNumberWithResponse(action, sequenceNumber, requestConditions,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1175,7 +1129,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
@@ -1238,11 +1192,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyStatusType> copyIncremental(String source, String snapshot) {
-        try {
-            return copyIncrementalWithResponse(source, snapshot, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return copyIncrementalWithResponse(source, snapshot, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1300,13 +1250,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions) {
-        try {
-            return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
-                .setRequestConditions(
-                    ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
+                .setRequestConditions(ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)));
     }
 
     /**
@@ -1363,7 +1308,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> copyIncrementalWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1379,15 +1324,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             builder.toUrl();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
-            throw logger.logExceptionAsError(new IllegalArgumentException(e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().copyIncrementalWithResponseAsync(containerName, blobName, builder.toString(), null,
-            modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-            modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(),
-            modifiedRequestConditions.getTagsConditions(), null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getPageBlobs().copyIncrementalWithResponseAsync(containerName, blobName,
+                builder.toString(), null, modifiedRequestConditions.getIfModifiedSince(),
+                modifiedRequestConditions.getIfUnmodifiedSince(), modifiedRequestConditions.getIfMatch(),
+                modifiedRequestConditions.getIfNoneMatch(), modifiedRequestConditions.getTagsConditions(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyStatus()));
     }
 }

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Azure Databricks linked service properties. */
 @Fluent
 public final class AzureDatabricksLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksLinkedServiceTypeProperties.class);
-
     /*
      * <REGION>.azuredatabricks.net, domain name of your Databricks deployment.
      * Type: string (or Expression with resultType string).
@@ -605,7 +602,7 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
      */
     public void validate() {
         if (domain() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domain in model AzureDatabricksLinkedServiceTypeProperties"));
@@ -617,4 +614,6 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDatabricksLinkedServiceTypeProperties.class);
 }

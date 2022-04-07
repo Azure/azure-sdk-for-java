@@ -13,13 +13,12 @@ import com.azure.resourcemanager.securityinsights.fluent.ThreatIntelligenceIndic
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceInformationInner;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceAppendTags;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceFilteringCriteria;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndicatorModelForRequestBody;
+import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndicatorModel;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndicators;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceInformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenceIndicators {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligenceIndicatorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ThreatIntelligenceIndicatorsImpl.class);
 
     private final ThreatIntelligenceIndicatorsClient innerClient;
 
@@ -33,9 +32,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
     }
 
     public ThreatIntelligenceInformation createIndicator(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceIndicatorModelForRequestBody threatIntelligenceProperties) {
+        String resourceGroupName, String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         ThreatIntelligenceInformationInner inner =
             this.serviceClient().createIndicator(resourceGroupName, workspaceName, threatIntelligenceProperties);
         if (inner != null) {
@@ -48,7 +45,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
     public Response<ThreatIntelligenceInformation> createIndicatorWithResponse(
         String resourceGroupName,
         String workspaceName,
-        ThreatIntelligenceIndicatorModelForRequestBody threatIntelligenceProperties,
+        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
         Context context) {
         Response<ThreatIntelligenceInformationInner> inner =
             this
@@ -93,7 +90,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
         String resourceGroupName,
         String workspaceName,
         String name,
-        ThreatIntelligenceIndicatorModelForRequestBody threatIntelligenceProperties) {
+        ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         ThreatIntelligenceInformationInner inner =
             this.serviceClient().create(resourceGroupName, workspaceName, name, threatIntelligenceProperties);
         if (inner != null) {
@@ -107,7 +104,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
         String resourceGroupName,
         String workspaceName,
         String name,
-        ThreatIntelligenceIndicatorModelForRequestBody threatIntelligenceProperties,
+        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
         Context context) {
         Response<ThreatIntelligenceInformationInner> inner =
             this
@@ -177,7 +174,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
         String resourceGroupName,
         String workspaceName,
         String name,
-        ThreatIntelligenceIndicatorModelForRequestBody threatIntelligenceReplaceTags) {
+        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
         ThreatIntelligenceInformationInner inner =
             this.serviceClient().replaceTags(resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags);
         if (inner != null) {
@@ -191,7 +188,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
         String resourceGroupName,
         String workspaceName,
         String name,
-        ThreatIntelligenceIndicatorModelForRequestBody threatIntelligenceReplaceTags,
+        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags,
         Context context) {
         Response<ThreatIntelligenceInformationInner> inner =
             this

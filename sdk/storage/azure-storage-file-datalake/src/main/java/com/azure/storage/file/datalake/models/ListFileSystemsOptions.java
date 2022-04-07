@@ -12,7 +12,7 @@ import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
  * passed in place of an object of this type if no options are desirable.
  */
 public final class ListFileSystemsOptions {
-    private final ClientLogger logger = new ClientLogger(ListFileSystemsOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ListFileSystemsOptions.class);
 
     private FileSystemListDetails details;
 
@@ -83,7 +83,7 @@ public final class ListFileSystemsOptions {
      */
     public ListFileSystemsOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
         if (maxResultsPerPage != null && maxResultsPerPage <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
         }
         this.maxResultsPerPage = maxResultsPerPage;
         return this;

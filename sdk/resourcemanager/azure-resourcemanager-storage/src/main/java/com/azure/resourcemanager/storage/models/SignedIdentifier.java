@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SignedIdentifier model. */
 @Fluent
 public final class SignedIdentifier {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignedIdentifier.class);
-
     /*
      * An unique identifier of the stored access policy.
      */

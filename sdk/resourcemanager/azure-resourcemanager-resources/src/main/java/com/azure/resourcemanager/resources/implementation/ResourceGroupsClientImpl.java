@@ -47,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceGroupsClient. */
 public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
-    private final ClientLogger logger = new ClientLogger(ResourceGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceGroupsService service;
 
@@ -292,7 +290,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -1541,4 +1539,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                         res.getValue().nextLink(),
                         null));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGroupsClientImpl.class);
 }

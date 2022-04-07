@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.OfficeIrmDataConnectorProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OfficeIRM")
 @Fluent
 public final class OfficeIrmDataConnector extends DataConnectorInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OfficeIrmDataConnector.class);
-
     /*
      * OfficeIRM (Microsoft Insider Risk Management) data connector properties.
      */

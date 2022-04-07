@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CertificateOrderContact model. */
 @Fluent
 public final class CertificateOrderContact {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateOrderContact.class);
-
     /*
      * The email property.
      */

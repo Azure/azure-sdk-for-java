@@ -68,7 +68,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
-    private final ClientLogger logger = new ClientLogger(AppendBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobAsyncClient.class);
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -158,11 +158,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> create() {
-        try {
-            return create(false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return create(false);
     }
 
     /**
@@ -178,21 +174,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean -->
      *
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> create(boolean overwrite) {
-        try {
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (!overwrite) {
-                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -262,7 +254,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -314,11 +306,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length) {
-        try {
-            return appendBlockWithResponse(data, length, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return appendBlockWithResponse(data, length, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -360,7 +348,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             return withContext(context ->
                 appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -407,11 +395,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> appendBlockFromUrl(String sourceUrl, BlobRange sourceRange) {
-        try {
-            return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -450,14 +434,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
-        try {
-            return appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
-                .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMD5)
-                .setDestinationRequestConditions(destRequestConditions)
-                .setSourceRequestConditions(sourceRequestConditions));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMD5)
+            .setDestinationRequestConditions(destRequestConditions)
+            .setSourceRequestConditions(sourceRequestConditions));
     }
 
     /**
@@ -489,10 +469,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options) {
         try {
-            return withContext(context ->
-                appendBlockFromUrlWithResponse(options, context));
+            return withContext(context -> appendBlockFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -506,7 +485,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
         String sourceAuth = options.getSourceAuthorization() == null
@@ -545,12 +524,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> seal() {
-        try {
-            return sealWithResponse(new AppendBlobSealOptions())
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return sealWithResponse(new AppendBlobSealOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -576,7 +550,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> sealWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

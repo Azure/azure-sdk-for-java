@@ -4,8 +4,11 @@
 package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.models.DownloadBlobResult;
+import com.azure.containers.containerregistry.models.DownloadManifestOptions;
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.OciManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
+import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -81,14 +84,14 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param data The manifest that needs to be uploaded.
+     * @param options The options for the upload manifest operation.
      * @return The operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadManifestResult uploadManifest(BinaryData data) {
-        return this.asyncClient.uploadManifest(data).block();
+    public UploadManifestResult uploadManifest(UploadManifestOptions options) {
+        return this.asyncClient.uploadManifest(options).block();
     }
 
     /**
@@ -100,15 +103,15 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param data The manifest that needs to be uploaded.
+     * @param options The options for the upload manifest operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The rest response containing the operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UploadManifestResult> uploadManifestWithResponse(BinaryData data, Context context) {
-        return this.asyncClient.uploadManifestWithResponse(data.toByteBuffer(), context).block();
+    public Response<UploadManifestResult> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
+        return this.asyncClient.uploadManifestWithResponse(options, context).block();
     }
 
     /**
@@ -153,14 +156,14 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param tagOrDigest The tag or digest of the manifest.
+     * @param options Options for the operation.
      * @return The manifest associated with the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OciManifest downloadManifest(String tagOrDigest) {
-        return this.asyncClient.downloadManifest(tagOrDigest).block();
+    public DownloadManifestResult downloadManifest(DownloadManifestOptions options) {
+        return this.asyncClient.downloadManifest(options).block();
     }
 
     /**
@@ -169,15 +172,15 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param tagOrDigest The tag or digest of the manifest.
+     * @param options Options for the operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The response for the manifest associated with the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OciManifest> downloadManifestWithResponse(String tagOrDigest, Context context) {
-        return this.asyncClient.downloadManifestWithResponse(tagOrDigest, context).block();
+    public Response<DownloadManifestResult> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
+        return this.asyncClient.downloadManifestWithResponse(options, context).block();
     }
 
     /**

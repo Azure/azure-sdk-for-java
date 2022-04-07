@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TumblingWindowTriggerDependencyReference")
 @Fluent
 public final class TumblingWindowTriggerDependencyReference extends TriggerDependencyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TumblingWindowTriggerDependencyReference.class);
-
     /*
      * Timespan applied to the start time of a tumbling window when evaluating
      * dependency.

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.redis.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.redis.models.RedisCommonPropertiesRedisConfiguration;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.SkuFamily;
@@ -42,9 +42,7 @@ public final class RedisCreateSamples {
                         "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1")
                     .withStaticIp("192.168.0.5")
                     .withRedisConfiguration(
-                        new RedisCommonPropertiesRedisConfiguration()
-                            .withMaxmemoryPolicy("allkeys-lru")
-                            .withAdditionalProperties(mapOf()))
+                        new RedisConfiguration().withMaxmemoryPolicy("allkeys-lru").withAdditionalProperties(mapOf()))
                     .withRedisVersion("4")
                     .withEnableNonSslPort(true)
                     .withReplicasPerPrimary(2)

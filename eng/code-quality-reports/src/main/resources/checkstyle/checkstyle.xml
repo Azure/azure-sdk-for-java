@@ -398,5 +398,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
     <!--    <property name="avoidStartWords" value="with,set"/>-->
     <!-- </module>-->
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Ensures caught exceptions are included as exception cause in subsequently thrown exception -->
+    <module name="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
   </module>
 </module>

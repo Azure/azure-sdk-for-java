@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Timeline Query Errors. */
 @Fluent
 public final class TimelineError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimelineError.class);
-
     /*
      * the query kind
      */
@@ -99,14 +96,16 @@ public final class TimelineError {
      */
     public void validate() {
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model TimelineError"));
         }
         if (errorMessage() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property errorMessage in model TimelineError"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TimelineError.class);
 }

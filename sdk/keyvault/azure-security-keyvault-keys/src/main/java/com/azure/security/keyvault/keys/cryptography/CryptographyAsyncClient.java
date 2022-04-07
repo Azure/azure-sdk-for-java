@@ -72,7 +72,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
     static final String SECRETS_COLLECTION = "secrets";

@@ -32,7 +32,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -62,19 +62,21 @@ public final class UtilsImpl {
     private static final int HTTP_STATUS_CODE_ACCEPTED;
     private static final String CONTINUATION_LINK_HEADER_NAME;
     private static final Pattern CONTINUATION_LINK_PATTERN;
+    private static final ClientLogger LOGGER;
 
-    public static final String OCI_MANIFEST_MEDIA_TYPE;
     public static final String DOCKER_DIGEST_HEADER_NAME;
+    public static final String OCI_MANIFEST_MEDIA_TYPE;
     public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 
     static {
+        LOGGER = new ClientLogger(UtilsImpl.class);
         Map<String, String> properties = CoreUtils.getProperties("azure-containers-containerregistry.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
         HTTP_STATUS_CODE_NOT_FOUND = 404;
         HTTP_STATUS_CODE_ACCEPTED = 202;
         OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
-        DOCKER_DIGEST_HEADER_NAME = "Docker-Content-Digest";
+        DOCKER_DIGEST_HEADER_NAME = "docker-content-digest";
         CONTINUATION_LINK_HEADER_NAME = "Link";
         CONTINUATION_LINK_PATTERN = Pattern.compile("<(.+)>;.*");
         CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
@@ -124,6 +126,7 @@ public final class UtilsImpl {
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.add(new AddDatePolicy());
+        policies.add(new ContainerRegistryRedirectPolicy());
 
         policies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -191,18 +194,20 @@ public final class UtilsImpl {
             return "sha256:" + byteArrayToHex(digest);
 
         } catch (NoSuchAlgorithmException e) {
-            // We need to do something better here.
+            LOGGER.error("SHA-256 conversion failed with" + e);
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
-    // TODO: Make this performant. We do not need String.format here and can potentially do simple bit manipulation.
-    public static String byteArrayToHex(byte[] a) {
-        StringBuilder sb = new StringBuilder(a.length * 2);
-        for (byte b: a) {
-            sb.append(String.format("%02x", b));
+    private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
+    private static String byteArrayToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
         }
-        return sb.toString();
+        return new String(hexChars);
     }
 
     /**
@@ -218,16 +223,15 @@ public final class UtilsImpl {
             return getAcceptedDeleteResponse(responseT, responseT.getStatusCode());
         }
 
-        // In case of 400, we still convert it to success i.e. no-op.
+        // In case of 404, we still convert it to success i.e. no-op.
         return getAcceptedDeleteResponse(responseT, HTTP_STATUS_CODE_ACCEPTED);
     }
 
     static <T> Mono<Response<Void>> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
-        return Mono.just(new ResponseBase<String, Void>(
+        return Mono.just(new SimpleResponse<Void>(
             responseT.getRequest(),
             statusCode,
             responseT.getHeaders(),
-            null,
             null));
     }
 
@@ -331,5 +335,14 @@ public final class UtilsImpl {
             continuationLink,
             null
         );
+    }
+
+    /**
+     * Get the digest from the response header if available.
+     * @param headers The headers to parse.
+     * @return The digest value.
+     */
+    public static <T> String getDigestFromHeader(HttpHeaders headers) {
+        return headers.getValue(DOCKER_DIGEST_HEADER_NAME);
     }
 }

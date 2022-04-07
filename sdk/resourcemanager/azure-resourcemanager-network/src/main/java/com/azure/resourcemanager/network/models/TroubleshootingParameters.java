@@ -7,14 +7,11 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.TroubleshootingProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the resource to troubleshoot. */
 @Fluent
 public final class TroubleshootingParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingParameters.class);
-
     /*
      * The target resource to troubleshoot.
      */
@@ -109,13 +106,13 @@ public final class TroubleshootingParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceId in model TroubleshootingParameters"));
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model TroubleshootingParameters"));
@@ -123,4 +120,6 @@ public final class TroubleshootingParameters {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TroubleshootingParameters.class);
 }

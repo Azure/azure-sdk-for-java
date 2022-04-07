@@ -74,7 +74,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     /**
      * Gets the private link service ID for the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +110,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -131,7 +131,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     /**
      * Gets the private link service ID for the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
      * @param context The context to associate with this operation.
@@ -168,7 +168,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -186,7 +186,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     /**
      * Gets the private link service ID for the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +211,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     /**
      * Gets the private link service ID for the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +228,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     /**
      * Gets the private link service ID for the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
      * @param context The context to associate with this operation.

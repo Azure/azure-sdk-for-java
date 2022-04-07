@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Ssis environment reference. */
 @Fluent
 public final class SsisEnvironmentReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisEnvironmentReference.class);
-
     /*
      * Environment reference id.
      */

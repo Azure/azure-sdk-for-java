@@ -96,7 +96,7 @@ public interface DelegationSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateWithResponse(
@@ -132,7 +132,7 @@ public interface DelegationSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delegation settings for a developer portal.
+     * @return delegation settings for a developer portal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PortalDelegationSettingsInner> createOrUpdateWithResponse(
@@ -164,7 +164,7 @@ public interface DelegationSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the secret validation key of the DelegationSettings.
+     * @return the secret validation key of the DelegationSettings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PortalSettingValidationKeyContractInner> listSecretsWithResponse(

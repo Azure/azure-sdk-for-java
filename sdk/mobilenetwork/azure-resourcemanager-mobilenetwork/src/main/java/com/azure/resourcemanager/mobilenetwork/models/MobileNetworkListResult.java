@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for mobile networks API service call. */
 @Fluent
 public final class MobileNetworkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MobileNetworkListResult.class);
-
     /*
      * A list of mobile networks in a resource group.
      */

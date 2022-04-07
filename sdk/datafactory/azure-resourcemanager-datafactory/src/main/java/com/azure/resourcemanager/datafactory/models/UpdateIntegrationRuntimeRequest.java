@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Update integration runtime request. */
 @Fluent
 public final class UpdateIntegrationRuntimeRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateIntegrationRuntimeRequest.class);
-
     /*
      * Enables or disables the auto-update feature of the self-hosted
      * integration runtime. See https://go.microsoft.com/fwlink/?linkid=854189.

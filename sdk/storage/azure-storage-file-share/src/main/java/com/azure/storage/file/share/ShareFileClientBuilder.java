@@ -155,7 +155,7 @@ public class ShareFileClientBuilder implements
     AzureSasCredentialTrait<ShareFileClientBuilder>,
     ConfigurationTrait<ShareFileClientBuilder>,
     EndpointTrait<ShareFileClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(ShareFileClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ShareFileClientBuilder.class);
 
     private String endpoint;
     private String accountName;
@@ -195,7 +195,7 @@ public class ShareFileClientBuilder implements
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
         CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, null, azureSasCredential, sasToken, logger);
+            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
@@ -205,11 +205,11 @@ public class ShareFileClientBuilder implements
             } else if (sasToken != null) {
                 return new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
             } else {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
         }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, logger);
+            perRetryPolicies, configuration, LOGGER);
 
         return new AzureFileStorageImplBuilder()
             .url(endpoint)
@@ -347,8 +347,8 @@ public class ShareFileClientBuilder implements
                 sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage File endpoint url is malformed."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage File endpoint url is malformed.", ex));
         }
 
         return this;
@@ -456,10 +456,10 @@ public class ShareFileClientBuilder implements
     @Override
     public ShareFileClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, logger);
+                = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getFileEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw logger
+            throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive file service endpoint."));
         }
@@ -493,7 +493,7 @@ public class ShareFileClientBuilder implements
     @Override
     public ShareFileClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
+            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -621,7 +621,7 @@ public class ShareFileClientBuilder implements
     @Override
     public ShareFileClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

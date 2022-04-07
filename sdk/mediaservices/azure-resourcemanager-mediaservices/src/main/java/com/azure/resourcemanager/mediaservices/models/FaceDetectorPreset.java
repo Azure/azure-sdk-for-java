@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,13 +15,10 @@ import java.util.Map;
  * Describes all the settings to be used when analyzing a video in order to detect (and optionally redact) all the faces
  * present.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.FaceDetectorPreset")
-@JsonFlatten
 @Fluent
-public class FaceDetectorPreset extends Preset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FaceDetectorPreset.class);
-
+public final class FaceDetectorPreset extends Preset {
     /*
      * Specifies the maximum resolution at which your video is analyzed. The
      * default behavior is "SourceResolution," which will keep the input video
@@ -66,6 +61,7 @@ public class FaceDetectorPreset extends Preset {
      * preset itself
      */
     @JsonProperty(value = "experimentalOptions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> experimentalOptions;
 
     /**

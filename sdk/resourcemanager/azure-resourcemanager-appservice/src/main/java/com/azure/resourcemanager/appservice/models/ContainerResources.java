@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Container App container resource requirements. */
 @Fluent
 public final class ContainerResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerResources.class);
-
     /*
      * Required CPU in cores, e.g. 0.5
      */
