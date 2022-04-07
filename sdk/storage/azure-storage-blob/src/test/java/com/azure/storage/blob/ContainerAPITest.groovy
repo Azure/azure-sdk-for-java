@@ -807,6 +807,20 @@ class ContainerAPITest extends APISpec {
         response == null
     }
 
+    def "Delete if exists container that was already deleted"() {
+        when:
+        boolean result = cc.deleteIfExists()
+        boolean result2 = cc.deleteIfExists()
+
+        then:
+        result
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After delete has been called once but before it has been garbage collected
+        result2
+        !cc.exists()
+    }
+
+
     def "List block blobs flat"() {
         setup:
         def name = generateBlobName()

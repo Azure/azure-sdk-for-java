@@ -495,6 +495,24 @@ class FileSystemAPITest extends APISpec {
         !fsc.getBlobContainerClient().exists()
     }
 
+    def "Delete if exists file system that was already deleted"() {
+        setup:
+        def fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        fsc.create()
+        fsc.getBlobContainerClient().exists()
+
+        when:
+        def initialResponse = fsc.deleteIfExistsWithResponse(null, null, null)
+        def secondResponse = fsc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        !fsc.getBlobContainerClient().exists()
+        initialResponse.getStatusCode() == 202
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After delete has been called once but before it has been garbage collected
+        secondResponse.getStatusCode() == 202
+    }
+
     @Unroll
     def "Delete if exists AC"() {
         setup:
@@ -917,6 +935,20 @@ class FileSystemAPITest extends APISpec {
 
         then:
         response == null
+    }
+
+    def "Delete if exists file that was already deleted"() {
+        setup:
+        def pathName = generatePathName()
+        fsc.createFile(pathName)
+
+        when:
+        def initialResponse = fsc.deleteFileIfExistsWithResponse(pathName, null, null, null)
+        def secondResponse = fsc.deleteFileIfExistsWithResponse(pathName, null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 200
+        secondResponse == null
     }
 
     @Unroll
@@ -1359,6 +1391,21 @@ class FileSystemAPITest extends APISpec {
         then:
         response == null
         !fsc.getDirectoryClient(pathName).exists()
+    }
+
+    def "Delete if exists dir that was already deleted"() {
+        setup:
+        def pathName = generatePathName()
+        fsc.createDirectory(pathName)
+
+        when:
+        def initialResponse = fsc.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
+        def secondResponse = fsc.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 200
+        secondResponse == null
+
     }
 
     @Unroll

@@ -253,6 +253,21 @@ class ShareAsyncAPITests extends APISpec {
         !client.exists().block()
     }
 
+    def "Delete if exists dir that was already deleted"() {
+        setup:
+        primaryShareAsyncClient.create().block()
+
+        when:
+        def initialResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block()
+        def secondResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block()
+
+        then:
+        initialResponse.getStatusCode() == 202
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After delete has been called once but before it has been garbage collected
+        secondResponse.getStatusCode() == 202
+    }
+
 
     def "Get properties"() {
         given:

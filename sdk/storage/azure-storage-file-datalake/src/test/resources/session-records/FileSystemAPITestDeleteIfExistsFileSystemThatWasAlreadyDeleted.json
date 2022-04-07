@@ -1,0 +1,134 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/a1e0d65c0a1e0d65cde7037358658ff5f1cd740fe8f0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee29cc4c-a4b3-43f5-a19d-dc610d831a87"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA18E28F2E2714",
+      "Last-Modified" : "Thu, 07 Apr 2022 22:04:17 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b21226fc-401e-0005-3fcb-4aec4f000000",
+      "x-ms-client-request-id" : "ee29cc4c-a4b3-43f5-a19d-dc610d831a87",
+      "Date" : "Thu, 07 Apr 2022 22:04:16 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/a1e0d65c1a1e0d65cde7001360df2a5209e95416b892?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "67ad0d44-d5c5-40ee-bdc7-f28ec818dde9"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA18E28F4750B7",
+      "Last-Modified" : "Thu, 07 Apr 2022 22:04:17 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b21227a2-401e-0005-5ccb-4aec4f000000",
+      "x-ms-client-request-id" : "67ad0d44-d5c5-40ee-bdc7-f28ec818dde9",
+      "Date" : "Thu, 07 Apr 2022 22:04:17 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/a1e0d65c1a1e0d65cde7001360df2a5209e95416b892?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f8a0fc35-aeb3-467a-8f7f-90ed3d5ee5ba"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-immutable-storage-with-versioning-enabled" : "false",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Thu, 07 Apr 2022 22:04:17 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-has-legal-hold" : "false",
+      "Date" : "Thu, 07 Apr 2022 22:04:17 GMT",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "x-ms-has-immutability-policy" : "false",
+      "eTag" : "0x8DA18E28F4750B7",
+      "x-ms-request-id" : "b21227e7-401e-0005-1fcb-4aec4f000000",
+      "x-ms-client-request-id" : "f8a0fc35-aeb3-467a-8f7f-90ed3d5ee5ba"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/a1e0d65c1a1e0d65cde7001360df2a5209e95416b892?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0f4abd80-57d7-40e6-957f-aa8791019517"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "b2122813-401e-0005-49cb-4aec4f000000",
+      "x-ms-client-request-id" : "0f4abd80-57d7-40e6-957f-aa8791019517",
+      "Date" : "Thu, 07 Apr 2022 22:04:17 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/a1e0d65c1a1e0d65cde7001360df2a5209e95416b892?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4eaae88c-36ef-4acb-99aa-3b9aaf487caf"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "b2122852-401e-0005-03cb-4aec4f000000",
+      "x-ms-client-request-id" : "4eaae88c-36ef-4acb-99aa-3b9aaf487caf",
+      "Date" : "Thu, 07 Apr 2022 22:04:17 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/a1e0d65c1a1e0d65cde7001360df2a5209e95416b892?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "99cde4dc-917c-4117-be86-ccb020f63c42"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "b2122882-401e-0005-32cb-4aec4f000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:b2122882-401e-0005-32cb-4aec4f000000\nTime:2022-04-07T22:04:17.5465549Z</Message></Error>",
+      "x-ms-client-request-id" : "99cde4dc-917c-4117-be86-ccb020f63c42",
+      "Date" : "Thu, 07 Apr 2022 22:04:17 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "a1e0d65c0a1e0d65cde7037358658ff5f1cd740fe8f0", "a1e0d65c1a1e0d65cde7001360df2a5209e95416b892" ]
+}
