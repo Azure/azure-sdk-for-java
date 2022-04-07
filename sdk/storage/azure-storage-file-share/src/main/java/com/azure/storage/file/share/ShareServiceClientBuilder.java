@@ -133,7 +133,7 @@ public final class ShareServiceClientBuilder implements
     AzureSasCredentialTrait<ShareServiceClientBuilder>,
     ConfigurationTrait<ShareServiceClientBuilder>,
     EndpointTrait<ShareServiceClientBuilder> {
-    private static final ClientLogger LOGGER = new ClientLogger(ShareServiceClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(ShareServiceClientBuilder.class);
 
     private String endpoint;
     private String accountName;
@@ -181,7 +181,7 @@ public final class ShareServiceClientBuilder implements
      */
     public ShareServiceAsyncClient buildAsyncClient() {
         CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
+            storageSharedKeyCredential, null, azureSasCredential, sasToken, logger);
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
@@ -192,11 +192,11 @@ public final class ShareServiceClientBuilder implements
             } else if (sasToken != null) {
                 return new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
             } else {
-                throw LOGGER.logExceptionAsError(
+                throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
         }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, LOGGER);
+            perRetryPolicies, configuration, logger);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
@@ -255,8 +255,8 @@ public final class ShareServiceClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.", ex));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
         }
 
         return this;
@@ -327,10 +327,10 @@ public final class ShareServiceClientBuilder implements
     @Override
     public ShareServiceClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+                = StorageConnectionString.create(connectionString, logger);
         StorageEndpoint endpoint = storageConnectionString.getFileEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
+            throw logger
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive file service endpoint."));
         }
@@ -364,7 +364,7 @@ public final class ShareServiceClientBuilder implements
     @Override
     public ShareServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
+            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -492,7 +492,7 @@ public final class ShareServiceClientBuilder implements
     @Override
     public ShareServiceClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;
