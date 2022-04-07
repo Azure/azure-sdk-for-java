@@ -84,7 +84,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobClientBase {
-    private static final ClientLogger LOGGER = new ClientLogger(BlobClientBase.class);
+    private final ClientLogger logger = new ClientLogger(BlobClientBase.class);
 
     private final BlobAsyncClientBase client;
 
@@ -355,7 +355,7 @@ public class BlobClientBase {
                         break;
                     case VERSION_ID:
                         if (versionId == null) {
-                            return FluxUtil.monoError(LOGGER,
+                            return FluxUtil.monoError(logger,
                                 new UnsupportedOperationException("Versioning is not supported on this account."));
                         } else {
                             // Target the user specified version by default. If not provided, target the latest version.
@@ -365,7 +365,7 @@ public class BlobClientBase {
                         }
                         break;
                     default:
-                        return FluxUtil.monoError(LOGGER, new IllegalArgumentException("Concurrency control type not "
+                        return FluxUtil.monoError(logger, new IllegalArgumentException("Concurrency control type not "
                             + "supported."));
                 }
 
@@ -969,7 +969,7 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @param overwrite Whether to overwrite the file, should the file exist.
+     * @param overwrite Whether or not to overwrite the file, should the file exist.
      * @return The blob properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -1884,7 +1884,7 @@ public class BlobClientBase {
 
         // Create input stream from the data.
         if (response == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
         return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
@@ -2090,7 +2090,7 @@ public class BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean -->
      *
-     * @param legalHold Whether you want a legal hold on the blob.
+     * @param legalHold Whether or not you want a legal hold on the blob.
      * @return The legal hold result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2112,7 +2112,7 @@ public class BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context -->
      *
-     * @param legalHold Whether you want a legal hold on the blob.
+     * @param legalHold Whether or not you want a legal hold on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the legal hold result.

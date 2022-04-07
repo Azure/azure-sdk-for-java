@@ -69,7 +69,7 @@ public final class ModelHelper {
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
      */
-    public static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
+    private static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
 
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
