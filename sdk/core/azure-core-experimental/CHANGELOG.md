@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Rename `MessageWithMetadata` to `MessageContent`.
+
 ### Bugs Fixed
 
 ### Other Changes
