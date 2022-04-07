@@ -29,6 +29,31 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Schema Registry-based serializer implementation for Avro data format using Apache Avro.
+ *
+ * <p><strong>Creating a {@link SchemaRegistryApacheAvroSerializer}</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ *
+ * <p><strong>Serialize an object</strong></p>
+ * Serializes an Avro generated object into {@link MessageWithMetadata}.
+ * {@link #serializeMessageData(Object, TypeReference)} assumes that there is a no argument constructor used to
+ * instantiate the {@link MessageWithMetadata} type. If there is a different way to instantiate the concrete type, use
+ * the overload which takes a message factory function, {@link #serializeMessageData(Object, TypeReference, Function)}.
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
+ * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
+ *
+ * <p><strong>Deserialize an object</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
+ * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
+ *
+ * <p><strong>Serialize an object using a message factory</strong></p>
+ * Serializes an Avro generated object into {@link MessageWithMetadata}. It uses the {@link Function messageFactory} to
+ * instantiate and populate the type.
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory -->
+ * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory -->
+ * <p>
  */
 public final class SchemaRegistryApacheAvroSerializer {
     static final String AVRO_MIME_TYPE = "avro/binary";
