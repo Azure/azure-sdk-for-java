@@ -57,6 +57,9 @@ extends:
       - name: azure-core-management
         groupId: com.azure
         safeName: azurecoremanagement
+      - name: azure-core-serializeradapter-jackson
+        groupId: com.azure
+        safeName: azurecoreserializeradapterjackson
       - name: azure-core-serializer-avro-apache
         groupId: com.azure
         safeName: azurecoreserializeravroapache

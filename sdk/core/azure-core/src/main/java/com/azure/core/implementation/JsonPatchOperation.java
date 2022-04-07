@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.models;
+package com.azure.core.implementation;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.Option;
+import com.azure.core.implementation.jackson.JsonPatchOperationSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @Immutable
 @JsonSerialize(using = JsonPatchOperationSerializer.class)
-final class JsonPatchOperation {
+public final class JsonPatchOperation {
     private final JsonPatchOperationKind op;
     private final String from;
     private final String path;
@@ -32,7 +32,7 @@ final class JsonPatchOperation {
      * @param path Operation target path.
      * @param value Optional value.
      */
-    JsonPatchOperation(JsonPatchOperationKind op, String from, String path, Option<String> value) {
+    public JsonPatchOperation(JsonPatchOperationKind op, String from, String path, Option<String> value) {
         this.op = op;
         this.from = from;
         this.path = path;
@@ -44,7 +44,7 @@ final class JsonPatchOperation {
      *
      * @return The kind of operation.
      */
-    JsonPatchOperationKind getOp() {
+    public JsonPatchOperationKind getOp() {
         return op;
     }
 
@@ -53,7 +53,7 @@ final class JsonPatchOperation {
      *
      * @return The operation from target path.
      */
-    String getFrom() {
+    public String getFrom() {
         return from;
     }
 
@@ -62,7 +62,7 @@ final class JsonPatchOperation {
      *
      * @return The operation target path.
      */
-    String getPath() {
+    public String getPath() {
         return path;
     }
 
@@ -73,7 +73,7 @@ final class JsonPatchOperation {
      *
      * @return The operation value.
      */
-    Option<String> getValue() {
+    public Option<String> getValue() {
         return value;
     }
 
@@ -105,7 +105,13 @@ final class JsonPatchOperation {
         return buildString(new StringBuilder()).toString();
     }
 
-    StringBuilder buildString(StringBuilder builder) {
+    /**
+     * Appends this operation's JSON to the passed {@link StringBuilder}.
+     *
+     * @param builder The {@link StringBuilder} where this operation's JSON is being appended.
+     * @return The updated {@link StringBuilder}.
+     */
+    public StringBuilder buildString(StringBuilder builder) {
         builder.append("{\"op\":\"")
             .append(op.toString())
             .append("\"");
