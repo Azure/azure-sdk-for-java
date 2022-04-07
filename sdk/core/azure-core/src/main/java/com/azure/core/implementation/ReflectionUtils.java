@@ -49,15 +49,15 @@ final class ReflectionUtils implements ReflectionUtilsApi {
         try {
             return (MethodHandles.Lookup) PRIVATE_LOOKUP_IN.invoke(targetClass);
         } catch (Throwable throwable) {
+            // invoke(Class<?) throws a Throwable as the underlying method being called through reflection can throw
+            // anything, but the constructor being called is owned by the Java SDKs which won't throw Throwable. So,
+            // only Error needs to be inspected and handled specially, otherwise it can be assumed the Throwable is
+            // a type of Exception which can be thrown based on this method having Exception checked.
             if (throwable instanceof Error) {
                 throw (Error) throwable;
-            }
-
-            if (throwable instanceof Exception) {
+            } else {
                 throw (Exception) throwable;
             }
-
-            throw new Exception(throwable);
         }
     }
 
