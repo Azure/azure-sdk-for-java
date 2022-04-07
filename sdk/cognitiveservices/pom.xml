@@ -37,6 +37,9 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-cognitiveservices-anomalydetector</module>
+        <module>azure-cognitiveservices-multivariateanomalydetector</module>
+        <module>azure-cognitiveservices-rootcauseanalysis</module>
         <module>azure-resourcemanager-cognitiveservices</module>
         <module>ms-azure-cs-autosuggest</module>
         <module>ms-azure-cs-computervision</module>
