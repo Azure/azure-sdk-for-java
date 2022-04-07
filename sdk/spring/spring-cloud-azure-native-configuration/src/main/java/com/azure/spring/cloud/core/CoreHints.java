@@ -23,6 +23,7 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 import org.springframework.nativex.hint.NativeHint;
+import org.springframework.nativex.hint.ResourceHint;
 import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.nativex.type.NativeConfiguration;
@@ -57,5 +58,6 @@ import org.springframework.nativex.type.NativeConfiguration;
         )
     }
 )
+@ResourceHint(patterns = { "META-INF/project.properties", "additional-spring-configuration-metadata.json"})
 public class CoreHints implements NativeConfiguration {
 }

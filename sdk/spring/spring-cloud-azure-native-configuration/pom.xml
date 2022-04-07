@@ -2,12 +2,6 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
@@ -40,12 +34,26 @@
     <dependency>
       <groupId>org.springframework.experimental</groupId>
       <artifactId>spring-aot</artifactId>
-      <version>0.11.2</version> <!-- {x-version-update;org.springframework.experimental:spring-aot;external_dependency} -->
+      <version>0.11.3</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-aot-graalvm-support</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -185,8 +193,9 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.fasterxml.jackson.core:jackson-core:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.6.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.experimental:spring-aot:[0.11.2]</include> <!-- {x-include-update;org.springframework.experimental:spring-aot;external_dependency} -->
+                <include>org.springframework.experimental:spring-aot:[0.11.3]</include> <!-- {x-include-update;org.springframework.experimental:spring-aot;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -194,4 +203,26 @@
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>spring-release</id>
+      <name>Spring release</name>
+      <url>https://repo.spring.io/release</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <name>Spring release</name>
+      <id>release</id>
+      <url>https://repo.spring.io/release</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 </project>

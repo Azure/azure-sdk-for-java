@@ -63,16 +63,12 @@ public class AzureSpringBootVersionVerifier {
     private boolean springBootVersionMatches() {
         for (String acceptedVersion : acceptedVersions) {
             try {
-                boolean matched = this.matchSpringBootVersionFromManifest(acceptedVersion);
-                if (matched) {
-                    return true;
-                }
+                LOGGER.info("acceptedVersion: {}", acceptedVersion);
+                return this.matchSpringBootVersionFromManifest(acceptedVersion);
             } catch (FileNotFoundException e) {
                 CompatibilityPredicate predicate = this.supportedVersions.get(stripWildCardFromVersion(acceptedVersion));
                 if (predicate != null && predicate.isCompatible()) {
-                    if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("Predicate [" + predicate + "] was matched");
-                    }
+                    LOGGER.debug("Predicate [{}] was matched", predicate);
                     return true;
                 }
             }
@@ -82,9 +78,7 @@ public class AzureSpringBootVersionVerifier {
 
     private boolean matchSpringBootVersionFromManifest(String s) throws FileNotFoundException {
         String version = this.getVersionFromManifest();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Version found in Boot manifest [" + version + "]");
-        }
+        LOGGER.debug("Version found in Boot manifest [{}]", version);
         if (!StringUtils.hasText(version)) {
             LOGGER.info("Cannot check Boot version from manifest");
             throw new FileNotFoundException("Spring Boot version not found");
