@@ -82,7 +82,7 @@ public final class LengthValidatingInputStream extends InputStream {
     @Override
     public synchronized int read() throws IOException {
         int read = inner.read();
-        validateLength(read);
+        validateLength(read == -1 ? -1 : 1);
 
         return read;
     }
