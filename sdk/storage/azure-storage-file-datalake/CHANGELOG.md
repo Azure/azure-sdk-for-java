@@ -1,10 +1,6 @@
 # Release History
 
-## 12.9.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 12.9.0 (2022-04-07)
 
 ### Bugs Fixed
 - Fixed a bug that would cause auth failures when trying to rename a path object while authenticating with a sas.
@@ -13,6 +9,12 @@
   be checked before using chunked upload than the size used to triggered chunked upload.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-blob` from `12.15.0` to version `12.15.1`.
 
 ## 12.8.0 (2022-03-09)
 
