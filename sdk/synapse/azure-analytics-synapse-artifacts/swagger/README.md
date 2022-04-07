@@ -38,8 +38,10 @@ add-context-parameter: true
 models-subpackage: models
 context-client-method-parameter: true
 required-parameter-client-methods: true
-credential-types: tokencredential
-credential-scopes: https://dev.azuresynapse.net/.default
+security: AADToken
+security-scopes: https://dev.azuresynapse.net/.default
+default-http-exception-type: com.azure.analytics.synapse.artifacts.models.CloudErrorException
+custom-strongly-typed-header-deserialization: true
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/$(branch)/specification/synapse/data-plane/readme.md
 tag: package-artifacts-composite-v4
 ```
