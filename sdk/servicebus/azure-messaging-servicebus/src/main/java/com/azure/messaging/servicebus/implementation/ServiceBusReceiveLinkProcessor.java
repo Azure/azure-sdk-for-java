@@ -217,14 +217,24 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             next.setEmptyCreditListener(() -> 0);
 
             currentLinkSubscriptions = Disposables.composite(
-                next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
-                    synchronized (queueLock) {
-                        messageQueue.add(message);
-                        pendingMessages.incrementAndGet();
-                    }
+                next.receive().publishOn(Schedulers.boundedElastic()).subscribe(
+                    message -> {
+                        synchronized (queueLock) {
+                            messageQueue.add(message);
+                            pendingMessages.incrementAndGet();
+                        }
 
-                    drain();
-                }),
+                        drain();
+                    },
+                    error -> {
+                        // When the receive on AmqpReceiveLink (e.g., ServiceBusReactorReceiver) terminates
+                        // with an error, we expect the recovery to happen in response to the terminal events
+                        // in link EndpointState Flux.
+                        logger.atVerbose()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log("Receiver is terminated.", error);
+                    }),
                 next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.

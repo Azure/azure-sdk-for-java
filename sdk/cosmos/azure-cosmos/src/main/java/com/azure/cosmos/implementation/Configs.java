@@ -238,7 +238,7 @@ public class Configs {
     }
 
     public static boolean isQueryPlanCachingEnabled() {
-        // Queryplan caching will be disabled by default
+        // Queryplan caching is enabled by default
         return getJVMConfigAsBoolean(QUERYPLAN_CACHING_ENABLED, true);
     }
 

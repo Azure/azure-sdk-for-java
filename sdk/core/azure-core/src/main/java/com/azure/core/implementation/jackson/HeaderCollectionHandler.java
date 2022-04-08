@@ -87,8 +87,8 @@ final class HeaderCollectionHandler {
             MethodHandles.Lookup lookupToUse;
             try {
                 lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
-            } catch (Throwable t) {
-                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, t);
+            } catch (Exception ex) {
+                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, ex);
                 return null;
             }
 
@@ -133,6 +133,10 @@ final class HeaderCollectionHandler {
 
             return true;
         } catch (Throwable ex) {
+            if (ex instanceof Error) {
+                throw (Error) ex;
+            }
+
             logger.verbose("Failed to set header {} collection on class {} using MethodHandle.", fieldName,
                 clazzSimpleName, ex);
             return false;

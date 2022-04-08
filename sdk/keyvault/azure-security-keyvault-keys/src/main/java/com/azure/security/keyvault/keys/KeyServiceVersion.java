@@ -25,9 +25,9 @@ public enum KeyServiceVersion implements ServiceVersion {
     V7_2("7.2"),
 
     /**
-     * Service version {@code 7.3-preview}.
+     * Service version {@code 7.3}.
      */
-    V7_3_PREVIEW("7.3-preview");
+    V7_3("7.3");
 
     private final String version;
 
@@ -49,6 +49,6 @@ public enum KeyServiceVersion implements ServiceVersion {
      * @return the latest {@link KeyServiceVersion}
      */
     public static KeyServiceVersion getLatest() {
-        return V7_3_PREVIEW;
+        return V7_3;
     }
 }
