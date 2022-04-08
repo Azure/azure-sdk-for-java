@@ -3,6 +3,8 @@
 
 package com.azure.aot.graalvm.samples.formrecognizer;
 
+import java.io.IOException;
+
 // import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 // import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
 // import com.azure.ai.formrecognizer.models.AnalyzeResult;
@@ -28,7 +30,7 @@ public class FormRecognizerSample {
 //     private static final String AZURE_FORM_RECOGNIZER_ENDPOINT = System.getenv("AZURE_FORM_RECOGNIZER_ENDPOINT");
 //     private static final String AZURE_FORM_RECOGNIZER_KEY = System.getenv("AZURE_FORM_RECOGNIZER_KEY");
 //
-//     public static void runSample() throws IOException {
+    public static void runSample() throws IOException {
 //         System.out.println("\n================================================================");
 //         System.out.println(" Starting Form Recognizer Sample");
 //         System.out.println("================================================================");
@@ -141,5 +143,5 @@ public class FormRecognizerSample {
 //         System.out.println("\n================================================================");
 //         System.out.println(" Form Recognizer Sample Complete");
 //         System.out.println("================================================================");
-//     }
+    }
 }
