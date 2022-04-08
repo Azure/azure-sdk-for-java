@@ -159,30 +159,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
     # Add services exsting in old toc but missing in automation.
     $otherService = $services[-1]
     $sortableServices = $services | Where-Object { $_ –ne $otherService }
-    # Assumption on current structure:
-    # Core is the first item of Other, Client is the first item of Core.
-    $CoreClient = $otherService.items[0].items[0].items
-    for ($i = 0; $i -lt $CoreClient.Count; $i++) {
-        if ($CoreClient[$i].name -eq 'Test') {
-            $otherService.items[0].items[0].items[$i].children = ($CoreClient[$i].children | ForEach-Object {$_.Trim() + "*"})
-            break
-        }                
-    }
-    for ($i = 0; $i -lt $sortableServices.Count; $i++) {
-        if ($sortableServices[$i].name -eq "IoT") {
-            for ($j = 0; $j -lt $sortableServices[$i].items.Count; $j++) {
-                if ($sortableServices[$i].items[$j].name -eq "IoT Service Client") {
-                    $sortableServices[$i].items[$j].children += @(
-                        "com.microsoft.azure.sdk.iot.service.digitaltwin.authentication",
-                        "com.microsoft.azure.sdk.iot.service.digitaltwin.generated",
-                        "com.microsoft.azure.sdk.iot.service.digitaltwin.helpers",
-                        "com.microsoft.azure.sdk.iot.service.digitaltwin.generated.models"
-                    )
-                    break
-                } 
-            } 
-        }
-    }
+
     $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
         href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
