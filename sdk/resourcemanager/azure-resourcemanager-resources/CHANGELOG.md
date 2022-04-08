@@ -2,6 +2,10 @@
 
 ## 2.14.0-beta.1 (Unreleased)
 
+### Bugs Fixed
+
+- Fixed a bug that `ResourceManager.pipeline()` be `null`.
+
 ### Other Changes
 
 #### Dependency Updates
