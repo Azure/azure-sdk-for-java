@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Fixed a bug that `ResourceManager.pipeline()` is `null`.
+- Fixed a bug that `ResourceManager.pipeline()` be `null`.
 
 ### Other Changes
 
