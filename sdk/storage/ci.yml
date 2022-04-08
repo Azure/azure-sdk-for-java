@@ -102,6 +102,7 @@ extends:
         groupId: com.azure
         safeName: azurestorageinternalavro
         skipPublishDocMs: true
+        skipPublishDocGithubIo: true
       - name: azure-storage-queue
         groupId: com.azure
         safeName: azurestoragequeue
