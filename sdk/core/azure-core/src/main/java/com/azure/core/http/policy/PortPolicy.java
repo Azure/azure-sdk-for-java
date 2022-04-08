@@ -4,21 +4,40 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
 /**
  * The pipeline policy that adds a given port to each {@link HttpRequest}.
  */
-public class PortPolicy extends HttpPipelineSynchronousPolicy {
+public class PortPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);
 
     private final int port;
     private final boolean overwrite;
+    private final HttpPipelineSynchronousPolicy inner = new HttpPipelineSynchronousPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            if (overwrite || urlBuilder.getPort() == null) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+
+                try {
+                    context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
+                } catch (MalformedURLException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(
+                        String.format("Failed to set the HTTP request port to %d.", port), e));
+                }
+            }
+        }
+    };
 
     /**
      * Creates a new PortPolicy object.
@@ -32,17 +51,12 @@ public class PortPolicy extends HttpPipelineSynchronousPolicy {
     }
 
     @Override
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-        if (overwrite || urlBuilder.getPort() == null) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.process(context, next);
+    }
 
-            try {
-                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(
-                    String.format("Failed to set the HTTP request port to %d.", port), e));
-            }
-        }
+    @Override
+    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.processSynchronously(context, next);
     }
 }
