@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSite;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ARM resource for a static site when patching. */
 @Fluent
 public final class StaticSitePatchResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSitePatchResource.class);
-
     /*
      * Core resource properties
      */

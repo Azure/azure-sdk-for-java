@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.Dynamics365DataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dynamics365 data connector properties. */
 @Fluent
 public final class Dynamics365DataConnectorProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dynamics365DataConnectorProperties.class);
-
     /*
      * The available data types for the connector.
      */
@@ -58,7 +55,7 @@ public final class Dynamics365DataConnectorProperties extends DataConnectorTenan
     public void validate() {
         super.validate();
         if (dataTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataTypes in model Dynamics365DataConnectorProperties"));
@@ -66,4 +63,6 @@ public final class Dynamics365DataConnectorProperties extends DataConnectorTenan
             dataTypes().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Dynamics365DataConnectorProperties.class);
 }

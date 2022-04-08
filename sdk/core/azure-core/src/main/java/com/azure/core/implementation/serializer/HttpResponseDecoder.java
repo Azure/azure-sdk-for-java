@@ -60,7 +60,7 @@ public final class HttpResponseDecoder {
          * @param decodeData the necessary data required to decode a Http response
          */
         HttpDecodedResponse(final HttpResponse response, SerializerAdapter serializer,
-                            HttpResponseDecodeData decodeData) {
+            HttpResponseDecodeData decodeData) {
             this.response = response;
             this.serializer = serializer;
             this.decodeData = decodeData;

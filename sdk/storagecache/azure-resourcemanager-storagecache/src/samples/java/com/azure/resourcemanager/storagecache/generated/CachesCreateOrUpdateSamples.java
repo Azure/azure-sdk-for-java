@@ -29,7 +29,7 @@ import java.util.Map;
 /** Samples for Caches CreateOrUpdate. */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_CreateOrUpdate_ldap_only.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_CreateOrUpdate_ldap_only.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate_ldap_only.
@@ -89,7 +89,7 @@ public final class CachesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.

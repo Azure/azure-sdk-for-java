@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  */
 public class AvroUnionSchema extends AvroCompositeSchema {
 
-    private final ClientLogger logger = new ClientLogger(AvroUnionSchema.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvroUnionSchema.class);
 
     private final List<AvroType> types;
 
@@ -60,7 +60,7 @@ public class AvroUnionSchema extends AvroCompositeSchema {
         checkType("index", index, Integer.class);
         Integer i = (Integer) index;
         if (i < 0 || i >= this.types.size()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid index to parse union"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid index to parse union"));
         }
         /* Using the zero-based index, get the appropriate type. */
         AvroType type = this.types.get(i);

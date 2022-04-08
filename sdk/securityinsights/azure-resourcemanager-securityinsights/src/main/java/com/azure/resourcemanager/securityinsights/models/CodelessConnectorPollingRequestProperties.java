@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describe the request properties needed to successfully pull from the server. */
 @Fluent
 public final class CodelessConnectorPollingRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CodelessConnectorPollingRequestProperties.class);
-
     /*
      * Describe the endpoint we should pull the data from
      */
@@ -337,23 +334,25 @@ public final class CodelessConnectorPollingRequestProperties {
      */
     public void validate() {
         if (apiEndpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property apiEndpoint in model CodelessConnectorPollingRequestProperties"));
         }
         if (httpMethod() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property httpMethod in model CodelessConnectorPollingRequestProperties"));
         }
         if (queryTimeFormat() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property queryTimeFormat in model"
                             + " CodelessConnectorPollingRequestProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CodelessConnectorPollingRequestProperties.class);
 }

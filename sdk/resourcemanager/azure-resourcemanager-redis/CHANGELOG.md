@@ -1,6 +1,20 @@
 # Release History
 
-## 2.13.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported configuration via `RedisConfiguration` in `RedisCache` create and update.
 
 ### Other Changes
 

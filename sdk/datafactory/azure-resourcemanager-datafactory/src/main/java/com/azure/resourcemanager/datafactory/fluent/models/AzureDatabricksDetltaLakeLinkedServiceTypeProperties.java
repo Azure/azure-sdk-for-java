@@ -8,15 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Databricks Delta Lake linked service properties. */
 @Fluent
 public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureDatabricksDetltaLakeLinkedServiceTypeProperties.class);
-
     /*
      * <REGION>.azuredatabricks.net, domain name of your Databricks deployment.
      * Type: string (or Expression with resultType string).
@@ -199,7 +195,7 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
      */
     public void validate() {
         if (domain() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domain in model"
@@ -212,4 +208,7 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(AzureDatabricksDetltaLakeLinkedServiceTypeProperties.class);
 }

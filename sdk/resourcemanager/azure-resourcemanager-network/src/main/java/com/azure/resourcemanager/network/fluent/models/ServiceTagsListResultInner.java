@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListServiceTags API service call. */
 @Immutable
 public final class ServiceTagsListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagsListResultInner.class);
-
     /*
      * The name of the cloud.
      */

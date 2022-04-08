@@ -346,7 +346,9 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     private void log(String levelName, String message, Throwable t) {
         String dateTime = getFormattedDate();
         String threadName = Thread.currentThread().getName();
-        StringBuilder stringBuilder = new StringBuilder();
+        // Use a larger initial buffer for the StringBuilder as it defaults to 16 and non-empty information is expected
+        // to be much larger than that. This will reduce the amount of resizing and copying needed to be done.
+        StringBuilder stringBuilder = new StringBuilder(256);
         stringBuilder
             .append(dateTime)
             .append(OPEN_BRACKET)

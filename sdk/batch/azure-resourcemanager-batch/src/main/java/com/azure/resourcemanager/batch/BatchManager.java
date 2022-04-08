@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -20,11 +21,11 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.batch.fluent.BatchManagement;
+import com.azure.resourcemanager.batch.fluent.BatchManagementClient;
 import com.azure.resourcemanager.batch.implementation.ApplicationPackagesImpl;
 import com.azure.resourcemanager.batch.implementation.ApplicationsImpl;
 import com.azure.resourcemanager.batch.implementation.BatchAccountsImpl;
-import com.azure.resourcemanager.batch.implementation.BatchManagementBuilder;
+import com.azure.resourcemanager.batch.implementation.BatchManagementClientBuilder;
 import com.azure.resourcemanager.batch.implementation.CertificatesImpl;
 import com.azure.resourcemanager.batch.implementation.LocationsImpl;
 import com.azure.resourcemanager.batch.implementation.OperationsImpl;
@@ -45,8 +46,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-/** Entry point to BatchManager. */
+/** Entry point to BatchManager. Batch Client. */
 public final class BatchManager {
     private BatchAccounts batchAccounts;
 
@@ -66,13 +68,13 @@ public final class BatchManager {
 
     private Pools pools;
 
-    private final BatchManagement clientObject;
+    private final BatchManagementClient clientObject;
 
     private BatchManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new BatchManagementBuilder()
+            new BatchManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -104,7 +106,7 @@ public final class BatchManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -178,9 +180,11 @@ public final class BatchManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -202,7 +206,7 @@ public final class BatchManager {
                 .append("-")
                 .append("com.azure.resourcemanager.batch")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -225,11 +229,24 @@ public final class BatchManager {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -315,10 +332,10 @@ public final class BatchManager {
     }
 
     /**
-     * @return Wrapped service client BatchManagement providing direct access to the underlying auto-generated API
+     * @return Wrapped service client BatchManagementClient providing direct access to the underlying auto-generated API
      *     implementation, based on Azure REST API.
      */
-    public BatchManagement serviceClient() {
+    public BatchManagementClient serviceClient() {
         return this.clientObject;
     }
 }

@@ -28,7 +28,7 @@ public interface ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationContractInner> listByApi(String resourceGroupName, String serviceName, String apiId);
@@ -54,7 +54,7 @@ public interface ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationContractInner> listByApi(
@@ -151,7 +151,7 @@ public interface ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationContractInner createOrUpdate(
@@ -176,7 +176,7 @@ public interface ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApiOperationsCreateOrUpdateResponse createOrUpdateWithResponse(
@@ -203,7 +203,7 @@ public interface ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationContractInner update(
@@ -230,7 +230,7 @@ public interface ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApiOperationsUpdateResponse updateWithResponse(
@@ -275,7 +275,7 @@ public interface ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

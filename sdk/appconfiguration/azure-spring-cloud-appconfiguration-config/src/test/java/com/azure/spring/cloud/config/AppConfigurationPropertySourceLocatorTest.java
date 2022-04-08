@@ -25,10 +25,11 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -210,6 +211,9 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.setAccessible(true);
         field.set(null, new AtomicBoolean(true));
         StateHolder.setLoadState(TEST_STORE_NAME, false);
@@ -355,6 +359,9 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void refreshThrowException() throws IOException, NoSuchFieldException, SecurityException,
         IllegalArgumentException, IllegalAccessException {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.setAccessible(true);
         field.set(null, new AtomicBoolean(false));
         StateHolder.setLoadState(TEST_STORE_NAME, true);
@@ -441,7 +448,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStore.isEnabled()).thenReturn(true);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
-        when(appPropertiesMock.getStartDate()).thenReturn(new Date());
+        when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 
         locator = new AppConfigurationPropertySourceLocator(properties, appPropertiesMock, clientStoreMock,
             tokenCredentialProvider, null, null);

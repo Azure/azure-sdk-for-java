@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.ContainerAppsRevisionsClient;
 import com.azure.resourcemanager.appservice.fluent.models.RevisionInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ContainerAppsRevisionsClient. */
 public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevisionsClient {
-    private final ClientLogger logger = new ClientLogger(ContainerAppsRevisionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ContainerAppsRevisionsService service;
 

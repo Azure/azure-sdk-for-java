@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.spring.cloud.config.stores;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,15 +39,15 @@ import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
 public class ClientStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
 
-    private AppConfigurationProviderProperties appProperties;
+    private final AppConfigurationProviderProperties appProperties;
 
-    private ConnectionPool pool;
+    private final ConnectionPool pool;
 
-    private AppConfigurationCredentialProvider tokenCredentialProvider;
+    private final AppConfigurationCredentialProvider tokenCredentialProvider;
 
-    private ConfigurationClientBuilderSetup clientProvider;
+    private final ConfigurationClientBuilderSetup clientProvider;
 
-    private HashMap<String, ConfigurationAsyncClient> clients;
+    private final HashMap<String, ConfigurationAsyncClient> clients;
 
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
@@ -57,7 +56,7 @@ public class ClientStore {
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
-        this.clients = new HashMap<String, ConfigurationAsyncClient>();
+        this.clients = new HashMap<>();
     }
 
     private ConfigurationAsyncClient buildClient(String store) throws IllegalArgumentException {
@@ -149,7 +148,7 @@ public class ClientStore {
 
                 if (retryAfterHeader != null) {
                     try {
-                        Integer retryAfter = Integer.valueOf(retryAfterHeader.getValue());
+                        int retryAfter = Integer.parseInt(retryAfterHeader.getValue());
 
                         Thread.sleep(retryAfter);
                     } catch (NumberFormatException e) {
@@ -176,10 +175,8 @@ public class ClientStore {
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
-     * @throws IOException thrown when failed to retrieve values.
      */
-    public final List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName)
-        throws IOException {
+    public final List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
         ConfigurationAsyncClient client = buildClient(storeName);
 
         return client.listConfigurationSettings(settingSelector).collectList().block();
@@ -198,7 +195,7 @@ public class ClientStore {
      * @return the full name of the key mapping to the configuration store
      */
     public List<String> watchedKeyNames(ConfigStore store, Map<String, List<String>> storeContextsMap) {
-        List<String> watchedKeys = new ArrayList<String>();
+        List<String> watchedKeys = new ArrayList<>();
         String watchedKey = store.getWatchedKey().trim();
         List<String> contexts = storeContextsMap.get(store.getEndpoint());
 

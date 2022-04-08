@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
 import com.azure.resourcemanager.appservice.models.DomainPropertiesDomainNotRenewableReasonsItem;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** Information about a domain. */
 @Fluent
 public final class DomainInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
-
     /*
      * Domain resource specific properties
      */

@@ -1,7 +1,44 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2022-03-23)
+
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK. Batch Client. Package tag package-2022-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `BatchManager` was modified
+
+* `fluent.BatchManagement serviceClient()` -> `fluent.BatchManagementClient serviceClient()`
+
+### Features Added
+
+* `models.DynamicVNetAssignmentScope` was added
+
+* `models.DetectorListResult` was added
+
+* `models.DetectorResponse` was added
+
+#### `models.NetworkConfiguration` was modified
+
+* `dynamicVNetAssignmentScope()` was added
+* `withDynamicVNetAssignmentScope(models.DynamicVNetAssignmentScope)` was added
+
+#### `models.BatchAccounts` was modified
+
+* `getDetectorWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listDetectors(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getDetector(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDetectors(java.lang.String,java.lang.String)` was added
 
 ## 1.0.0-beta.2 (2021-07-29)
 

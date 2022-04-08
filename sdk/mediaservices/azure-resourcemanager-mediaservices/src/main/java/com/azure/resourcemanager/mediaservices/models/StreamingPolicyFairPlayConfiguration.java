@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class to specify configurations of FairPlay in Streaming Policy. */
 @Fluent
 public final class StreamingPolicyFairPlayConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingPolicyFairPlayConfiguration.class);
-
     /*
      * Template for the URL of the custom service delivering licenses to end
      * user players.  Not required when using Azure Media Services for issuing

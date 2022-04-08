@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Intrusion detection bypass traffic specification. */
 @Fluent
 public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(FirewallPolicyIntrusionDetectionBypassTrafficSpecifications.class);
-
     /*
      * Name of the bypass traffic rule.
      */

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network rule set. */
 @Fluent
 public final class NetworkRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
-
     /*
      * Specifies whether traffic is bypassed for Logging/Metrics/AzureServices.
      * Possible values are any combination of Logging|Metrics|AzureServices
@@ -168,9 +165,11 @@ public final class NetworkRuleSet {
             ipRules().forEach(e -> e.validate());
         }
         if (defaultAction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkRuleSet.class);
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Storage linked service properties. */
 @Fluent
 public final class AzureStorageLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageLinkedServiceTypeProperties.class);
-
     /*
      * The connection string. It is mutually exclusive with sasUri property.
      * Type: string, SecureString or AzureKeyVaultSecretReference.

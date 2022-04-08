@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscription keys. */
 @Fluent
 public final class SubscriptionKeysContractInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionKeysContractInner.class);
-
     /*
      * Subscription primary key.
      */

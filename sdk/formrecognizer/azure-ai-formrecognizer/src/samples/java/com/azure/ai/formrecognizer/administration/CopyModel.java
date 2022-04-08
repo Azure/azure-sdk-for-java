@@ -4,9 +4,11 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
@@ -35,12 +37,14 @@ public class CopyModel {
         String copiedModelId = "my-copied-model";
 
         // Get authorization to copy the model to target resource
-        CopyAuthorization modelCopyAuthorization = targetClient.getCopyAuthorization(copiedModelId);
+        CopyAuthorization modelCopyAuthorization
+            = targetClient.getCopyAuthorizationWithResponse(new CopyAuthorizationOptions().setModelId(copiedModelId),
+            Context.NONE).getValue();
 
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
         // Start copy operation from the source client
-        SyncPoller<DocumentOperationResult, DocumentModel> copyPoller = sourceClient.beginCopyModel(copyModelId,
+        SyncPoller<DocumentOperationResult, DocumentModel> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
             modelCopyAuthorization);
         copyPoller.waitForCompletion();
 

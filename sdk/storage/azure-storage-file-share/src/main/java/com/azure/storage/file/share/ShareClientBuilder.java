@@ -139,7 +139,7 @@ public class ShareClientBuilder implements
     AzureSasCredentialTrait<ShareClientBuilder>,
     ConfigurationTrait<ShareClientBuilder>,
     EndpointTrait<ShareClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ShareClientBuilder.class);
 
     private String endpoint;
     private String accountName;
@@ -191,7 +191,7 @@ public class ShareClientBuilder implements
     public ShareAsyncClient buildAsyncClient() {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, null, azureSasCredential, sasToken, logger);
+            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
@@ -202,11 +202,11 @@ public class ShareClientBuilder implements
             } else if (sasToken != null) {
                 return new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
             } else {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
         }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient,
-            perCallPolicies, perRetryPolicies, configuration, logger);
+            perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
@@ -265,7 +265,7 @@ public class ShareClientBuilder implements
             String[] pathSegments = fullUrl.getPath().split("/");
             int length = pathSegments.length;
             if (length > 3) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "Cannot accept a URL to a file or directory to construct a file share client"));
             }
             this.shareName = length >= 2 ? pathSegments[1] : this.shareName;
@@ -286,8 +286,8 @@ public class ShareClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.", ex));
         }
 
         return this;
@@ -383,10 +383,10 @@ public class ShareClientBuilder implements
     @Override
     public ShareClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, logger);
+                = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getFileEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw logger
+            throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive file service endpoint."));
         }
@@ -420,7 +420,7 @@ public class ShareClientBuilder implements
     @Override
     public ShareClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
+            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -548,7 +548,7 @@ public class ShareClientBuilder implements
     @Override
     public ShareClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

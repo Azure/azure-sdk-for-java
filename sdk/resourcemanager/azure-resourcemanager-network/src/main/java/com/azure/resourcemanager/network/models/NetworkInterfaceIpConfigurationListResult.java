@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for list ip configurations API service call. */
 @Fluent
 public final class NetworkInterfaceIpConfigurationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationListResult.class);
-
     /*
      * A list of ip configurations.
      */

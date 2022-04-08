@@ -28,7 +28,7 @@ class PublishingProfileImpl implements PublishingProfile {
         Pattern
             .compile(
                 "publishMethod=\"FTP\""
-                    + " publishUrl=\"ftp://([^\"]+).+userName=\"([^\"]+\\\\\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
+                    + " publishUrl=\"ftps?://([^\"]+).+userName=\"([^\"]+\\\\\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
 
     PublishingProfileImpl(String publishingProfileXml, WebAppBase parent) {
         Matcher matcher = GIT_REGEX.matcher(publishingProfileXml);

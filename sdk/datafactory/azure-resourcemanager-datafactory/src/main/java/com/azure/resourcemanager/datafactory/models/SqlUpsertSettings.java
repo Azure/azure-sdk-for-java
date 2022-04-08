@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sql upsert option settings. */
 @Fluent
 public final class SqlUpsertSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlUpsertSettings.class);
-
     /*
      * Specifies whether to use temp db for upsert interim table. Type: boolean
      * (or Expression with resultType boolean).
