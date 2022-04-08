@@ -18,10 +18,12 @@ public class HttpPipelineSynchronousPolicy implements HttpPipelinePolicy {
      */
     @Override
     public final Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
             beforeSendingRequest(context);
-            return next.process();
-        }).map(response -> afterReceivedResponse(context, response));
+            return next;
+            })
+            .flatMap(ignored -> next.process())
+            .map(response -> afterReceivedResponse(context, response));
     }
 
     /**
