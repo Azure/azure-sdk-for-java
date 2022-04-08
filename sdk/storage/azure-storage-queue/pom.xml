@@ -127,6 +127,8 @@
         <version>1.2.7</version>
         <configuration>
           <flattenMode>oss</flattenMode>
+          <outputDirectory>${project.build.directory}</outputDirectory>
+          <flattenedPomFilename>${project.artifactId}-${project.version}.pom</flattenedPomFilename>
         </configuration>
         <executions>
           <execution>
