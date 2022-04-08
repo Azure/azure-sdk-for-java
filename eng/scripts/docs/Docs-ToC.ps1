@@ -159,12 +159,24 @@ function Get-java-UpdatedDocsMsToc($toc) {
     # Add services exsting in old toc but missing in automation.
     $otherService = $services[-1]
     $sortableServices = $services | Where-Object { $_ –ne $otherService }
+    # Assumption on current structure:
+    # Core is the first item of Other, Client is the first item of Core.
     $CoreClient = $otherService.items[0].items[0].items
     for ($i = 0; $i -lt $CoreClient.Count; $i++) {
         if ($CoreClient[$i].name -eq 'Test') {
             $otherService.items[0].items[0].items[$i].children = ($CoreClient[$i].children | ForEach-Object {$_.Trim() + "*"})
             break
         }                
+    }
+    for ($i = 0; $i -lt $sortableServices.items.Count; $i++) {
+        if ($sortableServices.items[$i].name -eq "IoT") {
+            for ($j = 0; $j -lt $sortableServices.items[$i].items.Count; $j++) {
+                if ($sortableServices.items[$i].items[$j] -eq "IoT Service Client") {
+                    $sortableServices.items[$i].items[$j].children += $newChildren
+                    break
+                } 
+            } 
+        }
     }
     $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
