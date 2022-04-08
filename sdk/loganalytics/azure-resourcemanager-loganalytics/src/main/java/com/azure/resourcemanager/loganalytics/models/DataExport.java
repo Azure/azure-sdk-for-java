@@ -75,11 +75,11 @@ public interface DataExport {
     String resourceId();
 
     /**
-     * Gets the typePropertiesDestinationType property: The type of the destination resource.
+     * Gets the typePropertiesType property: The type of the destination resource.
      *
-     * @return the typePropertiesDestinationType value.
+     * @return the typePropertiesType value.
      */
-    Type typePropertiesDestinationType();
+    Type typePropertiesType();
 
     /**
      * Gets the eventHubName property: Optional. Allows to define an Event Hub name. Not applicable when destination is

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.DataExportsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataExportInner;
 import com.azure.resourcemanager.loganalytics.models.DataExportListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataExportsClient. */
 public final class DataExportsClientImpl implements DataExportsClient {
-    private final ClientLogger logger = new ClientLogger(DataExportsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataExportsService service;
 
@@ -135,7 +132,8 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataExportInner>> listByWorkspaceSinglePageAsync(
@@ -159,6 +157,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -169,7 +168,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DataExportInner>>map(
@@ -188,7 +187,8 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataExportInner>> listByWorkspaceSinglePageAsync(
@@ -212,6 +212,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -220,7 +221,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -237,7 +238,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataExportInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
@@ -253,7 +254,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataExportInner> listByWorkspaceAsync(
@@ -269,7 +270,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataExportInner> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -285,7 +286,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataExportInner> listByWorkspace(
@@ -303,7 +304,8 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container.
+     * @return the top level data export resource container along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataExportInner>> createOrUpdateWithResponseAsync(
@@ -335,6 +337,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -346,7 +349,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             resourceGroupName,
                             workspaceName,
                             dataExportName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -364,7 +367,8 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container.
+     * @return the top level data export resource container along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataExportInner>> createOrUpdateWithResponseAsync(
@@ -400,6 +404,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -409,7 +414,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 resourceGroupName,
                 workspaceName,
                 dataExportName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -425,7 +430,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container.
+     * @return the top level data export resource container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataExportInner> createOrUpdateAsync(
@@ -470,7 +475,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container.
+     * @return the top level data export resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataExportInner> createOrUpdateWithResponse(
@@ -492,7 +497,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return a data export instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataExportInner>> getWithResponseAsync(
@@ -519,6 +524,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -530,7 +536,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             resourceGroupName,
                             workspaceName,
                             dataExportName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -546,7 +552,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return a data export instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataExportInner>> getWithResponseAsync(
@@ -573,6 +579,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -582,7 +589,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 resourceGroupName,
                 workspaceName,
                 dataExportName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -596,7 +603,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return a data export instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataExportInner> getAsync(String resourceGroupName, String workspaceName, String dataExportName) {
@@ -637,7 +644,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return a data export instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataExportInner> getWithResponse(
@@ -654,7 +661,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -681,6 +688,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -692,7 +700,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                             resourceGroupName,
                             workspaceName,
                             dataExportName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -708,7 +716,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -735,6 +743,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -744,7 +753,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
                 resourceGroupName,
                 workspaceName,
                 dataExportName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -758,7 +767,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String dataExportName) {
@@ -791,7 +800,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

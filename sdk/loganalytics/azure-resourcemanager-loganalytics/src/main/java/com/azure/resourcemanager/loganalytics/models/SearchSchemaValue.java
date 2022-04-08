@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Value object for schema results. */
 @Fluent
 public final class SearchSchemaValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SearchSchemaValue.class);
-
     /*
      * The name of the schema.
      */

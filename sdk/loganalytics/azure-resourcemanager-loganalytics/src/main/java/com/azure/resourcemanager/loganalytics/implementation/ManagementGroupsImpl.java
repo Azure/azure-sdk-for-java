@@ -11,10 +11,9 @@ import com.azure.resourcemanager.loganalytics.fluent.ManagementGroupsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.ManagementGroupInner;
 import com.azure.resourcemanager.loganalytics.models.ManagementGroup;
 import com.azure.resourcemanager.loganalytics.models.ManagementGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagementGroupsImpl implements ManagementGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementGroupsImpl.class);
 
     private final ManagementGroupsClient innerClient;
 

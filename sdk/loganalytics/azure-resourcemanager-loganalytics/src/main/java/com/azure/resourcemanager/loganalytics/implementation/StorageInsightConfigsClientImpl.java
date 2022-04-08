@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.StorageInsightConfigsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner;
 import com.azure.resourcemanager.loganalytics.models.StorageInsightListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in StorageInsightConfigsClient. */
 public final class StorageInsightConfigsClientImpl implements StorageInsightConfigsClient {
-    private final ClientLogger logger = new ClientLogger(StorageInsightConfigsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final StorageInsightConfigsService service;
 
@@ -147,7 +144,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container.
+     * @return the top level storage insight resource container along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(
@@ -180,6 +178,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -190,7 +189,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             resourceGroupName,
                             workspaceName,
                             storageInsightName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
                             accept,
@@ -209,7 +208,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container.
+     * @return the top level storage insight resource container along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(
@@ -246,6 +246,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -254,7 +255,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 resourceGroupName,
                 workspaceName,
                 storageInsightName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
                 accept,
@@ -271,7 +272,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container.
+     * @return the top level storage insight resource container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageInsightInner> createOrUpdateAsync(
@@ -316,7 +317,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container.
+     * @return the top level storage insight resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInsightInner> createOrUpdateWithResponse(
@@ -339,7 +340,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
+     * @return a storage insight instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageInsightInner>> getWithResponseAsync(
@@ -367,6 +368,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -377,7 +379,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             resourceGroupName,
                             workspaceName,
                             storageInsightName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -394,7 +396,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
+     * @return a storage insight instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageInsightInner>> getWithResponseAsync(
@@ -422,6 +424,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -430,7 +433,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 resourceGroupName,
                 workspaceName,
                 storageInsightName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -445,7 +448,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
+     * @return a storage insight instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageInsightInner> getAsync(
@@ -487,7 +490,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
+     * @return a storage insight instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageInsightInner> getWithResponse(
@@ -504,7 +507,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -532,6 +535,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -541,7 +545,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             resourceGroupName,
                             workspaceName,
                             storageInsightName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -557,7 +561,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -585,6 +589,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -592,7 +597,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 resourceGroupName,
                 workspaceName,
                 storageInsightName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 context);
     }
@@ -606,7 +611,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String storageInsightName) {
@@ -639,7 +644,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -655,7 +660,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(
@@ -679,6 +685,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -688,7 +695,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -713,7 +720,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(
@@ -737,6 +745,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -744,7 +753,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)
@@ -767,7 +776,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageInsightInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
@@ -785,7 +794,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageInsightInner> listByWorkspaceAsync(
@@ -803,7 +812,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageInsightInner> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -819,7 +828,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageInsightInner> listByWorkspace(
@@ -834,7 +843,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -870,7 +880,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceNextSinglePageAsync(

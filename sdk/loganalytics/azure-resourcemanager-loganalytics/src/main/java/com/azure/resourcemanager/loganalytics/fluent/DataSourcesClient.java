@@ -40,7 +40,7 @@ public interface DataSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datasources under OMS Workspace.
+     * @return datasources under OMS Workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataSourceInner> createOrUpdateWithResponse(
@@ -73,7 +73,7 @@ public interface DataSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -103,7 +103,7 @@ public interface DataSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datasource instance.
+     * @return a datasource instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataSourceInner> getWithResponse(
@@ -118,7 +118,8 @@ public interface DataSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page.
+     * @return the first page of data source instances in a workspace with the link to the next page as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String filter);
@@ -134,7 +135,8 @@ public interface DataSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page.
+     * @return the first page of data source instances in a workspace with the link to the next page as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataSourceInner> listByWorkspace(

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a storage account connection. */
 @Fluent
 public final class StorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccount.class);
-
     /*
      * The Azure Resource Manager ID of the storage account resource.
      */
@@ -73,14 +70,16 @@ public final class StorageAccount {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model StorageAccount"));
         }
         if (key() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property key in model StorageAccount"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccount.class);
 }

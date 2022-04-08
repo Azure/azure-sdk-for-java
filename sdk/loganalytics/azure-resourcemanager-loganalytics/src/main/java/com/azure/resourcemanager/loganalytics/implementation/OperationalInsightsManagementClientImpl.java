@@ -34,6 +34,8 @@ import com.azure.resourcemanager.loganalytics.fluent.ManagementGroupsClient;
 import com.azure.resourcemanager.loganalytics.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.loganalytics.fluent.OperationalInsightsManagementClient;
 import com.azure.resourcemanager.loganalytics.fluent.OperationsClient;
+import com.azure.resourcemanager.loganalytics.fluent.QueriesClient;
+import com.azure.resourcemanager.loganalytics.fluent.QueryPacksClient;
 import com.azure.resourcemanager.loganalytics.fluent.SavedSearchesClient;
 import com.azure.resourcemanager.loganalytics.fluent.SchemasClient;
 import com.azure.resourcemanager.loganalytics.fluent.SharedKeysOperationsClient;
@@ -55,8 +57,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the OperationalInsightsManagementClientImpl type. */
 @ServiceClient(builder = OperationalInsightsManagementClientBuilder.class)
 public final class OperationalInsightsManagementClientImpl implements OperationalInsightsManagementClient {
-    private final ClientLogger logger = new ClientLogger(OperationalInsightsManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -79,18 +79,6 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -127,6 +115,30 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /** The QueryPacksClient object to access its operations. */
+    private final QueryPacksClient queryPacks;
+
+    /**
+     * Gets the QueryPacksClient object to access its operations.
+     *
+     * @return the QueryPacksClient object.
+     */
+    public QueryPacksClient getQueryPacks() {
+        return this.queryPacks;
+    }
+
+    /** The QueriesClient object to access its operations. */
+    private final QueriesClient queries;
+
+    /**
+     * Gets the QueriesClient object to access its operations.
+     *
+     * @return the QueriesClient object.
+     */
+    public QueriesClient getQueries() {
+        return this.queries;
     }
 
     /** The DataExportsClient object to access its operations. */
@@ -201,18 +213,6 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
         return this.managementGroups;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
     /** The OperationStatusesClient object to access its operations. */
     private final OperationStatusesClient operationStatuses;
 
@@ -247,42 +247,6 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
      */
     public UsagesClient getUsages() {
         return this.usages;
-    }
-
-    /** The WorkspacesClient object to access its operations. */
-    private final WorkspacesClient workspaces;
-
-    /**
-     * Gets the WorkspacesClient object to access its operations.
-     *
-     * @return the WorkspacesClient object.
-     */
-    public WorkspacesClient getWorkspaces() {
-        return this.workspaces;
-    }
-
-    /** The DeletedWorkspacesClient object to access its operations. */
-    private final DeletedWorkspacesClient deletedWorkspaces;
-
-    /**
-     * Gets the DeletedWorkspacesClient object to access its operations.
-     *
-     * @return the DeletedWorkspacesClient object.
-     */
-    public DeletedWorkspacesClient getDeletedWorkspaces() {
-        return this.deletedWorkspaces;
-    }
-
-    /** The ClustersClient object to access its operations. */
-    private final ClustersClient clusters;
-
-    /**
-     * Gets the ClustersClient object to access its operations.
-     *
-     * @return the ClustersClient object.
-     */
-    public ClustersClient getClusters() {
-        return this.clusters;
     }
 
     /** The StorageInsightConfigsClient object to access its operations. */
@@ -357,6 +321,54 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
         return this.workspacePurges;
     }
 
+    /** The ClustersClient object to access its operations. */
+    private final ClustersClient clusters;
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     *
+     * @return the ClustersClient object.
+     */
+    public ClustersClient getClusters() {
+        return this.clusters;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /** The WorkspacesClient object to access its operations. */
+    private final WorkspacesClient workspaces;
+
+    /**
+     * Gets the WorkspacesClient object to access its operations.
+     *
+     * @return the WorkspacesClient object.
+     */
+    public WorkspacesClient getWorkspaces() {
+        return this.workspaces;
+    }
+
+    /** The DeletedWorkspacesClient object to access its operations. */
+    private final DeletedWorkspacesClient deletedWorkspaces;
+
+    /**
+     * Gets the DeletedWorkspacesClient object to access its operations.
+     *
+     * @return the DeletedWorkspacesClient object.
+     */
+    public DeletedWorkspacesClient getDeletedWorkspaces() {
+        return this.deletedWorkspaces;
+    }
+
     /** The TablesClient object to access its operations. */
     private final TablesClient tables;
 
@@ -391,26 +403,27 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-08-01";
+        this.queryPacks = new QueryPacksClientImpl(this);
+        this.queries = new QueriesClientImpl(this);
         this.dataExports = new DataExportsClientImpl(this);
         this.dataSources = new DataSourcesClientImpl(this);
         this.intelligencePacks = new IntelligencePacksClientImpl(this);
         this.linkedServices = new LinkedServicesClientImpl(this);
         this.linkedStorageAccounts = new LinkedStorageAccountsClientImpl(this);
         this.managementGroups = new ManagementGroupsClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
         this.operationStatuses = new OperationStatusesClientImpl(this);
         this.sharedKeysOperations = new SharedKeysOperationsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
-        this.workspaces = new WorkspacesClientImpl(this);
-        this.deletedWorkspaces = new DeletedWorkspacesClientImpl(this);
-        this.clusters = new ClustersClientImpl(this);
         this.storageInsightConfigs = new StorageInsightConfigsClientImpl(this);
         this.savedSearches = new SavedSearchesClientImpl(this);
         this.availableServiceTiers = new AvailableServiceTiersClientImpl(this);
         this.gateways = new GatewaysClientImpl(this);
         this.schemas = new SchemasClientImpl(this);
         this.workspacePurges = new WorkspacePurgesClientImpl(this);
+        this.clusters = new ClustersClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
+        this.workspaces = new WorkspacesClientImpl(this);
+        this.deletedWorkspaces = new DeletedWorkspacesClientImpl(this);
         this.tables = new TablesClientImpl(this);
     }
 
@@ -497,7 +510,7 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -556,4 +569,6 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationalInsightsManagementClientImpl.class);
 }

@@ -57,8 +57,8 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
         return this.innerModel().resourceId();
     }
 
-    public Type typePropertiesDestinationType() {
-        return this.innerModel().typePropertiesDestinationType();
+    public Type typePropertiesType() {
+        return this.innerModel().typePropertiesType();
     }
 
     public String eventHubName() {

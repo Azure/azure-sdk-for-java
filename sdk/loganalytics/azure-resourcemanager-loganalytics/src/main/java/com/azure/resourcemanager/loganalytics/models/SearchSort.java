@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The sort parameters for search. */
 @Fluent
 public final class SearchSort {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SearchSort.class);
-
     /*
      * The name of the field the search query is sorted on.
      */

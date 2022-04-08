@@ -5,45 +5,37 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.LinkedServiceEntityStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The top level Linked service resource container. */
-@JsonFlatten
 @Fluent
-public class LinkedServiceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedServiceInner.class);
+public final class LinkedServiceInner extends ProxyResource {
+    /*
+     * The properties of the linked service.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private LinkedServiceProperties innerProperties = new LinkedServiceProperties();
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The resource id of the resource that will be linked to the workspace.
-     * This should be used for linking resources which require read access
+    /**
+     * Get the innerProperties property: The properties of the linked service.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
-
-    /*
-     * The resource id of the resource that will be linked to the workspace.
-     * This should be used for linking resources which require write access
-     */
-    @JsonProperty(value = "properties.writeAccessResourceId")
-    private String writeAccessResourceId;
-
-    /*
-     * The provisioning state of the linked service.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private LinkedServiceEntityStatus provisioningState;
+    private LinkedServiceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -72,7 +64,7 @@ public class LinkedServiceInner extends ProxyResource {
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -83,7 +75,10 @@ public class LinkedServiceInner extends ProxyResource {
      * @return the LinkedServiceInner object itself.
      */
     public LinkedServiceInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedServiceProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -94,7 +89,7 @@ public class LinkedServiceInner extends ProxyResource {
      * @return the writeAccessResourceId value.
      */
     public String writeAccessResourceId() {
-        return this.writeAccessResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().writeAccessResourceId();
     }
 
     /**
@@ -105,7 +100,10 @@ public class LinkedServiceInner extends ProxyResource {
      * @return the LinkedServiceInner object itself.
      */
     public LinkedServiceInner withWriteAccessResourceId(String writeAccessResourceId) {
-        this.writeAccessResourceId = writeAccessResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedServiceProperties();
+        }
+        this.innerProperties().withWriteAccessResourceId(writeAccessResourceId);
         return this;
     }
 
@@ -115,7 +113,7 @@ public class LinkedServiceInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public LinkedServiceEntityStatus provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -125,7 +123,10 @@ public class LinkedServiceInner extends ProxyResource {
      * @return the LinkedServiceInner object itself.
      */
     public LinkedServiceInner withProvisioningState(LinkedServiceEntityStatus provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedServiceProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -135,5 +136,15 @@ public class LinkedServiceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model LinkedServiceInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedServiceInner.class);
 }

@@ -17,7 +17,8 @@ public interface DeletedWorkspacesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recently deleted workspaces in a subscription, available for recovery.
+     * @return recently deleted workspaces in a subscription, available for recovery as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> list();
@@ -29,7 +30,8 @@ public interface DeletedWorkspacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recently deleted workspaces in a subscription, available for recovery.
+     * @return recently deleted workspaces in a subscription, available for recovery as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> list(Context context);
@@ -41,7 +43,8 @@ public interface DeletedWorkspacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recently deleted workspaces in a resource group, available for recovery.
+     * @return recently deleted workspaces in a resource group, available for recovery as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName);
@@ -54,7 +57,8 @@ public interface DeletedWorkspacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recently deleted workspaces in a resource group, available for recovery.
+     * @return recently deleted workspaces in a resource group, available for recovery as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName, Context context);

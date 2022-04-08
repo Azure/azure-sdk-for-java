@@ -36,7 +36,7 @@ public interface SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -69,7 +69,7 @@ public interface SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results.
+     * @return value object for saved search results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SavedSearchInner> createOrUpdateWithResponse(
@@ -103,7 +103,7 @@ public interface SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified saved search for a given workspace.
+     * @return the specified saved search for a given workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SavedSearchInner> getWithResponse(
@@ -131,7 +131,7 @@ public interface SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the saved searches for a given Log Analytics Workspace.
+     * @return the saved searches for a given Log Analytics Workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(

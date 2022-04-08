@@ -70,7 +70,7 @@ public interface WorkspacePurges {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation.
+     * @return status of an ongoing purge operation along with {@link Response}.
      */
     Response<WorkspacePurgeStatusResponse> getPurgeStatusWithResponse(
         String resourceGroupName, String workspaceName, String purgeId, Context context);

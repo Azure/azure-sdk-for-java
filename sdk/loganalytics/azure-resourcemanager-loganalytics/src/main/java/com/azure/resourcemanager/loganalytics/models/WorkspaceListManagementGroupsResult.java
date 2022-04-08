@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.ManagementGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list workspace management groups operation response. */
 @Fluent
 public final class WorkspaceListManagementGroupsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceListManagementGroupsResult.class);
-
     /*
      * Gets or sets a list of management groups attached to the workspace.
      */

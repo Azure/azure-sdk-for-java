@@ -8,15 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.DataSourceKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Datasources under OMS Workspace. */
 @Fluent
 public final class DataSourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataSourceInner.class);
-
     /*
      * The data source properties in raw json format, each kind of data source
      * have it's own schema.
@@ -40,6 +38,7 @@ public final class DataSourceInner extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -131,14 +130,16 @@ public final class DataSourceInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property properties in model DataSourceInner"));
         }
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model DataSourceInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataSourceInner.class);
 }

@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The cluster sku definition. */
 @Fluent
 public final class ClusterSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterSku.class);
-
     /*
      * The capacity value
      */
     @JsonProperty(value = "capacity")
-    private Long capacity;
+    private Capacity capacity;
 
     /*
      * The name of the SKU.
@@ -31,7 +27,7 @@ public final class ClusterSku {
      *
      * @return the capacity value.
      */
-    public Long capacity() {
+    public Capacity capacity() {
         return this.capacity;
     }
 
@@ -41,7 +37,7 @@ public final class ClusterSku {
      * @param capacity the capacity value to set.
      * @return the ClusterSku object itself.
      */
-    public ClusterSku withCapacity(Long capacity) {
+    public ClusterSku withCapacity(Capacity capacity) {
         this.capacity = capacity;
         return this;
     }
