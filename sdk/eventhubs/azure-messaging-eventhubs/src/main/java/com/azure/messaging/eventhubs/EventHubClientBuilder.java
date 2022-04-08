@@ -270,14 +270,11 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Sets the client identifier.
-     *
-     * @param identifier Identifier for the client.
-     * @return The updated {@link EventHubClientBuilder} object.
+     * {@inheritDoc}
      */
     @Override
     public EventHubClientBuilder identifier(String identifier) {
-        this.identifier = identifier;
+        this.identifier =  Objects.requireNonNull(identifier, "'identifier' cannot be null.");
         return this;
     }
 

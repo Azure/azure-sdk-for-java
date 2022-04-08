@@ -533,7 +533,7 @@ public class ReactorSession implements AmqpSession {
         final Source source = new Source();
         if (linkProperties != null && linkProperties.size() > 0) {
             String clientIdentifier = (String) linkProperties.get(CLIENT_IDENTIFIER);
-            if (CoreUtils.isNullOrEmpty(clientIdentifier)) {
+            if (!CoreUtils.isNullOrEmpty(clientIdentifier)) {
                 source.setAddress(clientIdentifier);
                 linkProperties.remove(CLIENT_IDENTIFIER);
             }
@@ -598,7 +598,7 @@ public class ReactorSession implements AmqpSession {
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
             String clientIdentifier = (String) receiverProperties.get(CLIENT_IDENTIFIER);
-            if (CoreUtils.isNullOrEmpty(clientIdentifier)) {
+            if (!CoreUtils.isNullOrEmpty(clientIdentifier)) {
                 target.setAddress(clientIdentifier);
             }
         }

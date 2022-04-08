@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
@@ -142,6 +143,11 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
             return createProducer(linkName, entityPath, timeout, retry, linkProperties);
         }
+    }
+
+    @Override
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
+        return this.createProducer(linkName, entityPath, timeout, retry, (Map<Symbol, Object>) null).cast(AmqpLink.class);
     }
 
     @Override

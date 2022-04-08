@@ -240,10 +240,7 @@ public class EventProcessorClientBuilder implements
     }
 
     /**
-     * Sets the client identifier.
-     *
-     * @param identifier Identifier for the client.
-     * @return The updated {@link EventHubClientBuilder} object.
+     * {@inheritDoc}
      */
     @Override
     public EventProcessorClientBuilder identifier(String identifier) {
