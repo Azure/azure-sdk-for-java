@@ -940,6 +940,7 @@
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>
+        <module>sdk/postgresqlhsc</module>
         <module>sdk/powerbidedicated</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
