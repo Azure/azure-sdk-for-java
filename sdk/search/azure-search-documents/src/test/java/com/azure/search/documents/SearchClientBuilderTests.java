@@ -138,6 +138,7 @@ public class SearchClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName("test_builder")
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(1))))
             .httpClient(new SearchIndexClientBuilderTests.FreshDateTestClient())
             .buildAsyncClient();
 
