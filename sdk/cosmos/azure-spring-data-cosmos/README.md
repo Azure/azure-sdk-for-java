@@ -528,7 +528,7 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
 ```
 
 ### Spring Boot Starter Data Rest
-- Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
+- Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://spring.io/projects/spring-data-rest).
 - Supports List and nested type in domain class.
 - Configurable ObjectMapper bean with unique name `cosmosObjectMapper`, only configure customized ObjectMapper if you really need to. e.g.,
 ```java readme-sample-objectMapper
