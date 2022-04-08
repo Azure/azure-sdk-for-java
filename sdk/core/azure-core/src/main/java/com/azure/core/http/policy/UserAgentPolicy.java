@@ -121,11 +121,33 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         this.userAgent = UserAgentUtil.toUserAgentString(null, sdkName, sdkVersion, configuration);
     }
 
+    /**
+     * Updates the "User-Agent" header with the value supplied in the policy.
+     *
+     * <p>The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
+     * {@code Override-User-Agent} will take precedence over the value supplied in the policy,
+     * {@code Append-User-Agent} will be appended to the value supplied in the policy.</p>
+     *
+     * @param context request context
+     * @param next The next policy to invoke.
+     * @return A publisher that initiates the request upon subscription and emits a response on completion.
+     */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return inner.process(context, next);
     }
 
+    /**
+     * Updates the "User-Agent" header with the value supplied in the policy.
+     *
+     * <p>The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
+     * {@code Override-User-Agent} will take precedence over the value supplied in the policy,
+     * {@code Append-User-Agent} will be appended to the value supplied in the policy.</p>
+     *
+     * @param context request context
+     * @param next The next policy to invoke.
+     * @return A response.
+     */
     @Override
     public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return inner.processSynchronously(context, next);

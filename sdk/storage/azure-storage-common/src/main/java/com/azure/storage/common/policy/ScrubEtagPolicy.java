@@ -34,11 +34,23 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
         }
     };
 
+    /**
+     * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
+     * standardize the value.
+     *
+     * @return an updated response with post-processing steps applied.
+     */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return INNER.process(context, next);
     }
 
+    /**
+     * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
+     * standardize the value.
+     *
+     * @return an updated response with post-processing steps applied.
+     */
     @Override
     public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return INNER.processSynchronously(context, next);
