@@ -40,6 +40,7 @@ public interface JsonWriter extends Closeable {
     /**
      * Writes a JSON field name.
      *
+     * @param fieldName The field name.
      * @return The updated JsonWriter object.
      */
     JsonWriter writeFieldName(String fieldName);
@@ -49,7 +50,7 @@ public interface JsonWriter extends Closeable {
      * <p>
      * This API is used instead of {@link #writeBinaryField(String, byte[])} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     * 
+     *
      * @param value Binary value to write.
      * @return The updated JsonWriter object.
      */
@@ -76,6 +77,17 @@ public interface JsonWriter extends Closeable {
      * @return The updated JsonWriter object.
      */
     JsonWriter writeDouble(double value);
+
+    /**
+     * Writes a JSON float value.
+     * <p>
+     * This API is used instead of {@link #writeFloatField(String, float)} when the value needs to be written to the
+     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     *
+     * @param value float value to write.
+     * @return The updated JsonWriter object.
+     */
+    JsonWriter writeFloat(float value);
 
     /**
      * Writes a JSON int value.
@@ -125,7 +137,7 @@ public interface JsonWriter extends Closeable {
      * <p>
      * Combines {@link #writeFieldName(String)} and {@link #writeBinary(byte[])} to simplify adding a key-value to a
      * JSON object.
-     * 
+     *
      * @param fieldName The field name.
      * @param value The binary value.
      * @return The updated JsonWriter object.
@@ -155,6 +167,18 @@ public interface JsonWriter extends Closeable {
      * @return The updated JsonWriter object.
      */
     JsonWriter writeDoubleField(String fieldName, double value);
+
+    /**
+     * Writes a JSON float field.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeFloat(float)} to simplify adding a key-value to a
+     * JSON object.
+     *
+     * @param fieldName The field name.
+     * @param value The float value.
+     * @return The updated JsonWriter object.
+     */
+    JsonWriter writeFloatField(String fieldName, float value);
 
     /**
      * Writes a JSON int field.
