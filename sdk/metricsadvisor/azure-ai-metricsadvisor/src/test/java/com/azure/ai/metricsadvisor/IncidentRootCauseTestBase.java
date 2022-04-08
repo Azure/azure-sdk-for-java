@@ -10,7 +10,6 @@ import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 import static com.azure.ai.metricsadvisor.AnomalyAlertTestBase.DETECTION_CONFIGURATION_ID;
