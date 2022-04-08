@@ -6,12 +6,24 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * The pipeline policy that adds a particular set of headers to HTTP requests.
  */
-public class AddHeadersPolicy extends HttpPipelineSynchronousPolicy {
+public class AddHeadersPolicy implements HttpPipelinePolicy {
+
     private final HttpHeaders headers;
+    private final HttpPipelineSynchronousPolicy inner = new HttpPipelineSynchronousPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            for (HttpHeader header : headers) {
+                context.getHttpRequest().setHeader(header.getName(), header.getValue());
+            }
+        }
+    };
 
     /**
      * Creates a AddHeadersPolicy.
@@ -23,9 +35,12 @@ public class AddHeadersPolicy extends HttpPipelineSynchronousPolicy {
     }
 
     @Override
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        for (HttpHeader header : headers) {
-            context.getHttpRequest().setHeader(header.getName(), header.getValue());
-        }
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.process(context, next);
+    }
+
+    @Override
+    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.processSynchronously(context, next);
     }
 }

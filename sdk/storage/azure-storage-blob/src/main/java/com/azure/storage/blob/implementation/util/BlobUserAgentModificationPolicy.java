@@ -4,8 +4,12 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
+import reactor.core.publisher.Mono;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,10 +20,9 @@ import java.util.regex.Pattern;
  * UAbefore: "azsdk-java-azure-storage-blob/12.11.0-beta.2 (11.0.6; Windows 10; 10.0)"
  * UAafter: "azsdk-java-azure-storage-blob/12.11.0-beta.2 azsdk-java-azure-storage-blob-batch/12.8.0-beta.2 (11.0.6; Windows 10; 10.0) "
  */
-public class BlobUserAgentModificationPolicy extends HttpPipelineSynchronousPolicy {
+public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
 
-    private final String clientName;
-    private final String clientVersion;
+    private final HttpPipelineSynchronousPolicy inner;
 
     private static final String USER_AGENT = "User-Agent";
     private static final String REGEX = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
@@ -32,24 +35,33 @@ public class BlobUserAgentModificationPolicy extends HttpPipelineSynchronousPoli
      * @param clientVersion The version of the package.
      */
     public BlobUserAgentModificationPolicy(String clientName, String clientVersion) {
-        this.clientName = clientName;
-        this.clientVersion = clientVersion;
+        this.inner = new HttpPipelineSynchronousPolicy() {
+            @Override
+            protected void beforeSendingRequest(HttpPipelineCallContext context) {
+                String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
+                Matcher matcher = PATTERN.matcher(userAgent);
+                StringBuilder builder = new StringBuilder();
+                if (matcher.matches()) {
+                    builder.append(matcher.group(1) == null ? "" : matcher.group(1))
+                        .append(matcher.group(2) == null ? "" : matcher.group(2))
+                        .append(" ").append("azsdk-java-").append(clientName).append("/").append(clientVersion)
+                        .append(matcher.group(3) == null ? "" : matcher.group(3));
+                } else {
+                    builder.append(userAgent);
+                }
+                context.getHttpRequest().getHeaders().set("User-Agent", builder.toString());
+            }
+        };
     }
 
     @Override
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
-        Matcher matcher = PATTERN.matcher(userAgent);
-        StringBuilder builder = new StringBuilder();
-        if (matcher.matches()) {
-            builder.append(matcher.group(1) == null ? "" : matcher.group(1))
-                .append(matcher.group(2) == null ? "" : matcher.group(2))
-                .append(" ").append("azsdk-java-").append(clientName).append("/").append(clientVersion)
-                .append(matcher.group(3) == null ? "" : matcher.group(3));
-        } else {
-            builder.append(userAgent);
-        }
-        context.getHttpRequest().getHeaders().put("User-Agent", builder.toString());
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.process(context, next);
+    }
+
+    @Override
+    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.processSynchronously(context, next);
     }
 
     @Override

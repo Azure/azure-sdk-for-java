@@ -4,8 +4,11 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpResponse;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -22,10 +25,20 @@ import java.util.UUID;
  * </pre>
  * <!-- end com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName -->
  */
-public class RequestIdPolicy extends HttpPipelineSynchronousPolicy {
+public class RequestIdPolicy implements HttpPipelinePolicy {
 
     private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
+
     private final String requestIdHeaderName;
+    private final HttpPipelineSynchronousPolicy inner = new HttpPipelineSynchronousPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            String requestId = context.getHttpRequest().getHeaders().getValue(requestIdHeaderName);
+            if (requestId == null) {
+                context.getHttpRequest().getHeaders().set(requestIdHeaderName, UUID.randomUUID().toString());
+            }
+        }
+    };
 
     /**
      * Creates  {@link RequestIdPolicy} with provided {@code requestIdHeaderName}.
@@ -44,11 +57,13 @@ public class RequestIdPolicy extends HttpPipelineSynchronousPolicy {
     }
 
     @Override
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        String requestId = context.getHttpRequest().getHeaders().getValue(requestIdHeaderName);
-        if (requestId == null) {
-            context.getHttpRequest().getHeaders().set(requestIdHeaderName, UUID.randomUUID().toString());
-        }
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.process(context, next);
+    }
+
+    @Override
+    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.processSynchronously(context, next);
     }
 }
 

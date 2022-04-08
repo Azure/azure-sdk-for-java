@@ -16,9 +16,8 @@ public class HttpPipelineSynchronousPolicy implements HttpPipelinePolicy {
     /**
      * {@inheritDoc}
      */
-    // TODO (kasobol-msft) ideally this should be marked final but then it breaks revapi.
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public final Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return Mono.defer(() -> {
             beforeSendingRequest(context);
             return next.process();
@@ -28,9 +27,8 @@ public class HttpPipelineSynchronousPolicy implements HttpPipelinePolicy {
     /**
      * {@inheritDoc}
      */
-    // TODO (kasobol-msft) ideally this should be marked final but then it breaks revapi.
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public final HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         beforeSendingRequest(context);
         HttpResponse response = next.processSynchronously();
         return afterReceivedResponse(context, response);
