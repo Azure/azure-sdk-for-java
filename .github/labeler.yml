@@ -1,0 +1,4 @@
+# Add 'azure-spring' label to any change to sdk/spring folder
+azure-spring:
+  - sdk/spring/**/*
+  - sdk/bomx/spring-cloud-azure-dependencies/**/*
