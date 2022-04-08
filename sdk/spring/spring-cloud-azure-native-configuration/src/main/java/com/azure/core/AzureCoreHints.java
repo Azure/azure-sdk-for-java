@@ -15,8 +15,7 @@ import org.springframework.nativex.type.NativeConfiguration;
     initialization = {
         @InitializationHint(
             initTime = InitializationTime.BUILD,
-            types = { LoggingEventBuilder.class }
-        )
+            types = { LoggingEventBuilder.class })
     }
 )
 public class AzureCoreHints implements NativeConfiguration {

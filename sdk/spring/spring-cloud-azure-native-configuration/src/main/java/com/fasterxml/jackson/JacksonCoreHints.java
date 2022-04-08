@@ -16,11 +16,10 @@ import org.springframework.nativex.type.NativeConfiguration;
     initialization = {
         @InitializationHint(
             initTime = InitializationTime.BUILD,
-            types ={
+            types = {
                 CharTypes.class,
                 JsonStringEncoder.class
-            }
-        )
+            })
     }
 )
 public class JacksonCoreHints implements NativeConfiguration {

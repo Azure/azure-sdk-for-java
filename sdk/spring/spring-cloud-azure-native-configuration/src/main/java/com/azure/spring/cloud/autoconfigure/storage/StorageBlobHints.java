@@ -15,8 +15,7 @@ import org.springframework.nativex.type.NativeConfiguration;
     types = {
         @TypeHint(
             types = AzureStorageBlobProperties.class,
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        )
+            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS })
     }
 )
 public class StorageBlobHints implements NativeConfiguration {

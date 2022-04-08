@@ -31,8 +31,7 @@ import org.springframework.nativex.type.NativeConfiguration;
                 EventHubsChannelProvisioner.class,
                 EventHubsChannelResourceManagerProvisioner.class
             },
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS, TypeAccess.DECLARED_CLASSES }
-        )
+            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS, TypeAccess.DECLARED_CLASSES })
     }
 )
 public class EventHubsBinderHints implements NativeConfiguration {

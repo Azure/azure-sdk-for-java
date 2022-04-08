@@ -381,6 +381,9 @@ the main ServiceBusClientBuilder. -->
   <suppress files="com.azure.spring[\\/].*Configuration\.java" checks="MissingJavadocMethod" />
   <suppress files="com.azure.spring[\\/].*Metadata\.java" checks="MissingJavadocMethod" />
 
+  <!-- Suppress spring-cloud-azure-native-configuration module, because of only some auto configurations. -->
+  <suppress files="[/\\]spring-cloud-azure-native-configuration[/\\]src[/\\]main[/\\]java[/\\].*[/\\]*Hints.java" checks="MissingJavadocMethod|MissingJavadocType|MissingJavadocPackage|JavadocPackage|PackageName" />
+
   <!-- Suppress package name warning: b2c is the product name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aadb2c.*" />
   <!-- Suppress package name warning: oauth2 is the protocol name. -->

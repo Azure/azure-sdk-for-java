@@ -54,8 +54,7 @@ import org.springframework.nativex.type.NativeConfiguration;
                 HttpLoggingProperties.class,
                 AzureResourceMetadata.class
             },
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        )
+            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS })
     }
 )
 @ResourceHint(patterns = { "META-INF/project.properties", "additional-spring-configuration-metadata.json"})
