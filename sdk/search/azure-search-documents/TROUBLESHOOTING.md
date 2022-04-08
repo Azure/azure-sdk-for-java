@@ -1,4 +1,4 @@
-# Troubleshooting Azure Search SDK Issues
+# Troubleshooting Azure Cognitive Search SDK Issues
 
 The `azure-search-documents` package provides APIs for operations on the 
 [Azure Cognitive Search](https://docs.microsoft.com/azure/search/search-what-is-azure-search) cloud service.
@@ -32,6 +32,8 @@ and query (read-only). The **admin key** grants full rights to all operations, i
 create and delete indexes, indexers, and data sources. The **query key** grants read-only access to indexes and documents. 
 Ensure that the key used for an API call provides sufficient privileges for the operation. See [here](https://docs.microsoft.com/azure/search/search-security-api-keys) 
 for details about managing API keys.
+
+If you are using the `azure-identity` package to authenticate requests to Azure Cognitive Search, please see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md).
 
 ### 404 Not Found
 
