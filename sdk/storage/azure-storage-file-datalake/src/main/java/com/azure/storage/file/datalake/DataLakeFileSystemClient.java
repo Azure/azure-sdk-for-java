@@ -597,8 +597,8 @@ public class DataLakeFileSystemClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions)
-            .setPathResourceType(PathResourceType.FILE), null, Context.NONE)
+        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions),
+            null, Context.NONE)
             .getValue();
     }
 
@@ -642,8 +642,7 @@ public class DataLakeFileSystemClient {
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(PathResourceType.FILE);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
 
         return createFileWithResponse(fileName, options, timeout, context);
     }

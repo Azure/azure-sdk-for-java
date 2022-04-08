@@ -720,8 +720,8 @@ public class DataLakeFileSystemAsyncClient {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions)
-            .setPathResourceType(PathResourceType.FILE)).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -761,8 +761,7 @@ public class DataLakeFileSystemAsyncClient {
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(PathResourceType.FILE);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
         DataLakeFileAsyncClient dataLakeFileAsyncClient;
         try {
             dataLakeFileAsyncClient = getFileAsyncClient(fileName);
@@ -916,7 +915,7 @@ public class DataLakeFileSystemAsyncClient {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return createDirectoryWithResponse(directoryName, new DataLakePathCreateOptions()
-            .setRequestConditions(requestConditions).setPathResourceType(PathResourceType.DIRECTORY))
+            .setRequestConditions(requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -958,8 +957,7 @@ public class DataLakeFileSystemAsyncClient {
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(PathResourceType.DIRECTORY);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
         try {
             return createDirectoryWithResponse(directoryName, options);
         } catch (RuntimeException ex) {

@@ -31,10 +31,9 @@ public class DataLakePathCreateOptions {
     private String sourceLeaseId;
     private String leaseId;
     private String proposedLeaseId;
-    private long leaseDuration;
+    private Long leaseDuration;
     private PathExpiryOptions expiryOptions;
     private String expiresOn;
-    private PathResourceType pathResourceType;
     private CpkInfo cpkInfo;
 
     public DataLakePathCreateOptions() {
@@ -207,23 +206,6 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * @return the type of resource
-     */
-    public PathResourceType getPathResourceType() {
-        return pathResourceType;
-    }
-
-    /**
-     * Sets the type of resource for the given path.
-     * @param resourceType the new type of resource (file or directory).
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setPathResourceType(PathResourceType resourceType) {
-        pathResourceType = resourceType;
-        return this;
-    }
-
-    /**
      * @return the source lease ID
      */
     public String getSourceLeaseId() {
@@ -277,7 +259,7 @@ public class DataLakePathCreateOptions {
     /**
      * @return the lease duration.
      */
-    public long getLeaseDuration() {
+    public Long getLeaseDuration() {
         return leaseDuration;
     }
 
@@ -286,7 +268,7 @@ public class DataLakePathCreateOptions {
      * @param duration the new duration.
      * @return The updated options.
      */
-    public DataLakePathCreateOptions setLeaseDuration(long duration) {
+    public DataLakePathCreateOptions setLeaseDuration(Long duration) {
         leaseDuration = duration;
         return this;
     }

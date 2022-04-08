@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
@@ -67,6 +68,24 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def createResponse = dc.createWithResponse(null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create defaults test"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+        def metadata = new HashMap<String, String>()
+        def permissions = "0777"
+        metadata.put("foo", "bar")
+        options.setMetadata(metadata).setRequestConditions(new DataLakeRequestConditions()).setPathHttpHeaders(new PathHttpHeaders())
+            .setAccessControlList(pathAccessControlEntries).setPermissions(permissions)
+
+        when:
+        def createResponse = dc.createWithResponse(options, null, null)
 
         then:
         createResponse.getStatusCode() == 201

@@ -299,8 +299,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             return monoError(LOGGER, ex);
         }
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(pathResourceType);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
 
         return dataLakeFileAsyncClient.createWithResponse(options)
             .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
@@ -526,8 +525,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         DataLakeRequestConditions requestConditions) {
         DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(pathResourceType);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
         try {
             dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
         } catch (RuntimeException ex) {

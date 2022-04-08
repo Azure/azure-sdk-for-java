@@ -28,6 +28,7 @@ import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAP
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
@@ -354,7 +355,7 @@ public class DataLakePathAsyncClient {
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
             DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions)
-                .setUmask(umask).setPathHttpHeaders(headers).setMetadata(metadata).setPathResourceType(pathResourceType)
+                .setUmask(umask).setPathHttpHeaders(headers).setMetadata(metadata)
                 .setRequestConditions(requestConditions);
             return withContext(context -> createWithResponse(options));
         } catch (RuntimeException ex) {
@@ -394,7 +395,7 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options) {
         if (options == null) {
-            options = new DataLakePathCreateOptions().setPathResourceType(pathResourceType)
+            options = new DataLakePathCreateOptions()
                 .setRequestConditions(new DataLakeRequestConditions()).setPathHttpHeaders(new PathHttpHeaders());
         }
         try {
@@ -418,7 +419,8 @@ public class DataLakePathAsyncClient {
         String acl = options.getAccessControlList() != null ? PathAccessControlEntry.serializeList(options.getAccessControlList()) : null;
 
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, options.getPathResourceType(),
+        //PathExpiryOptions expiryOptions = options.getExpiryOptions() == null ? new PathExpiryOptions() : options.getExpiryOptions();
+        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType,
                 options.getContinuation(), null, null, options.getSourceLeaseId(),
                 buildMetadataString(options.getMetadata()), options.getPermissions(), options.getUmask(),
                 options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(), options.getLeaseDuration(),

@@ -211,7 +211,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions)
-            .setPathResourceType(PathResourceType.FILE), null, null).getValue();
+            , null, null).getValue();
     }
 
     /**
@@ -255,8 +255,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(dataLakeDirectoryAsyncClient.pathResourceType);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
 
         Response<PathInfo> response = dataLakeFileClient.createWithResponse(options, timeout, context);
         return new SimpleResponse<>(response, dataLakeFileClient);
@@ -420,7 +419,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return createSubdirectoryWithResponse(subdirectoryName, new DataLakePathCreateOptions()
-            .setRequestConditions(requestConditions).setPathResourceType(PathResourceType.DIRECTORY), null, null)
+            .setRequestConditions(requestConditions), null, null)
             .getValue();
     }
 
@@ -466,8 +465,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getSubdirectoryClient(subdirectoryName);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(PathResourceType.DIRECTORY);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
 
         Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(options, timeout, context);
         return new SimpleResponse<>(response, dataLakeDirectoryClient);

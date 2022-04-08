@@ -221,8 +221,7 @@ public class DataLakePathClient {
         Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
-            .setPathResourceType(dataLakePathAsyncClient.pathResourceType);
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(options, context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
