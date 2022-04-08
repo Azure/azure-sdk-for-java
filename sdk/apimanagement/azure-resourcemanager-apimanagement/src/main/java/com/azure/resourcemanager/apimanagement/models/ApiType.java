@@ -16,6 +16,12 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
     /** Static value soap for ApiType. */
     public static final ApiType SOAP = fromString("soap");
 
+    /** Static value websocket for ApiType. */
+    public static final ApiType WEBSOCKET = fromString("websocket");
+
+    /** Static value graphql for ApiType. */
+    public static final ApiType GRAPHQL = fromString("graphql");
+
     /**
      * Creates or finds a ApiType from its string representation.
      *

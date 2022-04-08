@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.JsonField;
 import com.azure.resourcemanager.eventgrid.models.JsonFieldWithDefault;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class JsonInputSchemaMappingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonInputSchemaMappingProperties.class);
-
     /*
      * The mapping information for the Id property of the Event Grid Event.
      */

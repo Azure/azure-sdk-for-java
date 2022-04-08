@@ -4,11 +4,8 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `virtualMachineSizeType()` in `VirtualMachineSize` as a typed alias of `name`.
+- Supported ephemeral OS disk in `VirtualMachineScaleSet`.
 
 ## 2.13.0 (2022-03-11)
 

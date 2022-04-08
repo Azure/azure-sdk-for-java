@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "69cd21d3-f34d-4fdd-8cab-80af45a2933d",
+      "x-ms-client-request-id" : "87bbd54b-f651-4258-b719-3754f7db415f",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "9d800a43-100c-4966-b008-88c4c96168ab",
+      "X-Ms-Correlation-Request-Id" : "3e38e682-886e-4ea6-abfb-f4429eb3fbb1",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.4",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.5",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Tue, 01 Mar 2022 23:00:34 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:19:42 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3bddbc7f-26a1-4a26-ba21-7e5220d5587b",
+      "x-ms-client-request-id" : "67763e22-3483-4b35-930c-847980548a9f",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "decd5372-62a2-42e3-991d-a027cfebce4e",
+      "X-Ms-Correlation-Request-Id" : "3b860d68-50fc-4efa-900f-8854ae0c71a1",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.083333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.5",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Tue, 01 Mar 2022 23:00:34 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:19:42 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,7 +48,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine/_tags/v3?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a5eb9dc9-3a67-445a-a39d-17e998b3e886"
+      "x-ms-client-request-id" : "176c6e7f-f2d2-4797-9645-38ea6a4e291a"
     },
     "Response" : {
       "content-length" : "0",
@@ -57,14 +57,14 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Tue, 01 Mar 2022 23:00:34 GMT",
-      "X-Ms-Int-Docker-Content-Digest" : "sha256:21a3deaa0d32a8057914f36584b5288d2e5ecc984380bc0118285c70fa8c9300",
+      "Date" : "Fri, 01 Apr 2022 18:19:43 GMT",
+      "X-Ms-Int-Docker-Content-Digest" : "sha256:f22945d45ee2eb4dd463ed5a431d9f04fcd80ca768bb1acf898d91ce51f7bf04",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "e22737ed-b685-4351-a9ff-3094fd7c8861",
+      "X-Ms-Correlation-Request-Id" : "be712605-6e0e-4742-9912-1c51ad5f17d9",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "a5eb9dc9-3a67-445a-a39d-17e998b3e886",
-      "X-Ms-Request-Id" : "2ccb54f1-c0ea-46d3-ab18-8c874e4942de",
+      "X-Ms-Client-Request-Id" : "176c6e7f-f2d2-4797-9645-38ea6a4e291a",
+      "X-Ms-Request-Id" : "874e573c-5e97-4a55-b61a-ea330e8ed09e",
       "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "8.000000"
     },
     "Exception" : null

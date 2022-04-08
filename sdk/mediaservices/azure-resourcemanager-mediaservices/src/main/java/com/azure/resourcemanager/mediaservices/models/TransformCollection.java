@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.models.TransformInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of Transform items. */
 @Fluent
 public final class TransformCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransformCollection.class);
-
     /*
      * A collection of Transform items.
      */

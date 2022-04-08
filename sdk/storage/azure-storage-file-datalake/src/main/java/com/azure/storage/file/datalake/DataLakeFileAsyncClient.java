@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -113,16 +114,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient,
-        CpkInfo customerProvidedKey) {
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE,
-            blockBlobAsyncClient, customerProvidedKey);
+            blockBlobAsyncClient, sasToken, customerProvidedKey);
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
             Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE,
-            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getCpkInfo());
+            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken(),
+			pathAsyncClient.getCpkInfo());
     }
 
     /**
@@ -168,7 +170,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, finalCustomerProvidedKey);
+            getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(), finalCustomerProvidedKey);
     }
 
     /**

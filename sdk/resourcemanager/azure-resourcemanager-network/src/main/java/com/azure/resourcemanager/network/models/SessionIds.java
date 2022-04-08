@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of session IDs. */
 @Fluent
 public final class SessionIds {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionIds.class);
-
     /*
      * List of session IDs.
      */

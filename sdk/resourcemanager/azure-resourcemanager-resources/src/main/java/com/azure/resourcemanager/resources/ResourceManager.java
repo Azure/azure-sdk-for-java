@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
@@ -41,7 +42,6 @@ import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
@@ -79,17 +79,21 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @return the ResourceManager instance
      */
     public static ResourceManager.Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile used in resource management
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
-    private static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 

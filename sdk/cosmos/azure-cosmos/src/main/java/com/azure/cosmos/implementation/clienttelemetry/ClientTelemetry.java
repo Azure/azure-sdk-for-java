@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.RequestVerb;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientTelemetry {
     public final static int ONE_KB_TO_BYTES = 1024;
@@ -78,6 +80,8 @@ public class ClientTelemetry {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static AtomicLong instanceCount = new AtomicLong(0);
+    private final static AtomicReference<AzureVMMetadata> azureVmMetaDataSingleton =
+        new AtomicReference<>(null);
     private ClientTelemetryInfo clientTelemetryInfo;
     private final HttpClient httpClient;
     private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
@@ -98,7 +102,8 @@ public class ClientTelemetry {
     private final IAuthorizationTokenProvider tokenProvider;
     private final String globalDatabaseAccountName;
 
-    public ClientTelemetry(Boolean acceleratedNetworking,
+    public ClientTelemetry(DiagnosticsClientContext diagnosticsClientContext,
+                           Boolean acceleratedNetworking,
                            String clientId,
                            String processId,
                            String userAgent,
@@ -111,8 +116,17 @@ public class ClientTelemetry {
                            IAuthorizationTokenProvider tokenProvider,
                            List<String> preferredRegions
     ) {
-        clientTelemetryInfo = new ClientTelemetryInfo(clientId, processId, userAgent, connectionMode,
-            globalDatabaseAccountName, applicationRegion, hostEnvInfo, acceleratedNetworking, preferredRegions);
+        clientTelemetryInfo = new ClientTelemetryInfo(
+            getMachineId(diagnosticsClientContext),
+            clientId,
+            processId,
+            userAgent,
+            connectionMode,
+            globalDatabaseAccountName,
+            applicationRegion,
+            hostEnvInfo,
+            acceleratedNetworking,
+            preferredRegions);
         this.isClosed = false;
         this.httpClient = httpClient;
         this.isClientTelemetryEnabled = isClientTelemetryEnabled;
@@ -123,6 +137,24 @@ public class ClientTelemetry {
 
     public ClientTelemetryInfo getClientTelemetryInfo() {
         return clientTelemetryInfo;
+    }
+
+    public static String getMachineId(DiagnosticsClientContext diagnosticsClientContext) {
+        AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
+
+        if (metadataSnapshot != null && metadataSnapshot.getVmId() != null) {
+            String machineId = "vmId:" + metadataSnapshot.getVmId();
+            if (diagnosticsClientContext != null) {
+                diagnosticsClientContext.getConfig().withMachineId(machineId);
+            }
+            return machineId;
+        }
+
+        if (diagnosticsClientContext == null) {
+            return "";
+        }
+
+        return diagnosticsClientContext.getConfig().getMachineId();
     }
 
     public static void recordValue(ConcurrentDoubleHistogram doubleHistogram, long value) {
@@ -239,7 +271,21 @@ public class ClientTelemetry {
             }).subscribeOn(scheduler);
     }
 
+    private void populateAzureVmMetaData(AzureVMMetadata azureVMMetadata) {
+        this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
+        this.clientTelemetryInfo.setMachineId("vmId:" + azureVMMetadata.getVmId());
+        this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
+            "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
+    }
+
     private void loadAzureVmMetaData() {
+        AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
+
+        if (metadataSnapshot != null) {
+            this.populateAzureVmMetaData(metadataSnapshot);
+            return;
+        }
+
         URI targetEndpoint = null;
         try {
             targetEndpoint = new URI(AZURE_VM_METADATA);
@@ -253,16 +299,16 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
-        httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
-            AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
-            this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
-            this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
-                "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
-        }).onErrorResume(throwable -> {
-            logger.info("Client is not on azure vm");
-            logger.debug("Unable to get azure vm metadata", throwable);
-            return Mono.empty();
-        }).subscribe();
+        httpResponseMono
+            .flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
+                AzureVMMetadata.class)).doOnSuccess(metadata -> {
+                azureVmMetaDataSingleton.compareAndSet(null, metadata);
+                this.populateAzureVmMetaData(metadata);
+            }).onErrorResume(throwable -> {
+                logger.info("Client is not on azure vm");
+                logger.debug("Unable to get azure vm metadata", throwable);
+                return Mono.empty();
+            }).subscribe();
     }
 
     private static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {

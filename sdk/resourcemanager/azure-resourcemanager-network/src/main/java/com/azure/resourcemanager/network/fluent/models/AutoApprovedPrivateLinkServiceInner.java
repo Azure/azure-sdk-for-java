@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information of an AutoApprovedPrivateLinkService. */
 @Fluent
 public final class AutoApprovedPrivateLinkServiceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoApprovedPrivateLinkServiceInner.class);
-
     /*
      * The id of the private link service resource.
      */

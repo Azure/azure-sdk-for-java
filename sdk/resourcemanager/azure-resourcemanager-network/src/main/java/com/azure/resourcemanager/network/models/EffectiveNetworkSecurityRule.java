@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Effective network security rules. */
 @Fluent
 public final class EffectiveNetworkSecurityRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityRule.class);
-
     /*
      * The name of the security rule specified by the user (if created by the
      * user).

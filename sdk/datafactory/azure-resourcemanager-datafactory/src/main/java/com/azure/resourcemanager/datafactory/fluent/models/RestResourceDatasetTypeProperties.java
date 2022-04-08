@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this dataset type. */
 @Fluent
 public final class RestResourceDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestResourceDatasetTypeProperties.class);
-
     /*
      * The relative URL to the resource that the RESTful API provides. Type:
      * string (or Expression with resultType string).

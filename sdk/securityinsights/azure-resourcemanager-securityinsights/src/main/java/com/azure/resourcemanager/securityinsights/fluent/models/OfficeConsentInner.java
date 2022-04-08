@@ -7,15 +7,11 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Consent for Office365 tenant that already made. */
 @Fluent
 public final class OfficeConsentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OfficeConsentInner.class);
-
     /*
      * Office consent properties
      */

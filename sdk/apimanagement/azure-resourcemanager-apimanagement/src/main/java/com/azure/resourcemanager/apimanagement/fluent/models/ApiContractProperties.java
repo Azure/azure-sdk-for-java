@@ -6,21 +6,20 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.models.ApiContactInformation;
 import com.azure.resourcemanager.apimanagement.models.ApiEntityBaseContract;
+import com.azure.resourcemanager.apimanagement.models.ApiLicenseInformation;
 import com.azure.resourcemanager.apimanagement.models.ApiType;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContractDetails;
 import com.azure.resourcemanager.apimanagement.models.AuthenticationSettingsContract;
 import com.azure.resourcemanager.apimanagement.models.Protocol;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Api Entity Properties. */
+/** API Entity Properties. */
 @Fluent
 public class ApiContractProperties extends ApiEntityBaseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiContractProperties.class);
-
     /*
      * API identifier of the source API.
      */
@@ -265,6 +264,27 @@ public class ApiContractProperties extends ApiEntityBaseContract {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApiContractProperties withTermsOfServiceUrl(String termsOfServiceUrl) {
+        super.withTermsOfServiceUrl(termsOfServiceUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiContractProperties withContact(ApiContactInformation contact) {
+        super.withContact(contact);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiContractProperties withLicense(ApiLicenseInformation license) {
+        super.withLicense(license);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -274,7 +294,7 @@ public class ApiContractProperties extends ApiEntityBaseContract {
     public void validate() {
         super.validate();
         if (path() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property path in model ApiContractProperties"));
         }
@@ -282,4 +302,6 @@ public class ApiContractProperties extends ApiEntityBaseContract {
             apiVersionSet().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApiContractProperties.class);
 }

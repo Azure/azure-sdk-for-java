@@ -16,10 +16,9 @@ import com.azure.resourcemanager.apimanagement.models.BackendReconnectContract;
 import com.azure.resourcemanager.apimanagement.models.Backends;
 import com.azure.resourcemanager.apimanagement.models.BackendsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.BackendsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackendsImpl implements Backends {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackendsImpl.class);
 
     private final BackendsClient innerClient;
 
@@ -103,7 +102,7 @@ public final class BackendsImpl implements Backends {
     public BackendContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,14 +110,14 @@ public final class BackendsImpl implements Backends {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
@@ -129,7 +128,7 @@ public final class BackendsImpl implements Backends {
     public Response<BackendContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,14 +136,14 @@ public final class BackendsImpl implements Backends {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
@@ -155,7 +154,7 @@ public final class BackendsImpl implements Backends {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,26 +162,26 @@ public final class BackendsImpl implements Backends {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
         }
         String localIfMatch = null;
-        this.deleteWithResponse(resourceGroupName, serviceName, backendId, localIfMatch, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, serviceName, backendId, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -190,14 +189,14 @@ public final class BackendsImpl implements Backends {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));

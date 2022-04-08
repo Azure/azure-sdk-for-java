@@ -94,7 +94,9 @@ public class EncryptionImplementationBridgeHelpers {
                 String clientEncryptionKeyId,
                 String databaseRid,
                 CosmosAsyncContainer cosmosAsyncContainer,
-                boolean shouldForceRefresh);
+                boolean shouldForceRefresh,
+                String ifNoneMatchEtag,
+                boolean shouldForceRefreshGateway);
 
             Mono<CosmosContainerProperties> getContainerPropertiesAsync(
                 CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient,

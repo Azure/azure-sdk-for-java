@@ -6,15 +6,12 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Config to describe the instructions blade. */
 @Fluent
 public final class CodelessUiConnectorConfigProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CodelessUiConnectorConfigProperties.class);
-
     /*
      * Connector blade title
      */
@@ -342,32 +339,32 @@ public final class CodelessUiConnectorConfigProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property title in model CodelessUiConnectorConfigProperties"));
         }
         if (publisher() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property publisher in model CodelessUiConnectorConfigProperties"));
         }
         if (descriptionMarkdown() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property descriptionMarkdown in model CodelessUiConnectorConfigProperties"));
         }
         if (graphQueriesTableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property graphQueriesTableName in model"
                             + " CodelessUiConnectorConfigProperties"));
         }
         if (graphQueries() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property graphQueries in model CodelessUiConnectorConfigProperties"));
@@ -375,7 +372,7 @@ public final class CodelessUiConnectorConfigProperties {
             graphQueries().forEach(e -> e.validate());
         }
         if (sampleQueries() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sampleQueries in model CodelessUiConnectorConfigProperties"));
@@ -383,7 +380,7 @@ public final class CodelessUiConnectorConfigProperties {
             sampleQueries().forEach(e -> e.validate());
         }
         if (dataTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataTypes in model CodelessUiConnectorConfigProperties"));
@@ -391,7 +388,7 @@ public final class CodelessUiConnectorConfigProperties {
             dataTypes().forEach(e -> e.validate());
         }
         if (connectivityCriteria() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectivityCriteria in model CodelessUiConnectorConfigProperties"));
@@ -399,7 +396,7 @@ public final class CodelessUiConnectorConfigProperties {
             connectivityCriteria().forEach(e -> e.validate());
         }
         if (availability() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property availability in model CodelessUiConnectorConfigProperties"));
@@ -407,7 +404,7 @@ public final class CodelessUiConnectorConfigProperties {
             availability().validate();
         }
         if (permissions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property permissions in model CodelessUiConnectorConfigProperties"));
@@ -415,7 +412,7 @@ public final class CodelessUiConnectorConfigProperties {
             permissions().validate();
         }
         if (instructionSteps() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property instructionSteps in model CodelessUiConnectorConfigProperties"));
@@ -423,4 +420,6 @@ public final class CodelessUiConnectorConfigProperties {
             instructionSteps().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CodelessUiConnectorConfigProperties.class);
 }

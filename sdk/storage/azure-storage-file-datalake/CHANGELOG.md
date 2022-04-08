@@ -9,6 +9,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a path object while authenticating with a sas.
 
 - Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether file existence should
   be checked before using chunked upload than the size used to triggered chunked upload.

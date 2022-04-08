@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** MCAS (Microsoft Cloud App Security) requirements check properties. */
 @Fluent
 public final class McasCheckRequirementsProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(McasCheckRequirementsProperties.class);
-
     /** {@inheritDoc} */
     @Override
     public McasCheckRequirementsProperties withTenantId(String tenantId) {

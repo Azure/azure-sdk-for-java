@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateGallery;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateLocalizedGallery;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** An Application Insights workbook template definition. */
 @Fluent
 public final class WorkbookTemplateInner extends WorkbookTemplateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookTemplateInner.class);
-
     /*
      * Metadata describing a workbook template for an Azure resource.
      */

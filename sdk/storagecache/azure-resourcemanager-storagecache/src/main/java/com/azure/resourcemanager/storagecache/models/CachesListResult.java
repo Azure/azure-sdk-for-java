@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the request to list Caches. It contains a list of Caches and a URL link to get the next set of results. */
 @Fluent
 public final class CachesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CachesListResult.class);
-
     /*
      * URL to get the next set of Cache list results, if there are any.
      */

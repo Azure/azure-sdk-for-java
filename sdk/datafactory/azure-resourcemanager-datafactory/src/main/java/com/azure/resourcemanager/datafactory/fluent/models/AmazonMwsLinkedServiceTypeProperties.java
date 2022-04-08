@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Amazon Marketplace Web Service linked service properties. */
 @Fluent
 public final class AmazonMwsLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonMwsLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com)
      */
@@ -300,19 +297,19 @@ public final class AmazonMwsLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model AmazonMwsLinkedServiceTypeProperties"));
         }
         if (marketplaceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property marketplaceId in model AmazonMwsLinkedServiceTypeProperties"));
         }
         if (sellerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sellerId in model AmazonMwsLinkedServiceTypeProperties"));
@@ -321,7 +318,7 @@ public final class AmazonMwsLinkedServiceTypeProperties {
             mwsAuthToken().validate();
         }
         if (accessKeyId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accessKeyId in model AmazonMwsLinkedServiceTypeProperties"));
@@ -330,4 +327,6 @@ public final class AmazonMwsLinkedServiceTypeProperties {
             secretKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonMwsLinkedServiceTypeProperties.class);
 }

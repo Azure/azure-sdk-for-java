@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Lists the service impacting events that may be affecting the health of the resource. */
 @Fluent
 public final class ServiceImpactingEvent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceImpactingEvent.class);
-
     /*
      * Timestamp for when the event started.
      */
