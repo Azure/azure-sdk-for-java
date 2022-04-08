@@ -29,7 +29,7 @@ public class ProxyUtilTest {
 
         ProxyOptions proxyConfig =  ProxyUtil.getDefaultProxyConfiguration(configuration);
         if (expectSystemDefault) {
-            assertIsSystemDefaultConfig(proxyConfig);
+            assertIsSystemDefaultProxy(proxyConfig);
         } else {
             Assertions.assertNotNull(proxyConfig);
             Assertions.assertEquals(ProxyAuthenticationType.BASIC, proxyConfig.getAuthentication());
@@ -48,7 +48,7 @@ public class ProxyUtilTest {
         configuration = configuration.put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME);
         configuration = configuration.put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD);
         ProxyOptions proxyConfig = ProxyUtil.getDefaultProxyConfiguration(configuration);
-        assertIsSystemDefaultConfig(proxyConfig);
+        assertIsSystemDefaultProxy(proxyConfig);
     }
 
     @Test
@@ -60,6 +60,9 @@ public class ProxyUtilTest {
 
         ProxyOptions proxyConfig =  ProxyUtil.getDefaultProxyConfiguration(configuration);
         Assertions.assertNotNull(proxyConfig);
+        Assertions.assertEquals(ProxyAuthenticationType.NONE, proxyConfig.getAuthentication());
+        Assertions.assertNull(proxyConfig.getCredential());
+        Assertions.assertNotNull(proxyConfig.getProxyAddress());
     }
 
     public static Stream<Arguments> getProxyConfigurations() {
@@ -77,7 +80,7 @@ public class ProxyUtilTest {
         );
     }
 
-    private void assertIsSystemDefaultConfig(ProxyOptions proxyConfig) {
+    private void assertIsSystemDefaultProxy(ProxyOptions proxyConfig) {
         Assertions.assertEquals(ProxyOptions.SYSTEM_DEFAULTS.getAuthentication(), proxyConfig.getAuthentication());
         Assertions.assertNull(proxyConfig.getCredential());
         Assertions.assertNull(proxyConfig.getProxyAddress());

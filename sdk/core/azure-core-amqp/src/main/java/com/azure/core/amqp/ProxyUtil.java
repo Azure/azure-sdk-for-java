@@ -6,10 +6,10 @@ package com.azure.core.amqp;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.util.annotation.NonNull;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /***
@@ -30,7 +30,8 @@ public final class ProxyUtil {
      * @param configuration - The client library configuration
      * @return the constructed {@link ProxyOptions} object
      */
-    public static ProxyOptions getDefaultProxyConfiguration(@NonNull Configuration configuration) {
+    public static ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         final ProxyAuthenticationType authentication = ProxyAuthenticationType.valueOf(configuration.get(
             ProxyOptions.PROXY_AUTHENTICATION_TYPE, ProxyAuthenticationType.NONE.toString()));
 
