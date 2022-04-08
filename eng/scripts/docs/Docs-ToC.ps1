@@ -168,11 +168,16 @@ function Get-java-UpdatedDocsMsToc($toc) {
             break
         }                
     }
-    for ($i = 0; $i -lt $sortableServices.items.Count; $i++) {
-        if ($sortableServices.items[$i].name -eq "IoT") {
-            for ($j = 0; $j -lt $sortableServices.items[$i].items.Count; $j++) {
-                if ($sortableServices.items[$i].items[$j] -eq "IoT Service Client") {
-                    $sortableServices.items[$i].items[$j].children += $newChildren
+    for ($i = 0; $i -lt $sortableServices.Count; $i++) {
+        if ($sortableServices[$i].name -eq "IoT") {
+            for ($j = 0; $j -lt $sortableServices[$i].items.Count; $j++) {
+                if ($sortableServices[$i].items[$j].name -eq "IoT Service Client") {
+                    $sortableServices[$i].items[$j].children += @(
+                        "com.microsoft.azure.sdk.iot.service.digitaltwin.authentication",
+                        "com.microsoft.azure.sdk.iot.service.digitaltwin.generated",
+                        "com.microsoft.azure.sdk.iot.service.digitaltwin.helpers",
+                        "com.microsoft.azure.sdk.iot.service.digitaltwin.generated.models"
+                    )
                     break
                 } 
             } 
