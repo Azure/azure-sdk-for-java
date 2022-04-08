@@ -25,7 +25,12 @@
     <test.on.azure>false</test.on.azure>
     <test.on.emualator>false</test.on.emualator>
   </properties>
-
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <url>https://repo.spring.io.milestone/</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

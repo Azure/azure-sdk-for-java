@@ -19,7 +19,12 @@
     <properties>
         <skipSpringITs>true</skipSpringITs>
     </properties>
-
+    <repositories>
+      <repository>
+        <id>spring-milestones</id>
+        <url>https://repo.spring.io.milestone/</url>
+      </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.azure.spring</groupId>
