@@ -22,7 +22,25 @@ import java.util.regex.Pattern;
  */
 public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
 
-    private final HttpPipelineSynchronousPolicy inner;
+    private final String clientName;
+    private final String clientVersion;
+    private final HttpPipelineSynchronousPolicy inner = new HttpPipelineSynchronousPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
+            Matcher matcher = PATTERN.matcher(userAgent);
+            StringBuilder builder = new StringBuilder();
+            if (matcher.matches()) {
+                builder.append(matcher.group(1) == null ? "" : matcher.group(1))
+                    .append(matcher.group(2) == null ? "" : matcher.group(2))
+                    .append(" ").append("azsdk-java-").append(clientName).append("/").append(clientVersion)
+                    .append(matcher.group(3) == null ? "" : matcher.group(3));
+            } else {
+                builder.append(userAgent);
+            }
+            context.getHttpRequest().getHeaders().set("User-Agent", builder.toString());
+        }
+    };
 
     private static final String USER_AGENT = "User-Agent";
     private static final String REGEX = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
@@ -35,23 +53,8 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
      * @param clientVersion The version of the package.
      */
     public BlobUserAgentModificationPolicy(String clientName, String clientVersion) {
-        this.inner = new HttpPipelineSynchronousPolicy() {
-            @Override
-            protected void beforeSendingRequest(HttpPipelineCallContext context) {
-                String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
-                Matcher matcher = PATTERN.matcher(userAgent);
-                StringBuilder builder = new StringBuilder();
-                if (matcher.matches()) {
-                    builder.append(matcher.group(1) == null ? "" : matcher.group(1))
-                        .append(matcher.group(2) == null ? "" : matcher.group(2))
-                        .append(" ").append("azsdk-java-").append(clientName).append("/").append(clientVersion)
-                        .append(matcher.group(3) == null ? "" : matcher.group(3));
-                } else {
-                    builder.append(userAgent);
-                }
-                context.getHttpRequest().getHeaders().set("User-Agent", builder.toString());
-            }
-        };
+        this.clientName = clientName;
+        this.clientVersion = clientVersion;
     }
 
     @Override
