@@ -67,7 +67,7 @@ pr:
       - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
 
 extends:
-  template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
+  template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml
   parameters:
     ServiceDirectory: cosmos
     SDKType: client
@@ -89,6 +89,9 @@ extends:
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark32
         uberJar: true
+      - name: azure-resourcemanager-cosmos-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercosmosgenerated
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure
