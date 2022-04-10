@@ -54,6 +54,13 @@ public interface SourceControl {
     String idPropertiesId();
 
     /**
+     * Gets the version property: The version number associated with the source control.
+     *
+     * @return the version value.
+     */
+    Version version();
+
+    /**
      * Gets the displayName property: The display name of the source control.
      *
      * @return the displayName value.
@@ -89,6 +96,20 @@ public interface SourceControl {
     Repository repository();
 
     /**
+     * Gets the repositoryResourceInfo property: Information regarding the resources created in user's repository.
+     *
+     * @return the repositoryResourceInfo value.
+     */
+    RepositoryResourceInfo repositoryResourceInfo();
+
+    /**
+     * Gets the lastDeploymentInfo property: Information regarding the latest deployment for the source control.
+     *
+     * @return the lastDeploymentInfo value.
+     */
+    DeploymentInfo lastDeploymentInfo();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.SourceControlInner object.
      *
      * @return the inner object.
@@ -122,11 +143,14 @@ public interface SourceControl {
         interface WithCreate
             extends DefinitionStages.WithEtag,
                 DefinitionStages.WithIdPropertiesId,
+                DefinitionStages.WithVersion,
                 DefinitionStages.WithDisplayName,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithRepoType,
                 DefinitionStages.WithContentTypes,
-                DefinitionStages.WithRepository {
+                DefinitionStages.WithRepository,
+                DefinitionStages.WithRepositoryResourceInfo,
+                DefinitionStages.WithLastDeploymentInfo {
             /**
              * Executes the create request.
              *
@@ -161,6 +185,16 @@ public interface SourceControl {
              * @return the next definition stage.
              */
             WithCreate withIdPropertiesId(String idPropertiesId);
+        }
+        /** The stage of the SourceControl definition allowing to specify version. */
+        interface WithVersion {
+            /**
+             * Specifies the version property: The version number associated with the source control.
+             *
+             * @param version The version number associated with the source control.
+             * @return the next definition stage.
+             */
+            WithCreate withVersion(Version version);
         }
         /** The stage of the SourceControl definition allowing to specify displayName. */
         interface WithDisplayName {
@@ -211,6 +245,28 @@ public interface SourceControl {
              * @return the next definition stage.
              */
             WithCreate withRepository(Repository repository);
+        }
+        /** The stage of the SourceControl definition allowing to specify repositoryResourceInfo. */
+        interface WithRepositoryResourceInfo {
+            /**
+             * Specifies the repositoryResourceInfo property: Information regarding the resources created in user's
+             * repository..
+             *
+             * @param repositoryResourceInfo Information regarding the resources created in user's repository.
+             * @return the next definition stage.
+             */
+            WithCreate withRepositoryResourceInfo(RepositoryResourceInfo repositoryResourceInfo);
+        }
+        /** The stage of the SourceControl definition allowing to specify lastDeploymentInfo. */
+        interface WithLastDeploymentInfo {
+            /**
+             * Specifies the lastDeploymentInfo property: Information regarding the latest deployment for the source
+             * control..
+             *
+             * @param lastDeploymentInfo Information regarding the latest deployment for the source control.
+             * @return the next definition stage.
+             */
+            WithCreate withLastDeploymentInfo(DeploymentInfo lastDeploymentInfo);
         }
     }
     /**

@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Sims UpdateTags. */
 public final class SimsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimUpdateTags.json
      */
     /**
      * Sample code: Update sim tags.

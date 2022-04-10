@@ -15,16 +15,12 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionM
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VirtualNetworkGatewayConnection properties. */
 @Fluent
 public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayConnectionPropertiesFormatInner.class);
-
     /*
      * The authorizationKey.
      */
@@ -628,7 +624,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
      */
     public void validate() {
         if (virtualNetworkGateway1() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property virtualNetworkGateway1 in model"
@@ -643,7 +639,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
             localNetworkGateway2().validate();
         }
         if (connectionType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionType in model"
@@ -659,4 +655,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
             trafficSelectorPolicies().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(VirtualNetworkGatewayConnectionPropertiesFormatInner.class);
 }

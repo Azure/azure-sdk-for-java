@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vpn NatRule mapping. */
 @Fluent
 public final class VpnNatRuleMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnNatRuleMapping.class);
-
     /*
      * Address space for Vpn NatRule mapping.
      */

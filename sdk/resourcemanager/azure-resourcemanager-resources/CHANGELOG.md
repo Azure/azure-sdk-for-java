@@ -2,13 +2,15 @@
 
 ## 2.14.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
+- Fixed a bug that `ResourceManager.pipeline()` be `null`.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of locks to `2017-04-01`.
 
 ## 2.13.0 (2022-03-11)
 

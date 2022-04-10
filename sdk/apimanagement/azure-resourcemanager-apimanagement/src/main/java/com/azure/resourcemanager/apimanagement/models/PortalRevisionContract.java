@@ -46,21 +46,21 @@ public interface PortalRevisionContract {
     String statusDetails();
 
     /**
-     * Gets the status property: Portal revision publishing status.
+     * Gets the status property: Status of the portal's revision.
      *
      * @return the status value.
      */
     PortalRevisionStatus status();
 
     /**
-     * Gets the isCurrent property: Indicates if the Portal Revision is public.
+     * Gets the isCurrent property: Indicates if the portal's revision is public.
      *
      * @return the isCurrent value.
      */
     Boolean isCurrent();
 
     /**
-     * Gets the createdDateTime property: Portal revision creation date and time.
+     * Gets the createdDateTime property: Portal's revision creation date and time.
      *
      * @return the createdDateTime value.
      */
@@ -133,9 +133,9 @@ public interface PortalRevisionContract {
         /** The stage of the PortalRevisionContract definition allowing to specify isCurrent. */
         interface WithIsCurrent {
             /**
-             * Specifies the isCurrent property: Indicates if the Portal Revision is public..
+             * Specifies the isCurrent property: Indicates if the portal's revision is public..
              *
-             * @param isCurrent Indicates if the Portal Revision is public.
+             * @param isCurrent Indicates if the portal's revision is public.
              * @return the next definition stage.
              */
             WithCreate withIsCurrent(Boolean isCurrent);
@@ -180,9 +180,9 @@ public interface PortalRevisionContract {
         /** The stage of the PortalRevisionContract update allowing to specify isCurrent. */
         interface WithIsCurrent {
             /**
-             * Specifies the isCurrent property: Indicates if the Portal Revision is public..
+             * Specifies the isCurrent property: Indicates if the portal's revision is public..
              *
-             * @param isCurrent Indicates if the Portal Revision is public.
+             * @param isCurrent Indicates if the portal's revision is public.
              * @return the next definition stage.
              */
             Update withIsCurrent(Boolean isCurrent);

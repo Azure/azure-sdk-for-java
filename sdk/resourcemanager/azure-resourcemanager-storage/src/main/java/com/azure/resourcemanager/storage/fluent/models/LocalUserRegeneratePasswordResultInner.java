@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The secrets of Storage Account Local User. */
 @Immutable
 public final class LocalUserRegeneratePasswordResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalUserRegeneratePasswordResultInner.class);
-
     /*
      * Auto generated password by the server for SSH authentication if
      * hasSshPassword is set to true on the creation of local user.

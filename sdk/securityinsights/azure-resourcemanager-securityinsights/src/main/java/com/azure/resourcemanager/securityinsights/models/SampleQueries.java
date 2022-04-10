@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The sample queries for the connector. */
 @Fluent
 public class SampleQueries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SampleQueries.class);
-
     /*
      * The sample query description
      */

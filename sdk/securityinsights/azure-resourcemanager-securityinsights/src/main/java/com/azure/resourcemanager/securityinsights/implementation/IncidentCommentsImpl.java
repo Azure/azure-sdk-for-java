@@ -13,10 +13,9 @@ import com.azure.resourcemanager.securityinsights.fluent.IncidentCommentsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentCommentInner;
 import com.azure.resourcemanager.securityinsights.models.IncidentComment;
 import com.azure.resourcemanager.securityinsights.models.IncidentComments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IncidentCommentsImpl implements IncidentComments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentCommentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IncidentCommentsImpl.class);
 
     private final IncidentCommentsClient innerClient;
 
@@ -93,7 +92,7 @@ public final class IncidentCommentsImpl implements IncidentComments {
     public IncidentComment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -101,21 +100,21 @@ public final class IncidentCommentsImpl implements IncidentComments {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String incidentId = Utils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         String incidentCommentId = Utils.getValueFromIdByName(id, "comments");
         if (incidentCommentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));
@@ -128,7 +127,7 @@ public final class IncidentCommentsImpl implements IncidentComments {
     public Response<IncidentComment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,21 +135,21 @@ public final class IncidentCommentsImpl implements IncidentComments {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String incidentId = Utils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         String incidentCommentId = Utils.getValueFromIdByName(id, "comments");
         if (incidentCommentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));
@@ -161,7 +160,7 @@ public final class IncidentCommentsImpl implements IncidentComments {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,21 +168,21 @@ public final class IncidentCommentsImpl implements IncidentComments {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String incidentId = Utils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         String incidentCommentId = Utils.getValueFromIdByName(id, "comments");
         if (incidentCommentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));
@@ -194,7 +193,7 @@ public final class IncidentCommentsImpl implements IncidentComments {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -202,21 +201,21 @@ public final class IncidentCommentsImpl implements IncidentComments {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String incidentId = Utils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         String incidentCommentId = Utils.getValueFromIdByName(id, "comments");
         if (incidentCommentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));

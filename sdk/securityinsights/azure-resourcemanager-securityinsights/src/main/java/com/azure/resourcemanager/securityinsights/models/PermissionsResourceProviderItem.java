@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The PermissionsResourceProviderItem model. */
 @Fluent
 public final class PermissionsResourceProviderItem extends ResourceProvider {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PermissionsResourceProviderItem.class);
-
     /** {@inheritDoc} */
     @Override
     public PermissionsResourceProviderItem withProvider(ProviderName provider) {

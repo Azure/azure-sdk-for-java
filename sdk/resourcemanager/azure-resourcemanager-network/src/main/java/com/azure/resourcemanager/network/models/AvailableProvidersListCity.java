@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** City or town details. */
 @Fluent
 public final class AvailableProvidersListCity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListCity.class);
-
     /*
      * The city or town name.
      */

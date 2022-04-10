@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Network Address and Port Translation settings to use for the attached data network. */
 @Fluent
 public final class NaptConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NaptConfiguration.class);
-
     /*
      * Whether NAPT is enabled for connections to this attachedDataNetwork.
      */

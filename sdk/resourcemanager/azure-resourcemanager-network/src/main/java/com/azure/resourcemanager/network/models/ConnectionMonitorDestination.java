@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the destination of connection monitor. */
 @Fluent
 public final class ConnectionMonitorDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorDestination.class);
-
     /*
      * The ID of the resource used as the destination by connection monitor.
      */

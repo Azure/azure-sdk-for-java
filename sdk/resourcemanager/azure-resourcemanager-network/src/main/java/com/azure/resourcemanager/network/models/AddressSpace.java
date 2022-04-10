@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network. */
 @Fluent
 public final class AddressSpace {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressSpace.class);
-
     /*
      * A list of address blocks reserved for this virtual network in CIDR
      * notation.

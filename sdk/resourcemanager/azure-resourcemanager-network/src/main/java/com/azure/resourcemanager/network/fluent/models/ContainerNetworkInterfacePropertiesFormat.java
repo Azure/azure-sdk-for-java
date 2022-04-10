@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Container;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of container network interface. */
 @Fluent
 public final class ContainerNetworkInterfacePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfacePropertiesFormat.class);
-
     /*
      * Container network interface configuration from which this container
      * network interface is created.

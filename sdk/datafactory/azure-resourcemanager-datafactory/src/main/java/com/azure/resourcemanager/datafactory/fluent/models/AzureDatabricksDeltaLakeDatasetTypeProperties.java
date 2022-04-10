@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Databricks Delta Lake Dataset Properties. */
 @Fluent
 public final class AzureDatabricksDeltaLakeDatasetTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureDatabricksDeltaLakeDatasetTypeProperties.class);
-
     /*
      * The name of delta table. Type: string (or Expression with resultType
      * string).

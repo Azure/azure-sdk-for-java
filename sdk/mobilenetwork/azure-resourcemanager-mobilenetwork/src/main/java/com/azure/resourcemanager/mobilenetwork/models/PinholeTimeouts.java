@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second. */
 @Fluent
 public final class PinholeTimeouts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PinholeTimeouts.class);
-
     /*
      * Pinhole timeout for TCP pinholes in seconds. Default for TCP is 2 hours
      * 4 minutes per RFC 5382 section 5.

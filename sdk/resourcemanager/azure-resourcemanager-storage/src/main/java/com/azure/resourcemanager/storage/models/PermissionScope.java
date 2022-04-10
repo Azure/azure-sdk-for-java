@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PermissionScope model. */
 @Fluent
 public final class PermissionScope {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PermissionScope.class);
-
     /*
      * The permissions for the local user. Possible values include: Read (r),
      * Write (w), Delete (d), List (l), and Create (c).
@@ -105,19 +102,21 @@ public final class PermissionScope {
      */
     public void validate() {
         if (permissions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property permissions in model PermissionScope"));
         }
         if (service() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property service in model PermissionScope"));
         }
         if (resourceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property resourceName in model PermissionScope"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PermissionScope.class);
 }

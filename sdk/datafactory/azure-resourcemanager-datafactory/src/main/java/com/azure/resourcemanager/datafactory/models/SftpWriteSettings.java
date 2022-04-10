@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SftpWriteSettings")
 @Fluent
 public final class SftpWriteSettings extends StoreWriteSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SftpWriteSettings.class);
-
     /*
      * Specifies the timeout for writing each chunk to SFTP server. Default
      * value: 01:00:00 (one hour). Type: string (or Expression with resultType
