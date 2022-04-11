@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.MetastoresImpl;
-import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.MetastoreRegisterObject;
 import com.azure.analytics.synapse.artifacts.models.MetastoreRegistrationResponse;
 import com.azure.analytics.synapse.artifacts.models.MetastoreRequestSuccessResponse;
@@ -40,7 +40,7 @@ public final class MetastoreAsyncClient {
      *     not exceed 24 characters.
      * @param registerBody The body for the register request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -58,7 +58,7 @@ public final class MetastoreAsyncClient {
      *     not exceed 24 characters.
      * @param registerBody The body for the register request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -73,7 +73,7 @@ public final class MetastoreAsyncClient {
      *
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of the database along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -88,7 +88,7 @@ public final class MetastoreAsyncClient {
      *
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of the database on successful completion of {@link Mono}.
      */
@@ -104,7 +104,7 @@ public final class MetastoreAsyncClient {
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -120,7 +120,7 @@ public final class MetastoreAsyncClient {
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -135,7 +135,7 @@ public final class MetastoreAsyncClient {
      *
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -150,7 +150,7 @@ public final class MetastoreAsyncClient {
      *
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */

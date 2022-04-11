@@ -6,7 +6,7 @@ package com.azure.analytics.synapse.artifacts.implementation;
 
 import com.azure.analytics.synapse.artifacts.models.BigDataPoolResourceInfo;
 import com.azure.analytics.synapse.artifacts.models.BigDataPoolResourceInfoListResult;
-import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -52,7 +52,7 @@ public final class BigDataPoolsImpl {
     private interface BigDataPoolsService {
         @Get("/bigDataPools")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<BigDataPoolResourceInfoListResult>> list(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -61,7 +61,7 @@ public final class BigDataPoolsImpl {
 
         @Get("/bigDataPools/{bigDataPoolName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<BigDataPoolResourceInfo>> get(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -73,7 +73,7 @@ public final class BigDataPoolsImpl {
     /**
      * List Big Data Pools.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -89,7 +89,7 @@ public final class BigDataPoolsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -103,7 +103,7 @@ public final class BigDataPoolsImpl {
     /**
      * List Big Data Pools.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools on successful completion of {@link Mono}.
      */
@@ -125,7 +125,7 @@ public final class BigDataPoolsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools on successful completion of {@link Mono}.
      */
@@ -145,7 +145,7 @@ public final class BigDataPoolsImpl {
     /**
      * List Big Data Pools.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools.
      */
@@ -159,7 +159,7 @@ public final class BigDataPoolsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools along with {@link Response}.
      */
@@ -173,7 +173,7 @@ public final class BigDataPoolsImpl {
      *
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return big Data Pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -191,7 +191,7 @@ public final class BigDataPoolsImpl {
      * @param bigDataPoolName The Big Data Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return big Data Pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -207,7 +207,7 @@ public final class BigDataPoolsImpl {
      *
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return big Data Pool on successful completion of {@link Mono}.
      */
@@ -230,7 +230,7 @@ public final class BigDataPoolsImpl {
      * @param bigDataPoolName The Big Data Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return big Data Pool on successful completion of {@link Mono}.
      */
@@ -252,7 +252,7 @@ public final class BigDataPoolsImpl {
      *
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return big Data Pool.
      */
@@ -267,7 +267,7 @@ public final class BigDataPoolsImpl {
      * @param bigDataPoolName The Big Data Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return big Data Pool along with {@link Response}.
      */

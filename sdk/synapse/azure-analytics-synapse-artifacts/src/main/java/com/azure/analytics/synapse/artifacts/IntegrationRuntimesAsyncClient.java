@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.IntegrationRuntimesImpl;
-import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeListResponse;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeResource;
 import com.azure.core.annotation.Generated;
@@ -33,7 +33,7 @@ public final class IntegrationRuntimesAsyncClient {
     /**
      * List Integration Runtimes.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources along with {@link Response} on successful completion of {@link
      *     Mono}.
@@ -47,7 +47,7 @@ public final class IntegrationRuntimesAsyncClient {
     /**
      * List Integration Runtimes.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources on successful completion of {@link Mono}.
      */
@@ -62,7 +62,7 @@ public final class IntegrationRuntimesAsyncClient {
      *
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -77,7 +77,7 @@ public final class IntegrationRuntimesAsyncClient {
      *
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime on successful completion of {@link Mono}.
      */

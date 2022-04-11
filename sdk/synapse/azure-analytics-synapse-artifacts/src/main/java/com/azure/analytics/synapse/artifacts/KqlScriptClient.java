@@ -6,7 +6,7 @@ package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.KqlScriptsOperationsImpl;
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
-import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.KqlScriptResource;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -36,7 +36,7 @@ public final class KqlScriptClient {
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -53,7 +53,7 @@ public final class KqlScriptClient {
      * @param kqlScript KQL script.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -69,7 +69,7 @@ public final class KqlScriptClient {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name.
      */
@@ -85,7 +85,7 @@ public final class KqlScriptClient {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name along with {@link Response}.
      */
@@ -100,7 +100,7 @@ public final class KqlScriptClient {
      *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -115,7 +115,7 @@ public final class KqlScriptClient {
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -131,7 +131,7 @@ public final class KqlScriptClient {
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -147,7 +147,7 @@ public final class KqlScriptClient {
      * @param renameRequest Rename request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */

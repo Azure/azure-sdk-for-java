@@ -100,4 +100,46 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
         this.libraries = libraries;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkJarActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkJarActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkJarActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkJarActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkJarActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkJarActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
+        return this;
+    }
 }

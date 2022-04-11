@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
-import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.Workspace;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -50,7 +50,7 @@ public final class WorkspacesImpl {
     private interface WorkspacesService {
         @Get("/workspace")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<Workspace>> get(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -61,7 +61,7 @@ public final class WorkspacesImpl {
     /**
      * Get Workspace.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -77,7 +77,7 @@ public final class WorkspacesImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -91,7 +91,7 @@ public final class WorkspacesImpl {
     /**
      * Get Workspace.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace on successful completion of {@link Mono}.
      */
@@ -113,7 +113,7 @@ public final class WorkspacesImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace on successful completion of {@link Mono}.
      */
@@ -133,7 +133,7 @@ public final class WorkspacesImpl {
     /**
      * Get Workspace.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace.
      */
@@ -147,7 +147,7 @@ public final class WorkspacesImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace along with {@link Response}.
      */

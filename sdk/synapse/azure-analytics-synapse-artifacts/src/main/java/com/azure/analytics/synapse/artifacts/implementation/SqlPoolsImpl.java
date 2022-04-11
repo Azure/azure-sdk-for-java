@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
-import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.SqlPool;
 import com.azure.analytics.synapse.artifacts.models.SqlPoolInfoListResult;
 import com.azure.core.annotation.ExpectedResponses;
@@ -51,7 +51,7 @@ public final class SqlPoolsImpl {
     private interface SqlPoolsService {
         @Get("/sqlPools")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<SqlPoolInfoListResult>> list(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -60,7 +60,7 @@ public final class SqlPoolsImpl {
 
         @Get("/sqlPools/{sqlPoolName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<SqlPool>> get(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -72,7 +72,7 @@ public final class SqlPoolsImpl {
     /**
      * List Sql Pools.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -88,7 +88,7 @@ public final class SqlPoolsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -102,7 +102,7 @@ public final class SqlPoolsImpl {
     /**
      * List Sql Pools.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection on successful completion of {@link Mono}.
      */
@@ -124,7 +124,7 @@ public final class SqlPoolsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection on successful completion of {@link Mono}.
      */
@@ -144,7 +144,7 @@ public final class SqlPoolsImpl {
     /**
      * List Sql Pools.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection.
      */
@@ -158,7 +158,7 @@ public final class SqlPoolsImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool collection along with {@link Response}.
      */
@@ -172,7 +172,7 @@ public final class SqlPoolsImpl {
      *
      * @param sqlPoolName The Sql Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -190,7 +190,7 @@ public final class SqlPoolsImpl {
      * @param sqlPoolName The Sql Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -206,7 +206,7 @@ public final class SqlPoolsImpl {
      *
      * @param sqlPoolName The Sql Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool on successful completion of {@link Mono}.
      */
@@ -229,7 +229,7 @@ public final class SqlPoolsImpl {
      * @param sqlPoolName The Sql Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool on successful completion of {@link Mono}.
      */
@@ -251,7 +251,7 @@ public final class SqlPoolsImpl {
      *
      * @param sqlPoolName The Sql Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool.
      */
@@ -266,7 +266,7 @@ public final class SqlPoolsImpl {
      * @param sqlPoolName The Sql Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool along with {@link Response}.
      */

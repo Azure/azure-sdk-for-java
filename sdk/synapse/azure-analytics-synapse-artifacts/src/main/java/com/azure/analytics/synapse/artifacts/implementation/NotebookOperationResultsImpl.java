@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
-import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -51,7 +51,7 @@ public final class NotebookOperationResultsImpl {
     private interface NotebookOperationResultsService {
         @Get("/notebookOperationResults/{operationId}")
         @ExpectedResponses({200, 201, 202, 204})
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
         Mono<Response<Void>> get(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -65,7 +65,7 @@ public final class NotebookOperationResultsImpl {
      *
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook operation result along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -83,7 +83,7 @@ public final class NotebookOperationResultsImpl {
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook operation result along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -99,7 +99,7 @@ public final class NotebookOperationResultsImpl {
      *
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook operation result on successful completion of {@link Mono}.
      */
@@ -114,7 +114,7 @@ public final class NotebookOperationResultsImpl {
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook operation result on successful completion of {@link Mono}.
      */
@@ -128,7 +128,7 @@ public final class NotebookOperationResultsImpl {
      *
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -142,7 +142,7 @@ public final class NotebookOperationResultsImpl {
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook operation result along with {@link Response}.
      */
