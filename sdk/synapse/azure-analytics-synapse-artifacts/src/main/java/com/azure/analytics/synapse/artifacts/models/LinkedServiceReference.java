@@ -6,6 +6,7 @@ package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Linked service reference type. */
 @Fluent
@@ -26,7 +27,7 @@ public final class LinkedServiceReference {
      * Arguments for LinkedService.
      */
     @JsonProperty(value = "parameters")
-    private Object parameters;
+    private Map<String, Object> parameters;
 
     /**
      * Get the type property: Linked service reference type.
@@ -73,7 +74,7 @@ public final class LinkedServiceReference {
      *
      * @return the parameters value.
      */
-    public Object getParameters() {
+    public Map<String, Object> getParameters() {
         return this.parameters;
     }
 
@@ -83,7 +84,7 @@ public final class LinkedServiceReference {
      * @param parameters the parameters value to set.
      * @return the LinkedServiceReference object itself.
      */
-    public LinkedServiceReference setParameters(Object parameters) {
+    public LinkedServiceReference setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
     }
