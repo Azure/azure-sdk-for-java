@@ -7,8 +7,6 @@
 - Upgraded `azure-core` to 1.27.0
 - Upgraded `azure-identity` to 1.5.0
 
-### Other Changes
-
 ## 1.1.0 (2022-03-11)
 
 ### Features Added
