@@ -96,6 +96,11 @@ public final class DefaultJsonReader implements JsonReader {
     }
 
     @Override
+    public String getFieldName() {
+        return callWithWrappedIoException(parser::currentName);
+    }
+
+    @Override
     public void skipValue() {
         callWithWrappedIoException(parser::skipChildren);
     }
@@ -112,6 +117,11 @@ public final class DefaultJsonReader implements JsonReader {
      * be returned by specialty implementations that aren't used.
      */
     private static JsonToken mapFromParserToken(com.azure.core.implementation.jackson.core.JsonToken token) {
+        // Special case for when currentToken is called after instantiating the JsonReader.
+        if (token == null) {
+            return null;
+        }
+
         switch (token) {
             case START_OBJECT:
                 return JsonToken.START_OBJECT;

@@ -104,6 +104,16 @@ public interface JsonReader extends Closeable {
     String getStringValue();
 
     /**
+     * Gets the field name if the reader is currently pointing to a {@link JsonToken#FIELD_NAME}.
+     * <p>
+     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     *
+     * @return The field name based on the current token.
+     * @throws IllegalStateException If the current token isn't a {@link JsonToken#FIELD_NAME}.
+     */
+    String getFieldName();
+
+    /**
      * Recursively skips the JSON token sub-stream if the current token is either {@link JsonToken#START_OBJECT} or
      * {@link JsonToken#START_ARRAY}.
      * <p>

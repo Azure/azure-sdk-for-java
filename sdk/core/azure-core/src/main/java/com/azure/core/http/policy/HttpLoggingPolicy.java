@@ -203,7 +203,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                                 .append("-byte body:")
                                 .append(System.lineSeparator())
                                 .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
-                                    new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
+                                    stream.toString(StandardCharsets.UTF_8)))
                                 .append(System.lineSeparator())
                                 .append("--> END ")
                                 .append(request.getHttpMethod())
@@ -531,7 +531,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     responseLogMessage.append("Response body:")
                         .append(System.lineSeparator())
                         .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                            new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
+                            stream.toString(StandardCharsets.UTF_8)))
                         .append(System.lineSeparator())
                         .append("<-- END HTTP");
 
