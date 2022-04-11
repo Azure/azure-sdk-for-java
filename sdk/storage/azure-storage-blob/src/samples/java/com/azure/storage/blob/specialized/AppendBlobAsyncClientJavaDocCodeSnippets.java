@@ -3,8 +3,6 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.http.rest.Response;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -13,7 +11,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -210,12 +207,12 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
 
         client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers)
             .setMetadata(metadata).setTags(tags)).subscribe(response -> {
-            if (response.getStatusCode() == 409) {
-                System.out.println("Already exists.");
-            } else {
-                System.out.println("successfully created.");
-            }
-        });
+                if (response.getStatusCode() == 409) {
+                    System.out.println("Already exists.");
+                } else {
+                    System.out.println("successfully created.");
+                }
+            });
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions
     }
 }

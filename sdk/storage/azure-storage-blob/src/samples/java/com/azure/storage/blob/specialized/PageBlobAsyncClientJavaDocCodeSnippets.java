@@ -4,13 +4,11 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
-import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -18,7 +16,6 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -497,13 +494,13 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .setContentType("binary");
 
         client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-                .setHeaders(headers).setMetadata(metadata).setTags(tags)).subscribe(response -> {
-            if (response.getStatusCode() == 409) {
-                System.out.println("Already exists.");
-            } else {
-                System.out.println("successfully created.");
-            }
-        });
+            .setHeaders(headers).setMetadata(metadata).setTags(tags)).subscribe(response -> {
+                if (response.getStatusCode() == 409) {
+                    System.out.println("Already exists.");
+                } else {
+                    System.out.println("successfully created.");
+                }
+            });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions
     }
 

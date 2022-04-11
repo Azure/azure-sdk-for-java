@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -315,11 +314,11 @@ public final class BlobServiceAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createBlobContainerWithResponse(containerName, options.getMetadata(), options.getPublicAccessType(),
                 context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
-                    .getStatusCode() == 409, t -> {
-                HttpResponse response = ((BlobStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
-            });
+                .getStatusCode() == 409, t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
