@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** UrlPathMaps give a url path to the backend mapping information for PathBasedRouting. */
 @Fluent
 public final class ApplicationGatewayUrlPathMapInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayUrlPathMapInner.class);
-
     /*
      * Properties of the application gateway URL path map.
      */

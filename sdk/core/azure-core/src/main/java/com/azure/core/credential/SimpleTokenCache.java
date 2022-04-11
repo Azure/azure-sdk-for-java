@@ -117,7 +117,7 @@ public class SimpleTokenCache {
                         return sinksOne.asMono().switchIfEmpty(Mono.defer(() -> Mono.just(cache)));
                     }
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 return Mono.error(t);
             }
         });

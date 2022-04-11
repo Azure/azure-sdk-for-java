@@ -28,14 +28,10 @@ public class BinaryDataReceiveTest extends RestProxyTestBase<CorePerfStressOptio
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        BinaryDataSendTest sendTest = new BinaryDataSendTest(options);
-        return super.globalSetupAsync()
-            .then(Mono.defer(sendTest::globalSetupAsync))
-            .then(Mono.defer(sendTest::setupAsync))
-            .then(Mono.defer(sendTest::runAsync))
-            .then(Mono.defer(sendTest::cleanupAsync))
-            .then(Mono.defer(sendTest::globalCleanupAsync));
+    public Mono<Void> setupAsync() {
+        byte[] bodyBytes = new byte[(int) options.getSize()];
+        new Random(0).nextBytes(bodyBytes);
+        return service.setBinaryData(endpoint, id, BinaryData.fromBytes(bodyBytes), options.getSize());
     }
 
     @Override
@@ -45,7 +41,7 @@ public class BinaryDataReceiveTest extends RestProxyTestBase<CorePerfStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getBinaryDataAsync(endpoint)
+        return service.getBinaryDataAsync(endpoint, id)
            .map(Response::getValue)
            .map(BinaryData::toBytes).then();
     }

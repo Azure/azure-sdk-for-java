@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Stop packet capture parameters. */
 @Fluent
 public final class VpnPacketCaptureStopParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnPacketCaptureStopParameters.class);
-
     /*
      * SAS url for packet capture on virtual network gateway.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties pertaining to the Nfs3Target. */
 @Fluent
 public final class Nfs3Target {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Nfs3Target.class);
-
     /*
      * IP address or host name of an NFSv3 host (e.g., 10.0.44.44).
      */

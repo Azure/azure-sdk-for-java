@@ -18,7 +18,7 @@ public interface Apis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api list representation.
+     * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApiContract> listByService(String resourceGroupName, String serviceName);
 
@@ -42,7 +42,7 @@ public interface Apis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api list representation.
+     * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApiContract> listByService(
         String resourceGroupName,
@@ -141,7 +141,7 @@ public interface Apis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,
@@ -159,7 +159,7 @@ public interface Apis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName);
 
@@ -183,7 +183,7 @@ public interface Apis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagResourceContract> listByTags(
         String resourceGroupName,
@@ -238,7 +238,7 @@ public interface Apis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, String ifMatch, Boolean deleteRevisions, Context context);
 

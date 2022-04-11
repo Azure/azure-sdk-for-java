@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Filter that is applied to packet capture request. Multiple filters can be applied. */
 @Fluent
 public final class PacketCaptureFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureFilter.class);
-
     /*
      * Protocol to be filtered on.
      */

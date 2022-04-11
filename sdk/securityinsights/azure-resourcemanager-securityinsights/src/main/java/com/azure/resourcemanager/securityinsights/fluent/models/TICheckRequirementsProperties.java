@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Threat Intelligence Platforms data connector required properties. */
 @Fluent
 public final class TICheckRequirementsProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TICheckRequirementsProperties.class);
-
     /** {@inheritDoc} */
     @Override
     public TICheckRequirementsProperties withTenantId(String tenantId) {

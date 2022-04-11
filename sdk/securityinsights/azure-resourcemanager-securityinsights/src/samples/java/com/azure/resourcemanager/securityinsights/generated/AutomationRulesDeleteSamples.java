@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for AutomationRules Delete. */
 public final class AutomationRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/automationRules/DeleteAutomationRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/automationRules/AutomationRules_Delete.json
      */
     /**
-     * Sample code: Delete an automation rule.
+     * Sample code: AutomationRules_Delete.
      *
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void deleteAnAutomationRule(
+    public static void automationRulesDelete(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
         manager
             .automationRules()

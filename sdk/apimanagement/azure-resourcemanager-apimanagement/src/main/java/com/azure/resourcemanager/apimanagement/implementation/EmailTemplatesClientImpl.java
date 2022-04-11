@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.EmailTemplatesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.EmailTemplateContractInner;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateCollection;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EmailTemplatesClient. */
 public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
-    private final ClientLogger logger = new ClientLogger(EmailTemplatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EmailTemplatesService service;
 
@@ -196,7 +193,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailTemplateContractInner>> listByServiceSinglePageAsync(
@@ -262,7 +259,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailTemplateContractInner>> listByServiceSinglePageAsync(
@@ -324,7 +321,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EmailTemplateContractInner> listByServiceAsync(
@@ -342,7 +339,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EmailTemplateContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
@@ -368,7 +365,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EmailTemplateContractInner> listByServiceAsync(
@@ -386,7 +383,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmailTemplateContractInner> listByService(String resourceGroupName, String serviceName) {
@@ -410,7 +407,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmailTemplateContractInner> listByService(
@@ -427,7 +424,8 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the email template specified by its identifier.
+     * @return the entity state (Etag) version of the email template specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplatesGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -481,7 +479,8 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the email template specified by its identifier.
+     * @return the entity state (Etag) version of the email template specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplatesGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -531,7 +530,8 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the email template specified by its identifier.
+     * @return the entity state (Etag) version of the email template specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, TemplateName templateName) {
@@ -581,7 +581,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the email template specified by its identifier.
+     * @return the details of the email template specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplatesGetResponse> getWithResponseAsync(
@@ -635,7 +635,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the email template specified by its identifier.
+     * @return the details of the email template specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplatesGetResponse> getWithResponseAsync(
@@ -685,7 +685,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the email template specified by its identifier.
+     * @return the details of the email template specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplateContractInner> getAsync(
@@ -746,7 +746,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EmailTemplateContractInner>> createOrUpdateWithResponseAsync(
@@ -813,7 +813,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EmailTemplateContractInner>> createOrUpdateWithResponseAsync(
@@ -877,7 +877,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplateContractInner> createOrUpdateAsync(
@@ -907,7 +907,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplateContractInner> createOrUpdateAsync(
@@ -961,7 +961,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EmailTemplateContractInner> createOrUpdateWithResponse(
@@ -988,7 +988,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplatesUpdateResponse> updateWithResponseAsync(
@@ -1059,7 +1059,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplatesUpdateResponse> updateWithResponseAsync(
@@ -1127,7 +1127,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return email Template details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EmailTemplateContractInner> updateAsync(
@@ -1209,7 +1209,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1269,7 +1269,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1325,7 +1325,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1363,7 +1363,7 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1378,7 +1378,8 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged email template list representation.
+     * @return paged email template list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailTemplateContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1414,7 +1415,8 @@ public final class EmailTemplatesClientImpl implements EmailTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged email template list representation.
+     * @return paged email template list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailTemplateContractInner>> listByServiceNextSinglePageAsync(

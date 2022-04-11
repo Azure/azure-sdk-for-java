@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Deployment operation parameters. */
 @Fluent
 public final class ScopedDeployment {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopedDeployment.class);
-
     /*
      * The location to store the deployment data.
      */
@@ -102,16 +99,18 @@ public final class ScopedDeployment {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model ScopedDeployment"));
         }
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property properties in model ScopedDeployment"));
         } else {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScopedDeployment.class);
 }

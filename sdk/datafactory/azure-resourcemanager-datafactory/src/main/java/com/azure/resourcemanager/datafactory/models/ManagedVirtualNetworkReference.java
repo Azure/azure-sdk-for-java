@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed Virtual Network reference type. */
 @Fluent
 public final class ManagedVirtualNetworkReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedVirtualNetworkReference.class);
-
     /*
      * Managed Virtual Network reference type.
      */
@@ -78,10 +75,12 @@ public final class ManagedVirtualNetworkReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property referenceName in model ManagedVirtualNetworkReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedVirtualNetworkReference.class);
 }

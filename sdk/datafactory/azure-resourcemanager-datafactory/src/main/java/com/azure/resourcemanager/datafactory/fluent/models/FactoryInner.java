@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.EncryptionConfiguration;
 import com.azure.resourcemanager.datafactory.models.FactoryIdentity;
 import com.azure.resourcemanager.datafactory.models.FactoryRepoConfiguration;
@@ -23,8 +22,6 @@ import java.util.Map;
 /** Factory resource type. */
 @Fluent
 public final class FactoryInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryInner.class);
-
     /*
      * Managed service identity of the factory.
      */

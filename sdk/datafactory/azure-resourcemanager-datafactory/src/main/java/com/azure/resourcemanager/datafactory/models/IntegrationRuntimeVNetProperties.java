@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** VNet properties for managed integration runtime. */
 @Fluent
 public final class IntegrationRuntimeVNetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeVNetProperties.class);
-
     /*
      * The ID of the VNet that this integration runtime will join.
      */

@@ -18,7 +18,7 @@ public interface EntityQueryTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity query templates.
+     * @return all entity query templates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EntityQueryTemplate> list(String resourceGroupName, String workspaceName);
 
@@ -32,10 +32,10 @@ public interface EntityQueryTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity query templates.
+     * @return all entity query templates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EntityQueryTemplate> list(
-        String resourceGroupName, String workspaceName, Constant69 kind, Context context);
+        String resourceGroupName, String workspaceName, Constant74 kind, Context context);
 
     /**
      * Gets an entity query.

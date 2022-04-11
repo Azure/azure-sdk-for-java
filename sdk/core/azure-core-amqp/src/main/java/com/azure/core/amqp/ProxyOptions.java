@@ -24,6 +24,15 @@ public class ProxyOptions implements AutoCloseable {
      * The configuration key for containing the password for the username who authenticates with the proxy.
      */
     public static final String PROXY_PASSWORD = "PROXY_PASSWORD";
+    /**
+     * The configuration key for containing the authentication type to be used by the proxy.
+     * This can one of three values -
+     *  - NONE
+     *  - BASIC
+     *  - DIGEST
+     *  as defined in ProxyAuthenticationType
+     */
+    public static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
 
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private final PasswordAuthentication credentials;
@@ -38,7 +47,7 @@ public class ProxyOptions implements AutoCloseable {
     private ProxyOptions() {
         this.credentials = null;
         this.proxyAddress = null;
-        this.authentication = null;
+        this.authentication = ProxyAuthenticationType.NONE;
     }
 
     /**

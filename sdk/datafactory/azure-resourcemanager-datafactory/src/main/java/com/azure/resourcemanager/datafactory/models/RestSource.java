@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RestSource")
 @Fluent
 public final class RestSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestSource.class);
-
     /*
      * The HTTP method used to call the RESTful API. The default is GET. Type:
      * string (or Expression with resultType string).

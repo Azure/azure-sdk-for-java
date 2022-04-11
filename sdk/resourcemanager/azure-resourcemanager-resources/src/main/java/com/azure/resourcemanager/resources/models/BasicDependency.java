@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deployment dependency information. */
 @Fluent
 public final class BasicDependency {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BasicDependency.class);
-
     /*
      * The ID of the dependency.
      */

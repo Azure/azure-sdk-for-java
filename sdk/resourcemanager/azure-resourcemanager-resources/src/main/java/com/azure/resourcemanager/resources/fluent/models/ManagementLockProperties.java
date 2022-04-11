@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLockOwner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The lock properties. */
 @Fluent
 public final class ManagementLockProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementLockProperties.class);
-
     /*
      * The level of the lock. Possible values are: NotSpecified, CanNotDelete,
      * ReadOnly. CanNotDelete means authorized users are able to read and
@@ -109,7 +106,7 @@ public final class ManagementLockProperties {
      */
     public void validate() {
         if (level() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property level in model ManagementLockProperties"));
         }
@@ -117,4 +114,6 @@ public final class ManagementLockProperties {
             owners().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementLockProperties.class);
 }
