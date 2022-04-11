@@ -108,6 +108,11 @@ parameters:
   - name: Artifacts
     type: object
     default:
+    - name: spring-cloud-azure
+      groupId: com.azure.spring
+      safeName: springcloudazure
+      skipPublishDocMs: true
+      skipUpdatePackageJson: true
     - name: spring-cloud-azure-core
       groupId: com.azure.spring
       safeName: springcloudazurecore
@@ -323,6 +328,7 @@ parameters:
       skipPublishDocMs: true
       skipUpdatePackageJson: true
       skipVerifyChangelog: true
+
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
