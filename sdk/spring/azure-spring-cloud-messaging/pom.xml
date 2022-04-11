@@ -7,6 +7,7 @@
   <artifactId>azure-spring-cloud-messaging</artifactId>
   <version>4.0.0</version>
   <name>Azure Spring Cloud Messaging</name>
+  <description>Azure Spring Cloud Messaging</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <distributionManagement>
     <relocation>

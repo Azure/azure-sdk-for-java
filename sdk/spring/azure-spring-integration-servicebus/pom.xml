@@ -7,6 +7,7 @@
   <artifactId>azure-spring-integration-servicebus</artifactId>
   <version>4.0.0</version>
   <name>Azure Spring Integration Service Bus</name>
+  <description>Azure Spring Integration Service Bus</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <distributionManagement>
     <relocation>

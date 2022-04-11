@@ -7,6 +7,7 @@
   <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
   <version>4.0.0</version>
   <name>Azure Spring Cloud Stream Service Bus Binder Core</name>
+  <description>Azure Spring Cloud Stream Service Bus Binder Core</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <distributionManagement>
     <relocation>

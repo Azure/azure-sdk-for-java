@@ -10,6 +10,7 @@
   <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
   <version>4.0.0</version>
   <name>Azure Spring Cloud Starter Storage Queue</name>
+  <description>Azure Spring Cloud Starter Storage Queue</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <distributionManagement>
     <relocation>

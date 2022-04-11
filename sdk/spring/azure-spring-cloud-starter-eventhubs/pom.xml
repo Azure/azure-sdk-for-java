@@ -8,6 +8,7 @@
   <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
   <version>4.0.0</version>
   <name>Azure Spring Cloud Starter Event Hubs</name>
+  <description>Azure Spring Cloud Starter Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <distributionManagement>
     <relocation>

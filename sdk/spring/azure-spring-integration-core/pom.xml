@@ -7,6 +7,7 @@
   <artifactId>azure-spring-integration-core</artifactId>
   <version>4.0.0</version>
   <name>Azure Spring Integration Core</name>
+  <description>Azure Spring Integration Core</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
   <distributionManagement>
     <relocation>
