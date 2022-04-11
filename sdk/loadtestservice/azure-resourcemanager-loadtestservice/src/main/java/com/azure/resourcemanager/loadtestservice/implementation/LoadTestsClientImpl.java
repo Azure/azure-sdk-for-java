@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loadtestservice.fluent.LoadTestsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadTestsClient. */
 public final class LoadTestsClientImpl implements LoadTestsClient {
-    private final ClientLogger logger = new ClientLogger(LoadTestsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LoadTestsService service;
 
@@ -113,9 +110,9 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
                 + "/loadTests/{loadTestName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadTestResourceInner>> createOrUpdate(
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -129,9 +126,9 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService"
                 + "/loadTests/{loadTestName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadTestResourceInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -182,7 +179,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listSinglePageAsync() {
@@ -228,7 +225,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listSinglePageAsync(Context context) {
@@ -269,7 +266,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listAsync() {
@@ -284,7 +281,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listAsync(Context context) {
@@ -297,7 +294,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> list() {
@@ -311,7 +308,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> list(Context context) {
@@ -325,7 +322,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -377,7 +374,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupSinglePageAsync(
@@ -426,7 +423,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -443,7 +440,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadTestResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -459,7 +456,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -474,7 +471,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -489,7 +486,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return a LoadTest resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LoadTestResourceInner>> getByResourceGroupWithResponseAsync(
@@ -538,7 +535,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return a LoadTest resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LoadTestResourceInner>> getByResourceGroupWithResponseAsync(
@@ -583,7 +580,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return a LoadTest resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoadTestResourceInner> getByResourceGroupAsync(String resourceGroupName, String loadTestName) {
@@ -622,7 +619,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return a LoadTest resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadTestResourceInner> getByResourceGroupWithResponse(
@@ -639,10 +636,10 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadTest details.
+     * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LoadTestResourceInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -696,10 +693,10 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadTest details.
+     * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LoadTestResourceInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -749,20 +746,119 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadTest details.
+     * @return the {@link PollerFlux} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, loadTestResource);
+        return this
+            .client
+            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                LoadTestResourceInner.class,
+                LoadTestResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Create or update LoadTest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResource LoadTest resource data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, loadTestResource, context);
+        return this
+            .client
+            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class, context);
+    }
+
+    /**
+     * Create or update LoadTest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResource LoadTest resource data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource).getSyncPoller();
+    }
+
+    /**
+     * Create or update LoadTest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResource LoadTest resource data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context).getSyncPoller();
+    }
+
+    /**
+     * Create or update LoadTest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResource LoadTest resource data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadTest details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoadTestResourceInner> createOrUpdateAsync(
         String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, loadTestResource)
-            .flatMap(
-                (Response<LoadTestResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update LoadTest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResource LoadTest resource data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadTest details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LoadTestResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -795,9 +891,9 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LoadTestResourceInner> createOrUpdateWithResponse(
+    public LoadTestResourceInner createOrUpdate(
         String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, loadTestName, loadTestResource, context).block();
+        return createOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context).block();
     }
 
     /**
@@ -809,10 +905,10 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadTest details.
+     * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LoadTestResourceInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String loadTestName,
         LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
@@ -870,10 +966,10 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadTest details.
+     * @return loadTest details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LoadTestResourceInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String loadTestName,
         LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
@@ -928,22 +1024,135 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadTest details.
+     * @return the {@link PollerFlux} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdateAsync(
+        String resourceGroupName,
+        String loadTestName,
+        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody);
+        return this
+            .client
+            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                LoadTestResourceInner.class,
+                LoadTestResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Update a loadtest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdateAsync(
+        String resourceGroupName,
+        String loadTestName,
+        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context);
+        return this
+            .client
+            .<LoadTestResourceInner, LoadTestResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), LoadTestResourceInner.class, LoadTestResourceInner.class, context);
+    }
+
+    /**
+     * Update a loadtest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
+        String resourceGroupName,
+        String loadTestName,
+        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
+        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody).getSyncPoller();
+    }
+
+    /**
+     * Update a loadtest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
+        String resourceGroupName,
+        String loadTestName,
+        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a loadtest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadTest details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoadTestResourceInner> updateAsync(
         String resourceGroupName,
         String loadTestName,
         LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
-        return updateWithResponseAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody)
-            .flatMap(
-                (Response<LoadTestResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a loadtest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadTest details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LoadTestResourceInner> updateAsync(
+        String resourceGroupName,
+        String loadTestName,
+        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -978,13 +1187,12 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LoadTestResourceInner> updateWithResponse(
+    public LoadTestResourceInner update(
         String resourceGroupName,
         String loadTestName,
         LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context)
-            .block();
+        return updateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context).block();
     }
 
     /**
@@ -995,7 +1203,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String loadTestName) {
@@ -1043,7 +1251,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1088,7 +1296,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadTestName) {
@@ -1108,7 +1316,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1128,7 +1336,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadTestName) {
@@ -1144,7 +1352,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1160,7 +1368,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String loadTestName) {
@@ -1176,7 +1384,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String loadTestName, Context context) {
@@ -1221,7 +1429,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1258,7 +1466,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listBySubscriptionNextSinglePageAsync(
@@ -1294,7 +1502,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1331,7 +1539,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadTestResourceInner>> listByResourceGroupNextSinglePageAsync(

@@ -51,7 +51,7 @@ public interface LoadTestResource {
      *
      * @return the identity value.
      */
-    SystemAssignedServiceIdentity identity();
+    ManagedServiceIdentity identity();
 
     /**
      * Gets the description property: Description of the resource.
@@ -73,6 +73,13 @@ public interface LoadTestResource {
      * @return the dataPlaneUri value.
      */
     String dataPlaneUri();
+
+    /**
+     * Gets the encryption property: CMK Encryption property.
+     *
+     * @return the encryption value.
+     */
+    EncryptionProperties encryption();
 
     /**
      * Gets the region of the resource.
@@ -140,7 +147,10 @@ public interface LoadTestResource {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithDescription {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithDescription,
+                DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              *
@@ -174,7 +184,7 @@ public interface LoadTestResource {
              * @param identity The type of identity used for the resource.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(SystemAssignedServiceIdentity identity);
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
         /** The stage of the LoadTestResource definition allowing to specify description. */
         interface WithDescription {
@@ -186,6 +196,16 @@ public interface LoadTestResource {
              */
             WithCreate withDescription(String description);
         }
+        /** The stage of the LoadTestResource definition allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: CMK Encryption property..
+             *
+             * @param encryption CMK Encryption property.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryption(EncryptionProperties encryption);
+        }
     }
     /**
      * Begins update for the LoadTestResource resource.
@@ -195,7 +215,11 @@ public interface LoadTestResource {
     LoadTestResource.Update update();
 
     /** The template for LoadTestResource update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithDescription,
+            UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -231,17 +255,27 @@ public interface LoadTestResource {
              * @param identity The type of identity used for the resource.
              * @return the next definition stage.
              */
-            Update withIdentity(SystemAssignedServiceIdentity identity);
+            Update withIdentity(ManagedServiceIdentity identity);
         }
-        /** The stage of the LoadTestResource update allowing to specify properties. */
-        interface WithProperties {
+        /** The stage of the LoadTestResource update allowing to specify description. */
+        interface WithDescription {
             /**
-             * Specifies the properties property: Load Test resource properties.
+             * Specifies the description property: Description of the resource..
              *
-             * @param properties Load Test resource properties.
+             * @param description Description of the resource.
              * @return the next definition stage.
              */
-            Update withProperties(LoadTestResourcePatchRequestBodyProperties properties);
+            Update withDescription(String description);
+        }
+        /** The stage of the LoadTestResource update allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: CMK Encryption property..
+             *
+             * @param encryption CMK Encryption property.
+             * @return the next definition stage.
+             */
+            Update withEncryption(EncryptionProperties encryption);
         }
     }
     /**

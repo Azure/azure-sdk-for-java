@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.loadtestservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.loadtestservice.fluent.models.LoadTestResourcePatchRequestBodyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** LoadTest resource patch request body. */
 @Fluent
 public final class LoadTestResourcePatchRequestBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadTestResourcePatchRequestBody.class);
-
     /*
      * Resource tags.
      */
@@ -24,13 +21,13 @@ public final class LoadTestResourcePatchRequestBody {
      * The type of identity used for the resource.
      */
     @JsonProperty(value = "identity")
-    private SystemAssignedServiceIdentity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Load Test resource properties
      */
     @JsonProperty(value = "properties")
-    private LoadTestResourcePatchRequestBodyProperties properties;
+    private LoadTestResourcePatchRequestBodyProperties innerProperties;
 
     /**
      * Get the tags property: Resource tags.
@@ -57,7 +54,7 @@ public final class LoadTestResourcePatchRequestBody {
      *
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -67,28 +64,63 @@ public final class LoadTestResourcePatchRequestBody {
      * @param identity the identity value to set.
      * @return the LoadTestResourcePatchRequestBody object itself.
      */
-    public LoadTestResourcePatchRequestBody withIdentity(SystemAssignedServiceIdentity identity) {
+    public LoadTestResourcePatchRequestBody withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
 
     /**
-     * Get the properties property: Load Test resource properties.
+     * Get the innerProperties property: Load Test resource properties.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public LoadTestResourcePatchRequestBodyProperties properties() {
-        return this.properties;
+    private LoadTestResourcePatchRequestBodyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the properties property: Load Test resource properties.
+     * Get the description property: Description of the resource.
      *
-     * @param properties the properties value to set.
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of the resource.
+     *
+     * @param description the description value to set.
      * @return the LoadTestResourcePatchRequestBody object itself.
      */
-    public LoadTestResourcePatchRequestBody withProperties(LoadTestResourcePatchRequestBodyProperties properties) {
-        this.properties = properties;
+    public LoadTestResourcePatchRequestBody withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadTestResourcePatchRequestBodyProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: CMK Encryption property.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionProperties encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: CMK Encryption property.
+     *
+     * @param encryption the encryption value to set.
+     * @return the LoadTestResourcePatchRequestBody object itself.
+     */
+    public LoadTestResourcePatchRequestBody withEncryption(EncryptionProperties encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadTestResourcePatchRequestBodyProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -101,8 +133,8 @@ public final class LoadTestResourcePatchRequestBody {
         if (identity() != null) {
             identity().validate();
         }
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

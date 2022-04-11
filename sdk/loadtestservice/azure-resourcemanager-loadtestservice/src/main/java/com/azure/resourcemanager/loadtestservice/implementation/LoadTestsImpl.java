@@ -13,10 +13,9 @@ import com.azure.resourcemanager.loadtestservice.fluent.LoadTestsClient;
 import com.azure.resourcemanager.loadtestservice.fluent.models.LoadTestResourceInner;
 import com.azure.resourcemanager.loadtestservice.models.LoadTestResource;
 import com.azure.resourcemanager.loadtestservice.models.LoadTests;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LoadTestsImpl implements LoadTests {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadTestsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestsImpl.class);
 
     private final LoadTestsClient innerClient;
 
@@ -84,7 +83,7 @@ public final class LoadTestsImpl implements LoadTests {
     public LoadTestResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +91,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -103,7 +102,7 @@ public final class LoadTestsImpl implements LoadTests {
     public Response<LoadTestResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -122,7 +121,7 @@ public final class LoadTestsImpl implements LoadTests {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -141,7 +140,7 @@ public final class LoadTestsImpl implements LoadTests {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));

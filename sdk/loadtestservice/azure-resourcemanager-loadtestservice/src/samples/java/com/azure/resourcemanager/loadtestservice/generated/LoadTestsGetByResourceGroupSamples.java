@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LoadTests GetByResourceGroup. */
 public final class LoadTestsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_Get.json
+     * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_Get.json
      */
     /**
      * Sample code: LoadTests_Get.
