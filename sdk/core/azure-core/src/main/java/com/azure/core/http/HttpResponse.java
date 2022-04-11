@@ -63,9 +63,7 @@ public abstract class HttpResponse implements Closeable {
      * methods like {@code block()} on the stream then be sure to use {@code publishOn} before the blocking call.
      *
      * @return The response's content as a stream of {@link ByteBuffer}.
-     * @deprecated Use {@link #getBodyAsBinaryData()} instead.
      */
-    @Deprecated
     public abstract Flux<ByteBuffer> getBody();
 
     /**
