@@ -41,7 +41,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-cosmos</artifactId>
-          <version>4.28.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+          <version>4.29.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
         </dependency>
       </dependencies>
 

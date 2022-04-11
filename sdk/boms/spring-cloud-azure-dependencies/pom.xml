@@ -51,7 +51,7 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-cosmos</artifactId> <!-- Spring Cloud Azure is tested with 4.28.0 -->
-        <version>4.28.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+        <version>4.28.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
