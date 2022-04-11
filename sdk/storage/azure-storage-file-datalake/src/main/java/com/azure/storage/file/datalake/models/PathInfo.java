@@ -29,6 +29,8 @@ public class PathInfo {
      * Constructs a {@link PathInfo}
      * @param eTag ETag of the path.
      * @param lastModified Datetime when the path was last modified.
+     * @param isServerEncrypted Indicates whether the path is encrypted using Cpk.
+     * @param encryptionKeySha256 An echo of the SHA256 of the key that was used to encrypt the data.
      */
     public PathInfo(String eTag, OffsetDateTime lastModified, boolean isServerEncrypted, String encryptionKeySha256) {
         this.eTag = eTag;
