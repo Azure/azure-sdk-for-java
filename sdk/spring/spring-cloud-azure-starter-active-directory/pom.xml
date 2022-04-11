@@ -99,11 +99,6 @@
       <version>5.6.1</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>msal4j</artifactId>
-      <version>1.11.3</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
       <version>9.10.1</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
