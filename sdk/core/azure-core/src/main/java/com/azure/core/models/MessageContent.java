@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.models;
+package com.azure.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
