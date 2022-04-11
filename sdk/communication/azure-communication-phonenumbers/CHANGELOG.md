@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (2022-04-11)
+## 1.1.0-beta.4 (2022-04-11)
 
 ### Features Added
 - Upgraded `azure-communication-common` to 1.1.2
