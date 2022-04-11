@@ -483,11 +483,11 @@ public class ReactorConnection implements AmqpConnection {
             managementNodeCloseOperations.doFinally(signalType ->
                 logger.atVerbose()
                     .log("Closed management nodes.")))
+            // Make sure to close request-response-channel before session is closed.
             .then(emitShutDownSignalOperation.doFinally(signalType ->
                 logger.atVerbose()
                     .addKeyValue(SIGNAL_TYPE_KEY, signalType)
                     .log("Emitted connection shutdown signal. ")))
-            // Make sure to close request-response-channel before session is closed.
             .then(closeReactor.doFinally(signalType ->
                 logger.atVerbose()
                     .addKeyValue(SIGNAL_TYPE_KEY, signalType)
