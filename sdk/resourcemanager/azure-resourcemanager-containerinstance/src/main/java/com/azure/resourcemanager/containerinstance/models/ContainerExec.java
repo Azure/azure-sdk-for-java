@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The container execution command, for liveness or readiness probe. */
 @Fluent
 public final class ContainerExec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerExec.class);
-
     /*
      * The commands to execute within the container.
      */
