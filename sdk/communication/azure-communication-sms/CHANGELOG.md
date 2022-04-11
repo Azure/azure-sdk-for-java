@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2022-03-11)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `SmsClientBuilder`
+- Added `retryOptions` to `SmsClientBuilder`
+- Upgraded `azure-communication-common` to 1.1.1
+- Upgraded `azure-core` to 1.26.0
+- Upgraded `azure-identity` to 1.4.6
 
 ## 1.0.8 (2022-02-17)
 

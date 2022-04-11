@@ -12,18 +12,21 @@ import reactor.core.publisher.MonoProcessor;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_RENEWAL_BUFFER_DURATION;
 
 /**
  * Represents a renewal session or message lock renewal operation that.
  */
 class LockRenewalOperation implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(LockRenewalOperation.class);
+    private final ClientLogger logger;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>();
     private final AtomicReference<Throwable> throwable = new AtomicReference<>();
@@ -67,6 +70,11 @@ class LockRenewalOperation implements AutoCloseable {
         Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");
         Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
 
+        Map<String, Object> loggingContext = new HashMap<>(2);
+        loggingContext.put(LOCK_TOKEN_KEY, lockToken);
+        loggingContext.put("isSession", isSession);
+        this.logger = new ClientLogger(LockRenewalOperation.class, loggingContext);
+
         if (maxLockRenewalDuration.isNegative()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
@@ -82,13 +90,13 @@ class LockRenewalOperation implements AutoCloseable {
         this.completionMono = renewLockOperation.then();
         this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
             error -> {
-                logger.error("token[{}]. Error occurred while renewing lock token.", error);
+                logger.error("Error occurred while renewing lock token.", error);
                 status.set(LockRenewalStatus.FAILED);
                 throwable.set(error);
                 cancellationProcessor.onComplete();
             }, () -> {
                 if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
-                    logger.verbose("token[{}]. Renewing session lock task completed.", lockToken);
+                    logger.verbose("Renewing session lock task completed.");
                 }
 
                 cancellationProcessor.onComplete();
@@ -159,7 +167,7 @@ class LockRenewalOperation implements AutoCloseable {
         }
 
         if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.CANCELLED)) {
-            logger.verbose("token[{}] Cancelled operation.", lockToken);
+            logger.verbose("Cancelled operation.");
         }
 
         cancellationProcessor.onComplete();
@@ -191,13 +199,17 @@ class LockRenewalOperation implements AutoCloseable {
             .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
-                logger.info("token[{}]. now[{}]. Starting lock renewal.", lockToken, OffsetDateTime.now());
+                logger.info("Starting lock renewal.");
+
                 return renewalOperation.apply(lockToken);
             })
             .map(offsetDateTime -> {
                 final Duration next = Duration.between(OffsetDateTime.now(), offsetDateTime);
-                logger.info("token[{}]. nextExpiration[{}]. next: [{}]. isSession[{}]", lockToken, offsetDateTime, next,
-                    isSession);
+
+                logger.atInfo()
+                    .addKeyValue("nextExpiration", offsetDateTime)
+                    .addKeyValue("next", next)
+                    .log("Starting lock renewal.");
 
                 sink.next(calculateRenewalDelay(offsetDateTime));
                 return offsetDateTime;
@@ -213,7 +225,9 @@ class LockRenewalOperation implements AutoCloseable {
         // C# class : github.com/azure-sdk-for-net/.../Azure.Messaging.ServiceBus/src/Processor/ReceiverManager.cs#L367
 
         if (remainingTime.toMillis() < 400) {
-            logger.info("Duration was less than 400ms. now[{}] lockedUntil[{}]", now, initialLockedUntil);
+            logger.atInfo()
+                .addKeyValue("lockedUntil", initialLockedUntil)
+                .log("Duration was less than 400ms.");
             return Duration.ZERO;
         } else {
             // Adjust the interval, so we can buffer time for the time it'll take to refresh.
@@ -221,8 +235,10 @@ class LockRenewalOperation implements AutoCloseable {
                 MAX_RENEWAL_BUFFER_DURATION.toMillis());
             final Duration renewAfter = Duration.ofMillis(remainingTime.toMillis() - bufferInMilliSec);
             if (renewAfter.isNegative()) {
-                logger.info("Adjusted duration is negative. renewAfter: {}ms. Buffer: {}ms.",
-                    remainingTime.toMillis(), bufferInMilliSec);
+                logger.atInfo()
+                    .addKeyValue("renewAfter", remainingTime.toMillis())
+                    .addKeyValue("buffer", bufferInMilliSec)
+                    .log("Adjusted duration is negative.");
             }
             return renewAfter;
         }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,8 +32,6 @@ import java.util.Map;
 })
 @Fluent
 public class StoreWriteSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StoreWriteSettings.class);
-
     /*
      * The maximum concurrent connection count for the source data store. Type:
      * integer (or Expression with resultType integer).

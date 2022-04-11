@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a packet capture session. */
 @Fluent
 public final class PacketCaptureResultProperties extends PacketCaptureParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultProperties.class);
-
     /*
      * The provisioning state of the packet capture session.
      */

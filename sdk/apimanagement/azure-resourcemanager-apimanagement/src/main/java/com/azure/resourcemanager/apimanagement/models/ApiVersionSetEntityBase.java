@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Api Version set base parameters. */
+/** API Version set base parameters. */
 @Fluent
 public class ApiVersionSetEntityBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiVersionSetEntityBase.class);
-
     /*
      * Description of API Version Set.
      */

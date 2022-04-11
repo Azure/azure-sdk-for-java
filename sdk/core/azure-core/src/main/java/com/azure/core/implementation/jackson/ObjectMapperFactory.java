@@ -26,19 +26,18 @@ import java.lang.invoke.MethodType;
  * Constructs and configures {@link ObjectMapper} instances.
  */
 final class ObjectMapperFactory {
-    private final ClientLogger logger = new ClientLogger(ObjectMapperFactory.class);
+    // ObjectMapperFactory is a commonly used factory, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperFactory.class);
 
     private static final String MUTABLE_COERCION_CONFIG = "com.fasterxml.jackson.databind.cfg.MutableCoercionConfig";
     private static final String COERCION_INPUT_SHAPE = "com.fasterxml.jackson.databind.cfg.CoercionInputShape";
     private static final String COERCION_ACTION = "com.fasterxml.jackson.databind.cfg.CoercionAction";
 
-    private MethodHandle coersionConfigDefaults;
+    private MethodHandle coercionConfigDefaults;
     private MethodHandle setCoercion;
     private Object coercionInputShapeEmptyString;
     private Object coercionActionAsNull;
     private boolean useReflectionToSetCoercion;
-
-    private static ObjectMapperFactory instance;
 
     public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
@@ -50,7 +49,7 @@ final class ObjectMapperFactory {
             Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE);
             Class<?> coercionActionClass = Class.forName(COERCION_ACTION);
 
-            coersionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
+            coercionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
                 MethodType.methodType(mutableCoercionConfig));
             setCoercion = publicLookup.findVirtual(mutableCoercionConfig, "setCoercion",
                 MethodType.methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
@@ -60,7 +59,13 @@ final class ObjectMapperFactory {
                 .invoke();
             useReflectionToSetCoercion = true;
         } catch (Throwable ex) {
-            logger.verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
+            // Throw the Error only if it isn't a LinkageError.
+            // This initialization is attempting to use classes that may not exist.
+            if (ex instanceof Error && !(ex instanceof LinkageError)) {
+                throw (Error) ex;
+            }
+
+            LOGGER.verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
                 + "Setting coercion configurations will be skipped.", ex);
         }
     }
@@ -93,13 +98,17 @@ final class ObjectMapperFactory {
 
         if (useReflectionToSetCoercion) {
             try {
-                Object object = coersionConfigDefaults.invoke(xmlMapper);
+                Object object = coercionConfigDefaults.invoke(xmlMapper);
                 setCoercion.invoke(object, coercionInputShapeEmptyString, coercionActionAsNull);
             } catch (Throwable e) {
-                logger.verbose("Failed to set coercion actions.", e);
+                if (e instanceof Error) {
+                    throw (Error) e;
+                }
+
+                LOGGER.verbose("Failed to set coercion actions.", e);
             }
         } else {
-            logger.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
+            LOGGER.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
         }
 
         return xmlMapper;

@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -114,7 +115,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     }
 
                     return clientWrapper
-                        .queryDocumentChangeFeed(collection, effectiveRequestOptions)
+                        .queryDocumentChangeFeed(collection, effectiveRequestOptions, Document.class)
                         .map(response -> {
                             List<JsonNode> results = response.getResults()
                                                              .stream()

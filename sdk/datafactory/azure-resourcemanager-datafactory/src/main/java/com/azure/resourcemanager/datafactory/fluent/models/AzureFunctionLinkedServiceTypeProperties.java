@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Function linked service properties. */
 @Fluent
 public final class AzureFunctionLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the Azure Function App. URL will be in the format
      * https://<accountName>.azurewebsites.net.
@@ -189,7 +186,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
      */
     public void validate() {
         if (functionAppUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property functionAppUrl in model AzureFunctionLinkedServiceTypeProperties"));
@@ -201,4 +198,6 @@ public final class AzureFunctionLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFunctionLinkedServiceTypeProperties.class);
 }

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Lists the operations available in the SecurityInsights RP. */
 @Fluent
 public final class OperationsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsList.class);
-
     /*
      * URL to fetch the next set of operations.
      */
@@ -64,11 +61,13 @@ public final class OperationsList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model OperationsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsList.class);
 }

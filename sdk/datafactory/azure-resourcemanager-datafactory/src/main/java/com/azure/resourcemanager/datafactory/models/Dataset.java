@@ -127,8 +127,6 @@ import java.util.Map;
 })
 @Fluent
 public class Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dataset.class);
-
     /*
      * Dataset description.
      */
@@ -366,7 +364,7 @@ public class Dataset {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property linkedServiceName in model Dataset"));
         } else {
@@ -386,4 +384,6 @@ public class Dataset {
             folder().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Dataset.class);
 }

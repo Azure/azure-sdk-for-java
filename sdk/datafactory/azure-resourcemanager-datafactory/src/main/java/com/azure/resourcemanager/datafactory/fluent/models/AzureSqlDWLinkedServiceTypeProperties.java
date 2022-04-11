@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure SQL Data Warehouse linked service properties. */
 @Fluent
 public final class AzureSqlDWLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlDWLinkedServiceTypeProperties.class);
-
     /*
      * The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or
@@ -256,7 +253,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model AzureSqlDWLinkedServiceTypeProperties"));
@@ -271,4 +268,6 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSqlDWLinkedServiceTypeProperties.class);
 }

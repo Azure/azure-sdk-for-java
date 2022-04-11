@@ -7,15 +7,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityStatusContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network Status details. */
 @Fluent
 public final class NetworkStatusContractInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkStatusContractInner.class);
-
     /*
      * Gets the list of DNS servers IPV4 addresses.
      */
@@ -78,13 +75,13 @@ public final class NetworkStatusContractInner {
      */
     public void validate() {
         if (dnsServers() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dnsServers in model NetworkStatusContractInner"));
         }
         if (connectivityStatus() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectivityStatus in model NetworkStatusContractInner"));
@@ -92,4 +89,6 @@ public final class NetworkStatusContractInner {
             connectivityStatus().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkStatusContractInner.class);
 }

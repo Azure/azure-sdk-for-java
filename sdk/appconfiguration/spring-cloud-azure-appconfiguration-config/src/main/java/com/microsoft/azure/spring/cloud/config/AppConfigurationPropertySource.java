@@ -40,25 +40,25 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private final String context;
 
-    private Map<String, Object> properties = new LinkedHashMap<>();
+    private final Map<String, Object> properties = new LinkedHashMap<>();
 
     private final String label;
 
-    private AppConfigurationProperties appConfigurationProperties;
+    private final AppConfigurationProperties appConfigurationProperties;
 
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
-    private HashMap<String, KeyVaultClient> keyVaultClients;
+    private final HashMap<String, KeyVaultClient> keyVaultClients;
 
-    private ClientStore clients;
+    private final ClientStore clients;
 
-    private KeyVaultCredentialProvider keyVaultCredentialProvider;
+    private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
-    private SecretClientBuilderSetup keyVaultClientProvider;
+    private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private AppConfigurationProviderProperties appProperties;
+    private final AppConfigurationProviderProperties appProperties;
 
-    private ConfigStore configStore;
+    private final ConfigStore configStore;
 
     AppConfigurationPropertySource(String context, ConfigStore configStore, String label,
             AppConfigurationProperties appConfigurationProperties, ClientStore clients,
@@ -72,7 +72,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         this.label = label;
         this.appConfigurationProperties = appConfigurationProperties;
         this.appProperties = appProperties;
-        this.keyVaultClients = new HashMap<String, KeyVaultClient>();
+        this.keyVaultClients = new HashMap<>();
         this.clients = clients;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
@@ -206,9 +206,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         // Reading In Features
         for (ConfigurationSetting setting : settings) {
             Object feature = createFeature(setting);
-            if (feature != null) {
-                featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
-            }
+            featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
         }
         return featureSet;
     }
@@ -222,7 +220,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * @throws IOException
      */
     private Object createFeature(ConfigurationSetting item) throws IOException {
-        Feature feature = null;
+        Feature feature;
         if (item.getContentType() != null && item.getContentType().equals(FEATURE_FLAG_CONTENT_TYPE)) {
             try {
                 String key = item.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());

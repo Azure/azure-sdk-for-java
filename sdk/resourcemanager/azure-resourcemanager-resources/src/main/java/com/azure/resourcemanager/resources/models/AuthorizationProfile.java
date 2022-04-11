@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Authorization Profile. */
 @Immutable
 public final class AuthorizationProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationProfile.class);
-
     /*
      * The requested time
      */

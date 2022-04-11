@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ public class AzureCliCredentialTest {
 
 
     @Test
-    public void getTokenMockAsync() throws Exception {   
+    public void getTokenMockAsync() throws Exception {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("resourcename");
@@ -49,13 +50,14 @@ public class AzureCliCredentialTest {
     public void azureCliCredentialWinAzureCLINotInstalledException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
- 
+
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAzureCli(request))
             .thenReturn(Mono.error(new Exception("Azure CLI not installed")));
+        when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
- 
+
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
@@ -67,11 +69,12 @@ public class AzureCliCredentialTest {
     public void azureCliCredentialAzNotLogInException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotLogin");
-  
+
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAzureCli(request))
                 .thenReturn(Mono.error(new Exception("Azure not Login")));
+        when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
@@ -80,17 +83,19 @@ public class AzureCliCredentialTest {
             .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("Azure not Login"))
             .verify();
     }
-    
+
     @Test
     public void azureCliCredentialAuthenticationFailedException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureCliCredentialAuthenticationFailed");
-  
+
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAzureCli(request))
                 .thenReturn(Mono.error(new Exception("other error")));
+        when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
 
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();

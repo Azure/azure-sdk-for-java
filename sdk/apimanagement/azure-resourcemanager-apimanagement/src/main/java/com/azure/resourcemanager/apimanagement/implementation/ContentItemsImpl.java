@@ -16,10 +16,9 @@ import com.azure.resourcemanager.apimanagement.models.ContentItems;
 import com.azure.resourcemanager.apimanagement.models.ContentItemsCreateOrUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.ContentItemsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ContentItemsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ContentItemsImpl implements ContentItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentItemsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContentItemsImpl.class);
 
     private final ContentItemsClient innerClient;
 

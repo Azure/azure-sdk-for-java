@@ -18,9 +18,10 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds a given port to each {@link HttpRequest}.
  */
 public class PortPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);
+
     private final int port;
     private final boolean overwrite;
-    private final ClientLogger logger = new ClientLogger(PortPolicy.class);
 
     /**
      * Creates a new PortPolicy object.
@@ -37,13 +38,12 @@ public class PortPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         if (overwrite || urlBuilder.getPort() == null) {
-            logger.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
 
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
             } catch (MalformedURLException e) {
-                return Mono.error(new RuntimeException(
-                    String.format("Failed to set the HTTP request port to %d.", port), e));
+                return Mono.error(new RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
             }
         }
         return next.process();

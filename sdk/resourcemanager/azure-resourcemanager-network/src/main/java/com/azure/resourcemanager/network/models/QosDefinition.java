@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Quality of Service defines the traffic configuration between endpoints. Mandatory to have one marking. */
 @Fluent
 public final class QosDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QosDefinition.class);
-
     /*
      * List of markings to be used in the configuration.
      */

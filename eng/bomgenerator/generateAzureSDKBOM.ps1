@@ -39,22 +39,21 @@ Write-Output "Updating version_client.txt file by looking at the packages releas
 SyncVersionClientFile -GroupId "com.azure"
 Write-Output "Updated version_client.txt file."
 
-if(! (Test-Path $InputDir)) { 
-  New-Item -Path $PSScriptRoot -Name "inputDir" -ItemType "directory"
+New-Item -Path $PSScriptRoot -Name "inputdir" -ItemType "directory" -Force
+New-Item -Path $PSScriptRoot -Name "outputdir" -ItemType "directory" -Force
+if (!(Test-Path -Path $DefaultVersionClientFilePath)) {
+  Copy-Item $VersionClientFilePath -Destination $InputDir 
 }
 
-if(! (Test-Path $defaultVersionClientFilePath)) {
- Copy-Item $VersionClientFilePath -Destination $InputDir
+if (!(Test-Path -Path $DefaultPomFilePath)) {
+  Copy-Item $BomPomFilePath -Destination $InputDir
 }
 
-if(! (Test-Path $DefaultPomFilePath)) {
- Copy-Item $BomPomFilePath -Destination $InputDir
-}
-
-#$args = "-Dexec.args=`"-InputDir=$($InputDir) -OutputDir=$($OutputDir) -mode=generate`""
 $cmdoutput = mvn clean install -f $BomGeneratorPomFilePath
-UpdateBomProjectElement -OldPomFilePath $BomPomFilePath -NewPomFilePath $NewBomFilePath
 
-Write-Output "Updating azure-sdk-bom file."
-Copy-Item $NewBomFilePath -Destination $BomPomFilePath -Force
-
+if (Test-Path -Path $BomPomFilePath && Test-Path -Path $NewBomFilePath) {
+  Copy-Item $NewBomFilePath -Destination $BomPomFilePath -Force
+  UpdateBomProjectElement -OldPomFilePath $BomPomFilePath -NewPomFilePath $NewBomFilePath
+  Write-Output "Updating azure-sdk-bom file."
+  Copy-Item $NewBomFilePath -Destination $BomPomFilePath -Force 
+}

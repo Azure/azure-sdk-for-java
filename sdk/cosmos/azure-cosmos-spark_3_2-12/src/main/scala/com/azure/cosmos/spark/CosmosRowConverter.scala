@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.{Constants, Utils}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -16,6 +17,7 @@ import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
 import org.apache.spark.sql.catalyst.util.ArrayData
 
+import java.io.IOException
 import java.time.{OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
 import scala.collection.concurrent.TrieMap
@@ -29,7 +31,7 @@ import org.apache.spark.unsafe.types.UTF8String
 import scala.util.{Try, Success, Failure}
 
 // scalastyle:off
-private object CosmosRowConverter {
+private[cosmos] object CosmosRowConverter {
 
   // TODO: Expose configuration to handle duplicate fields
   // See: https://github.com/Azure/azure-sdk-for-java/pull/18642#discussion_r558638474
@@ -60,7 +62,7 @@ private object CosmosRowConverter {
   }
 }
 
-private class CosmosRowConverter(
+private[cosmos] class CosmosRowConverter(
                                   private val objectMapper: ObjectMapper,
                                   private val serializationConfig: CosmosSerializationConfig)
     extends BasicLoggingTrait {
@@ -75,20 +77,31 @@ private class CosmosRowConverter(
     private val utcFormatter = DateTimeFormatter
         .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
 
-    def fromObjectNodeToInternalRow(schema: StructType,
-                                    rowSerializer: ExpressionEncoder.Serializer[Row],
-                                    objectNode: ObjectNode,
-                                    schemaConversionMode: SchemaConversionMode): InternalRow = {
-        val row = fromObjectNodeToRow(schema, objectNode, schemaConversionMode)
-        try {
-          rowSerializer.apply(row)
-        }
+    def fromRowToInternalRow(row: Row,
+                             rowSerializer: ExpressionEncoder.Serializer[Row]): InternalRow = {
+      try {
+        rowSerializer.apply(row)
+      }
+      catch {
+        case inner: RuntimeException =>
+          throw new Exception(
+            s"Cannot convert row into InternalRow",
+            inner)
+      }
+    }
+
+    def ensureObjectNode(jsonNode: JsonNode): ObjectNode = {
+      if (jsonNode.isValueNode || jsonNode.isArray) {
+        try Utils
+          .getSimpleObjectMapper.readTree(s"""{"${Constants.Properties.VALUE}": $jsonNode}""")
+          .asInstanceOf[ObjectNode]
         catch {
-          case inner: RuntimeException =>
-            throw new Exception(
-              s"Cannot convert Json '${objectMapper.writeValueAsString(objectNode)}' into InternalRow",
-              inner)
+          case e: IOException =>
+            throw new IllegalStateException(s"Unable to parse JSON $jsonNode", e)
         }
+      } else {
+        jsonNode.asInstanceOf[ObjectNode]
+      }
     }
 
     def fromObjectNodeToRow(schema: StructType,

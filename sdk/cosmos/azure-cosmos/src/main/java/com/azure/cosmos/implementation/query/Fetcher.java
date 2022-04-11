@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-abstract class Fetcher<T extends Resource> {
+abstract class Fetcher<T> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
 
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;

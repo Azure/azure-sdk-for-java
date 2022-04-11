@@ -12,7 +12,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -41,6 +40,7 @@ import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
+import com.azure.cosmos.implementation.query.PipelinedQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
@@ -110,6 +110,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
+    private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
     private static final Range<String> RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES = new Range<>(
@@ -289,7 +290,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          ApiType apiType) {
 
         activeClientsCnt.incrementAndGet();
-        this.clientId = clientIdGenerator.getAndDecrement();
+        this.clientId = clientIdGenerator.incrementAndGet();
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
         this.diagnosticsClientConfig.withClientId(this.clientId);
         this.diagnosticsClientConfig.withActiveClientCounter(activeClientsCnt);
@@ -350,6 +351,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(this.connectionPolicy.isMultipleWriteRegionsEnabled());
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
+            this.diagnosticsClientConfig.withMachineId(tempMachineId);
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
@@ -457,7 +459,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache);
 
             updateGatewayProxy();
-            clientTelemetry = new ClientTelemetry(null, UUID.randomUUID().toString(),
+            clientTelemetry = new ClientTelemetry(this, null, UUID.randomUUID().toString(),
                 ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
                 null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
@@ -779,7 +781,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return options.getOperationContextAndListenerTuple();
     }
 
-    private <T extends Resource> Flux<FeedResponse<T>> createQuery(
+    private <T> Flux<FeedResponse<T>> createQuery(
         String parentResourceLink,
         SqlQuerySpec sqlQuery,
         CosmosQueryRequestOptions options,
@@ -813,7 +815,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             invalidPartitionExceptionRetryPolicy);
     }
 
-    private <T extends Resource> Flux<FeedResponse<T>> createQueryInternal(
+    private <T> Flux<FeedResponse<T>> createQueryInternal(
             String resourceLink,
             SqlQuerySpec sqlQuery,
             CosmosQueryRequestOptions options,
@@ -831,8 +833,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         AtomicBoolean isFirstResponse = new AtomicBoolean(true);
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {
             QueryInfo queryInfo = null;
-            if (iDocumentQueryExecutionContext instanceof PipelinedDocumentQueryExecutionContext) {
-                queryInfo = ((PipelinedDocumentQueryExecutionContext<T>) iDocumentQueryExecutionContext).getQueryInfo();
+            if (iDocumentQueryExecutionContext instanceof PipelinedQueryExecutionContextBase) {
+                queryInfo = ((PipelinedQueryExecutionContextBase<T>) iDocumentQueryExecutionContext).getQueryInfo();
             }
 
             QueryInfo finalQueryInfo = queryInfo;
@@ -2060,13 +2062,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Document>> readDocuments(String collectionLink, CosmosQueryRequestOptions options) {
+    public <T> Flux<FeedResponse<T>>  readDocuments(
+        String collectionLink, CosmosQueryRequestOptions options, Class<T> classOfT) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return queryDocuments(collectionLink, "SELECT * FROM r", options);
+        return queryDocuments(collectionLink, "SELECT * FROM r", options, classOfT);
     }
 
     @Override
@@ -2312,8 +2315,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, CosmosQueryRequestOptions options) {
-        return queryDocuments(collectionLink, new SqlQuerySpec(query), options);
+    public <T> Flux<FeedResponse<T>> queryDocuments(
+        String collectionLink, String query, CosmosQueryRequestOptions options, Class<T> classOfT) {
+
+        return queryDocuments(collectionLink, new SqlQuerySpec(query), options, classOfT);
     }
 
     private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -2380,23 +2385,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec,
-                                                             CosmosQueryRequestOptions options) {
+    public <T> Flux<FeedResponse<T>> queryDocuments(
+        String collectionLink,
+        SqlQuerySpec querySpec,
+        CosmosQueryRequestOptions options,
+        Class<T> classOfT) {
         SqlQuerySpecLogger.getInstance().logQuery(querySpec);
-        return createQuery(collectionLink, querySpec, options, Document.class, ResourceType.Document);
+        return createQuery(collectionLink, querySpec, options, classOfT, ResourceType.Document);
     }
 
     @Override
-    public Flux<FeedResponse<Document>> queryDocumentChangeFeed(
+    public <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         final DocumentCollection collection,
-        final CosmosChangeFeedRequestOptions changeFeedOptions) {
+        final CosmosChangeFeedRequestOptions changeFeedOptions,
+        Class<T> classOfT) {
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
 
-        ChangeFeedQueryImpl<Document> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
+        ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
             ResourceType.Document,
-            Document.class,
+            classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
             changeFeedOptions);
@@ -2405,10 +2414,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<Document>> readAllDocuments(
+    public <T> Flux<FeedResponse<T>> readAllDocuments(
         String collectionLink,
         PartitionKey partitionKey,
-        CosmosQueryRequestOptions options) {
+        CosmosQueryRequestOptions options,
+        Class<T> classOfT) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -2485,7 +2495,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             resourceLink,
                             querySpec,
                             ModelBridgeInternal.setPartitionKeyRangeIdInternal(effectiveOptions, range.getId()),
-                            Document.class,
+                            classOfT, //Document.class
                             ResourceType.Document,
                             queryClient,
                             activityId);
@@ -3877,8 +3887,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 //
 //        return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
 //    }
+    private <T> Flux<FeedResponse<T>> readFeed(
+        CosmosQueryRequestOptions options,
+        ResourceType resourceType,
+        Class<T> klass,
+        String resourceLink) {
 
-    private <T extends Resource> Flux<FeedResponse<T>> readFeed(CosmosQueryRequestOptions options, ResourceType resourceType, Class<T> klass, String resourceLink) {
         if (options == null) {
             options = new CosmosQueryRequestOptions();
         }
@@ -3900,10 +3914,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         };
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = request -> ObservableHelper
-            .inlineIfPossibleAsObs(() -> readFeed(request).map(response -> toFeedResponsePage(response, klass)),
+            .inlineIfPossibleAsObs(() -> readFeed(request).map(response -> toFeedResponsePage(
+                response,
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getItemFactoryMethod(finalCosmosQueryRequestOptions, klass),
+                    klass)),
                 retryPolicy);
 
-        return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
+        return Paginator.getPaginatedQueryResultAsObservable(
+            options, createRequestFunc, executeFunc, maxPageSize);
     }
 
     @Override
@@ -4058,6 +4079,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
+            activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
             logger.info("Closing Global Endpoint Manager ...");
             LifeCycleUtils.closeQuietly(this.globalEndpointManager);

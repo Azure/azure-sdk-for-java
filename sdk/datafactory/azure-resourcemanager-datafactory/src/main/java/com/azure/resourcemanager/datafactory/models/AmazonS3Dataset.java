@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AmazonS3DatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AmazonS3Object")
 @Fluent
 public final class AmazonS3Dataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonS3Dataset.class);
-
     /*
      * Amazon S3 dataset properties.
      */
@@ -286,7 +283,7 @@ public final class AmazonS3Dataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AmazonS3Dataset"));
@@ -294,4 +291,6 @@ public final class AmazonS3Dataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonS3Dataset.class);
 }

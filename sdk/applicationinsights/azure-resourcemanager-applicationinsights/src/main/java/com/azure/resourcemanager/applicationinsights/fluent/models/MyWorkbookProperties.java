@@ -6,15 +6,12 @@ package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties that contain a private workbook. */
 @Fluent
 public final class MyWorkbookProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MyWorkbookProperties.class);
-
     /*
      * The user-defined name of the private workbook.
      */
@@ -243,21 +240,23 @@ public final class MyWorkbookProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model MyWorkbookProperties"));
         }
         if (serializedData() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serializedData in model MyWorkbookProperties"));
         }
         if (category() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property category in model MyWorkbookProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MyWorkbookProperties.class);
 }

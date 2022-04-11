@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The settings for the Upstream when the service is in server-less mode. */
 @Fluent
 public final class ServerlessUpstreamSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerlessUpstreamSettings.class);
-
     /*
      * Gets or sets the list of Upstream URL templates. Order matters, and the
      * first matching template takes effects.

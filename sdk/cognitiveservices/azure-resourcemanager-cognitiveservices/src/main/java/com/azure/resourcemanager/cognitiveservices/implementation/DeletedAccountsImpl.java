@@ -13,10 +13,9 @@ import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
 import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DeletedAccountsImpl implements DeletedAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeletedAccountsImpl.class);
 
     private final DeletedAccountsClient innerClient;
 

@@ -110,7 +110,7 @@ stages:
                 # versioning validation, so skip it.
                 condition: and(succeeded(), ne('${{ artifact.uberJar }}', 'true'))
 
-              - ${{if ne(parameters.SDKType, 'data')}}:
+              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:
                     PackageName: ${{artifact.name}}
@@ -257,7 +257,7 @@ stages:
                           DocValidationImageId: "$(DocValidationImageId)"
                       - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                         parameters: 
-                          JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
                           ArtifactName: ${{artifact.name}}
                           TargetBranch: $(TargetBranchName)
                           DocRepoLocation: $(DocRepoLocation)
@@ -459,7 +459,7 @@ stages:
 
               - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                 parameters: 
-                  JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
                   ArtifactName: ${{artifact.name}}
                   TargetBranch: $(TargetBranchName)
                   DocRepoLocation: $(DocRepoLocation)

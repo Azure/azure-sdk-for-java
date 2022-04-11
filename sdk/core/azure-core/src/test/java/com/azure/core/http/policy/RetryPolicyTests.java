@@ -116,11 +116,39 @@ public class RetryPolicyTests {
 
     private static Stream<Throwable> defaultRetryPolicyRetriesAllExceptionsSupplier() {
         return Stream.of(
-            new Throwable(),
             new MalformedURLException(),
             new RuntimeException(),
             new IllegalStateException(),
             new TimeoutException()
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("defaultRetryPolicyDoesNotRetryErrorsSupplier")
+    public void defaultRetryPolicyDoesNotRetryErrors(Throwable throwable) {
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy())
+            .httpClient(request -> {
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.error(throwable);
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+            .verifyError(throwable.getClass());
+    }
+
+    private static Stream<Throwable> defaultRetryPolicyDoesNotRetryErrorsSupplier() {
+        // Don't use specific types of Error as it leads to the JVM issues with JUnit, such as ThreadDeath killing the
+        // JUnit test runner thread.
+        return Stream.of(
+            new Throwable(),
+            new Error()
         );
     }
 

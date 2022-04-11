@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** disk encryption set resource update properties. */
 @Fluent
 public final class DiskEncryptionSetUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetUpdateProperties.class);
-
     /*
      * The type of key used to encrypt the data of the disk.
      */

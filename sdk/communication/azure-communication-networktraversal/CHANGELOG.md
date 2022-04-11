@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,19 @@
 
 ### Other Changes
 
-## 1.0.0 (2022-02-11)
+## 1.1.0-beta.1 (2022-03-15)
+
+### Features Added
+
+- Added interfaces from `com.azure.core.client.traits` to `CommunicationRelayClientBuilder`
+- Added `retryOptions` to `CommunicationRelayClientBuilder`
+- Added optional parameter to GetRelayConfiguration to set credential Time-To-Live in seconds of max 48 hours. The default value will be used if given value exceeds it.
+
+### Breaking Changes
+
+- Making Ttl part of the options parameter
+
+## 1.0.0 (2022-02-11) (Deprecated)
 
 ### Features Added
 

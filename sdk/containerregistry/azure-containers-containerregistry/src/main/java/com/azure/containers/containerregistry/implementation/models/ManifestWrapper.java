@@ -4,6 +4,8 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.OciAnnotations;
+import com.azure.containers.containerregistry.models.OciBlobDescriptor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -27,19 +29,19 @@ public final class ManifestWrapper extends Manifest {
      * (V2, OCI) Image config descriptor
      */
     @JsonProperty(value = "config")
-    private Descriptor config;
+    private OciBlobDescriptor config;
 
     /*
      * (V2, OCI) List of V2 image layer information
      */
     @JsonProperty(value = "layers")
-    private List<Descriptor> layers;
+    private List<OciBlobDescriptor> layers;
 
     /*
      * (OCI, OCIIndex) Additional metadata
      */
     @JsonProperty(value = "annotations")
-    private Annotations annotations;
+    private OciAnnotations annotations;
 
     /*
      * (V1) CPU architecture
@@ -122,7 +124,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the config value.
      */
-    public Descriptor getConfig() {
+    public OciBlobDescriptor getConfig() {
         return this.config;
     }
 
@@ -132,7 +134,7 @@ public final class ManifestWrapper extends Manifest {
      * @param config the config value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setConfig(Descriptor config) {
+    public ManifestWrapper setConfig(OciBlobDescriptor config) {
         this.config = config;
         return this;
     }
@@ -142,7 +144,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the layers value.
      */
-    public List<Descriptor> getLayers() {
+    public List<OciBlobDescriptor> getLayers() {
         return this.layers;
     }
 
@@ -152,7 +154,7 @@ public final class ManifestWrapper extends Manifest {
      * @param layers the layers value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setLayers(List<Descriptor> layers) {
+    public ManifestWrapper setLayers(List<OciBlobDescriptor> layers) {
         this.layers = layers;
         return this;
     }
@@ -162,7 +164,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the annotations value.
      */
-    public Annotations getAnnotations() {
+    public OciAnnotations getAnnotations() {
         return this.annotations;
     }
 
@@ -172,7 +174,7 @@ public final class ManifestWrapper extends Manifest {
      * @param annotations the annotations value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setAnnotations(Annotations annotations) {
+    public ManifestWrapper setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
     }

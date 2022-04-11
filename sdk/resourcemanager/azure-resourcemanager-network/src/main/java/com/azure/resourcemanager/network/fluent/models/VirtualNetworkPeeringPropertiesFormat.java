@@ -6,21 +6,17 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the virtual network peering. */
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringPropertiesFormat.class);
-
     /*
      * Whether the VMs in the local virtual network space would be able to
      * access the VMs in remote virtual network space.

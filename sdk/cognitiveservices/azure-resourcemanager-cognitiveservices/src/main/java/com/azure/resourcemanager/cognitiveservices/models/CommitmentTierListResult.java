@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentTierInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of cognitive services accounts operation response. */
 @Fluent
 public final class CommitmentTierListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentTierListResult.class);
-
     /*
      * The link used to get the next page of CommitmentTier.
      */

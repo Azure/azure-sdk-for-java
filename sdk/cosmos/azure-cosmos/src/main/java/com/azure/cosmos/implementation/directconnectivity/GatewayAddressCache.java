@@ -428,7 +428,7 @@ public class GatewayAddressCache implements IAddressCache {
                     logger.debug("getServerAddressesViaGatewayAsync deserializes result");
                 }
                 logAddressResolutionEnd(request, identifier, null);
-                return dsr.getQueryResponse(Address.class);
+                return dsr.getQueryResponse(null, Address.class);
             }).onErrorResume(throwable -> {
             Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
             logAddressResolutionEnd(request, identifier, unwrappedException.toString());
@@ -759,7 +759,7 @@ public class GatewayAddressCache implements IAddressCache {
                 }
 
                 logAddressResolutionEnd(request, identifier, null);
-                return dsr.getQueryResponse(Address.class);
+                return dsr.getQueryResponse(null, Address.class);
             }).onErrorResume(throwable -> {
             Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
             logAddressResolutionEnd(request, identifier, unwrappedException.toString());

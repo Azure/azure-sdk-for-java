@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 class StrictTlsContextSpi extends SSLContextSpi {
     private static final String SSL_V2_HELLO = "SSLv2Hello";
 
-    private final ClientLogger logger = new ClientLogger(StrictTlsContextSpi.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StrictTlsContextSpi.class);
     private final SSLContext sslContext;
 
     /**
@@ -106,7 +106,7 @@ class StrictTlsContextSpi extends SSLContextSpi {
             .filter(protocol -> {
                 final boolean isSSLv2Hello = protocol.equalsIgnoreCase(SSL_V2_HELLO);
                 if (isSSLv2Hello) {
-                    logger.info("{} was an enabled protocol. Filtering out.", SSL_V2_HELLO);
+                    LOGGER.info("{} was an enabled protocol. Filtering out.", SSL_V2_HELLO);
                 }
 
                 return !isSSLv2Hello;

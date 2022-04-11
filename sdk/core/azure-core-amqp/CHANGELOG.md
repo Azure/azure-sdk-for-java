@@ -7,16 +7,46 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
-- Fixed issue where EndpointStates were not emitted serially. ([#24762](https://github.com/Azure/azure-sdk-for-java/issues/24762))
+- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
+- Updated ProxyOptions.SYSTEM_DEFAULTS to use ProxyAuthenticationType.NONE
 
 ### Other Changes
+
+## 2.4.2 (2022-04-01)
+
+### Bugs Fixed
+
+- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the 
+  receivers. ([#27716](https://github.com/Azure/azure-sdk-for-java/issues/27716))
+- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often 
+  recover from this error, but due to the log level, it generates false alerts in monitoring systems. ([26968](https://github.com/Azure/azure-sdk-for-java/issues/26968))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+
+## 2.4.1 (2022-03-16)
+
+### Bugs Fixed
+
+- Fixed issue where EndpointStates were not emitted serially. ([#24762](https://github.com/Azure/azure-sdk-for-java/issues/24762))
+- Fixed issue of not emitting the shutdown signal serially when ClosedChannelException thrown concurrently. ([#27320](https://github.com/Azure/azure-sdk-for-java/issues/27320))
+- Fixed the issue of leaving downstream in an unterminated state when RequestResponseChannel is disposed after invoking sendWithAck ([27482](https://github.com/Azure/azure-sdk-for-java/issues/27482))
+- Removing CustomIOHandler.onUnhandled which listens to every proton-j reactor event that could cause excessive logging. The underlying library could encounter `NullPointerException` if the selector is null.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
 
 ## 2.4.0 (2022-02-04)
 
 ### Features Added
 
-- Added `AmqpTrait` interface that represent common cross-cutting (and AMQP-related) aspects of functionality offered 
+- Added `AmqpTrait` interface that represent common cross-cutting (and AMQP-related) aspects of functionality offered
   by libraries in the Azure SDK for Java.
 - Added structured logging to generate more easily queried log messages. ([#26561](https://github.com/Azure/azure-sdk-for-java/pull/26561))
 
