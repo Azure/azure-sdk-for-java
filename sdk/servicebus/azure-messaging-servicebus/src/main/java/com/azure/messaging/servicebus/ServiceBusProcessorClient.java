@@ -12,6 +12,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionP
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.Disposable;
 import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
 
@@ -20,8 +21,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -138,7 +137,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final String queueName;
     private final String topicName;
     private final String subscriptionName;
-    private ScheduledExecutorService scheduledExecutor;
+    private Disposable monitorDisposable;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -224,9 +223,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         receiveMessages();
 
         // Start an executor to periodically check if the client's connection is active
-        if (this.scheduledExecutor == null) {
-            this.scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-            scheduledExecutor.scheduleWithFixedDelay(() -> {
+        if (monitorDisposable == null) {
+            monitorDisposable = Schedulers.boundedElastic().schedulePeriodically(() -> {
                 if (this.asyncClient.get().isConnectionClosed()) {
                     restartMessageReceiver(null);
                 }
@@ -251,9 +249,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         isRunning.set(false);
         receiverSubscriptions.keySet().forEach(Subscription::cancel);
         receiverSubscriptions.clear();
-        if (scheduledExecutor != null) {
-            scheduledExecutor.shutdown();
-            scheduledExecutor = null;
+        if (monitorDisposable != null) {
+            monitorDisposable.dispose();
+            monitorDisposable = null;
         }
         if (asyncClient.get() != null) {
             asyncClient.get().close();
