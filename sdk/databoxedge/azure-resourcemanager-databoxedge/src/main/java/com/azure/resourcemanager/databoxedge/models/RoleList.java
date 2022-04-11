@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of all the roles on the Data Box Edge device. */
 @Immutable
 public final class RoleList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleList.class);
-
     /*
      * The Value.
      */

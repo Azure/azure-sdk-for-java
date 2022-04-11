@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.BandwidthSchedulesClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.BandwidthScheduleInner;
 import com.azure.resourcemanager.databoxedge.models.BandwidthSchedule;
 import com.azure.resourcemanager.databoxedge.models.BandwidthSchedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BandwidthSchedulesImpl implements BandwidthSchedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BandwidthSchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BandwidthSchedulesImpl.class);
 
     private final BandwidthSchedulesClient innerClient;
 
@@ -76,7 +75,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
     public BandwidthSchedule getById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +84,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String name = Utils.getValueFromIdByName(id, "bandwidthSchedules");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
     public Response<BandwidthSchedule> getByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String name = Utils.getValueFromIdByName(id, "bandwidthSchedules");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
     public void deleteById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,7 +144,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String name = Utils.getValueFromIdByName(id, "bandwidthSchedules");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
     public void deleteByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +174,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String name = Utils.getValueFromIdByName(id, "bandwidthSchedules");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -184,7 +183,7 @@ public final class BandwidthSchedulesImpl implements BandwidthSchedules {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -5,63 +5,30 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.NodeStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a single node in a Data box Edge/Gateway device Gateway devices, standalone Edge devices and a single node
  * cluster Edge device will all have 1 node Multi-node Edge devices will have more than 1 nodes.
  */
-@JsonFlatten
 @Immutable
-public class NodeInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeInner.class);
-
+public final class NodeInner extends ArmBaseModel {
     /*
-     * The current status of the individual node
+     * The properties of the node
      */
-    @JsonProperty(value = "properties.nodeStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private NodeStatus nodeStatus;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private NodeProperties innerProperties;
 
-    /*
-     * Serial number of the Chassis
+    /**
+     * Get the innerProperties property: The properties of the node.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.nodeChassisSerialNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String nodeChassisSerialNumber;
-
-    /*
-     * Serial number of the individual node
-     */
-    @JsonProperty(value = "properties.nodeSerialNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String nodeSerialNumber;
-
-    /*
-     * Display Name of the individual node
-     */
-    @JsonProperty(value = "properties.nodeDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String nodeDisplayName;
-
-    /*
-     * Friendly software version name that is currently installed on the node
-     */
-    @JsonProperty(value = "properties.nodeFriendlySoftwareVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String nodeFriendlySoftwareVersion;
-
-    /*
-     * HCS version that is currently installed on the node
-     */
-    @JsonProperty(value = "properties.nodeHcsVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String nodeHcsVersion;
-
-    /*
-     * Guid instance id of the node
-     */
-    @JsonProperty(value = "properties.nodeInstanceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String nodeInstanceId;
+    private NodeProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the nodeStatus property: The current status of the individual node.
@@ -69,7 +36,7 @@ public class NodeInner extends ArmBaseModel {
      * @return the nodeStatus value.
      */
     public NodeStatus nodeStatus() {
-        return this.nodeStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeStatus();
     }
 
     /**
@@ -78,7 +45,7 @@ public class NodeInner extends ArmBaseModel {
      * @return the nodeChassisSerialNumber value.
      */
     public String nodeChassisSerialNumber() {
-        return this.nodeChassisSerialNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeChassisSerialNumber();
     }
 
     /**
@@ -87,7 +54,7 @@ public class NodeInner extends ArmBaseModel {
      * @return the nodeSerialNumber value.
      */
     public String nodeSerialNumber() {
-        return this.nodeSerialNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeSerialNumber();
     }
 
     /**
@@ -96,7 +63,7 @@ public class NodeInner extends ArmBaseModel {
      * @return the nodeDisplayName value.
      */
     public String nodeDisplayName() {
-        return this.nodeDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeDisplayName();
     }
 
     /**
@@ -106,7 +73,7 @@ public class NodeInner extends ArmBaseModel {
      * @return the nodeFriendlySoftwareVersion value.
      */
     public String nodeFriendlySoftwareVersion() {
-        return this.nodeFriendlySoftwareVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeFriendlySoftwareVersion();
     }
 
     /**
@@ -115,7 +82,7 @@ public class NodeInner extends ArmBaseModel {
      * @return the nodeHcsVersion value.
      */
     public String nodeHcsVersion() {
-        return this.nodeHcsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeHcsVersion();
     }
 
     /**
@@ -124,7 +91,7 @@ public class NodeInner extends ArmBaseModel {
      * @return the nodeInstanceId value.
      */
     public String nodeInstanceId() {
-        return this.nodeInstanceId;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeInstanceId();
     }
 
     /**
@@ -135,5 +102,8 @@ public class NodeInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

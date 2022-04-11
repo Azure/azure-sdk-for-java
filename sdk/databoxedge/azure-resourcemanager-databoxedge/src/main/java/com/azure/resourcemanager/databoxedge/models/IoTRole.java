@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.databoxedge.fluent.models.IoTRoleProperties;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,40 +15,22 @@ import java.util.List;
 /** Compute role. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("IOT")
-@JsonFlatten
 @Fluent
-public class IoTRole extends RoleInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTRole.class);
-
+public final class IoTRole extends RoleInner {
     /*
-     * Host OS supported by the IoT role.
+     * Properties specific to IoT role.
      */
-    @JsonProperty(value = "properties.hostPlatform")
-    private PlatformType hostPlatform;
+    @JsonProperty(value = "properties")
+    private IoTRoleProperties innerProperties;
 
-    /*
-     * IoT device metadata to which data box edge device needs to be connected.
+    /**
+     * Get the innerProperties property: Properties specific to IoT role.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.ioTDeviceDetails")
-    private IoTDeviceInfo ioTDeviceDetails;
-
-    /*
-     * IoT edge device to which the IoT role needs to be configured.
-     */
-    @JsonProperty(value = "properties.ioTEdgeDeviceDetails")
-    private IoTDeviceInfo ioTEdgeDeviceDetails;
-
-    /*
-     * Mount points of shares in role(s).
-     */
-    @JsonProperty(value = "properties.shareMappings")
-    private List<MountPointMap> shareMappings;
-
-    /*
-     * Role status.
-     */
-    @JsonProperty(value = "properties.roleStatus")
-    private RoleStatus roleStatus;
+    private IoTRoleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the hostPlatform property: Host OS supported by the IoT role.
@@ -58,7 +38,7 @@ public class IoTRole extends RoleInner {
      * @return the hostPlatform value.
      */
     public PlatformType hostPlatform() {
-        return this.hostPlatform;
+        return this.innerProperties() == null ? null : this.innerProperties().hostPlatform();
     }
 
     /**
@@ -68,7 +48,10 @@ public class IoTRole extends RoleInner {
      * @return the IoTRole object itself.
      */
     public IoTRole withHostPlatform(PlatformType hostPlatform) {
-        this.hostPlatform = hostPlatform;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withHostPlatform(hostPlatform);
         return this;
     }
 
@@ -78,7 +61,7 @@ public class IoTRole extends RoleInner {
      * @return the ioTDeviceDetails value.
      */
     public IoTDeviceInfo ioTDeviceDetails() {
-        return this.ioTDeviceDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().ioTDeviceDetails();
     }
 
     /**
@@ -88,7 +71,10 @@ public class IoTRole extends RoleInner {
      * @return the IoTRole object itself.
      */
     public IoTRole withIoTDeviceDetails(IoTDeviceInfo ioTDeviceDetails) {
-        this.ioTDeviceDetails = ioTDeviceDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withIoTDeviceDetails(ioTDeviceDetails);
         return this;
     }
 
@@ -98,7 +84,7 @@ public class IoTRole extends RoleInner {
      * @return the ioTEdgeDeviceDetails value.
      */
     public IoTDeviceInfo ioTEdgeDeviceDetails() {
-        return this.ioTEdgeDeviceDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().ioTEdgeDeviceDetails();
     }
 
     /**
@@ -108,7 +94,10 @@ public class IoTRole extends RoleInner {
      * @return the IoTRole object itself.
      */
     public IoTRole withIoTEdgeDeviceDetails(IoTDeviceInfo ioTEdgeDeviceDetails) {
-        this.ioTEdgeDeviceDetails = ioTEdgeDeviceDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withIoTEdgeDeviceDetails(ioTEdgeDeviceDetails);
         return this;
     }
 
@@ -118,7 +107,7 @@ public class IoTRole extends RoleInner {
      * @return the shareMappings value.
      */
     public List<MountPointMap> shareMappings() {
-        return this.shareMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().shareMappings();
     }
 
     /**
@@ -128,7 +117,65 @@ public class IoTRole extends RoleInner {
      * @return the IoTRole object itself.
      */
     public IoTRole withShareMappings(List<MountPointMap> shareMappings) {
-        this.shareMappings = shareMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withShareMappings(shareMappings);
+        return this;
+    }
+
+    /**
+     * Get the ioTEdgeAgentInfo property: Iot edge agent details to download the agent and bootstrap iot runtime.
+     *
+     * @return the ioTEdgeAgentInfo value.
+     */
+    public IoTEdgeAgentInfo ioTEdgeAgentInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().ioTEdgeAgentInfo();
+    }
+
+    /**
+     * Set the ioTEdgeAgentInfo property: Iot edge agent details to download the agent and bootstrap iot runtime.
+     *
+     * @param ioTEdgeAgentInfo the ioTEdgeAgentInfo value to set.
+     * @return the IoTRole object itself.
+     */
+    public IoTRole withIoTEdgeAgentInfo(IoTEdgeAgentInfo ioTEdgeAgentInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withIoTEdgeAgentInfo(ioTEdgeAgentInfo);
+        return this;
+    }
+
+    /**
+     * Get the hostPlatformType property: Platform where the Iot runtime is hosted.
+     *
+     * @return the hostPlatformType value.
+     */
+    public HostPlatformType hostPlatformType() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostPlatformType();
+    }
+
+    /**
+     * Get the computeResource property: Resource allocation.
+     *
+     * @return the computeResource value.
+     */
+    public ComputeResource computeResource() {
+        return this.innerProperties() == null ? null : this.innerProperties().computeResource();
+    }
+
+    /**
+     * Set the computeResource property: Resource allocation.
+     *
+     * @param computeResource the computeResource value to set.
+     * @return the IoTRole object itself.
+     */
+    public IoTRole withComputeResource(ComputeResource computeResource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withComputeResource(computeResource);
         return this;
     }
 
@@ -138,7 +185,7 @@ public class IoTRole extends RoleInner {
      * @return the roleStatus value.
      */
     public RoleStatus roleStatus() {
-        return this.roleStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().roleStatus();
     }
 
     /**
@@ -148,7 +195,10 @@ public class IoTRole extends RoleInner {
      * @return the IoTRole object itself.
      */
     public IoTRole withRoleStatus(RoleStatus roleStatus) {
-        this.roleStatus = roleStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withRoleStatus(roleStatus);
         return this;
     }
 
@@ -160,14 +210,8 @@ public class IoTRole extends RoleInner {
     @Override
     public void validate() {
         super.validate();
-        if (ioTDeviceDetails() != null) {
-            ioTDeviceDetails().validate();
-        }
-        if (ioTEdgeDeviceDetails() != null) {
-            ioTEdgeDeviceDetails().validate();
-        }
-        if (shareMappings() != null) {
-            shareMappings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

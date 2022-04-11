@@ -52,6 +52,13 @@ public interface DataBoxEdgeManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the AvailableSkusClient object to access its operations.
+     *
+     * @return the AvailableSkusClient object.
+     */
+    AvailableSkusClient getAvailableSkus();
+
+    /**
      * Gets the DevicesClient object to access its operations.
      *
      * @return the DevicesClient object.
@@ -71,6 +78,27 @@ public interface DataBoxEdgeManagementClient {
      * @return the BandwidthSchedulesClient object.
      */
     BandwidthSchedulesClient getBandwidthSchedules();
+
+    /**
+     * Gets the DeviceCapacityChecksClient object to access its operations.
+     *
+     * @return the DeviceCapacityChecksClient object.
+     */
+    DeviceCapacityChecksClient getDeviceCapacityChecks();
+
+    /**
+     * Gets the DeviceCapacityInfoesClient object to access its operations.
+     *
+     * @return the DeviceCapacityInfoesClient object.
+     */
+    DeviceCapacityInfoesClient getDeviceCapacityInfoes();
+
+    /**
+     * Gets the DiagnosticSettingsClient object to access its operations.
+     *
+     * @return the DiagnosticSettingsClient object.
+     */
+    DiagnosticSettingsClient getDiagnosticSettings();
 
     /**
      * Gets the JobsClient object to access its operations.
@@ -108,6 +136,20 @@ public interface DataBoxEdgeManagementClient {
     RolesClient getRoles();
 
     /**
+     * Gets the AddonsClient object to access its operations.
+     *
+     * @return the AddonsClient object.
+     */
+    AddonsClient getAddons();
+
+    /**
+     * Gets the MonitoringConfigsClient object to access its operations.
+     *
+     * @return the MonitoringConfigsClient object.
+     */
+    MonitoringConfigsClient getMonitoringConfigs();
+
+    /**
      * Gets the SharesClient object to access its operations.
      *
      * @return the SharesClient object.
@@ -143,16 +185,16 @@ public interface DataBoxEdgeManagementClient {
     TriggersClient getTriggers();
 
     /**
+     * Gets the SupportPackagesClient object to access its operations.
+     *
+     * @return the SupportPackagesClient object.
+     */
+    SupportPackagesClient getSupportPackages();
+
+    /**
      * Gets the UsersClient object to access its operations.
      *
      * @return the UsersClient object.
      */
     UsersClient getUsers();
-
-    /**
-     * Gets the SkusClient object to access its operations.
-     *
-     * @return the SkusClient object.
-     */
-    SkusClient getSkus();
 }

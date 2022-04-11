@@ -13,8 +13,8 @@ public final class OrderState extends ExpandableStringEnum<OrderState> {
     /** Static value Untracked for OrderState. */
     public static final OrderState UNTRACKED = fromString("Untracked");
 
-    /** Static value AwaitingFulfilment for OrderState. */
-    public static final OrderState AWAITING_FULFILMENT = fromString("AwaitingFulfilment");
+    /** Static value AwaitingFulfillment for OrderState. */
+    public static final OrderState AWAITING_FULFILLMENT = fromString("AwaitingFulfillment");
 
     /** Static value AwaitingPreparation for OrderState. */
     public static final OrderState AWAITING_PREPARATION = fromString("AwaitingPreparation");
@@ -51,6 +51,15 @@ public final class OrderState extends ExpandableStringEnum<OrderState> {
 
     /** Static value CollectedAtMicrosoft for OrderState. */
     public static final OrderState COLLECTED_AT_MICROSOFT = fromString("CollectedAtMicrosoft");
+
+    /** Static value AwaitingPickup for OrderState. */
+    public static final OrderState AWAITING_PICKUP = fromString("AwaitingPickup");
+
+    /** Static value PickupCompleted for OrderState. */
+    public static final OrderState PICKUP_COMPLETED = fromString("PickupCompleted");
+
+    /** Static value AwaitingDrop for OrderState. */
+    public static final OrderState AWAITING_DROP = fromString("AwaitingDrop");
 
     /**
      * Creates or finds a OrderState from its string representation.

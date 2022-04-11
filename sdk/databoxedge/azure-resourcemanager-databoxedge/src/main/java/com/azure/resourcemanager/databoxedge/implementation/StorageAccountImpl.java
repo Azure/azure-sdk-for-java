@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databoxedge.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.databoxedge.models.DataPolicy;
@@ -25,6 +26,10 @@ public final class StorageAccountImpl implements StorageAccount, StorageAccount.
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String description() {
@@ -146,6 +151,11 @@ public final class StorageAccountImpl implements StorageAccount, StorageAccount.
         return this;
     }
 
+    public StorageAccountImpl withDataPolicy(DataPolicy dataPolicy) {
+        this.innerModel().withDataPolicy(dataPolicy);
+        return this;
+    }
+
     public StorageAccountImpl withDescription(String description) {
         this.innerModel().withDescription(description);
         return this;
@@ -153,11 +163,6 @@ public final class StorageAccountImpl implements StorageAccount, StorageAccount.
 
     public StorageAccountImpl withStorageAccountStatus(StorageAccountStatus storageAccountStatus) {
         this.innerModel().withStorageAccountStatus(storageAccountStatus);
-        return this;
-    }
-
-    public StorageAccountImpl withDataPolicy(DataPolicy dataPolicy) {
-        this.innerModel().withDataPolicy(dataPolicy);
         return this;
     }
 

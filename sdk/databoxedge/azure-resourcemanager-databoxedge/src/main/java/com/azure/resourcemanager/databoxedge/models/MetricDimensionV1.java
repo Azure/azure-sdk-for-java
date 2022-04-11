@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metric Dimension v1. */
 @Fluent
 public final class MetricDimensionV1 {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimensionV1.class);
-
     /*
      * Name of the metrics dimension.
      */

@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
+import com.azure.resourcemanager.databoxedge.models.CloudEdgeManagementRole;
 import com.azure.resourcemanager.databoxedge.models.IoTRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.databoxedge.models.KubernetesRole;
+import com.azure.resourcemanager.databoxedge.models.MecRole;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,10 +23,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "kind",
     defaultImpl = RoleInner.class)
 @JsonTypeName("Role")
-@JsonSubTypes({@JsonSubTypes.Type(name = "IOT", value = IoTRole.class)})
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "CloudEdgeManagement", value = CloudEdgeManagementRole.class),
+    @JsonSubTypes.Type(name = "IOT", value = IoTRole.class),
+    @JsonSubTypes.Type(name = "Kubernetes", value = KubernetesRole.class),
+    @JsonSubTypes.Type(name = "MEC", value = MecRole.class)
+})
 @Immutable
 public class RoleInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInner.class);
+    /*
+     * Metadata pertaining to creation and last modification of Role
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of Role.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Validates the instance.

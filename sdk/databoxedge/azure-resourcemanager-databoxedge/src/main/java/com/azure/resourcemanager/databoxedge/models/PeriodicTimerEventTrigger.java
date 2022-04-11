@@ -5,10 +5,9 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.databoxedge.fluent.models.PeriodicTimerProperties;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,31 +15,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Trigger details. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("PeriodicTimerEvent")
-@JsonFlatten
 @Fluent
-public class PeriodicTimerEventTrigger extends TriggerInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeriodicTimerEventTrigger.class);
-
+public final class PeriodicTimerEventTrigger extends TriggerInner {
     /*
-     * Periodic timer details.
+     * Periodic timer trigger properties.
      */
-    @JsonProperty(value = "properties.sourceInfo", required = true)
-    private PeriodicTimerSourceInfo sourceInfo;
+    @JsonProperty(value = "properties", required = true)
+    private PeriodicTimerProperties innerProperties = new PeriodicTimerProperties();
 
-    /*
-     * Role Sink information.
+    /**
+     * Get the innerProperties property: Periodic timer trigger properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sinkInfo", required = true)
-    private RoleSinkInfo sinkInfo;
-
-    /*
-     * A custom context tag typically used to correlate the trigger against its
-     * usage. For example, if a periodic timer trigger is intended for certain
-     * specific IoT modules in the device, the tag can be the name or the image
-     * URL of the module.
-     */
-    @JsonProperty(value = "properties.customContextTag")
-    private String customContextTag;
+    private PeriodicTimerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sourceInfo property: Periodic timer details.
@@ -48,7 +38,7 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
      * @return the sourceInfo value.
      */
     public PeriodicTimerSourceInfo sourceInfo() {
-        return this.sourceInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceInfo();
     }
 
     /**
@@ -58,7 +48,10 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
      * @return the PeriodicTimerEventTrigger object itself.
      */
     public PeriodicTimerEventTrigger withSourceInfo(PeriodicTimerSourceInfo sourceInfo) {
-        this.sourceInfo = sourceInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeriodicTimerProperties();
+        }
+        this.innerProperties().withSourceInfo(sourceInfo);
         return this;
     }
 
@@ -68,7 +61,7 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
      * @return the sinkInfo value.
      */
     public RoleSinkInfo sinkInfo() {
-        return this.sinkInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().sinkInfo();
     }
 
     /**
@@ -78,7 +71,10 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
      * @return the PeriodicTimerEventTrigger object itself.
      */
     public PeriodicTimerEventTrigger withSinkInfo(RoleSinkInfo sinkInfo) {
-        this.sinkInfo = sinkInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeriodicTimerProperties();
+        }
+        this.innerProperties().withSinkInfo(sinkInfo);
         return this;
     }
 
@@ -90,7 +86,7 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
      * @return the customContextTag value.
      */
     public String customContextTag() {
-        return this.customContextTag;
+        return this.innerProperties() == null ? null : this.innerProperties().customContextTag();
     }
 
     /**
@@ -102,7 +98,10 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
      * @return the PeriodicTimerEventTrigger object itself.
      */
     public PeriodicTimerEventTrigger withCustomContextTag(String customContextTag) {
-        this.customContextTag = customContextTag;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeriodicTimerProperties();
+        }
+        this.innerProperties().withCustomContextTag(customContextTag);
         return this;
     }
 
@@ -114,21 +113,15 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
     @Override
     public void validate() {
         super.validate();
-        if (sourceInfo() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property sourceInfo in model PeriodicTimerEventTrigger"));
+                        "Missing required property innerProperties in model PeriodicTimerEventTrigger"));
         } else {
-            sourceInfo().validate();
-        }
-        if (sinkInfo() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sinkInfo in model PeriodicTimerEventTrigger"));
-        } else {
-            sinkInfo().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PeriodicTimerEventTrigger.class);
 }

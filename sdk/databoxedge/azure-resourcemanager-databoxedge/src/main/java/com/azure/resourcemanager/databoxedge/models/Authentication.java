@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Authentication mechanism for IoT devices. */
 @Fluent
 public final class Authentication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Authentication.class);
-
     /*
      * Symmetric key for authentication.
      */

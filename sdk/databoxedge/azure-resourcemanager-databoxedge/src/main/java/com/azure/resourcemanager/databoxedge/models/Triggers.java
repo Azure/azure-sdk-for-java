@@ -19,7 +19,7 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all trigger on the data box edge device.
+     * @return collection of all trigger on the data box edge device as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Trigger> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
@@ -33,7 +33,7 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all trigger on the data box edge device.
+     * @return collection of all trigger on the data box edge device as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Trigger> listByDataBoxEdgeDevice(
         String deviceName, String resourceGroupName, String filter, Context context);
@@ -61,7 +61,7 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific trigger by name.
+     * @return a specific trigger by name along with {@link Response}.
      */
     Response<Trigger> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
 

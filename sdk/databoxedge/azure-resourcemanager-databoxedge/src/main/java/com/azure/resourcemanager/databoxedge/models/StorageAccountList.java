@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of all the Storage Accounts on the Data Box Edge/Gateway device. */
 @Immutable
 public final class StorageAccountList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountList.class);
-
     /*
      * The list of storageAccounts.
      */

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databoxedge.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.databoxedge.fluent.models.UpdateSummaryInner;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -30,6 +31,13 @@ public interface UpdateSummary {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of UpdateSummary.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the deviceVersionNumber property: The current version of the device in format: 1.2.17312.13.",.
@@ -61,6 +69,13 @@ public interface UpdateSummary {
     OffsetDateTime lastCompletedScanJobDateTime();
 
     /**
+     * Gets the lastSuccessfulScanJobTime property: Time when the last scan job is successfully completed.
+     *
+     * @return the lastSuccessfulScanJobTime value.
+     */
+    OffsetDateTime lastSuccessfulScanJobTime();
+
+    /**
      * Gets the lastCompletedDownloadJobDateTime property: The time when the last Download job was completed
      * (success/cancelled/failed) on the appliance.
      *
@@ -69,12 +84,49 @@ public interface UpdateSummary {
     OffsetDateTime lastCompletedDownloadJobDateTime();
 
     /**
+     * Gets the lastCompletedDownloadJobId property: JobId of the last ran download job.(Can be
+     * success/cancelled/failed).
+     *
+     * @return the lastCompletedDownloadJobId value.
+     */
+    String lastCompletedDownloadJobId();
+
+    /**
+     * Gets the lastDownloadJobStatus property: JobStatus of the last ran download job.
+     *
+     * @return the lastDownloadJobStatus value.
+     */
+    JobStatus lastDownloadJobStatus();
+
+    /**
+     * Gets the lastSuccessfulInstallJobDateTime property: The time when the Last Install job was completed successfully
+     * on the appliance.
+     *
+     * @return the lastSuccessfulInstallJobDateTime value.
+     */
+    OffsetDateTime lastSuccessfulInstallJobDateTime();
+
+    /**
      * Gets the lastCompletedInstallJobDateTime property: The time when the last Install job was completed
      * (success/cancelled/failed) on the appliance.
      *
      * @return the lastCompletedInstallJobDateTime value.
      */
     OffsetDateTime lastCompletedInstallJobDateTime();
+
+    /**
+     * Gets the lastCompletedInstallJobId property: JobId of the last ran install job.(Can be success/cancelled/failed).
+     *
+     * @return the lastCompletedInstallJobId value.
+     */
+    String lastCompletedInstallJobId();
+
+    /**
+     * Gets the lastInstallJobStatus property: JobStatus of the last ran install job.
+     *
+     * @return the lastInstallJobStatus value.
+     */
+    JobStatus lastInstallJobStatus();
 
     /**
      * Gets the totalNumberOfUpdatesAvailable property: The number of updates available for the current device version
@@ -151,11 +203,25 @@ public interface UpdateSummary {
     List<String> updateTitles();
 
     /**
+     * Gets the updates property: The list of updates available for install.
+     *
+     * @return the updates value.
+     */
+    List<UpdateDetails> updates();
+
+    /**
      * Gets the totalUpdateSizeInBytes property: The total size of updates available for download in bytes.
      *
      * @return the totalUpdateSizeInBytes value.
      */
     Double totalUpdateSizeInBytes();
+
+    /**
+     * Gets the totalTimeInMinutes property: The total time in Minutes.
+     *
+     * @return the totalTimeInMinutes value.
+     */
+    Integer totalTimeInMinutes();
 
     /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.UpdateSummaryInner object.

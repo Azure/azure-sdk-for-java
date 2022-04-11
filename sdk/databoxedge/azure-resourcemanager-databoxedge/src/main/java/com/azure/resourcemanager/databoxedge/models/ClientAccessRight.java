@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The mapping between a particular client IP and the type of access client has on the NFS share. */
 @Fluent
 public final class ClientAccessRight {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientAccessRight.class);
-
     /*
      * IP of the client.
      */
@@ -73,15 +70,17 @@ public final class ClientAccessRight {
      */
     public void validate() {
         if (client() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property client in model ClientAccessRight"));
         }
         if (accessPermission() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accessPermission in model ClientAccessRight"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClientAccessRight.class);
 }

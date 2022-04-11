@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the mapping between this particular user and the type of access he has on shares on this device. */
 @Fluent
 public final class ShareAccessRight {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareAccessRight.class);
-
     /*
      * The share ID.
      */
@@ -73,14 +70,16 @@ public final class ShareAccessRight {
      */
     public void validate() {
         if (shareId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property shareId in model ShareAccessRight"));
         }
         if (accessType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property accessType in model ShareAccessRight"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ShareAccessRight.class);
 }

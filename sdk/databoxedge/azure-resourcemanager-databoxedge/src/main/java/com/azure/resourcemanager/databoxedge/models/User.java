@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databoxedge.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.UserInner;
 import java.util.List;
@@ -30,6 +31,13 @@ public interface User {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of User.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the encryptedPassword property: The password details.
@@ -97,7 +105,7 @@ public interface User {
          * The stage of the User definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithEncryptedPassword, DefinitionStages.WithShareAccessRights {
+        interface WithCreate extends DefinitionStages.WithEncryptedPassword {
             /**
              * Executes the create request.
              *
@@ -123,18 +131,6 @@ public interface User {
              */
             WithCreate withEncryptedPassword(AsymmetricEncryptedSecret encryptedPassword);
         }
-        /** The stage of the User definition allowing to specify shareAccessRights. */
-        interface WithShareAccessRights {
-            /**
-             * Specifies the shareAccessRights property: List of shares that the user has rights on. This field should
-             * not be specified during user creation..
-             *
-             * @param shareAccessRights List of shares that the user has rights on. This field should not be specified
-             *     during user creation.
-             * @return the next definition stage.
-             */
-            WithCreate withShareAccessRights(List<ShareAccessRight> shareAccessRights);
-        }
     }
     /**
      * Begins update for the User resource.
@@ -144,8 +140,7 @@ public interface User {
     User.Update update();
 
     /** The template for User update. */
-    interface Update
-        extends UpdateStages.WithEncryptedPassword, UpdateStages.WithShareAccessRights, UpdateStages.WithUserType {
+    interface Update extends UpdateStages.WithEncryptedPassword, UpdateStages.WithUserType {
         /**
          * Executes the update request.
          *
@@ -172,18 +167,6 @@ public interface User {
              * @return the next definition stage.
              */
             Update withEncryptedPassword(AsymmetricEncryptedSecret encryptedPassword);
-        }
-        /** The stage of the User update allowing to specify shareAccessRights. */
-        interface WithShareAccessRights {
-            /**
-             * Specifies the shareAccessRights property: List of shares that the user has rights on. This field should
-             * not be specified during user creation..
-             *
-             * @param shareAccessRights List of shares that the user has rights on. This field should not be specified
-             *     during user creation.
-             * @return the next definition stage.
-             */
-            Update withShareAccessRights(List<ShareAccessRight> shareAccessRights);
         }
         /** The stage of the User update allowing to specify userType. */
         interface WithUserType {

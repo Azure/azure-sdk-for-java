@@ -6,18 +6,15 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The shipping address of the customer. */
 @Fluent
 public final class Address {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Address.class);
-
     /*
      * The address line1.
      */
-    @JsonProperty(value = "addressLine1", required = true)
+    @JsonProperty(value = "addressLine1")
     private String addressLine1;
 
     /*
@@ -35,19 +32,19 @@ public final class Address {
     /*
      * The postal code.
      */
-    @JsonProperty(value = "postalCode", required = true)
+    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * The city name.
      */
-    @JsonProperty(value = "city", required = true)
+    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The state name.
      */
-    @JsonProperty(value = "state", required = true)
+    @JsonProperty(value = "state")
     private String state;
 
     /*
@@ -202,28 +199,12 @@ public final class Address {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (addressLine1() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property addressLine1 in model Address"));
-        }
-        if (postalCode() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property postalCode in model Address"));
-        }
-        if (city() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property city in model Address"));
-        }
-        if (state() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property state in model Address"));
-        }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model Address"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Address.class);
 }

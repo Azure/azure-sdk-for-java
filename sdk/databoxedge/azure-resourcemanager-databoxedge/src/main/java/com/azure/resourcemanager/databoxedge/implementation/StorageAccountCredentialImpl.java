@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databoxedge.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountCredentialInner;
 import com.azure.resourcemanager.databoxedge.models.AccountType;
@@ -27,6 +28,10 @@ public final class StorageAccountCredentialImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String alias() {

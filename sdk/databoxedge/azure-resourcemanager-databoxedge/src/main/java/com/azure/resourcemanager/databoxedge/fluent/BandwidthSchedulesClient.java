@@ -23,7 +23,8 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
@@ -37,7 +38,8 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(
@@ -67,7 +69,7 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified bandwidth schedule.
+     * @return the properties of the specified bandwidth schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BandwidthScheduleInner> getWithResponse(
@@ -83,9 +85,9 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link SyncPoller} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(
         String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters);
 
@@ -100,9 +102,9 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link SyncPoller} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(
         String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context);
 
@@ -148,9 +150,9 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName);
 
     /**
@@ -163,9 +165,9 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String deviceName, String name, String resourceGroupName, Context context);
 

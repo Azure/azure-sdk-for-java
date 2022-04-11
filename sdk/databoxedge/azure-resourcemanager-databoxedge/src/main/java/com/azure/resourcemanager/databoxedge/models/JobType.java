@@ -28,6 +28,15 @@ public final class JobType extends ExpandableStringEnum<JobType> {
     /** Static value RefreshContainer for JobType. */
     public static final JobType REFRESH_CONTAINER = fromString("RefreshContainer");
 
+    /** Static value Backup for JobType. */
+    public static final JobType BACKUP = fromString("Backup");
+
+    /** Static value Restore for JobType. */
+    public static final JobType RESTORE = fromString("Restore");
+
+    /** Static value TriggerSupportPackage for JobType. */
+    public static final JobType TRIGGER_SUPPORT_PACKAGE = fromString("TriggerSupportPackage");
+
     /**
      * Creates or finds a JobType from its string representation.
      *

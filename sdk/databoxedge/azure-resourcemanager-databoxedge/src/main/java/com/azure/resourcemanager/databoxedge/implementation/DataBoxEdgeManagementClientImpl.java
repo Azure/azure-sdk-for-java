@@ -21,21 +21,27 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.databoxedge.fluent.AddonsClient;
 import com.azure.resourcemanager.databoxedge.fluent.AlertsClient;
+import com.azure.resourcemanager.databoxedge.fluent.AvailableSkusClient;
 import com.azure.resourcemanager.databoxedge.fluent.BandwidthSchedulesClient;
 import com.azure.resourcemanager.databoxedge.fluent.ContainersClient;
 import com.azure.resourcemanager.databoxedge.fluent.DataBoxEdgeManagementClient;
+import com.azure.resourcemanager.databoxedge.fluent.DeviceCapacityChecksClient;
+import com.azure.resourcemanager.databoxedge.fluent.DeviceCapacityInfoesClient;
 import com.azure.resourcemanager.databoxedge.fluent.DevicesClient;
+import com.azure.resourcemanager.databoxedge.fluent.DiagnosticSettingsClient;
 import com.azure.resourcemanager.databoxedge.fluent.JobsClient;
+import com.azure.resourcemanager.databoxedge.fluent.MonitoringConfigsClient;
 import com.azure.resourcemanager.databoxedge.fluent.NodesClient;
 import com.azure.resourcemanager.databoxedge.fluent.OperationsClient;
 import com.azure.resourcemanager.databoxedge.fluent.OperationsStatusClient;
 import com.azure.resourcemanager.databoxedge.fluent.OrdersClient;
 import com.azure.resourcemanager.databoxedge.fluent.RolesClient;
 import com.azure.resourcemanager.databoxedge.fluent.SharesClient;
-import com.azure.resourcemanager.databoxedge.fluent.SkusClient;
 import com.azure.resourcemanager.databoxedge.fluent.StorageAccountCredentialsClient;
 import com.azure.resourcemanager.databoxedge.fluent.StorageAccountsClient;
+import com.azure.resourcemanager.databoxedge.fluent.SupportPackagesClient;
 import com.azure.resourcemanager.databoxedge.fluent.TriggersClient;
 import com.azure.resourcemanager.databoxedge.fluent.UsersClient;
 import java.io.IOException;
@@ -51,8 +57,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the DataBoxEdgeManagementClientImpl type. */
 @ServiceClient(builder = DataBoxEdgeManagementClientBuilder.class)
 public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagementClient {
-    private final ClientLogger logger = new ClientLogger(DataBoxEdgeManagementClientImpl.class);
-
     /** The subscription ID. */
     private final String subscriptionId;
 
@@ -137,6 +141,18 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
         return this.operations;
     }
 
+    /** The AvailableSkusClient object to access its operations. */
+    private final AvailableSkusClient availableSkus;
+
+    /**
+     * Gets the AvailableSkusClient object to access its operations.
+     *
+     * @return the AvailableSkusClient object.
+     */
+    public AvailableSkusClient getAvailableSkus() {
+        return this.availableSkus;
+    }
+
     /** The DevicesClient object to access its operations. */
     private final DevicesClient devices;
 
@@ -171,6 +187,42 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
      */
     public BandwidthSchedulesClient getBandwidthSchedules() {
         return this.bandwidthSchedules;
+    }
+
+    /** The DeviceCapacityChecksClient object to access its operations. */
+    private final DeviceCapacityChecksClient deviceCapacityChecks;
+
+    /**
+     * Gets the DeviceCapacityChecksClient object to access its operations.
+     *
+     * @return the DeviceCapacityChecksClient object.
+     */
+    public DeviceCapacityChecksClient getDeviceCapacityChecks() {
+        return this.deviceCapacityChecks;
+    }
+
+    /** The DeviceCapacityInfoesClient object to access its operations. */
+    private final DeviceCapacityInfoesClient deviceCapacityInfoes;
+
+    /**
+     * Gets the DeviceCapacityInfoesClient object to access its operations.
+     *
+     * @return the DeviceCapacityInfoesClient object.
+     */
+    public DeviceCapacityInfoesClient getDeviceCapacityInfoes() {
+        return this.deviceCapacityInfoes;
+    }
+
+    /** The DiagnosticSettingsClient object to access its operations. */
+    private final DiagnosticSettingsClient diagnosticSettings;
+
+    /**
+     * Gets the DiagnosticSettingsClient object to access its operations.
+     *
+     * @return the DiagnosticSettingsClient object.
+     */
+    public DiagnosticSettingsClient getDiagnosticSettings() {
+        return this.diagnosticSettings;
     }
 
     /** The JobsClient object to access its operations. */
@@ -233,6 +285,30 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
         return this.roles;
     }
 
+    /** The AddonsClient object to access its operations. */
+    private final AddonsClient addons;
+
+    /**
+     * Gets the AddonsClient object to access its operations.
+     *
+     * @return the AddonsClient object.
+     */
+    public AddonsClient getAddons() {
+        return this.addons;
+    }
+
+    /** The MonitoringConfigsClient object to access its operations. */
+    private final MonitoringConfigsClient monitoringConfigs;
+
+    /**
+     * Gets the MonitoringConfigsClient object to access its operations.
+     *
+     * @return the MonitoringConfigsClient object.
+     */
+    public MonitoringConfigsClient getMonitoringConfigs() {
+        return this.monitoringConfigs;
+    }
+
     /** The SharesClient object to access its operations. */
     private final SharesClient shares;
 
@@ -293,6 +369,18 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
         return this.triggers;
     }
 
+    /** The SupportPackagesClient object to access its operations. */
+    private final SupportPackagesClient supportPackages;
+
+    /**
+     * Gets the SupportPackagesClient object to access its operations.
+     *
+     * @return the SupportPackagesClient object.
+     */
+    public SupportPackagesClient getSupportPackages() {
+        return this.supportPackages;
+    }
+
     /** The UsersClient object to access its operations. */
     private final UsersClient users;
 
@@ -303,18 +391,6 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
      */
     public UsersClient getUsers() {
         return this.users;
-    }
-
-    /** The SkusClient object to access its operations. */
-    private final SkusClient skus;
-
-    /**
-     * Gets the SkusClient object to access its operations.
-     *
-     * @return the SkusClient object.
-     */
-    public SkusClient getSkus() {
-        return this.skus;
     }
 
     /**
@@ -339,23 +415,29 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-08-01";
+        this.apiVersion = "2022-03-01";
         this.operations = new OperationsClientImpl(this);
+        this.availableSkus = new AvailableSkusClientImpl(this);
         this.devices = new DevicesClientImpl(this);
         this.alerts = new AlertsClientImpl(this);
         this.bandwidthSchedules = new BandwidthSchedulesClientImpl(this);
+        this.deviceCapacityChecks = new DeviceCapacityChecksClientImpl(this);
+        this.deviceCapacityInfoes = new DeviceCapacityInfoesClientImpl(this);
+        this.diagnosticSettings = new DiagnosticSettingsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.nodes = new NodesClientImpl(this);
         this.operationsStatus = new OperationsStatusClientImpl(this);
         this.orders = new OrdersClientImpl(this);
         this.roles = new RolesClientImpl(this);
+        this.addons = new AddonsClientImpl(this);
+        this.monitoringConfigs = new MonitoringConfigsClientImpl(this);
         this.shares = new SharesClientImpl(this);
         this.storageAccountCredentials = new StorageAccountCredentialsClientImpl(this);
         this.storageAccounts = new StorageAccountsClientImpl(this);
         this.containers = new ContainersClientImpl(this);
         this.triggers = new TriggersClientImpl(this);
+        this.supportPackages = new SupportPackagesClientImpl(this);
         this.users = new UsersClientImpl(this);
-        this.skus = new SkusClientImpl(this);
     }
 
     /**
@@ -441,7 +523,7 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -500,4 +582,6 @@ public final class DataBoxEdgeManagementClientImpl implements DataBoxEdgeManagem
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataBoxEdgeManagementClientImpl.class);
 }

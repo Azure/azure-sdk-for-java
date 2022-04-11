@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of all trigger on the data box edge device. */
 @Immutable
 public final class TriggerList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerList.class);
-
     /*
      * The list of triggers.
      */

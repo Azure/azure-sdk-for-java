@@ -11,19 +11,20 @@ import com.azure.core.util.Context;
 /** Resource collection API of StorageAccounts. */
 public interface StorageAccounts {
     /**
-     * Lists all the storage accounts in a Data Box Edge/Data Box Gateway device.
+     * Lists all the StorageAccounts in a Data Box Edge/Data Box Gateway device.
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the Storage Accounts on the Data Box Edge/Gateway device.
+     * @return collection of all the Storage Accounts on the Data Box Edge/Gateway device as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<StorageAccount> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
-     * Lists all the storage accounts in a Data Box Edge/Data Box Gateway device.
+     * Lists all the StorageAccounts in a Data Box Edge/Data Box Gateway device.
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
@@ -31,7 +32,8 @@ public interface StorageAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the Storage Accounts on the Data Box Edge/Gateway device.
+     * @return collection of all the Storage Accounts on the Data Box Edge/Gateway device as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<StorageAccount> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context);
 
@@ -58,7 +60,7 @@ public interface StorageAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageAccount by name.
+     * @return a StorageAccount by name along with {@link Response}.
      */
     Response<StorageAccount> getWithResponse(
         String deviceName, String storageAccountName, String resourceGroupName, Context context);
@@ -95,7 +97,7 @@ public interface StorageAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageAccount by name.
+     * @return a StorageAccount by name along with {@link Response}.
      */
     StorageAccount getById(String id);
 
@@ -107,7 +109,7 @@ public interface StorageAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StorageAccount by name.
+     * @return a StorageAccount by name along with {@link Response}.
      */
     Response<StorageAccount> getByIdWithResponse(String id, Context context);
 

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains all the contact details of the customer. */
 @Fluent
 public final class ContactDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContactDetails.class);
-
     /*
      * The contact person name.
      */
@@ -126,24 +123,26 @@ public final class ContactDetails {
      */
     public void validate() {
         if (contactPerson() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactPerson in model ContactDetails"));
         }
         if (companyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property companyName in model ContactDetails"));
         }
         if (phone() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property phone in model ContactDetails"));
         }
         if (emailList() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property emailList in model ContactDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContactDetails.class);
 }

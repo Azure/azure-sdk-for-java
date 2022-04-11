@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.RolesClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
 import com.azure.resourcemanager.databoxedge.models.Role;
 import com.azure.resourcemanager.databoxedge.models.Roles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RolesImpl implements Roles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RolesImpl.class);
 
     private final RolesClient innerClient;
 

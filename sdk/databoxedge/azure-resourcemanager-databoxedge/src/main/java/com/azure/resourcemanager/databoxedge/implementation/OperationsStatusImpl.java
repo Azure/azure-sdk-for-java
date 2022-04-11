@@ -12,10 +12,9 @@ import com.azure.resourcemanager.databoxedge.fluent.OperationsStatusClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.JobInner;
 import com.azure.resourcemanager.databoxedge.models.Job;
 import com.azure.resourcemanager.databoxedge.models.OperationsStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsStatusImpl implements OperationsStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsStatusImpl.class);
 
     private final OperationsStatusClient innerClient;
 

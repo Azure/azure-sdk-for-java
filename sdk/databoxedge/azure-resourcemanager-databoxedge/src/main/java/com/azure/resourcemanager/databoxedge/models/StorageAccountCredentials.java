@@ -18,7 +18,8 @@ public interface StorageAccountCredentials {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<StorageAccountCredential> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
@@ -31,7 +32,8 @@ public interface StorageAccountCredentials {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<StorageAccountCredential> listByDataBoxEdgeDevice(
         String deviceName, String resourceGroupName, Context context);
@@ -59,7 +61,7 @@ public interface StorageAccountCredentials {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential along with {@link Response}.
      */
     Response<StorageAccountCredential> getWithResponse(
         String deviceName, String name, String resourceGroupName, Context context);
@@ -96,7 +98,7 @@ public interface StorageAccountCredentials {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential along with {@link Response}.
      */
     StorageAccountCredential getById(String id);
 
@@ -108,7 +110,7 @@ public interface StorageAccountCredentials {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential along with {@link Response}.
      */
     Response<StorageAccountCredential> getByIdWithResponse(String id, Context context);
 

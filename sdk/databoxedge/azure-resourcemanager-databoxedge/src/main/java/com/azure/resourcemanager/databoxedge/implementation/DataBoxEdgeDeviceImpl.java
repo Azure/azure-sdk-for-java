@@ -6,13 +6,22 @@ package com.azure.resourcemanager.databoxedge.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.DataBoxEdgeDeviceInner;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDevice;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceExtendedInfo;
+import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceExtendedInfoPatch;
+import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceKind;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDevicePatch;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceStatus;
+import com.azure.resourcemanager.databoxedge.models.DataResidency;
 import com.azure.resourcemanager.databoxedge.models.DeviceType;
+import com.azure.resourcemanager.databoxedge.models.EdgeProfile;
+import com.azure.resourcemanager.databoxedge.models.EdgeProfilePatch;
+import com.azure.resourcemanager.databoxedge.models.GenerateCertResponse;
+import com.azure.resourcemanager.databoxedge.models.ResourceIdentity;
+import com.azure.resourcemanager.databoxedge.models.ResourceMoveDetails;
 import com.azure.resourcemanager.databoxedge.models.RoleTypes;
 import com.azure.resourcemanager.databoxedge.models.Sku;
 import com.azure.resourcemanager.databoxedge.models.UploadCertificateRequest;
@@ -58,6 +67,22 @@ public final class DataBoxEdgeDeviceImpl
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public ResourceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
+    public DataBoxEdgeDeviceKind kind() {
+        return this.innerModel().kind();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public SystemData systemDataPropertiesSystemData() {
+        return this.innerModel().systemDataPropertiesSystemData();
     }
 
     public DataBoxEdgeDeviceStatus dataBoxEdgeDeviceStatus() {
@@ -121,6 +146,18 @@ public final class DataBoxEdgeDeviceImpl
         return this.innerModel().nodeCount();
     }
 
+    public ResourceMoveDetails resourceMoveDetails() {
+        return this.innerModel().resourceMoveDetails();
+    }
+
+    public EdgeProfile edgeProfile() {
+        return this.innerModel().edgeProfile();
+    }
+
+    public DataResidency dataResidency() {
+        return this.innerModel().dataResidency();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -153,7 +190,8 @@ public final class DataBoxEdgeDeviceImpl
             serviceManager
                 .serviceClient()
                 .getDevices()
-                .createOrUpdate(deviceName, resourceGroupName, this.innerModel(), Context.NONE);
+                .createOrUpdateWithResponse(deviceName, resourceGroupName, this.innerModel(), Context.NONE)
+                .getValue();
         return this;
     }
 
@@ -162,7 +200,8 @@ public final class DataBoxEdgeDeviceImpl
             serviceManager
                 .serviceClient()
                 .getDevices()
-                .createOrUpdate(deviceName, resourceGroupName, this.innerModel(), context);
+                .createOrUpdateWithResponse(deviceName, resourceGroupName, this.innerModel(), context)
+                .getValue();
         return this;
     }
 
@@ -233,6 +272,14 @@ public final class DataBoxEdgeDeviceImpl
         serviceManager.devices().downloadUpdates(deviceName, resourceGroupName, context);
     }
 
+    public GenerateCertResponse generateCertificate() {
+        return serviceManager.devices().generateCertificate(deviceName, resourceGroupName);
+    }
+
+    public Response<GenerateCertResponse> generateCertificateWithResponse(Context context) {
+        return serviceManager.devices().generateCertificateWithResponse(deviceName, resourceGroupName, context);
+    }
+
     public DataBoxEdgeDeviceExtendedInfo getExtendedInformation() {
         return serviceManager.devices().getExtendedInformation(deviceName, resourceGroupName);
     }
@@ -255,6 +302,17 @@ public final class DataBoxEdgeDeviceImpl
 
     public void scanForUpdates(Context context) {
         serviceManager.devices().scanForUpdates(deviceName, resourceGroupName, context);
+    }
+
+    public DataBoxEdgeDeviceExtendedInfo updateExtendedInformation(DataBoxEdgeDeviceExtendedInfoPatch parameters) {
+        return serviceManager.devices().updateExtendedInformation(deviceName, resourceGroupName, parameters);
+    }
+
+    public Response<DataBoxEdgeDeviceExtendedInfo> updateExtendedInformationWithResponse(
+        DataBoxEdgeDeviceExtendedInfoPatch parameters, Context context) {
+        return serviceManager
+            .devices()
+            .updateExtendedInformationWithResponse(deviceName, resourceGroupName, parameters, context);
     }
 
     public UploadCertificateResponse uploadCertificate(UploadCertificateRequest parameters) {
@@ -298,23 +356,23 @@ public final class DataBoxEdgeDeviceImpl
         return this;
     }
 
-    public DataBoxEdgeDeviceImpl withDataBoxEdgeDeviceStatus(DataBoxEdgeDeviceStatus dataBoxEdgeDeviceStatus) {
-        this.innerModel().withDataBoxEdgeDeviceStatus(dataBoxEdgeDeviceStatus);
+    public DataBoxEdgeDeviceImpl withIdentity(ResourceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public DataBoxEdgeDeviceImpl withDataResidency(DataResidency dataResidency) {
+        this.innerModel().withDataResidency(dataResidency);
         return this;
     }
 
-    public DataBoxEdgeDeviceImpl withDescription(String description) {
-        this.innerModel().withDescription(description);
-        return this;
-    }
-
-    public DataBoxEdgeDeviceImpl withModelDescription(String modelDescription) {
-        this.innerModel().withModelDescription(modelDescription);
-        return this;
-    }
-
-    public DataBoxEdgeDeviceImpl withFriendlyName(String friendlyName) {
-        this.innerModel().withFriendlyName(friendlyName);
+    public DataBoxEdgeDeviceImpl withEdgeProfile(EdgeProfilePatch edgeProfile) {
+        this.updateParameters.withEdgeProfile(edgeProfile);
         return this;
     }
 

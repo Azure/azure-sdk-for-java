@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.RolesClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RolesClient. */
 public final class RolesClientImpl implements RolesClient {
-    private final ClientLogger logger = new ClientLogger(RolesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RolesService service;
 
@@ -149,7 +146,8 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleInner>> listByDataBoxEdgeDeviceSinglePageAsync(
@@ -207,7 +205,8 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleInner>> listByDataBoxEdgeDeviceSinglePageAsync(
@@ -261,7 +260,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName) {
@@ -279,7 +278,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleInner> listByDataBoxEdgeDeviceAsync(
@@ -297,7 +296,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName) {
@@ -313,7 +312,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleInner> listByDataBoxEdgeDevice(
@@ -330,7 +329,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific role by name.
+     * @return a specific role by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RoleInner>> getWithResponseAsync(String deviceName, String name, String resourceGroupName) {
@@ -383,7 +382,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific role by name.
+     * @return a specific role by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RoleInner>> getWithResponseAsync(
@@ -433,7 +432,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific role by name.
+     * @return a specific role by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RoleInner> getAsync(String deviceName, String name, String resourceGroupName) {
@@ -474,7 +473,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific role by name.
+     * @return a specific role by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleInner> getWithResponse(
@@ -492,7 +491,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return compute role along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -553,7 +552,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return compute role along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -610,9 +609,9 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return the {@link PollerFlux} for polling of compute role.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RoleInner>, RoleInner> beginCreateOrUpdateAsync(
         String deviceName, String name, String resourceGroupName, RoleInner role) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -620,7 +619,7 @@ public final class RolesClientImpl implements RolesClient {
         return this
             .client
             .<RoleInner, RoleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RoleInner.class, RoleInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), RoleInner.class, RoleInner.class, this.client.getContext());
     }
 
     /**
@@ -634,9 +633,9 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return the {@link PollerFlux} for polling of compute role.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RoleInner>, RoleInner> beginCreateOrUpdateAsync(
         String deviceName, String name, String resourceGroupName, RoleInner role, Context context) {
         context = this.client.mergeContext(context);
@@ -658,9 +657,9 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return the {@link SyncPoller} for polling of compute role.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleInner>, RoleInner> beginCreateOrUpdate(
         String deviceName, String name, String resourceGroupName, RoleInner role) {
         return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, role).getSyncPoller();
@@ -677,9 +676,9 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return the {@link SyncPoller} for polling of compute role.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleInner>, RoleInner> beginCreateOrUpdate(
         String deviceName, String name, String resourceGroupName, RoleInner role, Context context) {
         return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, role, context).getSyncPoller();
@@ -695,7 +694,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return compute role on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RoleInner> createOrUpdateAsync(
@@ -716,7 +715,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute role.
+     * @return compute role on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RoleInner> createOrUpdateAsync(
@@ -771,7 +770,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -825,7 +824,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -875,15 +874,16 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String deviceName, String name, String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -896,9 +896,9 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String deviceName, String name, String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -917,9 +917,9 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName) {
         return beginDeleteAsync(deviceName, name, resourceGroupName).getSyncPoller();
     }
@@ -934,9 +934,9 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String deviceName, String name, String resourceGroupName, Context context) {
         return beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
@@ -951,7 +951,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName) {
@@ -970,7 +970,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName, Context context) {
@@ -1017,7 +1017,8 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink) {
@@ -1054,7 +1055,8 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the roles on the Data Box Edge device.
+     * @return collection of all the roles on the Data Box Edge device along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(

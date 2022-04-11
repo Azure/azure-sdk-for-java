@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databoxedge.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.databoxedge.fluent.models.OrderInner;
 import java.util.List;
 
@@ -29,6 +30,27 @@ public interface Order {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the kind property: It specify the order api version.
+     *
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of Order.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the orderId property: It specify the order resource id.
+     *
+     * @return the orderId value.
+     */
+    String orderId();
 
     /**
      * Gets the contactInformation property: The contact details.
@@ -80,6 +102,13 @@ public interface Order {
      * @return the returnTrackingInfo value.
      */
     List<TrackingInfo> returnTrackingInfo();
+
+    /**
+     * Gets the shipmentType property: ShipmentType of the order.
+     *
+     * @return the shipmentType value.
+     */
+    ShipmentType shipmentType();
 
     /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.OrderInner object.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure container mapping of the endpoint. */
 @Fluent
 public final class AzureContainerInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureContainerInfo.class);
-
     /*
      * ID of the storage account credential used to access storage.
      */
@@ -102,21 +99,23 @@ public final class AzureContainerInfo {
      */
     public void validate() {
         if (storageAccountCredentialId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageAccountCredentialId in model AzureContainerInfo"));
         }
         if (containerName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property containerName in model AzureContainerInfo"));
         }
         if (dataFormat() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataFormat in model AzureContainerInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureContainerInfo.class);
 }

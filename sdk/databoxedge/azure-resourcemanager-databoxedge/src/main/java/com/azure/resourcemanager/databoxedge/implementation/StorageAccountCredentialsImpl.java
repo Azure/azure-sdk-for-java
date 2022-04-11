@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.StorageAccountCredentialsCli
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountCredentialInner;
 import com.azure.resourcemanager.databoxedge.models.StorageAccountCredential;
 import com.azure.resourcemanager.databoxedge.models.StorageAccountCredentials;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageAccountCredentialsImpl implements StorageAccountCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCredentialsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCredentialsImpl.class);
 
     private final StorageAccountCredentialsClient innerClient;
 
@@ -78,7 +77,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
     public StorageAccountCredential getById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -87,7 +86,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -97,7 +96,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
     public Response<StorageAccountCredential> getByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
     public void deleteById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,7 +158,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +170,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
     public void deleteByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -190,7 +189,7 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

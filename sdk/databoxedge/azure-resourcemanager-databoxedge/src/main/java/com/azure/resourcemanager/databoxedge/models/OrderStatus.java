@@ -6,7 +6,7 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,8 +14,6 @@ import java.util.Map;
 /** Represents a single status change. */
 @Fluent
 public final class OrderStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderStatus.class);
-
     /*
      * Status of the order as per the allowed status types.
      */
@@ -35,10 +33,17 @@ public final class OrderStatus {
     private String comments;
 
     /*
+     * Tracking information related to the state in the ordering flow
+     */
+    @JsonProperty(value = "trackingInformation", access = JsonProperty.Access.WRITE_ONLY)
+    private TrackingInfo trackingInformation;
+
+    /*
      * Dictionary to hold generic information which is not stored
      * by the already existing properties
      */
     @JsonProperty(value = "additionalOrderDetails", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalOrderDetails;
 
     /**
@@ -91,6 +96,15 @@ public final class OrderStatus {
     }
 
     /**
+     * Get the trackingInformation property: Tracking information related to the state in the ordering flow.
+     *
+     * @return the trackingInformation value.
+     */
+    public TrackingInfo trackingInformation() {
+        return this.trackingInformation;
+    }
+
+    /**
      * Get the additionalOrderDetails property: Dictionary to hold generic information which is not stored by the
      * already existing properties.
      *
@@ -107,9 +121,14 @@ public final class OrderStatus {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model OrderStatus"));
         }
+        if (trackingInformation() != null) {
+            trackingInformation().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrderStatus.class);
 }

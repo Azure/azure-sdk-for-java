@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Fields for tracking refresh job on the share or container. */
 @Fluent
 public final class RefreshDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RefreshDetails.class);
-
     /*
      * If a refresh job is currently in progress on this share or container,
      * this field indicates the ARM resource ID of that job. The field is empty

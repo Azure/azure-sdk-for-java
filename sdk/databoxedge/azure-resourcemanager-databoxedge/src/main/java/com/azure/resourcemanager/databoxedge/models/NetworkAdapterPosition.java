@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The network adapter position. */
 @Immutable
 public final class NetworkAdapterPosition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkAdapterPosition.class);
-
     /*
      * The network group.
      */

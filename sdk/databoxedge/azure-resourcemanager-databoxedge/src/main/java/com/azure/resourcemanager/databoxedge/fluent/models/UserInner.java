@@ -5,40 +5,47 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.AsymmetricEncryptedSecret;
 import com.azure.resourcemanager.databoxedge.models.ShareAccessRight;
 import com.azure.resourcemanager.databoxedge.models.UserType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a user who has access to one or more shares on the Data Box Edge/Gateway device. */
-@JsonFlatten
 @Fluent
-public class UserInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
+public final class UserInner extends ArmBaseModel {
+    /*
+     * The storage account credential properties.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private UserProperties innerProperties = new UserProperties();
 
     /*
-     * The password details.
+     * Metadata pertaining to creation and last modification of User
      */
-    @JsonProperty(value = "properties.encryptedPassword")
-    private AsymmetricEncryptedSecret encryptedPassword;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
-    /*
-     * List of shares that the user has rights on. This field should not be
-     * specified during user creation.
+    /**
+     * Get the innerProperties property: The storage account credential properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.shareAccessRights")
-    private List<ShareAccessRight> shareAccessRights;
+    private UserProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Type of the user.
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of User.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.userType", required = true)
-    private UserType userType;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the encryptedPassword property: The password details.
@@ -46,7 +53,7 @@ public class UserInner extends ArmBaseModel {
      * @return the encryptedPassword value.
      */
     public AsymmetricEncryptedSecret encryptedPassword() {
-        return this.encryptedPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().encryptedPassword();
     }
 
     /**
@@ -56,7 +63,10 @@ public class UserInner extends ArmBaseModel {
      * @return the UserInner object itself.
      */
     public UserInner withEncryptedPassword(AsymmetricEncryptedSecret encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withEncryptedPassword(encryptedPassword);
         return this;
     }
 
@@ -67,19 +77,7 @@ public class UserInner extends ArmBaseModel {
      * @return the shareAccessRights value.
      */
     public List<ShareAccessRight> shareAccessRights() {
-        return this.shareAccessRights;
-    }
-
-    /**
-     * Set the shareAccessRights property: List of shares that the user has rights on. This field should not be
-     * specified during user creation.
-     *
-     * @param shareAccessRights the shareAccessRights value to set.
-     * @return the UserInner object itself.
-     */
-    public UserInner withShareAccessRights(List<ShareAccessRight> shareAccessRights) {
-        this.shareAccessRights = shareAccessRights;
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().shareAccessRights();
     }
 
     /**
@@ -88,7 +86,7 @@ public class UserInner extends ArmBaseModel {
      * @return the userType value.
      */
     public UserType userType() {
-        return this.userType;
+        return this.innerProperties() == null ? null : this.innerProperties().userType();
     }
 
     /**
@@ -98,7 +96,10 @@ public class UserInner extends ArmBaseModel {
      * @return the UserInner object itself.
      */
     public UserInner withUserType(UserType userType) {
-        this.userType = userType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withUserType(userType);
         return this;
     }
 
@@ -110,16 +111,14 @@ public class UserInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
-        if (encryptedPassword() != null) {
-            encryptedPassword().validate();
-        }
-        if (shareAccessRights() != null) {
-            shareAccessRights().forEach(e -> e.validate());
-        }
-        if (userType() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userType in model UserInner"));
+                    new IllegalArgumentException("Missing required property innerProperties in model UserInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserInner.class);
 }

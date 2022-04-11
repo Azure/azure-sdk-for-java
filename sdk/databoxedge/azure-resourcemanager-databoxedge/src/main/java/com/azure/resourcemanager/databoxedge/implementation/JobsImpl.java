@@ -12,10 +12,9 @@ import com.azure.resourcemanager.databoxedge.fluent.JobsClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.JobInner;
 import com.azure.resourcemanager.databoxedge.models.Job;
 import com.azure.resourcemanager.databoxedge.models.Jobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 

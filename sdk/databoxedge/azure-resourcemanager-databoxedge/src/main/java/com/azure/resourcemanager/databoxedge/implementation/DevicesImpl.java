@@ -12,21 +12,23 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.DevicesClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.DataBoxEdgeDeviceExtendedInfoInner;
 import com.azure.resourcemanager.databoxedge.fluent.models.DataBoxEdgeDeviceInner;
+import com.azure.resourcemanager.databoxedge.fluent.models.GenerateCertResponseInner;
 import com.azure.resourcemanager.databoxedge.fluent.models.NetworkSettingsInner;
 import com.azure.resourcemanager.databoxedge.fluent.models.UpdateSummaryInner;
 import com.azure.resourcemanager.databoxedge.fluent.models.UploadCertificateResponseInner;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDevice;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceExtendedInfo;
+import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceExtendedInfoPatch;
 import com.azure.resourcemanager.databoxedge.models.Devices;
+import com.azure.resourcemanager.databoxedge.models.GenerateCertResponse;
 import com.azure.resourcemanager.databoxedge.models.NetworkSettings;
 import com.azure.resourcemanager.databoxedge.models.SecuritySettings;
 import com.azure.resourcemanager.databoxedge.models.UpdateSummary;
 import com.azure.resourcemanager.databoxedge.models.UploadCertificateRequest;
 import com.azure.resourcemanager.databoxedge.models.UploadCertificateResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DevicesImpl implements Devices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DevicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DevicesImpl.class);
 
     private final DevicesClient innerClient;
 
@@ -98,6 +100,30 @@ public final class DevicesImpl implements Devices {
 
     public void downloadUpdates(String deviceName, String resourceGroupName, Context context) {
         this.serviceClient().downloadUpdates(deviceName, resourceGroupName, context);
+    }
+
+    public GenerateCertResponse generateCertificate(String deviceName, String resourceGroupName) {
+        GenerateCertResponseInner inner = this.serviceClient().generateCertificate(deviceName, resourceGroupName);
+        if (inner != null) {
+            return new GenerateCertResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<GenerateCertResponse> generateCertificateWithResponse(
+        String deviceName, String resourceGroupName, Context context) {
+        Response<GenerateCertResponseInner> inner =
+            this.serviceClient().generateCertificateWithResponse(deviceName, resourceGroupName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new GenerateCertResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DataBoxEdgeDeviceExtendedInfo getExtendedInformation(String deviceName, String resourceGroupName) {
@@ -175,6 +201,34 @@ public final class DevicesImpl implements Devices {
         this.serviceClient().createOrUpdateSecuritySettings(deviceName, resourceGroupName, securitySettings, context);
     }
 
+    public DataBoxEdgeDeviceExtendedInfo updateExtendedInformation(
+        String deviceName, String resourceGroupName, DataBoxEdgeDeviceExtendedInfoPatch parameters) {
+        DataBoxEdgeDeviceExtendedInfoInner inner =
+            this.serviceClient().updateExtendedInformation(deviceName, resourceGroupName, parameters);
+        if (inner != null) {
+            return new DataBoxEdgeDeviceExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<DataBoxEdgeDeviceExtendedInfo> updateExtendedInformationWithResponse(
+        String deviceName, String resourceGroupName, DataBoxEdgeDeviceExtendedInfoPatch parameters, Context context) {
+        Response<DataBoxEdgeDeviceExtendedInfoInner> inner =
+            this
+                .serviceClient()
+                .updateExtendedInformationWithResponse(deviceName, resourceGroupName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new DataBoxEdgeDeviceExtendedInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public UpdateSummary getUpdateSummary(String deviceName, String resourceGroupName) {
         UpdateSummaryInner inner = this.serviceClient().getUpdateSummary(deviceName, resourceGroupName);
         if (inner != null) {
@@ -228,7 +282,7 @@ public final class DevicesImpl implements Devices {
     public DataBoxEdgeDevice getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -236,7 +290,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -249,7 +303,7 @@ public final class DevicesImpl implements Devices {
     public Response<DataBoxEdgeDevice> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -257,7 +311,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -270,7 +324,7 @@ public final class DevicesImpl implements Devices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -278,7 +332,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -291,7 +345,7 @@ public final class DevicesImpl implements Devices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -299,7 +353,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

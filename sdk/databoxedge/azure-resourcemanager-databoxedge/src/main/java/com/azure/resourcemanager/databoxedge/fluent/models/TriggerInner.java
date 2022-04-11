@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.FileEventTrigger;
 import com.azure.resourcemanager.databoxedge.models.PeriodicTimerEventTrigger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -27,7 +27,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class TriggerInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerInner.class);
+    /*
+     * Metadata pertaining to creation and last modification of Trigger
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of Trigger.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Validates the instance.

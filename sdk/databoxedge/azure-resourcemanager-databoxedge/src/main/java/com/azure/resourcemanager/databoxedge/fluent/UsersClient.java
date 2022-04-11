@@ -23,7 +23,8 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the users registered on a Data Box Edge/Data Box Gateway device.
+     * @return all the users registered on a Data Box Edge/Data Box Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UserInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
@@ -33,12 +34,13 @@ public interface UsersClient {
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
-     * @param filter Specify $filter='UserType eq &lt;type&gt;' to filter on user type property.
+     * @param filter Specify $filter='Type eq &lt;type&gt;' to filter on user type property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the users registered on a Data Box Edge/Data Box Gateway device.
+     * @return all the users registered on a Data Box Edge/Data Box Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UserInner> listByDataBoxEdgeDevice(
@@ -68,7 +70,7 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified user.
+     * @return the properties of the specified user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<UserInner> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
@@ -83,9 +85,10 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a user who has access to one or more shares on the Data Box Edge/Gateway device.
+     * @return the {@link SyncPoller} for polling of represents a user who has access to one or more shares on the Data
+     *     Box Edge/Gateway device.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
         String deviceName, String name, String resourceGroupName, UserInner user);
 
@@ -100,9 +103,10 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a user who has access to one or more shares on the Data Box Edge/Gateway device.
+     * @return the {@link SyncPoller} for polling of represents a user who has access to one or more shares on the Data
+     *     Box Edge/Gateway device.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
         String deviceName, String name, String resourceGroupName, UserInner user, Context context);
 
@@ -146,9 +150,9 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName);
 
     /**
@@ -161,9 +165,9 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String deviceName, String name, String resourceGroupName, Context context);
 

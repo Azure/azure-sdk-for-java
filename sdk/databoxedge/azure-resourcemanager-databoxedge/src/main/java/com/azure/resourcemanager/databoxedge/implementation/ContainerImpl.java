@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databoxedge.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.ContainerInner;
 import com.azure.resourcemanager.databoxedge.models.AzureContainerDataFormat;
@@ -27,6 +28,10 @@ public final class ContainerImpl implements Container, Container.Definition, Con
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ContainerStatus containerStatus() {

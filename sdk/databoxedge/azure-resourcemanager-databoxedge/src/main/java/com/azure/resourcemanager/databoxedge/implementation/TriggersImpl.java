@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.TriggersClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
 import com.azure.resourcemanager.databoxedge.models.Trigger;
 import com.azure.resourcemanager.databoxedge.models.Triggers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TriggersImpl implements Triggers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TriggersImpl.class);
 
     private final TriggersClient innerClient;
 

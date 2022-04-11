@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Metric specification version 1. */
 @Fluent
 public final class MetricSpecificationV1 {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecificationV1.class);
-
     /*
      * Name of the metric.
      */

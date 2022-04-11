@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.BandwidthScheduleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The collection of bandwidth schedules. */
 @Immutable
 public final class BandwidthSchedulesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BandwidthSchedulesList.class);
-
     /*
      * The list of bandwidth schedules.
      */

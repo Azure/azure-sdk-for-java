@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Progress details during installation of updates. */
 @Immutable
 public final class UpdateInstallProgress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateInstallProgress.class);
-
     /*
      * Percentage completed.
      */

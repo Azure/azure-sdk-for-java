@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.ContainerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of all the containers on the Data Box Edge/Gateway device. */
 @Immutable
 public final class ContainerList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerList.class);
-
     /*
      * The list of containers.
      */

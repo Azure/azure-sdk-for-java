@@ -5,66 +5,72 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.databoxedge.models.Address;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.ContactDetails;
 import com.azure.resourcemanager.databoxedge.models.OrderStatus;
+import com.azure.resourcemanager.databoxedge.models.ShipmentType;
 import com.azure.resourcemanager.databoxedge.models.TrackingInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The order details. */
-@JsonFlatten
 @Fluent
-public class OrderInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderInner.class);
+public final class OrderInner extends ArmBaseModel {
+    /*
+     * It specify the order api version.
+     */
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
 
     /*
-     * The contact details.
+     * Metadata pertaining to creation and last modification of Order
      */
-    @JsonProperty(value = "properties.contactInformation")
-    private ContactDetails contactInformation;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * The shipping address.
+     * The order properties.
      */
-    @JsonProperty(value = "properties.shippingAddress")
-    private Address shippingAddress;
+    @JsonProperty(value = "properties")
+    private OrderProperties innerProperties;
 
-    /*
-     * Current status of the order.
+    /**
+     * Get the kind property: It specify the order api version.
+     *
+     * @return the kind value.
      */
-    @JsonProperty(value = "properties.currentStatus")
-    private OrderStatus currentStatus;
+    public String kind() {
+        return this.kind;
+    }
 
-    /*
-     * List of status changes in the order.
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of Order.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.orderHistory", access = JsonProperty.Access.WRITE_ONLY)
-    private List<OrderStatus> orderHistory;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
-    /*
-     * Serial number of the device.
+    /**
+     * Get the innerProperties property: The order properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.serialNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String serialNumber;
+    private OrderProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Tracking information for the package delivered to the customer whether
-     * it has an original or a replacement device.
+    /**
+     * Get the orderId property: It specify the order resource id.
+     *
+     * @return the orderId value.
      */
-    @JsonProperty(value = "properties.deliveryTrackingInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TrackingInfo> deliveryTrackingInfo;
-
-    /*
-     * Tracking information for the package returned from the customer whether
-     * it has an original or a replacement device.
-     */
-    @JsonProperty(value = "properties.returnTrackingInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TrackingInfo> returnTrackingInfo;
+    public String orderId() {
+        return this.innerProperties() == null ? null : this.innerProperties().orderId();
+    }
 
     /**
      * Get the contactInformation property: The contact details.
@@ -72,7 +78,7 @@ public class OrderInner extends ArmBaseModel {
      * @return the contactInformation value.
      */
     public ContactDetails contactInformation() {
-        return this.contactInformation;
+        return this.innerProperties() == null ? null : this.innerProperties().contactInformation();
     }
 
     /**
@@ -82,7 +88,10 @@ public class OrderInner extends ArmBaseModel {
      * @return the OrderInner object itself.
      */
     public OrderInner withContactInformation(ContactDetails contactInformation) {
-        this.contactInformation = contactInformation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrderProperties();
+        }
+        this.innerProperties().withContactInformation(contactInformation);
         return this;
     }
 
@@ -92,7 +101,7 @@ public class OrderInner extends ArmBaseModel {
      * @return the shippingAddress value.
      */
     public Address shippingAddress() {
-        return this.shippingAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().shippingAddress();
     }
 
     /**
@@ -102,7 +111,10 @@ public class OrderInner extends ArmBaseModel {
      * @return the OrderInner object itself.
      */
     public OrderInner withShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrderProperties();
+        }
+        this.innerProperties().withShippingAddress(shippingAddress);
         return this;
     }
 
@@ -112,18 +124,7 @@ public class OrderInner extends ArmBaseModel {
      * @return the currentStatus value.
      */
     public OrderStatus currentStatus() {
-        return this.currentStatus;
-    }
-
-    /**
-     * Set the currentStatus property: Current status of the order.
-     *
-     * @param currentStatus the currentStatus value to set.
-     * @return the OrderInner object itself.
-     */
-    public OrderInner withCurrentStatus(OrderStatus currentStatus) {
-        this.currentStatus = currentStatus;
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().currentStatus();
     }
 
     /**
@@ -132,7 +133,7 @@ public class OrderInner extends ArmBaseModel {
      * @return the orderHistory value.
      */
     public List<OrderStatus> orderHistory() {
-        return this.orderHistory;
+        return this.innerProperties() == null ? null : this.innerProperties().orderHistory();
     }
 
     /**
@@ -141,7 +142,7 @@ public class OrderInner extends ArmBaseModel {
      * @return the serialNumber value.
      */
     public String serialNumber() {
-        return this.serialNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().serialNumber();
     }
 
     /**
@@ -151,7 +152,7 @@ public class OrderInner extends ArmBaseModel {
      * @return the deliveryTrackingInfo value.
      */
     public List<TrackingInfo> deliveryTrackingInfo() {
-        return this.deliveryTrackingInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryTrackingInfo();
     }
 
     /**
@@ -161,7 +162,30 @@ public class OrderInner extends ArmBaseModel {
      * @return the returnTrackingInfo value.
      */
     public List<TrackingInfo> returnTrackingInfo() {
-        return this.returnTrackingInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().returnTrackingInfo();
+    }
+
+    /**
+     * Get the shipmentType property: ShipmentType of the order.
+     *
+     * @return the shipmentType value.
+     */
+    public ShipmentType shipmentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().shipmentType();
+    }
+
+    /**
+     * Set the shipmentType property: ShipmentType of the order.
+     *
+     * @param shipmentType the shipmentType value to set.
+     * @return the OrderInner object itself.
+     */
+    public OrderInner withShipmentType(ShipmentType shipmentType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrderProperties();
+        }
+        this.innerProperties().withShipmentType(shipmentType);
+        return this;
     }
 
     /**
@@ -172,23 +196,8 @@ public class OrderInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
-        if (contactInformation() != null) {
-            contactInformation().validate();
-        }
-        if (shippingAddress() != null) {
-            shippingAddress().validate();
-        }
-        if (currentStatus() != null) {
-            currentStatus().validate();
-        }
-        if (orderHistory() != null) {
-            orderHistory().forEach(e -> e.validate());
-        }
-        if (deliveryTrackingInfo() != null) {
-            deliveryTrackingInfo().forEach(e -> e.validate());
-        }
-        if (returnTrackingInfo() != null) {
-            returnTrackingInfo().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

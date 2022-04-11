@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databoxedge.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
 import com.azure.resourcemanager.databoxedge.models.Trigger;
 
@@ -27,6 +28,10 @@ public final class TriggerImpl implements Trigger {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public TriggerInner innerModel() {

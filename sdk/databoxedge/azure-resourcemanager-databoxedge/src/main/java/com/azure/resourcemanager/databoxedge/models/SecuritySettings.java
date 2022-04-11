@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.databoxedge.fluent.models.SecuritySettingsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The security settings of a device. */
-@JsonFlatten
 @Fluent
-public class SecuritySettings extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySettings.class);
-
+public final class SecuritySettings extends ArmBaseModel {
     /*
-     * Device administrator password as an encrypted string (encrypted using
-     * RSA PKCS #1) is used to sign into the  local web UI of the device. The
-     * Actual password should have at least 8 characters that are a combination
-     * of  uppercase, lowercase, numeric, and special characters.
+     * Properties of the security settings.
      */
-    @JsonProperty(value = "properties.deviceAdminPassword", required = true)
-    private AsymmetricEncryptedSecret deviceAdminPassword;
+    @JsonProperty(value = "properties", required = true)
+    private SecuritySettingsProperties innerProperties = new SecuritySettingsProperties();
+
+    /**
+     * Get the innerProperties property: Properties of the security settings.
+     *
+     * @return the innerProperties value.
+     */
+    private SecuritySettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the deviceAdminPassword property: Device administrator password as an encrypted string (encrypted using RSA
@@ -33,7 +35,7 @@ public class SecuritySettings extends ArmBaseModel {
      * @return the deviceAdminPassword value.
      */
     public AsymmetricEncryptedSecret deviceAdminPassword() {
-        return this.deviceAdminPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceAdminPassword();
     }
 
     /**
@@ -45,7 +47,10 @@ public class SecuritySettings extends ArmBaseModel {
      * @return the SecuritySettings object itself.
      */
     public SecuritySettings withDeviceAdminPassword(AsymmetricEncryptedSecret deviceAdminPassword) {
-        this.deviceAdminPassword = deviceAdminPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySettingsProperties();
+        }
+        this.innerProperties().withDeviceAdminPassword(deviceAdminPassword);
         return this;
     }
 
@@ -57,13 +62,15 @@ public class SecuritySettings extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
-        if (deviceAdminPassword() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property deviceAdminPassword in model SecuritySettings"));
+                        "Missing required property innerProperties in model SecuritySettings"));
         } else {
-            deviceAdminPassword().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecuritySettings.class);
 }

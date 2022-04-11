@@ -4,25 +4,19 @@
 
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.databoxedge.models.JobErrorDetails;
 import com.azure.resourcemanager.databoxedge.models.JobStatus;
 import com.azure.resourcemanager.databoxedge.models.JobType;
 import com.azure.resourcemanager.databoxedge.models.UpdateDownloadProgress;
 import com.azure.resourcemanager.databoxedge.models.UpdateInstallProgress;
 import com.azure.resourcemanager.databoxedge.models.UpdateOperationStage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A device job. */
-@JsonFlatten
-@Fluent
-public class JobInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobInner.class);
-
+@Immutable
+public final class JobInner {
     /*
      * The path ID that uniquely identifies the object.
      */
@@ -72,54 +66,10 @@ public class JobInner {
     private JobErrorDetails error;
 
     /*
-     * The type of the job.
+     * The properties of the job.
      */
-    @JsonProperty(value = "properties.jobType", access = JsonProperty.Access.WRITE_ONLY)
-    private JobType jobType;
-
-    /*
-     * Current stage of the update operation.
-     */
-    @JsonProperty(value = "properties.currentStage", access = JsonProperty.Access.WRITE_ONLY)
-    private UpdateOperationStage currentStage;
-
-    /*
-     * The download progress.
-     */
-    @JsonProperty(value = "properties.downloadProgress", access = JsonProperty.Access.WRITE_ONLY)
-    private UpdateDownloadProgress downloadProgress;
-
-    /*
-     * The install progress.
-     */
-    @JsonProperty(value = "properties.installProgress", access = JsonProperty.Access.WRITE_ONLY)
-    private UpdateInstallProgress installProgress;
-
-    /*
-     * Total number of errors encountered during the refresh process.
-     */
-    @JsonProperty(value = "properties.totalRefreshErrors", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalRefreshErrors;
-
-    /*
-     * Local share/remote container relative path to the error manifest file of
-     * the refresh.
-     */
-    @JsonProperty(value = "properties.errorManifestFile", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorManifestFile;
-
-    /*
-     * ARM ID of the entity that was refreshed.
-     */
-    @JsonProperty(value = "properties.refreshedEntityId", access = JsonProperty.Access.WRITE_ONLY)
-    private String refreshedEntityId;
-
-    /*
-     * If only subfolders need to be refreshed, then the subfolder path inside
-     * the share or container. (The path is empty if there are no subfolders.)
-     */
-    @JsonProperty(value = "properties.folder")
-    private String folder;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private JobProperties innerProperties;
 
     /**
      * Get the id property: The path ID that uniquely identifies the object.
@@ -194,12 +144,21 @@ public class JobInner {
     }
 
     /**
+     * Get the innerProperties property: The properties of the job.
+     *
+     * @return the innerProperties value.
+     */
+    private JobProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the jobType property: The type of the job.
      *
      * @return the jobType value.
      */
     public JobType jobType() {
-        return this.jobType;
+        return this.innerProperties() == null ? null : this.innerProperties().jobType();
     }
 
     /**
@@ -208,7 +167,7 @@ public class JobInner {
      * @return the currentStage value.
      */
     public UpdateOperationStage currentStage() {
-        return this.currentStage;
+        return this.innerProperties() == null ? null : this.innerProperties().currentStage();
     }
 
     /**
@@ -217,7 +176,7 @@ public class JobInner {
      * @return the downloadProgress value.
      */
     public UpdateDownloadProgress downloadProgress() {
-        return this.downloadProgress;
+        return this.innerProperties() == null ? null : this.innerProperties().downloadProgress();
     }
 
     /**
@@ -226,7 +185,7 @@ public class JobInner {
      * @return the installProgress value.
      */
     public UpdateInstallProgress installProgress() {
-        return this.installProgress;
+        return this.innerProperties() == null ? null : this.innerProperties().installProgress();
     }
 
     /**
@@ -235,7 +194,7 @@ public class JobInner {
      * @return the totalRefreshErrors value.
      */
     public Integer totalRefreshErrors() {
-        return this.totalRefreshErrors;
+        return this.innerProperties() == null ? null : this.innerProperties().totalRefreshErrors();
     }
 
     /**
@@ -245,7 +204,7 @@ public class JobInner {
      * @return the errorManifestFile value.
      */
     public String errorManifestFile() {
-        return this.errorManifestFile;
+        return this.innerProperties() == null ? null : this.innerProperties().errorManifestFile();
     }
 
     /**
@@ -254,7 +213,7 @@ public class JobInner {
      * @return the refreshedEntityId value.
      */
     public String refreshedEntityId() {
-        return this.refreshedEntityId;
+        return this.innerProperties() == null ? null : this.innerProperties().refreshedEntityId();
     }
 
     /**
@@ -264,7 +223,7 @@ public class JobInner {
      * @return the folder value.
      */
     public String folder() {
-        return this.folder;
+        return this.innerProperties() == null ? null : this.innerProperties().folder();
     }
 
     /**
@@ -275,7 +234,10 @@ public class JobInner {
      * @return the JobInner object itself.
      */
     public JobInner withFolder(String folder) {
-        this.folder = folder;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withFolder(folder);
         return this;
     }
 
@@ -288,11 +250,8 @@ public class JobInner {
         if (error() != null) {
             error().validate();
         }
-        if (downloadProgress() != null) {
-            downloadProgress().validate();
-        }
-        if (installProgress() != null) {
-            installProgress().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

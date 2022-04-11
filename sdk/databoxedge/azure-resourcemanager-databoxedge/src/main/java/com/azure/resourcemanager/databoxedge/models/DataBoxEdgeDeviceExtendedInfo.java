@@ -4,7 +4,9 @@
 
 package com.azure.resourcemanager.databoxedge.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.databoxedge.fluent.models.DataBoxEdgeDeviceExtendedInfoInner;
+import java.util.Map;
 
 /** An immutable client-side representation of DataBoxEdgeDeviceExtendedInfo. */
 public interface DataBoxEdgeDeviceExtendedInfo {
@@ -30,6 +32,13 @@ public interface DataBoxEdgeDeviceExtendedInfo {
     String type();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of DataBoxEdgeDevice.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the encryptionKeyThumbprint property: The digital signature of encrypted certificate.
      *
      * @return the encryptionKeyThumbprint value.
@@ -50,6 +59,91 @@ public interface DataBoxEdgeDeviceExtendedInfo {
      * @return the resourceKey value.
      */
     String resourceKey();
+
+    /**
+     * Gets the clientSecretStoreId property: The Key Vault ARM Id for client secrets.
+     *
+     * @return the clientSecretStoreId value.
+     */
+    String clientSecretStoreId();
+
+    /**
+     * Gets the clientSecretStoreUrl property: The url to access the Client Key Vault.
+     *
+     * @return the clientSecretStoreUrl value.
+     */
+    String clientSecretStoreUrl();
+
+    /**
+     * Gets the channelIntegrityKeyName property: The name of Channel Integrity Key stored in the Client Key Vault.
+     *
+     * @return the channelIntegrityKeyName value.
+     */
+    String channelIntegrityKeyName();
+
+    /**
+     * Gets the channelIntegrityKeyVersion property: The version of Channel Integrity Key stored in the Client Key
+     * Vault.
+     *
+     * @return the channelIntegrityKeyVersion value.
+     */
+    String channelIntegrityKeyVersion();
+
+    /**
+     * Gets the keyVaultSyncStatus property: Key vault sync status.
+     *
+     * @return the keyVaultSyncStatus value.
+     */
+    KeyVaultSyncStatus keyVaultSyncStatus();
+
+    /**
+     * Gets the deviceSecrets property: Device secrets, will be returned only with ODataFilter $expand=deviceSecrets.
+     *
+     * @return the deviceSecrets value.
+     */
+    Map<String, Secret> deviceSecrets();
+
+    /**
+     * Gets the clusterWitnessType property: Cluster Witness Type.
+     *
+     * @return the clusterWitnessType value.
+     */
+    ClusterWitnessType clusterWitnessType();
+
+    /**
+     * Gets the fileShareWitnessLocation property: The witness location of file share.
+     *
+     * @return the fileShareWitnessLocation value.
+     */
+    String fileShareWitnessLocation();
+
+    /**
+     * Gets the fileShareWitnessUsername property: The username of file share.
+     *
+     * @return the fileShareWitnessUsername value.
+     */
+    String fileShareWitnessUsername();
+
+    /**
+     * Gets the cloudWitnessStorageAccountName property: The Cloud Witness Storage account name.
+     *
+     * @return the cloudWitnessStorageAccountName value.
+     */
+    String cloudWitnessStorageAccountName();
+
+    /**
+     * Gets the cloudWitnessContainerName property: The Container for cloud witness in the storage account.
+     *
+     * @return the cloudWitnessContainerName value.
+     */
+    String cloudWitnessContainerName();
+
+    /**
+     * Gets the cloudWitnessStorageEndpoint property: The Azure service endpoint of the cloud witness storage account.
+     *
+     * @return the cloudWitnessStorageEndpoint value.
+     */
+    String cloudWitnessStorageEndpoint();
 
     /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.DataBoxEdgeDeviceExtendedInfoInner object.

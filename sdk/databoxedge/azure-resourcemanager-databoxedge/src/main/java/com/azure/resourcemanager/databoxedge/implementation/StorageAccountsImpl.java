@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.databoxedge.models.StorageAccount;
 import com.azure.resourcemanager.databoxedge.models.StorageAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageAccountsImpl implements StorageAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountsImpl.class);
 
     private final StorageAccountsClient innerClient;
 
@@ -76,7 +75,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
     public StorageAccount getById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +84,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -93,7 +92,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,7 +104,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
     public Response<StorageAccount> getByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +121,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
     public void deleteById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +150,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
     public void deleteByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +171,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String storageAccountName = Utils.getValueFromIdByName(id, "storageAccounts");
         if (storageAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
