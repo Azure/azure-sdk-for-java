@@ -18,9 +18,11 @@ cd <swagger-folder>
 autorest --java --use=C:/work/autorest.java
 ```
 
+Requires manual clean-up of multiple `CloudError`.
+
 ### Code generation settings
 ```yaml
-branch: 8ee804c1c8f5af24034d3565085b98a411e753a8
+branch: 2c888f4fcc12ed71287c76a6e599cc66f34c1088
 repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```
 
