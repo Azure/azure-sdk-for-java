@@ -180,7 +180,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     @Unroll
@@ -247,7 +247,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Get properties null"() {

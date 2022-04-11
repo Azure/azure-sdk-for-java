@@ -337,8 +337,7 @@ public final class BlobContainerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
-        Response<Void> response = createIfNotExistsWithResponse(null, null, null);
-        return response != null && response.getStatusCode() == 201;
+        return createIfNotExistsWithResponse(null, null, null).getStatusCode() == 201;
     }
 
     /**
@@ -355,7 +354,7 @@ public final class BlobContainerClient {
      *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
      *
      * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, context&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -366,8 +365,8 @@ public final class BlobContainerClient {
      * @param options {@link BlobContainerCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the new
-     * container was created successfully, {@code null} indicates a container already existed at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 201, a new
+     * container was successfully created. If status code is 409, a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,

@@ -452,7 +452,13 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
+        return createIfNotExistsWithResponse(null).map(response -> {
+            if (response.getStatusCode() == 409) {
+                return false;
+            } else {
+                return true;
+            }
+        });
     }
 
     /**
@@ -467,15 +473,19 @@ public final class BlobContainerAsyncClient {
      * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
      *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
      *
-     * client.createIfNotExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.createIfNotExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      *
      * @param options {@link BlobContainerCreateOptions}
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
-     * container was created. An empty {@code Mono} indicates a container already existed at this location.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 201, a new container was
+     * successfully created. If status code is 409, a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(BlobContainerCreateOptions options) {
@@ -491,7 +501,11 @@ public final class BlobContainerAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
                 .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
-                    .getStatusCode() == 409, t -> Mono.empty());
+                    .getStatusCode() == 409, t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -359,7 +359,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
         Response<BlobContainerClient> response = client.createBlobContainerIfNotExistsWithResponse("containerName",
             options, context);
 
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());

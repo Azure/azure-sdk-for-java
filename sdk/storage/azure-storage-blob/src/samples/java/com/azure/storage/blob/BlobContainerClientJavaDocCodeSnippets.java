@@ -477,7 +477,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
             .setPublicAccessType(PublicAccessType.CONTAINER);
 
         Response<Void> response = client.createIfNotExistsWithResponse(options, timeout, context);
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());

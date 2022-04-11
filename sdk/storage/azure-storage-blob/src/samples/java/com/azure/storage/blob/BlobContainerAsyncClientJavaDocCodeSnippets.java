@@ -463,9 +463,13 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
             .setPublicAccessType(PublicAccessType.CONTAINER);
 
-        client.createIfNotExistsWithResponse(options).switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        client.createIfNotExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
     }
 

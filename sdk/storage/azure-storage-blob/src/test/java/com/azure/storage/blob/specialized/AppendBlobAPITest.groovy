@@ -228,8 +228,7 @@ class AppendBlobAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
-        initialResponse.getValue() != null
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     @Unroll

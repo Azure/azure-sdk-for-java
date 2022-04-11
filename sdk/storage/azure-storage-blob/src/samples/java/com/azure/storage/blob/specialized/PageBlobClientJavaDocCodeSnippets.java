@@ -520,7 +520,8 @@ public class PageBlobClientJavaDocCodeSnippets {
 
         Response<PageBlobItem> response = client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size)
             .setHeaders(headers).setMetadata(metadata).setTags(tags), timeout, context);
-        if (response == null) {
+
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());

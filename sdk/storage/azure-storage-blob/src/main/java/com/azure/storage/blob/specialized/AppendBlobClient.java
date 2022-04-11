@@ -259,8 +259,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem createIfNotExists() {
-        Response<AppendBlobItem> response = createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
-        return response == null ? null : response.getValue();
+        return createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null).getValue();
     }
 
     /**
@@ -279,7 +278,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * Response&lt;AppendBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;
      *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
