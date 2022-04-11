@@ -157,7 +157,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Creates a new {@link DataLakeFileAsyncClient} with the specified {@code customerProvidedKey}.
      *
-     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the file,
      * pass {@code null} to use no customer provided key.
      * @return a {@link DataLakeFileAsyncClient} with the specified {@code customerProvidedKey}.
      */

@@ -122,7 +122,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Creates a new {@link DataLakeDirectoryAsyncClient} with the specified {@code customerProvidedKey}.
      *
-     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the directory,
      * pass {@code null} to use no customer provided key.
      * @return a {@link DataLakeDirectoryAsyncClient} with the specified {@code customerProvidedKey}.
      */

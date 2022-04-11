@@ -614,7 +614,7 @@ public final class DataLakePathClientBuilder implements
      * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt blob contents on the server.
      *
      * @param customerProvidedKey Customer provided key containing the encryption key information.
-     * @return the updated SpecializedBlobClientBuilder object
+     * @return the updated DataLakePathClientBuilder object
      */
     public DataLakePathClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
         if (customerProvidedKey == null) {
