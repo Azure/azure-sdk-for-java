@@ -6,7 +6,7 @@
 
 ### Breaking Changes
 
-- Rename `MessageWithMetadata` to `MessageContent`.
+- Move `MessageWithMetadata` to `com.azure` package as `com.azure.core.models.MessageContent`.
 
 ### Bugs Fixed
 

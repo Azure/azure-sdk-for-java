@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add `com.azure.core.models.MessageContent`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
