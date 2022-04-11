@@ -75,7 +75,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer, Context context) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
-        this.context = context;
+        this.context = context != null ? context : Context.NONE;
     }
 
     @Override

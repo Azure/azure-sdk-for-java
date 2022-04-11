@@ -74,7 +74,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
         this.operationLocationHeaderName = operationLocationHeaderName != null ? operationLocationHeaderName
             : DEFAULT_OPERATION_LOCATION_HEADER;
-        this.context = context;
+        this.context = context != null ? context : Context.NONE;
     }
 
 
