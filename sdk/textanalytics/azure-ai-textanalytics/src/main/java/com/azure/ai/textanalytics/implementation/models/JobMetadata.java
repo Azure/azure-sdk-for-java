@@ -11,7 +11,13 @@ import java.util.UUID;
 
 /** The JobMetadata model. */
 @Fluent
-public class JobMetadata {
+public final class JobMetadata {
+    /*
+     * The displayName property.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
     /*
      * The createdDateTime property.
      */
@@ -41,6 +47,26 @@ public class JobMetadata {
      */
     @JsonProperty(value = "status", required = true)
     private State status;
+
+    /**
+     * Get the displayName property: The displayName property.
+     *
+     * @return the displayName value.
+     */
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The displayName property.
+     *
+     * @param displayName the displayName value to set.
+     * @return the JobMetadata object itself.
+     */
+    public JobMetadata setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
 
     /**
      * Get the createdDateTime property: The createdDateTime property.

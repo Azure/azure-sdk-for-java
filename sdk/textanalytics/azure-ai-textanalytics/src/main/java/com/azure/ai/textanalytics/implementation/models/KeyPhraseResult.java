@@ -10,38 +10,19 @@ import java.util.List;
 
 /** The KeyPhraseResult model. */
 @Fluent
-public final class KeyPhraseResult {
+public final class KeyPhraseResult extends PreBuiltResult {
     /*
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<DocumentKeyPhrases> documents;
-
-    /*
-     * Errors by document id.
-     */
-    @JsonProperty(value = "errors", required = true)
-    private List<DocumentError> errors;
-
-    /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the request payload.
-     */
-    @JsonProperty(value = "statistics")
-    private RequestStatistics statistics;
-
-    /*
-     * This field indicates which model is used for scoring.
-     */
-    @JsonProperty(value = "modelVersion", required = true)
-    private String modelVersion;
+    private List<KeyPhraseResultDocumentsItem> documents;
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<DocumentKeyPhrases> getDocuments() {
+    public List<KeyPhraseResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -51,70 +32,8 @@ public final class KeyPhraseResult {
      * @param documents the documents value to set.
      * @return the KeyPhraseResult object itself.
      */
-    public KeyPhraseResult setDocuments(List<DocumentKeyPhrases> documents) {
+    public KeyPhraseResult setDocuments(List<KeyPhraseResultDocumentsItem> documents) {
         this.documents = documents;
-        return this;
-    }
-
-    /**
-     * Get the errors property: Errors by document id.
-     *
-     * @return the errors value.
-     */
-    public List<DocumentError> getErrors() {
-        return this.errors;
-    }
-
-    /**
-     * Set the errors property: Errors by document id.
-     *
-     * @param errors the errors value to set.
-     * @return the KeyPhraseResult object itself.
-     */
-    public KeyPhraseResult setErrors(List<DocumentError> errors) {
-        this.errors = errors;
-        return this;
-    }
-
-    /**
-     * Get the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @return the statistics value.
-     */
-    public RequestStatistics getStatistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Set the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @param statistics the statistics value to set.
-     * @return the KeyPhraseResult object itself.
-     */
-    public KeyPhraseResult setStatistics(RequestStatistics statistics) {
-        this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the KeyPhraseResult object itself.
-     */
-    public KeyPhraseResult setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
         return this;
     }
 }
