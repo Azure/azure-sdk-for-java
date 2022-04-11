@@ -503,7 +503,7 @@ public class DataLakeFileSystemClientBuilder implements
      * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt file contents on the server.
      *
      * @param customerProvidedKey Customer provided key containing the encryption key information.
-     * @return the updated SpecializedBlobClientBuilder object
+     * @return the updated DataLakeFileSystemClientBuilder object
      */
     public DataLakeFileSystemClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
         if (customerProvidedKey == null) {
