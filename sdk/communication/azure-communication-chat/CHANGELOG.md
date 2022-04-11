@@ -22,7 +22,7 @@
 
 #### Other Changes
 
-### 1.2.1 (2022-04-12)
+### 1.2.1 (2022-04-11)
 #### Features Added
 
 ### Other Changes
