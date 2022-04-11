@@ -4,6 +4,8 @@
 
 ### Features Added
 - Implemented equals and hashCode methods for CorrelationRuleFilter and SqlRuleFilter objects
+- Replaced creating single thread executor with `Schedulers.boundedElastic()`
+
 ### Breaking Changes
 
 ### Bugs Fixed
