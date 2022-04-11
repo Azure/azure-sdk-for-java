@@ -4,13 +4,16 @@
 
 package com.azure.resourcemanager.loadtestservice.generated;
 
+import com.azure.resourcemanager.loadtestservice.models.EncryptionProperties;
+import com.azure.resourcemanager.loadtestservice.models.EncryptionPropertiesIdentity;
+import com.azure.resourcemanager.loadtestservice.models.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for LoadTests CreateOrUpdate. */
 public final class LoadTestsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_CreateOrUpdate.json
+     * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2022-04-15-preview/examples/LoadTests_CreateOrUpdate.json
      */
     /**
      * Sample code: LoadTests_CreateOrUpdate.
@@ -25,6 +28,14 @@ public final class LoadTestsCreateOrUpdateSamples {
             .withExistingResourceGroup("dummyrg")
             .withTags(mapOf("Team", "Dev Exp"))
             .withDescription("This is new load test resource")
+            .withEncryption(
+                new EncryptionProperties()
+                    .withIdentity(
+                        new EncryptionPropertiesIdentity()
+                            .withType(Type.USER_ASSIGNED)
+                            .withResourceId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
+                    .withKeyUrl("https://dummy.vault.azure.net/keys/dummykey1"))
             .create();
     }
 

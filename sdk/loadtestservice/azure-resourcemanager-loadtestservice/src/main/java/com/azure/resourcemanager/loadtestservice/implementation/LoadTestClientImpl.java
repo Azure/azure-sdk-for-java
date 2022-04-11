@@ -37,8 +37,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the LoadTestClientImpl type. */
 @ServiceClient(builder = LoadTestClientBuilder.class)
 public final class LoadTestClientImpl implements LoadTestClient {
-    private final ClientLogger logger = new ClientLogger(LoadTestClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -157,7 +155,7 @@ public final class LoadTestClientImpl implements LoadTestClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-12-01-preview";
+        this.apiVersion = "2022-04-15-preview";
         this.operations = new OperationsClientImpl(this);
         this.loadTests = new LoadTestsClientImpl(this);
     }
@@ -245,7 +243,7 @@ public final class LoadTestClientImpl implements LoadTestClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -304,4 +302,6 @@ public final class LoadTestClientImpl implements LoadTestClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestClientImpl.class);
 }

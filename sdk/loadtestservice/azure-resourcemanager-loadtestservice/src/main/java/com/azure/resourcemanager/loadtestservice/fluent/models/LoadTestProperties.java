@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.loadtestservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.loadtestservice.models.EncryptionProperties;
 import com.azure.resourcemanager.loadtestservice.models.ResourceState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** LoadTest resource properties. */
 @Fluent
 public final class LoadTestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadTestProperties.class);
-
     /*
      * Description of the resource.
      */
@@ -32,6 +29,12 @@ public final class LoadTestProperties {
      */
     @JsonProperty(value = "dataPlaneURI", access = JsonProperty.Access.WRITE_ONLY)
     private String dataPlaneUri;
+
+    /*
+     * CMK Encryption property.
+     */
+    @JsonProperty(value = "encryption")
+    private EncryptionProperties encryption;
 
     /**
      * Get the description property: Description of the resource.
@@ -72,10 +75,33 @@ public final class LoadTestProperties {
     }
 
     /**
+     * Get the encryption property: CMK Encryption property.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionProperties encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: CMK Encryption property.
+     *
+     * @param encryption the encryption value to set.
+     * @return the LoadTestProperties object itself.
+     */
+    public LoadTestProperties withEncryption(EncryptionProperties encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (encryption() != null) {
+            encryption().validate();
+        }
     }
 }
