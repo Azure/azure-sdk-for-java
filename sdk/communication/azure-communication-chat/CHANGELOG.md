@@ -22,6 +22,15 @@
 
 #### Other Changes
 
+### 1.2.1 (2022-04-12)
+#### Features Added
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-communication-common` to 1.1.2
+- Upgraded `azure-communication-identity` to 1.1.8
+
 ### 1.2.0 (2022-03-11)
 #### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `ChatClientBuilder` and `ChatThreadClientBuilder`
