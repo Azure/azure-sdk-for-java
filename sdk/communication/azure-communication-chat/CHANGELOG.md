@@ -1,8 +1,6 @@
 ## Release History
-### 1.2.1 (2022-04-11)
-#### Other Changes
-Improving documents for max pages in list message API
-
+## 1.2.1 (2022-04-11)
+### Other Changes
 #### Dependency Updates
 - Upgraded `azure-communication-common` to 1.1.2
 - Upgraded `azure-communication-identity` to 1.1.8
