@@ -147,7 +147,7 @@ public class DataLakePathClient {
     /**
      * Creates a new {@link DataLakePathClient} with the specified {@code customerProvidedKey}.
      *
-     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the path,
      * pass {@code null} to use no customer provided key.
      * @return a {@link DataLakePathClient} with the specified {@code customerProvidedKey}.
      */
