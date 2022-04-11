@@ -284,7 +284,7 @@ public class DataLakePathAsyncClient {
     /**
      * Creates a new {@link DataLakePathAsyncClient} with the specified {@code customerProvidedKey}.
      *
-     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the path,
      * pass {@code null} to use no customer provided key.
      * @return a {@link DataLakePathAsyncClient} with the specified {@code customerProvidedKey}.
      */
