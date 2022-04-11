@@ -11,7 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
@@ -25,11 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class ResponseInnerErrorTests {
     @ParameterizedTest
     @MethodSource("toJsonSupplier")
-    public void toJson(ResponseInnerError innerError, String expectedJson) throws IOException {
+    public void toJson(ResponseInnerError innerError, String expectedJson) {
         AccessibleByteArrayOutputStream os = new AccessibleByteArrayOutputStream();
-        try (JsonWriter writer = DefaultJsonWriter.toStream(os)) {
-            innerError.toJson(writer);
-        }
+        JsonWriter writer = DefaultJsonWriter.toStream(os);
+        innerError.toJson(writer);
 
         assertEquals(expectedJson, os.toString(StandardCharsets.UTF_8));
     }
@@ -40,7 +38,7 @@ public class ResponseInnerErrorTests {
                 "{\"code\":\"error code\",\"innererror\":null}"),
 
             Arguments.of(new ResponseInnerError().setCode("error code")
-                .setInnerError(new ResponseInnerError().setCode("sub-error code")),
+                    .setInnerError(new ResponseInnerError().setCode("sub-error code")),
                 "{\"code\":\"error code\",\"innererror\":{\"code\":\"sub-error code\",\"innererror\":null}}")
         );
     }

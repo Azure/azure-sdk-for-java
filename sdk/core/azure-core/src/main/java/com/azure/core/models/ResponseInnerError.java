@@ -74,7 +74,9 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
             jsonWriter.writeNull();
         }
 
-        return jsonWriter.writeEndObject();
+        // Always flush at the end of writing an object.
+        return jsonWriter.writeEndObject()
+            .flush();
     }
 
     /**

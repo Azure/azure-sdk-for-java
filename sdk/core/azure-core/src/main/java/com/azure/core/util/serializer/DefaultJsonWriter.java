@@ -41,6 +41,13 @@ public final class DefaultJsonWriter implements JsonWriter {
     }
 
     @Override
+    public JsonWriter flush() {
+        callWithWrappedIoException(generator::flush);
+
+        return this;
+    }
+
+    @Override
     public JsonWriter writeStartObject() {
         callWithWrappedIoException(() -> generator.writeStartObject());
 

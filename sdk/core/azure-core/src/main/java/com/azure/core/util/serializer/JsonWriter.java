@@ -10,6 +10,13 @@ import java.io.Closeable;
  */
 public interface JsonWriter extends Closeable {
     /**
+     * Flushes any un-flushed content written to this writer.
+     *
+     * @return The flushed JsonWriter object.
+     */
+    JsonWriter flush();
+
+    /**
      * Writes a JSON start object, '{'.
      *
      * @return The updated JsonWriter object.
