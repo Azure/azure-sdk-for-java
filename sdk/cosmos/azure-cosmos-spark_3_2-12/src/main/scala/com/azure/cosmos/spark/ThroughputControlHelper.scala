@@ -21,10 +21,10 @@ private object ThroughputControlHelper {
                 .defaultControlGroup(true)
 
             if (throughputControlConfig.targetThroughput.isDefined) {
-                groupConfigBuilder.setTargetThroughput(throughputControlConfig.targetThroughput.get)
+                groupConfigBuilder.targetThroughput(throughputControlConfig.targetThroughput.get)
             }
             if (throughputControlConfig.targetThroughputThreshold.isDefined) {
-                groupConfigBuilder.setTargetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
+                groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
             }
 
             val globalThroughputControlConfigBuilder = client.createGlobalThroughputControlConfigBuilder(
