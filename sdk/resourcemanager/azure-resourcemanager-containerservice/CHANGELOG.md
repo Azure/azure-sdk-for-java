@@ -9,6 +9,10 @@
 - Supported disabling local accounts for `KubernetesCluster`.
 - Supported disk encryption set for `KubernetesCluster`.
 
+### Bugs Fixed
+
+- Fixed a bug that `orchestratorVersion` not initialized in agent pool.
+
 ### Other Changes
 
 - Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
