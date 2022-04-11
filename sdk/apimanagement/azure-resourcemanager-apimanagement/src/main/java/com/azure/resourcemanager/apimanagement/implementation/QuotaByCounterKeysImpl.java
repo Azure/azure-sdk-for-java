@@ -13,10 +13,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterCollect
 import com.azure.resourcemanager.apimanagement.models.QuotaByCounterKeys;
 import com.azure.resourcemanager.apimanagement.models.QuotaCounterCollection;
 import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueUpdateContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QuotaByCounterKeysImpl implements QuotaByCounterKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaByCounterKeysImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QuotaByCounterKeysImpl.class);
 
     private final QuotaByCounterKeysClient innerClient;
 

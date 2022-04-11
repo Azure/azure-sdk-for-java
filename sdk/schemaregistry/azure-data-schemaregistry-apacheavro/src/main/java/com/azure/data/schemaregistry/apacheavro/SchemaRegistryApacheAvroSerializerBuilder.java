@@ -14,7 +14,27 @@ import org.apache.avro.specific.SpecificRecord;
 import java.util.Objects;
 
 /**
- * The builder implementation for building {@link SchemaRegistryApacheAvroSerializer}.
+ * The builder for instantiating a {@link SchemaRegistryApacheAvroSerializer}. Additional code samples are in
+ * {@link SchemaRegistryApacheAvroSerializer}.
+ *
+ * <p><strong>Creating a {@link SchemaRegistryApacheAvroSerializer}</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ * <pre>
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .credential&#40;tokenCredential&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;&#123;schema-registry-endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
+ * &#47;&#47; added to the instance. By default, this is false, so it will error if the schema is not found.
+ * SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder&#40;&#41;
+ *     .schemaRegistryAsyncClient&#40;schemaRegistryAsyncClient&#41;
+ *     .autoRegisterSchema&#40;true&#41;
+ *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
+ *     .buildSerializer&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
  *
  * @see SchemaRegistryApacheAvroSerializer
  */

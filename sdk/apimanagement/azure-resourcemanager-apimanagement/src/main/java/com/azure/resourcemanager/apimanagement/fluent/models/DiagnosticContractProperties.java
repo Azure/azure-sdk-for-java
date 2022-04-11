@@ -12,14 +12,11 @@ import com.azure.resourcemanager.apimanagement.models.OperationNameFormat;
 import com.azure.resourcemanager.apimanagement.models.PipelineDiagnosticSettings;
 import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
 import com.azure.resourcemanager.apimanagement.models.Verbosity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Diagnostic Entity Properties. */
 @Fluent
 public final class DiagnosticContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticContractProperties.class);
-
     /*
      * Specifies for what type of messages sampling settings should not apply.
      */
@@ -264,7 +261,7 @@ public final class DiagnosticContractProperties {
      */
     public void validate() {
         if (loggerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property loggerId in model DiagnosticContractProperties"));
@@ -279,4 +276,6 @@ public final class DiagnosticContractProperties {
             backend().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiagnosticContractProperties.class);
 }

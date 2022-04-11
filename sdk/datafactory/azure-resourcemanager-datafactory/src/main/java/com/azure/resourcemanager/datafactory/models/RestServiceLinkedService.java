@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.RestServiceLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("RestService")
 @Fluent
 public final class RestServiceLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestServiceLinkedService.class);
-
     /*
      * Rest Service linked service properties.
      */
@@ -386,7 +383,7 @@ public final class RestServiceLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model RestServiceLinkedService"));
@@ -394,4 +391,6 @@ public final class RestServiceLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestServiceLinkedService.class);
 }

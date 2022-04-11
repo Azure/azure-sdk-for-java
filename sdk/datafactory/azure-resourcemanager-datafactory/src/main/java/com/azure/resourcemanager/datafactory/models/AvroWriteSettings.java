@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AvroWriteSettings")
 @Fluent
 public final class AvroWriteSettings extends FormatWriteSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvroWriteSettings.class);
-
     /*
      * Top level record name in write result, which is required in AVRO spec.
      */

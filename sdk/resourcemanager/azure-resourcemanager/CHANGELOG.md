@@ -1,14 +1,10 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `authenticate(HttpPipeline, AzureProfile)` in managers.
 
 ## 2.13.0 (2022-03-11)
 

@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Shopify Service linked service properties. */
 @Fluent
 public final class ShopifyLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShopifyLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the Shopify server. (i.e. mystore.myshopify.com)
      */
@@ -195,7 +192,7 @@ public final class ShopifyLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model ShopifyLinkedServiceTypeProperties"));
@@ -204,4 +201,6 @@ public final class ShopifyLinkedServiceTypeProperties {
             accessToken().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ShopifyLinkedServiceTypeProperties.class);
 }

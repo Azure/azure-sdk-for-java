@@ -5,16 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Common Data Service data type connection. */
 @Fluent
 public final class Dynamics365DataConnectorDataTypesDynamics365CdsActivities extends DataConnectorDataTypeCommon {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(Dynamics365DataConnectorDataTypesDynamics365CdsActivities.class);
-
     /** {@inheritDoc} */
     @Override
     public Dynamics365DataConnectorDataTypesDynamics365CdsActivities withState(DataTypeState state) {

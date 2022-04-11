@@ -5,8 +5,9 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.models.ApiContactInformation;
 import com.azure.resourcemanager.apimanagement.models.ApiCreateOrUpdatePropertiesWsdlSelector;
+import com.azure.resourcemanager.apimanagement.models.ApiLicenseInformation;
 import com.azure.resourcemanager.apimanagement.models.ApiType;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContractDetails;
 import com.azure.resourcemanager.apimanagement.models.AuthenticationSettingsContract;
@@ -14,15 +15,12 @@ import com.azure.resourcemanager.apimanagement.models.ContentFormat;
 import com.azure.resourcemanager.apimanagement.models.Protocol;
 import com.azure.resourcemanager.apimanagement.models.SoapApiType;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Api Create or Update Properties. */
+/** API Create or Update Properties. */
 @Fluent
 public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiCreateOrUpdateProperties.class);
-
     /*
      * Content value when Importing an API.
      */
@@ -42,9 +40,11 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     private ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector;
 
     /*
-     * Type of Api to create.
-     * * `http` creates a SOAP to REST API
-     * * `soap` creates a SOAP pass-through API .
+     * Type of API to create.
+     * * `http` creates a REST API
+     * * `soap` creates a SOAP pass-through API
+     * * `websocket` creates websocket API
+     * * `graphql` creates GraphQL API.
      */
     @JsonProperty(value = "apiType")
     private SoapApiType soapApiType;
@@ -110,8 +110,8 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     }
 
     /**
-     * Get the soapApiType property: Type of Api to create. * `http` creates a SOAP to REST API * `soap` creates a SOAP
-     * pass-through API .
+     * Get the soapApiType property: Type of API to create. * `http` creates a REST API * `soap` creates a SOAP
+     * pass-through API * `websocket` creates websocket API * `graphql` creates GraphQL API.
      *
      * @return the soapApiType value.
      */
@@ -120,8 +120,8 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     }
 
     /**
-     * Set the soapApiType property: Type of Api to create. * `http` creates a SOAP to REST API * `soap` creates a SOAP
-     * pass-through API .
+     * Set the soapApiType property: Type of API to create. * `http` creates a REST API * `soap` creates a SOAP
+     * pass-through API * `websocket` creates websocket API * `graphql` creates GraphQL API.
      *
      * @param soapApiType the soapApiType value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
@@ -249,6 +249,27 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     @Override
     public ApiCreateOrUpdateProperties withSubscriptionRequired(Boolean subscriptionRequired) {
         super.withSubscriptionRequired(subscriptionRequired);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiCreateOrUpdateProperties withTermsOfServiceUrl(String termsOfServiceUrl) {
+        super.withTermsOfServiceUrl(termsOfServiceUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiCreateOrUpdateProperties withContact(ApiContactInformation contact) {
+        super.withContact(contact);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiCreateOrUpdateProperties withLicense(ApiLicenseInformation license) {
+        super.withLicense(license);
         return this;
     }
 

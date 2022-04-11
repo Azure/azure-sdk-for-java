@@ -55,8 +55,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the DataFactoryManagementClientImpl type. */
 @ServiceClient(builder = DataFactoryManagementClientBuilder.class)
 public final class DataFactoryManagementClientImpl implements DataFactoryManagementClient {
-    private final ClientLogger logger = new ClientLogger(DataFactoryManagementClientImpl.class);
-
     /** The subscription identifier. */
     private final String subscriptionId;
 
@@ -497,7 +495,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -556,4 +554,6 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFactoryManagementClientImpl.class);
 }

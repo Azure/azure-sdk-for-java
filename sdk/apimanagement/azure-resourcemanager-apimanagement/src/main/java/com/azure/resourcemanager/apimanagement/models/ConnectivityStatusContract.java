@@ -6,15 +6,12 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Details about connectivity to a resource. */
 @Fluent
 public final class ConnectivityStatusContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityStatusContract.class);
-
     /*
      * The hostname of the resource which the service depends on. This can be
      * the database, storage or any other azure resource on which the service
@@ -227,33 +224,35 @@ public final class ConnectivityStatusContract {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ConnectivityStatusContract"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model ConnectivityStatusContract"));
         }
         if (lastUpdated() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lastUpdated in model ConnectivityStatusContract"));
         }
         if (lastStatusChange() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lastStatusChange in model ConnectivityStatusContract"));
         }
         if (resourceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceType in model ConnectivityStatusContract"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectivityStatusContract.class);
 }

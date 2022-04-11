@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network interface and its custom security rules. */
 @Fluent
 public final class NetworkInterfaceAssociation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceAssociation.class);
-
     /*
      * Network interface ID.
      */

@@ -1,12 +1,25 @@
 # Azure GraalVM Netty Support client library for Java
 
+The Azure GraalVM Netty Support client library provides support for applications using 
+[Azure client libraries](https://azure.github.io/azure-sdk/releases/latest/java.html) that take a dependency on 
+[azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) to be 
+built as [GraalVM nativeimages](https://www.graalvm.org/22.0/reference-manual/native-image/). The library contains all the necessary
+[configuration files](https://www.graalvm.org/22.0/reference-manual/native-image/BuildConfiguration/) and [GraalVM
+features](https://www.graalvm.org/sdk/javadoc/index.html?org/graalvm/nativeimage/hosted/Feature.html) required to build
+a native image of an application that uses Azure client libraries.
+
 ## Getting started
 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-
+- [GraalVM](https://www.graalvm.org/downloads/) version 22 or later.
+- [GraalVM Native Image](https://www.graalvm.org/22.0/reference-manual/native-image/)
+- 
 ### Include the package
+
+This package should be included in addition to `azure-aot-graalvm-support` library when using Azure client libraries 
+that take a dependency on `azure-core-http-netty`.
 
 [//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support-netty;current})
 ```xml
@@ -18,11 +31,20 @@
 ```
 ## Key concepts
 
+Please refer to the [Key Concepts](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/aot/azure-aot-graalvm-support#key-concepts) section of the azure-aot-graalvm-support library.
+
 ## Examples
 
+Please refer to the [Examples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/aot/azure-aot-graalvm-support#examples) section of the 
+`azure-aot-graalvm-support` library.
+
 ## Troubleshooting
+Please refer to the [Troubleshooting](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/aot/azure-aot-graalvm-support#troubleshooting) section of the
+`azure-aot-graalvm-support` library.
 
 ## Next steps
+Please refer to the [Next Steps](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/aot/azure-aot-graalvm-support#next-steps) section of the
+`azure-aot-graalvm-support` library.
 
 ## Contributing
 

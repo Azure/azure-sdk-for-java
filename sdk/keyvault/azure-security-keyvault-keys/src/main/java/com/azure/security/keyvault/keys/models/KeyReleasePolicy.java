@@ -18,8 +18,12 @@ import java.util.Objects;
  */
 @Fluent
 public final class KeyReleasePolicy {
-    /*
-     * Blob encoding the policy rules under which the key can be released.
+    /**
+     * The policy rules under which the key can be released. Encoded based on the {@link KeyReleasePolicy#contentType}.
+     *
+     * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
+     * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
+     * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
     @JsonProperty(value = "data")
     @JsonSerialize(using = BinaryDataJsonSerializer.class)
@@ -46,7 +50,12 @@ public final class KeyReleasePolicy {
     /**
      * Creates an instance of {@link KeyReleasePolicy}.
      *
-     * @param encodedPolicy A blob encoding the policy rules under which the key can be released.
+     * @param encodedPolicy The policy rules under which the key can be released. Encoded based on the
+     * {@link KeyReleasePolicy#contentType}.
+     *
+     * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
+     * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
+     * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
     public KeyReleasePolicy(BinaryData encodedPolicy) {
         Objects.requireNonNull(encodedPolicy, "'encodedPolicy' cannot be null.");
@@ -57,7 +66,12 @@ public final class KeyReleasePolicy {
     /**
      * Get a blob encoding the policy rules under which the key can be released.
      *
-     * @return A blob encoding the policy rules under which the key can be released.
+     * @return encodedPolicy The policy rules under which the key can be released. Encoded based on the
+     * {@link KeyReleasePolicy#contentType}.
+     *
+     * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
+     * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
+     * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
     public BinaryData getEncodedPolicy() {
         return encodedPolicy;

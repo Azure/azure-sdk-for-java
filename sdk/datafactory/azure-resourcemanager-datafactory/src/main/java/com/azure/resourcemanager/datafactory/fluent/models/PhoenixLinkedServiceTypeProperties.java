@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.PhoenixAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Phoenix server linked service properties. */
 @Fluent
 public final class PhoenixLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PhoenixLinkedServiceTypeProperties.class);
-
     /*
      * The IP address or host name of the Phoenix server. (i.e.
      * 192.168.222.160)
@@ -367,13 +364,13 @@ public final class PhoenixLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model PhoenixLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model PhoenixLinkedServiceTypeProperties"));
@@ -382,4 +379,6 @@ public final class PhoenixLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PhoenixLinkedServiceTypeProperties.class);
 }

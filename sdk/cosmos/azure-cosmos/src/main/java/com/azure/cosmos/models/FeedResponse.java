@@ -17,12 +17,14 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -88,6 +90,35 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
         this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
+    }
+
+    private FeedResponse(
+        List<T> transformedResults,
+        FeedResponse<?> toBeCloned) {
+        this.results = transformedResults;
+
+        // NOTE - it is important to use HashMap over ConcurrentHashMap here because some keys/values might be null
+        // and this is not allowed in ConcurrentHashMap - while it is ok in HashMap
+        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : null;
+
+        this.usageHeaders = toBeCloned.usageHeaders != null ? new HashMap<>(toBeCloned.usageHeaders) : null;
+        this.quotaHeaders = toBeCloned.quotaHeaders != null ? new HashMap<>(toBeCloned.quotaHeaders) : null;
+        this.useEtagAsContinuation = toBeCloned.useEtagAsContinuation;
+        this.nochanges = toBeCloned.nochanges;
+        this.queryMetricsMap = toBeCloned.queryMetricsMap != null ?
+            new ConcurrentHashMap<>(toBeCloned.queryMetricsMap) :
+            new ConcurrentHashMap<>();
+        this.cosmosDiagnostics = toBeCloned.cosmosDiagnostics != null ?
+            BridgeInternal.cloneCosmosDiagnostics(toBeCloned.cosmosDiagnostics) :
+            BridgeInternal.createCosmosDiagnostics(this.queryMetricsMap);
+
+        this.queryInfo = toBeCloned.queryInfo != null ? new QueryInfo(toBeCloned.queryInfo.getPropertyBag()) : null;
+        this.queryPlanDiagnosticsContext = toBeCloned.queryPlanDiagnosticsContext != null ?
+            new QueryInfo.QueryPlanDiagnosticsContext(
+                toBeCloned.queryPlanDiagnosticsContext.getStartTimeUTC(),
+                toBeCloned.queryPlanDiagnosticsContext.getEndTimeUTC(),
+                toBeCloned.queryPlanDiagnosticsContext.getRequestTimeline()) :
+            null;
     }
 
     /**
@@ -442,6 +473,16 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return 0;
     }
 
+    <TNew> FeedResponse<TNew> convertGenericType(Function<T, TNew> conversion) {
+        List<TNew> newResults = new ArrayList<>(this.results.size());
+
+        for (T result: this.results) {
+            newResults.add(conversion.apply(result));
+        }
+
+        return new FeedResponse<TNew>(newResults, this);
+    }
+
     private void populateQuotaHeader(String headerMaxQuota,
                                      String headerCurrentUsage) {
         String[] headerMaxQuotaWords = DELIMITER_CHARS_PATTERN.split(headerMaxQuota, -1);
@@ -517,6 +558,13 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 @Override
                 public <T> boolean getNoChanges(FeedResponse<T> feedResponse) {
                     return feedResponse.getNoChanges();
+                }
+
+                @Override
+                public <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T,
+                    TNew> conversion) {
+
+                    return feedResponse.convertGenericType(conversion);
                 }
             });
     }

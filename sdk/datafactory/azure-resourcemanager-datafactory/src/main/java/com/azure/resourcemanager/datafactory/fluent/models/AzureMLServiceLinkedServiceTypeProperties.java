@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure ML Service linked service properties. */
 @Fluent
 public final class AzureMLServiceLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLServiceLinkedServiceTypeProperties.class);
-
     /*
      * Azure ML Service workspace subscription ID. Type: string (or Expression
      * with resultType string).
@@ -227,20 +224,20 @@ public final class AzureMLServiceLinkedServiceTypeProperties {
      */
     public void validate() {
         if (subscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subscriptionId in model AzureMLServiceLinkedServiceTypeProperties"));
         }
         if (resourceGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceGroupName in model"
                             + " AzureMLServiceLinkedServiceTypeProperties"));
         }
         if (mlWorkspaceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property mlWorkspaceName in model"
@@ -250,4 +247,6 @@ public final class AzureMLServiceLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMLServiceLinkedServiceTypeProperties.class);
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Caches ListByResourceGroup. */
 public final class CachesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2021-09-01/examples/Caches_ListByResourceGroup.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_ListByResourceGroup.json
      */
     /**
      * Sample code: Caches_ListByResourceGroup.

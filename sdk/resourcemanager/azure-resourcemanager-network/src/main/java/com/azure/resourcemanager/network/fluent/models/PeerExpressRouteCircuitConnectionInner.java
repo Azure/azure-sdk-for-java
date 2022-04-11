@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peer Express Route Circuit Connection in an ExpressRouteCircuitPeering resource. */
 @Fluent
 public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerExpressRouteCircuitConnectionInner.class);
-
     /*
      * Properties of the peer express route circuit connection.
      */

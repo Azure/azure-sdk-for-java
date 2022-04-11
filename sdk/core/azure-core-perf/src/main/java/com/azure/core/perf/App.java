@@ -18,12 +18,15 @@ import com.azure.perf.test.core.PerfStressProgram;
 public class App {
     public static void main(String[] args) {
         PerfStressProgram.run(new Class<?>[]{
+            BinaryDataReceiveTest.class,
+            BinaryDataSendTest.class,
             ByteBufferReceiveTest.class,
+            ByteBufferSendTest.class,
             JsonReceiveTest.class,
             JsonSendTest.class,
             XmlReceiveTest.class,
             XmlSendTest.class,
-            ByteBufferSendTest.class
+            PipelineSendTest.class
         }, args);
     }
 }

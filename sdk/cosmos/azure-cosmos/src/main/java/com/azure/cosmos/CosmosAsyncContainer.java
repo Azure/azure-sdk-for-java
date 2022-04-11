@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Document;
@@ -72,7 +71,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
@@ -417,8 +415,11 @@ public class CosmosAsyncContainer {
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
-            return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> prepareFeedResponse(response, false, classType));
+
+            return getDatabase()
+                .getDocClientWrapper()
+                .readDocuments(getLink(), options, classType)
+                .map(response -> prepareFeedResponse(response, false));
         });
     }
 
@@ -569,8 +570,8 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracer());
 
                 return getDatabase().getDocClientWrapper()
-                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
-                             .map(response -> prepareFeedResponse(response, false, classType));
+                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions, classType)
+                             .map(response -> prepareFeedResponse(response, false));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -587,8 +588,8 @@ public class CosmosAsyncContainer {
 
             return sqlQuerySpecMono.flux()
                 .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
-                    .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions))
-                .map(response -> prepareFeedResponse(response, false, classType));
+                    .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions, classType))
+                .map(response -> prepareFeedResponse(response, false));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -657,8 +658,8 @@ public class CosmosAsyncContainer {
                         }
 
                         return clientWrapper
-                            .queryDocumentChangeFeed(collection, cosmosChangeFeedRequestOptions)
-                            .map(response -> prepareFeedResponse(response, true, classType));
+                            .queryDocumentChangeFeed(collection, cosmosChangeFeedRequestOptions, classType)
+                            .map(response -> prepareFeedResponse(response, true));
                     });
         });
 
@@ -666,46 +667,22 @@ public class CosmosAsyncContainer {
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(
-        FeedResponse<Document> response,
-        boolean isChangeFeed,
-        Class<T> classType) {
+        FeedResponse<T> response,
+        boolean isChangeFeed) {
 
-        QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
         boolean useEtagAsContinuation = isChangeFeed;
         boolean isNoChangesResponse = isChangeFeed ?
             ModelBridgeInternal.getNoCHangesFromFeedResponse(response)
             : false;
 
-        if (queryInfo != null && queryInfo.hasSelectValue()) {
-            List<T> transformedResults = response.getResults()
-                                                 .stream()
-                                                 .map(d -> d.has(Constants.Properties.VALUE) ?
-                                                     transform(d.get(Constants.Properties.VALUE), classType) :
-                                                     ModelBridgeInternal.toObjectFromJsonSerializable(d, classType))
-                                                 .collect(Collectors.toList());
-
-            return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
-                response.getResponseHeaders(),
-                ModelBridgeInternal.queryMetrics(response),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
-                useEtagAsContinuation,
-                isNoChangesResponse,
-                response.getCosmosDiagnostics()                                                     );
-
-        }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
-            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
-                                                                                                             classType))
-                 .collect(Collectors.toList())), response.getResponseHeaders(),
+            response.getResults(),
+            response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response),
             ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
             useEtagAsContinuation,
             isNoChangesResponse,
             response.getCosmosDiagnostics());
-    }
-
-    private <T> T transform(Object object, Class<T> classType) {
-        return Utils.getSimpleObjectMapper().convertValue(object, classType);
     }
 
     /**
@@ -1001,8 +978,8 @@ public class CosmosAsyncContainer {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase()
                 .getDocClientWrapper()
-                .readAllDocuments(getLink(), partitionKey, requestOptions)
-                .map(response -> prepareFeedResponse(response, false, classType));
+                .readAllDocuments(getLink(), partitionKey, requestOptions, classType)
+                .map(response -> prepareFeedResponse(response, false));
         });
     }
 

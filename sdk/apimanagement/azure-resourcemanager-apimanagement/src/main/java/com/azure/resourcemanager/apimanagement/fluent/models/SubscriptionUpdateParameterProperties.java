@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Parameters supplied to the Update subscription operation. */
 @Fluent
 public final class SubscriptionUpdateParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionUpdateParameterProperties.class);
-
     /*
      * User identifier path: /users/{userId}
      */

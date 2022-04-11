@@ -1,10 +1,11 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 
 - Supported `virtualMachineSizeType()` in `VirtualMachineSize` as a typed alias of `name`.
+- Supported ephemeral OS disk in `VirtualMachineScaleSet`.
 
 ## 2.13.0 (2022-03-11)
 

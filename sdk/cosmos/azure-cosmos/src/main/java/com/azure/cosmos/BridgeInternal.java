@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -119,9 +120,12 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
-                                                                          Class<T> cls) {
-        return ModelBridgeInternal.toFeedResponsePage(response, cls);
+    public static <T> FeedResponse<T> toFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<JsonNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return ModelBridgeInternal.toFeedResponsePage(response, factoryMethod, cls);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -130,9 +134,12 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toChangeFeedResponsePage(RxDocumentServiceResponse response,
-                                                                                Class<T> cls) {
-        return ModelBridgeInternal.toChaneFeedResponsePage(response, cls);
+    public static <T> FeedResponse<T> toChangeFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<JsonNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return ModelBridgeInternal.toChangeFeedResponsePage(response, factoryMethod, cls);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -141,7 +148,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> boolean noChanges(FeedResponse<T> page) {
+    public static <T> boolean noChanges(FeedResponse<T> page) {
         return ModelBridgeInternal.noChanges(page);
     }
 
@@ -186,6 +193,11 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosDiagnostics cloneCosmosDiagnostics(CosmosDiagnostics toBeCloned) {
+        return new CosmosDiagnostics(toBeCloned);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -380,7 +392,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
+    public static <T> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
                                                                    QueryMetrics queryMetrics) {
         ModelBridgeInternal.queryMetricsMap(response).put(partitionKeyRangeId, queryMetrics);
     }

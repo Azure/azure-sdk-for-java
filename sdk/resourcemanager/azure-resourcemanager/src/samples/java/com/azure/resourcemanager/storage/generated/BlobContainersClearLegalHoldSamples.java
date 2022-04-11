@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for BlobContainers ClearLegalHold. */
 public final class BlobContainersClearLegalHoldSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersClearLegalHold.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersClearLegalHold.json
      */
     /**
      * Sample code: ClearLegalHoldContainers.

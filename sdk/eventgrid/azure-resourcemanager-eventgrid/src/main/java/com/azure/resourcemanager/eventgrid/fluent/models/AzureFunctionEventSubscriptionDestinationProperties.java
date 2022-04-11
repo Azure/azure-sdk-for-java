@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties that represent the Azure Function destination of an event subscription. */
 @Fluent
 public final class AzureFunctionEventSubscriptionDestinationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureFunctionEventSubscriptionDestinationProperties.class);
-
     /*
      * The Azure Resource Id that represents the endpoint of the Azure Function
      * destination of an event subscription.

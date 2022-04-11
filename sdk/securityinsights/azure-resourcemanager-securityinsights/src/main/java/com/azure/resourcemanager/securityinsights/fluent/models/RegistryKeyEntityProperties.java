@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.RegistryHive;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** RegistryKey entity property bag. */
 @Immutable
 public final class RegistryKeyEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryKeyEntityProperties.class);
-
     /*
      * the hive that holds the registry key.
      */

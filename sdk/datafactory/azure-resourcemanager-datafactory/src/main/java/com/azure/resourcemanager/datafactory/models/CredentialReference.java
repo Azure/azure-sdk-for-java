@@ -16,8 +16,6 @@ import java.util.Map;
 /** Credential reference type. */
 @Fluent
 public final class CredentialReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialReference.class);
-
     /*
      * Credential reference type.
      */
@@ -116,10 +114,12 @@ public final class CredentialReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property referenceName in model CredentialReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CredentialReference.class);
 }

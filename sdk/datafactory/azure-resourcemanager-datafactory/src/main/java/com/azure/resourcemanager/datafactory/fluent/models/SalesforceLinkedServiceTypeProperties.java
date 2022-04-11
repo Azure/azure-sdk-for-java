@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Salesforce linked service properties. */
 @Fluent
 public final class SalesforceLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SalesforceLinkedServiceTypeProperties.class);
-
     /*
      * The URL of Salesforce instance. Default is
      * 'https://login.salesforce.com'. To copy data from sandbox, specify

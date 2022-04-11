@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Specifies a symmetric key for token validation. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicySymmetricTokenKey")
-@JsonFlatten
 @Fluent
-public class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRestrictionTokenKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicySymmetricTokenKey.class);
-
+public final class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /*
      * The key value of the key
      */
@@ -56,10 +51,12 @@ public class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRestricti
     public void validate() {
         super.validate();
         if (keyValue() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyValue in model ContentKeyPolicySymmetricTokenKey"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicySymmetricTokenKey.class);
 }

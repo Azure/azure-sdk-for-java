@@ -55,7 +55,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
@@ -90,7 +90,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
@@ -128,7 +128,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
 
@@ -147,7 +147,7 @@ public class EncryptionProcessorAndSettingsTest {
         assertThat(cachedEncryptionSettings.getEncryptionSettingTimeToLive()).isBefore(Instant.now().plus(Duration.ofMinutes(61)));
 
         spyEncryptionSettings.setEncryptionSettingForProperty("sensitiveString", cachedEncryptionSettings,
-            Instant.now());
+            Instant.now().minus(Duration.ofSeconds(5)));
         // fetchCachedEncryptionSettingsAsync should be called for second time as cached encryption setting is expired
         spyEncryptionSettings.getEncryptionSettingForPropertyAsync("sensitiveString", encryptionProcessor).block();
         Mockito.verify(spyEncryptionSettings, Mockito.times(2)).fetchCachedEncryptionSettingsAsync(Mockito.anyString(), Mockito.any(EncryptionProcessor.class));
@@ -164,7 +164,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(keyProperties));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(keyProperties));
         EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
@@ -180,14 +180,14 @@ public class EncryptionProcessorAndSettingsTest {
         Assertions.assertThat(ReflectionUtils.isEncryptionSettingsInitDone(encryptionProcessor).get()).isFalse();
         encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
 
-        //Throw InvalidKeyException twice , we will retry refreshing key from database only once
+        //Throw InvalidKeyException thrice , we will retry refreshing key from database only once
         encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
         encryptionSettings = encryptionProcessor.getEncryptionSettings();
         mockEncryptionSettings = Mockito.mock(EncryptionSettings.class);
         ReflectionUtils.setEncryptionSettings(encryptionProcessor, mockEncryptionSettings);
         Mockito.when(mockEncryptionSettings.buildProtectedDataEncryptionKey(Mockito.any(CosmosClientEncryptionKeyProperties.class), Mockito.any(EncryptionKeyStoreProvider.class), Mockito.anyString())).
-            thenThrow(new InvalidKeyException(), new InvalidKeyException()).thenReturn(encryptionSettings.buildProtectedDataEncryptionKey(keyProperties, cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient), keyProperties.getId()));
+            thenThrow(new InvalidKeyException(), new InvalidKeyException(), new InvalidKeyException()).thenReturn(encryptionSettings.buildProtectedDataEncryptionKey(keyProperties, cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient), keyProperties.getId()));
         try {
             encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
             fail("Expecting initializeEncryptionSettingsAsync to throw InvalidKeyException");

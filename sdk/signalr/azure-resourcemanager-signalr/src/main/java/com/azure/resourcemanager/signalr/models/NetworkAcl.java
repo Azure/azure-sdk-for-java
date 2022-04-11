@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network ACL. */
 @Fluent
 public class NetworkAcl {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkAcl.class);
-
     /*
      * Allowed request types. The value can be one or more of:
      * ClientConnection, ServerConnection, RESTAPI.

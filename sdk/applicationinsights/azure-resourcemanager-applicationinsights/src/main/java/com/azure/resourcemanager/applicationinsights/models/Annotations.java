@@ -23,7 +23,8 @@ public interface Annotations {
      * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range.
+     * @return the list of annotations for a component for given time range as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Annotation> list(String resourceGroupName, String resourceName, String start, String end);
 
@@ -39,7 +40,8 @@ public interface Annotations {
      * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range.
+     * @return the list of annotations for a component for given time range as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Annotation> list(
         String resourceGroupName, String resourceName, String start, String end, Context context);
