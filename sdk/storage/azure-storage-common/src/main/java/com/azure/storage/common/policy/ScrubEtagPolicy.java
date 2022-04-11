@@ -52,8 +52,8 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
      * @return an updated response with post-processing steps applied.
      */
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return INNER.processSynchronously(context, next);
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.processSync(context, next);
     }
 
     /*

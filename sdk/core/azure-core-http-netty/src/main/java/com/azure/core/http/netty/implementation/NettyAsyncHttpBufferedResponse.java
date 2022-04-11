@@ -32,7 +32,7 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return body;
     }
 

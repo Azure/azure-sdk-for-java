@@ -475,7 +475,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public BinaryData getContent() {
+        public BinaryData getBodyAsBinaryData() {
             return BinaryData.fromFlux(plainTextBody).block();
         }
 

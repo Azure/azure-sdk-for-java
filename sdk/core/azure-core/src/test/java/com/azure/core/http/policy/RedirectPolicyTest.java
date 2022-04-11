@@ -14,6 +14,7 @@ import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.test.junit.extensions.SyncAsyncExtension;
 import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -48,10 +49,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         assertEquals(308, response.getStatusCode());
@@ -76,10 +77,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         // assertEquals(2, httpClient.getCount());
@@ -103,10 +104,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         assertEquals(5, httpClient.getCount());
@@ -132,10 +133,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.POST,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.POST,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.POST,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         // not redirected to 200
@@ -164,8 +165,8 @@ public class RedirectPolicyTest {
         HttpResponse response = SyncAsyncExtension.execute(
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
                 new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE)
         );
 
         assertEquals(2, httpClient.getCount());
@@ -196,10 +197,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         assertEquals(2, httpClient.getCount());
@@ -225,8 +226,8 @@ public class RedirectPolicyTest {
         HttpResponse response = SyncAsyncExtension.execute(
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
                 new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE)
         );
 
         assertEquals(5, httpClient.getCount());
@@ -269,10 +270,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         assertEquals(2, httpClient.getCount());
@@ -297,10 +298,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         assertEquals(1, httpClient.getCount());
@@ -326,17 +327,18 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response1 = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
+
         );
 
         HttpResponse response2 = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         assertEquals(4, httpClient.getCount());
@@ -365,10 +367,10 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block(),
-            () -> pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")))
+                new URL("http://localhost/"))).block()
         );
 
         assertEquals(401, response.getStatusCode());

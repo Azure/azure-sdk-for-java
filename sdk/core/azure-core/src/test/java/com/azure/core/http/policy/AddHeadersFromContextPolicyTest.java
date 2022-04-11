@@ -50,7 +50,7 @@ public class AddHeadersFromContextPolicyTest {
         }
 
         @Override
-        public BinaryData getContent() {
+        public BinaryData getBodyAsBinaryData() {
             return null;
         }
 

@@ -29,7 +29,7 @@ final class BufferedJdkHttpResponse extends JdkHttpResponseBase {
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return body;
     }
 

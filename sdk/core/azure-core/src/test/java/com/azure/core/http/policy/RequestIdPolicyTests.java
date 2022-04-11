@@ -50,7 +50,7 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public BinaryData getContent() {
+        public BinaryData getBodyAsBinaryData() {
             return null;
         }
 

@@ -90,10 +90,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse sendSynchronously(HttpRequest request, Context context) {
+    public HttpResponse sendSync(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
 
-        Request okHttpRequest = toOkHttpRequestSynchronously(request);
+        Request okHttpRequest = toOkHttpRequestSync(request);
         Call call = httpClient.newCall(okHttpRequest);
         try {
             Response okHttpResponse = call.execute();
@@ -127,7 +127,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return Mono.just(requestBuilder.head().build());
         }
 
-        return toOkHttpRequestBody(request.getContent(), request.getHeaders())
+        return toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders())
             .map(okhttpRequestBody -> requestBuilder.method(request.getHttpMethod().toString(), okhttpRequestBody)
                 .build());
     }
@@ -138,7 +138,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @param request the azure-core request
      * @return the Mono emitting okhttp request
      */
-    private static okhttp3.Request toOkHttpRequestSynchronously(HttpRequest request) {
+    private static okhttp3.Request toOkHttpRequestSync(HttpRequest request) {
         Request.Builder requestBuilder = new Request.Builder()
             .url(request.getUrl());
 
@@ -156,7 +156,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return requestBuilder.head().build();
         }
 
-        RequestBody requestBody = toOkHttpRequestBodySynchronously(request.getContent(), request.getHeaders());
+        RequestBody requestBody = toOkHttpRequestBodySync(request.getBodyAsBinaryData(), request.getHeaders());
         return requestBuilder.method(request.getHttpMethod().toString(), requestBody)
             .build();
     }
@@ -168,7 +168,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @param headers the headers associated with the original request
      * @return the Mono emitting okhttp3.RequestBody
      */
-    private static RequestBody toOkHttpRequestBodySynchronously(BinaryData bodyContent, HttpHeaders headers) {
+    private static RequestBody toOkHttpRequestBodySync(BinaryData bodyContent, HttpHeaders headers) {
         String contentType = headers.getValue("Content-Type");
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 

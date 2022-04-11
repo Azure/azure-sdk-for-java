@@ -51,7 +51,7 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
         // Context with azure-eagerly-read-response=true makes sure
         // that response is disposed to prevent connection leak.
         // There's no response body in this scenario anyway.
-        HttpResponse httpResponse = httpPipeline.sendSynchronously(httpRequest, context);
+        HttpResponse httpResponse = httpPipeline.sendSync(httpRequest, context);
         if (httpResponse.getStatusCode() / 100 != 2) {
             throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
         }

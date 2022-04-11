@@ -102,9 +102,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
-            return next.processSynchronously();
+            return next.processSync();
         }
 
         Context telemetryContext = startSpan(context);
@@ -113,7 +113,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         HttpResponse responseToBeRecorded = null;
         RuntimeException exception = null;
         try {
-            HttpResponse response = next.processSynchronously();
+            HttpResponse response = next.processSync();
             responseToBeRecorded = response;
             return response;
         } catch (RuntimeException e) {

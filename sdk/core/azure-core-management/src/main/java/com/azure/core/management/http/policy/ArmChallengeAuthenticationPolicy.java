@@ -62,12 +62,12 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
     }
 
     @Override
-    public void authorizeRequestSynchronously(HttpPipelineCallContext context) {
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
         String[] scopes = this.scopes;
         scopes = getScopes(context, scopes);
         if (scopes != null) {
             context.setData(ARM_SCOPES_KEY, scopes);
-            setAuthorizationHeaderSynchronously(context, new TokenRequestContext().addScopes(scopes));
+            setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes));
         }
     }
 
@@ -104,7 +104,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
     }
 
     @Override
-    public boolean authorizeRequestOnChallengeSynchronously(HttpPipelineCallContext context, HttpResponse response) {
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
         if (response.getStatusCode() == 401 && authHeader != null) {
             List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
@@ -123,7 +123,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                     // If scopes wasn't configured in On Before logic or at constructor level,
                     // then this method will retrieve it again.
                     scopes = getScopes(context, scopes);
-                    setAuthorizationHeaderSynchronously(context,
+                    setAuthorizationHeaderSync(context,
                         new TokenRequestContext()
                             .addScopes(scopes).setClaims(claims));
                     return true;

@@ -82,7 +82,7 @@ public class HttpResponseTests {
         }
 
         @Override
-        public BinaryData getContent() {
+        public BinaryData getBodyAsBinaryData() {
             // TODO (kasobol-msft) is this right?
             return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
         }
