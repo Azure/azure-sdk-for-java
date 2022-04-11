@@ -19,7 +19,6 @@ import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.StreamUtils;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -28,14 +27,16 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.BufferedSink;
 import okio.ByteString;
+import okio.Okio;
+import okio.Source;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
@@ -188,7 +189,33 @@ class OkHttpAsyncHttpClient implements HttpClient {
         } else if (content instanceof StringContent) {
             return RequestBody.create(bodyContent.toString(), mediaType);
         } else if (content instanceof InputStreamContent) {
-            return RequestBody.create(toByteString(content.toStream()), mediaType);
+            Long contentLength = content.getLength();
+            if (contentLength == null) {
+                String contentLengthHeaderValue = headers.getValue("Content-Length");
+                if (contentLengthHeaderValue != null) {
+                    contentLength = Long.parseLong(contentLengthHeaderValue);
+                } else {
+                    contentLength = -1L;
+                }
+            }
+            long effectiveContentLength = contentLength;
+            return new RequestBody() {
+                @Override
+                public MediaType contentType() {
+                    return mediaType;
+                }
+
+                @Override
+                public long contentLength() {
+                    return effectiveContentLength;
+                }
+
+                @Override
+                public void writeTo(BufferedSink bufferedSink) throws IOException {
+                    Source source = Okio.source(content.toStream());
+                    bufferedSink.writeAll(source);
+                }
+            };
         } else {
             // TODO (kasobol-msft) is there better way than just block? perhaps throw?
             // Perhaps we could consider using one of storage's stream implementation on top of flux?
@@ -251,21 +278,6 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 }
             }).map(b -> ByteString.of(b.readByteArray())), okio.Buffer::clear)
             .switchIfEmpty(Mono.defer(() -> EMPTY_BYTE_STRING_MONO));
-    }
-
-    /**
-     * Aggregate InputStream to single okio.ByteString.
-     *
-     * @param inputStream the InputStream to aggregate
-     * @return Aggregated ByteString
-     */
-    private static ByteString toByteString(InputStream inputStream) {
-        try (InputStream closeableInputStream = inputStream) {
-            byte[] content = StreamUtils.INSTANCE.readAllBytes(closeableInputStream);
-            return ByteString.of(content);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-        }
     }
 
     private static HttpResponse fromOkHttpResponse(
