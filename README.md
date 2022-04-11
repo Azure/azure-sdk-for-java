@@ -24,9 +24,9 @@ Each service can have both 'client' and 'management' libraries. 'Client' librari
 Our client libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/), and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://docs.microsoft.com/azure/developer/java/sdk/overview).
 These libraries can be easily identified by folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-You can find the **[most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java)**. This list includes the most recent releases: both GA and preview.
+You can find the **[most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java)**. This list includes the most recent releases: both stable and beta.
 
-> NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
+> NOTE: If you need to ensure your code is ready for production use one of the stable, non-beta libraries.
 
 ### Management Libraries
 
@@ -34,7 +34,11 @@ Similar to our client libraries, the management libraries follow the [Azure SDK 
 
 **For general documentation on how to use the new libraries for Azure Resource Management, please [visit here](https://aka.ms/azsdk/java/mgmt)**. We have also prepared **[plenty of code samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md)** as well as **[migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)** in case you are upgrading from previous versions.
 
-The management libraries can be identified by namespaces that start with `azure-resourcemanager`, e.g. `azure-resourcemanager-compute`
+The management libraries can be identified by namespaces that start with `azure-resourcemanager`, e.g. `azure-resourcemanager-compute`.
+
+### Historical Releases
+
+Note that the latest libraries from Microsoft are in the `com.azure` Maven group ID, and have the package naming pattern of beginning with `com.azure`. If you're using libraries that are in `com.microsoft.azure` Maven group ID, or have this as the package structure, please consider migrating to the latest libraries. You can find a mapping table from these historical releases to their equivalent [here](https://azure.github.io/azure-sdk/releases/deprecated/index.html#java).
 
 ## Need help?
 
@@ -48,11 +52,11 @@ The management libraries can be identified by namespaces that start with `azure-
 
 ### Main branch
 
-The main branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK.
+The main branch has the most recent code with new features and bug fixes. It does **not** represent latest released **stable** SDK.
 
 ### Release branches (Release tagging)
 
-For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
+For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular beta or stable release version.
 Format of the release tags are `<package-name>_<package-version>`. For more information please see [our branching strategy](https://github.com/Azure/azure-sdk/blob/main/docs/policies/repobranching.md#release-tagging).
 
 ## Contributing
