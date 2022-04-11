@@ -1,6 +1,10 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.14.0 (2022-04-11)
+
+### Bugs Fixed
+
+- Fixed a bug that `ResourceManager.pipeline()` be `null`.
 
 ### Other Changes
 

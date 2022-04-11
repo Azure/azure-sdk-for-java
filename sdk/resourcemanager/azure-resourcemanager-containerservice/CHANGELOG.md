@@ -1,6 +1,6 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 
@@ -8,6 +8,10 @@
 - Supported enabling Azure AD integration for `KubernetesCluster`.
 - Supported disabling local accounts for `KubernetesCluster`.
 - Supported disk encryption set for `KubernetesCluster`.
+
+### Bugs Fixed
+
+- Fixed a bug that `orchestratorVersion` not initialized in agent pool.
 
 ### Other Changes
 

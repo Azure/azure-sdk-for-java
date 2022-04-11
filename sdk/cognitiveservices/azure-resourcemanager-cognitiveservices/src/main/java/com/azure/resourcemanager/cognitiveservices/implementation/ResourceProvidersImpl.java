@@ -16,10 +16,9 @@ import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityPa
 import com.azure.resourcemanager.cognitiveservices.models.DomainAvailability;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
 import com.azure.resourcemanager.cognitiveservices.models.SkuAvailabilityListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 

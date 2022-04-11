@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthcareapis.models.ServiceNameUnavailabilityReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties indicating whether a given service name is available. */
 @Fluent
 public final class ServicesNameAvailabilityInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesNameAvailabilityInfoInner.class);
-
     /*
      * The value which indicates whether the provided name is available.
      */
