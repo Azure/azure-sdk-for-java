@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.15.0-beta.1</version>
+  <version>4.0.0</version>
   <packaging>pom</packaging>
   <name>Azure Spring Boot BOM</name>
   <description>BOM for Microsoft Azure Spring Boot Support</description>

@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-dependencies</artifactId>
-  <version>2.15.0-beta.1</version>
+  <version>4.0.0</version>
   <packaging>pom</packaging>
   <name>Azure Spring Cloud Dependencies</name>
   <description>Azure spring cloud dependencies</description>
