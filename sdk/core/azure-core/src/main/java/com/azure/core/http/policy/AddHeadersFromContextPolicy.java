@@ -65,7 +65,7 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return INNER.processSynchronously(context, next);
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.processSync(context, next);
     }
 }

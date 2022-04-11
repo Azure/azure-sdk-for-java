@@ -52,7 +52,7 @@ public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolic
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.processSynchronously(context, next);
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.processSync(context, next);
     }
 }

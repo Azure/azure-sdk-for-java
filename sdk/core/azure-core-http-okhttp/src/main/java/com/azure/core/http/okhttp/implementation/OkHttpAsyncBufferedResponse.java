@@ -30,7 +30,7 @@ public final class OkHttpAsyncBufferedResponse extends OkHttpAsyncResponseBase {
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return body;
     }
 

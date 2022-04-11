@@ -4,6 +4,8 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -61,17 +63,20 @@ public abstract class HttpResponse implements Closeable {
      * methods like {@code block()} on the stream then be sure to use {@code publishOn} before the blocking call.
      *
      * @return The response's content as a stream of {@link ByteBuffer}.
+     * @deprecated Use {@link #getBodyAsBinaryData()} instead.
      */
+    @Deprecated
     public abstract Flux<ByteBuffer> getBody();
 
     /**
      * Gets the {@link BinaryData} that represents the body of the response.
      *
+     * Subclasses should override this method.
+     *
      * @return The {@link BinaryData} response body.
      */
-    public BinaryData getContent() {
-        // TODO (kasobol-msft) revapi isn't happy about adding abstract method.
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("This hasn't been implemented"));
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 
     /**

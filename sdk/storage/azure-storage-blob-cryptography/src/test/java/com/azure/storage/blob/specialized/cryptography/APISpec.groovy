@@ -339,7 +339,7 @@ class APISpec extends StorageSpec {
         }
 
         @Override
-        BinaryData getContent() {
+        BinaryData getBodyAsBinaryData() {
             return BinaryData.fromFlux(body).block()
         }
 

@@ -167,7 +167,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         if (bodyBytes == null) {
             return null;
         } else {

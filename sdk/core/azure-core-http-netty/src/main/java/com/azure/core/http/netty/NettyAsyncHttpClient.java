@@ -170,11 +170,11 @@ class NettyAsyncHttpClient implements HttpClient {
                 }
             }
 
-            if (restRequest.getContent() == null) {
+            if (restRequest.getBodyAsBinaryData() == null) {
                 return reactorNettyOutbound;
             }
 
-            BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getContent());
+            BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getBodyAsBinaryData());
             if (binaryDataContent instanceof ByteArrayContent) {
                 return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(binaryDataContent.toBytes())));
             } else if (binaryDataContent instanceof StringContent) {

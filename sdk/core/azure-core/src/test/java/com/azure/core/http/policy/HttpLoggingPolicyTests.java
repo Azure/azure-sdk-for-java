@@ -257,7 +257,7 @@ public class HttpLoggingPolicyTests {
         }
 
         @Override
-        public BinaryData getContent() {
+        public BinaryData getBodyAsBinaryData() {
             return null;
         }
 

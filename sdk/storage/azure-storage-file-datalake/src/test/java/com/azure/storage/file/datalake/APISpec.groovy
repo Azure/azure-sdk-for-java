@@ -626,7 +626,7 @@ class APISpec extends StorageSpec {
             }
 
             @Override
-            BinaryData getContent() {
+            BinaryData getBodyAsBinaryData() {
                 return null
             }
 

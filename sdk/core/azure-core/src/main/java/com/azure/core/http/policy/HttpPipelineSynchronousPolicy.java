@@ -31,9 +31,9 @@ public class HttpPipelineSynchronousPolicy implements HttpPipelinePolicy {
      * {@inheritDoc}
      */
     @Override
-    public final HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public final HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         beforeSendingRequest(context);
-        HttpResponse response = next.processSynchronously();
+        HttpResponse response = next.processSync();
         return afterReceivedResponse(context, response);
     }
 

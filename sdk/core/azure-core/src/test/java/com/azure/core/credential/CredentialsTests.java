@@ -13,6 +13,7 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.junit.extensions.SyncAsyncExtension;
 import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -56,7 +57,7 @@ public class CredentialsTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSynchronously(request),
+            () -> pipeline.sendSync(request, Context.NONE),
             () -> pipeline.send(request).block()
         );
     }
@@ -78,7 +79,7 @@ public class CredentialsTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://localhost"));
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSynchronously(request),
+            () -> pipeline.sendSync(request, Context.NONE),
             () -> pipeline.send(request).block()
         );
     }
@@ -102,7 +103,8 @@ public class CredentialsTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                assertThrows(RuntimeException.class, () -> pipeline.sendSynchronously(request));
+                assertThrows(RuntimeException.class,
+                    () -> pipeline.sendSync(request, Context.NONE));
             },
             () -> StepVerifier.create(pipeline.send(request))
                 .expectErrorMessage("token credentials require a URL using the HTTPS protocol scheme")

@@ -15,7 +15,7 @@ public class HttpPipelineNextPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);
     private final HttpPipeline pipeline;
     private final HttpPipelineCallContext context;
-    private final boolean isSynchronous;
+    private final boolean isSync;
     private int currentPolicyIndex;
 
     /**
@@ -25,12 +25,12 @@ public class HttpPipelineNextPolicy {
      *
      * @param pipeline the pipeline
      * @param context the request-response context
-     * @param isSynchronous whether pipeline is invoked synchronously or not.
+     * @param isSync whether pipeline is invoked synchronously or not.
      */
-    HttpPipelineNextPolicy(final HttpPipeline pipeline, HttpPipelineCallContext context, boolean isSynchronous) {
+    HttpPipelineNextPolicy(final HttpPipeline pipeline, HttpPipelineCallContext context, boolean isSync) {
         this.pipeline = pipeline;
         this.context = context;
-        this.isSynchronous = isSynchronous;
+        this.isSync = isSync;
         this.currentPolicyIndex = -1;
     }
 
@@ -40,15 +40,15 @@ public class HttpPipelineNextPolicy {
      * @return A publisher which upon subscription invokes next policy and emits response from the policy.
      */
     public Mono<HttpResponse> process() {
-        if (isSynchronous && !Schedulers.isInNonBlockingThread()) {
+        if (isSync && !Schedulers.isInNonBlockingThread()) {
             // Pipeline executes in synchronous style. We most likely got here via default implementation in the
             // HttpPipelinePolicy.processSynchronously so go back to sync style here.
             // Don't do this on non-blocking threads.
-            return Mono.fromCallable(this::processSynchronously);
+            return Mono.fromCallable(this::processSync);
         } else {
-            if (isSynchronous) {
+            if (isSync) {
                 LOGGER.warning("The pipeline switched from synchronous to asynchronous."
-                    + " Check if all policies override HttpPipelinePolicy.processSynchronously");
+                    + " Check if all policies override HttpPipelinePolicy.processSync");
             }
             final int size = this.pipeline.getPolicyCount();
             if (this.currentPolicyIndex > size) {
@@ -69,10 +69,10 @@ public class HttpPipelineNextPolicy {
      *
      * @return A publisher which upon subscription invokes next policy and emits response from the policy.
      */
-    public HttpResponse processSynchronously() {
-        if (!isSynchronous) {
+    public HttpResponse processSync() {
+        if (!isSync) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "Must not use HttpPipelineNextPolicy.processSynchronously in asynchronous HttpPipeline invocation."));
+                "Must not use HttpPipelineNextPolicy.processSync in asynchronous HttpPipeline invocation."));
         }
         final int size = this.pipeline.getPolicyCount();
         if (this.currentPolicyIndex > size) {
@@ -81,10 +81,10 @@ public class HttpPipelineNextPolicy {
 
         this.currentPolicyIndex++;
         if (this.currentPolicyIndex == size) {
-            return this.pipeline.getHttpClient().sendSynchronously(
+            return this.pipeline.getHttpClient().sendSync(
                 this.context.getHttpRequest(), this.context.getContext());
         } else {
-            return this.pipeline.getPolicy(this.currentPolicyIndex).processSynchronously(this.context, this);
+            return this.pipeline.getPolicy(this.currentPolicyIndex).processSync(this.context, this);
         }
     }
 
@@ -95,7 +95,7 @@ public class HttpPipelineNextPolicy {
      */
     @Override
     public HttpPipelineNextPolicy clone() {
-        HttpPipelineNextPolicy cloned = new HttpPipelineNextPolicy(this.pipeline, this.context, this.isSynchronous);
+        HttpPipelineNextPolicy cloned = new HttpPipelineNextPolicy(this.pipeline, this.context, this.isSync);
         cloned.currentPolicyIndex = this.currentPolicyIndex;
         return cloned;
     }

@@ -103,7 +103,7 @@ public class HttpLoggingPolicySyncTests {
             .httpClient(new NoOpHttpClient())
             .build();
 
-        pipeline.sendSynchronously(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT);
+        pipeline.sendSync(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT);
 
         assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
     }
@@ -151,7 +151,7 @@ public class HttpLoggingPolicySyncTests {
                 .then(Mono.empty()))
             .build();
 
-        pipeline.sendSynchronously(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, requestContent),
+        pipeline.sendSync(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, requestContent),
                 CONTEXT);
 
         String logString = convertOutputStreamToString(logCaptureStream);
@@ -174,9 +174,9 @@ public class HttpLoggingPolicySyncTests {
             .httpClient(ignored -> Mono.just(new MockHttpResponse(ignored, responseHeaders, responseContent)))
             .build();
 
-        HttpResponse response = pipeline.sendSynchronously(request, CONTEXT);
+        HttpResponse response = pipeline.sendSync(request, CONTEXT);
 
-        assertArrayEquals(data, response.getContent().toBytes());
+        assertArrayEquals(data, response.getBodyAsBinaryData().toBytes());
         String logString = convertOutputStreamToString(logCaptureStream);
         assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
     }
@@ -222,7 +222,7 @@ public class HttpLoggingPolicySyncTests {
         }
 
         @Override
-        public BinaryData getContent() {
+        public BinaryData getBodyAsBinaryData() {
             return body;
         }
 
@@ -256,7 +256,7 @@ public class HttpLoggingPolicySyncTests {
                 : Mono.just(new com.azure.core.http.MockHttpResponse(ignored, 200)))
             .build();
 
-        HttpResponse response = pipeline.sendSynchronously(request, CONTEXT);
+        HttpResponse response = pipeline.sendSync(request, CONTEXT);
 
         assertEquals(200, response.getStatusCode());
 

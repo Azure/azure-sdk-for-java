@@ -68,7 +68,7 @@ public final class AccessTokenCache {
      * @param tokenRequestContext The request context for token acquisition.
      * @return The Publisher that emits an AccessToken
      */
-    public AccessToken getTokenSynchronously(
+    public AccessToken getTokenSync(
         TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         // TODO (kasobol-msft) should we go deep into identity here or is this enough ?
         return this.getToken(tokenRequestContext, checkToForceFetchToken).block();

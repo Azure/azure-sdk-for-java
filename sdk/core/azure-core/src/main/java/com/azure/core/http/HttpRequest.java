@@ -169,7 +169,9 @@ public class HttpRequest {
      * Get the request content.
      *
      * @return the content to be sent
+     * @deprecated Use {@link #getBodyAsBinaryData()} instead.
      */
+    @Deprecated
     public Flux<ByteBuffer> getBody() {
         return (data == null) ? null : data.toFluxByteBuffer();
     }
@@ -223,7 +225,7 @@ public class HttpRequest {
      *
      * @return The {@link BinaryData} request body.
      */
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return data;
     }
 
@@ -233,7 +235,7 @@ public class HttpRequest {
      * @param data The {@link BinaryData} request body.
      * @return this HttpRequest
      */
-    public HttpRequest setContent(BinaryData data) {
+    public HttpRequest setBody(BinaryData data) {
         this.data = data;
         return this;
     }
