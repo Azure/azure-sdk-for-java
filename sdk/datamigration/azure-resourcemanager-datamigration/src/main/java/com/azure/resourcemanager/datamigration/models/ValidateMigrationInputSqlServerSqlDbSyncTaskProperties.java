@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for task that validates migration input for SQL to Azure SQL DB sync migrations. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("ValidateMigrationInput.SqlServer.SqlDb.Sync")
 @Fluent
 public final class ValidateMigrationInputSqlServerSqlDbSyncTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ValidateMigrationInputSqlServerSqlDbSyncTaskProperties.class);
-
     /*
      * Task input
      */
@@ -60,6 +56,13 @@ public final class ValidateMigrationInputSqlServerSqlDbSyncTaskProperties extend
      */
     public List<ValidateSyncMigrationInputSqlServerTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidateMigrationInputSqlServerSqlDbSyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

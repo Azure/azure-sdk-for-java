@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -20,15 +18,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = ConnectionInfo.class)
 @JsonTypeName("ConnectionInfo")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "MongoDbConnectionInfo", value = MongoDbConnectionInfo.class),
     @JsonSubTypes.Type(name = "SqlConnectionInfo", value = SqlConnectionInfo.class),
     @JsonSubTypes.Type(name = "MySqlConnectionInfo", value = MySqlConnectionInfo.class),
+    @JsonSubTypes.Type(name = "OracleConnectionInfo", value = OracleConnectionInfo.class),
     @JsonSubTypes.Type(name = "PostgreSqlConnectionInfo", value = PostgreSqlConnectionInfo.class),
     @JsonSubTypes.Type(name = "MiSqlConnectionInfo", value = MiSqlConnectionInfo.class)
 })
 @Fluent
 public class ConnectionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionInfo.class);
-
     /*
      * User name
      */

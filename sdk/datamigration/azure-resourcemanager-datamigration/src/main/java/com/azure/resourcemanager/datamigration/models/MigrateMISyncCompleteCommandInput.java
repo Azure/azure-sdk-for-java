@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for command that completes online migration for an Azure SQL Database Managed Instance. */
 @Fluent
 public final class MigrateMISyncCompleteCommandInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateMISyncCompleteCommandInput.class);
-
     /*
      * Name of managed instance database
      */
@@ -47,10 +44,12 @@ public final class MigrateMISyncCompleteCommandInput {
      */
     public void validate() {
         if (sourceDatabaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceDatabaseName in model MigrateMISyncCompleteCommandInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateMISyncCompleteCommandInput.class);
 }

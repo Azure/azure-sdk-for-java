@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Database specific information for SQL to Azure SQL DB sync migration task inputs. */
 @Fluent
 public final class MigrateSqlServerSqlDbSyncDatabaseInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbSyncDatabaseInput.class);
-
     /*
      * Unique identifier for database
      */
@@ -43,24 +40,28 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
      * Mapping of source to target tables
      */
     @JsonProperty(value = "tableMap")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tableMap;
 
     /*
      * Migration settings which tune the migration behavior
      */
     @JsonProperty(value = "migrationSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> migrationSetting;
 
     /*
      * Source settings to tune source endpoint migration behavior
      */
     @JsonProperty(value = "sourceSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceSetting;
 
     /*
      * Target settings to tune target endpoint migration behavior
      */
     @JsonProperty(value = "targetSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetSetting;
 
     /**

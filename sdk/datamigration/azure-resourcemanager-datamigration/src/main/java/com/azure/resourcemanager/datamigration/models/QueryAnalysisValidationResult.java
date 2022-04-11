@@ -4,26 +4,22 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Results for query analysis comparison between the source and target. */
-@Immutable
+@Fluent
 public final class QueryAnalysisValidationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryAnalysisValidationResult.class);
-
     /*
      * List of queries executed and it's execution results in source and target
      */
-    @JsonProperty(value = "queryResults", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "queryResults")
     private QueryExecutionResult queryResults;
 
     /*
      * Errors that are part of the execution
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "validationErrors")
     private ValidationError validationErrors;
 
     /**
@@ -36,12 +32,34 @@ public final class QueryAnalysisValidationResult {
     }
 
     /**
+     * Set the queryResults property: List of queries executed and it's execution results in source and target.
+     *
+     * @param queryResults the queryResults value to set.
+     * @return the QueryAnalysisValidationResult object itself.
+     */
+    public QueryAnalysisValidationResult withQueryResults(QueryExecutionResult queryResults) {
+        this.queryResults = queryResults;
+        return this;
+    }
+
+    /**
      * Get the validationErrors property: Errors that are part of the execution.
      *
      * @return the validationErrors value.
      */
     public ValidationError validationErrors() {
         return this.validationErrors;
+    }
+
+    /**
+     * Set the validationErrors property: Errors that are part of the execution.
+     *
+     * @param validationErrors the validationErrors value to set.
+     * @return the QueryAnalysisValidationResult object itself.
+     */
+    public QueryAnalysisValidationResult withValidationErrors(ValidationError validationErrors) {
+        this.validationErrors = validationErrors;
+        return this;
     }
 
     /**

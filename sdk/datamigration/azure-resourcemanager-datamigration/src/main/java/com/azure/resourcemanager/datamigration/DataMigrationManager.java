@@ -8,30 +8,45 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.DataMigrationManagementClient;
 import com.azure.resourcemanager.datamigration.implementation.DataMigrationManagementClientBuilder;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsSqlDbsImpl;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsSqlMisImpl;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsSqlVmsImpl;
+import com.azure.resourcemanager.datamigration.implementation.FilesImpl;
 import com.azure.resourcemanager.datamigration.implementation.OperationsImpl;
 import com.azure.resourcemanager.datamigration.implementation.ProjectsImpl;
 import com.azure.resourcemanager.datamigration.implementation.ResourceSkusImpl;
+import com.azure.resourcemanager.datamigration.implementation.ServiceTasksImpl;
 import com.azure.resourcemanager.datamigration.implementation.ServicesImpl;
+import com.azure.resourcemanager.datamigration.implementation.SqlMigrationServicesImpl;
 import com.azure.resourcemanager.datamigration.implementation.TasksImpl;
 import com.azure.resourcemanager.datamigration.implementation.UsagesImpl;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsSqlDbs;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsSqlMis;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsSqlVms;
+import com.azure.resourcemanager.datamigration.models.Files;
 import com.azure.resourcemanager.datamigration.models.Operations;
 import com.azure.resourcemanager.datamigration.models.Projects;
 import com.azure.resourcemanager.datamigration.models.ResourceSkus;
+import com.azure.resourcemanager.datamigration.models.ServiceTasks;
 import com.azure.resourcemanager.datamigration.models.Services;
+import com.azure.resourcemanager.datamigration.models.SqlMigrationServices;
 import com.azure.resourcemanager.datamigration.models.Tasks;
 import com.azure.resourcemanager.datamigration.models.Usages;
 import java.time.Duration;
@@ -39,20 +54,33 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to DataMigrationManager. Data Migration Client. */
 public final class DataMigrationManager {
+    private DatabaseMigrationsSqlDbs databaseMigrationsSqlDbs;
+
+    private DatabaseMigrationsSqlMis databaseMigrationsSqlMis;
+
+    private DatabaseMigrationsSqlVms databaseMigrationsSqlVms;
+
+    private Operations operations;
+
+    private SqlMigrationServices sqlMigrationServices;
+
     private ResourceSkus resourceSkus;
 
     private Services services;
 
     private Tasks tasks;
 
+    private ServiceTasks serviceTasks;
+
     private Projects projects;
 
     private Usages usages;
 
-    private Operations operations;
+    private Files files;
 
     private final DataMigrationManagementClient clientObject;
 
@@ -82,6 +110,19 @@ public final class DataMigrationManager {
     }
 
     /**
+     * Creates an instance of DataMigration service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the DataMigration service API instance.
+     */
+    public static DataMigrationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new DataMigrationManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create DataMigrationManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -92,12 +133,14 @@ public final class DataMigrationManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -137,6 +180,17 @@ public final class DataMigrationManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -148,15 +202,30 @@ public final class DataMigrationManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -192,20 +261,38 @@ public final class DataMigrationManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -215,6 +302,49 @@ public final class DataMigrationManager {
                     .build();
             return new DataMigrationManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /** @return Resource collection API of DatabaseMigrationsSqlDbs. */
+    public DatabaseMigrationsSqlDbs databaseMigrationsSqlDbs() {
+        if (this.databaseMigrationsSqlDbs == null) {
+            this.databaseMigrationsSqlDbs =
+                new DatabaseMigrationsSqlDbsImpl(clientObject.getDatabaseMigrationsSqlDbs(), this);
+        }
+        return databaseMigrationsSqlDbs;
+    }
+
+    /** @return Resource collection API of DatabaseMigrationsSqlMis. */
+    public DatabaseMigrationsSqlMis databaseMigrationsSqlMis() {
+        if (this.databaseMigrationsSqlMis == null) {
+            this.databaseMigrationsSqlMis =
+                new DatabaseMigrationsSqlMisImpl(clientObject.getDatabaseMigrationsSqlMis(), this);
+        }
+        return databaseMigrationsSqlMis;
+    }
+
+    /** @return Resource collection API of DatabaseMigrationsSqlVms. */
+    public DatabaseMigrationsSqlVms databaseMigrationsSqlVms() {
+        if (this.databaseMigrationsSqlVms == null) {
+            this.databaseMigrationsSqlVms =
+                new DatabaseMigrationsSqlVmsImpl(clientObject.getDatabaseMigrationsSqlVms(), this);
+        }
+        return databaseMigrationsSqlVms;
+    }
+
+    /** @return Resource collection API of Operations. */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /** @return Resource collection API of SqlMigrationServices. */
+    public SqlMigrationServices sqlMigrationServices() {
+        if (this.sqlMigrationServices == null) {
+            this.sqlMigrationServices = new SqlMigrationServicesImpl(clientObject.getSqlMigrationServices(), this);
+        }
+        return sqlMigrationServices;
     }
 
     /** @return Resource collection API of ResourceSkus. */
@@ -241,6 +371,14 @@ public final class DataMigrationManager {
         return tasks;
     }
 
+    /** @return Resource collection API of ServiceTasks. */
+    public ServiceTasks serviceTasks() {
+        if (this.serviceTasks == null) {
+            this.serviceTasks = new ServiceTasksImpl(clientObject.getServiceTasks(), this);
+        }
+        return serviceTasks;
+    }
+
     /** @return Resource collection API of Projects. */
     public Projects projects() {
         if (this.projects == null) {
@@ -257,12 +395,12 @@ public final class DataMigrationManager {
         return usages;
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    /** @return Resource collection API of Files. */
+    public Files files() {
+        if (this.files == null) {
+            this.files = new FilesImpl(clientObject.getFiles(), this);
         }
-        return operations;
+        return files;
     }
 
     /**

@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for the task that validates connection to SQL DB and target server requirements for online migration. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("ConnectToTarget.SqlDb.Sync")
 @Fluent
 public final class ConnectToTargetSqlDbSyncTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetSqlDbSyncTaskProperties.class);
-
     /*
      * Task input
      */
@@ -58,6 +55,13 @@ public final class ConnectToTargetSqlDbSyncTaskProperties extends ProjectTaskPro
      */
     public List<ConnectToTargetSqlDbTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectToTargetSqlDbSyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

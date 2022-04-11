@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Database specific information for SQL to Azure SQL DB Managed Instance migration task inputs. */
 @Fluent
 public final class MigrateSqlServerSqlMIDatabaseInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMIDatabaseInput.class);
-
     /*
      * Name of the database
      */
@@ -38,6 +35,12 @@ public final class MigrateSqlServerSqlMIDatabaseInput {
      */
     @JsonProperty(value = "backupFilePaths")
     private List<String> backupFilePaths;
+
+    /*
+     * id of the database
+     */
+    @JsonProperty(value = "id")
+    private String id;
 
     /**
      * Get the name property: Name of the database.
@@ -120,19 +123,39 @@ public final class MigrateSqlServerSqlMIDatabaseInput {
     }
 
     /**
+     * Get the id property: id of the database.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: id of the database.
+     *
+     * @param id the id value to set.
+     * @return the MigrateSqlServerSqlMIDatabaseInput object itself.
+     */
+    public MigrateSqlServerSqlMIDatabaseInput withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model MigrateSqlServerSqlMIDatabaseInput"));
         }
         if (restoreDatabaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreDatabaseName in model MigrateSqlServerSqlMIDatabaseInput"));
@@ -141,4 +164,6 @@ public final class MigrateSqlServerSqlMIDatabaseInput {
             backupFileShare().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlMIDatabaseInput.class);
 }

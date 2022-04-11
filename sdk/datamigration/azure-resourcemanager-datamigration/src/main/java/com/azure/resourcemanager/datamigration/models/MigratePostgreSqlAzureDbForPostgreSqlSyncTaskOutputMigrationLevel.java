@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,13 +13,9 @@ import java.time.OffsetDateTime;
 /** The MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("MigrationLevelOutput")
-@Immutable
+@Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel
     extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
-
     /*
      * Migration start time
      */
@@ -57,6 +51,30 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
      */
     @JsonProperty(value = "targetServer", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServer;
+
+    /*
+     * Source server type.
+     */
+    @JsonProperty(value = "sourceServerType", access = JsonProperty.Access.WRITE_ONLY)
+    private ScenarioSource sourceServerType;
+
+    /*
+     * Target server type.
+     */
+    @JsonProperty(value = "targetServerType", access = JsonProperty.Access.WRITE_ONLY)
+    private ScenarioTarget targetServerType;
+
+    /*
+     * Migration status
+     */
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
+    private ReplicateMigrationState state;
+
+    /*
+     * Number of databases to include
+     */
+    @JsonProperty(value = "databaseCount")
+    private Float databaseCount;
 
     /**
      * Get the startedOn property: Migration start time.
@@ -110,6 +128,53 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
      */
     public String targetServer() {
         return this.targetServer;
+    }
+
+    /**
+     * Get the sourceServerType property: Source server type.
+     *
+     * @return the sourceServerType value.
+     */
+    public ScenarioSource sourceServerType() {
+        return this.sourceServerType;
+    }
+
+    /**
+     * Get the targetServerType property: Target server type.
+     *
+     * @return the targetServerType value.
+     */
+    public ScenarioTarget targetServerType() {
+        return this.targetServerType;
+    }
+
+    /**
+     * Get the state property: Migration status.
+     *
+     * @return the state value.
+     */
+    public ReplicateMigrationState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the databaseCount property: Number of databases to include.
+     *
+     * @return the databaseCount value.
+     */
+    public Float databaseCount() {
+        return this.databaseCount;
+    }
+
+    /**
+     * Set the databaseCount property: Number of databases to include.
+     *
+     * @param databaseCount the databaseCount value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel withDatabaseCount(Float databaseCount) {
+        this.databaseCount = databaseCount;
+        return this;
     }
 
     /**

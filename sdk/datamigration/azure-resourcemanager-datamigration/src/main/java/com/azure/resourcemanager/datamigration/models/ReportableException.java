@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Exception object for all custom exceptions. */
 @Fluent
 public final class ReportableException {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportableException.class);
-
     /*
      * Error message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message")
     private String message;
 
     /*
@@ -29,25 +25,25 @@ public final class ReportableException {
     /*
      * The path to the file where exception occurred
      */
-    @JsonProperty(value = "filePath", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "filePath")
     private String filePath;
 
     /*
      * The line number where exception occurred
      */
-    @JsonProperty(value = "lineNumber", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lineNumber")
     private String lineNumber;
 
     /*
      * Coded numerical value that is assigned to a specific exception
      */
-    @JsonProperty(value = "hResult", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "hResult")
     private Integer hResult;
 
     /*
      * Stack trace
      */
-    @JsonProperty(value = "stackTrace", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "stackTrace")
     private String stackTrace;
 
     /**
@@ -57,6 +53,17 @@ public final class ReportableException {
      */
     public String message() {
         return this.message;
+    }
+
+    /**
+     * Set the message property: Error message.
+     *
+     * @param message the message value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withMessage(String message) {
+        this.message = message;
+        return this;
     }
 
     /**
@@ -89,12 +96,34 @@ public final class ReportableException {
     }
 
     /**
+     * Set the filePath property: The path to the file where exception occurred.
+     *
+     * @param filePath the filePath value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withFilePath(String filePath) {
+        this.filePath = filePath;
+        return this;
+    }
+
+    /**
      * Get the lineNumber property: The line number where exception occurred.
      *
      * @return the lineNumber value.
      */
     public String lineNumber() {
         return this.lineNumber;
+    }
+
+    /**
+     * Set the lineNumber property: The line number where exception occurred.
+     *
+     * @param lineNumber the lineNumber value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withLineNumber(String lineNumber) {
+        this.lineNumber = lineNumber;
+        return this;
     }
 
     /**
@@ -107,12 +136,34 @@ public final class ReportableException {
     }
 
     /**
+     * Set the hResult property: Coded numerical value that is assigned to a specific exception.
+     *
+     * @param hResult the hResult value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withHResult(Integer hResult) {
+        this.hResult = hResult;
+        return this;
+    }
+
+    /**
      * Get the stackTrace property: Stack trace.
      *
      * @return the stackTrace value.
      */
     public String stackTrace() {
         return this.stackTrace;
+    }
+
+    /**
+     * Set the stackTrace property: Stack trace.
+     *
+     * @param stackTrace the stackTrace value to set.
+     * @return the ReportableException object itself.
+     */
+    public ReportableException withStackTrace(String stackTrace) {
+        this.stackTrace = stackTrace;
+        return this;
     }
 
     /**

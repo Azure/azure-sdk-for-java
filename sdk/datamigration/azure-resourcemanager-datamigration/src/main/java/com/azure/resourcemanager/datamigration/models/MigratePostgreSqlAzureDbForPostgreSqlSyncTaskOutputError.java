@@ -4,28 +4,29 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** The MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("ErrorOutput")
-@Immutable
+@Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError
     extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.class);
-
     /*
      * Migration error
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ReportableException error;
+
+    /*
+     * List of error events
+     */
+    @JsonProperty(value = "events")
+    private List<SyncMigrationDatabaseErrorEvent> events;
 
     /**
      * Get the error property: Migration error.
@@ -34,6 +35,27 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError
      */
     public ReportableException error() {
         return this.error;
+    }
+
+    /**
+     * Get the events property: List of error events.
+     *
+     * @return the events value.
+     */
+    public List<SyncMigrationDatabaseErrorEvent> events() {
+        return this.events;
+    }
+
+    /**
+     * Set the events property: List of error events.
+     *
+     * @param events the events value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError withEvents(
+        List<SyncMigrationDatabaseErrorEvent> events) {
+        this.events = events;
+        return this;
     }
 
     /**
@@ -46,6 +68,9 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError
         super.validate();
         if (error() != null) {
             error().validate();
+        }
+        if (events() != null) {
+            events().forEach(e -> e.validate());
         }
     }
 }

@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for task that migrates SQL Server databases to Azure SQL Database Managed Instance sync scenario. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("Migrate.SqlServer.AzureSqlDbMI.Sync.LRS")
 @Fluent
 public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMISyncTaskProperties.class);
-
     /*
      * Task input
      */
@@ -30,6 +27,12 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<MigrateSqlServerSqlMISyncTaskOutput> output;
+
+    /*
+     * DateTime in UTC when the task was created
+     */
+    @JsonProperty(value = "createdOn")
+    private String createdOn;
 
     /**
      * Get the input property: Task input.
@@ -58,6 +61,33 @@ public final class MigrateSqlServerSqlMISyncTaskProperties extends ProjectTaskPr
      */
     public List<MigrateSqlServerSqlMISyncTaskOutput> output() {
         return this.output;
+    }
+
+    /**
+     * Get the createdOn property: DateTime in UTC when the task was created.
+     *
+     * @return the createdOn value.
+     */
+    public String createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Set the createdOn property: DateTime in UTC when the task was created.
+     *
+     * @param createdOn the createdOn value to set.
+     * @return the MigrateSqlServerSqlMISyncTaskProperties object itself.
+     */
+    public MigrateSqlServerSqlMISyncTaskProperties withCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MigrateSqlServerSqlMISyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

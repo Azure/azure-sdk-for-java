@@ -19,9 +19,9 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources.
+     * @return oData page of project resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Project> listByResourceGroup(String groupName, String serviceName);
+    PagedIterable<Project> list(String groupName, String serviceName);
 
     /**
      * The project resource is a nested resource representing a stored migration project. This method returns a list of
@@ -33,9 +33,9 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources.
+     * @return oData page of project resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Project> listByResourceGroup(String groupName, String serviceName, Context context);
+    PagedIterable<Project> list(String groupName, String serviceName, Context context);
 
     /**
      * The project resource is a nested resource representing a stored migration project. The GET method retrieves
@@ -62,7 +62,7 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource.
+     * @return a project resource along with {@link Response}.
      */
     Response<Project> getWithResponse(String groupName, String serviceName, String projectName, Context context);
 
@@ -91,7 +91,7 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String groupName, String serviceName, String projectName, Boolean deleteRunningTasks, Context context);
@@ -104,7 +104,7 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource.
+     * @return a project resource along with {@link Response}.
      */
     Project getById(String id);
 
@@ -117,7 +117,7 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource.
+     * @return a project resource along with {@link Response}.
      */
     Response<Project> getByIdWithResponse(String id, Context context);
 
@@ -142,7 +142,7 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Boolean deleteRunningTasks, Context context);
 

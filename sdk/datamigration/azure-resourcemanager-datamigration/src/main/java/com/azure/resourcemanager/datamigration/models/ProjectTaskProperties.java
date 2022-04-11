@@ -4,15 +4,16 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for all types of DMS task properties. If task is not supported by current client, this object is returned.
@@ -24,7 +25,11 @@ import java.util.List;
     defaultImpl = ProjectTaskProperties.class)
 @JsonTypeName("ProjectTaskProperties")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ConnectToSource.MySql", value = ConnectToSourceMySqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "MigrateSchemaSqlServerSqlDb", value = MigrateSchemaSqlServerSqlDbTaskProperties.class),
+    @JsonSubTypes.Type(name = "Service.Check.OCI", value = CheckOciDriverTaskProperties.class),
+    @JsonSubTypes.Type(name = "Service.Upload.OCI", value = UploadOciDriverTaskProperties.class),
+    @JsonSubTypes.Type(name = "Service.Install.OCI", value = InstallOciDriverTaskProperties.class),
+    @JsonSubTypes.Type(name = "Connect.MongoDb", value = ConnectToMongoDbTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToSource.SqlServer", value = ConnectToSourceSqlServerTaskProperties.class),
     @JsonSubTypes.Type(
         name = "ConnectToSource.SqlServer.Sync",
@@ -32,13 +37,21 @@ import java.util.List;
     @JsonSubTypes.Type(
         name = "ConnectToSource.PostgreSql.Sync",
         value = ConnectToSourcePostgreSqlSyncTaskProperties.class),
+    @JsonSubTypes.Type(name = "ConnectToSource.MySql", value = ConnectToSourceMySqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "ConnectToSource.Oracle.Sync", value = ConnectToSourceOracleSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.SqlDb", value = ConnectToTargetSqlDbTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.SqlDb.Sync", value = ConnectToTargetSqlDbSyncTaskProperties.class),
     @JsonSubTypes.Type(
         name = "ConnectToTarget.AzureDbForPostgreSql.Sync",
         value = ConnectToTargetAzureDbForPostgreSqlSyncTaskProperties.class),
+    @JsonSubTypes.Type(
+        name = "ConnectToTarget.Oracle.AzureDbForPostgreSql.Sync",
+        value = ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "GetUserTables.Sql", value = GetUserTablesSqlTaskProperties.class),
     @JsonSubTypes.Type(name = "GetUserTables.AzureSqlDb.Sync", value = GetUserTablesSqlSyncTaskProperties.class),
+    @JsonSubTypes.Type(name = "GetUserTablesOracle", value = GetUserTablesOracleTaskProperties.class),
+    @JsonSubTypes.Type(name = "GetUserTablesPostgreSql", value = GetUserTablesPostgreSqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "GetUserTablesMySql", value = GetUserTablesMySqlTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.AzureSqlDbMI", value = ConnectToTargetSqlMITaskProperties.class),
     @JsonSubTypes.Type(
         name = "ConnectToTarget.AzureSqlDbMI.Sync.LRS",
@@ -46,6 +59,7 @@ import java.util.List;
     @JsonSubTypes.Type(
         name = "ConnectToTarget.AzureDbForMySql",
         value = ConnectToTargetAzureDbForMySqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "Migrate.MongoDb", value = MigrateMongoDbTaskProperties.class),
     @JsonSubTypes.Type(name = "Migrate.SqlServer.AzureSqlDbMI", value = MigrateSqlServerSqlMITaskProperties.class),
     @JsonSubTypes.Type(
         name = "Migrate.SqlServer.AzureSqlDbMI.Sync.LRS",
@@ -58,8 +72,14 @@ import java.util.List;
         name = "Migrate.MySql.AzureDbForMySql.Sync",
         value = MigrateMySqlAzureDbForMySqlSyncTaskProperties.class),
     @JsonSubTypes.Type(
-        name = "Migrate.PostgreSql.AzureDbForPostgreSql.Sync",
+        name = "Migrate.MySql.AzureDbForMySql",
+        value = MigrateMySqlAzureDbForMySqlOfflineTaskProperties.class),
+    @JsonSubTypes.Type(
+        name = "Migrate.PostgreSql.AzureDbForPostgreSql.SyncV2",
         value = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.class),
+    @JsonSubTypes.Type(
+        name = "Migrate.Oracle.AzureDbForPostgreSql.Sync",
+        value = MigrateOracleAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(
         name = "ValidateMigrationInput.SqlServer.SqlDb.Sync",
         value = ValidateMigrationInputSqlServerSqlDbSyncTaskProperties.class),
@@ -69,12 +89,15 @@ import java.util.List;
     @JsonSubTypes.Type(
         name = "ValidateMigrationInput.SqlServer.AzureSqlDbMI.Sync.LRS",
         value = ValidateMigrationInputSqlServerSqlMISyncTaskProperties.class),
-    @JsonSubTypes.Type(name = "GetTDECertificates.Sql", value = GetTdeCertificatesSqlTaskProperties.class)
+    @JsonSubTypes.Type(name = "Validate.MongoDb", value = ValidateMongoDbTaskProperties.class),
+    @JsonSubTypes.Type(
+        name = "Validate.Oracle.AzureDbPostgreSql.Sync",
+        value = ValidateOracleAzureDbForPostgreSqlSyncTaskProperties.class),
+    @JsonSubTypes.Type(name = "GetTDECertificates.Sql", value = GetTdeCertificatesSqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "Migrate.Ssis", value = MigrateSsisTaskProperties.class)
 })
-@Immutable
+@Fluent
 public class ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProjectTaskProperties.class);
-
     /*
      * Array of errors. This is ignored if submitted.
      */
@@ -91,7 +114,14 @@ public class ProjectTaskProperties {
      * Array of command properties.
      */
     @JsonProperty(value = "commands", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CommandProperties> commands;
+    private List<CommandPropertiesInner> commands;
+
+    /*
+     * Key value pairs of client data to attach meta data information to task
+     */
+    @JsonProperty(value = "clientData")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> clientData;
 
     /**
      * Get the errors property: Array of errors. This is ignored if submitted.
@@ -116,8 +146,28 @@ public class ProjectTaskProperties {
      *
      * @return the commands value.
      */
-    public List<CommandProperties> commands() {
+    public List<CommandPropertiesInner> commands() {
         return this.commands;
+    }
+
+    /**
+     * Get the clientData property: Key value pairs of client data to attach meta data information to task.
+     *
+     * @return the clientData value.
+     */
+    public Map<String, String> clientData() {
+        return this.clientData;
+    }
+
+    /**
+     * Set the clientData property: Key value pairs of client data to attach meta data information to task.
+     *
+     * @param clientData the clientData value to set.
+     * @return the ProjectTaskProperties object itself.
+     */
+    public ProjectTaskProperties withClientData(Map<String, String> clientData) {
+        this.clientData = clientData;
+        return this;
     }
 
     /**

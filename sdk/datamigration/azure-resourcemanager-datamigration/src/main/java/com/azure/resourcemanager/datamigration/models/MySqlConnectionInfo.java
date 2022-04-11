@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MySqlConnectionInfo")
 @Fluent
 public final class MySqlConnectionInfo extends ConnectionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MySqlConnectionInfo.class);
-
     /*
      * Name of the server
      */
@@ -25,10 +22,34 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
     private String serverName;
 
     /*
+     * Data source
+     */
+    @JsonProperty(value = "dataSource")
+    private String dataSource;
+
+    /*
      * Port for Server
      */
     @JsonProperty(value = "port", required = true)
     private int port;
+
+    /*
+     * Whether to encrypt the connection
+     */
+    @JsonProperty(value = "encryptConnection")
+    private Boolean encryptConnection;
+
+    /*
+     * Authentication type to use for connection
+     */
+    @JsonProperty(value = "authentication")
+    private AuthenticationType authentication;
+
+    /*
+     * Additional connection settings
+     */
+    @JsonProperty(value = "additionalSettings")
+    private String additionalSettings;
 
     /**
      * Get the serverName property: Name of the server.
@@ -51,6 +72,26 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
     }
 
     /**
+     * Get the dataSource property: Data source.
+     *
+     * @return the dataSource value.
+     */
+    public String dataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Set the dataSource property: Data source.
+     *
+     * @param dataSource the dataSource value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withDataSource(String dataSource) {
+        this.dataSource = dataSource;
+        return this;
+    }
+
+    /**
      * Get the port property: Port for Server.
      *
      * @return the port value.
@@ -67,6 +108,66 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
      */
     public MySqlConnectionInfo withPort(int port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the encryptConnection property: Whether to encrypt the connection.
+     *
+     * @return the encryptConnection value.
+     */
+    public Boolean encryptConnection() {
+        return this.encryptConnection;
+    }
+
+    /**
+     * Set the encryptConnection property: Whether to encrypt the connection.
+     *
+     * @param encryptConnection the encryptConnection value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withEncryptConnection(Boolean encryptConnection) {
+        this.encryptConnection = encryptConnection;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Authentication type to use for connection.
+     *
+     * @return the authentication value.
+     */
+    public AuthenticationType authentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Authentication type to use for connection.
+     *
+     * @param authentication the authentication value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withAuthentication(AuthenticationType authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
+     * Get the additionalSettings property: Additional connection settings.
+     *
+     * @return the additionalSettings value.
+     */
+    public String additionalSettings() {
+        return this.additionalSettings;
+    }
+
+    /**
+     * Set the additionalSettings property: Additional connection settings.
+     *
+     * @param additionalSettings the additionalSettings value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withAdditionalSettings(String additionalSettings) {
+        this.additionalSettings = additionalSettings;
         return this;
     }
 
@@ -93,9 +194,11 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
     public void validate() {
         super.validate();
         if (serverName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property serverName in model MySqlConnectionInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MySqlConnectionInfo.class);
 }

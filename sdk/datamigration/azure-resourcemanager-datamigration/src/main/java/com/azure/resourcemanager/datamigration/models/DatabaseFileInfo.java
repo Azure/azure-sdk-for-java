@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Database file specific information. */
 @Fluent
 public final class DatabaseFileInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseFileInfo.class);
-
     /*
      * Name of the database
      */

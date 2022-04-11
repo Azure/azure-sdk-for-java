@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information of the backup file. */
 @Fluent
 public final class BackupFileInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupFileInfo.class);
-
     /*
      * Location of the backup file in shared folder
      */

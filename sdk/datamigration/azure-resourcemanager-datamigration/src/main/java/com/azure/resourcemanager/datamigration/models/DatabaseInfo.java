@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Project Database Details. */
 @Fluent
 public final class DatabaseInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseInfo.class);
-
     /*
      * Name of the database
      */
@@ -47,9 +44,11 @@ public final class DatabaseInfo {
      */
     public void validate() {
         if (sourceDatabaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sourceDatabaseName in model DatabaseInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabaseInfo.class);
 }

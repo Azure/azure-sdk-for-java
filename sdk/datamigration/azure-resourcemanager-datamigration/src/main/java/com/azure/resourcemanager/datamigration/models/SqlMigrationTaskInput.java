@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Base class for migration task input. */
 @Fluent
 public class SqlMigrationTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlMigrationTaskInput.class);
-
     /*
      * Information for connecting to source
      */
@@ -73,7 +70,7 @@ public class SqlMigrationTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model SqlMigrationTaskInput"));
@@ -81,7 +78,7 @@ public class SqlMigrationTaskInput {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model SqlMigrationTaskInput"));
@@ -89,4 +86,6 @@ public class SqlMigrationTaskInput {
             targetConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlMigrationTaskInput.class);
 }

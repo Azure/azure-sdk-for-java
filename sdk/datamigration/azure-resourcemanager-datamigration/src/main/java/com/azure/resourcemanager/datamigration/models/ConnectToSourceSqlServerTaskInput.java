@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to SQL Server and also validates source server requirements. */
 @Fluent
 public final class ConnectToSourceSqlServerTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceSqlServerTaskInput.class);
-
     /*
      * Connection information for Source SQL Server
      */
@@ -27,6 +24,12 @@ public final class ConnectToSourceSqlServerTaskInput {
     private ServerLevelPermissionsGroup checkPermissionsGroup;
 
     /*
+     * Flag for whether to collect databases from source server.
+     */
+    @JsonProperty(value = "collectDatabases")
+    private Boolean collectDatabases;
+
+    /*
      * Flag for whether to collect logins from source server.
      */
     @JsonProperty(value = "collectLogins")
@@ -37,6 +40,25 @@ public final class ConnectToSourceSqlServerTaskInput {
      */
     @JsonProperty(value = "collectAgentJobs")
     private Boolean collectAgentJobs;
+
+    /*
+     * Flag for whether to collect TDE Certificate names from source server.
+     */
+    @JsonProperty(value = "collectTdeCertificateInfo")
+    private Boolean collectTdeCertificateInfo;
+
+    /*
+     * Flag for whether to validate SSIS catalog is reachable on the source
+     * server.
+     */
+    @JsonProperty(value = "validateSsisCatalogOnly")
+    private Boolean validateSsisCatalogOnly;
+
+    /*
+     * encrypted key for secure fields
+     */
+    @JsonProperty(value = "encryptedKeyForSecureFields")
+    private String encryptedKeyForSecureFields;
 
     /**
      * Get the sourceConnectionInfo property: Connection information for Source SQL Server.
@@ -76,6 +98,26 @@ public final class ConnectToSourceSqlServerTaskInput {
     public ConnectToSourceSqlServerTaskInput withCheckPermissionsGroup(
         ServerLevelPermissionsGroup checkPermissionsGroup) {
         this.checkPermissionsGroup = checkPermissionsGroup;
+        return this;
+    }
+
+    /**
+     * Get the collectDatabases property: Flag for whether to collect databases from source server.
+     *
+     * @return the collectDatabases value.
+     */
+    public Boolean collectDatabases() {
+        return this.collectDatabases;
+    }
+
+    /**
+     * Set the collectDatabases property: Flag for whether to collect databases from source server.
+     *
+     * @param collectDatabases the collectDatabases value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withCollectDatabases(Boolean collectDatabases) {
+        this.collectDatabases = collectDatabases;
         return this;
     }
 
@@ -120,13 +162,75 @@ public final class ConnectToSourceSqlServerTaskInput {
     }
 
     /**
+     * Get the collectTdeCertificateInfo property: Flag for whether to collect TDE Certificate names from source server.
+     *
+     * @return the collectTdeCertificateInfo value.
+     */
+    public Boolean collectTdeCertificateInfo() {
+        return this.collectTdeCertificateInfo;
+    }
+
+    /**
+     * Set the collectTdeCertificateInfo property: Flag for whether to collect TDE Certificate names from source server.
+     *
+     * @param collectTdeCertificateInfo the collectTdeCertificateInfo value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withCollectTdeCertificateInfo(Boolean collectTdeCertificateInfo) {
+        this.collectTdeCertificateInfo = collectTdeCertificateInfo;
+        return this;
+    }
+
+    /**
+     * Get the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the source
+     * server.
+     *
+     * @return the validateSsisCatalogOnly value.
+     */
+    public Boolean validateSsisCatalogOnly() {
+        return this.validateSsisCatalogOnly;
+    }
+
+    /**
+     * Set the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the source
+     * server.
+     *
+     * @param validateSsisCatalogOnly the validateSsisCatalogOnly value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withValidateSsisCatalogOnly(Boolean validateSsisCatalogOnly) {
+        this.validateSsisCatalogOnly = validateSsisCatalogOnly;
+        return this;
+    }
+
+    /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     *
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     *
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the ConnectToSourceSqlServerTaskInput object itself.
+     */
+    public ConnectToSourceSqlServerTaskInput withEncryptedKeyForSecureFields(String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model ConnectToSourceSqlServerTaskInput"));
@@ -134,4 +238,6 @@ public final class ConnectToSourceSqlServerTaskInput {
             sourceConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToSourceSqlServerTaskInput.class);
 }

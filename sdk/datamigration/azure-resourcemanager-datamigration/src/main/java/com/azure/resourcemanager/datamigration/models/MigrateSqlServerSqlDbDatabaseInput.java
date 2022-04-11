@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Database specific information for SQL to Azure SQL DB migration task inputs. */
 @Fluent
 public final class MigrateSqlServerSqlDbDatabaseInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbDatabaseInput.class);
-
     /*
      * Name of the database
      */
@@ -38,7 +35,20 @@ public final class MigrateSqlServerSqlDbDatabaseInput {
      * Mapping of source to target tables
      */
     @JsonProperty(value = "tableMap")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tableMap;
+
+    /*
+     * Settings selected for DB schema migration.
+     */
+    @JsonProperty(value = "schemaSetting")
+    private Object schemaSetting;
+
+    /*
+     * id of the database
+     */
+    @JsonProperty(value = "id")
+    private String id;
 
     /**
      * Get the name property: Name of the database.
@@ -119,6 +129,46 @@ public final class MigrateSqlServerSqlDbDatabaseInput {
      */
     public MigrateSqlServerSqlDbDatabaseInput withTableMap(Map<String, String> tableMap) {
         this.tableMap = tableMap;
+        return this;
+    }
+
+    /**
+     * Get the schemaSetting property: Settings selected for DB schema migration.
+     *
+     * @return the schemaSetting value.
+     */
+    public Object schemaSetting() {
+        return this.schemaSetting;
+    }
+
+    /**
+     * Set the schemaSetting property: Settings selected for DB schema migration.
+     *
+     * @param schemaSetting the schemaSetting value to set.
+     * @return the MigrateSqlServerSqlDbDatabaseInput object itself.
+     */
+    public MigrateSqlServerSqlDbDatabaseInput withSchemaSetting(Object schemaSetting) {
+        this.schemaSetting = schemaSetting;
+        return this;
+    }
+
+    /**
+     * Get the id property: id of the database.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: id of the database.
+     *
+     * @param id the id value to set.
+     * @return the MigrateSqlServerSqlDbDatabaseInput object itself.
+     */
+    public MigrateSqlServerSqlDbDatabaseInput withId(String id) {
+        this.id = id;
         return this;
     }
 

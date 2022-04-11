@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Database specific information for MySQL to Azure Database for MySQL migration task inputs. */
 @Fluent
 public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateMySqlAzureDbForMySqlSyncDatabaseInput.class);
-
     /*
      * Name of the database
      */
@@ -33,19 +29,29 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput {
      * Migration settings which tune the migration behavior
      */
     @JsonProperty(value = "migrationSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> migrationSetting;
 
     /*
      * Source settings to tune source endpoint migration behavior
      */
     @JsonProperty(value = "sourceSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceSetting;
 
     /*
      * Target settings to tune target endpoint migration behavior
      */
     @JsonProperty(value = "targetSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetSetting;
+
+    /*
+     * Mapping of source to target tables
+     */
+    @JsonProperty(value = "tableMap")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tableMap;
 
     /**
      * Get the name property: Name of the database.
@@ -146,6 +152,26 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput {
      */
     public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withTargetSetting(Map<String, String> targetSetting) {
         this.targetSetting = targetSetting;
+        return this;
+    }
+
+    /**
+     * Get the tableMap property: Mapping of source to target tables.
+     *
+     * @return the tableMap value.
+     */
+    public Map<String, String> tableMap() {
+        return this.tableMap;
+    }
+
+    /**
+     * Set the tableMap property: Mapping of source to target tables.
+     *
+     * @param tableMap the tableMap value to set.
+     * @return the MigrateMySqlAzureDbForMySqlSyncDatabaseInput object itself.
+     */
+    public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withTableMap(Map<String, String> tableMap) {
+        this.tableMap = tableMap;
         return this;
     }
 

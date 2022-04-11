@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,10 +16,6 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
     extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.class);
-
     /*
      * Name of the table
      */

@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for the task that migrates on-prem SQL Server databases to Azure SQL Database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("Migrate.SqlServer.SqlDb")
 @Fluent
 public final class MigrateSqlServerSqlDbTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskProperties.class);
-
     /*
      * Task input
      */
@@ -30,6 +27,24 @@ public final class MigrateSqlServerSqlDbTaskProperties extends ProjectTaskProper
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<MigrateSqlServerSqlDbTaskOutput> output;
+
+    /*
+     * task id
+     */
+    @JsonProperty(value = "taskId")
+    private String taskId;
+
+    /*
+     * whether the task can be cloned or not
+     */
+    @JsonProperty(value = "isCloneable")
+    private Boolean isCloneable;
+
+    /*
+     * DateTime in UTC when the task was created
+     */
+    @JsonProperty(value = "createdOn")
+    private String createdOn;
 
     /**
      * Get the input property: Task input.
@@ -58,6 +73,73 @@ public final class MigrateSqlServerSqlDbTaskProperties extends ProjectTaskProper
      */
     public List<MigrateSqlServerSqlDbTaskOutput> output() {
         return this.output;
+    }
+
+    /**
+     * Get the taskId property: task id.
+     *
+     * @return the taskId value.
+     */
+    public String taskId() {
+        return this.taskId;
+    }
+
+    /**
+     * Set the taskId property: task id.
+     *
+     * @param taskId the taskId value to set.
+     * @return the MigrateSqlServerSqlDbTaskProperties object itself.
+     */
+    public MigrateSqlServerSqlDbTaskProperties withTaskId(String taskId) {
+        this.taskId = taskId;
+        return this;
+    }
+
+    /**
+     * Get the isCloneable property: whether the task can be cloned or not.
+     *
+     * @return the isCloneable value.
+     */
+    public Boolean isCloneable() {
+        return this.isCloneable;
+    }
+
+    /**
+     * Set the isCloneable property: whether the task can be cloned or not.
+     *
+     * @param isCloneable the isCloneable value to set.
+     * @return the MigrateSqlServerSqlDbTaskProperties object itself.
+     */
+    public MigrateSqlServerSqlDbTaskProperties withIsCloneable(Boolean isCloneable) {
+        this.isCloneable = isCloneable;
+        return this;
+    }
+
+    /**
+     * Get the createdOn property: DateTime in UTC when the task was created.
+     *
+     * @return the createdOn value.
+     */
+    public String createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Set the createdOn property: DateTime in UTC when the task was created.
+     *
+     * @param createdOn the createdOn value to set.
+     * @return the MigrateSqlServerSqlDbTaskProperties object itself.
+     */
+    public MigrateSqlServerSqlDbTaskProperties withCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MigrateSqlServerSqlDbTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

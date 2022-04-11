@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datamigration.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -19,12 +18,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {DataMigrationManagementClientImpl.class})
 public final class DataMigrationManagementClientBuilder {
     /*
-     * Identifier of the subscription
+     * Subscription ID that identifies an Azure subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets Identifier of the subscription.
+     * Sets Subscription ID that identifies an Azure subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the DataMigrationManagementClientBuilder.
@@ -67,22 +66,6 @@ public final class DataMigrationManagementClientBuilder {
     }
 
     /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the DataMigrationManagementClientBuilder.
-     */
-    public DataMigrationManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
-    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -95,6 +78,22 @@ public final class DataMigrationManagementClientBuilder {
      */
     public DataMigrationManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the DataMigrationManagementClientBuilder.
+     */
+    public DataMigrationManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
         return this;
     }
 
@@ -120,20 +119,20 @@ public final class DataMigrationManagementClientBuilder {
      * @return an instance of DataMigrationManagementClientImpl.
      */
     public DataMigrationManagementClientImpl buildClient() {
+        if (pipeline == null) {
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        }
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         }
+        if (pipeline == null) {
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        }
         if (defaultPollInterval == null) {
             this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.datamigration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.models.ResourceSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DMS List SKUs operation response. */
 @Fluent
 public final class ResourceSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkusResult.class);
-
     /*
      * The list of SKUs available for the subscription.
      */
@@ -78,11 +75,13 @@ public final class ResourceSkusResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ResourceSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceSkusResult.class);
 }

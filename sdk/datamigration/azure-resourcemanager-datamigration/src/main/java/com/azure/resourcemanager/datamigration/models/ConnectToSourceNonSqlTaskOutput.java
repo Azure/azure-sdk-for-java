@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Output for connect to Oracle, MySQL type source. */
+/** Output for connect to MySQL type source. */
 @Immutable
 public final class ConnectToSourceNonSqlTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceNonSqlTaskOutput.class);
-
     /*
      * Result identifier
      */

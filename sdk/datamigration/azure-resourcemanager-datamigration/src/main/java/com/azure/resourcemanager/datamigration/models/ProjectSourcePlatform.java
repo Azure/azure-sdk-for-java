@@ -13,6 +13,15 @@ public final class ProjectSourcePlatform extends ExpandableStringEnum<ProjectSou
     /** Static value SQL for ProjectSourcePlatform. */
     public static final ProjectSourcePlatform SQL = fromString("SQL");
 
+    /** Static value MySQL for ProjectSourcePlatform. */
+    public static final ProjectSourcePlatform MY_SQL = fromString("MySQL");
+
+    /** Static value PostgreSql for ProjectSourcePlatform. */
+    public static final ProjectSourcePlatform POSTGRE_SQL = fromString("PostgreSql");
+
+    /** Static value MongoDb for ProjectSourcePlatform. */
+    public static final ProjectSourcePlatform MONGO_DB = fromString("MongoDb");
+
     /** Static value Unknown for ProjectSourcePlatform. */
     public static final ProjectSourcePlatform UNKNOWN = fromString("Unknown");
 

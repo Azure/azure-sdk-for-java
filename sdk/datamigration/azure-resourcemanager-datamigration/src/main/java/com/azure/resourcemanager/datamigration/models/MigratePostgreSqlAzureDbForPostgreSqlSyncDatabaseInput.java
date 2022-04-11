@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Database specific information for PostgreSQL to Azure Database for PostgreSQL migration task inputs. */
 @Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.class);
-
     /*
      * Name of the database
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /*
+     * Result identifier
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /*
      * Name of target database. Note: Target database will be truncated before
@@ -33,19 +36,28 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
      * Migration settings which tune the migration behavior
      */
     @JsonProperty(value = "migrationSetting")
-    private Map<String, String> migrationSetting;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> migrationSetting;
 
     /*
      * Source settings to tune source endpoint migration behavior
      */
     @JsonProperty(value = "sourceSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceSetting;
 
     /*
      * Target settings to tune target endpoint migration behavior
      */
     @JsonProperty(value = "targetSetting")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetSetting;
+
+    /*
+     * Tables selected for migration
+     */
+    @JsonProperty(value = "selectedTables")
+    private List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables;
 
     /**
      * Get the name property: Name of the database.
@@ -65,6 +77,15 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
     public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get the id property: Result identifier.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -94,7 +115,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
      *
      * @return the migrationSetting value.
      */
-    public Map<String, String> migrationSetting() {
+    public Map<String, Object> migrationSetting() {
         return this.migrationSetting;
     }
 
@@ -105,7 +126,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
      */
     public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withMigrationSetting(
-        Map<String, String> migrationSetting) {
+        Map<String, Object> migrationSetting) {
         this.migrationSetting = migrationSetting;
         return this;
     }
@@ -151,10 +172,34 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
     }
 
     /**
+     * Get the selectedTables property: Tables selected for migration.
+     *
+     * @return the selectedTables value.
+     */
+    public List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables() {
+        return this.selectedTables;
+    }
+
+    /**
+     * Set the selectedTables property: Tables selected for migration.
+     *
+     * @param selectedTables the selectedTables value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withSelectedTables(
+        List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables) {
+        this.selectedTables = selectedTables;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (selectedTables() != null) {
+            selectedTables().forEach(e -> e.validate());
+        }
     }
 }

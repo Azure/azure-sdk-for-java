@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datamigration.fluent.ProjectsClient;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
 import com.azure.resourcemanager.datamigration.models.Project;
 import com.azure.resourcemanager.datamigration.models.Projects;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProjectsImpl implements Projects {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProjectsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProjectsImpl.class);
 
     private final ProjectsClient innerClient;
 
@@ -28,13 +27,13 @@ public final class ProjectsImpl implements Projects {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Project> listByResourceGroup(String groupName, String serviceName) {
-        PagedIterable<ProjectInner> inner = this.serviceClient().listByResourceGroup(groupName, serviceName);
+    public PagedIterable<Project> list(String groupName, String serviceName) {
+        PagedIterable<ProjectInner> inner = this.serviceClient().list(groupName, serviceName);
         return Utils.mapPage(inner, inner1 -> new ProjectImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Project> listByResourceGroup(String groupName, String serviceName, Context context) {
-        PagedIterable<ProjectInner> inner = this.serviceClient().listByResourceGroup(groupName, serviceName, context);
+    public PagedIterable<Project> list(String groupName, String serviceName, Context context) {
+        PagedIterable<ProjectInner> inner = this.serviceClient().list(groupName, serviceName, context);
         return Utils.mapPage(inner, inner1 -> new ProjectImpl(inner1, this.manager()));
     }
 
@@ -76,7 +75,7 @@ public final class ProjectsImpl implements Projects {
     public Project getById(String id) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,14 +83,14 @@ public final class ProjectsImpl implements Projects {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         String projectName = Utils.getValueFromIdByName(id, "projects");
         if (projectName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
@@ -102,7 +101,7 @@ public final class ProjectsImpl implements Projects {
     public Response<Project> getByIdWithResponse(String id, Context context) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,14 +109,14 @@ public final class ProjectsImpl implements Projects {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         String projectName = Utils.getValueFromIdByName(id, "projects");
         if (projectName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
@@ -128,7 +127,7 @@ public final class ProjectsImpl implements Projects {
     public void deleteById(String id) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,26 +135,26 @@ public final class ProjectsImpl implements Projects {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         String projectName = Utils.getValueFromIdByName(id, "projects");
         if (projectName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
         }
         Boolean localDeleteRunningTasks = null;
-        this.deleteWithResponse(groupName, serviceName, projectName, localDeleteRunningTasks, Context.NONE).getValue();
+        this.deleteWithResponse(groupName, serviceName, projectName, localDeleteRunningTasks, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Boolean deleteRunningTasks, Context context) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,14 +162,14 @@ public final class ProjectsImpl implements Projects {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         String projectName = Utils.getValueFromIdByName(id, "projects");
         if (projectName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));

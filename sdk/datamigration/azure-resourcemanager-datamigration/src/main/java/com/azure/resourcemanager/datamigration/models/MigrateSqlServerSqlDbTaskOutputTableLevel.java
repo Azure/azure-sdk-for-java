@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** Table level result for Sql Server to Azure Sql DB migration. */
+/** The MigrateSqlServerSqlDbTaskOutputTableLevel model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("TableLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputTableLevel extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputTableLevel.class);
-
     /*
      * Name of the item
      */

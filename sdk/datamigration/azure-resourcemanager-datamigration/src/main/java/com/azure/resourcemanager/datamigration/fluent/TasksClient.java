@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectTaskInner;
 
 /** An instance of this class provides access to all the operations defined in TasksClient. */
@@ -24,7 +25,7 @@ public interface TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of tasks.
+     * @return oData page of tasks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProjectTaskInner> list(String groupName, String serviceName, String projectName);
@@ -42,7 +43,7 @@ public interface TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of tasks.
+     * @return oData page of tasks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProjectTaskInner> list(
@@ -81,7 +82,7 @@ public interface TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
+     * @return a task resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProjectTaskInner> createOrUpdateWithResponse(
@@ -121,7 +122,7 @@ public interface TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
+     * @return a task resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProjectTaskInner> getWithResponse(
@@ -155,7 +156,7 @@ public interface TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -199,7 +200,7 @@ public interface TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
+     * @return a task resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProjectTaskInner> updateWithResponse(
@@ -238,9 +239,51 @@ public interface TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
+     * @return a task resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProjectTaskInner> cancelWithResponse(
         String groupName, String serviceName, String projectName, String taskName, Context context);
+
+    /**
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
+     * executes a command on a running task.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param projectName Name of the project.
+     * @param taskName Name of the Task.
+     * @param parameters Command to execute.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for all types of DMS command properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommandPropertiesInner command(
+        String groupName, String serviceName, String projectName, String taskName, CommandPropertiesInner parameters);
+
+    /**
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
+     * executes a command on a running task.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param projectName Name of the project.
+     * @param taskName Name of the Task.
+     * @param parameters Command to execute.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for all types of DMS command properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CommandPropertiesInner> commandWithResponse(
+        String groupName,
+        String serviceName,
+        String projectName,
+        String taskName,
+        CommandPropertiesInner parameters,
+        Context context);
 }

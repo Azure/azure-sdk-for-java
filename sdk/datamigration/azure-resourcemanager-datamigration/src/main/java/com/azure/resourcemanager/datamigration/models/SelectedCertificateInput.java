@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Info for certificate to be exported for TDE enabled databases. */
 @Fluent
 public final class SelectedCertificateInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelectedCertificateInput.class);
-
     /*
      * Name of certificate to be exported.
      */
@@ -73,16 +70,18 @@ public final class SelectedCertificateInput {
      */
     public void validate() {
         if (certificateName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateName in model SelectedCertificateInput"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property password in model SelectedCertificateInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SelectedCertificateInput.class);
 }

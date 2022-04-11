@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name of the quota. */
 @Fluent
 public final class QuotaName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaName.class);
-
     /*
      * The localized name of the quota
      */

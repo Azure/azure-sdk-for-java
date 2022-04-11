@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PostgreSqlConnectionInfo")
 @Fluent
 public final class PostgreSqlConnectionInfo extends ConnectionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PostgreSqlConnectionInfo.class);
-
     /*
      * Name of the server
      */
     @JsonProperty(value = "serverName", required = true)
     private String serverName;
+
+    /*
+     * Data source
+     */
+    @JsonProperty(value = "dataSource")
+    private String dataSource;
+
+    /*
+     * server version
+     */
+    @JsonProperty(value = "serverVersion")
+    private String serverVersion;
 
     /*
      * Name of the database
@@ -35,6 +44,36 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
      */
     @JsonProperty(value = "port", required = true)
     private int port;
+
+    /*
+     * Whether to encrypt the connection
+     */
+    @JsonProperty(value = "encryptConnection")
+    private Boolean encryptConnection;
+
+    /*
+     * Whether to trust the server certificate
+     */
+    @JsonProperty(value = "trustServerCertificate")
+    private Boolean trustServerCertificate;
+
+    /*
+     * Additional connection settings
+     */
+    @JsonProperty(value = "additionalSettings")
+    private String additionalSettings;
+
+    /*
+     * server brand version
+     */
+    @JsonProperty(value = "serverBrandVersion")
+    private String serverBrandVersion;
+
+    /*
+     * Authentication type to use for connection
+     */
+    @JsonProperty(value = "authentication")
+    private AuthenticationType authentication;
 
     /**
      * Get the serverName property: Name of the server.
@@ -53,6 +92,46 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
      */
     public PostgreSqlConnectionInfo withServerName(String serverName) {
         this.serverName = serverName;
+        return this;
+    }
+
+    /**
+     * Get the dataSource property: Data source.
+     *
+     * @return the dataSource value.
+     */
+    public String dataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Set the dataSource property: Data source.
+     *
+     * @param dataSource the dataSource value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withDataSource(String dataSource) {
+        this.dataSource = dataSource;
+        return this;
+    }
+
+    /**
+     * Get the serverVersion property: server version.
+     *
+     * @return the serverVersion value.
+     */
+    public String serverVersion() {
+        return this.serverVersion;
+    }
+
+    /**
+     * Set the serverVersion property: server version.
+     *
+     * @param serverVersion the serverVersion value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withServerVersion(String serverVersion) {
+        this.serverVersion = serverVersion;
         return this;
     }
 
@@ -96,6 +175,106 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
         return this;
     }
 
+    /**
+     * Get the encryptConnection property: Whether to encrypt the connection.
+     *
+     * @return the encryptConnection value.
+     */
+    public Boolean encryptConnection() {
+        return this.encryptConnection;
+    }
+
+    /**
+     * Set the encryptConnection property: Whether to encrypt the connection.
+     *
+     * @param encryptConnection the encryptConnection value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withEncryptConnection(Boolean encryptConnection) {
+        this.encryptConnection = encryptConnection;
+        return this;
+    }
+
+    /**
+     * Get the trustServerCertificate property: Whether to trust the server certificate.
+     *
+     * @return the trustServerCertificate value.
+     */
+    public Boolean trustServerCertificate() {
+        return this.trustServerCertificate;
+    }
+
+    /**
+     * Set the trustServerCertificate property: Whether to trust the server certificate.
+     *
+     * @param trustServerCertificate the trustServerCertificate value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withTrustServerCertificate(Boolean trustServerCertificate) {
+        this.trustServerCertificate = trustServerCertificate;
+        return this;
+    }
+
+    /**
+     * Get the additionalSettings property: Additional connection settings.
+     *
+     * @return the additionalSettings value.
+     */
+    public String additionalSettings() {
+        return this.additionalSettings;
+    }
+
+    /**
+     * Set the additionalSettings property: Additional connection settings.
+     *
+     * @param additionalSettings the additionalSettings value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withAdditionalSettings(String additionalSettings) {
+        this.additionalSettings = additionalSettings;
+        return this;
+    }
+
+    /**
+     * Get the serverBrandVersion property: server brand version.
+     *
+     * @return the serverBrandVersion value.
+     */
+    public String serverBrandVersion() {
+        return this.serverBrandVersion;
+    }
+
+    /**
+     * Set the serverBrandVersion property: server brand version.
+     *
+     * @param serverBrandVersion the serverBrandVersion value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withServerBrandVersion(String serverBrandVersion) {
+        this.serverBrandVersion = serverBrandVersion;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Authentication type to use for connection.
+     *
+     * @return the authentication value.
+     */
+    public AuthenticationType authentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Authentication type to use for connection.
+     *
+     * @param authentication the authentication value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withAuthentication(AuthenticationType authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public PostgreSqlConnectionInfo withUsername(String username) {
@@ -119,10 +298,12 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
     public void validate() {
         super.validate();
         if (serverName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serverName in model PostgreSqlConnectionInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlConnectionInfo.class);
 }

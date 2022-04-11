@@ -4,33 +4,29 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description about the errors happen while performing migration validation. */
-@Immutable
+@Fluent
 public final class SchemaComparisonValidationResultType {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaComparisonValidationResultType.class);
-
     /*
      * Name of the object that has the difference
      */
-    @JsonProperty(value = "objectName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "objectName")
     private String objectName;
 
     /*
      * Type of the object that has the difference. e.g
      * (Table/View/StoredProcedure)
      */
-    @JsonProperty(value = "objectType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "objectType")
     private ObjectType objectType;
 
     /*
      * Update action type with respect to target
      */
-    @JsonProperty(value = "updateAction", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "updateAction")
     private UpdateActionType updateAction;
 
     /**
@@ -43,6 +39,17 @@ public final class SchemaComparisonValidationResultType {
     }
 
     /**
+     * Set the objectName property: Name of the object that has the difference.
+     *
+     * @param objectName the objectName value to set.
+     * @return the SchemaComparisonValidationResultType object itself.
+     */
+    public SchemaComparisonValidationResultType withObjectName(String objectName) {
+        this.objectName = objectName;
+        return this;
+    }
+
+    /**
      * Get the objectType property: Type of the object that has the difference. e.g (Table/View/StoredProcedure).
      *
      * @return the objectType value.
@@ -52,12 +59,34 @@ public final class SchemaComparisonValidationResultType {
     }
 
     /**
+     * Set the objectType property: Type of the object that has the difference. e.g (Table/View/StoredProcedure).
+     *
+     * @param objectType the objectType value to set.
+     * @return the SchemaComparisonValidationResultType object itself.
+     */
+    public SchemaComparisonValidationResultType withObjectType(ObjectType objectType) {
+        this.objectType = objectType;
+        return this;
+    }
+
+    /**
      * Get the updateAction property: Update action type with respect to target.
      *
      * @return the updateAction value.
      */
     public UpdateActionType updateAction() {
         return this.updateAction;
+    }
+
+    /**
+     * Set the updateAction property: Update action type with respect to target.
+     *
+     * @param updateAction the updateAction value to set.
+     * @return the SchemaComparisonValidationResultType object itself.
+     */
+    public SchemaComparisonValidationResultType withUpdateAction(UpdateActionType updateAction) {
+        this.updateAction = updateAction;
+        return this;
     }
 
     /**

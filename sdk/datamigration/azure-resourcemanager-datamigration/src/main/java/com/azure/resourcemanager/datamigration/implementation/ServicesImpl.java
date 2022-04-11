@@ -20,10 +20,9 @@ import com.azure.resourcemanager.datamigration.models.DataMigrationServiceStatus
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityResponse;
 import com.azure.resourcemanager.datamigration.models.Services;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 
@@ -121,10 +120,10 @@ public final class ServicesImpl implements Services {
         return Utils.mapPage(inner, inner1 -> new AvailableServiceSkuImpl(inner1, this.manager()));
     }
 
-    public NameAvailabilityResponse nestedCheckNameAvailability(
+    public NameAvailabilityResponse checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
         NameAvailabilityResponseInner inner =
-            this.serviceClient().nestedCheckNameAvailability(groupName, serviceName, parameters);
+            this.serviceClient().checkChildrenNameAvailability(groupName, serviceName, parameters);
         if (inner != null) {
             return new NameAvailabilityResponseImpl(inner, this.manager());
         } else {
@@ -132,10 +131,10 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+    public Response<NameAvailabilityResponse> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
         Response<NameAvailabilityResponseInner> inner =
-            this.serviceClient().nestedCheckNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
+            this.serviceClient().checkChildrenNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -194,7 +193,7 @@ public final class ServicesImpl implements Services {
     public DataMigrationService getById(String id) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -202,7 +201,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -213,7 +212,7 @@ public final class ServicesImpl implements Services {
     public Response<DataMigrationService> getByIdWithResponse(String id, Context context) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -221,7 +220,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -232,7 +231,7 @@ public final class ServicesImpl implements Services {
     public void deleteById(String id) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -240,7 +239,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -252,7 +251,7 @@ public final class ServicesImpl implements Services {
     public void deleteByIdWithResponse(String id, Boolean deleteRunningTasks, Context context) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -260,7 +259,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));

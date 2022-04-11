@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A resource type and proposed name. */
 @Fluent
 public final class NameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityRequest.class);
-
     /*
      * The proposed resource name
      */

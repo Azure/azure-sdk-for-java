@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for the task that validates connection to SQL Server and also validates source server requirements. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("ConnectToSource.SqlServer")
 @Fluent
 public final class ConnectToSourceSqlServerTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceSqlServerTaskProperties.class);
-
     /*
      * Task input
      */
@@ -30,6 +27,12 @@ public final class ConnectToSourceSqlServerTaskProperties extends ProjectTaskPro
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectToSourceSqlServerTaskOutput> output;
+
+    /*
+     * Task id
+     */
+    @JsonProperty(value = "taskId")
+    private String taskId;
 
     /**
      * Get the input property: Task input.
@@ -58,6 +61,33 @@ public final class ConnectToSourceSqlServerTaskProperties extends ProjectTaskPro
      */
     public List<ConnectToSourceSqlServerTaskOutput> output() {
         return this.output;
+    }
+
+    /**
+     * Get the taskId property: Task id.
+     *
+     * @return the taskId value.
+     */
+    public String taskId() {
+        return this.taskId;
+    }
+
+    /**
+     * Set the taskId property: Task id.
+     *
+     * @param taskId the taskId value to set.
+     * @return the ConnectToSourceSqlServerTaskProperties object itself.
+     */
+    public ConnectToSourceSqlServerTaskProperties withTaskId(String taskId) {
+        this.taskId = taskId;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectToSourceSqlServerTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

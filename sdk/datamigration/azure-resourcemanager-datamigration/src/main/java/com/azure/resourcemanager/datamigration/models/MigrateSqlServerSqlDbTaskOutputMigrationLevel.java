@@ -4,23 +4,18 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Migration level result for Sql server to Azure Sql DB migration. */
+/** The MigrateSqlServerSqlDbTaskOutputMigrationLevel model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("MigrationLevelOutput")
-@Immutable
+@Fluent
 public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputMigrationLevel.class);
-
     /*
      * Migration start time
      */
@@ -70,11 +65,17 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
     private String databaseSummary;
 
     /*
+     * Migration Validation Results
+     */
+    @JsonProperty(value = "migrationValidationResult")
+    private MigrationValidationResult migrationValidationResult;
+
+    /*
      * Migration Report Result, provides unique url for downloading your
      * migration report.
      */
-    @JsonProperty(value = "migrationReport", access = JsonProperty.Access.WRITE_ONLY)
-    private MigrationReportResult migrationReport;
+    @JsonProperty(value = "migrationReportResult")
+    private MigrationReportResult migrationReportResult;
 
     /*
      * Source server version
@@ -179,13 +180,47 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
     }
 
     /**
-     * Get the migrationReport property: Migration Report Result, provides unique url for downloading your migration
-     * report.
+     * Get the migrationValidationResult property: Migration Validation Results.
      *
-     * @return the migrationReport value.
+     * @return the migrationValidationResult value.
      */
-    public MigrationReportResult migrationReport() {
-        return this.migrationReport;
+    public MigrationValidationResult migrationValidationResult() {
+        return this.migrationValidationResult;
+    }
+
+    /**
+     * Set the migrationValidationResult property: Migration Validation Results.
+     *
+     * @param migrationValidationResult the migrationValidationResult value to set.
+     * @return the MigrateSqlServerSqlDbTaskOutputMigrationLevel object itself.
+     */
+    public MigrateSqlServerSqlDbTaskOutputMigrationLevel withMigrationValidationResult(
+        MigrationValidationResult migrationValidationResult) {
+        this.migrationValidationResult = migrationValidationResult;
+        return this;
+    }
+
+    /**
+     * Get the migrationReportResult property: Migration Report Result, provides unique url for downloading your
+     * migration report.
+     *
+     * @return the migrationReportResult value.
+     */
+    public MigrationReportResult migrationReportResult() {
+        return this.migrationReportResult;
+    }
+
+    /**
+     * Set the migrationReportResult property: Migration Report Result, provides unique url for downloading your
+     * migration report.
+     *
+     * @param migrationReportResult the migrationReportResult value to set.
+     * @return the MigrateSqlServerSqlDbTaskOutputMigrationLevel object itself.
+     */
+    public MigrateSqlServerSqlDbTaskOutputMigrationLevel withMigrationReportResult(
+        MigrationReportResult migrationReportResult) {
+        this.migrationReportResult = migrationReportResult;
+        return this;
     }
 
     /**
@@ -241,8 +276,11 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
     @Override
     public void validate() {
         super.validate();
-        if (migrationReport() != null) {
-            migrationReport().validate();
+        if (migrationValidationResult() != null) {
+            migrationValidationResult().validate();
+        }
+        if (migrationReportResult() != null) {
+            migrationReportResult().validate();
         }
         if (exceptionsAndWarnings() != null) {
             exceptionsAndWarnings().forEach(e -> e.validate());

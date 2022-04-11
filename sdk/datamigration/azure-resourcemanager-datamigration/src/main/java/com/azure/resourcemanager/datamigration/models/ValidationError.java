@@ -4,26 +4,22 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description about the errors happen while performing migration validation. */
-@Immutable
+@Fluent
 public final class ValidationError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationError.class);
-
     /*
      * Error Text
      */
-    @JsonProperty(value = "text", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "text")
     private String text;
 
     /*
      * Severity of the error
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "severity")
     private Severity severity;
 
     /**
@@ -36,12 +32,34 @@ public final class ValidationError {
     }
 
     /**
+     * Set the text property: Error Text.
+     *
+     * @param text the text value to set.
+     * @return the ValidationError object itself.
+     */
+    public ValidationError withText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    /**
      * Get the severity property: Severity of the error.
      *
      * @return the severity value.
      */
     public Severity severity() {
         return this.severity;
+    }
+
+    /**
+     * Set the severity property: Severity of the error.
+     *
+     * @param severity the severity value to set.
+     * @return the ValidationError object itself.
+     */
+    public ValidationError withSeverity(Severity severity) {
+        this.severity = severity;
+        return this;
     }
 
     /**

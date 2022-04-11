@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** Database validation result for Sql Server to Azure Sql DB migration. */
+/** The MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("MigrationDatabaseLevelValidationOutput")
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
     extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.class);
+    /*
+     * Result identifier
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /*
      * Migration Identifier
@@ -77,6 +77,15 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
+
+    /**
+     * Get the id property: Result identifier.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the migrationId property: Migration Identifier.

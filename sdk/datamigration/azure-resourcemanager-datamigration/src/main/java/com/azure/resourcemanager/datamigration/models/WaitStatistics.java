@@ -4,32 +4,28 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Wait statistics gathered during query batch execution. */
-@Immutable
+@Fluent
 public final class WaitStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatistics.class);
-
     /*
      * Type of the Wait
      */
-    @JsonProperty(value = "waitType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "waitType")
     private String waitType;
 
     /*
      * Total wait time in millisecond(s)
      */
-    @JsonProperty(value = "waitTimeMs", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "waitTimeMs")
     private Float waitTimeMs;
 
     /*
      * Total no. of waits
      */
-    @JsonProperty(value = "waitCount", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "waitCount")
     private Long waitCount;
 
     /**
@@ -42,6 +38,17 @@ public final class WaitStatistics {
     }
 
     /**
+     * Set the waitType property: Type of the Wait.
+     *
+     * @param waitType the waitType value to set.
+     * @return the WaitStatistics object itself.
+     */
+    public WaitStatistics withWaitType(String waitType) {
+        this.waitType = waitType;
+        return this;
+    }
+
+    /**
      * Get the waitTimeMs property: Total wait time in millisecond(s).
      *
      * @return the waitTimeMs value.
@@ -51,12 +58,34 @@ public final class WaitStatistics {
     }
 
     /**
+     * Set the waitTimeMs property: Total wait time in millisecond(s).
+     *
+     * @param waitTimeMs the waitTimeMs value to set.
+     * @return the WaitStatistics object itself.
+     */
+    public WaitStatistics withWaitTimeMs(Float waitTimeMs) {
+        this.waitTimeMs = waitTimeMs;
+        return this;
+    }
+
+    /**
      * Get the waitCount property: Total no. of waits.
      *
      * @return the waitCount value.
      */
     public Long waitCount() {
         return this.waitCount;
+    }
+
+    /**
+     * Set the waitCount property: Total no. of waits.
+     *
+     * @param waitCount the waitCount value to set.
+     * @return the WaitStatistics object itself.
+     */
+    public WaitStatistics withWaitCount(Long waitCount) {
+        this.waitCount = waitCount;
+        return this;
     }
 
     /**

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that migrates on-prem SQL Server databases to Azure SQL Database. */
 @Fluent
 public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskInput.class);
-
     /*
      * Databases to migrate
      */
@@ -36,6 +33,18 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
      */
     @JsonProperty(value = "validationOptions")
     private MigrationValidationOptions validationOptions;
+
+    /*
+     * Date and time relative to UTC when the migration was started on
+     */
+    @JsonProperty(value = "startedOn")
+    private String startedOn;
+
+    /*
+     * encrypted key for secure fields
+     */
+    @JsonProperty(value = "encryptedKeyForSecureFields")
+    private String encryptedKeyForSecureFields;
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
@@ -88,6 +97,46 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
         return this;
     }
 
+    /**
+     * Get the startedOn property: Date and time relative to UTC when the migration was started on.
+     *
+     * @return the startedOn value.
+     */
+    public String startedOn() {
+        return this.startedOn;
+    }
+
+    /**
+     * Set the startedOn property: Date and time relative to UTC when the migration was started on.
+     *
+     * @param startedOn the startedOn value to set.
+     * @return the MigrateSqlServerSqlDbTaskInput object itself.
+     */
+    public MigrateSqlServerSqlDbTaskInput withStartedOn(String startedOn) {
+        this.startedOn = startedOn;
+        return this;
+    }
+
+    /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     *
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     *
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the MigrateSqlServerSqlDbTaskInput object itself.
+     */
+    public MigrateSqlServerSqlDbTaskInput withEncryptedKeyForSecureFields(String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public MigrateSqlServerSqlDbTaskInput withSourceConnectionInfo(SqlConnectionInfo sourceConnectionInfo) {
@@ -111,7 +160,7 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
     public void validate() {
         super.validate();
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model MigrateSqlServerSqlDbTaskInput"));
@@ -122,4 +171,6 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
             validationOptions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlDbTaskInput.class);
 }

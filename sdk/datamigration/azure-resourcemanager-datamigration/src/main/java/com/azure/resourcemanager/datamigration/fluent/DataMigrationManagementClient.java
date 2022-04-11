@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for DataMigrationManagementClient class. */
 public interface DataMigrationManagementClient {
     /**
-     * Gets Identifier of the subscription.
+     * Gets Subscription ID that identifies an Azure subscription.
      *
      * @return the subscriptionId value.
      */
@@ -45,6 +45,41 @@ public interface DataMigrationManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the DatabaseMigrationsSqlDbsClient object to access its operations.
+     *
+     * @return the DatabaseMigrationsSqlDbsClient object.
+     */
+    DatabaseMigrationsSqlDbsClient getDatabaseMigrationsSqlDbs();
+
+    /**
+     * Gets the DatabaseMigrationsSqlMisClient object to access its operations.
+     *
+     * @return the DatabaseMigrationsSqlMisClient object.
+     */
+    DatabaseMigrationsSqlMisClient getDatabaseMigrationsSqlMis();
+
+    /**
+     * Gets the DatabaseMigrationsSqlVmsClient object to access its operations.
+     *
+     * @return the DatabaseMigrationsSqlVmsClient object.
+     */
+    DatabaseMigrationsSqlVmsClient getDatabaseMigrationsSqlVms();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the SqlMigrationServicesClient object to access its operations.
+     *
+     * @return the SqlMigrationServicesClient object.
+     */
+    SqlMigrationServicesClient getSqlMigrationServices();
+
+    /**
      * Gets the ResourceSkusClient object to access its operations.
      *
      * @return the ResourceSkusClient object.
@@ -66,6 +101,13 @@ public interface DataMigrationManagementClient {
     TasksClient getTasks();
 
     /**
+     * Gets the ServiceTasksClient object to access its operations.
+     *
+     * @return the ServiceTasksClient object.
+     */
+    ServiceTasksClient getServiceTasks();
+
+    /**
      * Gets the ProjectsClient object to access its operations.
      *
      * @return the ProjectsClient object.
@@ -80,9 +122,9 @@ public interface DataMigrationManagementClient {
     UsagesClient getUsages();
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the FilesClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the FilesClient object.
      */
-    OperationsClient getOperations();
+    FilesClient getFiles();
 }

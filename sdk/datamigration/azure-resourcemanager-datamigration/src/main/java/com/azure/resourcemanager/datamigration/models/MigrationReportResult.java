@@ -4,26 +4,22 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Migration validation report result, contains the url for downloading the generated report. */
-@Immutable
+@Fluent
 public final class MigrationReportResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationReportResult.class);
-
     /*
      * Migration validation result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The url of the report.
      */
-    @JsonProperty(value = "reportUrl", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "reportUrl")
     private String reportUrl;
 
     /**
@@ -36,12 +32,34 @@ public final class MigrationReportResult {
     }
 
     /**
+     * Set the id property: Migration validation result identifier.
+     *
+     * @param id the id value to set.
+     * @return the MigrationReportResult object itself.
+     */
+    public MigrationReportResult withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the reportUrl property: The url of the report.
      *
      * @return the reportUrl value.
      */
     public String reportUrl() {
         return this.reportUrl;
+    }
+
+    /**
+     * Set the reportUrl property: The url of the report.
+     *
+     * @param reportUrl the reportUrl value to set.
+     * @return the MigrationReportResult object itself.
+     */
+    public MigrationReportResult withReportUrl(String reportUrl) {
+        this.reportUrl = reportUrl;
+        return this;
     }
 
     /**

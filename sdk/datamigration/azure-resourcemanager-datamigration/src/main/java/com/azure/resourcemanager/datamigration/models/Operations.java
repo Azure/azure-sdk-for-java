@@ -10,22 +10,22 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Lists all available actions exposed by the Database Migration Service resource provider.
+     * Lists all of the available SQL Migration REST API operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of action (operation) objects.
+     * @return result of the request to list SQL operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ServiceOperation> list();
+    PagedIterable<OperationsDefinition> list();
 
     /**
-     * Lists all available actions exposed by the Database Migration Service resource provider.
+     * Lists all of the available SQL Migration REST API operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of action (operation) objects.
+     * @return result of the request to list SQL operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ServiceOperation> list(Context context);
+    PagedIterable<OperationsDefinition> list(Context context);
 }

@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Properties for the task that validates connection to Azure Database for MySQL and target server requirements. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("ConnectToTarget.AzureDbForMySql")
 @Fluent
 public final class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectToTargetAzureDbForMySqlTaskProperties.class);
-
     /*
      * Task input
      */
@@ -59,6 +55,13 @@ public final class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectT
      */
     public List<ConnectToTargetAzureDbForMySqlTaskOutput> output() {
         return this.output;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectToTargetAzureDbForMySqlTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
     }
 
     /**

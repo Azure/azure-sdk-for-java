@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output for command that completes sync migration for a database. */
 @Immutable
 public final class MigrateSyncCompleteCommandOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSyncCompleteCommandOutput.class);
-
     /*
      * Result identifier
      */

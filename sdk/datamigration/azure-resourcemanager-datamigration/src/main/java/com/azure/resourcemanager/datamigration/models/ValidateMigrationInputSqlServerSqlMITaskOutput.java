@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output for task that validates migration input for SQL to Azure SQL Managed Instance migrations. */
 @Fluent
 public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ValidateMigrationInputSqlServerSqlMITaskOutput.class);
-
     /*
      * Result identifier
      */

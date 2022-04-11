@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to Azure SQL Database Managed Instance online scenario. */
 @Fluent
 public final class ConnectToTargetSqlMISyncTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetSqlMISyncTaskInput.class);
-
     /*
      * Connection information for Azure SQL Database Managed Instance
      */
@@ -77,7 +74,7 @@ public final class ConnectToTargetSqlMISyncTaskInput {
      */
     public void validate() {
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model ConnectToTargetSqlMISyncTaskInput"));
@@ -85,7 +82,7 @@ public final class ConnectToTargetSqlMISyncTaskInput {
             targetConnectionInfo().validate();
         }
         if (azureApp() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azureApp in model ConnectToTargetSqlMISyncTaskInput"));
@@ -93,4 +90,6 @@ public final class ConnectToTargetSqlMISyncTaskInput {
             azureApp().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToTargetSqlMISyncTaskInput.class);
 }

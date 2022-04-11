@@ -33,7 +33,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response}.
      */
     Response<DataMigrationService> getByResourceGroupWithResponse(
         String groupName, String serviceName, Context context);
@@ -100,7 +100,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status along with {@link Response}.
      */
     Response<DataMigrationServiceStatusResponse> checkStatusWithResponse(
         String groupName, String serviceName, Context context);
@@ -166,7 +166,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailableServiceSku> listSkus(String groupName, String serviceName);
 
@@ -180,7 +180,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailableServiceSku> listSkus(String groupName, String serviceName, Context context);
 
@@ -195,7 +195,7 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return indicates whether a proposed resource name is available.
      */
-    NameAvailabilityResponse nestedCheckNameAvailability(
+    NameAvailabilityResponse checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters);
 
     /**
@@ -208,9 +208,9 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
      */
-    Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+    Response<NameAvailabilityResponse> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context);
 
     /**
@@ -221,7 +221,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataMigrationService> listByResourceGroup(String groupName);
 
@@ -234,7 +234,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataMigrationService> listByResourceGroup(String groupName, Context context);
 
@@ -244,7 +244,7 @@ public interface Services {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataMigrationService> list();
 
@@ -256,7 +256,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataMigrationService> list(Context context);
 
@@ -281,7 +281,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
      */
     Response<NameAvailabilityResponse> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityRequest parameters, Context context);
@@ -294,7 +294,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response}.
      */
     DataMigrationService getById(String id);
 
@@ -307,7 +307,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response}.
      */
     Response<DataMigrationService> getByIdWithResponse(String id, Context context);
 

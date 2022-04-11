@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to Azure SQL DB and target server requirements. */
 @Fluent
 public final class ConnectToTargetSqlDbSyncTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetSqlDbSyncTaskInput.class);
-
     /*
      * Connection information for source SQL Server
      */
@@ -73,7 +70,7 @@ public final class ConnectToTargetSqlDbSyncTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model ConnectToTargetSqlDbSyncTaskInput"));
@@ -81,7 +78,7 @@ public final class ConnectToTargetSqlDbSyncTaskInput {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model ConnectToTargetSqlDbSyncTaskInput"));
@@ -89,4 +86,6 @@ public final class ConnectToTargetSqlDbSyncTaskInput {
             targetConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToTargetSqlDbSyncTaskInput.class);
 }

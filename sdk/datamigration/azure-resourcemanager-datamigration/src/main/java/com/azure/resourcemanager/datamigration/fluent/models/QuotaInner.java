@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.models.QuotaName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a quota for or usage details about a resource. */
 @Fluent
 public final class QuotaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaInner.class);
-
     /*
      * The current value of the quota. If null or missing, the current value
      * cannot be determined in the context of the request.

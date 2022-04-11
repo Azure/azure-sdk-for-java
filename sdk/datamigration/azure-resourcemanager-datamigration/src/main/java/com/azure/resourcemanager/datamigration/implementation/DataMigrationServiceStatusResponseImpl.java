@@ -25,6 +25,10 @@ public final class DataMigrationServiceStatusResponseImpl implements DataMigrati
         return this.innerModel().agentVersion();
     }
 
+    public Object agentConfiguration() {
+        return this.innerModel().agentConfiguration();
+    }
+
     public String status() {
         return this.innerModel().status();
     }

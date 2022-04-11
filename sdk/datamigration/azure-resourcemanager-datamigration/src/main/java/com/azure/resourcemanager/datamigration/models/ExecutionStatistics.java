@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,24 +13,22 @@ import java.util.Map;
 /** Description about the errors happen while performing migration validation. */
 @Fluent
 public final class ExecutionStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecutionStatistics.class);
-
     /*
      * No. of query executions
      */
-    @JsonProperty(value = "executionCount", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "executionCount")
     private Long executionCount;
 
     /*
      * CPU Time in millisecond(s) for the query execution
      */
-    @JsonProperty(value = "cpuTimeMs", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "cpuTimeMs")
     private Float cpuTimeMs;
 
     /*
      * Time taken in millisecond(s) for executing the query
      */
-    @JsonProperty(value = "elapsedTimeMs", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "elapsedTimeMs")
     private Float elapsedTimeMs;
 
     /*
@@ -39,18 +36,19 @@ public final class ExecutionStatistics {
      * statistics
      */
     @JsonProperty(value = "waitStats")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, WaitStatistics> waitStats;
 
     /*
      * Indicates whether the query resulted in an error
      */
-    @JsonProperty(value = "hasErrors", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "hasErrors")
     private Boolean hasErrors;
 
     /*
      * List of sql Errors
      */
-    @JsonProperty(value = "sqlErrors", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sqlErrors")
     private List<String> sqlErrors;
 
     /**
@@ -63,6 +61,17 @@ public final class ExecutionStatistics {
     }
 
     /**
+     * Set the executionCount property: No. of query executions.
+     *
+     * @param executionCount the executionCount value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withExecutionCount(Long executionCount) {
+        this.executionCount = executionCount;
+        return this;
+    }
+
+    /**
      * Get the cpuTimeMs property: CPU Time in millisecond(s) for the query execution.
      *
      * @return the cpuTimeMs value.
@@ -72,12 +81,34 @@ public final class ExecutionStatistics {
     }
 
     /**
+     * Set the cpuTimeMs property: CPU Time in millisecond(s) for the query execution.
+     *
+     * @param cpuTimeMs the cpuTimeMs value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withCpuTimeMs(Float cpuTimeMs) {
+        this.cpuTimeMs = cpuTimeMs;
+        return this;
+    }
+
+    /**
      * Get the elapsedTimeMs property: Time taken in millisecond(s) for executing the query.
      *
      * @return the elapsedTimeMs value.
      */
     public Float elapsedTimeMs() {
         return this.elapsedTimeMs;
+    }
+
+    /**
+     * Set the elapsedTimeMs property: Time taken in millisecond(s) for executing the query.
+     *
+     * @param elapsedTimeMs the elapsedTimeMs value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withElapsedTimeMs(Float elapsedTimeMs) {
+        this.elapsedTimeMs = elapsedTimeMs;
+        return this;
     }
 
     /**
@@ -110,12 +141,34 @@ public final class ExecutionStatistics {
     }
 
     /**
+     * Set the hasErrors property: Indicates whether the query resulted in an error.
+     *
+     * @param hasErrors the hasErrors value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withHasErrors(Boolean hasErrors) {
+        this.hasErrors = hasErrors;
+        return this;
+    }
+
+    /**
      * Get the sqlErrors property: List of sql Errors.
      *
      * @return the sqlErrors value.
      */
     public List<String> sqlErrors() {
         return this.sqlErrors;
+    }
+
+    /**
+     * Set the sqlErrors property: List of sql Errors.
+     *
+     * @param sqlErrors the sqlErrors value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withSqlErrors(List<String> sqlErrors) {
+        this.sqlErrors = sqlErrors;
+        return this;
     }
 
     /**

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that migrates on-prem SQL Server databases to Azure SQL Database for online migrations. */
 @Fluent
 public final class MigrateSqlServerSqlDbSyncTaskInput extends SqlMigrationTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbSyncTaskInput.class);
-
     /*
      * Databases to migrate
      */
@@ -91,7 +88,7 @@ public final class MigrateSqlServerSqlDbSyncTaskInput extends SqlMigrationTaskIn
     public void validate() {
         super.validate();
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model MigrateSqlServerSqlDbSyncTaskInput"));
@@ -102,4 +99,6 @@ public final class MigrateSqlServerSqlDbSyncTaskInput extends SqlMigrationTaskIn
             validationOptions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlDbSyncTaskInput.class);
 }

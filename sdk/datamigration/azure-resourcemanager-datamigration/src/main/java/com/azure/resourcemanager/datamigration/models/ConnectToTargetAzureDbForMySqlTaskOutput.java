@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output for the task that validates connection to Azure Database for MySQL and target server requirements. */
 @Immutable
 public final class ConnectToTargetAzureDbForMySqlTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetAzureDbForMySqlTaskOutput.class);
-
     /*
      * Result identifier
      */

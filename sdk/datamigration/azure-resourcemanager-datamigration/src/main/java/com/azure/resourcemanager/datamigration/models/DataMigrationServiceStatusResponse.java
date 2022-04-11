@@ -17,6 +17,13 @@ public interface DataMigrationServiceStatusResponse {
     String agentVersion();
 
     /**
+     * Gets the agentConfiguration property: Agent Configuration.
+     *
+     * @return the agentConfiguration value.
+     */
+    Object agentConfiguration();
+
+    /**
      * Gets the status property: The machine-readable status, such as 'Initializing', 'Offline', 'Online', 'Deploying',
      * 'Deleting', 'Stopped', 'Stopping', 'Starting', 'FailedToStart', 'FailedToStop' or 'Failed'.
      *

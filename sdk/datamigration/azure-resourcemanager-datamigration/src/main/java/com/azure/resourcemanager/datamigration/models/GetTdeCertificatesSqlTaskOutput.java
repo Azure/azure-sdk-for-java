@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output of the task that gets TDE certificates in Base64 encoded format. */
 @Immutable
 public final class GetTdeCertificatesSqlTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetTdeCertificatesSqlTaskOutput.class);
-
     /*
      * Mapping from certificate name to base 64 encoded format.
      */

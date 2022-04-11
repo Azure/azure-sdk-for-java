@@ -22,10 +22,16 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datamigration.fluent.DataMigrationManagementClient;
+import com.azure.resourcemanager.datamigration.fluent.DatabaseMigrationsSqlDbsClient;
+import com.azure.resourcemanager.datamigration.fluent.DatabaseMigrationsSqlMisClient;
+import com.azure.resourcemanager.datamigration.fluent.DatabaseMigrationsSqlVmsClient;
+import com.azure.resourcemanager.datamigration.fluent.FilesClient;
 import com.azure.resourcemanager.datamigration.fluent.OperationsClient;
 import com.azure.resourcemanager.datamigration.fluent.ProjectsClient;
 import com.azure.resourcemanager.datamigration.fluent.ResourceSkusClient;
+import com.azure.resourcemanager.datamigration.fluent.ServiceTasksClient;
 import com.azure.resourcemanager.datamigration.fluent.ServicesClient;
+import com.azure.resourcemanager.datamigration.fluent.SqlMigrationServicesClient;
 import com.azure.resourcemanager.datamigration.fluent.TasksClient;
 import com.azure.resourcemanager.datamigration.fluent.UsagesClient;
 import java.io.IOException;
@@ -41,13 +47,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the DataMigrationManagementClientImpl type. */
 @ServiceClient(builder = DataMigrationManagementClientBuilder.class)
 public final class DataMigrationManagementClientImpl implements DataMigrationManagementClient {
-    private final ClientLogger logger = new ClientLogger(DataMigrationManagementClientImpl.class);
-
-    /** Identifier of the subscription. */
+    /** Subscription ID that identifies an Azure subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Identifier of the subscription.
+     * Gets Subscription ID that identifies an Azure subscription.
      *
      * @return the subscriptionId value.
      */
@@ -115,6 +119,66 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         return this.defaultPollInterval;
     }
 
+    /** The DatabaseMigrationsSqlDbsClient object to access its operations. */
+    private final DatabaseMigrationsSqlDbsClient databaseMigrationsSqlDbs;
+
+    /**
+     * Gets the DatabaseMigrationsSqlDbsClient object to access its operations.
+     *
+     * @return the DatabaseMigrationsSqlDbsClient object.
+     */
+    public DatabaseMigrationsSqlDbsClient getDatabaseMigrationsSqlDbs() {
+        return this.databaseMigrationsSqlDbs;
+    }
+
+    /** The DatabaseMigrationsSqlMisClient object to access its operations. */
+    private final DatabaseMigrationsSqlMisClient databaseMigrationsSqlMis;
+
+    /**
+     * Gets the DatabaseMigrationsSqlMisClient object to access its operations.
+     *
+     * @return the DatabaseMigrationsSqlMisClient object.
+     */
+    public DatabaseMigrationsSqlMisClient getDatabaseMigrationsSqlMis() {
+        return this.databaseMigrationsSqlMis;
+    }
+
+    /** The DatabaseMigrationsSqlVmsClient object to access its operations. */
+    private final DatabaseMigrationsSqlVmsClient databaseMigrationsSqlVms;
+
+    /**
+     * Gets the DatabaseMigrationsSqlVmsClient object to access its operations.
+     *
+     * @return the DatabaseMigrationsSqlVmsClient object.
+     */
+    public DatabaseMigrationsSqlVmsClient getDatabaseMigrationsSqlVms() {
+        return this.databaseMigrationsSqlVms;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /** The SqlMigrationServicesClient object to access its operations. */
+    private final SqlMigrationServicesClient sqlMigrationServices;
+
+    /**
+     * Gets the SqlMigrationServicesClient object to access its operations.
+     *
+     * @return the SqlMigrationServicesClient object.
+     */
+    public SqlMigrationServicesClient getSqlMigrationServices() {
+        return this.sqlMigrationServices;
+    }
+
     /** The ResourceSkusClient object to access its operations. */
     private final ResourceSkusClient resourceSkus;
 
@@ -151,6 +215,18 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         return this.tasks;
     }
 
+    /** The ServiceTasksClient object to access its operations. */
+    private final ServiceTasksClient serviceTasks;
+
+    /**
+     * Gets the ServiceTasksClient object to access its operations.
+     *
+     * @return the ServiceTasksClient object.
+     */
+    public ServiceTasksClient getServiceTasks() {
+        return this.serviceTasks;
+    }
+
     /** The ProjectsClient object to access its operations. */
     private final ProjectsClient projects;
 
@@ -175,16 +251,16 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         return this.usages;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The FilesClient object to access its operations. */
+    private final FilesClient files;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the FilesClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the FilesClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public FilesClient getFiles() {
+        return this.files;
     }
 
     /**
@@ -194,7 +270,7 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Identifier of the subscription.
+     * @param subscriptionId Subscription ID that identifies an Azure subscription.
      * @param endpoint server parameter.
      */
     DataMigrationManagementClientImpl(
@@ -209,13 +285,19 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-04-19";
+        this.apiVersion = "2022-03-30-preview";
+        this.databaseMigrationsSqlDbs = new DatabaseMigrationsSqlDbsClientImpl(this);
+        this.databaseMigrationsSqlMis = new DatabaseMigrationsSqlMisClientImpl(this);
+        this.databaseMigrationsSqlVms = new DatabaseMigrationsSqlVmsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
+        this.sqlMigrationServices = new SqlMigrationServicesClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.services = new ServicesClientImpl(this);
         this.tasks = new TasksClientImpl(this);
+        this.serviceTasks = new ServiceTasksClientImpl(this);
         this.projects = new ProjectsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.files = new FilesClientImpl(this);
     }
 
     /**
@@ -301,7 +383,7 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -360,4 +442,6 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataMigrationManagementClientImpl.class);
 }

@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.datamigration.models.ServiceProvisioningState;
 import com.azure.resourcemanager.datamigration.models.ServiceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A Database Migration Service resource. */
-@JsonFlatten
 @Fluent
-public class DataMigrationServiceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMigrationServiceInner.class);
-
+public final class DataMigrationServiceInner extends Resource {
     /*
      * HTTP strong entity tag value. Ignored if submitted
      */
@@ -33,30 +28,22 @@ public class DataMigrationServiceInner extends Resource {
     private String kind;
 
     /*
+     * Custom service properties
+     */
+    @JsonProperty(value = "properties")
+    private DataMigrationServiceProperties innerProperties;
+
+    /*
      * Service SKU
      */
     @JsonProperty(value = "sku")
     private ServiceSku sku;
 
     /*
-     * The resource's provisioning state
+     * The systemData property.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ServiceProvisioningState provisioningState;
-
-    /*
-     * The public key of the service, used to encrypt secrets sent to the
-     * service
-     */
-    @JsonProperty(value = "properties.publicKey")
-    private String publicKey;
-
-    /*
-     * The ID of the Microsoft.Network/virtualNetworks/subnets resource to
-     * which the service should be joined
-     */
-    @JsonProperty(value = "properties.virtualSubnetId")
-    private String virtualSubnetId;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the etag property: HTTP strong entity tag value. Ignored if submitted.
@@ -99,6 +86,15 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Custom service properties.
+     *
+     * @return the innerProperties value.
+     */
+    private DataMigrationServiceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sku property: Service SKU.
      *
      * @return the sku value.
@@ -119,54 +115,12 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The resource's provisioning state.
+     * Get the systemData property: The systemData property.
      *
-     * @return the provisioningState value.
+     * @return the systemData value.
      */
-    public ServiceProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
-     *
-     * @return the publicKey value.
-     */
-    public String publicKey() {
-        return this.publicKey;
-    }
-
-    /**
-     * Set the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
-     *
-     * @param publicKey the publicKey value to set.
-     * @return the DataMigrationServiceInner object itself.
-     */
-    public DataMigrationServiceInner withPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-        return this;
-    }
-
-    /**
-     * Get the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
-     * service should be joined.
-     *
-     * @return the virtualSubnetId value.
-     */
-    public String virtualSubnetId() {
-        return this.virtualSubnetId;
-    }
-
-    /**
-     * Set the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
-     * service should be joined.
-     *
-     * @param virtualSubnetId the virtualSubnetId value to set.
-     * @return the DataMigrationServiceInner object itself.
-     */
-    public DataMigrationServiceInner withVirtualSubnetId(String virtualSubnetId) {
-        this.virtualSubnetId = virtualSubnetId;
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -184,11 +138,142 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The resource's provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public ServiceProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
+     *
+     * @return the publicKey value.
+     */
+    public String publicKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicKey();
+    }
+
+    /**
+     * Set the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
+     *
+     * @param publicKey the publicKey value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withPublicKey(String publicKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withPublicKey(publicKey);
+        return this;
+    }
+
+    /**
+     * Get the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
+     * service should be joined.
+     *
+     * @return the virtualSubnetId value.
+     */
+    public String virtualSubnetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualSubnetId();
+    }
+
+    /**
+     * Set the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
+     * service should be joined.
+     *
+     * @param virtualSubnetId the virtualSubnetId value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withVirtualSubnetId(String virtualSubnetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withVirtualSubnetId(virtualSubnetId);
+        return this;
+    }
+
+    /**
+     * Get the virtualNicId property: The ID of the Microsoft.Network/networkInterfaces resource which the service have.
+     *
+     * @return the virtualNicId value.
+     */
+    public String virtualNicId() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNicId();
+    }
+
+    /**
+     * Set the virtualNicId property: The ID of the Microsoft.Network/networkInterfaces resource which the service have.
+     *
+     * @param virtualNicId the virtualNicId value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withVirtualNicId(String virtualNicId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withVirtualNicId(virtualNicId);
+        return this;
+    }
+
+    /**
+     * Get the autoStopDelay property: The time delay before the service is auto-stopped when idle.
+     *
+     * @return the autoStopDelay value.
+     */
+    public String autoStopDelay() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoStopDelay();
+    }
+
+    /**
+     * Set the autoStopDelay property: The time delay before the service is auto-stopped when idle.
+     *
+     * @param autoStopDelay the autoStopDelay value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withAutoStopDelay(String autoStopDelay) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withAutoStopDelay(autoStopDelay);
+        return this;
+    }
+
+    /**
+     * Get the deleteResourcesOnStop property: Whether service resources should be deleted when stopped. (Turned on by
+     * default).
+     *
+     * @return the deleteResourcesOnStop value.
+     */
+    public Boolean deleteResourcesOnStop() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteResourcesOnStop();
+    }
+
+    /**
+     * Set the deleteResourcesOnStop property: Whether service resources should be deleted when stopped. (Turned on by
+     * default).
+     *
+     * @param deleteResourcesOnStop the deleteResourcesOnStop value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withDeleteResourcesOnStop(Boolean deleteResourcesOnStop) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withDeleteResourcesOnStop(deleteResourcesOnStop);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

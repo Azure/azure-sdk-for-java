@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Validation result for Sql Server to Azure Sql DB migration. */
+/** The MigrateSqlServerSqlDbTaskOutputValidationResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("MigrationValidationOutput")
 @Fluent
 public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
+    /*
+     * Migration validation result identifier
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /*
      * Migration Identifier
@@ -30,6 +32,7 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
      * Validation summary results for each database
      */
     @JsonProperty(value = "summaryResults")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, MigrationValidationDatabaseSummaryResult> summaryResults;
 
     /*
@@ -38,6 +41,15 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
+
+    /**
+     * Get the id property: Migration validation result identifier.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the migrationId property: Migration Identifier.

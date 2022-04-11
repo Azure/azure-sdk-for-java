@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Server properties for Oracle, MySQL type source. */
+/** Server properties for MySQL type source. */
 @Immutable
 public final class ServerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerProperties.class);
-
     /*
      * Name of the server platform
      */

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Input for command that completes sync migration for a database. */
 @Fluent
 public final class MigrateSyncCompleteCommandInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSyncCompleteCommandInput.class);
-
     /*
      * Name of database
      */
@@ -74,10 +71,12 @@ public final class MigrateSyncCompleteCommandInput {
      */
     public void validate() {
         if (databaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property databaseName in model MigrateSyncCompleteCommandInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateSyncCompleteCommandInput.class);
 }

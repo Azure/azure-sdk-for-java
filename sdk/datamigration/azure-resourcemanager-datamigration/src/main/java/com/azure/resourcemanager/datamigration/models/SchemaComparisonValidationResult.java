@@ -5,38 +5,37 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Results for schema comparison between the source and target. */
 @Fluent
 public final class SchemaComparisonValidationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaComparisonValidationResult.class);
-
     /*
      * List of schema differences between the source and target databases
      */
-    @JsonProperty(value = "schemaDifferences", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "schemaDifferences")
     private SchemaComparisonValidationResultType schemaDifferences;
 
     /*
      * List of errors that happened while performing schema compare validation
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "validationErrors")
     private ValidationError validationErrors;
 
     /*
      * Count of source database objects
      */
     @JsonProperty(value = "sourceDatabaseObjectCount")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Long> sourceDatabaseObjectCount;
 
     /*
      * Count of target database objects
      */
     @JsonProperty(value = "targetDatabaseObjectCount")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Long> targetDatabaseObjectCount;
 
     /**
@@ -49,12 +48,35 @@ public final class SchemaComparisonValidationResult {
     }
 
     /**
+     * Set the schemaDifferences property: List of schema differences between the source and target databases.
+     *
+     * @param schemaDifferences the schemaDifferences value to set.
+     * @return the SchemaComparisonValidationResult object itself.
+     */
+    public SchemaComparisonValidationResult withSchemaDifferences(
+        SchemaComparisonValidationResultType schemaDifferences) {
+        this.schemaDifferences = schemaDifferences;
+        return this;
+    }
+
+    /**
      * Get the validationErrors property: List of errors that happened while performing schema compare validation.
      *
      * @return the validationErrors value.
      */
     public ValidationError validationErrors() {
         return this.validationErrors;
+    }
+
+    /**
+     * Set the validationErrors property: List of errors that happened while performing schema compare validation.
+     *
+     * @param validationErrors the validationErrors value to set.
+     * @return the SchemaComparisonValidationResult object itself.
+     */
+    public SchemaComparisonValidationResult withValidationErrors(ValidationError validationErrors) {
+        this.validationErrors = validationErrors;
+        return this;
     }
 
     /**

@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,9 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
 @JsonTypeName("Migrate.Sync.Complete.Database")
 @Fluent
-public final class MigrateSyncCompleteCommandProperties extends CommandProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSyncCompleteCommandProperties.class);
-
+public final class MigrateSyncCompleteCommandProperties extends CommandPropertiesInner {
     /*
      * Command input
      */
@@ -29,6 +26,12 @@ public final class MigrateSyncCompleteCommandProperties extends CommandPropertie
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private MigrateSyncCompleteCommandOutput output;
+
+    /*
+     * Command id
+     */
+    @JsonProperty(value = "commandId")
+    private String commandId;
 
     /**
      * Get the input property: Command input.
@@ -57,6 +60,26 @@ public final class MigrateSyncCompleteCommandProperties extends CommandPropertie
      */
     public MigrateSyncCompleteCommandOutput output() {
         return this.output;
+    }
+
+    /**
+     * Get the commandId property: Command id.
+     *
+     * @return the commandId value.
+     */
+    public String commandId() {
+        return this.commandId;
+    }
+
+    /**
+     * Set the commandId property: Command id.
+     *
+     * @param commandId the commandId value to set.
+     * @return the MigrateSyncCompleteCommandProperties object itself.
+     */
+    public MigrateSyncCompleteCommandProperties withCommandId(String commandId) {
+        this.commandId = commandId;
+        return this;
     }
 
     /**

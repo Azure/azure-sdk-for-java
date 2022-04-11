@@ -34,9 +34,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters);
 
@@ -56,9 +56,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context);
 
@@ -129,7 +129,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataMigrationServiceInner> getByResourceGroupWithResponse(
@@ -145,9 +145,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String groupName, String serviceName, Boolean deleteRunningTasks);
 
     /**
@@ -161,9 +161,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String groupName, String serviceName, Boolean deleteRunningTasks, Context context);
 
@@ -220,9 +220,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters);
 
@@ -238,9 +238,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context);
 
@@ -302,7 +302,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataMigrationServiceStatusResponseInner> checkStatusWithResponse(
@@ -317,9 +317,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String groupName, String serviceName);
 
     /**
@@ -332,9 +332,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String groupName, String serviceName, Context context);
 
     /**
@@ -374,9 +374,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String groupName, String serviceName);
 
     /**
@@ -390,9 +390,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String groupName, String serviceName, Context context);
 
     /**
@@ -433,7 +433,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableServiceSkuInner> listSkus(String groupName, String serviceName);
@@ -448,7 +448,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableServiceSkuInner> listSkus(String groupName, String serviceName, Context context);
@@ -465,7 +465,7 @@ public interface ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NameAvailabilityResponseInner nestedCheckNameAvailability(
+    NameAvailabilityResponseInner checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters);
 
     /**
@@ -478,10 +478,10 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityResponseInner> nestedCheckNameAvailabilityWithResponse(
+    Response<NameAvailabilityResponseInner> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context);
 
     /**
@@ -492,7 +492,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataMigrationServiceInner> listByResourceGroup(String groupName);
@@ -506,7 +506,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataMigrationServiceInner> listByResourceGroup(String groupName, Context context);
@@ -517,7 +517,7 @@ public interface ServicesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataMigrationServiceInner> list();
@@ -530,7 +530,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataMigrationServiceInner> list(Context context);
@@ -557,7 +557,7 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NameAvailabilityResponseInner> checkNameAvailabilityWithResponse(

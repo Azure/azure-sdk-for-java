@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datamigration.fluent.ServicesClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServicesClient. */
 public final class ServicesClientImpl implements ServicesClient {
-    private final ClientLogger logger = new ClientLogger(ServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServicesService service;
 
@@ -202,7 +199,7 @@ public final class ServicesClientImpl implements ServicesClient {
                 + "/{serviceName}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailability(
+        Mono<Response<NameAvailabilityResponseInner>> checkChildrenNameAvailability(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("groupName") String groupName,
@@ -244,8 +241,8 @@ public final class ServicesClientImpl implements ServicesClient {
         Mono<Response<NameAvailabilityResponseInner>> checkNameAvailability(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
             @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NameAvailabilityRequest parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -296,7 +293,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -357,7 +355,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -414,9 +413,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(groupName, serviceName, parameters);
@@ -427,7 +426,7 @@ public final class ServicesClientImpl implements ServicesClient {
                 this.client.getHttpPipeline(),
                 DataMigrationServiceInner.class,
                 DataMigrationServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -446,9 +445,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -479,9 +478,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
         return beginCreateOrUpdateAsync(groupName, serviceName, parameters).getSyncPoller();
@@ -503,9 +502,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(groupName, serviceName, parameters, context).getSyncPoller();
@@ -526,7 +525,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> createOrUpdateAsync(
@@ -552,7 +551,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> createOrUpdateAsync(
@@ -618,7 +617,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceInner>> getByResourceGroupWithResponseAsync(
@@ -667,7 +667,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceInner>> getByResourceGroupWithResponseAsync(
@@ -712,7 +713,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> getByResourceGroupAsync(String groupName, String serviceName) {
@@ -753,7 +754,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMigrationServiceInner> getByResourceGroupWithResponse(
@@ -771,7 +772,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -822,7 +823,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -869,15 +870,16 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String groupName, String serviceName, Boolean deleteRunningTasks) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(groupName, serviceName, deleteRunningTasks);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -891,9 +893,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String groupName, String serviceName, Boolean deleteRunningTasks, Context context) {
         context = this.client.mergeContext(context);
@@ -914,9 +916,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String groupName, String serviceName, Boolean deleteRunningTasks) {
         return beginDeleteAsync(groupName, serviceName, deleteRunningTasks).getSyncPoller();
@@ -933,9 +935,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String groupName, String serviceName, Boolean deleteRunningTasks, Context context) {
         return beginDeleteAsync(groupName, serviceName, deleteRunningTasks, context).getSyncPoller();
@@ -951,7 +953,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String groupName, String serviceName, Boolean deleteRunningTasks) {
@@ -969,7 +971,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String groupName, String serviceName) {
@@ -990,7 +992,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String groupName, String serviceName, Boolean deleteRunningTasks, Context context) {
@@ -1059,7 +1061,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1116,7 +1119,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1169,9 +1173,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(groupName, serviceName, parameters);
@@ -1182,7 +1186,7 @@ public final class ServicesClientImpl implements ServicesClient {
                 this.client.getHttpPipeline(),
                 DataMigrationServiceInner.class,
                 DataMigrationServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1197,9 +1201,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1225,9 +1229,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
         return beginUpdateAsync(groupName, serviceName, parameters).getSyncPoller();
@@ -1245,9 +1249,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
         return beginUpdateAsync(groupName, serviceName, parameters, context).getSyncPoller();
@@ -1264,7 +1268,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> updateAsync(
@@ -1286,7 +1290,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> updateAsync(
@@ -1344,7 +1348,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceStatusResponseInner>> checkStatusWithResponseAsync(
@@ -1393,7 +1397,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceStatusResponseInner>> checkStatusWithResponseAsync(
@@ -1438,7 +1442,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceStatusResponseInner> checkStatusAsync(String groupName, String serviceName) {
@@ -1479,7 +1483,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMigrationServiceStatusResponseInner> checkStatusWithResponse(
@@ -1496,7 +1500,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String groupName, String serviceName) {
@@ -1544,7 +1548,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1589,14 +1593,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String groupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(groupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1609,9 +1614,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String groupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(groupName, serviceName, context);
@@ -1629,9 +1634,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String groupName, String serviceName) {
         return beginStartAsync(groupName, serviceName).getSyncPoller();
     }
@@ -1646,9 +1651,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String groupName, String serviceName, Context context) {
         return beginStartAsync(groupName, serviceName, context).getSyncPoller();
     }
@@ -1662,7 +1667,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String groupName, String serviceName) {
@@ -1679,7 +1684,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String groupName, String serviceName, Context context) {
@@ -1727,7 +1732,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String groupName, String serviceName) {
@@ -1776,7 +1781,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -1822,14 +1827,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String groupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(groupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1843,9 +1849,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String groupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(groupName, serviceName, context);
@@ -1864,9 +1870,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String groupName, String serviceName) {
         return beginStopAsync(groupName, serviceName).getSyncPoller();
     }
@@ -1882,9 +1888,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String groupName, String serviceName, Context context) {
         return beginStopAsync(groupName, serviceName, context).getSyncPoller();
     }
@@ -1899,7 +1905,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String groupName, String serviceName) {
@@ -1917,7 +1923,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String groupName, String serviceName, Context context) {
@@ -1966,7 +1972,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusSinglePageAsync(
@@ -2024,7 +2030,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusSinglePageAsync(
@@ -2078,7 +2084,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableServiceSkuInner> listSkusAsync(String groupName, String serviceName) {
@@ -2096,7 +2102,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableServiceSkuInner> listSkusAsync(String groupName, String serviceName, Context context) {
@@ -2114,7 +2120,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceSkuInner> listSkus(String groupName, String serviceName) {
@@ -2131,7 +2137,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceSkuInner> listSkus(String groupName, String serviceName, Context context) {
@@ -2147,10 +2153,11 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailabilityWithResponseAsync(
+    private Mono<Response<NameAvailabilityResponseInner>> checkChildrenNameAvailabilityWithResponseAsync(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2180,7 +2187,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .withContext(
                 context ->
                     service
-                        .nestedCheckNameAvailability(
+                        .checkChildrenNameAvailability(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             groupName,
@@ -2202,10 +2209,11 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailabilityWithResponseAsync(
+    private Mono<Response<NameAvailabilityResponseInner>> checkChildrenNameAvailabilityWithResponseAsync(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2233,7 +2241,7 @@ public final class ServicesClientImpl implements ServicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .nestedCheckNameAvailability(
+            .checkChildrenNameAvailability(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 groupName,
@@ -2253,12 +2261,12 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityResponseInner> nestedCheckNameAvailabilityAsync(
+    private Mono<NameAvailabilityResponseInner> checkChildrenNameAvailabilityAsync(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
-        return nestedCheckNameAvailabilityWithResponseAsync(groupName, serviceName, parameters)
+        return checkChildrenNameAvailabilityWithResponseAsync(groupName, serviceName, parameters)
             .flatMap(
                 (Response<NameAvailabilityResponseInner> res) -> {
                     if (res.getValue() != null) {
@@ -2281,9 +2289,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return indicates whether a proposed resource name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityResponseInner nestedCheckNameAvailability(
+    public NameAvailabilityResponseInner checkChildrenNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
-        return nestedCheckNameAvailabilityAsync(groupName, serviceName, parameters).block();
+        return checkChildrenNameAvailabilityAsync(groupName, serviceName, parameters).block();
     }
 
     /**
@@ -2296,12 +2304,12 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NameAvailabilityResponseInner> nestedCheckNameAvailabilityWithResponse(
+    public Response<NameAvailabilityResponseInner> checkChildrenNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
-        return nestedCheckNameAvailabilityWithResponseAsync(groupName, serviceName, parameters, context).block();
+        return checkChildrenNameAvailabilityWithResponseAsync(groupName, serviceName, parameters, context).block();
     }
 
     /**
@@ -2312,7 +2320,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupSinglePageAsync(String groupName) {
@@ -2364,7 +2372,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupSinglePageAsync(
@@ -2413,7 +2421,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listByResourceGroupAsync(String groupName) {
@@ -2431,7 +2439,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listByResourceGroupAsync(String groupName, Context context) {
@@ -2448,7 +2456,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> listByResourceGroup(String groupName) {
@@ -2464,7 +2472,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> listByResourceGroup(String groupName, Context context) {
@@ -2477,7 +2485,7 @@ public final class ServicesClientImpl implements ServicesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listSinglePageAsync() {
@@ -2524,7 +2532,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listSinglePageAsync(Context context) {
@@ -2566,7 +2574,7 @@ public final class ServicesClientImpl implements ServicesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listAsync() {
@@ -2581,7 +2589,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listAsync(Context context) {
@@ -2595,7 +2603,7 @@ public final class ServicesClientImpl implements ServicesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> list() {
@@ -2610,7 +2618,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> list(Context context) {
@@ -2625,7 +2633,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -2658,8 +2667,8 @@ public final class ServicesClientImpl implements ServicesClient {
                         .checkNameAvailability(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
                             location,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -2675,7 +2684,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -2706,8 +2716,8 @@ public final class ServicesClientImpl implements ServicesClient {
             .checkNameAvailability(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
                 location,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -2721,7 +2731,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NameAvailabilityResponseInner> checkNameAvailabilityAsync(
@@ -2761,7 +2771,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
@@ -2776,7 +2786,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusNextSinglePageAsync(String nextLink) {
@@ -2812,7 +2822,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusNextSinglePageAsync(
@@ -2848,7 +2858,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2885,7 +2895,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupNextSinglePageAsync(
@@ -2921,7 +2931,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2957,7 +2967,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listNextSinglePageAsync(String nextLink, Context context) {

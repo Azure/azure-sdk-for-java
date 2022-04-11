@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information of orphaned users on the SQL server database. */
 @Fluent
 public final class OrphanedUserInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrphanedUserInfo.class);
-
     /*
      * Name of the orphaned user
      */

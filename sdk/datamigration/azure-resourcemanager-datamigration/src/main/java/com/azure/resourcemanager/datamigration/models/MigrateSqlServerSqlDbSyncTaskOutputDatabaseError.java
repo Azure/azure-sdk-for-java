@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,9 +15,6 @@ import java.util.List;
 @JsonTypeName("DatabaseLevelErrorOutput")
 @Fluent
 public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseError extends MigrateSqlServerSqlDbSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbSyncTaskOutputDatabaseError.class);
-
     /*
      * Error message
      */

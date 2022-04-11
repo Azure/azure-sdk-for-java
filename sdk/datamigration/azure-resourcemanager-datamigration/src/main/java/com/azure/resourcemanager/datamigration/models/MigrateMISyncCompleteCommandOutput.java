@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output for command that completes online migration for an Azure SQL Database Managed Instance. */
 @Fluent
 public final class MigrateMISyncCompleteCommandOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateMISyncCompleteCommandOutput.class);
-
     /*
      * List of errors that happened during the command execution
      */

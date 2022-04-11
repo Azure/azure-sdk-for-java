@@ -6,16 +6,13 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Input for the task that migrates PostgreSQL databases to Azure Database for PostgreSQL for online migrations. */
 @Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.class);
-
     /*
      * Databases to migrate
      */
@@ -33,6 +30,18 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
      */
     @JsonProperty(value = "sourceConnectionInfo", required = true)
     private PostgreSqlConnectionInfo sourceConnectionInfo;
+
+    /*
+     * encrypted key for secure fields
+     */
+    @JsonProperty(value = "encryptedKeyForSecureFields")
+    private String encryptedKeyForSecureFields;
+
+    /*
+     * Migration start time
+     */
+    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime startedOn;
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
@@ -98,13 +107,43 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
     }
 
     /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     *
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     *
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput withEncryptedKeyForSecureFields(
+        String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
+        return this;
+    }
+
+    /**
+     * Get the startedOn property: Migration start time.
+     *
+     * @return the startedOn value.
+     */
+    public OffsetDateTime startedOn() {
+        return this.startedOn;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model"
@@ -113,7 +152,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
             selectedDatabases().forEach(e -> e.validate());
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model"
@@ -122,7 +161,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
             targetConnectionInfo().validate();
         }
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model"
@@ -131,4 +170,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
             sourceConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.class);
 }

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Task errors for Sql Server to Azure Sql DB migration. */
+/** The MigrateSqlServerSqlDbTaskOutputError model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
 @JsonTypeName("ErrorOutput")
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputError extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputError.class);
-
     /*
      * Migration error
      */

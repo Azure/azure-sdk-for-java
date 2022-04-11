@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("TaskLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectToSourceSqlServerTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceSqlServerTaskOutputTaskLevel.class);
-
     /*
      * Source databases as a map from database name to database id
      */
@@ -38,6 +34,12 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
      */
     @JsonProperty(value = "agentJobs", access = JsonProperty.Access.WRITE_ONLY)
     private String agentJobs;
+
+    /*
+     * Mapping from database name to TDE certificate name, if applicable
+     */
+    @JsonProperty(value = "databaseTdeCertificateMapping", access = JsonProperty.Access.WRITE_ONLY)
+    private String databaseTdeCertificateMapping;
 
     /*
      * Source server version
@@ -82,6 +84,16 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
      */
     public String agentJobs() {
         return this.agentJobs;
+    }
+
+    /**
+     * Get the databaseTdeCertificateMapping property: Mapping from database name to TDE certificate name, if
+     * applicable.
+     *
+     * @return the databaseTdeCertificateMapping value.
+     */
+    public String databaseTdeCertificateMapping() {
+        return this.databaseTdeCertificateMapping;
     }
 
     /**

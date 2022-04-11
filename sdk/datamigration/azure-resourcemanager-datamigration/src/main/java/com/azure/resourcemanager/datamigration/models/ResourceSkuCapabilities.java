@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes The SKU capabilities object. */
 @Immutable
 public final class ResourceSkuCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapabilities.class);
-
     /*
      * An invariant to describe the feature.
      */

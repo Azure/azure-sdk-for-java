@@ -5,184 +5,76 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.datamigration.models.AzureActiveDirectoryApp;
 import com.azure.resourcemanager.datamigration.models.ConnectionInfo;
 import com.azure.resourcemanager.datamigration.models.DatabaseInfo;
 import com.azure.resourcemanager.datamigration.models.ProjectProvisioningState;
 import com.azure.resourcemanager.datamigration.models.ProjectSourcePlatform;
 import com.azure.resourcemanager.datamigration.models.ProjectTargetPlatform;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** A project resource. */
-@JsonFlatten
 @Fluent
-public class ProjectInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProjectInner.class);
+public final class ProjectInner extends Resource {
+    /*
+     * Project properties
+     */
+    @JsonProperty(value = "properties")
+    private ProjectProperties innerProperties;
 
     /*
-     * Source platform for the project
+     * HTTP strong entity tag value. This is ignored if submitted.
      */
-    @JsonProperty(value = "properties.sourcePlatform")
-    private ProjectSourcePlatform sourcePlatform;
+    @JsonProperty(value = "etag")
+    private String etag;
 
     /*
-     * Target platform for the project
+     * The systemData property.
      */
-    @JsonProperty(value = "properties.targetPlatform")
-    private ProjectTargetPlatform targetPlatform;
-
-    /*
-     * UTC Date and time when project was created
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Information for connecting to source
-     */
-    @JsonProperty(value = "properties.sourceConnectionInfo")
-    private ConnectionInfo sourceConnectionInfo;
-
-    /*
-     * Information for connecting to target
-     */
-    @JsonProperty(value = "properties.targetConnectionInfo")
-    private ConnectionInfo targetConnectionInfo;
-
-    /*
-     * List of DatabaseInfo
-     */
-    @JsonProperty(value = "properties.databasesInfo")
-    private List<DatabaseInfo> databasesInfo;
-
-    /*
-     * The project's provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProjectProvisioningState provisioningState;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
-     * Get the sourcePlatform property: Source platform for the project.
+     * Get the innerProperties property: Project properties.
      *
-     * @return the sourcePlatform value.
+     * @return the innerProperties value.
      */
-    public ProjectSourcePlatform sourcePlatform() {
-        return this.sourcePlatform;
+    private ProjectProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the sourcePlatform property: Source platform for the project.
+     * Get the etag property: HTTP strong entity tag value. This is ignored if submitted.
      *
-     * @param sourcePlatform the sourcePlatform value to set.
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: HTTP strong entity tag value. This is ignored if submitted.
+     *
+     * @param etag the etag value to set.
      * @return the ProjectInner object itself.
      */
-    public ProjectInner withSourcePlatform(ProjectSourcePlatform sourcePlatform) {
-        this.sourcePlatform = sourcePlatform;
+    public ProjectInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
     /**
-     * Get the targetPlatform property: Target platform for the project.
+     * Get the systemData property: The systemData property.
      *
-     * @return the targetPlatform value.
+     * @return the systemData value.
      */
-    public ProjectTargetPlatform targetPlatform() {
-        return this.targetPlatform;
-    }
-
-    /**
-     * Set the targetPlatform property: Target platform for the project.
-     *
-     * @param targetPlatform the targetPlatform value to set.
-     * @return the ProjectInner object itself.
-     */
-    public ProjectInner withTargetPlatform(ProjectTargetPlatform targetPlatform) {
-        this.targetPlatform = targetPlatform;
-        return this;
-    }
-
-    /**
-     * Get the creationTime property: UTC Date and time when project was created.
-     *
-     * @return the creationTime value.
-     */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
-    }
-
-    /**
-     * Get the sourceConnectionInfo property: Information for connecting to source.
-     *
-     * @return the sourceConnectionInfo value.
-     */
-    public ConnectionInfo sourceConnectionInfo() {
-        return this.sourceConnectionInfo;
-    }
-
-    /**
-     * Set the sourceConnectionInfo property: Information for connecting to source.
-     *
-     * @param sourceConnectionInfo the sourceConnectionInfo value to set.
-     * @return the ProjectInner object itself.
-     */
-    public ProjectInner withSourceConnectionInfo(ConnectionInfo sourceConnectionInfo) {
-        this.sourceConnectionInfo = sourceConnectionInfo;
-        return this;
-    }
-
-    /**
-     * Get the targetConnectionInfo property: Information for connecting to target.
-     *
-     * @return the targetConnectionInfo value.
-     */
-    public ConnectionInfo targetConnectionInfo() {
-        return this.targetConnectionInfo;
-    }
-
-    /**
-     * Set the targetConnectionInfo property: Information for connecting to target.
-     *
-     * @param targetConnectionInfo the targetConnectionInfo value to set.
-     * @return the ProjectInner object itself.
-     */
-    public ProjectInner withTargetConnectionInfo(ConnectionInfo targetConnectionInfo) {
-        this.targetConnectionInfo = targetConnectionInfo;
-        return this;
-    }
-
-    /**
-     * Get the databasesInfo property: List of DatabaseInfo.
-     *
-     * @return the databasesInfo value.
-     */
-    public List<DatabaseInfo> databasesInfo() {
-        return this.databasesInfo;
-    }
-
-    /**
-     * Set the databasesInfo property: List of DatabaseInfo.
-     *
-     * @param databasesInfo the databasesInfo value to set.
-     * @return the ProjectInner object itself.
-     */
-    public ProjectInner withDatabasesInfo(List<DatabaseInfo> databasesInfo) {
-        this.databasesInfo = databasesInfo;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The project's provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public ProjectProvisioningState provisioningState() {
-        return this.provisioningState;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -200,19 +92,171 @@ public class ProjectInner extends Resource {
     }
 
     /**
+     * Get the sourcePlatform property: Source platform for the project.
+     *
+     * @return the sourcePlatform value.
+     */
+    public ProjectSourcePlatform sourcePlatform() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourcePlatform();
+    }
+
+    /**
+     * Set the sourcePlatform property: Source platform for the project.
+     *
+     * @param sourcePlatform the sourcePlatform value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withSourcePlatform(ProjectSourcePlatform sourcePlatform) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withSourcePlatform(sourcePlatform);
+        return this;
+    }
+
+    /**
+     * Get the azureAuthenticationInfo property: Field that defines the Azure active directory application info, used to
+     * connect to the target Azure resource.
+     *
+     * @return the azureAuthenticationInfo value.
+     */
+    public AzureActiveDirectoryApp azureAuthenticationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureAuthenticationInfo();
+    }
+
+    /**
+     * Set the azureAuthenticationInfo property: Field that defines the Azure active directory application info, used to
+     * connect to the target Azure resource.
+     *
+     * @param azureAuthenticationInfo the azureAuthenticationInfo value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withAzureAuthenticationInfo(AzureActiveDirectoryApp azureAuthenticationInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withAzureAuthenticationInfo(azureAuthenticationInfo);
+        return this;
+    }
+
+    /**
+     * Get the targetPlatform property: Target platform for the project.
+     *
+     * @return the targetPlatform value.
+     */
+    public ProjectTargetPlatform targetPlatform() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetPlatform();
+    }
+
+    /**
+     * Set the targetPlatform property: Target platform for the project.
+     *
+     * @param targetPlatform the targetPlatform value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withTargetPlatform(ProjectTargetPlatform targetPlatform) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withTargetPlatform(targetPlatform);
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: UTC Date and time when project was created.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
+     * Get the sourceConnectionInfo property: Information for connecting to source.
+     *
+     * @return the sourceConnectionInfo value.
+     */
+    public ConnectionInfo sourceConnectionInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceConnectionInfo();
+    }
+
+    /**
+     * Set the sourceConnectionInfo property: Information for connecting to source.
+     *
+     * @param sourceConnectionInfo the sourceConnectionInfo value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withSourceConnectionInfo(ConnectionInfo sourceConnectionInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withSourceConnectionInfo(sourceConnectionInfo);
+        return this;
+    }
+
+    /**
+     * Get the targetConnectionInfo property: Information for connecting to target.
+     *
+     * @return the targetConnectionInfo value.
+     */
+    public ConnectionInfo targetConnectionInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetConnectionInfo();
+    }
+
+    /**
+     * Set the targetConnectionInfo property: Information for connecting to target.
+     *
+     * @param targetConnectionInfo the targetConnectionInfo value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withTargetConnectionInfo(ConnectionInfo targetConnectionInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withTargetConnectionInfo(targetConnectionInfo);
+        return this;
+    }
+
+    /**
+     * Get the databasesInfo property: List of DatabaseInfo.
+     *
+     * @return the databasesInfo value.
+     */
+    public List<DatabaseInfo> databasesInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().databasesInfo();
+    }
+
+    /**
+     * Set the databasesInfo property: List of DatabaseInfo.
+     *
+     * @param databasesInfo the databasesInfo value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withDatabasesInfo(List<DatabaseInfo> databasesInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withDatabasesInfo(databasesInfo);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The project's provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public ProjectProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sourceConnectionInfo() != null) {
-            sourceConnectionInfo().validate();
-        }
-        if (targetConnectionInfo() != null) {
-            targetConnectionInfo().validate();
-        }
-        if (databasesInfo() != null) {
-            databasesInfo().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

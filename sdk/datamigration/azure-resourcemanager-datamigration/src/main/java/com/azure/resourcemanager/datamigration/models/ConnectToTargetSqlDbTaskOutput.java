@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Output for the task that validates connection to SQL DB and target server requirements. */
 @Immutable
 public final class ConnectToTargetSqlDbTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetSqlDbTaskOutput.class);
-
     /*
      * Result identifier
      */
