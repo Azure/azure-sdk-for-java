@@ -1,11 +1,14 @@
 # Azure GraalVM Support client library for Java
 
-The Azure GraalVM Support client library provides support for applications using [Azure client libraries](https://azure.
-github.io/azure-sdk/releases/latest/java.html) to be built as [GraalVM native 
+The Azure GraalVM Support client library provides support for applications using [Azure client libraries](https://azure.github.io/azure-sdk/releases/latest/java.html) to be built as [GraalVM native 
 images](https://www.graalvm.org/22.0/reference-manual/native-image/). The library contains all the necessary 
 [configuration files](https://www.graalvm.org/22.0/reference-manual/native-image/BuildConfiguration/) and [GraalVM 
 features](https://www.graalvm.org/sdk/javadoc/index.html?org/graalvm/nativeimage/hosted/Feature.html) required to build 
 a native image of an application that uses Azure client libraries.
+
+**NOTE:**: This library is a preview and is intended to enable applications using Azure client libraries to quickly 
+build and validate native images. However, this is not a stable, GA version and is not officially supported to use in production
+environments.
 
 ## Getting started
 
@@ -57,28 +60,37 @@ This library provides all the necessary configuration files for using Azure clie
 
 ## Examples
 
-#### [App Configuration](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration)
+#### App Configuration
 - [Sample demonstrating the creation and use of App Configuration client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/appconfiguration/AppConfigurationSample.java)
 
-#### [Key Vault](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault)
+Please refer to [Application Configuration](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration) client library documentation for more details.
+
+#### Key Vault
 - [Sample demonstrating the creation and use of Key Vault Certificates client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/keyvault/certificates/KeyVaultCertificatesSample.java)
 - [Sample demonstrating the creation and use of Key Vault Keys client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/keyvault/keys/KeyVaultKeysSample.java)
 - [Sample demonstrating the creation and use of Key Vault Secrets client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/keyvault/secrets/KeyVaultSecretsSample.java)
 
-#### [Storage Blob](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-blob)
+Please refer to [Key Vault](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault) client library documentation for more details.
+
+#### Storage Blob
 - [Sample demonstrating the creation and use of Storage Blob client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/storage/blob/StorageBlobSample.java)
 
-#### [Cosmos](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos)
-- [Sample demonstrating the creation and use of Cosmos client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/cosmos/CosmosSample.java)
+Please refer to [Storage Blob](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-blob) client library documentation for more details.
 
-#### [Event Hubs](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs)
+#### Event Hubs
 - [Sample demonstrating the creation and use of Event Hubs producer client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/eventhubs/EventHubsSample.java)
 
-#### [Form Recognizer](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer)
+Please refer to [Event Hubs](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs) client library documentation for more details.
+
+#### Form Recognizer
 - [Sample demonstrating the creation and use of Form Recognizer client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/formrecognizer/FormRecognizerSample.java)
 
-#### [Text Analytics](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/textanalytics/azure-ai-textanalytics)
+Please refer to [Form Recognizer](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer) client library documentation for more details.
+
+#### Text Analytics
 - [Sample demonstrating the creation and use of Text Analytics client](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-samples/src/main/java/com/azure/aot/graalvm/samples/textanalytics/TextAnalyticsSample.java)
+
+Please refer to [Text Analytics](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/textanalytics/azure-ai-textanalytics) client library documentation for more details.
 
 ## Troubleshooting
 
