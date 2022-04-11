@@ -86,7 +86,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     /**
      * Creates a new {@link DataLakeDirectoryClient} with the specified {@code customerProvidedKey}.
      *
-     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the directory,
      * pass {@code null} to use no customer provided key.
      * @return a {@link DataLakeDirectoryClient} with the specified {@code customerProvidedKey}.
      */
