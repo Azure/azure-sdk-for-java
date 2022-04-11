@@ -6,6 +6,7 @@ package com.azure.core.amqp;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -59,8 +60,8 @@ public final class ProxyUtil {
             return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         } else {
-            LOGGER.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
-                + "set or was false.");
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't set or was false.");
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
