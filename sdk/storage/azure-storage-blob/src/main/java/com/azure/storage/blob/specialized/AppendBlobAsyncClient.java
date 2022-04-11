@@ -348,11 +348,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             options.setRequestConditions(new AppendBlobRequestConditions()
                 .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
             return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
-                && ((BlobStorageException) t).getStatusCode() == 409, t -> {
-                HttpResponse response = ((BlobStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
-            });
+                && ((BlobStorageException) t).getStatusCode() == 409,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

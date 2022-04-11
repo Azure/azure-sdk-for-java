@@ -452,13 +452,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null).map(response -> {
-            if (response.getStatusCode() == 409) {
-                return false;
-            } else {
-                return true;
-            }
-        });
+        return createIfNotExistsWithResponse(null).map(response -> response.getStatusCode() != 409);
     }
 
     /**
@@ -501,11 +495,12 @@ public final class BlobContainerAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
                 .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
-                    .getStatusCode() == 409, t -> {
-                    HttpResponse response = ((BlobStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+                    .getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((BlobStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

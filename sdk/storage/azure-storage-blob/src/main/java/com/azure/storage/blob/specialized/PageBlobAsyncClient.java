@@ -412,7 +412,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                     HttpResponse response = ((BlobStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null));
-            });
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
