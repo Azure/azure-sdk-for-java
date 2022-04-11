@@ -121,6 +121,7 @@
       <Class name="com.azure.core.util.CoreUtils"/>
       <Class name="com.azure.core.implementation.serializer.HttpResponseDecodeData"/>
       <Class name="com.azure.core.util.serializer.JacksonAdapter"/>
+      <Class name="com.azure.core.serializeradapter.jackson.JacksonAdapter"/>
       <And>
         <Class name="com.microsoft.azure.servicebus.Utils"/>
         <Method name="getDataFromMessageBody"/>
@@ -153,9 +154,12 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
- <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
+  <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
   <Match>
-    <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+    <Or>
+      <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+      <Class name="com.azure.core.serializeradapter.jackson.implementation.ObjectMapperShim"/>
+    </Or>
     <Method name="createJsonMapper"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
@@ -404,8 +408,10 @@
   <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
   -->
   <Match>
-    <Class
-      name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+    <Or>
+      <Class name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+      <Class name="~com\.azure\.core\.serializeradapter\.jackson\.implementation\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+    </Or>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
@@ -676,6 +682,11 @@
       <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer"/>
       <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer"/>
       <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesDeserializer"/>
+
+      <Class name="com.azure.core.serializeradapter.jackson.implementation.FlatteningSerializer"/>
+      <Class name="com.azure.core.serializeradapter.jackson.implementation.FlatteningDeserializer"/>
+      <Class name="com.azure.core.serializeradapter.jackson.implementation.AdditionalPropertiesSerializer"/>
+      <Class name="com.azure.core.serializeradapter.jackson.implementation.AdditionalPropertiesDeserializer"/>
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
@@ -1332,7 +1343,7 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
-    <!-- Exception is required to handle when getting java version  -->
+  <!-- Exception is required to handle when getting java version  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.Utils"/>
     <Method name="getJavaVersion"/>
@@ -2187,7 +2198,7 @@
     UWF_UNWRITTEN_FIELD"/>
   </Match>
 
-    <!-- Exclude AAP source code types from spotbug -->
+  <!-- Exclude AAP source code types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.encryption\.implementation\.mdesrc(.+)"/>
     <Bug pattern="DM_CONVERT_CASE,
@@ -2333,7 +2344,7 @@
         <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureKeyCredentialResolver"/>
         <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver"/>
         <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureSasCredentialResolver"/>
-        <Class name="com.azure.spring.cloud.service.implementation.storage.credential.StorageSharedKeyCredentialResolver" />
+        <Class name="com.azure.spring.cloud.service.implementation.storage.credential.StorageSharedKeyCredentialResolver"/>
       </Or>
       <Method name="resolve"/>
     </And>
@@ -2342,8 +2353,8 @@
 
   <!-- This match should be removed after fixing https://github.com/Azure/azure-sdk-for-java/issues/26356 -->
   <Match>
-    <Class name="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation" />
-    <Field name="timer" />
+    <Class name="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation"/>
+    <Field name="timer"/>
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
   </Match>
 
@@ -2517,7 +2528,7 @@
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
-   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
+  <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
     <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
     <Field name="content"/>
@@ -2627,7 +2638,10 @@
 
   <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
   <Match>
-    <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+    <Or>
+      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+      <Class name="com.azure.core.serializeradapter.jackson.implementation.FlatteningSerializer"/>
+    </Or>
     <Method name="propertyOnlyFlattenSerialize"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>

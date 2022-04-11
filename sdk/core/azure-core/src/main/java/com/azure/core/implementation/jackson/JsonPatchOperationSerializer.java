@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.models;
+package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.JsonPatchOperation;
 import com.azure.core.implementation.Option;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * Handles serialization of a {@link JsonPatchOperation}.
  */
-final class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
+public final class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
     private static final SimpleModule MODULE;
 
     static {

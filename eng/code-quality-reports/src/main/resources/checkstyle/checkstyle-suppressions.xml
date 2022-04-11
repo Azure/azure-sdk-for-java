@@ -27,6 +27,13 @@
   <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionSerializerProvider"/>
   <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionSerializer"/>
 
+  <suppress checks="Header" files="com.azure.core.serializeradapter.jackson.implementation.OptionModule"/>
+  <suppress checks="Header" files="com.azure.core.serializeradapter.jackson.implementation.OptionPropertiesModifier"/>
+  <suppress checks="Header" files="com.azure.core.serializeradapter.jackson.implementation.OptionBeanPropertyWriter"/>
+  <suppress checks="Header" files="com.azure.core.serializeradapter.jackson.implementation.OptionTypeModifier"/>
+  <suppress checks="Header" files="com.azure.core.serializeradapter.jackson.implementation.OptionSerializerProvider"/>
+  <suppress checks="Header" files="com.azure.core.serializeradapter.jackson.implementation.OptionSerializer"/>
+
   <!-- empty Enum Singleton Pattern -->
   <suppress checks="NoWhitespaceBefore" files="Messages.java"/>
 
@@ -202,6 +209,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Temporary suppressions -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.util.serializer.JacksonAdapter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.serializeradapter.jackson.JacksonAdapter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag"
             files="com.azure.core.util.serializer.SerializerAdapter"/>
 

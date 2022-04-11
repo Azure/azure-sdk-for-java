@@ -3,6 +3,9 @@
 
 package com.azure.core.models;
 
+import com.azure.core.implementation.JsonPatchDocumentHelper;
+import com.azure.core.implementation.JsonPatchOperation;
+import com.azure.core.implementation.JsonPatchOperationKind;
 import com.azure.core.implementation.Option;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -21,6 +24,10 @@ import java.util.Objects;
 public final class JsonPatchDocument {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;
+
+    static {
+        JsonPatchDocumentHelper.setAccessor(JsonPatchDocument::getOperations);
+    }
 
     @JsonIgnore
     private final JsonSerializer serializer;

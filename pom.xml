@@ -52,6 +52,7 @@
         <module>sdk/core/azure-core-http-netty</module>
 <!--        <module>sdk/core/azure-core-http-okhttp</module>-->
         <module>sdk/core/azure-core-management</module>
+        <module>sdk/core/azure-core-serializeradapter-jackson</module>
         <module>sdk/core/azure-core-serializer-avro-apache</module>
         <module>sdk/core/azure-core-serializer-json-gson</module>
         <module>sdk/core/azure-core-serializer-json-jackson</module>
@@ -216,6 +217,7 @@
         <module>sdk/core/azure-core-http-netty</module>
         <module>sdk/core/azure-core-http-okhttp</module>
         <module>sdk/core/azure-core-management</module>
+        <module>sdk/core/azure-core-serializeradapter-jackson</module>
         <module>sdk/core/azure-core-serializer-avro-apache</module>
         <module>sdk/core/azure-core-serializer-json-gson</module>
         <module>sdk/core/azure-core-serializer-json-jackson</module>
@@ -394,6 +396,10 @@
                   <group>
                     <title>Azure Core - Management</title>
                     <packages>com.azure.core.management*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Core - SerializerAdapter - Jackson</title>
+                    <packages>com.azure.core.serializeradapter.jackson*</packages>
                   </group>
                   <group>
                     <title>Azure Core - Serializer - Avro - Apache</title>

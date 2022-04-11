@@ -21,6 +21,7 @@
         <module>azure-core-http-netty</module>
         <module>azure-core-http-okhttp</module>
         <module>azure-core-management</module>
+        <module>azure-core-serializeradapter-jackson</module>
         <module>azure-core-serializer-avro-apache</module>
         <module>azure-core-serializer-json-gson</module>
         <module>azure-core-serializer-json-jackson</module>
@@ -68,6 +69,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
           <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-serializeradapter-jackson</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializeradapter-jackson;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -131,6 +137,7 @@
         <module>azure-core-http-okhttp</module>
         <module>azure-core-management</module>
         <module>azure-core-perf</module>
+        <module>azure-core-serializeradapter-jackson</module>
         <module>azure-core-serializer-avro-apache</module>
         <module>azure-core-serializer-json-gson</module>
         <module>azure-core-serializer-json-jackson</module>

@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.models;
+package com.azure.core.serializeradapter.jackson.implementation;
 
+import com.azure.core.implementation.JsonPatchDocumentHelper;
+import com.azure.core.implementation.JsonPatchOperation;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -34,7 +37,7 @@ final class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument
     @Override
     public void serialize(JsonPatchDocument value, JsonGenerator gen, SerializerProvider serializers)
         throws IOException {
-        List<JsonPatchOperation> operations = value.getOperations();
+        List<JsonPatchOperation> operations = JsonPatchDocumentHelper.getOperations(value);
         if (CoreUtils.isNullOrEmpty(operations)) {
             return;
         }
