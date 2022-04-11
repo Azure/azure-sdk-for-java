@@ -36,7 +36,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
             new ThroughputControlGroupConfigBuilder()
                 .groupName("group-1")
                 .targetThroughput(10)
-                .isDefault(true)
+                .defaultControlGroup(true)
                 .build();
         container.enableLocalThroughputControlGroup(groupConfig);
 
@@ -44,7 +44,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
             new ThroughputControlGroupConfigBuilder()
                 .groupName("group-2")
                 .targetThroughputThreshold(1.0)
-                .isDefault(true)
+                .defaultControlGroup(true)
                 .build();
         assertThatThrownBy(() -> container.enableLocalThroughputControlGroup(groupConfig2))
             .isInstanceOf(IllegalArgumentException.class)

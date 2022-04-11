@@ -137,7 +137,7 @@ public class ThroughputControlGroupConfigBuilder {
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
     @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroupConfigBuilder isDefault(boolean aDefault) {
+    public ThroughputControlGroupConfigBuilder defaultControlGroup(boolean aDefault) {
         this.isDefault = aDefault;
         return this;
     }

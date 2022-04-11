@@ -18,7 +18,7 @@ private object ThroughputControlHelper {
 
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
                 .groupName(throughputControlConfig.groupName)
-                .isDefault(true)
+                .defaultControlGroup(true)
 
             if (throughputControlConfig.targetThroughput.isDefined) {
                 groupConfigBuilder.setTargetThroughput(throughputControlConfig.targetThroughput.get)

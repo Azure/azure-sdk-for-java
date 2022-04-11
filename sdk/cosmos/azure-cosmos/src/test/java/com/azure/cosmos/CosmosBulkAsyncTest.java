@@ -73,7 +73,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         ThroughputControlGroupConfig groupConfig = new ThroughputControlGroupConfigBuilder()
             .groupName("test-group")
             .targetThroughputThreshold(0.2)
-            .isDefault(true)
+            .defaultControlGroup(true)
             .build();
         bulkAsyncContainerWithThroughputControl.enableLocalThroughputControlGroup(groupConfig);
 
