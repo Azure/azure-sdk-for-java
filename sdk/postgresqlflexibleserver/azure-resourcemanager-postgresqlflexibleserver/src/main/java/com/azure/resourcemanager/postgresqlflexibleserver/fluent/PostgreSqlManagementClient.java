@@ -24,13 +24,6 @@ public interface PostgreSqlManagementClient {
     String getEndpoint();
 
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -52,6 +45,13 @@ public interface PostgreSqlManagementClient {
     ServersClient getServers();
 
     /**
+     * Gets the ReplicasClient object to access its operations.
+     *
+     * @return the ReplicasClient object.
+     */
+    ReplicasClient getReplicas();
+
+    /**
      * Gets the FirewallRulesClient object to access its operations.
      *
      * @return the FirewallRulesClient object.
@@ -59,39 +59,11 @@ public interface PostgreSqlManagementClient {
     FirewallRulesClient getFirewallRules();
 
     /**
-     * Gets the ConfigurationsClient object to access its operations.
+     * Gets the VirtualNetworkRulesClient object to access its operations.
      *
-     * @return the ConfigurationsClient object.
+     * @return the VirtualNetworkRulesClient object.
      */
-    ConfigurationsClient getConfigurations();
-
-    /**
-     * Gets the CheckNameAvailabilitiesClient object to access its operations.
-     *
-     * @return the CheckNameAvailabilitiesClient object.
-     */
-    CheckNameAvailabilitiesClient getCheckNameAvailabilities();
-
-    /**
-     * Gets the LocationBasedCapabilitiesClient object to access its operations.
-     *
-     * @return the LocationBasedCapabilitiesClient object.
-     */
-    LocationBasedCapabilitiesClient getLocationBasedCapabilities();
-
-    /**
-     * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
-     *
-     * @return the VirtualNetworkSubnetUsagesClient object.
-     */
-    VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
+    VirtualNetworkRulesClient getVirtualNetworkRules();
 
     /**
      * Gets the DatabasesClient object to access its operations.
@@ -101,9 +73,93 @@ public interface PostgreSqlManagementClient {
     DatabasesClient getDatabases();
 
     /**
-     * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
+     * Gets the ConfigurationsClient object to access its operations.
      *
-     * @return the GetPrivateDnsZoneSuffixesClient object.
+     * @return the ConfigurationsClient object.
      */
-    GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes();
+    ConfigurationsClient getConfigurations();
+
+    /**
+     * Gets the ServerParametersClient object to access its operations.
+     *
+     * @return the ServerParametersClient object.
+     */
+    ServerParametersClient getServerParameters();
+
+    /**
+     * Gets the LogFilesClient object to access its operations.
+     *
+     * @return the LogFilesClient object.
+     */
+    LogFilesClient getLogFiles();
+
+    /**
+     * Gets the ServerAdministratorsClient object to access its operations.
+     *
+     * @return the ServerAdministratorsClient object.
+     */
+    ServerAdministratorsClient getServerAdministrators();
+
+    /**
+     * Gets the RecoverableServersClient object to access its operations.
+     *
+     * @return the RecoverableServersClient object.
+     */
+    RecoverableServersClient getRecoverableServers();
+
+    /**
+     * Gets the ServerBasedPerformanceTiersClient object to access its operations.
+     *
+     * @return the ServerBasedPerformanceTiersClient object.
+     */
+    ServerBasedPerformanceTiersClient getServerBasedPerformanceTiers();
+
+    /**
+     * Gets the LocationBasedPerformanceTiersClient object to access its operations.
+     *
+     * @return the LocationBasedPerformanceTiersClient object.
+     */
+    LocationBasedPerformanceTiersClient getLocationBasedPerformanceTiers();
+
+    /**
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilitiesClient object.
+     */
+    CheckNameAvailabilitiesClient getCheckNameAvailabilities();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the ServerSecurityAlertPoliciesClient object to access its operations.
+     *
+     * @return the ServerSecurityAlertPoliciesClient object.
+     */
+    ServerSecurityAlertPoliciesClient getServerSecurityAlertPolicies();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the ServerKeysClient object to access its operations.
+     *
+     * @return the ServerKeysClient object.
+     */
+    ServerKeysClient getServerKeys();
 }

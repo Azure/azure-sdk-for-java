@@ -7,7 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 /** Samples for FirewallRules CreateOrUpdate. */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/FirewallRuleCreate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/FirewallRuleCreate.json
      */
     /**
      * Sample code: FirewallRuleCreate.
@@ -19,7 +19,7 @@ public final class FirewallRulesCreateOrUpdateSamples {
         manager
             .firewallRules()
             .define("rule1")
-            .withExistingFlexibleServer("testrg", "testserver")
+            .withExistingServer("TestGroup", "testserver")
             .withStartIpAddress("0.0.0.0")
             .withEndIpAddress("255.255.255.255")
             .create();

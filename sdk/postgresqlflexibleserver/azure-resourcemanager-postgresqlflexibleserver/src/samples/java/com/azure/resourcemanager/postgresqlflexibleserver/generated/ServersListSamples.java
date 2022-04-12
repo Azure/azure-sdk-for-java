@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers List. */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerList.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerList.json
      */
     /**
      * Sample code: ServerList.

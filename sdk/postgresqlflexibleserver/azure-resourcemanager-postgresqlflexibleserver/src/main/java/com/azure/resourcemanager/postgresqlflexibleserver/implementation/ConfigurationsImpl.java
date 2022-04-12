@@ -13,10 +13,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsC
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationsImpl implements Configurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
 
     private final ConfigurationsClient innerClient;
 
@@ -27,17 +26,6 @@ public final class ConfigurationsImpl implements Configurations {
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<ConfigurationInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context) {
-        PagedIterable<ConfigurationInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
     public Configuration get(String resourceGroupName, String serverName, String configurationName) {
@@ -64,26 +52,36 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
+    public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName) {
+        PagedIterable<ConfigurationInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context) {
+        PagedIterable<ConfigurationInner> inner =
+            this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+    }
+
     public Configuration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
+        String serverName = Utils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,23 +93,22 @@ public final class ConfigurationsImpl implements Configurations {
     public Response<Configuration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
+        String serverName = Utils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

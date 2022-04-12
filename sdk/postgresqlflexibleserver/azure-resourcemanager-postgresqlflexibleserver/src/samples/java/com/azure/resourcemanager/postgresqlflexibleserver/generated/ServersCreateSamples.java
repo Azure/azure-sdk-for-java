@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.GeoRedundantBackupEnum;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityMode;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.GeoRedundantBackup;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MinimalTlsVersionEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPropertiesForDefaultCreate;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPropertiesForGeoRestore;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPropertiesForReplica;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPropertiesForRestore;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuTier;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SslEnforcementEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageProfile;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,56 @@ import java.util.Map;
 /** Samples for Servers Create. */
 public final class ServersCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerCreate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreateReplicaMode.json
+     */
+    /**
+     * Sample code: Create a replica server.
+     *
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void createAReplicaServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
+            .servers()
+            .define("testserver-replica1")
+            .withRegion("westcentralus")
+            .withExistingResourceGroup("TestGroup_WestCentralUS")
+            .withProperties(
+                new ServerPropertiesForReplica()
+                    .withSourceServerId(
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"))
+            .withSku(
+                new Sku().withName("GP_Gen5_2").withTier(SkuTier.GENERAL_PURPOSE).withCapacity(2).withFamily("Gen5"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreateGeoRestoreMode.json
+     */
+    /**
+     * Sample code: Create a server as a geo restore.
+     *
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void createAServerAsAGeoRestore(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
+            .servers()
+            .define("targetserver")
+            .withRegion("westus")
+            .withExistingResourceGroup("TargetResourceGroup")
+            .withProperties(
+                new ServerPropertiesForGeoRestore()
+                    .withSourceServerId(
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforPostgreSQL/servers/sourceserver"))
+            .withTags(mapOf("ElasticServer", "1"))
+            .withSku(
+                new Sku().withName("GP_Gen5_2").withTier(SkuTier.GENERAL_PURPOSE).withCapacity(2).withFamily("Gen5"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
@@ -33,28 +82,25 @@ public final class ServersCreateSamples {
             .servers()
             .define("pgtestsvc4")
             .withRegion("westus")
-            .withExistingResourceGroup("testrg")
+            .withExistingResourceGroup("TestGroup")
+            .withProperties(
+                new ServerPropertiesForDefaultCreate()
+                    .withSslEnforcement(SslEnforcementEnum.ENABLED)
+                    .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_2)
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withBackupRetentionDays(7)
+                            .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                            .withStorageMB(128000))
+                    .withAdministratorLogin("cloudsa")
+                    .withAdministratorLoginPassword("<administratorLoginPassword>"))
             .withTags(mapOf("ElasticServer", "1"))
-            .withSku(new Sku().withName("Standard_D4s_v3").withTier(SkuTier.GENERAL_PURPOSE))
-            .withAdministratorLogin("cloudsa")
-            .withAdministratorLoginPassword("password")
-            .withVersion(ServerVersion.ONE_TWO)
-            .withStorage(new Storage().withStorageSizeGB(512))
-            .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeoRedundantBackupEnum.DISABLED))
-            .withNetwork(
-                new Network()
-                    .withDelegatedSubnetResourceId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet")
-                    .withPrivateDnsZoneArmResourceId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"))
-            .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.ZONE_REDUNDANT))
-            .withAvailabilityZone("1")
-            .withCreateMode(CreateMode.CREATE)
+            .withSku(new Sku().withName("B_Gen5_2").withTier(SkuTier.BASIC).withCapacity(2).withFamily("Gen5"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerCreatePointInTimeRestore.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Create a database as a point in time restore.
@@ -65,13 +111,16 @@ public final class ServersCreateSamples {
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager
             .servers()
-            .define("pgtestsvc5")
-            .withRegion("westus")
-            .withExistingResourceGroup("testrg")
-            .withSourceServerResourceId(
-                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername")
-            .withPointInTimeUtc(OffsetDateTime.parse("2021-06-27T00:04:59.4078005+00:00"))
-            .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+            .define("targetserver")
+            .withRegion("brazilsouth")
+            .withExistingResourceGroup("TargetResourceGroup")
+            .withProperties(
+                new ServerPropertiesForRestore()
+                    .withSourceServerId(
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforPostgreSQL/servers/sourceserver")
+                    .withRestorePointInTime(OffsetDateTime.parse("2017-12-14T00:00:37.467Z")))
+            .withTags(mapOf("ElasticServer", "1"))
+            .withSku(new Sku().withName("B_Gen5_2").withTier(SkuTier.BASIC).withCapacity(2).withFamily("Gen5"))
             .create();
     }
 

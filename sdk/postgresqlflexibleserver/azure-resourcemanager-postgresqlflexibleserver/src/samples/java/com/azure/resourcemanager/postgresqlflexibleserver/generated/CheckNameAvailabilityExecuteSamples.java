@@ -10,7 +10,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilit
 /** Samples for CheckNameAvailability Execute. */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: NameAvailability.
@@ -21,7 +21,6 @@ public final class CheckNameAvailabilityExecuteSamples {
         manager
             .checkNameAvailabilities()
             .executeWithResponse(
-                new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforPostgreSQL/flexibleServers"),
-                Context.NONE);
+                new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforPostgreSQL"), Context.NONE);
     }
 }

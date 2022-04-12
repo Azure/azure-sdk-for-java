@@ -5,26 +5,21 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.InfrastructureEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MinimalTlsVersionEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PublicNetworkAccessEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerPrivateEndpointConnection;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SslEnforcementEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.Map;
+import java.util.List;
 
 /** The properties of a server. */
 @Fluent
 public final class ServerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerProperties.class);
-
     /*
      * The administrator's login name of a server. Can only be specified when
      * the server is being created (and is required for creation).
@@ -33,97 +28,90 @@ public final class ServerProperties {
     private String administratorLogin;
 
     /*
-     * The administrator login password (required for server creation).
-     */
-    @JsonProperty(value = "administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * PostgreSQL Server version.
+     * Server version.
      */
     @JsonProperty(value = "version")
     private ServerVersion version;
 
     /*
-     * The minor version of the server.
+     * Enable ssl enforcement or not when connect to server.
      */
-    @JsonProperty(value = "minorVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String minorVersion;
+    @JsonProperty(value = "sslEnforcement")
+    private SslEnforcementEnum sslEnforcement;
+
+    /*
+     * Enforce a minimal Tls version for the server.
+     */
+    @JsonProperty(value = "minimalTlsVersion")
+    private MinimalTlsVersionEnum minimalTlsVersion;
+
+    /*
+     * Status showing whether the server data encryption is enabled with
+     * customer-managed keys.
+     */
+    @JsonProperty(value = "byokEnforcement", access = JsonProperty.Access.WRITE_ONLY)
+    private String byokEnforcement;
+
+    /*
+     * Status showing whether the server enabled infrastructure encryption.
+     */
+    @JsonProperty(value = "infrastructureEncryption")
+    private InfrastructureEncryption infrastructureEncryption;
 
     /*
      * A state of a server that is visible to user.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private ServerState state;
+    @JsonProperty(value = "userVisibleState")
+    private ServerState userVisibleState;
 
     /*
      * The fully qualified domain name of a server.
      */
-    @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "fullyQualifiedDomainName")
     private String fullyQualifiedDomainName;
 
     /*
-     * Storage properties of a server.
+     * Earliest restore point creation time (ISO8601 format)
      */
-    @JsonProperty(value = "storage")
-    private Storage storage;
+    @JsonProperty(value = "earliestRestoreDate")
+    private OffsetDateTime earliestRestoreDate;
 
     /*
-     * Backup properties of a server.
+     * Storage profile of a server.
      */
-    @JsonProperty(value = "backup")
-    private Backup backup;
+    @JsonProperty(value = "storageProfile")
+    private StorageProfile storageProfile;
 
     /*
-     * Network properties of a server.
+     * The replication role of the server.
      */
-    @JsonProperty(value = "network")
-    private Network network;
+    @JsonProperty(value = "replicationRole")
+    private String replicationRole;
 
     /*
-     * High availability properties of a server.
+     * The master server id of a replica server.
      */
-    @JsonProperty(value = "highAvailability")
-    private HighAvailability highAvailability;
+    @JsonProperty(value = "masterServerId")
+    private String masterServerId;
 
     /*
-     * Maintenance window properties of a server.
+     * The maximum number of replicas that a master server can have.
      */
-    @JsonProperty(value = "maintenanceWindow")
-    private MaintenanceWindow maintenanceWindow;
+    @JsonProperty(value = "replicaCapacity")
+    private Integer replicaCapacity;
 
     /*
-     * The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * Whether or not public network access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "sourceServerResourceId")
-    private String sourceServerResourceId;
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccessEnum publicNetworkAccess;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to
-     * restore from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * List of private endpoint connections on a server
      */
-    @JsonProperty(value = "pointInTimeUTC")
-    private OffsetDateTime pointInTimeUtc;
-
-    /*
-     * availability zone information of the server.
-     */
-    @JsonProperty(value = "availabilityZone")
-    private String availabilityZone;
-
-    /*
-     * The mode to create a new PostgreSQL server.
-     */
-    @JsonProperty(value = "createMode")
-    private CreateMode createMode;
-
-    /*
-     * Application-specific metadata in the form of key-value pairs.
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ServerPrivateEndpointConnection> privateEndpointConnections;
 
     /**
      * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
@@ -148,27 +136,7 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
-     * @return the administratorLoginPassword value.
-     */
-    public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
-    }
-
-    /**
-     * Set the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
-     * @param administratorLoginPassword the administratorLoginPassword value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
-        return this;
-    }
-
-    /**
-     * Get the version property: PostgreSQL Server version.
+     * Get the version property: Server version.
      *
      * @return the version value.
      */
@@ -177,7 +145,7 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the version property: PostgreSQL Server version.
+     * Set the version property: Server version.
      *
      * @param version the version value to set.
      * @return the ServerProperties object itself.
@@ -188,21 +156,93 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the minorVersion property: The minor version of the server.
+     * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
      *
-     * @return the minorVersion value.
+     * @return the sslEnforcement value.
      */
-    public String minorVersion() {
-        return this.minorVersion;
+    public SslEnforcementEnum sslEnforcement() {
+        return this.sslEnforcement;
     }
 
     /**
-     * Get the state property: A state of a server that is visible to user.
+     * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
      *
-     * @return the state value.
+     * @param sslEnforcement the sslEnforcement value to set.
+     * @return the ServerProperties object itself.
      */
-    public ServerState state() {
-        return this.state;
+    public ServerProperties withSslEnforcement(SslEnforcementEnum sslEnforcement) {
+        this.sslEnforcement = sslEnforcement;
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.minimalTlsVersion;
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        this.minimalTlsVersion = minimalTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the byokEnforcement property: Status showing whether the server data encryption is enabled with
+     * customer-managed keys.
+     *
+     * @return the byokEnforcement value.
+     */
+    public String byokEnforcement() {
+        return this.byokEnforcement;
+    }
+
+    /**
+     * Get the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
+     *
+     * @return the infrastructureEncryption value.
+     */
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.infrastructureEncryption;
+    }
+
+    /**
+     * Set the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
+     *
+     * @param infrastructureEncryption the infrastructureEncryption value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
+        this.infrastructureEncryption = infrastructureEncryption;
+        return this;
+    }
+
+    /**
+     * Get the userVisibleState property: A state of a server that is visible to user.
+     *
+     * @return the userVisibleState value.
+     */
+    public ServerState userVisibleState() {
+        return this.userVisibleState;
+    }
+
+    /**
+     * Set the userVisibleState property: A state of a server that is visible to user.
+     *
+     * @param userVisibleState the userVisibleState value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withUserVisibleState(ServerState userVisibleState) {
+        this.userVisibleState = userVisibleState;
+        return this;
     }
 
     /**
@@ -215,207 +255,145 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the storage property: Storage properties of a server.
+     * Set the fullyQualifiedDomainName property: The fully qualified domain name of a server.
      *
-     * @return the storage value.
-     */
-    public Storage storage() {
-        return this.storage;
-    }
-
-    /**
-     * Set the storage property: Storage properties of a server.
-     *
-     * @param storage the storage value to set.
+     * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withStorage(Storage storage) {
-        this.storage = storage;
+    public ServerProperties withFullyQualifiedDomainName(String fullyQualifiedDomainName) {
+        this.fullyQualifiedDomainName = fullyQualifiedDomainName;
         return this;
     }
 
     /**
-     * Get the backup property: Backup properties of a server.
+     * Get the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
      *
-     * @return the backup value.
+     * @return the earliestRestoreDate value.
      */
-    public Backup backup() {
-        return this.backup;
+    public OffsetDateTime earliestRestoreDate() {
+        return this.earliestRestoreDate;
     }
 
     /**
-     * Set the backup property: Backup properties of a server.
+     * Set the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
      *
-     * @param backup the backup value to set.
+     * @param earliestRestoreDate the earliestRestoreDate value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withBackup(Backup backup) {
-        this.backup = backup;
+    public ServerProperties withEarliestRestoreDate(OffsetDateTime earliestRestoreDate) {
+        this.earliestRestoreDate = earliestRestoreDate;
         return this;
     }
 
     /**
-     * Get the network property: Network properties of a server.
+     * Get the storageProfile property: Storage profile of a server.
      *
-     * @return the network value.
+     * @return the storageProfile value.
      */
-    public Network network() {
-        return this.network;
+    public StorageProfile storageProfile() {
+        return this.storageProfile;
     }
 
     /**
-     * Set the network property: Network properties of a server.
+     * Set the storageProfile property: Storage profile of a server.
      *
-     * @param network the network value to set.
+     * @param storageProfile the storageProfile value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withNetwork(Network network) {
-        this.network = network;
+    public ServerProperties withStorageProfile(StorageProfile storageProfile) {
+        this.storageProfile = storageProfile;
         return this;
     }
 
     /**
-     * Get the highAvailability property: High availability properties of a server.
+     * Get the replicationRole property: The replication role of the server.
      *
-     * @return the highAvailability value.
+     * @return the replicationRole value.
      */
-    public HighAvailability highAvailability() {
-        return this.highAvailability;
+    public String replicationRole() {
+        return this.replicationRole;
     }
 
     /**
-     * Set the highAvailability property: High availability properties of a server.
+     * Set the replicationRole property: The replication role of the server.
      *
-     * @param highAvailability the highAvailability value to set.
+     * @param replicationRole the replicationRole value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withHighAvailability(HighAvailability highAvailability) {
-        this.highAvailability = highAvailability;
+    public ServerProperties withReplicationRole(String replicationRole) {
+        this.replicationRole = replicationRole;
         return this;
     }
 
     /**
-     * Get the maintenanceWindow property: Maintenance window properties of a server.
+     * Get the masterServerId property: The master server id of a replica server.
      *
-     * @return the maintenanceWindow value.
+     * @return the masterServerId value.
      */
-    public MaintenanceWindow maintenanceWindow() {
-        return this.maintenanceWindow;
+    public String masterServerId() {
+        return this.masterServerId;
     }
 
     /**
-     * Set the maintenanceWindow property: Maintenance window properties of a server.
+     * Set the masterServerId property: The master server id of a replica server.
      *
-     * @param maintenanceWindow the maintenanceWindow value to set.
+     * @param masterServerId the masterServerId value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
-        this.maintenanceWindow = maintenanceWindow;
+    public ServerProperties withMasterServerId(String masterServerId) {
+        this.masterServerId = masterServerId;
         return this;
     }
 
     /**
-     * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * Get the replicaCapacity property: The maximum number of replicas that a master server can have.
      *
-     * @return the sourceServerResourceId value.
+     * @return the replicaCapacity value.
      */
-    public String sourceServerResourceId() {
-        return this.sourceServerResourceId;
+    public Integer replicaCapacity() {
+        return this.replicaCapacity;
     }
 
     /**
-     * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * Set the replicaCapacity property: The maximum number of replicas that a master server can have.
      *
-     * @param sourceServerResourceId the sourceServerResourceId value to set.
+     * @param replicaCapacity the replicaCapacity value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withSourceServerResourceId(String sourceServerResourceId) {
-        this.sourceServerResourceId = sourceServerResourceId;
+    public ServerProperties withReplicaCapacity(Integer replicaCapacity) {
+        this.replicaCapacity = replicaCapacity;
         return this;
     }
 
     /**
-     * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
      *
-     * @return the pointInTimeUtc value.
+     * @return the publicNetworkAccess value.
      */
-    public OffsetDateTime pointInTimeUtc() {
-        return this.pointInTimeUtc;
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.publicNetworkAccess;
     }
 
     /**
-     * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
      *
-     * @param pointInTimeUtc the pointInTimeUtc value to set.
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withPointInTimeUtc(OffsetDateTime pointInTimeUtc) {
-        this.pointInTimeUtc = pointInTimeUtc;
+    public ServerProperties withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
     /**
-     * Get the availabilityZone property: availability zone information of the server.
+     * Get the privateEndpointConnections property: List of private endpoint connections on a server.
      *
-     * @return the availabilityZone value.
+     * @return the privateEndpointConnections value.
      */
-    public String availabilityZone() {
-        return this.availabilityZone;
-    }
-
-    /**
-     * Set the availabilityZone property: availability zone information of the server.
-     *
-     * @param availabilityZone the availabilityZone value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withAvailabilityZone(String availabilityZone) {
-        this.availabilityZone = availabilityZone;
-        return this;
-    }
-
-    /**
-     * Get the createMode property: The mode to create a new PostgreSQL server.
-     *
-     * @return the createMode value.
-     */
-    public CreateMode createMode() {
-        return this.createMode;
-    }
-
-    /**
-     * Set the createMode property: The mode to create a new PostgreSQL server.
-     *
-     * @param createMode the createMode value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withCreateMode(CreateMode createMode) {
-        this.createMode = createMode;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
-     * @param tags the tags value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -424,20 +402,11 @@ public final class ServerProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (storage() != null) {
-            storage().validate();
+        if (storageProfile() != null) {
+            storageProfile().validate();
         }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (network() != null) {
-            network().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (maintenanceWindow() != null) {
-            maintenanceWindow().validate();
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

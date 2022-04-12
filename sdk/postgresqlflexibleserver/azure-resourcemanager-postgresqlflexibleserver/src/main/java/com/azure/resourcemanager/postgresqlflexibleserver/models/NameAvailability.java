@@ -23,18 +23,11 @@ public interface NameAvailability {
     Boolean nameAvailable();
 
     /**
-     * Gets the name property: name of the PostgreSQL server.
+     * Gets the reason property: Reason for name being unavailable.
      *
-     * @return the name value.
+     * @return the reason value.
      */
-    String name();
-
-    /**
-     * Gets the type property: type of the server.
-     *
-     * @return the type value.
-     */
-    String type();
+    String reason();
 
     /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvailabilityInner object.

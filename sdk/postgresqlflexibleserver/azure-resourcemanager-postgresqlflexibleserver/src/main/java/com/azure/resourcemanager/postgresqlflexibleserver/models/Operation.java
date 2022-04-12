@@ -4,18 +4,14 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** REST API operation definition. */
-@Fluent
+@Immutable
 public final class Operation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
-
     /*
      * The name of the operation being performed on this particular object.
      */
@@ -28,12 +24,6 @@ public final class Operation {
      */
     @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
     private OperationDisplay display;
-
-    /*
-     * Indicates whether the operation is a data action
-     */
-    @JsonProperty(value = "isDataAction")
-    private Boolean isDataAction;
 
     /*
      * The intended executor of the operation.
@@ -64,26 +54,6 @@ public final class Operation {
      */
     public OperationDisplay display() {
         return this.display;
-    }
-
-    /**
-     * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
-     * @return the isDataAction value.
-     */
-    public Boolean isDataAction() {
-        return this.isDataAction;
-    }
-
-    /**
-     * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
-     * @param isDataAction the isDataAction value to set.
-     * @return the Operation object itself.
-     */
-    public Operation withIsDataAction(Boolean isDataAction) {
-        this.isDataAction = isDataAction;
-        return this;
     }
 
     /**

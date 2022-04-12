@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.DatabaseInner;
 
@@ -30,13 +29,6 @@ public interface Database {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the charset property: The charset of the database.
@@ -77,7 +69,7 @@ public interface Database {
              * @param serverName The name of the server.
              * @return the next definition stage.
              */
-            WithCreate withExistingFlexibleServer(String resourceGroupName, String serverName);
+            WithCreate withExistingServer(String resourceGroupName, String serverName);
         }
         /**
          * The stage of the Database definition which contains all the minimum required properties for the resource to
@@ -118,6 +110,53 @@ public interface Database {
              * @return the next definition stage.
              */
             WithCreate withCollation(String collation);
+        }
+    }
+    /**
+     * Begins update for the Database resource.
+     *
+     * @return the stage of resource update.
+     */
+    Database.Update update();
+
+    /** The template for Database update. */
+    interface Update extends UpdateStages.WithCharset, UpdateStages.WithCollation {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        Database apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        Database apply(Context context);
+    }
+    /** The Database update stages. */
+    interface UpdateStages {
+        /** The stage of the Database update allowing to specify charset. */
+        interface WithCharset {
+            /**
+             * Specifies the charset property: The charset of the database..
+             *
+             * @param charset The charset of the database.
+             * @return the next definition stage.
+             */
+            Update withCharset(String charset);
+        }
+        /** The stage of the Database update allowing to specify collation. */
+        interface WithCollation {
+            /**
+             * Specifies the collation property: The collation of the database..
+             *
+             * @param collation The collation of the database.
+             * @return the next definition stage.
+             */
+            Update withCollation(String collation);
         }
     }
     /**

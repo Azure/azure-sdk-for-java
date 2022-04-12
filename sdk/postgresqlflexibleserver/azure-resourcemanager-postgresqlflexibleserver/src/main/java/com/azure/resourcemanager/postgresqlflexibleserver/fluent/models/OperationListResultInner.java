@@ -5,32 +5,21 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Operation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of resource provider operations. */
 @Fluent
 public final class OperationListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResultInner.class);
-
     /*
-     * Collection of available operation details
+     * The list of resource provider operations.
      */
     @JsonProperty(value = "value")
     private List<Operation> value;
 
-    /*
-     * URL client should use to fetch the next page (per server side paging).
-     * It's null for now, added for future use.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
     /**
-     * Get the value property: Collection of available operation details.
+     * Get the value property: The list of resource provider operations.
      *
      * @return the value value.
      */
@@ -39,35 +28,13 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the value property: Collection of available operation details.
+     * Set the value property: The list of resource provider operations.
      *
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
     public OperationListResultInner withValue(List<Operation> value) {
         this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the OperationListResultInner object itself.
-     */
-    public OperationListResultInner withNextLink(String nextLink) {
-        this.nextLink = nextLink;
         return this;
     }
 

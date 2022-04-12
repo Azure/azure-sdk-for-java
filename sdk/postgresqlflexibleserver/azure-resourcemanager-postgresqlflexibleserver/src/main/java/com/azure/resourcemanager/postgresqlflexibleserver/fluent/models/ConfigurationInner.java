@@ -6,28 +6,16 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationDataType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Configuration. */
 @Fluent
 public final class ConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationInner.class);
-
     /*
      * The properties of a configuration.
      */
     @JsonProperty(value = "properties")
     private ConfigurationProperties innerProperties;
-
-    /*
-     * The system metadata relating to this resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /**
      * Get the innerProperties property: The properties of a configuration.
@@ -36,15 +24,6 @@ public final class ConfigurationInner extends ProxyResource {
      */
     private ConfigurationProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -93,7 +72,7 @@ public final class ConfigurationInner extends ProxyResource {
      *
      * @return the dataType value.
      */
-    public ConfigurationDataType dataType() {
+    public String dataType() {
         return this.innerProperties() == null ? null : this.innerProperties().dataType();
     }
 

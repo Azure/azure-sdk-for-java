@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Databases Get. */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/DatabaseGet.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/DatabaseGet.json
      */
     /**
-     * Sample code: Get a database.
+     * Sample code: DatabaseGet.
      *
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void getADatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void databaseGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.databases().getWithResponse("TestGroup", "testserver", "db1", Context.NONE);
     }
 }

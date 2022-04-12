@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of FirewallRules. */
 public interface FirewallRules {
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -23,7 +23,7 @@ public interface FirewallRules {
     void delete(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -36,7 +36,7 @@ public interface FirewallRules {
     void delete(String resourceGroupName, String serverName, String firewallRuleName, Context context);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -44,12 +44,12 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return information about a server firewall rule.
      */
     FirewallRule get(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -58,25 +58,25 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response}.
      */
     Response<FirewallRule> getWithResponse(
         String resourceGroupName, String serverName, String firewallRuleName, Context context);
 
     /**
-     * List all the firewall rules in a given PostgreSQL server.
+     * List all the firewall rules in a given server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FirewallRule> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the firewall rules in a given PostgreSQL server.
+     * List all the firewall rules in a given server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -84,35 +84,35 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FirewallRule> listByServer(String resourceGroupName, String serverName, Context context);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a server firewall rule.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response}.
      */
     FirewallRule getById(String id);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a server firewall rule.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response}.
      */
     Response<FirewallRule> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +122,7 @@ public interface FirewallRules {
     void deleteById(String id);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

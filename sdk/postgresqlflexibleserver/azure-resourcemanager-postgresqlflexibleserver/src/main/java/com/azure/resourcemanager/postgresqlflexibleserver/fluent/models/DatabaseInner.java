@@ -6,27 +6,16 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Database. */
 @Fluent
 public final class DatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseInner.class);
-
     /*
      * The properties of a database.
      */
     @JsonProperty(value = "properties")
     private DatabaseProperties innerProperties;
-
-    /*
-     * The system metadata relating to this resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /**
      * Get the innerProperties property: The properties of a database.
@@ -35,15 +24,6 @@ public final class DatabaseInner extends ProxyResource {
      */
     private DatabaseProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

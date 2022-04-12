@@ -6,14 +6,11 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a server firewall rule. */
 @Fluent
 public final class FirewallRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleProperties.class);
-
     /*
      * The start IP address of the server firewall rule. Must be IPv4 format.
      */
@@ -73,16 +70,18 @@ public final class FirewallRuleProperties {
      */
     public void validate() {
         if (startIpAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property startIpAddress in model FirewallRuleProperties"));
         }
         if (endIpAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endIpAddress in model FirewallRuleProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallRuleProperties.class);
 }
