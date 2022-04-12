@@ -59,13 +59,13 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
     > [!NOTE]
     > It is always be possible for records to still be in source and not in target, while your application code is still pointing to your source container. However, when you are confident that all historic data has been moved, it may be useful to run this validation again after cutting over application code, to identify whether there are still any records that have not been processed, and thus whether the live migration notebook can now finally be stopped.
 
-## Checkpointing
+## Failures and check point
 
 * You will notice there is a variable which defines checkpoint location.
 
     ![image](./media/checkpoint.jpg)
 
-* This will be used to create a temp directory in the Azure Databricks file system to manage checkpointing. If there is an error during running the `CosmosDBLiveContainerMigration` notebook, or if the notebook is stopped, when restarted, processing will be picked up from last processed document using the checkpoint data. If you want to restart from the beginning, you need to either change the value of this variable (so that a new directory is created), or delete the current directory. 
+* This will be used to create a temp directory in the Azure Databricks file system to manage checkpointing. The Spark job will fail if there is a bad document. The notebook can be restarted after the document is corrected, and processing will start from the check point. If you want to restart from the beginning, you need to either change the value of this variable (so that a new directory is created), or delete the current directory.
 
 * To delete any checkpoint directory, create a new cell in the notebook, add a line like the following ("LiveMigration_checkpoint" is the name of the directory in this case), and run it:
 
