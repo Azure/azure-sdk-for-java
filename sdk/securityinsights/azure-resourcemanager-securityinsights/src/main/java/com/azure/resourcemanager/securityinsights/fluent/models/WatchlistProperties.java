@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.securityinsights.models.ProvisioningState;
 import com.azure.resourcemanager.securityinsights.models.SourceType;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -128,14 +127,6 @@ public final class WatchlistProperties {
     private String rawContent;
 
     /*
-     * The Shared Access Signature (SAS) URI under which the large csv
-     * watchlist file is located and from which the watchlist and its items
-     * will be created
-     */
-    @JsonProperty(value = "sasUri")
-    private String sasUri;
-
-    /*
      * The search key is used to optimize query performance when using
      * watchlists for joins with other data. For example, enable a column with
      * IP addresses to be the designated SearchKey field, then use this field
@@ -157,12 +148,6 @@ public final class WatchlistProperties {
      */
     @JsonProperty(value = "uploadStatus")
     private String uploadStatus;
-
-    /*
-     * The provisioning state of the watchlist resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
 
     /**
      * Get the watchlistId property: The id (a Guid) of the watchlist.
@@ -527,28 +512,6 @@ public final class WatchlistProperties {
     }
 
     /**
-     * Get the sasUri property: The Shared Access Signature (SAS) URI under which the large csv watchlist file is
-     * located and from which the watchlist and its items will be created.
-     *
-     * @return the sasUri value.
-     */
-    public String sasUri() {
-        return this.sasUri;
-    }
-
-    /**
-     * Set the sasUri property: The Shared Access Signature (SAS) URI under which the large csv watchlist file is
-     * located and from which the watchlist and its items will be created.
-     *
-     * @param sasUri the sasUri value to set.
-     * @return the WatchlistProperties object itself.
-     */
-    public WatchlistProperties withSasUri(String sasUri) {
-        this.sasUri = sasUri;
-        return this;
-    }
-
-    /**
      * Get the itemsSearchKey property: The search key is used to optimize query performance when using watchlists for
      * joins with other data. For example, enable a column with IP addresses to be the designated SearchKey field, then
      * use this field as the key field when joining to other event data by IP address.
@@ -612,15 +575,6 @@ public final class WatchlistProperties {
     public WatchlistProperties withUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the watchlist resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**

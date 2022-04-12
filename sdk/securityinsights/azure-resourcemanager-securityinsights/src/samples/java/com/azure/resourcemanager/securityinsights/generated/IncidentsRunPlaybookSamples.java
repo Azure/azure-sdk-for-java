@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Incidents RunPlaybook. */
 public final class IncidentsRunPlaybookSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/manualTrigger/AutomationRules_ManualTriggerPlaybook.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/manualTrigger/AutomationRules_ManualTriggerPlaybook.json
      */
     /**
      * Sample code: AutomationRules_ManualTriggerPlaybook.

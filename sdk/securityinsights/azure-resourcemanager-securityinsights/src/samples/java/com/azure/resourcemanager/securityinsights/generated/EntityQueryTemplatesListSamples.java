@@ -10,7 +10,7 @@ import com.azure.resourcemanager.securityinsights.models.Constant74;
 /** Samples for EntityQueryTemplates List. */
 public final class EntityQueryTemplatesListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entityQueryTemplates/GetEntityQueryTemplates.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/entityQueryTemplates/GetEntityQueryTemplates.json
      */
     /**
      * Sample code: Get all entity query templates.
