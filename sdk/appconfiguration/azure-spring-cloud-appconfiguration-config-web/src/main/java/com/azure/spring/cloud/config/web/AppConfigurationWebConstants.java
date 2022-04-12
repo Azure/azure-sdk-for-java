@@ -16,8 +16,14 @@ public final class AppConfigurationWebConstants {
      */
     public static final String VALIDATION_TOPIC = "topic";
 
+    /**
+     * Json field name for Data  section
+     */
     public static final String DATA = "data";
 
+    /**
+     * Json field name for SyncToken value
+     */
     public static final String SYNC_TOKEN = "syncToken";
     
     /**

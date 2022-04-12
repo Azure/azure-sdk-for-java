@@ -1,4 +1,4 @@
-package com.azure.spring.cloud.config.app;
+package com.azure.spring.cloud.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
