@@ -104,7 +104,7 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $folde
         # Log and warn
         Write-Host "Not able to find namespaces from javadoc jar $package-$version-javadoc.jar"
     }
-    return (Get-Content $filePath | ForEach-Object {$_.Trim() + "*"})
+    return (Get-Content $filePath | ForEach-Object {$_.Trim()})
 }
   
 function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
@@ -159,6 +159,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
     # Add services exsting in old toc but missing in automation.
     $otherService = $services[-1]
     $sortableServices = $services | Where-Object { $_ –ne $otherService }
+
     $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
         href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"

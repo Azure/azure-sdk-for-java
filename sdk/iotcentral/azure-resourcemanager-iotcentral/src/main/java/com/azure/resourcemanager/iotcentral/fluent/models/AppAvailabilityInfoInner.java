@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iotcentral.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties indicating whether a given IoT Central application name or subdomain is available. */
 @Immutable
 public final class AppAvailabilityInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppAvailabilityInfoInner.class);
-
     /*
      * The value which indicates whether the provided name is available.
      */

@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.1 (2022-04-08)
 
 Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure GraalVM Netty Support that is
