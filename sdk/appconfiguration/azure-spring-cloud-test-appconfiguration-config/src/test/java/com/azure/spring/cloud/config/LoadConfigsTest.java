@@ -27,6 +27,9 @@ public class LoadConfigsTest {
 
     @Autowired
     private MessageProperties properties;
+    
+    @Autowired
+    private Environment env;
 
     @Test
     public void sampleTest() {
