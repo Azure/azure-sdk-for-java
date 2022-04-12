@@ -4,26 +4,26 @@
 
 package com.azure.resourcemanager.azurestackhci.implementation;
 
-import com.azure.resourcemanager.azurestackhci.fluent.models.AvailableOperationsInner;
-import com.azure.resourcemanager.azurestackhci.models.AvailableOperations;
-import com.azure.resourcemanager.azurestackhci.models.OperationDetail;
+import com.azure.resourcemanager.azurestackhci.fluent.models.OperationListResultInner;
+import com.azure.resourcemanager.azurestackhci.models.Operation;
+import com.azure.resourcemanager.azurestackhci.models.OperationListResult;
 import java.util.Collections;
 import java.util.List;
 
-public final class AvailableOperationsImpl implements AvailableOperations {
-    private AvailableOperationsInner innerObject;
+public final class OperationListResultImpl implements OperationListResult {
+    private OperationListResultInner innerObject;
 
     private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
 
-    AvailableOperationsImpl(
-        AvailableOperationsInner innerObject,
+    OperationListResultImpl(
+        OperationListResultInner innerObject,
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public List<OperationDetail> value() {
-        List<OperationDetail> inner = this.innerModel().value();
+    public List<Operation> value() {
+        List<Operation> inner = this.innerModel().value();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -35,7 +35,7 @@ public final class AvailableOperationsImpl implements AvailableOperations {
         return this.innerModel().nextLink();
     }
 
-    public AvailableOperationsInner innerModel() {
+    public OperationListResultInner innerModel() {
         return this.innerObject;
     }
 
