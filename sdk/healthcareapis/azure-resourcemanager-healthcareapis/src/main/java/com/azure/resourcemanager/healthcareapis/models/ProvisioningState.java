@@ -37,6 +37,18 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     /** Static value Deprovisioned for ProvisioningState. */
     public static final ProvisioningState DEPROVISIONED = fromString("Deprovisioned");
 
+    /** Static value Moving for ProvisioningState. */
+    public static final ProvisioningState MOVING = fromString("Moving");
+
+    /** Static value Suspended for ProvisioningState. */
+    public static final ProvisioningState SUSPENDED = fromString("Suspended");
+
+    /** Static value Warned for ProvisioningState. */
+    public static final ProvisioningState WARNED = fromString("Warned");
+
+    /** Static value SystemMaintenance for ProvisioningState. */
+    public static final ProvisioningState SYSTEM_MAINTENANCE = fromString("SystemMaintenance");
+
     /**
      * Creates or finds a ProvisioningState from its string representation.
      *
