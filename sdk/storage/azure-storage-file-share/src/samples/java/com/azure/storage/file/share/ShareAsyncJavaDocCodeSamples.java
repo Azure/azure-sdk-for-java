@@ -797,7 +797,7 @@ public class ShareAsyncJavaDocCodeSamples {
                 } else {
                     System.out.println("successfully created.");
                 }
-        });
+            });
         // END: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions
     }
 

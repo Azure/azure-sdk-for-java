@@ -429,7 +429,7 @@ public class ShareDirectoryAsyncClient {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), null));
-            });
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
