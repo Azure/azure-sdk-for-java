@@ -245,7 +245,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
 
         Response<DataLakeFileClient> response = client.createFileIfNotExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());
@@ -299,7 +299,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
 
         Response<DataLakeDirectoryClient> response = client.createSubdirectoryIfNotExistsWithResponse(directoryName,
             options, timeout, new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());

@@ -296,9 +296,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
      *
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link AppendBlobItem} item
-     * indicates a new append blob was created. An empty {@code Mono} indicates that an append blob already exists at
-     * this location.
+     * @return A reactive response {@link Mono} signaling completion. {@link AppendBlobItem} contains the information of
+     * the created appended blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> createIfNotExists() {
@@ -330,8 +329,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
      *
      * @param options {@link AppendBlobCreateOptions}
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link Response} item indicates
-     * a new append blob was created. An empty {@code Mono} indicates an append blob already existed at this location.
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status code
+     * is 201, a new page blob was successfully created. If status code is 409, an append blob already existed at this
+     * location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {

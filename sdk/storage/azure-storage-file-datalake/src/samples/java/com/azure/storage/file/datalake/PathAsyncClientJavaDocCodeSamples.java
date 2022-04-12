@@ -464,9 +464,8 @@ public class PathAsyncClientJavaDocCodeSamples {
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
-        client.createIfNotExists().switchIfEmpty(Mono.<PathInfo>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.println("Create completed."));
+        client.createIfNotExists().subscribe(response ->
+            System.out.printf("Created at %s%n", response.getLastModified()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
@@ -479,9 +478,13 @@ public class PathAsyncClientJavaDocCodeSamples {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
             .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
 
-        client.createIfNotExistsWithResponse(options).switchIfEmpty(Mono.<Response<PathInfo>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        client.createIfNotExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
     }
 

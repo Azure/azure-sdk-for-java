@@ -471,9 +471,13 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER).switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
     }
 
@@ -511,9 +515,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void createFileIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String
-        client.createFileIfNotExists(fileName).switchIfEmpty(Mono.<DataLakeFileAsyncClient>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.println("Create completed."));
+        DataLakeFileAsyncClient fileAsyncClient = client.createFileIfNotExists(fileName).block();
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions
@@ -525,10 +527,13 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
             .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
 
-        client.createFileIfNotExistsWithResponse(fileName, options)
-            .switchIfEmpty(Mono.<Response<DataLakeFileAsyncClient>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        client.createFileIfNotExistsWithResponse(fileName, options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions
     }
 
@@ -565,9 +570,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void createDirectoryIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String
-        client.createDirectoryIfNotExists(directoryName).switchIfEmpty(Mono.<DataLakeDirectoryAsyncClient>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.println("Create completed."));
+        DataLakeDirectoryAsyncClient directoryAsyncClient = client.createDirectoryIfNotExists(directoryName).block();
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions
@@ -579,10 +582,13 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
             .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
 
-        client.createDirectoryIfNotExistsWithResponse(directoryName, options)
-            .switchIfEmpty(Mono.<Response<DataLakeDirectoryAsyncClient>>empty().doOnSuccess(x ->
-                System.out.println("Already exists."))).subscribe(response ->
-                System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        client.createDirectoryIfNotExistsWithResponse(directoryName, options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions
     }
 

@@ -263,7 +263,7 @@ class DirectoryAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create if not exists does exist"() {

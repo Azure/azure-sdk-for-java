@@ -508,10 +508,10 @@ public class FileSystemClientJavaDocCodeSamples {
         Context context = new Context("Key", "Value");
 
         Response<Void> response = client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context);
-        if (response != null) {
-            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
         } else {
-            System.out.println("File system already exists.");
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
     }
@@ -561,7 +561,7 @@ public class FileSystemClientJavaDocCodeSamples {
 
         Response<DataLakeFileClient> response = client.createFileIfNotExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());
@@ -609,7 +609,7 @@ public class FileSystemClientJavaDocCodeSamples {
 
         Response<DataLakeDirectoryClient> response = client.createDirectoryIfNotExistsWithResponse(directoryName,
             options, timeout, new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());

@@ -293,9 +293,9 @@ public final class BlobServiceAsyncClient {
      * @param containerName Name of the container to create
      * @param options {@link BlobContainerCreateOptions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * BlobContainerAsyncClient} used to interact with the container created. The presence of a {@link Response} item
-     * indicates a new container was created. If {@link Response}'s status code is 201, a new container was
-     * successfully created. If status code is 409, a container with the same name already existed at this location.
+     * BlobContainerAsyncClient} used to interact with the container created. If {@link Response}'s status code is 201,
+     * a new container was successfully created. If status code is 409, a container with the same name already existed
+     * at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,

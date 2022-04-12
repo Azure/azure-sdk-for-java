@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -365,9 +366,13 @@ public class DataLakeFileSystemAsyncClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      *
@@ -375,8 +380,8 @@ public class DataLakeFileSystemAsyncClient {
      * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new file
-     * system was created. An empty {@code Mono} indicates a file system already existed at this location.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 201, a new file system was
+     * successfully created. If status code is 409, a file system already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata,
@@ -911,16 +916,13 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String -->
      * <pre>
-     * client.createFileIfNotExists&#40;fileName&#41;.switchIfEmpty&#40;Mono.&lt;DataLakeFileAsyncClient&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     * DataLakeFileAsyncClient fileAsyncClient = client.createFileIfNotExists&#40;fileName&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link DataLakeFileAsyncClient}
-     * indicates a new file was created. An empty {@code Mono} indicates a file already existed at this location.
+     * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> createFileIfNotExists(String fileName) {
@@ -943,19 +945,23 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
      *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
-     * client.createFileIfNotExistsWithResponse&#40;fileName, options&#41;
-     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.createFileIfNotExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
      * @param options {@link DataLakePathCreateOptions}
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new file
-     * was created, and {@link Response#getValue() value} contains a {@link DataLakeFileAsyncClient} which can be used
-     * to interact with the file. An empty {@code Mono} indicates the specified file already existed at this location.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link DataLakeFileAsyncClient} used to interact with the file created. If {@link Response}'s status code is 201,
+     * a new file was successfully created. If status code is 409, a file with the same name already existed
+     * at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName,
@@ -967,7 +973,12 @@ public class DataLakeFileSystemAsyncClient {
             return createFileWithResponse(fileName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(), requestConditions)
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
-                    .getStatusCode() == 409, t -> Mono.empty());
+                    .getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), getFileAsyncClient(fileName)));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1204,16 +1215,14 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String -->
      * <pre>
-     * client.createDirectoryIfNotExists&#40;directoryName&#41;.switchIfEmpty&#40;Mono.&lt;DataLakeDirectoryAsyncClient&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     * DataLakeDirectoryAsyncClient directoryAsyncClient = client.createDirectoryIfNotExists&#40;directoryName&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
-     * created, or null if the specified directory already exists.
+     * created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
@@ -1237,20 +1246,23 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
      *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
-     * client.createDirectoryIfNotExistsWithResponse&#40;directoryName, options&#41;
-     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;DataLakeDirectoryAsyncClient&gt;&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt;
-     *         System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
-     *         System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.createDirectoryIfNotExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
      * @param options {@link DataLakePathCreateOptions}
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link Response} item indicates
-     * a new directory was created, and {@link Response#getValue() value} contains a {@link DataLakeDirectoryAsyncClient}
-     * which can be used to interact with the directory. An empty {@code Mono} indicates the specified directory already
-     * existed at this location.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link DataLakeDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status
+     * code is 201, a new directory was successfully created. If status code is 409, a directory with the same name
+     * already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
@@ -1261,7 +1273,12 @@ public class DataLakeFileSystemAsyncClient {
                 options.getPathHttpHeaders(), options.getMetadata(),
                 new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
-                    .getStatusCode() == 409, t -> Mono.empty());
+                    .getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), getDirectoryAsyncClient(directoryName)));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -186,7 +186,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Get properties null"() {
@@ -765,7 +765,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create if not exists file defaults"() {
@@ -1209,7 +1209,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     @Unroll

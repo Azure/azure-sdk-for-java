@@ -254,8 +254,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
      *
-     * @return {@link AppendBlobItem} if the append blob was created successfully, or null if the append blob already
-     * exists at this location.
+     * @return {@link AppendBlobItem} containing information of the created appended blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem createIfNotExists() {
@@ -289,8 +288,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param options {@link AppendBlobCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A reactive response {@link Response} signaling completion. Upon success, {@link Response#getValue() value}
-     * contains the {@link AppendBlobItem}. If append blob already exists, {@link Response} will be {@code null}.
+     * @return A reactive response {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains the {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status
+     * code is 201, a new append blob was successfully created. If status code is 409, an append blob already existed at
+     * this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,

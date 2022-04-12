@@ -301,7 +301,7 @@ class FileAPITest extends APISpec {
         then:
         initialResponse.getStatusCode() == 201
         fc.exists()
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create if not exists Exists"() {

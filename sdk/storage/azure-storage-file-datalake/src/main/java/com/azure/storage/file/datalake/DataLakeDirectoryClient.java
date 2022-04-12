@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
@@ -335,14 +336,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExists#String -->
      *
      * @param fileName Name of the file to create.
-     * @return A {@link DataLakeFileClient} used to interact with the file created. Presence of null indicates a file
-     * with the same name already exists.
+     * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFileIfNotExists(String fileName) {
-        Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName,
-            new DataLakePathCreateOptions(), null, null);
-        return response == null ? null : response.getValue();
+        return createFileIfNotExistsWithResponse(fileName, new DataLakePathCreateOptions(), null, null).getValue();
     }
 
     /**
@@ -361,7 +359,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * Response&lt;DataLakeFileClient&gt; response = client.createFileIfNotExistsWithResponse&#40;fileName, options, timeout,
      *     new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -375,8 +373,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
-     * to interact with the file created, or null if specified file already exists.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileAsyncClient}
+     * used to interact with the file created. If {@link Response}'s status code is 201, a new file was successfully
+     * created. If status code is 409, a file with the same name already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, DataLakePathCreateOptions
@@ -384,7 +383,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
         Response<PathInfo> response = StorageImplUtils.blockWithOptionalTimeout(
             dataLakeFileClient.dataLakePathAsyncClient.createIfNotExistsWithResponse(options, context), timeout);
-        return response != null ? new SimpleResponse<>(response, dataLakeFileClient) : null;
+        return new SimpleResponse<>(response, dataLakeFileClient);
     }
 
     /**
@@ -631,14 +630,12 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExists#String -->
      *
      * @param subdirectoryName Name of the subdirectory to create.
-     * @return A {@link DataLakeDirectoryClient} used to interact with the subdirectory created. Presence of null
-     * indicates a subdirectory with the same name already exists.
+     * @return A {@link DataLakeDirectoryClient} used to interact with the subdirectory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createSubdirectoryIfNotExists(String subdirectoryName) {
-        Response<DataLakeDirectoryClient> response = createSubdirectoryIfNotExistsWithResponse(subdirectoryName,
-            new DataLakePathCreateOptions(), null, null);
-        return response == null ? null : response.getValue();
+        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new DataLakePathCreateOptions(), null, null)
+            .getValue();
     }
 
     /**
@@ -659,7 +656,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * Response&lt;DataLakeDirectoryClient&gt; response = client.createSubdirectoryIfNotExistsWithResponse&#40;directoryName,
      *     options, timeout, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -672,15 +669,16 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
-     * used to interact with the subdirectory created, or null if the specified subdirectory already exists.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeDirectoryClient}
+     * used to interact with the subdirectory created. If {@link Response}'s status code is 201, a new subdirectory was
+     * successfully created. If status code is 409, a subdirectory with the same name already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
         DataLakePathCreateOptions options, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getSubdirectoryClient(subdirectoryName);
         Response<PathInfo> response = dataLakeDirectoryClient.createIfNotExistsWithResponse(options, timeout, context);
-        return response == null ? null : new SimpleResponse<>(response, dataLakeDirectoryClient);
+        return new SimpleResponse<>(response, dataLakeDirectoryClient);
     }
 
     /**

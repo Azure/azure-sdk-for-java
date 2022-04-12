@@ -278,8 +278,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
-     * @return {@link PageBlobItem} if the page blob was created successfully, or null if the page blob already exists
-     * at this location.
+     * @return {@link PageBlobItem} containing information of the created page blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem createIfNotExists(long size) {
@@ -314,8 +313,9 @@ public final class PageBlobClient extends BlobClientBase {
      * @param options {@link PageBlobCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A reactive response {@link Response} signaling completion. Upon success, {@link Response#getValue() value}
-     * contains the created {@link PageBlobItem}. If page blob already exists, {@link Response} will be {@code null}.
+     * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
+     * {@link PageBlobItem} containing information about the page blob. If {@link Response}'s status code is 201, a new
+     * page blob was successfully created. If status code is 409, a page blob already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options, Duration timeout,

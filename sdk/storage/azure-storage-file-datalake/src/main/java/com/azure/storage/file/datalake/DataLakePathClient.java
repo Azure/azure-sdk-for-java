@@ -236,11 +236,7 @@ public class DataLakePathClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists -->
      * <pre>
      * PathInfo pathInfo = client.createIfNotExists&#40;&#41;;
-     * if &#40;pathInfo != null&#41; &#123;
-     *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, pathInfo.getLastModified&#40;&#41;&#41;;
-     * &#125; else &#123;
-     *     System.out.println&#40;&quot;already exists.&quot;&#41;;
-     * &#125;
+     * System.out.printf&#40;&quot;Last Modified Time:%s&quot;, pathInfo.getLastModified&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists -->
      *
@@ -248,13 +244,11 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @return {@link PathInfo} that contains information about the created resource. If {@link PathInfo} is
-     * {@code null}, a resource already existed at this location.
+     * @return {@link PathInfo} that contains information about the created resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo createIfNotExists() {
-        Response<PathInfo> response = createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null);
-        return response == null ? null : response.getValue();
+        return createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null).getValue();
     }
 
     /**
@@ -274,7 +268,7 @@ public class DataLakePathClient {
      *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
      *
      * Response&lt;PathInfo&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -290,9 +284,9 @@ public class DataLakePathClient {
      * metadata key or value, it must be removed or encoded.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A reactive response {@link Response} containing status code and HTTP headers signaling completion.
-     * Upon success, {@link Response#getValue() value} contains the {@link PathInfo} that contains information about
-     * the created resource. If resource already exists, {@link Response} will be {@code null}.
+     * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
+     * {@link PathInfo} containing information about the resource. If {@link Response}'s status code is 201, a new
+     * resource was successfully created. If status code is 409, a resource already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout,

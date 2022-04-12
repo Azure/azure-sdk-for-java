@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -388,9 +389,8 @@ public class DataLakePathAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;PathInfo&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
      *
@@ -398,8 +398,7 @@ public class DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @return A reactive response signaling completion. The presence of a {@link PathInfo} item indicates a new
-     * resource was created. An empty {@code Mono} indicates a resource already existed at this location.
+     * @return A reactive response signaling completion. {@link PathInfo} contains information about the created resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> createIfNotExists() {
@@ -422,9 +421,13 @@ public class DataLakePathAsyncClient {
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
      *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
      *
-     * client.createIfNotExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;PathInfo&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.createIfNotExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
      *
@@ -433,9 +436,9 @@ public class DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param options {@link DataLakePathCreateOptions}
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new resource
-     * was created, and {@link Response#getValue() value} contains a {@link PathInfo} which contains information about
-     * the resource. An empty {@code Mono} indicates a resource already existed at this location.
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link PathInfo} containing information about the resource. If {@link Response}'s status code is
+     * 201, a new resource was successfully created. If status code is 409, a resource already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options) {
@@ -453,7 +456,12 @@ public class DataLakePathAsyncClient {
             return createWithResponse(options.getPermissions(), options.getUmask(), pathResourceType,
                 options.getPathHttpHeaders(), options.getMetadata(), options.getRequestConditions(), context)
                 .onErrorResume(t -> t instanceof DataLakeStorageException
-                        && ((DataLakeStorageException) t).getStatusCode() == 409, t -> Mono.empty());
+                        && ((DataLakeStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

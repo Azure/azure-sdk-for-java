@@ -353,9 +353,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      *
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link PageBlobItem} item
-     * indicates a new page blob was created. An empty {@code Mono} indicates that a page blob already exists at
-     * this location.
+     * @return A reactive response {@link Mono} signaling completion. {@link PageBlobItem} contains information of
+     * the newly created page blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> createIfNotExists(long size) {
@@ -387,8 +386,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
      *
      * @param options {@link PageBlobCreateOptions}
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link Response} item indicates
-     * a new page blob was created. An empty {@code Mono} indicates a page blob already existed at this location.
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link PageBlobItem} containing information about the page blob. If {@link Response}'s status code is
+     * 201, a new page blob was successfully created. If status code is 409, a page blob already existed at this location.
      *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.

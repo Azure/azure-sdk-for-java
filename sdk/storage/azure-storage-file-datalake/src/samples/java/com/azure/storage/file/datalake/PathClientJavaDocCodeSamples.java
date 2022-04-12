@@ -491,11 +491,7 @@ public class PathClientJavaDocCodeSamples {
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
         PathInfo pathInfo = client.createIfNotExists();
-        if (pathInfo != null) {
-            System.out.printf("Last Modified Time:%s", pathInfo.getLastModified());
-        } else {
-            System.out.println("already exists.");
-        }
+        System.out.printf("Last Modified Time:%s", pathInfo.getLastModified());
         // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context
@@ -509,7 +505,7 @@ public class PathClientJavaDocCodeSamples {
             .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
 
         Response<PathInfo> response = client.createIfNotExistsWithResponse(options, timeout, new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());

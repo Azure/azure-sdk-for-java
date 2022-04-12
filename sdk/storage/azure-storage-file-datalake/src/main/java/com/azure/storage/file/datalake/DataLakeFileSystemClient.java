@@ -297,7 +297,7 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
         Response<Void> response = createIfNotExistsWithResponse(null, null, null, Context.NONE);
-        return response != null && response.getStatusCode() == 201;
+        return response.getStatusCode() == 201;
     }
 
     /**
@@ -312,10 +312,10 @@ public class DataLakeFileSystemClient {
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
      * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;;
-     * if &#40;response != null&#41; &#123;
-     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *     System.out.println&#40;&quot;File system already exists.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
@@ -326,9 +326,8 @@ public class DataLakeFileSystemClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} containing status code and HTTP headers. The presence of a {@link Response} indicates
-     * the new file system was created successfully, {@code null} indicates a file system already existed at this
-     * location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 201, a new
+     * file system was successfully created. If status code is 409, a file system already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
@@ -782,14 +781,11 @@ public class DataLakeFileSystemClient {
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      *  version of the path name.
-     * @return A {@link DataLakeFileClient} used to interact with the file created. Presence of null indicates a file
-     * with the same name already exists.
+     * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFileIfNotExists(String fileName) {
-        Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName,
-            new DataLakePathCreateOptions(), null, null);
-        return response == null ? null : response.getValue();
+        return createFileIfNotExistsWithResponse(fileName, new DataLakePathCreateOptions(), null, null).getValue();
     }
 
     /**
@@ -809,7 +805,7 @@ public class DataLakeFileSystemClient {
      *
      * Response&lt;DataLakeFileClient&gt; response = client.createFileIfNotExistsWithResponse&#40;fileName, options, timeout,
      *     new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -825,14 +821,15 @@ public class DataLakeFileSystemClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
-     * to interact with the file created, or null if specified file already exists.
+     * to interact with the file created. If {@link Response}'s status code is 201, a new file was successfully created.
+     * If status code is 409, a file with the same name already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName,
         DataLakePathCreateOptions options, Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
         Response<PathInfo> response = dataLakeFileClient.createIfNotExistsWithResponse(options, timeout, context);
-        return response == null ? null : new SimpleResponse<>(response, dataLakeFileClient);
+        return new SimpleResponse<>(response, dataLakeFileClient);
     }
 
     /**
@@ -1054,14 +1051,12 @@ public class DataLakeFileSystemClient {
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @return A {@link DataLakeDirectoryClient} used to interact with the subdirectory created. Presence of null
-     * indicates a subdirectory with the same name already exists.
+     * @return A {@link DataLakeDirectoryClient} used to interact with the subdirectory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createDirectoryIfNotExists(String directoryName) {
-        Response<DataLakeDirectoryClient> response = createDirectoryIfNotExistsWithResponse(directoryName,
-            new DataLakePathCreateOptions(), null, null);
-        return response == null ? null : response.getValue();
+        return createDirectoryIfNotExistsWithResponse(directoryName, new DataLakePathCreateOptions(), null, null)
+            .getValue();
     }
 
     /**
@@ -1082,7 +1077,7 @@ public class DataLakeFileSystemClient {
      *
      * Response&lt;DataLakeDirectoryClient&gt; response = client.createDirectoryIfNotExistsWithResponse&#40;directoryName,
      *     options, timeout, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -1096,8 +1091,9 @@ public class DataLakeFileSystemClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
-     * used to interact with the directory created, or null if the directory with the specified name already exists.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeDirectoryClient}
+     * used to interact with the directory created. If {@link Response}'s status code is 201, a new directory was
+     * successfully created. If status code is 409, a directory with the same name already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName,
@@ -1105,7 +1101,7 @@ public class DataLakeFileSystemClient {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
         Response<PathInfo> response = dataLakeDirectoryClient
             .createIfNotExistsWithResponse(options, timeout, context);
-        return response == null ? null : new SimpleResponse<>(response, dataLakeDirectoryClient);
+        return new SimpleResponse<>(response, dataLakeDirectoryClient);
     }
 
     /**
