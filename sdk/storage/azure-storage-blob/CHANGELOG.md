@@ -1,6 +1,6 @@
 # Release History
 
-## 12.16.0-beta.1 (Unreleased)
+## 12.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,10 +8,19 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 12.16.0 (2022-04-07)
+
+### Bugs Fixed
 - Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether blob existence should
   be checked before using chunked upload than the size used to triggered chunked upload.
-
 ### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-common` from `12.15.0` to version `12.15.1`.
+- Upgraded `azure-storage-internal-avro` from `12.2.0` to version `12.2.1`.
 
 ## 12.15.0 (2022-03-09)
 
