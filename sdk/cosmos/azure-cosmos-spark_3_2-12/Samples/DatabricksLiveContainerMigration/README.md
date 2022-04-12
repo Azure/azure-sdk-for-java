@@ -30,7 +30,7 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
 ## Import notebooks
 
-* Download the notebooks in this repo, or import them directly from their url, to your Azure Databricks workspace:
+* Download the Scala notebooks in this repo (or import them directly from their url) to your Azure Databricks workspace:
 
     ![image](./media/import-notebooks.jpg)
 
