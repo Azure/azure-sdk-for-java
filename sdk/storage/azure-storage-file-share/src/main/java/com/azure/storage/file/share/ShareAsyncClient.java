@@ -442,8 +442,8 @@ public class ShareAsyncClient {
             options = options == null ? new ShareCreateOptions() : options;
             return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException
                 && ((ShareStorageException) t).getStatusCode() == 409, t -> {
-                HttpResponse response = ((ShareStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), null));
                 });
         } catch (RuntimeException ex) {
