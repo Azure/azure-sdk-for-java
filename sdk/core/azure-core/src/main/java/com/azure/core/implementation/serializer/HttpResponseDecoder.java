@@ -9,7 +9,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.lang.reflect.Type;
 
 /**
  * Decode {@link HttpResponse} to {@link HttpDecodedResponse}.
@@ -97,21 +96,6 @@ public final class HttpResponseDecoder {
                 headersCached = HttpResponseHeaderDecoder.decode(response, serializer, decodeData.getHeadersType());
             }
             return this.headersCached;
-        }
-
-        /**
-         * @return the {@code java.lang.reflect.Type} used to decode the response body, null if the body is not
-         * decodable
-         */
-        public Type getDecodedType() {
-            return HttpResponseBodyDecoder.decodedType(this.response, this.decodeData);
-        }
-
-        /**
-         * @return true if the response status code is considered as error, false otherwise
-         */
-        public boolean isErrorStatus() {
-            return HttpResponseBodyDecoder.isErrorStatus(response.getStatusCode(), decodeData);
         }
 
         @Override

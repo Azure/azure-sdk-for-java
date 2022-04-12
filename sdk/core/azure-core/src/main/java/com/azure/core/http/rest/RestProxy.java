@@ -360,10 +360,44 @@ public final class RestProxy implements InvocationHandler {
         return request;
     }
 
-    private Mono<HttpDecodedResponse> ensureExpectedStatus(final Mono<HttpDecodedResponse> asyncDecodedResponse,
+    /**
+     * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
+     * code' OR (2) emits provided response if it's status code ia allowed.
+     *
+     * 'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
+     * of additional allowed status codes.
+     *
+     * @param asyncDecodedResponse The HttpResponse to check.
+     * @param methodParser The method parser that contains information about the service interface method that initiated
+     * the HTTP request.
+     * @param options Additional options passed as part of the request.
+     * @return An async-version of the provided decodedResponse.
+     */
+    private static Mono<HttpDecodedResponse> ensureExpectedStatus(final Mono<HttpDecodedResponse> asyncDecodedResponse,
         final SwaggerMethodParser methodParser, RequestOptions options) {
-        return asyncDecodedResponse
-            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, options));
+        return asyncDecodedResponse.flatMap(decodedResponse -> {
+            int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
+
+            // If the response was success or configured to not return an error status when the request fails,
+            // return the decoded response.
+            if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
+                || (options != null && options.getErrorOptions().contains(ErrorOptions.NO_THROW))) {
+                return Mono.just(decodedResponse);
+            }
+
+            // Otherwise, the response wasn't successful and the error object needs to be parsed.
+            //
+            // First, try to create an error with the response body.
+            // If there is no response body create an error without the response body.
+            // Finally, return the error reactively.
+            return decodedResponse.getSourceResponse().getBodyAsByteArray()
+                .map(bytes -> instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                    decodedResponse.getSourceResponse(), bytes, decodedResponse.getDecodedBody(bytes)))
+                .switchIfEmpty(Mono.fromSupplier(() -> instantiateUnexpectedException(
+                    methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
+                    null, null)))
+                .flatMap(Mono::error);
+        });
     }
 
     private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
@@ -416,46 +450,8 @@ public final class RestProxy implements InvocationHandler {
         }
     }
 
-    /**
-     * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
-     * code' OR (2) emits provided response if it's status code ia allowed.
-     *
-     * 'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
-     * of additional allowed status codes.
-     *
-     * @param decodedResponse The HttpResponse to check.
-     * @param methodParser The method parser that contains information about the service interface method that initiated
-     * the HTTP request.
-     * @return An async-version of the provided decodedResponse.
-     */
-    private Mono<HttpDecodedResponse> ensureExpectedStatus(final HttpDecodedResponse decodedResponse,
-        final SwaggerMethodParser methodParser, RequestOptions options) {
-        final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
-
-        // If the response was success or configured to not return an error status when the request fails, return the
-        // decoded response.
-        if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
-            || (options != null && options.getErrorOptions().contains(ErrorOptions.NO_THROW))) {
-            return Mono.just(decodedResponse);
-        }
-
-        // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        return decodedResponse.getSourceResponse().getBodyAsByteArray()
-            .switchIfEmpty(Mono.defer(() -> {
-                // bodyAsString() emits empty, indicating an empty body, create exception empty content string no
-                // exception body object.
-                return Mono.error(instantiateUnexpectedException(
-                    methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
-                    null, null));
-            }))
-            .flatMap(responseBytes -> Mono.error(instantiateUnexpectedException(
-                methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
-                responseBytes, decodedResponse.getDecodedBody(responseBytes))));
-    }
-
-    private Mono<?> handleRestResponseReturnType(final HttpDecodedResponse response,
-        final SwaggerMethodParser methodParser,
-        final Type entityType) {
+    private static Mono<?> handleRestResponseReturnType(final HttpDecodedResponse response,
+        final SwaggerMethodParser methodParser, final Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
@@ -475,7 +471,8 @@ public final class RestProxy implements InvocationHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private Mono<Response<?>> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
+    private static Mono<Response<?>> createResponse(HttpDecodedResponse response, Type entityType,
+        Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         final HttpResponse httpResponse = response.getSourceResponse();
@@ -523,7 +520,7 @@ public final class RestProxy implements InvocationHandler {
             .map(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
     }
 
-    private Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
+    private static Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
         final SwaggerMethodParser methodParser, final Type entityType) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
