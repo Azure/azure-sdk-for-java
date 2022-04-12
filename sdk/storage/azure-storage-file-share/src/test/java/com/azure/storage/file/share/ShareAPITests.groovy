@@ -181,11 +181,8 @@ class ShareAPITests extends APISpec {
         def secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null)
 
         then:
-        initialResponse != null
-        initialResponse.getValue() != null
         initialResponse.getStatusCode() == 201
-        secondResponse == null
-        client.exists() == true
+        secondResponse.getStatusCode() == 409
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_12_12")
@@ -983,11 +980,8 @@ class ShareAPITests extends APISpec {
         def secondResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions(), null, null)
 
         then:
-        initialResponse != null
-        initialResponse.getValue() != null
         initialResponse.getStatusCode() == 201
-        secondResponse == null
-        client.exists() == true
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create file"() {

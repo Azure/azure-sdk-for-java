@@ -594,11 +594,11 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
         client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"))
             .subscribe(response -> {
-            if (response.getStatusCode() == 409) {
-                System.out.println("Already exists.");
-            } else {
-                System.out.println("successfully created.");
-            }
+                if (response.getStatusCode() == 409) {
+                    System.out.println("Already exists.");
+                } else {
+                    System.out.println("successfully created.");
+                }
         });
         // END: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
     }

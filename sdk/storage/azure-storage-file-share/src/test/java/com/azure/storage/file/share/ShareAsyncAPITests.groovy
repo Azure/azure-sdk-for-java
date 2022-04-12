@@ -175,11 +175,8 @@ class ShareAsyncAPITests extends APISpec {
         def secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block()
 
         then:
-        initialResponse != null
-        initialResponse.getValue() != null
         initialResponse.getStatusCode() == 201
-        secondResponse == null
-        client.exists().block() == true
+        secondResponse.getStatusCode() == 409
     }
 
     @Unroll
@@ -519,11 +516,8 @@ class ShareAsyncAPITests extends APISpec {
         def secondResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions()).block()
 
         then:
-        initialResponse != null
-        initialResponse.getValue() != null
         initialResponse.getStatusCode() == 201
-        secondResponse == null
-        client.exists().block() == true
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create if not exists directory invalid name"() {

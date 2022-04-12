@@ -266,11 +266,11 @@ public final class QueueAsyncClient {
      * <pre>
      * client.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;&#41;
      *     .subscribe&#40;response -&gt; &#123;
-     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
-     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
-     *     &#125;
+     *         if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *             System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *         &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map -->
@@ -300,7 +300,7 @@ public final class QueueAsyncClient {
                     HttpResponse response = ((QueueStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null));
-            });
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
