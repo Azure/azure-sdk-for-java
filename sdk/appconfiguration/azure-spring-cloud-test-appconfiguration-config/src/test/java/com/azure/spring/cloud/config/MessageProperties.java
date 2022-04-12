@@ -11,15 +11,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "config")
 public class MessageProperties {
-    
-    private String message;
 
-    public String getMessage() {
-        return message;
-    }
+	private String message;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	private String secret;
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
 
 }
