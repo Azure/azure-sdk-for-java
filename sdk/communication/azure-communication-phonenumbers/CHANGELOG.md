@@ -2,7 +2,7 @@
 
 ## 1.1.0-beta.4 (2022-04-11)
 
-### Features Added
+### Dependency updates
 - Upgraded `azure-communication-common` to 1.1.2
 - Upgraded `azure-core` to 1.27.0
 - Upgraded `azure-identity` to 1.5.0
