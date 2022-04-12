@@ -20,6 +20,7 @@ import com.azure.resourcemanager.appplatform.models.SpringAppDomains;
 import com.azure.resourcemanager.appplatform.models.SpringAppServiceBindings;
 import com.azure.resourcemanager.appplatform.models.SpringConfigurationService;
 import com.azure.resourcemanager.appplatform.models.SpringService;
+import com.azure.resourcemanager.appplatform.models.SpringServiceRegistry;
 import com.azure.resourcemanager.appplatform.models.TemporaryDisk;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -163,6 +164,23 @@ public class SpringAppImpl
             && Objects.equals(
             addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY).get(Constants.BINDING_RESOURCE_ID),
             configurationService.id()
+        );
+    }
+
+    @Override
+    public boolean hasServiceRegistryBinding() {
+        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        if (addonConfigs == null) {
+            return false;
+        }
+        SpringServiceRegistry serviceRegistry = parent().getDefaultServiceRegistry();
+        if (serviceRegistry == null) {
+            return false;
+        }
+        return addonConfigs.get(Constants.SERVICE_REGISTRY_KEY) != null
+            && Objects.equals(
+            addonConfigs.get(Constants.SERVICE_REGISTRY_KEY).get(Constants.BINDING_RESOURCE_ID),
+            serviceRegistry.id()
         );
     }
 
@@ -337,8 +355,11 @@ public class SpringAppImpl
             addonConfigs = new HashMap<>();
             innerModel().properties().withAddonConfigs(addonConfigs);
         }
-        Map<String, Object> configurationServiceConfigs = addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, k -> new HashMap<>());
-        configurationServiceConfigs.put(Constants.BINDING_RESOURCE_ID, parent().getDefaultConfigurationService().id());
+        SpringConfigurationService configurationService = parent().getDefaultConfigurationService();
+        if (configurationService != null) {
+            Map<String, Object> configurationServiceConfigs = addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, k -> new HashMap<>());
+            configurationServiceConfigs.put(Constants.BINDING_RESOURCE_ID, configurationService.id());
+        }
         return this;
     }
 
@@ -352,6 +373,39 @@ public class SpringAppImpl
             return this;
         }
         Map<String, Object> configurationServiceConfigs = addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
+        if (configurationServiceConfigs == null) {
+            return this;
+        }
+        configurationServiceConfigs.put(Constants.BINDING_RESOURCE_ID, "");
+        return this;
+    }
+
+    @Override
+    public SpringAppImpl withServiceRegistryBinding() {
+        ensureProperty();
+        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        if (addonConfigs == null) {
+            addonConfigs = new HashMap<>();
+            innerModel().properties().withAddonConfigs(addonConfigs);
+        }
+        SpringServiceRegistry serviceRegistry = parent().getDefaultServiceRegistry();
+        if (serviceRegistry != null) {
+            Map<String, Object> serviceRegistryConfigs = addonConfigs.computeIfAbsent(Constants.SERVICE_REGISTRY_KEY, k -> new HashMap<>());
+            serviceRegistryConfigs.put(Constants.BINDING_RESOURCE_ID, serviceRegistry.id());
+        }
+        return this;
+    }
+
+    @Override
+    public SpringAppImpl withoutServiceRegistryBinding() {
+        if (innerModel().properties() == null) {
+            return this;
+        }
+        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        if (addonConfigs == null) {
+            return this;
+        }
+        Map<String, Object> configurationServiceConfigs = addonConfigs.get(Constants.SERVICE_REGISTRY_KEY);
         if (configurationServiceConfigs == null) {
             return this;
         }
