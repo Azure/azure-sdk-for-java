@@ -154,11 +154,8 @@ class DirectoryAsyncAPITests extends APISpec {
         def secondResponse = client.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()).block()
 
         then:
-        initialResponse != null
         FileTestHelper.assertResponseStatusCode(initialResponse, 201)
-        initialResponse.getValue() != null
-        secondResponse == null
-        client.exists().block()
+        FileTestHelper.assertResponseStatusCode(secondResponse, 409)
     }
 
     def "Create if not exists directory with metadata"() {
@@ -623,9 +620,7 @@ class DirectoryAsyncAPITests extends APISpec {
         then:
         initialResponse != null
         FileTestHelper.assertResponseStatusCode(initialResponse, 201)
-        initialResponse.getValue() != null
-        initialResponse.getValue().exists().block() == true
-        secondResponse == null
+        FileTestHelper.assertResponseStatusCode(secondResponse, 409)
     }
 
     def "Create if not exists sub directory metadata"() {

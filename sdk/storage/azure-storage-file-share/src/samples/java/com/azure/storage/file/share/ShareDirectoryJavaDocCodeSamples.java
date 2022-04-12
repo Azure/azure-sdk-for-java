@@ -630,8 +630,8 @@ public class ShareDirectoryJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExists
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
-        shareDirectoryClient.createIfNotExists();
-        System.out.println("Completed creating the directory.");
+        ShareDirectoryInfo shareDirectoryInfo = shareDirectoryClient.createIfNotExists();
+        System.out.printf("Last Modified Time:%s", shareDirectoryInfo.getLastModified());
         // END: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Duration-Context
@@ -644,10 +644,10 @@ public class ShareDirectoryJavaDocCodeSamples {
         Response<ShareDirectoryInfo> response = directoryClient.createIfNotExistsWithResponse(options,
             Duration.ofSeconds(1), new Context(key1, value1));
 
-        if (response != null) {
-            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
         } else {
-            System.out.println("Directory already exists.");
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Duration-Context
     }
@@ -681,8 +681,7 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void createIfNotExistsSubdirectoryCodeSnippets() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExists#string
-        shareDirectoryClient.createSubdirectoryIfNotExists("subdir");
-        System.out.println("Completed creating the subdirectory.");
+        ShareDirectoryClient subdirectoryClient = shareDirectoryClient.createSubdirectoryIfNotExists("subdir");
         // END: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context
@@ -694,7 +693,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         Response<ShareDirectoryClient> response = shareDirectoryClient
             .createSubdirectoryIfNotExistsWithResponse("subdir", options, Duration.ofSeconds(1),
                 new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());

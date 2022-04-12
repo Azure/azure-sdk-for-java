@@ -761,6 +761,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(
         String subdirectoryName, DataLakePathCreateOptions options) {
+        options = options == null ? new DataLakePathCreateOptions() : options;
         options.setRequestConditions(new DataLakeRequestConditions()
             .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {

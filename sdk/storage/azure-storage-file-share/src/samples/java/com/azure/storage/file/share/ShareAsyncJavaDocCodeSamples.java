@@ -785,17 +785,20 @@ public class ShareAsyncJavaDocCodeSamples {
     public void createIfNotExistsCodeSnippets() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createIfNotExists
-        shareAsyncClient.createIfNotExists().switchIfEmpty(Mono.<ShareInfo>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.println("Create completed."));
+        shareAsyncClient.createIfNotExists().subscribe(response ->
+            System.out.printf("Created at %s%n", response.getLastModified()));
         // END: com.azure.storage.file.share.ShareAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions
         shareAsyncClient.createIfNotExistsWithResponse(new ShareCreateOptions()
             .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
-            .setAccessTier(ShareAccessTier.HOT)).switchIfEmpty(Mono.<Response<ShareInfo>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+            .setAccessTier(ShareAccessTier.HOT)).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions
     }
 
@@ -850,10 +853,13 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
             .setFilePermission(filePermission).setMetadata(metadata);
 
-        shareAsyncClient.createDirectoryIfNotExistsWithResponse("documents", options)
-            .switchIfEmpty(Mono.<Response<ShareDirectoryAsyncClient>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        shareAsyncClient.createDirectoryIfNotExistsWithResponse("documents", options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions
     }
 

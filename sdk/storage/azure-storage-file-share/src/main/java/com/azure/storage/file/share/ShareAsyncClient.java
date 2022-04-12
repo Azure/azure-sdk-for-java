@@ -383,18 +383,16 @@ public class ShareAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createIfNotExists -->
      * <pre>
-     * shareAsyncClient.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;ShareInfo&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     * shareAsyncClient.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.createIfNotExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link ShareInfo}
-     * indicates the share was created, and contains more information on the created share. An empty{@code Mono}
-     * indicates a share already existed at this location.
+     * @return A reactive response {@link Mono} signaling completion. {@link ShareInfo} contains information about the
+     * created share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> createIfNotExists() {
@@ -412,9 +410,13 @@ public class ShareAsyncClient {
      * <pre>
      * shareAsyncClient.createIfNotExistsWithResponse&#40;new ShareCreateOptions&#40;&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;&#41;.setQuotaInGb&#40;1&#41;
-     *     .setAccessTier&#40;ShareAccessTier.HOT&#41;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;ShareInfo&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *     .setAccessTier&#40;ShareAccessTier.HOT&#41;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions -->
      *
@@ -422,9 +424,9 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @param options {@link ShareCreateOptions}
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
-     * share was created, and {@link Response#getValue() value} contains a {@link ShareInfo} which contains information
-     * about the newly created share. An empty {@code Mono} indicates the share already existed at this location.
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link ShareInfo} containing information about the share. If {@link Response}'s status code is
+     * 201, a new share was successfully created. If status code is 409, a share already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options) {
@@ -437,8 +439,13 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
         try {
+            options = options == null ? new ShareCreateOptions() : options;
             return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException
-                && ((ShareStorageException) t).getStatusCode() == 409, t -> Mono.empty());
+                && ((ShareStorageException) t).getStatusCode() == 409, t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1478,9 +1485,8 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link ShareDirectoryAsyncClient}
-     * indicates the directory was created, and can be used to interact with the newly created directory. An empty
-     * {@code Mono} indicates a directory already existed at this location.
+     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the directory
+     * created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
@@ -1504,10 +1510,13 @@ public class ShareAsyncClient {
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
      *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
      *
-     * shareAsyncClient.createDirectoryIfNotExistsWithResponse&#40;&quot;documents&quot;, options&#41;
-     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;ShareDirectoryAsyncClient&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * shareAsyncClient.createDirectoryIfNotExistsWithResponse&#40;&quot;documents&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions -->
      *
@@ -1516,10 +1525,10 @@ public class ShareAsyncClient {
      *
      * @param directoryName Name of the directory
      * @param options {@link ShareDirectoryCreateOptions}
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
-     * directory was created, and {@link Response#getValue() value} contains a {@link ShareDirectoryAsyncClient}
-     * which can be used to interact with the newly created directory. An empty {@code Mono} indicates the specified
-     * directory already existed at this location.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link ShareDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status
+     * code is 201, a new directory was successfully created. If status code is 409, a directory with the same name
+     * already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
@@ -1538,7 +1547,11 @@ public class ShareAsyncClient {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createDirectoryWithResponse(directoryName, options.getSmbProperties(), options.getFilePermission(),
                 options.getMetadata(), context).onErrorResume(t -> t instanceof ShareStorageException
-                && ((ShareStorageException) t).getStatusCode() == 409, t -> Mono.empty());
+                && ((ShareStorageException) t).getStatusCode() == 409, t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), getDirectoryClient(directoryName)));
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

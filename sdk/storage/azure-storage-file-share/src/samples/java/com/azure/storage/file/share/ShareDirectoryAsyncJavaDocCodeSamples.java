@@ -662,9 +662,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     public void createIfNotExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists
-        shareDirectoryAsyncClient.createIfNotExists().switchIfEmpty(Mono.<ShareDirectoryInfo>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.println("Create completed."));
+        shareDirectoryAsyncClient.createIfNotExists().subscribe(response ->
+            System.out.printf("Created at %s%n", response.getLastModified()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions
@@ -674,10 +673,13 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
             .setFilePermission(filePermission).setMetadata(metadata);
 
-        shareDirectoryAsyncClient.createIfNotExistsWithResponse(options)
-            .switchIfEmpty(Mono.<Response<ShareDirectoryInfo>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        shareDirectoryAsyncClient.createIfNotExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions
     }
 
@@ -725,10 +727,13 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
             .setFilePermission(filePermission).setMetadata(metadata);
 
-        shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("subdir", options)
-            .switchIfEmpty(Mono.<Response<ShareDirectoryAsyncClient>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("subdir", options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions
     }
 

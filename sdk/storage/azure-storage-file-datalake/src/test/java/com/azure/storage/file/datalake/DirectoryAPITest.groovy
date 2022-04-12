@@ -2704,13 +2704,14 @@ class DirectoryAPITest extends APISpec {
     def "Create if not exists file overwrite"() {
         setup:
         def pathName = generatePathName()
-        dc.createFileIfNotExists(pathName)
+        def initialResponse = dc.createFileIfNotExistsWithResponse(pathName, null, null, null)
 
         when:
-        def result = dc.createFileIfNotExists(pathName)
+        def secondResponse = dc.createFileIfNotExistsWithResponse(pathName, null, null, null)
 
         then:
-        result == null
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create if not exists file defaults"() {
@@ -3138,7 +3139,9 @@ class DirectoryAPITest extends APISpec {
 
         then:
         client.exists()
-        secondClient == null
+        // same client is returned since subdirectory has already been created
+        secondClient.exists()
+        client.getDirectoryName() == secondClient.getDirectoryName()
     }
 
     @Unroll
@@ -3152,7 +3155,7 @@ class DirectoryAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create if not exists sub dir defaults"() {

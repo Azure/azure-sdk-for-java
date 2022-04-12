@@ -250,7 +250,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         FileTestHelper.assertResponseStatusCode(initialResponse, 201)
-        secondResponse == null
+        FileTestHelper.assertResponseStatusCode(secondResponse, 409)
     }
 
     def "Create if not exists directory with metadata"() {
@@ -1087,11 +1087,8 @@ class DirectoryAPITests extends APISpec {
             new ShareDirectoryCreateOptions(), null, null)
 
         then:
-        initialResponse != null
         initialResponse.getStatusCode() == 201
-        initialResponse.getValue() != null
-        initialResponse.getValue().exists() == true
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Create if not exists sub directory invalid name"() {

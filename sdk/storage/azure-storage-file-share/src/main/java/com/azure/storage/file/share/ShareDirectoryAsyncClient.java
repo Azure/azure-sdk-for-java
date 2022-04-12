@@ -357,18 +357,16 @@ public class ShareDirectoryAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists -->
      * <pre>
-     * shareDirectoryAsyncClient.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;ShareDirectoryInfo&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     * shareDirectoryAsyncClient.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link ShareDirectoryInfo}
-     * indicates the directory was created, and contains more information on the created directory. An empty
-     * {@code Mono} indicates a directory already existed at this location.
+     * @return A reactive response signaling completion. {@link ShareDirectoryInfo} contains information about the
+     * created directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryInfo> createIfNotExists() {
@@ -394,10 +392,13 @@ public class ShareDirectoryAsyncClient {
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
      *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
      *
-     * shareDirectoryAsyncClient.createIfNotExistsWithResponse&#40;options&#41;
-     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;ShareDirectoryInfo&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * shareDirectoryAsyncClient.createIfNotExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions -->
      *
@@ -405,10 +406,10 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param options {@link ShareDirectoryCreateOptions}
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
-     * directory was created, and {@link Response#getValue() value} contains a {@link ShareDirectoryInfo} which contains
-     * information about the newly created directory. An empty {@code Mono} indicates the specified directory already
-     * existed at this location.
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link ShareDirectoryInfo} containing information about the directory. If {@link Response}'s status
+     * code is 201, a new directory was successfully created. If status code is 409, a directory already existed at this
+     * location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options) {
@@ -424,7 +425,11 @@ public class ShareDirectoryAsyncClient {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(), options.getMetadata(),
                 context).onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
-                    .getStatusCode() == 409, t -> Mono.empty());
+                    .getStatusCode() == 409, t -> {
+                HttpResponse response = ((ShareStorageException) t).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1336,9 +1341,7 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
-     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link ShareDirectoryAsyncClient}
-     * indicates the subdirectory was created, and can be used to interact with the newly created directory. An empty
-     * {@code Mono} indicates a subdirectory already existed at this location.
+     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the subdirectory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createSubdirectoryIfNotExists(String subdirectoryName) {
@@ -1362,10 +1365,13 @@ public class ShareDirectoryAsyncClient {
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
      *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
      *
-     * shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse&#40;&quot;subdir&quot;, options&#41;
-     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;ShareDirectoryAsyncClient&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse&#40;&quot;subdir&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions -->
      *
@@ -1395,9 +1401,8 @@ public class ShareDirectoryAsyncClient {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
-            return createSubClient.createIfNotExistsWithResponse(options, context).onErrorResume(t -> t
-                    instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> Mono.empty()).map(response -> new SimpleResponse<>(response, createSubClient));
+            return createSubClient.createIfNotExistsWithResponse(options, context)
+                .map(response -> new SimpleResponse<>(response, createSubClient));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

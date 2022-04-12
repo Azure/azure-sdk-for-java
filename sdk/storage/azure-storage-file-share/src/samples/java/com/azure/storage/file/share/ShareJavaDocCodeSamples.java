@@ -768,10 +768,10 @@ public class ShareJavaDocCodeSamples {
             .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
             .setAccessTier(ShareAccessTier.HOT), Duration.ofSeconds(1), new Context(key1, value1));
 
-        if (response != null) {
-            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
         } else {
-            System.out.println("Share already exists.");
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
         // END: ShareClient.createIfNotExistsWithResponse#ShareCreateOptions-Duration-Context
     }
@@ -816,7 +816,7 @@ public class ShareJavaDocCodeSamples {
     public void createDirectoryIfNotExistsCodeSnippets() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExists#string
-        shareClient.createDirectoryIfNotExists("mydirectory");
+        ShareDirectoryClient directoryClient = shareClient.createDirectoryIfNotExists("mydirectory");
         System.out.println("Complete creating the directory.");
         // END: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExists#string
 
@@ -829,10 +829,10 @@ public class ShareJavaDocCodeSamples {
         Response<ShareDirectoryClient> response = shareClient.createDirectoryIfNotExistsWithResponse("documents",
             options, Duration.ofSeconds(1), new Context(key1, value1));
 
-        if (response != null) {
-            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
         } else {
-            System.out.println("Directory already exists.");
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context
     }

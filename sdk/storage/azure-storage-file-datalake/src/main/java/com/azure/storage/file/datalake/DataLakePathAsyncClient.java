@@ -451,6 +451,7 @@ public class DataLakePathAsyncClient {
 
     Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Context context) {
         try {
+            options = options == null ? new DataLakePathCreateOptions() : options;
             options.setRequestConditions(new DataLakeRequestConditions()
                 .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
             return createWithResponse(options.getPermissions(), options.getUmask(), pathResourceType,

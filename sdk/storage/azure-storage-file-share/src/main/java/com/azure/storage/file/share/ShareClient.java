@@ -309,13 +309,11 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
-     * @return A {@link ShareInfo} containing information about the newly created share. Presence of null
-     * indicates the share already exists.
+     * @return {@link ShareInfo} that contains information about the created resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo createIfNotExists() {
-        Response<ShareInfo> response = createIfNotExistsWithResponse(null, null, null);
-        return response == null ? null : response.getValue();
+        return createIfNotExistsWithResponse(null, null, null).getValue();
     }
 
     /**
@@ -329,10 +327,10 @@ public class ShareClient {
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;&#41;.setQuotaInGb&#40;1&#41;
      *     .setAccessTier&#40;ShareAccessTier.HOT&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      *
-     * if &#40;response != null&#41; &#123;
-     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *     System.out.println&#40;&quot;Share already exists.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end ShareClient.createIfNotExistsWithResponse#ShareCreateOptions-Duration-Context -->
@@ -344,8 +342,9 @@ public class ShareClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} containing status code and HTTP headers. The presence of a {@link Response} indicates
-     * the new share was created successfully, {@code null} indicates a share already existed at this location.
+     * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
+     * {@link ShareInfo} containing information about the share. If {@link Response}'s status code is 201, a new
+     * share was successfully created. If status code is 409, a share already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createIfNotExistsWithResponse(ShareCreateOptions options, Duration timeout, Context context) {
@@ -1247,7 +1246,7 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.createDirectoryIfNotExists#string -->
      * <pre>
-     * shareClient.createDirectoryIfNotExists&#40;&quot;mydirectory&quot;&#41;;
+     * ShareDirectoryClient directoryClient = shareClient.createDirectoryIfNotExists&#40;&quot;mydirectory&quot;&#41;;
      * System.out.println&#40;&quot;Complete creating the directory.&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.createDirectoryIfNotExists#string -->
@@ -1256,14 +1255,12 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @return A response containing a {@link ShareDirectoryClient} to interact with the created directory, or null
-     * if the directory already exists.
+     * @return The {@link ShareDirectoryClient} used to interact with the directory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createDirectoryIfNotExists(String directoryName) {
-        Response<ShareDirectoryClient> response = createDirectoryIfNotExistsWithResponse(directoryName,
-            new ShareDirectoryCreateOptions(), null, Context.NONE);
-        return response == null ? null : response.getValue();
+        return createDirectoryIfNotExistsWithResponse(directoryName, new ShareDirectoryCreateOptions(), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1284,10 +1281,10 @@ public class ShareClient {
      * Response&lt;ShareDirectoryClient&gt; response = shareClient.createDirectoryIfNotExistsWithResponse&#40;&quot;documents&quot;,
      *     options, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      *
-     * if &#40;response != null&#41; &#123;
-     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *     System.out.println&#40;&quot;Directory already exists.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context -->
@@ -1300,15 +1297,16 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
-     * @return A response containing a {@link ShareDirectoryAsyncClient} to interact with the created directory and the
-     * status of its creation, or null if directory already exists.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareDirectoryClient}
+     * used to interact with the directory created. If {@link Response}'s status code is 201, a new directory was
+     * successfully created. If status code is 409, a directory with the same name already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName,
         ShareDirectoryCreateOptions options, Duration timeout, Context context) {
         ShareDirectoryClient shareDirectoryClient = getDirectoryClient(directoryName);
         Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(options, timeout, context);
-        return response == null ? null : new SimpleResponse<>(response, shareDirectoryClient);
+        return new SimpleResponse<>(response, shareDirectoryClient);
     }
 
     /**
