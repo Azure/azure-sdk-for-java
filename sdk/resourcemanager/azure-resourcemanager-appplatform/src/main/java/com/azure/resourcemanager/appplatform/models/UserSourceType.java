@@ -19,6 +19,9 @@ public final class UserSourceType extends ExpandableStringEnum<UserSourceType> {
     /** Static value Source for UserSourceType. */
     public static final UserSourceType SOURCE = fromString("Source");
 
+    /** Static value BuildResult for UserSourceType. */
+    public static final UserSourceType BUILD_RESULT = fromString("BuildResult");
+
     /**
      * Creates or finds a UserSourceType from its string representation.
      *
