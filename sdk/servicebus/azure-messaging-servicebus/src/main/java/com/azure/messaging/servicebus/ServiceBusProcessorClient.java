@@ -222,7 +222,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
         receiveMessages();
 
-        // Start an executor to periodically check if the client's connection is active
+        // Start a monitor to periodically check if the client's connection is active.
+        // NOTE: Schedulers.boundedElastic() is used here instead of Flux.interval() because the restart route involves
+        // tearing down multiple levels of clients synchronously. The boundedElastic is used instead of the parallel
+        // (parallel scheduler backing Flux.interval), so that we don't block any of the parallel threads.
         if (monitorDisposable == null) {
             monitorDisposable = Schedulers.boundedElastic().schedulePeriodically(() -> {
                 if (this.asyncClient.get().isConnectionClosed()) {
