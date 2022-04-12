@@ -121,11 +121,12 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   (
     container: CosmosAsyncContainer,
     changeFeedConfig: CosmosChangeFeedConfig,
+    partitioningConfig: CosmosPartitioningConfig,
     streamId: Option[String]
   ): String = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
-      createInitialOffsetImpl(container, changeFeedConfig, streamId)
+      createInitialOffsetImpl(container, changeFeedConfig, partitioningConfig, streamId)
     )
   }
 
@@ -134,6 +135,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   (
     container: CosmosAsyncContainer,
     changeFeedConfig: CosmosChangeFeedConfig,
+    partitioningConfig: CosmosPartitioningConfig,
     streamId: Option[String]
   ): String = {
 
@@ -142,6 +144,16 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     ContainerFeedRangesCache
       .getFeedRanges(container)
+      .map(feedRangeList =>
+        partitioningConfig.feedRangeFiler match {
+          case Some(epkRangesInScope) => feedRangeList
+            .filter(feedRange => {
+              epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+                epk,
+                SparkBridgeImplementationInternal.toNormalizedRange(feedRange)))
+            })
+          case None => feedRangeList
+        })
       .flatMapMany(feedRanges => SFlux.fromIterable(feedRanges))
       .flatMap(feedRange => {
         val requestOptions = changeFeedConfig.toRequestOptions(feedRange)
@@ -239,11 +251,12 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     assertOnSparkDriver()
     assertNotNull(startOffset, "startOffset")
 
-    val latestPartitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
+    val latestPartitionMetadata = CosmosPartitionPlanner.getFilteredPartitionMetadata(
       userConfig,
       clientConfiguration,
       Some(cosmosClientStateHandle),
       containerConfig,
+      partitioningConfig,
       Some(maxStaleness)
     )
 
@@ -557,17 +570,23 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       })
   }
 
-  def getPartitionMetadata(
+  def getFilteredPartitionMetadata(
                             userConfig: Map[String, String],
                             cosmosClientConfig: CosmosClientConfiguration,
                             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
                             cosmosContainerConfig: CosmosContainerConfig,
+                            partitionConfig: CosmosPartitioningConfig,
                             maxStaleness: Option[Duration] = None
                           ): Array[PartitionMetadata] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
       getPartitionMetadataImpl(
-        userConfig, cosmosClientConfig, cosmosClientStateHandle, cosmosContainerConfig, maxStaleness))
+        userConfig,
+        cosmosClientConfig,
+        cosmosClientStateHandle,
+        cosmosContainerConfig,
+        partitionConfig.feedRangeFiler,
+        maxStaleness))
   }
 
   private[this] def getPartitionMetadataImpl(
@@ -575,6 +594,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       cosmosClientConfig: CosmosClientConfiguration,
       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
+      feedRangeFilter: Option[Array[NormalizedRange]],
       maxStaleness: Option[Duration] = None
   ): Array[PartitionMetadata] = {
 
@@ -585,6 +605,16 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         cosmosClientConfig,
         cosmosClientStateHandle,
         cosmosContainerConfig)
+      .map(feedRangeList =>
+        feedRangeFilter match {
+          case Some(epkRangesInScope) => feedRangeList
+            .filter(feedRange => {
+              epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+                epk,
+                feedRange))
+            })
+          case None => feedRangeList
+        })
       .flatMap(feedRanges => {
         SFlux
           .fromArray(feedRanges)
