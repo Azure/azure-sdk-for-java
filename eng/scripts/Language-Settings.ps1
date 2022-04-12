@@ -62,34 +62,43 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 # Returns the maven (really sonatype) publish status of a package id and version.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
-  try
+  $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  
+  $attempt = 1
+  while ($attempt -le 3)
   {
-    $uri = "https://oss.sonatype.org/content/repositories/releases/$groupId/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
-    $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -Method "GET" -uri $uri
-
-    if ($pomContent -ne $null -or $pomContent.Length -eq 0)
+    try
     {
-      return $true
+      if ($attempt -gt 1) {
+        Start-Sleep -Seconds ([Math]::Pow(2, $attempt))
+      }
+
+      Write-Host "Checking published package at $uri"
+      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck
+
+      if ($response.BaseResponse.IsSuccessStatusCode)
+      {
+        return $true
+      }
+
+      $statusCode = $response.StatusCode
+
+      if ($statusCode -eq 404)
+      {
+        return $false
+      }
+
+      Write-Host "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed attempt $attempt with statuscode $statusCode"
     }
-    else
+    catch
     {
-      return $false
-    }
-  }
-  catch
-  {
-    $statusCode = $_.Exception.Response.StatusCode.value__
-    $statusDescription = $_.Exception.Response.StatusDescription
-
-    # if this is 404ing, then this pkg has never been published before
-    if ($statusCode -eq 404) {
-      return $false
+      Write-Host "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed attempt $attempt with exception $($_.Exception.Message)"
     }
 
-    Write-Host "VersionCheck to maven for packageId $pkgId failed with statuscode $statusCode"
-    Write-Host $statusDescription
-    exit(1)
+    $attempt += 1
   }
+
+  throw "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed after 3 attempts"
 }
 
 # Parse out package publishing information given a maven POM file
@@ -265,6 +274,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 
 $PackageExclusions = @{
   "azure-core-experimental" = "Don't want to include an experimental package.";
+  "azure-core-test" = "Don't want to include the test framework package.";
   "azure-sdk-bom" = "Don't want to include the sdk bom.";
   "azure-storage-internal-avro" = "No external APIs.";
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";

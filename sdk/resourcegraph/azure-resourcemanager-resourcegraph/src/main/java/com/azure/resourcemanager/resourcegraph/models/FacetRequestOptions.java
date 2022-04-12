@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The options for facet evaluation. */
 @Fluent
 public final class FacetRequestOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FacetRequestOptions.class);
-
     /*
      * The column name or query expression to sort on. Defaults to count if not
      * present.
