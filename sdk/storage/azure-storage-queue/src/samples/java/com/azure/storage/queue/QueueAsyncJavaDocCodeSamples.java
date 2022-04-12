@@ -599,7 +599,7 @@ public class QueueAsyncJavaDocCodeSamples {
                 } else {
                     System.out.println("successfully created.");
                 }
-        });
+            });
         // END: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
     }
 
