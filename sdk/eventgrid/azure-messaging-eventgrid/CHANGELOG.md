@@ -1,6 +1,6 @@
 # Release History
 
-## 4.11.0 (2022-04-11)
+## 4.11.0 (2022-04-12)
 
 ### Features Added
 - Added system event classes for Azure Healthcare FHIR Services under package `com.azure.messaging.eventgrid.systemevents`,
