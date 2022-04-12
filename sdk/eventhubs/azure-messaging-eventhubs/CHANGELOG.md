@@ -1,14 +1,15 @@
 # Release History
 
-## 5.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 5.11.2 (2022-04-11)
 
 ### Other Changes
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.27.0`.
+- Upgraded `azure-core-amqp` to `2.4.2`.
 
 ## 5.11.1 (2022-03-17)
 
