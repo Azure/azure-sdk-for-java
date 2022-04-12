@@ -6,6 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -232,12 +233,12 @@ public final class QueueAsyncClient {
      *
      * <!-- src_embed com.azure.storage.queue.queueAsyncClient.createIfNotExists -->
      * <pre>
-     *client.createIfNotExists&#40;&#41;.subscribe&#40;created -&gt; &#123;
-     *      if &#40;created&#41; &#123;
-     *          System.out.println&#40;&quot;Successfully created.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *      &#125;
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;created -&gt; &#123;
+     *     if &#40;created&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully created.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.queue.queueAsyncClient.createIfNotExists -->
@@ -264,9 +265,13 @@ public final class QueueAsyncClient {
      * <!-- src_embed com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map -->
      * <pre>
      * client.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;&#41;
-     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *     .subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map -->
      *
@@ -275,7 +280,8 @@ public final class QueueAsyncClient {
      *
      * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
-     * @return A response that only contains headers and response status code, or null if queue already exists.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 201, a new queue was
+     * successfully created. If status code is 204 or 409, a queue already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata) {
@@ -288,10 +294,13 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
         try {
-            return createWithResponse(metadata, context)
-                .onErrorResume(t -> t instanceof QueueStorageException
-                        && ((QueueStorageException) t).getStatusCode() == 409,
-                    t -> Mono.empty()).filter(res -> res.getStatusCode() != 204);
+            return createWithResponse(metadata, context).onErrorResume(t -> t instanceof QueueStorageException
+                    && ((QueueStorageException) t).getStatusCode() == 409,
+                t -> {
+                    HttpResponse response = ((QueueStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -370,11 +379,11 @@ public final class QueueAsyncClient {
      * <!-- src_embed com.azure.storage.queue.queueAsyncClient.deleteIfExists -->
      * <pre>
      * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *      if &#40;deleted&#41; &#123;
-     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *      &#125;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.queue.queueAsyncClient.deleteIfExists -->
@@ -400,8 +409,8 @@ public final class QueueAsyncClient {
      * <!-- src_embed com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse -->
      * <pre>
      * client.deleteIfExistsWithResponse&#40;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse -->
      *

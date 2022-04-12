@@ -598,10 +598,10 @@ public class QueueJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context
         Response<Void> response = client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"),
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (response != null) {
-            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
         } else {
-            System.out.println("Queue already exists.");
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context
     }

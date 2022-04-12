@@ -78,7 +78,7 @@ class QueueAysncAPITests extends APISpec {
             .verifyComplete()
     }
 
-    def "Create if not exists queue that already exists"() {
+    def "Create if not exists queue with same metadata"() {
         setup:
         def initialResponse = queueAsyncClient.createIfNotExistsWithResponse(null).block()
 
@@ -87,7 +87,21 @@ class QueueAysncAPITests extends APISpec {
 
         then:
         QueueTestHelper.assertResponseStatusCode(initialResponse, 201)
-        secondResponse == null
+        // if metadata is the same response code is 204
+        QueueTestHelper.assertResponseStatusCode(secondResponse, 204)
+    }
+
+    def "Create if not exists queue with conflicting metadata"() {
+        setup:
+        def initialResponse = queueAsyncClient.createIfNotExistsWithResponse(createMetadata).block()
+
+        when:
+        def secondResponse = queueAsyncClient.createIfNotExistsWithResponse(testMetadata).block()
+
+        then:
+        QueueTestHelper.assertResponseStatusCode(initialResponse, 201)
+        // if metadata is the same response code is 204
+        QueueTestHelper.assertResponseStatusCode(secondResponse, 409)
     }
 
     def "Delete exist queue"() {

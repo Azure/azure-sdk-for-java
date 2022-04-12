@@ -83,6 +83,20 @@ class QueueAPITests extends APISpec {
         result
     }
 
+    def "Create if not exists with same metadata on a queue client that already exists"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+        def initialResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 204
+    }
+
     def "Create if not exists with conflicting metadata on a queue client that already exists"() {
         setup:
         queueName = namer.getRandomName(60)
@@ -93,9 +107,8 @@ class QueueAPITests extends APISpec {
         def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
 
         then:
-        initialResponse != null
         initialResponse.getStatusCode() == 201
-        secondResponse == null
+        secondResponse.getStatusCode() == 409
     }
 
     def "Delete exist queue"() {

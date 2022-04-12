@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.queue.core.windows.net/c8ecdff6c8ecdff62c380961a2462fd6a0f7449c8c",
+    "Uri" : "https://REDACTED.queue.core.windows.net/c8ecdff6c8ecdff6eae6372451a64e32cf4b465fa5",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9da3e414-dd20-4f23-a33b-c03fcc382fa8"
+      "x-ms-client-request-id" : "e36e3b12-423a-409e-a5be-1e9e8c3e25d1"
     },
     "Response" : {
       "content-length" : "0",
@@ -13,11 +13,11 @@
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "39d8479d-f003-005e-718b-44f918000000",
-      "x-ms-client-request-id" : "9da3e414-dd20-4f23-a33b-c03fcc382fa8",
-      "Date" : "Wed, 30 Mar 2022 23:09:35 GMT"
+      "x-ms-request-id" : "5c17ed8e-9003-003a-144d-4e0880000000",
+      "x-ms-client-request-id" : "e36e3b12-423a-409e-a5be-1e9e8c3e25d1",
+      "Date" : "Tue, 12 Apr 2022 09:10:42 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "c8ecdff6c8ecdff62c380961a2462fd6a0f7449c8c" ]
+  "variables" : [ "c8ecdff6c8ecdff6eae6372451a64e32cf4b465fa5" ]
 }

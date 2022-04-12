@@ -593,9 +593,13 @@ public class QueueAsyncJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
         client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"))
-            .switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+            .subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
         // END: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
     }
 
