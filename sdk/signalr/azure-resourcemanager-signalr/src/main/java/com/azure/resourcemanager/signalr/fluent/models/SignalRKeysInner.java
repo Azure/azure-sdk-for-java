@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class represents the access keys of the resource. */
 @Fluent
 public final class SignalRKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRKeysInner.class);
-
     /*
      * The primary access key.
      */

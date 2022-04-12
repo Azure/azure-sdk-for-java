@@ -55,6 +55,10 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
                 return buffer;
             })
             .onErrorResume(throwable -> {
+                if (throwable instanceof Error) {
+                    return Flux.error(throwable);
+                }
+
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {

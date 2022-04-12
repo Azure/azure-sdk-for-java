@@ -851,6 +851,7 @@
         <module>sdk/automanage</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
+        <module>sdk/azureadexternalidentities</module>
         <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
@@ -872,6 +873,7 @@
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
         <module>sdk/customerinsights</module>
+        <module>sdk/dashboard</module>
         <module>sdk/databox</module>
         <module>sdk/databoxedge</module>
         <module>sdk/databricks</module>

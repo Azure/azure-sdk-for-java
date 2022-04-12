@@ -37,6 +37,3 @@ extends:
       - name: azure-identity
         groupId: com.azure
         safeName: azureidentity
-    JavaBuildVersion: '1.11'
-    MatrixReplace:
-      - JavaTestVersion=(.*1)\.17(.*)/$1.11$2

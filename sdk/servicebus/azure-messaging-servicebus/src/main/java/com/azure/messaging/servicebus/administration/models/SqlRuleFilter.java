@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a filter which is a composition of an expression and an action that is executed in the pub/sub pipeline.
@@ -98,5 +99,47 @@ public class SqlRuleFilter extends RuleFilter {
      */
     public String getSqlExpression() {
         return sqlExpression;
+    }
+
+    /**
+     * Converts the value of the current instance to its equivalent string representation.
+     *
+     * @return A string representation of the current instance.
+     */
+    @Override
+    public String toString() {
+        return String.format("SqlRuleFilter: %s", sqlExpression);
+    }
+
+    /**
+     *  Compares this RuleFilter to the specified object. The result is true if and only if the argument is not null
+     *  and is a SqlRuleFilter object that with the same parameters as this object.
+     *
+     * @param other - the object to which the current SqlRuleFilter should be compared.
+     * @return True, if the passed object is a SqlRuleFilter with the same parameter values, False otherwise.
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof SqlRuleFilter)) {
+            return false;
+        }
+        SqlRuleFilter that = (SqlRuleFilter) other;
+        return sqlExpression.equals(that.sqlExpression)
+            && Objects.equals(compatibilityLevel, that.compatibilityLevel)
+            && Objects.equals(requiresPreprocessing, that.requiresPreprocessing)
+            && Objects.equals(properties, that.properties);
+    }
+
+    /**
+     * Returns a hash code for this SqlRuleFilter, which is the hashcode for the SqlExpression.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return sqlExpression.hashCode();
     }
 }

@@ -17,6 +17,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Verifies that:
+ * 1) no return classes are from the implementation package
+ * 2) no class of implementation package as method's parameters
+ */
 public class NoImplInPublicAPI extends AbstractCheck {
     private static final String ALTERNATIVE_MOVE_TO_PUBLIC_API = "Alternatively, it can be removed from the "
         + "implementation package and made public API, after appropriate API review.";

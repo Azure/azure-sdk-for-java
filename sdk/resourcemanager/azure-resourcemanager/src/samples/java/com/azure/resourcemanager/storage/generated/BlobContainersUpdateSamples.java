@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for BlobContainers Update. */
 public final class BlobContainersUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersPatch.json
      */
     /**
      * Sample code: UpdateContainers.

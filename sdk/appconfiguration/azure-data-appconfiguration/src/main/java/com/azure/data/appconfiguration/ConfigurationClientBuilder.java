@@ -274,7 +274,7 @@ public final class ConfigurationClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
         this.endpoint = endpoint;
         return this;

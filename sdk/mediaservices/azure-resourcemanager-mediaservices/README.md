@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-mediaservices</artifactId>
-    <version>1.1.0-beta.3</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

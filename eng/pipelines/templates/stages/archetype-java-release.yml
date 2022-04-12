@@ -110,7 +110,7 @@ stages:
                 # versioning validation, so skip it.
                 condition: and(succeeded(), ne('${{ artifact.uberJar }}', 'true'))
 
-              - ${{if ne(parameters.SDKType, 'data')}}:
+              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:
                     PackageName: ${{artifact.name}}
