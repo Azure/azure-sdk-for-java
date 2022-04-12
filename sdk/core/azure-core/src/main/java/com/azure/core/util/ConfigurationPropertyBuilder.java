@@ -40,7 +40,9 @@ public final class ConfigurationPropertyBuilder<T> {
     private boolean required;
 
     /**
-     * Creates default {@link ConfigurationPropertyBuilder} configured to redact property value.
+     * Creates default {@link ConfigurationPropertyBuilder}.
+     * String property values are redacted in logs by default. If property value does not contain sensitive information, use
+     * {@link ConfigurationPropertyBuilder#logValue} to enable logging.
      *
      * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
