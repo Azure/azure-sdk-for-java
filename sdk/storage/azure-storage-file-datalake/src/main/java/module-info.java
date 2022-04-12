@@ -16,6 +16,5 @@ module com.azure.storage.file.datalake {
     opens com.azure.storage.file.datalake.implementation.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
-    exports com.azure.storage.file.datalake.implementation.models;
 
 }

@@ -17,8 +17,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.specialized.BlobAsyncClientBase;
-import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -120,7 +118,7 @@ public class DataLakePathAsyncClient {
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
         BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken,
-		CpkInfo customerProvidedKey) {
+        CpkInfo customerProvidedKey) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
@@ -265,9 +263,10 @@ public class DataLakePathAsyncClient {
         return serviceVersion;
     }
 
-	AzureSasCredential getSasToken() {
+    AzureSasCredential getSasToken() {
         return this.sasToken;
     }
+
     /**
      * Gets the {@link CpkInfo} used to encrypt this path's content on the server.
      *
@@ -1390,7 +1389,7 @@ public class DataLakePathAsyncClient {
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
             prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken,
-			customerProvidedKey);
+            customerProvidedKey);
     }
 
     /**
