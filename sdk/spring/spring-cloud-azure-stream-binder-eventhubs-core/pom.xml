@@ -48,7 +48,7 @@
           <artifactId>spring-integration-core</artifactId>
         </exclusion>
       </exclusions>
-      <version>3.2.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+      <version>4.0.0-M2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -60,14 +60,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>3.0.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.4.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.15</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>6.0.0-M3</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -95,13 +95,13 @@
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-test</artifactId>
-        <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-test;external_dependency} -->
+        <version>3.0.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-test;external_dependency} -->
         <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -115,8 +115,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-stream:[3.2.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.0.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream:[4.0.0-M2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

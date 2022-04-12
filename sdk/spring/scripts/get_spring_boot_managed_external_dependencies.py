@@ -22,8 +22,8 @@ from urllib.error import HTTPError
 from log import log
 from pom import Pom
 
-SPRING_BOOT_VERSION = '2.6.5'
-SPRING_CLOUD_VERSION = '2021.0.1'
+SPRING_BOOT_VERSION = '3.0.0-M2'
+SPRING_CLOUD_VERSION = '2022.0.0-M2'
 
 ROOT_POMS = [
     'org.springframework.boot:spring-boot-starter-parent;{}'.format(SPRING_BOOT_VERSION),

@@ -70,13 +70,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-nop</artifactId>
-      <version>1.7.33</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.3.15</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
+      <version>6.0.0-M3</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
