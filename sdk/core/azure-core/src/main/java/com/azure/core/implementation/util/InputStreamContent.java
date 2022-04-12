@@ -99,6 +99,7 @@ public final class InputStreamContent extends BinaryDataContent {
         // TODO (alzimmer): Copying an InputStream is dependent on the InputStream type.
         // ByteArrayInputStream and FileInputStream should be re-playable without buffering, other types may need to be
         // buffered.
+        // Also consider adding InputStreamSupplierBinaryDataContent.
         return this;
     }
 }

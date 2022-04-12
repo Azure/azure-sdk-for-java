@@ -212,6 +212,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
                 @Override
                 public void writeTo(BufferedSink bufferedSink) throws IOException {
+                    // TODO (kasobol-msft) OkHttp client can retry internally so we should add mark/reset here
+                    // and fallback to buffering if that's not supported.
+                    // We should also consider adding InputStreamSupplierBinaryDataContent type where customer can
+                    // give a prescription how to acquire/re-acquire an InputStream.
                     Source source = Okio.source(content.toStream());
                     bufferedSink.writeAll(source);
                 }
