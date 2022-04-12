@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionPumpOptions;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Locale;
@@ -72,6 +73,7 @@ public class EventProcessorClient {
      * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
      * @param batchReceiveMode The boolean value indicating if this processor is configured to receive in batches or
      * single events.
+     * @param partitionPumpOptions The set of options to configure partition pump.
      * @param loadBalancerUpdateInterval The time duration between load balancing update cycles.
      * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
      * @param loadBalancingStrategy The load balancing strategy to use.
@@ -80,8 +82,8 @@ public class EventProcessorClient {
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
         boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError,
         Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
-        boolean batchReceiveMode, Duration loadBalancerUpdateInterval, Duration partitionOwnershipExpirationInterval,
-        LoadBalancingStrategy loadBalancingStrategy) {
+        boolean batchReceiveMode, PartitionPumpOptions partitionPumpOptions, Duration loadBalancerUpdateInterval,
+        Duration partitionOwnershipExpirationInterval, LoadBalancingStrategy loadBalancingStrategy) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -103,7 +105,7 @@ public class EventProcessorClient {
 
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
             eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition,
-            maxBatchSize, maxWaitTime, batchReceiveMode);
+            maxBatchSize, maxWaitTime, batchReceiveMode, partitionPumpOptions);
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,

@@ -29,6 +29,7 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.messaging.eventhubs.models.PartitionPumpOptions;
 
 import java.net.URL;
 import java.time.Duration;
@@ -134,6 +135,7 @@ public class EventProcessorClientBuilder implements
     private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
     private int maxBatchSize = 1; // setting this to 1 by default
     private Duration maxWaitTime;
+    private PartitionPumpOptions partitionPumpOptions;
     private Duration loadBalancingUpdateInterval;
     private Duration partitionOwnershipExpirationInterval;
     private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.GREEDY;
@@ -461,6 +463,11 @@ public class EventProcessorClientBuilder implements
         return this;
     }
 
+    public EventProcessorClientBuilder partitionPumpOptions(PartitionPumpOptions partitionPumpOptions) {
+        this.partitionPumpOptions = partitionPumpOptions;
+        return this;
+    }
+
     /**
      * The time interval between load balancing update cycles. This is also generally the interval at which ownership
      * of partitions are renewed. By default, this interval is set to 10 seconds.
@@ -733,6 +740,10 @@ public class EventProcessorClientBuilder implements
                 + "cannot be set"));
         }
 
+        if (partitionPumpOptions == null) {
+            partitionPumpOptions = new PartitionPumpOptions();
+        }
+
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         if (loadBalancingUpdateInterval == null) {
             loadBalancingUpdateInterval = DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL;
@@ -745,7 +756,7 @@ public class EventProcessorClientBuilder implements
         return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
             processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
-            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);
+            partitionPumpOptions, loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

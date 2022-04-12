@@ -22,6 +22,7 @@ import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.PartitionPumpOptions;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
@@ -79,6 +80,7 @@ class PartitionPumpManager {
     private final int maxBatchSize;
     private final boolean batchReceiveMode;
     private final int prefetch;
+    private final PartitionPumpOptions partitionPumpOptions;
 
     /**
      * Creates an instance of partition pump manager.
@@ -101,7 +103,7 @@ class PartitionPumpManager {
         Supplier<PartitionProcessor> partitionProcessorFactory, EventHubClientBuilder eventHubClientBuilder,
         boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider,
         Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
-        boolean batchReceiveMode) {
+        boolean batchReceiveMode, PartitionPumpOptions partitionPumpOptions) {
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.eventHubClientBuilder = eventHubClientBuilder;
@@ -115,6 +117,7 @@ class PartitionPumpManager {
         this.prefetch = eventHubClientBuilder.getPrefetchCount() == null
             ? EventHubClientBuilder.DEFAULT_PREFETCH_COUNT
             : eventHubClientBuilder.getPrefetchCount();
+        this.partitionPumpOptions = partitionPumpOptions;
     }
 
     /**
@@ -221,8 +224,8 @@ class PartitionPumpManager {
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
-            Scheduler scheduler = Schedulers.newBoundedElastic(schedulerSize,
-                MAXIMUM_QUEUE_SIZE, "partition-pump-" + claimedOwnership.getPartitionId());
+            Scheduler scheduler = Schedulers.newBoundedElastic(this.partitionPumpOptions.getSchedulerSize(),
+                this.partitionPumpOptions.getMaxQueueSize(), "partition-pump-" + claimedOwnership.getPartitionId());
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
                 .createConsumer(claimedOwnership.getConsumerGroup(), prefetch);
             PartitionPump partitionPump = new PartitionPump(claimedOwnership.getPartitionId(), eventHubConsumer,
