@@ -426,9 +426,9 @@ public class ShareDirectoryAsyncClient {
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(), options.getMetadata(),
                 context).onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
                     .getStatusCode() == 409, t -> {
-                HttpResponse response = ((ShareStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

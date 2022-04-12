@@ -8,7 +8,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -793,11 +792,11 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.createIfNotExistsWithResponse(new ShareCreateOptions()
             .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
             .setAccessTier(ShareAccessTier.HOT)).subscribe(response -> {
-            if (response.getStatusCode() == 409) {
-                System.out.println("Already exists.");
-            } else {
-                System.out.println("successfully created.");
-            }
+                if (response.getStatusCode() == 409) {
+                    System.out.println("Already exists.");
+                } else {
+                    System.out.println("successfully created.");
+                }
         });
         // END: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions
     }
