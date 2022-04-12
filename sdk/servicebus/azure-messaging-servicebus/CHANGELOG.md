@@ -3,7 +3,7 @@
 ## 7.9.0-beta.1 (Unreleased)
 
 ### Features Added
-- Replaced creating single thread executor with `Schedulers.boundedElastic()`
+- Replaced creating single thread executor with `Schedulers.boundedElastic()`. ([#27805](https://github.com/Azure/azure-sdk-for-java/issues/27805))
 ### Breaking Changes
 
 ### Bugs Fixed
