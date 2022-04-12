@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.29.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.28.1 (2022-04-08)
 #### Other Changes
 * Updated `jackson` dependency to 2.13.2 and `jackson-databind` dependency to 2.13.2.1 - CVE-2020-36518. - See [PR 27847](https://github.com/Azure/azure-sdk-for-java/pull/27847)
