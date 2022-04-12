@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** The kubernetes resource limits and requests used to restrict or reserve resource usage. */
 @Fluent
 public final class K8SResourceRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(K8SResourceRequirements.class);
-
     /*
      * Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu'
      * request must be less than or equal to 'cpu' limit. Default 'cpu' is 2,

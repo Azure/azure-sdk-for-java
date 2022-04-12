@@ -21,7 +21,7 @@ import java.util.UUID;
 /** Samples for DataControllers PutDataController. */
 public final class DataControllersPutDataControllerSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/CreateOrUpdateDataController.json
+     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/CreateOrUpdateDataController.json
      */
     /**
      * Sample code: Create or update a Data Controller.
@@ -48,6 +48,10 @@ public final class DataControllersPutDataControllerSamples {
                             .withLogs(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z"))
                             .withUsages(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z")))
                     .withBasicLoginInformation(
+                        new BasicLoginInformation().withUsername("username").withPassword("********"))
+                    .withMetricsDashboardCredential(
+                        new BasicLoginInformation().withUsername("username").withPassword("********"))
+                    .withLogsDashboardCredential(
                         new BasicLoginInformation().withUsername("username").withPassword("********"))
                     .withLogAnalyticsWorkspaceConfig(
                         new LogAnalyticsWorkspaceConfig()

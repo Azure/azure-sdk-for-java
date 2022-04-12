@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of sqlManagedInstance. */
 @Fluent
 public final class SqlManagedInstanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceProperties.class);
-
     /*
      * null
      */
@@ -59,10 +55,16 @@ public final class SqlManagedInstanceProperties {
     private OffsetDateTime lastUploadedDate;
 
     /*
-     * The provisioningState property.
+     * The provisioning state of the Arc-enabled SQL Managed Instance resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Active Directory information related to this SQL Managed Instance.
+     */
+    @JsonProperty(value = "activeDirectoryInformation")
+    private ActiveDirectoryInformation activeDirectoryInformation;
 
     /*
      * The license type to apply for this managed instance.
@@ -225,12 +227,33 @@ public final class SqlManagedInstanceProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: The provisioning state of the Arc-enabled SQL Managed Instance resource.
      *
      * @return the provisioningState value.
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the activeDirectoryInformation property: Active Directory information related to this SQL Managed Instance.
+     *
+     * @return the activeDirectoryInformation value.
+     */
+    public ActiveDirectoryInformation activeDirectoryInformation() {
+        return this.activeDirectoryInformation;
+    }
+
+    /**
+     * Set the activeDirectoryInformation property: Active Directory information related to this SQL Managed Instance.
+     *
+     * @param activeDirectoryInformation the activeDirectoryInformation value to set.
+     * @return the SqlManagedInstanceProperties object itself.
+     */
+    public SqlManagedInstanceProperties withActiveDirectoryInformation(
+        ActiveDirectoryInformation activeDirectoryInformation) {
+        this.activeDirectoryInformation = activeDirectoryInformation;
+        return this;
     }
 
     /**
@@ -308,6 +331,9 @@ public final class SqlManagedInstanceProperties {
         }
         if (basicLoginInformation() != null) {
             basicLoginInformation().validate();
+        }
+        if (activeDirectoryInformation() != null) {
+            activeDirectoryInformation().validate();
         }
     }
 }

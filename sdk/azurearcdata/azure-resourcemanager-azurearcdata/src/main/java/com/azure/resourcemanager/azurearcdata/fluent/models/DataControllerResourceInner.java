@@ -10,15 +10,12 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.models.DataControllerProperties;
 import com.azure.resourcemanager.azurearcdata.models.ExtendedLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Data controller resource. */
 @Fluent
 public final class DataControllerResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataControllerResourceInner.class);
-
     /*
      * The extendedLocation of the resource.
      */
@@ -32,7 +29,8 @@ public final class DataControllerResourceInner extends Resource {
     private DataControllerProperties properties;
 
     /*
-     * Read only system data
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -78,7 +76,7 @@ public final class DataControllerResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Read only system data.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -110,7 +108,7 @@ public final class DataControllerResourceInner extends Resource {
             extendedLocation().validate();
         }
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model DataControllerResourceInner"));
@@ -118,4 +116,6 @@ public final class DataControllerResourceInner extends Resource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataControllerResourceInner.class);
 }

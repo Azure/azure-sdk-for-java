@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.fluent.models.DataControllerResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PageOfDataControllerResource model. */
+/** A list of data controllers. */
 @Fluent
 public final class PageOfDataControllerResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PageOfDataControllerResource.class);
-
     /*
-     * The value property.
+     * Array of results.
      */
     @JsonProperty(value = "value")
     private List<DataControllerResourceInner> value;
@@ -29,7 +25,7 @@ public final class PageOfDataControllerResource {
     private String nextLink;
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: Array of results.
      *
      * @return the value value.
      */
@@ -38,7 +34,7 @@ public final class PageOfDataControllerResource {
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: Array of results.
      *
      * @param value the value value to set.
      * @return the PageOfDataControllerResource object itself.

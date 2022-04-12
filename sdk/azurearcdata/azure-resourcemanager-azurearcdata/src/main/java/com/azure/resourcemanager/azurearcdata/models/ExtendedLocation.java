@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The complex type of the extended location. */
 @Fluent
 public final class ExtendedLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedLocation.class);
-
     /*
      * The name of the extended location.
      */

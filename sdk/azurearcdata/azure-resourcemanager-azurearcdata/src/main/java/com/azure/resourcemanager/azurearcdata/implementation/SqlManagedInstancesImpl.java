@@ -13,10 +13,9 @@ import com.azure.resourcemanager.azurearcdata.fluent.SqlManagedInstancesClient;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlManagedInstanceInner;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstance;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlManagedInstancesImpl implements SqlManagedInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlManagedInstancesImpl.class);
 
     private final SqlManagedInstancesClient innerClient;
 
@@ -86,7 +85,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
     public SqlManagedInstance getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
         }
         String sqlManagedInstanceName = Utils.getValueFromIdByName(id, "sqlManagedInstances");
         if (sqlManagedInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +106,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
     public Response<SqlManagedInstance> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
         }
         String sqlManagedInstanceName = Utils.getValueFromIdByName(id, "sqlManagedInstances");
         if (sqlManagedInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
         }
         String sqlManagedInstanceName = Utils.getValueFromIdByName(id, "sqlManagedInstances");
         if (sqlManagedInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
         }
         String sqlManagedInstanceName = Utils.getValueFromIdByName(id, "sqlManagedInstances");
         if (sqlManagedInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

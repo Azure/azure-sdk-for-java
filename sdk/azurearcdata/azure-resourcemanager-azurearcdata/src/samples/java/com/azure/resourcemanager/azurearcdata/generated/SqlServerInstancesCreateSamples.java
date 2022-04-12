@@ -8,6 +8,7 @@ import com.azure.resourcemanager.azurearcdata.models.ArcSqlServerLicenseType;
 import com.azure.resourcemanager.azurearcdata.models.ConnectionStatus;
 import com.azure.resourcemanager.azurearcdata.models.DefenderStatus;
 import com.azure.resourcemanager.azurearcdata.models.EditionType;
+import com.azure.resourcemanager.azurearcdata.models.HostType;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceProperties;
 import com.azure.resourcemanager.azurearcdata.models.SqlVersion;
 import java.time.OffsetDateTime;
@@ -17,7 +18,7 @@ import java.util.Map;
 /** Samples for SqlServerInstances Create. */
 public final class SqlServerInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/CreateOrUpdateSqlServerInstance.json
+     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/CreateOrUpdateSqlServerInstance.json
      */
     /**
      * Sample code: Updates a SQL Server Instance tags.
@@ -34,21 +35,22 @@ public final class SqlServerInstancesCreateSamples {
             .withTags(mapOf("mytag", "myval"))
             .withProperties(
                 new SqlServerInstanceProperties()
-                    .withVersion(SqlVersion.SQL_SERVER_2017)
+                    .withVersion(SqlVersion.SQL_SERVER_2012)
                     .withEdition(EditionType.DEVELOPER)
-                    .withContainerResourceId("Arc Machine Name")
+                    .withContainerResourceId("Resource id of hosting Arc Machine")
                     .withVCore("4")
-                    .withStatus(ConnectionStatus.CONNECTED)
+                    .withStatus(ConnectionStatus.REGISTERED)
                     .withPatchLevel("patchlevel")
                     .withCollation("collation")
-                    .withCurrentVersion("2008 R2")
+                    .withCurrentVersion("2012")
                     .withInstanceName("name of instance")
                     .withTcpDynamicPorts("1433")
                     .withTcpStaticPorts("1433")
                     .withProductId("sql id")
                     .withLicenseType(ArcSqlServerLicenseType.FREE)
                     .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2020-01-02T17:18:19.1234567Z"))
-                    .withAzureDefenderStatus(DefenderStatus.PROTECTED))
+                    .withAzureDefenderStatus(DefenderStatus.PROTECTED)
+                    .withHostType(HostType.PHYSICAL_SERVER))
             .create();
     }
 

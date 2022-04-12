@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
+import com.azure.resourcemanager.azurearcdata.models.ActiveDirectoryInformation;
 import com.azure.resourcemanager.azurearcdata.models.ArcSqlManagedInstanceLicenseType;
 import com.azure.resourcemanager.azurearcdata.models.BasicLoginInformation;
 import com.azure.resourcemanager.azurearcdata.models.ExtendedLocation;
@@ -11,6 +12,7 @@ import com.azure.resourcemanager.azurearcdata.models.ExtendedLocationTypes;
 import com.azure.resourcemanager.azurearcdata.models.K8SResourceRequirements;
 import com.azure.resourcemanager.azurearcdata.models.K8SScheduling;
 import com.azure.resourcemanager.azurearcdata.models.K8SSchedulingOptions;
+import com.azure.resourcemanager.azurearcdata.models.KeytabInformation;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceK8SRaw;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceK8SSpec;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceProperties;
@@ -22,7 +24,7 @@ import java.util.Map;
 /** Samples for SqlManagedInstances Create. */
 public final class SqlManagedInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/CreateOrUpdateSqlManagedInstance.json
+     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/CreateOrUpdateSqlManagedInstance.json
      */
     /**
      * Sample code: Create or update a SQL Managed Instance.
@@ -75,6 +77,9 @@ public final class SqlManagedInstancesCreateSamples {
                             .withAdditionalProperties(mapOf("additionalProperty", 1234)))
                     .withBasicLoginInformation(
                         new BasicLoginInformation().withUsername("username").withPassword("********"))
+                    .withActiveDirectoryInformation(
+                        new ActiveDirectoryInformation()
+                            .withKeytabInformation(new KeytabInformation().withKeytab("********")))
                     .withLicenseType(ArcSqlManagedInstanceLicenseType.LICENSE_INCLUDED)
                     .withClusterId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s")

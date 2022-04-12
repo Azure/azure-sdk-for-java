@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,8 +18,6 @@ import java.util.Map;
  */
 @Fluent
 public final class K8SSchedulingOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(K8SSchedulingOptions.class);
-
     /*
      * The kubernetes resource limits and requests used to restrict or reserve
      * resource usage.

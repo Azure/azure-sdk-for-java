@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlManagedInstances Delete. */
 public final class SqlManagedInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/DeleteSqlManagedInstance.json
+     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/DeleteSqlManagedInstance.json
      */
     /**
      * Sample code: Delete a SQL Instance.

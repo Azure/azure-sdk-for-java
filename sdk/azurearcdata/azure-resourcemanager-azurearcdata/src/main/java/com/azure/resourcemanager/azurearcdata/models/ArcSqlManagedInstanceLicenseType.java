@@ -4,44 +4,34 @@
 
 package com.azure.resourcemanager.azurearcdata.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ArcSqlManagedInstanceLicenseType. */
-public enum ArcSqlManagedInstanceLicenseType {
-    /** Enum value BasePrice. */
-    BASE_PRICE("BasePrice"),
+public final class ArcSqlManagedInstanceLicenseType extends ExpandableStringEnum<ArcSqlManagedInstanceLicenseType> {
+    /** Static value BasePrice for ArcSqlManagedInstanceLicenseType. */
+    public static final ArcSqlManagedInstanceLicenseType BASE_PRICE = fromString("BasePrice");
 
-    /** Enum value LicenseIncluded. */
-    LICENSE_INCLUDED("LicenseIncluded");
+    /** Static value LicenseIncluded for ArcSqlManagedInstanceLicenseType. */
+    public static final ArcSqlManagedInstanceLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
-    /** The actual serialized value for a ArcSqlManagedInstanceLicenseType instance. */
-    private final String value;
-
-    ArcSqlManagedInstanceLicenseType(String value) {
-        this.value = value;
-    }
+    /** Static value DisasterRecovery for ArcSqlManagedInstanceLicenseType. */
+    public static final ArcSqlManagedInstanceLicenseType DISASTER_RECOVERY = fromString("DisasterRecovery");
 
     /**
-     * Parses a serialized value to a ArcSqlManagedInstanceLicenseType instance.
+     * Creates or finds a ArcSqlManagedInstanceLicenseType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ArcSqlManagedInstanceLicenseType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ArcSqlManagedInstanceLicenseType.
      */
     @JsonCreator
-    public static ArcSqlManagedInstanceLicenseType fromString(String value) {
-        ArcSqlManagedInstanceLicenseType[] items = ArcSqlManagedInstanceLicenseType.values();
-        for (ArcSqlManagedInstanceLicenseType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ArcSqlManagedInstanceLicenseType fromString(String name) {
+        return fromString(name, ArcSqlManagedInstanceLicenseType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ArcSqlManagedInstanceLicenseType values. */
+    public static Collection<ArcSqlManagedInstanceLicenseType> values() {
+        return values(ArcSqlManagedInstanceLicenseType.class);
     }
 }

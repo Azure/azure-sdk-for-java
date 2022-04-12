@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DataControllers Delete. */
 public final class DataControllersDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/DeleteDataController.json
+     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/DeleteDataController.json
      */
     /**
      * Sample code: Delete a dataController.

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Properties from the Kubernetes data controller. */
 @Fluent
 public final class OnPremiseProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OnPremiseProperty.class);
-
     /*
      * A globally unique ID identifying the associated Kubernetes cluster
      */
@@ -106,15 +103,17 @@ public final class OnPremiseProperty {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model OnPremiseProperty"));
         }
         if (publicSigningKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property publicSigningKey in model OnPremiseProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OnPremiseProperty.class);
 }

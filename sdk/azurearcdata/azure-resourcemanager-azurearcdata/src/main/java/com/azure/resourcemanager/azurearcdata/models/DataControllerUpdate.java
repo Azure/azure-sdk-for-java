@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,14 +12,18 @@ import java.util.Map;
 /** Used for updating a data controller resource. */
 @Fluent
 public final class DataControllerUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataControllerUpdate.class);
-
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * The data controller's properties
+     */
+    @JsonProperty(value = "properties")
+    private DataControllerProperties properties;
 
     /**
      * Get the tags property: Resource tags.
@@ -44,10 +46,33 @@ public final class DataControllerUpdate {
     }
 
     /**
+     * Get the properties property: The data controller's properties.
+     *
+     * @return the properties value.
+     */
+    public DataControllerProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The data controller's properties.
+     *
+     * @param properties the properties value to set.
+     * @return the DataControllerUpdate object itself.
+     */
+    public DataControllerUpdate withProperties(DataControllerProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

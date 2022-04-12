@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** An update to a SQL Managed Instance. */
 @Fluent
 public final class SqlManagedInstanceUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceUpdate.class);
-
     /*
      * Resource tags.
      */

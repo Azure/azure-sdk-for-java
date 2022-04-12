@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlServerInstances List. */
 public final class SqlServerInstancesListSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/ListSubscriptionSqlServerInstance.json
+     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/ListSubscriptionSqlServerInstance.json
      */
     /**
      * Sample code: Gets all SQL Server Instance in a subscription.

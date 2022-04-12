@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The kubernetes spec information. */
 @Fluent
 public final class SqlManagedInstanceK8SSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceK8SSpec.class);
-
     /*
      * The kubernetes scheduling information.
      */

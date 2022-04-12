@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlManagedInstanceInner;
 import java.util.Map;
@@ -67,13 +66,6 @@ public interface SqlManagedInstance {
      * @return the sku value.
      */
     SqlManagedInstanceSku sku();
-
-    /**
-     * Gets the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the region of the resource.

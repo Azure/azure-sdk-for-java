@@ -176,8 +176,13 @@ public final class DataControllerResourceImpl
     }
 
     public DataControllerResourceImpl withProperties(DataControllerProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withProperties(properties);
+            return this;
+        } else {
+            this.updateDataControllerResource.withProperties(properties);
+            return this;
+        }
     }
 
     public DataControllerResourceImpl withTags(Map<String, String> tags) {

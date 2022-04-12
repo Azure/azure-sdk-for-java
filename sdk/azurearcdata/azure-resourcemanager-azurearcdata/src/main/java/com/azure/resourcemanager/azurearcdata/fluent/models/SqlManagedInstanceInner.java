@@ -6,20 +6,16 @@ package com.azure.resourcemanager.azurearcdata.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.models.ExtendedLocation;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceProperties;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A SqlManagedInstance. */
 @Fluent
 public final class SqlManagedInstanceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceInner.class);
-
     /*
      * null
      */
@@ -37,12 +33,6 @@ public final class SqlManagedInstanceInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private SqlManagedInstanceSku sku;
-
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /**
      * Get the properties property: null.
@@ -104,15 +94,6 @@ public final class SqlManagedInstanceInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
     /** {@inheritDoc} */
     @Override
     public SqlManagedInstanceInner withLocation(String location) {
@@ -134,7 +115,7 @@ public final class SqlManagedInstanceInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model SqlManagedInstanceInner"));
@@ -148,4 +129,6 @@ public final class SqlManagedInstanceInner extends Resource {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlManagedInstanceInner.class);
 }

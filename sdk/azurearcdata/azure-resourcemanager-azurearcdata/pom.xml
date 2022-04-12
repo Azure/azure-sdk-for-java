@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for AzureArcData Management</name>
-  <description>This package contains Microsoft Azure SDK for AzureArcData Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The AzureArcData management API provides a RESTful set of web APIs to manage Azure Data Services on Azure Arc Resources. Package tag package-2021-08-01.</description>
+  <description>This package contains Microsoft Azure SDK for AzureArcData Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The AzureArcData management API provides a RESTful set of web APIs to manage Azure Data Services on Azure Arc Resources. Package tag package-preview-2022-03.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

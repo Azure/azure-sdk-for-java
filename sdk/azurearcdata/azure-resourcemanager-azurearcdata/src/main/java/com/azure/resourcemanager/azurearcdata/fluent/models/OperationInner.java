@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.models.OperationDisplay;
 import com.azure.resourcemanager.azurearcdata.models.OperationOrigin;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Azure Data Services on Azure Arc operation definition. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * The name of the operation being performed on this particular object.
      */
@@ -135,16 +132,18 @@ public final class OperationInner {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model OperationInner"));
         }
         if (display() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property display in model OperationInner"));
         } else {
             display().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationInner.class);
 }

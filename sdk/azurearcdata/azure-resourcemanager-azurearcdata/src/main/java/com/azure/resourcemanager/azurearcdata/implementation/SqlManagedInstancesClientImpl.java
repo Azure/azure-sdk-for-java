@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurearcdata.fluent.SqlManagedInstancesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlManagedInstancesClient. */
 public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesClient {
-    private final ClientLogger logger = new ClientLogger(SqlManagedInstancesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlManagedInstancesService service;
 
@@ -182,7 +179,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listSinglePageAsync() {
@@ -228,7 +225,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listSinglePageAsync(Context context) {
@@ -269,7 +266,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listAsync() {
@@ -283,7 +280,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listAsync(Context context) {
@@ -296,7 +293,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> list() {
@@ -310,7 +307,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> list(Context context) {
@@ -324,7 +321,8 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -376,7 +374,8 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupSinglePageAsync(
@@ -425,7 +424,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -442,7 +441,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -458,7 +457,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> listByResourceGroup(String resourceGroupName) {
@@ -473,7 +472,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -488,7 +487,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlManagedInstanceInner>> getByResourceGroupWithResponseAsync(
@@ -539,7 +538,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlManagedInstanceInner>> getByResourceGroupWithResponseAsync(
@@ -586,7 +585,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlManagedInstanceInner> getByResourceGroupAsync(
@@ -626,7 +625,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlManagedInstanceInner> getByResourceGroupWithResponse(
@@ -638,12 +637,12 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -696,13 +695,13 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -755,14 +754,14 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link PollerFlux} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreateAsync(
         String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -774,22 +773,22 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
                 this.client.getHttpPipeline(),
                 SqlManagedInstanceInner.class,
                 SqlManagedInstanceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link PollerFlux} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreateAsync(
         String resourceGroupName,
         String sqlManagedInstanceName,
@@ -812,14 +811,14 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link SyncPoller} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(
         String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
         return beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance).getSyncPoller();
@@ -829,15 +828,15 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link SyncPoller} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(
         String resourceGroupName,
         String sqlManagedInstanceName,
@@ -850,12 +849,12 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlManagedInstanceInner> createAsync(
@@ -869,13 +868,13 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlManagedInstanceInner> createAsync(
@@ -892,7 +891,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -909,7 +908,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Creates or replaces a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of SQL Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -930,11 +929,11 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -980,12 +979,12 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1028,33 +1027,34 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String sqlManagedInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, sqlManagedInstanceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String sqlManagedInstanceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1069,13 +1069,13 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlManagedInstanceName) {
         return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName).getSyncPoller();
     }
@@ -1084,14 +1084,14 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String sqlManagedInstanceName, Context context) {
         return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName, context).getSyncPoller();
@@ -1101,11 +1101,11 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String sqlManagedInstanceName) {
@@ -1118,12 +1118,12 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String sqlManagedInstanceName, Context context) {
@@ -1136,7 +1136,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1150,7 +1150,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Deletes a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1165,12 +1165,12 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Updates a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of sqlManagedInstance.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param parameters The SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlManagedInstanceInner>> updateWithResponseAsync(
@@ -1222,13 +1222,13 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Updates a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of sqlManagedInstance.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param parameters The SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlManagedInstanceInner>> updateWithResponseAsync(
@@ -1277,12 +1277,12 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Updates a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of sqlManagedInstance.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param parameters The SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlManagedInstanceInner> updateAsync(
@@ -1302,7 +1302,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Updates a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of sqlManagedInstance.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param parameters The SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1319,13 +1319,13 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * Updates a SQL Managed Instance resource.
      *
      * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of sqlManagedInstance.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param parameters The SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlManagedInstanceInner> updateWithResponse(
@@ -1340,7 +1340,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1376,7 +1376,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1411,7 +1411,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1448,7 +1448,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupNextSinglePageAsync(

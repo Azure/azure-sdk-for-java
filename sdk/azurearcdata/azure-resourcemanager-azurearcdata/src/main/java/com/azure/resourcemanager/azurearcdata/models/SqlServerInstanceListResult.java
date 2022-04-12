@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of SqlServerInstance. */
 @Immutable
 public final class SqlServerInstanceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerInstanceListResult.class);
-
     /*
      * Array of results.
      */

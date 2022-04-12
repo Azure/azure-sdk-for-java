@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The kubernetes scheduling information. */
 @Fluent
 public final class K8SScheduling {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(K8SScheduling.class);
-
     /*
      * The kubernetes scheduling options. It describes restrictions used to
      * help Kubernetes select appropriate nodes to host the database service
