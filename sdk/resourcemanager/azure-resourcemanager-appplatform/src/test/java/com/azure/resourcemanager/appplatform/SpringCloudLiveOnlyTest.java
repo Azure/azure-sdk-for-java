@@ -51,16 +51,14 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private static final String PIGGYMETRICS_CONFIG_URL = "https://github.com/Azure-Samples/piggymetrics-config";
     private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
     private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
+    private static final String PETCLINIC_CONFIG_URL = "https://github.com/Azure-Samples/spring-petclinic-microservices-config";
+    private static final String PETCLINIC_JAR = "spring-petclinic-api-gateway-2.3.6.jar";
 
     private static final String SPRING_CLOUD_SERVICE_OBJECT_ID = "938df8e2-2b9d-40b1-940c-c75c33494239";
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDDeployment() throws Exception {
-        if (skipInPlayback()) {
-            return;
-        }
-
         allowAllSSL();
 
         String serviceName = generateRandomResourceName("springsvc", 15);
@@ -111,7 +109,6 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         File gzFile = new File("piggymetrics.tar.gz");
         if (!gzFile.exists()) {
-            allowAllSSL();
             HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
             connection.connect();
             try (InputStream inputStream = connection.getInputStream();
@@ -144,12 +141,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCreateCustomDomainWithSsl() throws Exception {
-        if (skipInPlayback()) {
-            return;
-        }
-
         String domainName = generateRandomResourceName("jsdkdemo-", 20) + ".com";
         String certOrderName = generateRandomResourceName("cert", 15);
         String vaultName = generateRandomResourceName("vault", 15);
@@ -227,7 +220,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
         String alias = Collections.list(store.aliases()).get(0);
         String thumbprint = printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
-
+//
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -254,8 +247,47 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         app.update()
             .withHttpsOnly()
+            .withoutCustomDomain(String.format("www.%s", domainName))
             .apply();
         Assertions.assertTrue(checkRedirect(String.format("http://ssl.%s", domainName)));
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void canCRUDEnterpriseTierDeployment() throws Exception {
+        allowAllSSL();
+
+        String serviceName = generateRandomResourceName("springsvc", 15);
+        String appName = "api-gateway";
+        String deploymentName = generateRandomResourceName("deploy", 15);
+        Region region = Region.US_EAST;
+
+        List<String> filePatterns = new ArrayList<>();
+        filePatterns.add("api-gateway");
+
+        SpringService service = appPlatformManager.springServices().define(serviceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withEnterpriseTierSku()
+            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", filePatterns)
+            .create();
+
+        File jarFile = new File(PETCLINIC_JAR);
+
+        SpringApp app = service.apps().define(appName)
+            .defineActiveDeployment(deploymentName)
+            .withJarFile(jarFile)
+            .withInstance(2)
+            .withCpu(2)
+            .withMemory(4)
+            .withRuntime(RuntimeVersion.JAVA_11)
+            .attach()
+            .withDefaultPublicEndpoint()
+            .create();
+
+        Assertions.assertNotNull(app.url());
+        Assertions.assertNotNull(app.activeDeploymentName());
+        Assertions.assertEquals(1, app.deployments().list().stream().count());
     }
 
     private void extraTarGzSource(File folder, URL url) throws IOException {

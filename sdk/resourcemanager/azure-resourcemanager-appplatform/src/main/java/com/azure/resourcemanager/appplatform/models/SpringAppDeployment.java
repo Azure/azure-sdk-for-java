@@ -119,6 +119,8 @@ public interface SpringAppDeployment
              * @return the next stage of deployment definition
              */
             T withExistingSource(UserSourceType type, String relativePath);
+
+            T withArtifact(File artifact, List<String> configFilePatterns);
         }
 
         /** The stage of a deployment definition allowing to specify the module of the source code. */
@@ -317,6 +319,8 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             Update withExistingSource(UserSourceType type, String relativePath);
+
+            Update withArtifact(File artifact, List<String> configFilePatterns);
         }
 
         /** The stage of a deployment update allowing to specify the module of the source code. */
