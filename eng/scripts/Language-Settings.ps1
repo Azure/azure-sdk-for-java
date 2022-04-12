@@ -574,6 +574,10 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 # function is used to filter packages to submit to API view tool
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 {
+  # skip spark packages
+  if ($pkgName.Contains("-spark"))
+    return $null
+
   # Find all source jar files in given artifact directory
   # Filter for package in "com.azure*" groupid.
   $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
