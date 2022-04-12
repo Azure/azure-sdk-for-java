@@ -4,7 +4,6 @@
 
 ### Features Added
 - Replaced creating single thread executor with `Schedulers.boundedElastic()`
-
 ### Breaking Changes
 
 ### Bugs Fixed
