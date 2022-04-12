@@ -4,7 +4,7 @@
 
 ### Other Changes
 
-### Dependency Changes
+### Dependency updates
 - Upgraded `azure-communication-common` to 1.1.2
 - Upgraded `azure-core` to 1.27.0
 - Upgraded `azure-identity` to 1.5.0
