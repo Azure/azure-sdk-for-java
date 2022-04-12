@@ -47,7 +47,6 @@
     </license>
   </licenses>
 
-  <!-- Repositories definitions -->
   <repositories>
     <repository>
       <id>ossrh</id>
@@ -59,8 +58,12 @@
         <updatePolicy>daily</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>repository.spring.milestone</id>
+      <name>Spring Milestone Repository</name>
+      <url>http://repo.spring.io/milestone</url>
+    </repository>
   </repositories>
-
   <pluginRepositories>
     <pluginRepository>
       <id>ossrh</id>
