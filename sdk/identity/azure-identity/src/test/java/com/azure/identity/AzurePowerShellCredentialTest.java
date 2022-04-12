@@ -56,7 +56,7 @@ public class AzurePowerShellCredentialTest {
             when(identityClient.authenticateWithAzurePowerShell(request))
                 .thenReturn(Mono.error(new Exception("Azure PowerShell not installed")));
             when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        } )) {
+        })) {
             // test
             AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))

@@ -9,7 +9,6 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
