@@ -30,6 +30,10 @@ public class SerializerUtils {
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
     }
 
+    private SerializerUtils(){
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String serializeOAuth2AuthorizedClientMap(Map<String, OAuth2AuthorizedClient> authorizedClients) {
         String result;
         try {

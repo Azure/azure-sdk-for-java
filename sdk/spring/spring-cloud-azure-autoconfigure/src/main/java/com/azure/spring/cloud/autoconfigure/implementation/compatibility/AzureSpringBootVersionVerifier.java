@@ -16,16 +16,13 @@ import java.util.Map;
 
 public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
-    final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<String, CompatibilityPredicate>() {
-        {
-            this.put("2.5", AzureSpringBootVersionVerifier.this.is2_5());
-            this.put("2.6", AzureSpringBootVersionVerifier.this.is2_6());
-        }
-    };
+    final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<>();
     private final List<String> acceptedVersions;
 
     public AzureSpringBootVersionVerifier(List<String> acceptedVersions) {
         this.acceptedVersions = acceptedVersions;
+        supportedVersions.put("2.5", AzureSpringBootVersionVerifier.this.is2_5());
+        supportedVersions.put("2.6", AzureSpringBootVersionVerifier.this.is2_6());
     }
 
     /**

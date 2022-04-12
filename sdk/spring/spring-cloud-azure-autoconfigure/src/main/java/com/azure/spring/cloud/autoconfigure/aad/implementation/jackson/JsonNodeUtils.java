@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 abstract class JsonNodeUtils {
+    private JsonNodeUtils(){
+        throw new IllegalStateException("Utility class");
+    }
 
     static final TypeReference<Set<String>> STRING_SET = new TypeReference<Set<String>>() {
     };
