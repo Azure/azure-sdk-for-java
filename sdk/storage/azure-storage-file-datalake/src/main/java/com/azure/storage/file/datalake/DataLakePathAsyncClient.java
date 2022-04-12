@@ -408,7 +408,9 @@ public class DataLakePathAsyncClient {
 
     Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options, Context context) {
         options = options == null ? new DataLakePathCreateOptions() : options;
-
+        if (options.getRequestConditions() == null) {
+            options.setRequestConditions(new DataLakeRequestConditions());
+        }
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(options.getRequestConditions().getLeaseId());
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
             .setIfMatch(options.getRequestConditions().getIfMatch())
@@ -419,7 +421,6 @@ public class DataLakePathAsyncClient {
         String acl = options.getAccessControlList() != null ? PathAccessControlEntry.serializeList(options.getAccessControlList()) : null;
 
         context = context == null ? Context.NONE : context;
-        //PathExpiryOptions expiryOptions = options.getExpiryOptions() == null ? new PathExpiryOptions() : options.getExpiryOptions();
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType,
                 options.getContinuation(), null, null, options.getSourceLeaseId(),
                 buildMetadataString(options.getMetadata()), options.getPermissions(), options.getUmask(),

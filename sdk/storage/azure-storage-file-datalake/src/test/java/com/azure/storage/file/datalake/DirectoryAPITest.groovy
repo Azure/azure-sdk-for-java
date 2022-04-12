@@ -246,6 +246,26 @@ class DirectoryAPITest extends APISpec {
         dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create options with ACL"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setAccessControlList(pathAccessControlEntries).setOwner(owner).setGroup(group)
+        def result = dc.createWithResponse(options, null, null)
+        //dc.setAccessControlList(pathAccessControlEntries, group, owner)
+
+        then:
+        notThrown(DataLakeStorageException)
+        //dc.getAccessControl().getAccessControlList() ==
+        for (PathAccessControlEntry entry : dc.getAccessControl().getAccessControlList()) {
+            System.out.println(entry.toString())
+        }
+        System.out.println(" ")
+        for (PathAccessControlEntry entry : pathAccessControlEntries) {
+            System.out.println(entry.toString())
+        }
+    }
+
     def "Delete min"() {
         expect:
         dc.deleteWithResponse(false, null, null, null).getStatusCode() == 200
