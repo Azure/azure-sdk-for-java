@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.9.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.8.0 (2022-04-08)
 #### Features Added
 * Added an API to determine installed version of the Cosmos Spark connector (`CosmosItemsDataSource.version`/`CosmosChangeFeedDataSource.version`).See [PR 27709](https://github.com/Azure/azure-sdk-for-java/pull/27709)
