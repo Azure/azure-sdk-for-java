@@ -84,7 +84,7 @@ public final class ConfigurationBuilder {
     }
 
     /**
-     * Add property to the configuration source.
+     * Adds property to the configuration source.
      * In case the source already contains property with the same name, the value will be overwritten with the new value passed.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationBuilder#putProperty -->
