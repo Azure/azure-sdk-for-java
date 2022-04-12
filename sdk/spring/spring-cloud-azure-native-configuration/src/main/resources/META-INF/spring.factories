@@ -1,5 +1,6 @@
 org.springframework.nativex.type.NativeConfiguration=\
   com.azure.core.AzureCoreHints,\
+  com.azure.keyvault.certificates.CertificateHints, \
   com.azure.spring.cloud.autoconfigure.AutoconfigureHints,\
   com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsHints,\
   com.azure.spring.cloud.autoconfigure.keyvault.KeyVaultCommonHints,\

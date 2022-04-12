@@ -116,6 +116,13 @@
 
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-certificates</artifactId>
+      <version>4.3.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
       <version>12.15.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>provided</scope>
