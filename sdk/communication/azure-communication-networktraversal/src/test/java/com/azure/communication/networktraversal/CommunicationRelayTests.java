@@ -264,10 +264,11 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             Response<CommunicationRelayConfiguration> response;
 
             GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
-            options.setTtl(5000);
+            int ttl = 5000;
+            options.setTtl(ttl);
 
             Instant now = Instant.now();
-            OffsetDateTime requestedTime = now.atOffset(ZoneOffset.UTC).plusSeconds(5000);
+            OffsetDateTime requestedTime = now.atOffset(ZoneOffset.UTC).plusSeconds(ttl);
 
             // Action & Assert
             response = client.getRelayConfigurationWithResponse(options, Context.NONE);
