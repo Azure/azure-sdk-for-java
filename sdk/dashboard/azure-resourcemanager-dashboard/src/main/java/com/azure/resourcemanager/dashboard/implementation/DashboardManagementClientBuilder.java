@@ -126,7 +126,7 @@ public final class DashboardManagementClientBuilder {
             this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
         }
         if (endpoint == null) {
-            this.endpoint = "";
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
