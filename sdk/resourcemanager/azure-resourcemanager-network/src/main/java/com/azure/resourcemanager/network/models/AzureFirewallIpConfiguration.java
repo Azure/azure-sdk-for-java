@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallIpConfigurationPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration of an Azure Firewall. */
 @Fluent
 public final class AzureFirewallIpConfiguration extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallIpConfiguration.class);
-
     /*
      * Properties of the azure firewall IP configuration.
      */

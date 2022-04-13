@@ -234,8 +234,7 @@ public class IdentityClient {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, credential);
             try {
-                applicationBuilder = applicationBuilder.authority(authorityUrl)
-                    .validateAuthority(options.getAuthorityValidation());
+                applicationBuilder = applicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
                 return Mono.error(LOGGER.logExceptionAsWarning(new IllegalStateException(e)));
             }
@@ -303,8 +302,7 @@ public class IdentityClient {
                 + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
-                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl)
-                    .validateAuthority(options.getAuthorityValidation());
+                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
                 throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
             }
@@ -370,7 +368,7 @@ public class IdentityClient {
                     ConfidentialClientApplication.Builder applicationBuilder =
                         ConfidentialClientApplication.builder(spDetails.get("client"),
                             ClientCredentialFactory.createFromSecret(spDetails.get("key")))
-                            .authority(authorityUrl).validateAuthority(options.getAuthorityValidation());
+                            .authority(authorityUrl);
 
                     // If http pipeline is available, then it should override the proxy options if any configured.
                     if (httpPipelineAdapter != null) {
@@ -682,6 +680,10 @@ public class IdentityClient {
                     ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                         .tenant(IdentityUtil
                             .resolveTenantId(tenantId, request, options));
+                if (clientAssertionSupplier != null) {
+                    builder.clientCredential(ClientCredentialFactory
+                        .createFromClientAssertion(clientAssertionSupplier.get()));
+                }
                 return confidentialClient.acquireToken(builder.build());
             }
         )).map(MsalToken::new);
@@ -725,7 +727,7 @@ public class IdentityClient {
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
                 + "password. To mitigate this issue, please refer to the troubleshooting guidelines "
-                + "here at https://aka.ms/azsdk/net/identity/usernamepasswordcredential/troubleshoot",
+                + "here at https://aka.ms/azsdk/java/identity/usernamepasswordcredential/troubleshoot",
                 null, t)).map(MsalToken::new);
     }
 
@@ -850,7 +852,7 @@ public class IdentityClient {
                 new CredentialUnavailableException("VsCodeCredential  "
                 + "authentication unavailable. ADFS tenant/authorities are not supported. "
                 + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot")));
+                + "https://aka.ms/azsdk/java/identity/vscodecredential/troubleshoot")));
         }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
@@ -877,7 +879,7 @@ public class IdentityClient {
                             new CredentialUnavailableException("Failed to acquire token with"
                             + " VS code credential."
                             + " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                            + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot", t)));
+                            + "https://aka.ms/azsdk/java/identity/vscodecredential/troubleshoot", t)));
                     }
                     return Mono.error(new ClientAuthenticationException("Failed to acquire token with"
                         + " VS code credential", null, t));
@@ -1201,11 +1203,13 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
             if (clientId != null) {
+                LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
             }
 
             if (resourceId != null) {
+                LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&mi_res_id=");
                 payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
             }
@@ -1241,12 +1245,18 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
+     * Specifying identity parameters will use the 2019-08-01 endpoint version.
+     * Specifying MSI parameters will use the 2017-09-01 endpoint version.
+     *
      * @param identityEndpoint the Identity endpoint to acquire token from
      * @param identityHeader the identity header to acquire token with
+     * @param msiEndpoint the MSI endpoint to acquire token from
+     * @param msiSecret the MSI secret to acquire token with
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+                                                                   String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             String endpoint;
@@ -1254,9 +1264,15 @@ public class IdentityClient {
             String endpointVersion;
 
 
-            endpoint = identityEndpoint;
-            headerValue = identityHeader;
-            endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            if (identityEndpoint != null) {
+                endpoint = identityEndpoint;
+                headerValue = identityHeader;
+                endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            } else {
+                endpoint = msiEndpoint;
+                headerValue = msiSecret;
+                endpointVersion = MSI_ENDPOINT_VERSION;
+            }
 
 
             String resource = ScopeUtil.scopesToResource(request.getScopes());
@@ -1268,10 +1284,22 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
             if (clientId != null) {
-                payload.append("&client_id=");
+                if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                    payload.append("&client_id=");
+                } else {
+                    if (headerValue == null) {
+                        // This is the Cloud Shell case. If a clientId is specified, warn the user.
+                        LOGGER.warning("User assigned managed identities are not supported in the Cloud Shell environment.");
+                    }
+                    payload.append("&clientid=");
+                }
                 payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
             }
             if (resourceId != null) {
+                if (endpointVersion.equals(MSI_ENDPOINT_VERSION) && headerValue == null) {
+                    // This is the Cloud Shell case. If a clientId is specified, warn the user.
+                    LOGGER.warning("User assigned managed identities are not supported in the Cloud Shell environment.");
+                }
                 payload.append("&mi_res_id=");
                 payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
             }
@@ -1506,15 +1534,15 @@ public class IdentityClient {
         // as they should directly be set on the pipeline.
         HttpPipeline httpPipeline = options.getHttpPipeline();
         if (httpPipeline != null) {
-            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline);
+            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline, options);
         } else {
             // If http client is set on the credential, then it should override the proxy options if any configured.
             HttpClient httpClient = options.getHttpClient();
             if (httpClient != null) {
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient), options);
             } else if (options.getProxyOptions() == null) {
                 //Http Client is null, proxy options are not set, use the default client and build the pipeline.
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()), options);
             }
         }
     }

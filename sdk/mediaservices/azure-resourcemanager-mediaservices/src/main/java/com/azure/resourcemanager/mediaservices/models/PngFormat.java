@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Describes the settings for producing PNG thumbnails. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.PngFormat")
-@JsonFlatten
 @Fluent
-public class PngFormat extends ImageFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PngFormat.class);
-
+public final class PngFormat extends ImageFormat {
     /** {@inheritDoc} */
     @Override
     public PngFormat withFilenamePattern(String filenamePattern) {

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure ML WebService Input/Output file. */
 @Fluent
 public final class AzureMLWebServiceFile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLWebServiceFile.class);
-
     /*
      * The relative file path, including container name, in the Azure Blob
      * Storage specified by the LinkedService. Type: string (or Expression with
@@ -80,12 +77,12 @@ public final class AzureMLWebServiceFile {
      */
     public void validate() {
         if (filePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filePath in model AzureMLWebServiceFile"));
         }
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model AzureMLWebServiceFile"));
@@ -93,4 +90,6 @@ public final class AzureMLWebServiceFile {
             linkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMLWebServiceFile.class);
 }

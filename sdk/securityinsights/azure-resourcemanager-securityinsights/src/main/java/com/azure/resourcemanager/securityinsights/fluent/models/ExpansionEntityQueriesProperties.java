@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes expansion entity query properties. */
 @Fluent
 public final class ExpansionEntityQueriesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpansionEntityQueriesProperties.class);
-
     /*
      * List of the data sources that are required to run the query
      */

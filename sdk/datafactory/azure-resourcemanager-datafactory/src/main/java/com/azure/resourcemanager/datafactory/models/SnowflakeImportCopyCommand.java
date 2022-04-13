@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,8 +16,6 @@ import java.util.Map;
 @JsonTypeName("SnowflakeImportCopyCommand")
 @Fluent
 public final class SnowflakeImportCopyCommand extends ImportSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnowflakeImportCopyCommand.class);
-
     /*
      * Additional copy options directly passed to snowflake Copy Command. Type:
      * key value pairs (value should be string type) (or Expression with

@@ -65,6 +65,25 @@ public class ClientSideRequestStatistics {
         this.globalEndpointManager = globalEndpointManager;
     }
 
+    public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
+        this.diagnosticsClientContext = toBeCloned.diagnosticsClientContext;
+        this.requestStartTimeUTC = toBeCloned.requestStartTimeUTC;
+        this.requestEndTimeUTC = toBeCloned.requestEndTimeUTC;
+        this.responseStatisticsList = new ArrayList<>(toBeCloned.responseStatisticsList);
+        this.supplementalResponseStatisticsList = new ArrayList<>(toBeCloned.supplementalResponseStatisticsList);
+        this.addressResolutionStatistics = new HashMap<>(toBeCloned.addressResolutionStatistics);
+        this.contactedReplicas = Collections.synchronizedList(new ArrayList<>(toBeCloned.contactedReplicas));
+        this.failedReplicas = Collections.synchronizedSet(new HashSet<>(toBeCloned.failedReplicas));
+        this.regionsContacted = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionsContacted));
+        this.locationEndpointsContacted = Collections.synchronizedSet(
+            new HashSet<>(toBeCloned.locationEndpointsContacted));
+        this.metadataDiagnosticsContext = new MetadataDiagnosticsContext(toBeCloned.metadataDiagnosticsContext);
+        this.serializationDiagnosticsContext =
+            new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
+        this.retryContext = new RetryContext(toBeCloned.retryContext);
+        this.globalEndpointManager = toBeCloned.globalEndpointManager;
+    }
+
     public Duration getDuration() {
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }

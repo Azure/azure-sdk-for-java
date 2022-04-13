@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class FilterTrackSelection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FilterTrackSelection.class);
-
     /*
      * The track selections.
      */
@@ -51,7 +48,7 @@ public final class FilterTrackSelection {
      */
     public void validate() {
         if (trackSelections() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trackSelections in model FilterTrackSelection"));
@@ -59,4 +56,6 @@ public final class FilterTrackSelection {
             trackSelections().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FilterTrackSelection.class);
 }

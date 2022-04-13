@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class PortReuseHoldTimes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortReuseHoldTimes.class);
-
     /*
      * Minimum time in seconds that will pass before a TCP port that was used
      * by a closed pinhole can be reused. Default for TCP is 2 minutes.

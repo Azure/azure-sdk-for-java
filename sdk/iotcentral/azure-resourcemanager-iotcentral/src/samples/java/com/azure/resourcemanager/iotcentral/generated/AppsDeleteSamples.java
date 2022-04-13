@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Apps Delete. */
 public final class AppsDeleteSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Delete.json
+     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Delete.json
      */
     /**
      * Sample code: Apps_Delete.

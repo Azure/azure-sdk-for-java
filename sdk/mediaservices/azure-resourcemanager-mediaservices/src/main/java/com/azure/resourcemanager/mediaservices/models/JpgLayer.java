@@ -5,21 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Describes the settings to produce a JPEG image from the input video. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
-@JsonTypeName("#Microsoft.Media.JpgLayer")
-@JsonFlatten
 @Fluent
-public class JpgLayer extends Layer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JpgLayer.class);
-
+public final class JpgLayer extends Layer {
     /*
      * The compression quality of the JPEG output. Range is from 0-100 and the
      * default is 70.

@@ -1,11 +1,20 @@
 # Release History
 
-## 5.12.0-beta.1 (Unreleased)
+## 5.11.2 (2022-04-11)
+
+### Other Changes
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.27.0`.
+- Upgraded `azure-core-amqp` to `2.4.2`.
+
+## 5.11.1 (2022-03-17)
 
 ### Features Added
 - Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
@@ -13,6 +22,11 @@
 - Fixed a bug where users get a NullPointerException when getting `LastEnqueuedEventProperties` for an empty window. ([#27121](https://github.com/Azure/azure-sdk-for-java/issues/27121))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded `azure-core-amqp` from `2.4.0` to `2.4.1`.
 
 ## 5.11.0 (2022-02-11)
 

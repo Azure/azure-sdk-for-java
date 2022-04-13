@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.LiveTokensClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.LiveTokenResponseInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LiveTokensClient. */
 public final class LiveTokensClientImpl implements LiveTokensClient {
-    private final ClientLogger logger = new ClientLogger(LiveTokensClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LiveTokensService service;
 

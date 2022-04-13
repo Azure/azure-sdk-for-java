@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.19.0</version>
+    <version>3.19.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -307,7 +307,7 @@ public interface UserRepository extends CosmosRepository<User, String> {
 - `findByFirstName` method is custom query method, it will find items per firstName.
 
 #### Query Plan Caching
-When query plan caching is enabled, custom query methods like `findByFirstName(String firstName)` where `firstName` is the partition key will result in lower query execution time. Query plan caching can be enabled by setting the `COSMOS.QUERYPLAN_CACHING_ENABLED` System property to 'true'. Currently, query plan caching is only supported for custom query methods targeting a single partition.
+Spring repository query APIs like `findByFirstName(String firstName)` where `firstName` is the partition or annotated queries containing partition key will result in lower query execution time because of query plan caching. Currently, query plan caching is only supported for query methods targeting a single partition.
 
 #### QueryAnnotation : Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.
@@ -528,7 +528,7 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
 ```
 
 ### Spring Boot Starter Data Rest
-- Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
+- Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://spring.io/projects/spring-data-rest).
 - Supports List and nested type in domain class.
 - Configurable ObjectMapper bean with unique name `cosmosObjectMapper`, only configure customized ObjectMapper if you really need to. e.g.,
 ```java readme-sample-objectMapper

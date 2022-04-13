@@ -31,6 +31,9 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
     /** Static value PUT for CorsRuleAllowedMethodsItem. */
     public static final CorsRuleAllowedMethodsItem PUT = fromString("PUT");
 
+    /** Static value PATCH for CorsRuleAllowedMethodsItem. */
+    public static final CorsRuleAllowedMethodsItem PATCH = fromString("PATCH");
+
     /**
      * Creates or finds a CorsRuleAllowedMethodsItem from its string representation.
      *

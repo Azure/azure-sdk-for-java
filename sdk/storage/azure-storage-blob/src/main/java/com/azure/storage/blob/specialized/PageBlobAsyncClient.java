@@ -618,7 +618,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
         String sourceAuth = options.getSourceAuthorization() == null
@@ -1179,7 +1179,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             try {
                 new URL(prevSnapshotUrl);
             } catch (MalformedURLException ex) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url.", ex));
             }
         }
         context = context == null ? Context.NONE : context;

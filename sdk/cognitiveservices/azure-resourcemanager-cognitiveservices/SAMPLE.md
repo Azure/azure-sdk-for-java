@@ -9,6 +9,7 @@
 - [List](#accounts_list)
 - [ListByResourceGroup](#accounts_listbyresourcegroup)
 - [ListKeys](#accounts_listkeys)
+- [ListModels](#accounts_listmodels)
 - [ListSkus](#accounts_listskus)
 - [ListUsages](#accounts_listusages)
 - [RegenerateKey](#accounts_regeneratekey)
@@ -77,7 +78,7 @@ import java.util.Arrays;
 /** Samples for Accounts Create. */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/CreateAccountMin.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -98,7 +99,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/CreateAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/CreateAccount.json
      */
     /**
      * Sample code: Create Account.
@@ -143,7 +144,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts Delete. */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/DeleteAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteAccount.json
      */
     /**
      * Sample code: Delete Account.
@@ -164,7 +165,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts GetByResourceGroup. */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetAccount.json
      */
     /**
      * Sample code: Get Account.
@@ -185,7 +186,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts List. */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListAccountsBySubscription.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListAccountsBySubscription.json
      */
     /**
      * Sample code: List Accounts by Subscription.
@@ -207,7 +208,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListAccountsByResourceGroup.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListAccountsByResourceGroup.json
      */
     /**
      * Sample code: List Accounts by Resource Group.
@@ -229,7 +230,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListKeys. */
 public final class AccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListKeys.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListKeys.json
      */
     /**
      * Sample code: List Keys.
@@ -242,6 +243,27 @@ public final class AccountsListKeysSamples {
 }
 ```
 
+### Accounts_ListModels
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for Accounts ListModels. */
+public final class AccountsListModelsSamples {
+    /*
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListAccountModels.json
+     */
+    /**
+     * Sample code: List AccountModels.
+     *
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void listAccountModels(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.accounts().listModels("resourceGroupName", "accountName", Context.NONE);
+    }
+}
+```
+
 ### Accounts_ListSkus
 
 ```java
@@ -250,7 +272,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListSkus. */
 public final class AccountsListSkusSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListSkus.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListSkus.json
      */
     /**
      * Sample code: List SKUs.
@@ -271,7 +293,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListUsages. */
 public final class AccountsListUsagesSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetUsages.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetUsages.json
      */
     /**
      * Sample code: Get Usages.
@@ -294,7 +316,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameter
 /** Samples for Accounts RegenerateKey. */
 public final class AccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/RegenerateKey.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/RegenerateKey.json
      */
     /**
      * Sample code: Regenerate Keys.
@@ -320,7 +342,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
 /** Samples for Accounts Update. */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/UpdateAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/UpdateAccount.json
      */
     /**
      * Sample code: Update Account.
@@ -345,7 +367,7 @@ import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
 /** Samples for CommitmentPlans CreateOrUpdate. */
 public final class CommitmentPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/PutCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutCommitmentPlan.json
      */
     /**
      * Sample code: PutCommitmentPlan.
@@ -376,7 +398,7 @@ import com.azure.core.util.Context;
 /** Samples for CommitmentPlans Delete. */
 public final class CommitmentPlansDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/DeleteCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteCommitmentPlan.json
      */
     /**
      * Sample code: DeleteCommitmentPlan.
@@ -398,7 +420,7 @@ import com.azure.core.util.Context;
 /** Samples for CommitmentPlans Get. */
 public final class CommitmentPlansGetSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetCommitmentPlan.json
      */
     /**
      * Sample code: GetCommitmentPlan.
@@ -421,7 +443,7 @@ import com.azure.core.util.Context;
 /** Samples for CommitmentPlans List. */
 public final class CommitmentPlansListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListCommitmentPlans.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListCommitmentPlans.json
      */
     /**
      * Sample code: ListCommitmentPlans.
@@ -443,7 +465,7 @@ import com.azure.core.util.Context;
 /** Samples for CommitmentTiers List. */
 public final class CommitmentTiersListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListCommitmentTiers.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListCommitmentTiers.json
      */
     /**
      * Sample code: ListCommitmentTiers.
@@ -465,7 +487,7 @@ import com.azure.core.util.Context;
 /** Samples for DeletedAccounts Get. */
 public final class DeletedAccountsGetSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetDeletedAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetDeletedAccount.json
      */
     /**
      * Sample code: Get Account.
@@ -486,7 +508,7 @@ import com.azure.core.util.Context;
 /** Samples for DeletedAccounts List. */
 public final class DeletedAccountsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListAccountsBySubscription.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListAccountsBySubscription.json
      */
     /**
      * Sample code: List Deleted Accounts by Subscription.
@@ -508,7 +530,7 @@ import com.azure.core.util.Context;
 /** Samples for DeletedAccounts Purge. */
 public final class DeletedAccountsPurgeSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/PurgeDeletedAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PurgeDeletedAccount.json
      */
     /**
      * Sample code: Delete Account.
@@ -532,7 +554,7 @@ import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
 /** Samples for Deployments CreateOrUpdate. */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/PutDeployment.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutDeployment.json
      */
     /**
      * Sample code: PutDeployment.
@@ -562,7 +584,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments Delete. */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/DeleteDeployment.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteDeployment.json
      */
     /**
      * Sample code: DeleteDeployment.
@@ -583,7 +605,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments Get. */
 public final class DeploymentsGetSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetDeployment.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetDeployment.json
      */
     /**
      * Sample code: GetDeployment.
@@ -604,7 +626,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments List. */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListDeployments.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListDeployments.json
      */
     /**
      * Sample code: ListDeployments.
@@ -625,7 +647,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetOperations.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetOperations.json
      */
     /**
      * Sample code: Get Operations.
@@ -648,7 +670,7 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkServiceConn
 /** Samples for PrivateEndpointConnections CreateOrUpdate. */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/PutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: PutPrivateEndpointConnection.
@@ -680,7 +702,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/DeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: DeletePrivateEndpointConnection.
@@ -704,7 +726,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.
@@ -728,7 +750,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListPrivateEndpointConnections.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.
@@ -750,7 +772,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources List. */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/ListPrivateLinkResources.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListPrivateLinkResources.json
      */
     /**
      * Sample code: ListPrivateLinkResources.
@@ -773,7 +795,7 @@ import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilit
 /** Samples for ResourceProvider CheckDomainAvailability. */
 public final class ResourceProviderCheckDomainAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/CheckDomainAvailability.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.
@@ -803,7 +825,7 @@ import java.util.Arrays;
 /** Samples for ResourceProvider CheckSkuAvailability. */
 public final class ResourceProviderCheckSkuAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/CheckSkuAvailability.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/CheckSkuAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.
@@ -833,7 +855,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceSkus List. */
 public final class ResourceSkusListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2021-10-01/examples/GetSkus.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetSkus.json
      */
     /**
      * Sample code: Regenerate Keys.

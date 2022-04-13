@@ -26,6 +26,13 @@ public final class CommunicationRelayConfigurationRequest {
     @JsonProperty(value = "routeType")
     private RouteType routeType;
 
+    /*
+     * The credential Time-To-Live (TTL), in seconds. The default value will be
+     * used if given value exceeds it.
+     */
+    @JsonProperty(value = "ttl")
+    private Integer ttl;
+
     /**
      * Get the id property: An identity to be associated with telemetry for data relayed using the returned credentials.
      * Must be an existing ACS user identity. If not provided, the telemetry will not contain an associated identity
@@ -69,6 +76,28 @@ public final class CommunicationRelayConfigurationRequest {
      */
     public CommunicationRelayConfigurationRequest setRouteType(RouteType routeType) {
         this.routeType = routeType;
+        return this;
+    }
+
+    /**
+     * Get the ttl property: The credential Time-To-Live (TTL), in seconds. The default value will be used if given
+     * value exceeds it.
+     *
+     * @return the ttl value.
+     */
+    public Integer getTtl() {
+        return this.ttl;
+    }
+
+    /**
+     * Set the ttl property: The credential Time-To-Live (TTL), in seconds. The default value will be used if given
+     * value exceeds it.
+     *
+     * @param ttl the ttl value to set.
+     * @return the CommunicationRelayConfigurationRequest object itself.
+     */
+    public CommunicationRelayConfigurationRequest setTtl(Integer ttl) {
+        this.ttl = ttl;
         return this;
     }
 }

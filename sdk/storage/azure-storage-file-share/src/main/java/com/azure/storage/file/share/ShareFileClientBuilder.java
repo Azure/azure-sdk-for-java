@@ -348,7 +348,7 @@ public class ShareFileClientBuilder implements
             }
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage File endpoint url is malformed."));
+                new IllegalArgumentException("The Azure Storage File endpoint url is malformed.", ex));
         }
 
         return this;

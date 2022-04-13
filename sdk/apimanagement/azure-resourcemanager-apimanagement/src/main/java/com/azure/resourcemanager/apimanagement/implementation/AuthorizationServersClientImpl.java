@@ -31,7 +31,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.AuthorizationServersClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerSecretsContractInner;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AuthorizationServersClient. */
 public final class AuthorizationServersClientImpl implements AuthorizationServersClient {
-    private final ClientLogger logger = new ClientLogger(AuthorizationServersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AuthorizationServersService service;
 
@@ -217,7 +214,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(
@@ -284,7 +282,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceSinglePageAsync(
@@ -347,7 +346,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(
@@ -365,7 +364,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(
@@ -393,7 +392,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AuthorizationServerContractInner> listByServiceAsync(
@@ -411,7 +410,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationServerContractInner> listByService(String resourceGroupName, String serviceName) {
@@ -436,7 +435,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationServerContractInner> listByService(
@@ -453,7 +452,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
+     * @return the entity state (Etag) version of the authorizationServer specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -507,7 +507,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
+     * @return the entity state (Etag) version of the authorizationServer specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -557,7 +558,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
+     * @return the entity state (Etag) version of the authorizationServer specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String authsid) {
@@ -607,7 +609,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization server specified by its identifier.
+     * @return the details of the authorization server specified by its identifier on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetResponse> getWithResponseAsync(
@@ -661,7 +664,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization server specified by its identifier.
+     * @return the details of the authorization server specified by its identifier on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersGetResponse> getWithResponseAsync(
@@ -711,7 +715,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization server specified by its identifier.
+     * @return the details of the authorization server specified by its identifier on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServerContractInner> getAsync(
@@ -772,7 +777,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -839,7 +844,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -903,7 +908,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServerContractInner> createOrUpdateAsync(
@@ -933,7 +938,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServerContractInner> createOrUpdateAsync(
@@ -1007,7 +1012,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersUpdateResponse> updateWithResponseAsync(
@@ -1078,7 +1083,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersUpdateResponse> updateWithResponseAsync(
@@ -1146,7 +1151,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return external OAuth authorization server settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServerContractInner> updateAsync(
@@ -1227,7 +1232,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1287,7 +1292,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1343,7 +1348,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String authsid, String ifMatch) {
@@ -1380,7 +1385,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1397,7 +1402,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the authorization server.
+     * @return the client secret details of the authorization server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersListSecretsResponse> listSecretsWithResponseAsync(
@@ -1451,7 +1456,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the authorization server.
+     * @return the client secret details of the authorization server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServersListSecretsResponse> listSecretsWithResponseAsync(
@@ -1501,7 +1506,7 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the authorization server.
+     * @return the client secret details of the authorization server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationServerSecretsContractInner> listSecretsAsync(
@@ -1559,7 +1564,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1595,7 +1601,8 @@ public final class AuthorizationServersClientImpl implements AuthorizationServer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged OAuth2 Authorization Servers list representation.
+     * @return paged OAuth2 Authorization Servers list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationServerContractInner>> listByServiceNextSinglePageAsync(
