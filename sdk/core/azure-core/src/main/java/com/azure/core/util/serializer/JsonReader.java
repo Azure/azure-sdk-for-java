@@ -3,13 +3,16 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.io.Closeable;
-import java.util.function.Predicate;
 
 /**
  * Reads a JSON encoded value as a stream of tokens.
  */
-public interface JsonReader extends Closeable {
+public abstract class JsonReader implements Closeable {
+    private static final ClientLogger LOGGER = new ClientLogger(JsonReader.class);
+
     /**
      * Gets the {@link JsonToken} that the reader currently points.
      * <p>
@@ -18,7 +21,7 @@ public interface JsonReader extends Closeable {
      *
      * @return The {@link JsonToken} that the reader currently points, or null if the reader isn't pointing to a token.
      */
-    JsonToken currentToken();
+    public abstract JsonToken currentToken();
 
     /**
      * Iterates to and returns the next {@link JsonToken} in the JSON encoded value.
@@ -27,7 +30,33 @@ public interface JsonReader extends Closeable {
      *
      * @return The next {@link JsonToken} in the JSON encoded value, or null if reading completes.
      */
-    JsonToken nextToken();
+    public abstract JsonToken nextToken();
+
+    /**
+     * Whether the {@link #currentToken()} is {@link JsonToken#START_ARRAY} or {@link JsonToken#START_OBJECT}.
+     *
+     * @return Whether the {@link #currentToken()} is {@link JsonToken#START_ARRAY} or {@link JsonToken#START_OBJECT}.
+     */
+    public final boolean isStartArrayOrObject() {
+        return isStartArrayOrObject(currentToken());
+    }
+
+    private static boolean isStartArrayOrObject(JsonToken token) {
+        return token == JsonToken.START_ARRAY || token == JsonToken.START_OBJECT;
+    }
+
+    /**
+     * Whether the {@link #currentToken()} is {@link JsonToken#END_ARRAY} or {@link JsonToken#END_OBJECT}.
+     *
+     * @return Whether the {@link #currentToken()} is {@link JsonToken#END_ARRAY} or {@link JsonToken#END_OBJECT}.
+     */
+    public final boolean isEndArrayOrObject() {
+        return isEndArrayOrObject(currentToken());
+    }
+
+    private static boolean isEndArrayOrObject(JsonToken token) {
+        return token == JsonToken.END_ARRAY || token == JsonToken.END_OBJECT;
+    }
 
     /**
      * Gets the boolean value if the reader is currently pointing to a {@link JsonToken#TRUE} or {@link JsonToken#FALSE}
@@ -39,7 +68,7 @@ public interface JsonReader extends Closeable {
      * JsonToken#FALSE}.
      * @throws IllegalStateException If the reader isn't pointing to {@link JsonToken#TRUE} or {@link JsonToken#FALSE}.
      */
-    boolean getBooleanValue();
+    public abstract boolean getBooleanValue();
 
     /**
      * Gets the double value if the reader is currently pointing to a {@link JsonToken#NUMBER} or {@link
@@ -55,7 +84,7 @@ public interface JsonReader extends Closeable {
      * double.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
-    double getDoubleValue();
+    public abstract double getDoubleValue();
 
     /**
      * Gets the int value if the reader is currently pointing to a {@link JsonToken#NUMBER} or {@link
@@ -71,7 +100,7 @@ public interface JsonReader extends Closeable {
      * int.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
-    int getIntValue();
+    public abstract int getIntValue();
 
     /**
      * Gets the long value if the reader is currently pointing to a {@link JsonToken#NUMBER} or {@link
@@ -87,7 +116,7 @@ public interface JsonReader extends Closeable {
      * long.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
-    long getLongValue();
+    public abstract long getLongValue();
 
     /**
      * Gets the String value if the reader is currently pointing to a {@link JsonToken#TRUE}, {@link JsonToken#FALSE},
@@ -103,7 +132,7 @@ public interface JsonReader extends Closeable {
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#TRUE}, {@link JsonToken#FALSE},
      * {@link JsonToken#NULL}, {@link JsonToken#NUMBER}, or {@link JsonToken#STRING}.
      */
-    String getStringValue();
+    public abstract String getStringValue();
 
     /**
      * Gets the field name if the reader is currently pointing to a {@link JsonToken#FIELD_NAME}.
@@ -113,7 +142,7 @@ public interface JsonReader extends Closeable {
      * @return The field name based on the current token.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#FIELD_NAME}.
      */
-    String getFieldName();
+    public abstract String getFieldName();
 
     /**
      * Recursively skips the JSON token sub-stream if the current token is either {@link JsonToken#START_ARRAY} or
@@ -121,7 +150,7 @@ public interface JsonReader extends Closeable {
      * <p>
      * If the current token isn't the beginning of an array or object this method is a no-op.
      */
-    void skipChildren();
+    public abstract void skipChildren();
 
     /**
      * Recursively reads the JSON token sub-stream if the current token is either {@link JsonToken#START_ARRAY} or
@@ -131,12 +160,8 @@ public interface JsonReader extends Closeable {
      *
      * @return The raw textual value of the JSON token sub-stream.
      */
-    default String readChildren() {
-        StringBuilder builder = new StringBuilder();
-
-        readChildren(builder);
-
-        return builder.toString();
+    public final String readChildren() {
+        return readChildrenInternal(new StringBuilder()).toString();
     }
 
     /**
@@ -147,12 +172,16 @@ public interface JsonReader extends Closeable {
      *
      * @param buffer The {@link StringBuilder} where the read sub-stream will be written.
      */
-    default void readChildren(StringBuilder buffer) {
+    public final void readChildren(StringBuilder buffer) {
+        readChildrenInternal(buffer);
+    }
+
+    private StringBuilder readChildrenInternal(StringBuilder buffer) {
         JsonToken token = currentToken();
 
         // Not pointing to an array or object start, no-op.
         if (token != JsonToken.START_ARRAY && token != JsonToken.START_OBJECT) {
-            return;
+            return buffer;
         }
 
         buffer.append(getTextValue());
@@ -160,29 +189,28 @@ public interface JsonReader extends Closeable {
         // Initial array or object depth is 1.
         int depth = 1;
 
-        Predicate<JsonToken> structStart = t -> t == JsonToken.START_ARRAY || t == JsonToken.START_OBJECT;
-        Predicate<JsonToken> structEnd = t -> t == JsonToken.END_ARRAY || t == JsonToken.END_OBJECT;
-
         while (depth > 0) {
             JsonToken previousToken = token;
             token = nextToken();
 
-            if (structStart.test(token)) {
+            if (isStartArrayOrObject(token)) {
                 // Entering another array or object, increase depth.
                 depth++;
-            } else if (structEnd.test(token)) {
+            } else if (isEndArrayOrObject(token)) {
                 // Existing the array or object, decrease depth.
                 depth--;
             } else if (token == null) {
                 // Should never get into this state if the JSON token stream is properly formatted JSON.
                 // But if this happens, just return until a better strategy can be determined.
-                return;
+                return buffer;
             }
 
             // 1. If the previous token was a struct start token it should never be followed by ','.
             // 2. If the current token is a struct end a ',' should never occur between it and the previous token.
             // 3. If the previous token was a field name a ',' should never occur after it.
-            if (!(structStart.test(previousToken) || structEnd.test(token) || previousToken == JsonToken.FIELD_NAME)) {
+            if (!(isStartArrayOrObject(previousToken)
+                || isEndArrayOrObject(token)
+                || previousToken == JsonToken.FIELD_NAME)) {
                 buffer.append(',');
             }
 
@@ -194,6 +222,8 @@ public interface JsonReader extends Closeable {
                 buffer.append(getTextValue());
             }
         }
+
+        return buffer;
     }
 
     /**
@@ -207,7 +237,7 @@ public interface JsonReader extends Closeable {
      *
      * @return The {@link JsonToken} where object reading will begin.
      */
-    default JsonToken beginReadingObject() {
+    public final JsonToken beginReadingObject() {
         JsonToken token = currentToken();
 
         if (token == null) {
@@ -240,11 +270,11 @@ public interface JsonReader extends Closeable {
      * @return The text value for the {@link #currentToken()}.
      * @throws IllegalStateException If the current token is null.
      */
-    default String getTextValue() {
+    public final String getTextValue() {
         JsonToken token = currentToken();
 
         if (token == null) {
-            throw new IllegalStateException("Current token cannot be null.");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Current token cannot be null."));
         }
 
         switch (token) {

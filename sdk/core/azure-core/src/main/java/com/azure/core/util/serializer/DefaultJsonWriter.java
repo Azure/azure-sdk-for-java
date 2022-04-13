@@ -14,7 +14,7 @@ import java.io.UncheckedIOException;
 /**
  * Default {@link JsonWriter} implementation.
  */
-public final class DefaultJsonWriter implements JsonWriter {
+public final class DefaultJsonWriter extends JsonWriter {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultJsonWriter.class);
 
     private static final JsonFactory FACTORY = JsonFactory.builder().build();
