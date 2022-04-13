@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 final class JsonNodeUtils {
-    private JsonNodeUtils(){
+    private JsonNodeUtils() {
         throw new IllegalStateException("Utility class");
     }
 

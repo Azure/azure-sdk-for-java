@@ -21,12 +21,11 @@ class AzureSpringBootVersionVerifierTest {
     @ParameterizedTest
     @ValueSource(strings = { "2.6", "2.6.2", "2.6.x" })
     public void shouldMatchWhenManifestNumberAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
-        //With major and minor version number
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
 
             String getVersionFromManifest() {
-                return "2.6.2";//With fix version number
+                return "2.6.2";
             }
         };
         VerificationResult verificationResult = versionVerifier.verify();
@@ -40,7 +39,7 @@ class AzureSpringBootVersionVerifierTest {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
-                return "2.5.2";//With fix version number
+                return "2.5.2";
             }
         };
 
