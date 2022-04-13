@@ -23,6 +23,7 @@ documentation.
 
 ### Include the package
 
+
 [//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support;current})
 ```xml
 <dependency>
@@ -31,10 +32,17 @@ documentation.
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
+Also, include the `azure-aot-graalvm-support-netty` package to bring in the configuration files required for Netty HTTP
+client.  For more details on this library, please refer to [this README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-support-netty/README.md).
 
-Add the above dependency to your Maven project along with any other Azure client libraries you may want to use. If 
-you are using client libraries that depend on `azure-core-http-netty`, add the `azure-aot-graalvm-support-netty` 
-dependency too. For more details on this library, please refer to [this README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/aot/azure-aot-graalvm-support-netty/README.md).
+[//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support-netty;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-aot-graalvm-support-netty</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+```
 
 ## Key concepts
 

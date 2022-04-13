@@ -22,9 +22,16 @@ environments.
 
 ### Include the package
 
-This package should be included in addition to `azure-aot-graalvm-support` library when using Azure client libraries 
-that take a dependency on `azure-core-http-netty`.
+Include both the packages below:
 
+[//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-aot-graalvm-support</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+```
 [//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support-netty;current})
 ```xml
 <dependency>
