@@ -1,14 +1,9 @@
 # Release History
 
-## 4.12.0-beta.1 (Unreleased)
+## 4.12.0-beta.1 (2022-04-13)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support to publish CloudEvents to partner topics by setting the channel name in `SendEventsOptions`.
 
 ## 4.11.0 (2022-04-12)
 
