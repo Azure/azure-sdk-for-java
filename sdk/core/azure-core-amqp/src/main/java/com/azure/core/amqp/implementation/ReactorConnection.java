@@ -411,7 +411,9 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .log("Emitting new response channel.");
             })
-            .repeat();
+            .repeat()
+            .takeUntilOther(shutdownSignalSink.asMono());
+
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
@@ -445,7 +447,7 @@ public class ReactorConnection implements AmqpConnection {
 
         final Mono<Void> cbsCloseOperation;
         if (cbsChannelProcessor != null) {
-            cbsCloseOperation = Mono.fromRunnable(() -> cbsChannelProcessor.dispose());
+            cbsCloseOperation = cbsChannelProcessor.flatMap(channel -> channel.closeAsync());
         } else {
             cbsCloseOperation = Mono.empty();
         }
