@@ -22,7 +22,7 @@ Requires manual clean-up of multiple `CloudError`.
 
 ### Code generation settings
 ```yaml
-branch: 2c888f4fcc12ed71287c76a6e599cc66f34c1088
+branch: main
 repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```
 

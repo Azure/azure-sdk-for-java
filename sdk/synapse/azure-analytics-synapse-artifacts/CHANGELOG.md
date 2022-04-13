@@ -7,6 +7,7 @@
 - Added interfaces from com.azure.core.client.traits to `ArtifactsClientBuilder`.
 - Added `retryOptions` method to `ArtifactsClientBuilder`.
 - Added `LinkConnectionClient` and `LinkConnectionAsyncClient`.
+- Added class `DataworldLinkedService`, `AppFiguresLinkedService`, `AsanaLinkedService`, `TwilioLinkedService` as subclass of `LinkedService`.
 
 ### Breaking Changes
 
