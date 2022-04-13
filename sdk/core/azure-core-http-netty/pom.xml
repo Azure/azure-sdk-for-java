@@ -225,42 +225,44 @@
     </plugins>
   </build>
 
-  <profile>
-    <id>native-linux</id>
-    <activation>
-      <property>
-        <name>native-linux</name>
-      </property>
-    </activation>
+  <profiles>
+    <profile>
+      <id>native-linux</id>
+      <activation>
+        <property>
+          <name>native-linux</name>
+        </property>
+      </activation>
 
-    <properties>
-      <boring-ssl-classifier>linux-x86_64</boring-ssl-classifier>
-    </properties>
-  </profile>
+      <properties>
+        <boring-ssl-classifier>linux-x86_64</boring-ssl-classifier>
+      </properties>
+    </profile>
 
-  <profile>
-    <id>native-macos</id>
-    <activation>
-      <property>
-        <name>native-macos</name>
-      </property>
-    </activation>
+    <profile>
+      <id>native-macos</id>
+      <activation>
+        <property>
+          <name>native-macos</name>
+        </property>
+      </activation>
 
-    <properties>
-      <boring-ssl-classifier>osx-x86_64</boring-ssl-classifier>
-    </properties>
-  </profile>
+      <properties>
+        <boring-ssl-classifier>osx-x86_64</boring-ssl-classifier>
+      </properties>
+    </profile>
 
-  <profile>
-    <id>native-windows</id>
-    <activation>
-      <property>
-        <name>native-windows</name>
-      </property>
-    </activation>
+    <profile>
+      <id>native-windows</id>
+      <activation>
+        <property>
+          <name>native-windows</name>
+        </property>
+      </activation>
 
-    <properties>
-      <boring-ssl-classifier>windows-x86_64</boring-ssl-classifier>
-    </properties>
-  </profile>
+      <properties>
+        <boring-ssl-classifier>windows-x86_64</boring-ssl-classifier>
+      </properties>
+    </profile>
+  </profiles>
 </project>
