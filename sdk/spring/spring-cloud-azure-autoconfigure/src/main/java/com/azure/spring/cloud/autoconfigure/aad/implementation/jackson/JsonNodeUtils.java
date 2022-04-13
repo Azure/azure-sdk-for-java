@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import java.util.Set;
 
-abstract class JsonNodeUtils {
+final class JsonNodeUtils {
     private JsonNodeUtils(){
         throw new IllegalStateException("Utility class");
     }
