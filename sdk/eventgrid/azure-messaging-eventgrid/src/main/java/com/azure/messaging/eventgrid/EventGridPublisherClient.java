@@ -11,6 +11,7 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.Context;
+import com.azure.messaging.eventgrid.models.SendEventsOptions;
 
 import java.time.OffsetDateTime;
 
@@ -191,6 +192,21 @@ public final class EventGridPublisherClient<T> {
     }
 
     /**
+     * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
+     * @param events the events to publish.
+     * @param sendEventsOptions the options to configure the request to send events.
+     * @param context the context to use along the pipeline.
+     *
+     * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendEventsWithResponse(Iterable<T> events, SendEventsOptions sendEventsOptions,
+                                                 Context context) {
+        return asyncClient.sendEventsWithResponse(events, sendEventsOptions, context).block();
+    }
+
+    /**
      * Publishes the given event to the set topic or domain and gives the response issued by EventGrid.
      * @param event the event to publish.
      *
@@ -198,6 +214,7 @@ public final class EventGridPublisherClient<T> {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEvent(T event) {
+        
         asyncClient.sendEvent(event).block();
     }
 }
