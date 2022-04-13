@@ -14,6 +14,8 @@ import java.util.Arrays;
  * consumes ByteBuffers. This class is optimized to reduce the number of memory copies by directly writing a passed
  * ByteBuffers data directly into its backing byte array, this differs from handling for {@link ByteArrayOutputStream}
  * where ByteBuffer data may need to be first copied into a temporary buffer resulting in an extra memory copy.
+ * <p>
+ * This class isn't thread-safe and should only be used when concurrency is controlled.
  */
 public final class ByteBufferCollector {
     /*
@@ -60,7 +62,7 @@ public final class ByteBufferCollector {
      * @throws IllegalStateException If the size of the backing array would be larger than {@link Integer#MAX_VALUE}
      * when the passed buffer is written.
      */
-    public synchronized void write(ByteBuffer byteBuffer) {
+    public void write(ByteBuffer byteBuffer) {
         // Null buffer.
         if (byteBuffer == null) {
             return;
@@ -83,7 +85,7 @@ public final class ByteBufferCollector {
      *
      * @return A copy of the backing array.
      */
-    public synchronized byte[] toByteArray() {
+    public byte[] toByteArray() {
         return Arrays.copyOf(buffer, position);
     }
 
