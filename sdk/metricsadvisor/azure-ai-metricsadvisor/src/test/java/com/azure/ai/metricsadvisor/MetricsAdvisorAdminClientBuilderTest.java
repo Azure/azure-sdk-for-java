@@ -16,6 +16,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -101,6 +102,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     public void clientBuilderWithTokenCredential(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         clientBuilderWithTokenCredentialRunner(httpClient, serviceVersion, (clientBuilder) ->
             clientBuilder

@@ -15,11 +15,6 @@
   <name>Spring Cloud Feature Management</name>
   <description>Adds Feature Management into Spring</description>
 
-  <properties>
-    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
-    <doclint>all,-missing</doclint>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
