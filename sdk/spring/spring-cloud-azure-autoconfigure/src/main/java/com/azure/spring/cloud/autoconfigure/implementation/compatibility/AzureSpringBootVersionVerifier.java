@@ -48,10 +48,10 @@ public class AzureSpringBootVersionVerifier {
     }
 
     private String action() {
-        return String.format("Change Spring Boot version to one of the following versions %s.\n"
-                + "You can find the latest Spring Boot versions here [%s]. \n"
+        return String.format("Change Spring Boot version to one of the following versions %s.%n"
+                + "You can find the latest Spring Boot versions here [%s]. %n"
                 + "If you want to learn more about the Spring Cloud Azure compatibility, "
-                + "you can visit this page [%s] and check the [Which Version of Spring Cloud Azure Should I Use] section.\n"
+                + "you can visit this page [%s] and check the [Which Version of Spring Cloud Azure Should I Use] section.%n"
                 + "If you want to disable this check, "
                 + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false].",
             this.acceptedVersions, "https://spring.io/projects/spring-boot#learn",
