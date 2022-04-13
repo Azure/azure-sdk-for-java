@@ -45,7 +45,7 @@ public interface IotSecuritySolutionsAnalyticsRecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
+     * @return ioT Security solution recommendation information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IoTSecurityAggregatedRecommendationInner> getWithResponse(
@@ -60,7 +60,8 @@ public interface IotSecuritySolutionsAnalyticsRecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IoTSecurityAggregatedRecommendationInner> list(String resourceGroupName, String solutionName);
@@ -76,7 +77,8 @@ public interface IotSecuritySolutionsAnalyticsRecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IoTSecurityAggregatedRecommendationInner> list(

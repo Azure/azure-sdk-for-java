@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -22,8 +21,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "OnPremiseSql", value = OnPremiseSqlResourceDetails.class)})
 @Fluent
 public class OnPremiseResourceDetails extends ResourceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OnPremiseResourceDetails.class);
-
     /*
      * Azure resource Id of the workspace the machine is attached to
      */
@@ -137,27 +134,29 @@ public class OnPremiseResourceDetails extends ResourceDetails {
     public void validate() {
         super.validate();
         if (workspaceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property workspaceId in model OnPremiseResourceDetails"));
         }
         if (vmuuid() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property vmuuid in model OnPremiseResourceDetails"));
         }
         if (sourceComputerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceComputerId in model OnPremiseResourceDetails"));
         }
         if (machineName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property machineName in model OnPremiseResourceDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OnPremiseResourceDetails.class);
 }

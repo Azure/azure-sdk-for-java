@@ -7,15 +7,12 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedRecommendationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of IoT Security solution aggregated recommendations. */
 @Fluent
 public final class IoTSecurityAggregatedRecommendationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecurityAggregatedRecommendationList.class);
-
     /*
      * List of aggregated recommendations data.
      */
@@ -65,7 +62,7 @@ public final class IoTSecurityAggregatedRecommendationList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model IoTSecurityAggregatedRecommendationList"));
@@ -73,4 +70,6 @@ public final class IoTSecurityAggregatedRecommendationList {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IoTSecurityAggregatedRecommendationList.class);
 }

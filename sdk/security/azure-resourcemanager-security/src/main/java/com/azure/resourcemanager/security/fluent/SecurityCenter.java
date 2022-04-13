@@ -38,6 +38,27 @@ public interface SecurityCenter {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the MdeOnboardingsClient object to access its operations.
+     *
+     * @return the MdeOnboardingsClient object.
+     */
+    MdeOnboardingsClient getMdeOnboardings();
+
+    /**
+     * Gets the CustomAssessmentAutomationsClient object to access its operations.
+     *
+     * @return the CustomAssessmentAutomationsClient object.
+     */
+    CustomAssessmentAutomationsClient getCustomAssessmentAutomations();
+
+    /**
+     * Gets the CustomEntityStoreAssignmentsClient object to access its operations.
+     *
+     * @return the CustomEntityStoreAssignmentsClient object.
+     */
+    CustomEntityStoreAssignmentsClient getCustomEntityStoreAssignments();
+
+    /**
      * Gets the ComplianceResultsClient object to access its operations.
      *
      * @return the ComplianceResultsClient object.
@@ -325,83 +346,6 @@ public interface SecurityCenter {
     SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules();
 
     /**
-     * Gets the IotDefenderSettingsClient object to access its operations.
-     *
-     * @return the IotDefenderSettingsClient object.
-     */
-    IotDefenderSettingsClient getIotDefenderSettings();
-
-    /**
-     * Gets the IotSensorsClient object to access its operations.
-     *
-     * @return the IotSensorsClient object.
-     */
-    IotSensorsClient getIotSensors();
-
-    /**
-     * Gets the DevicesForSubscriptionsClient object to access its operations.
-     *
-     * @return the DevicesForSubscriptionsClient object.
-     */
-    DevicesForSubscriptionsClient getDevicesForSubscriptions();
-
-    /**
-     * Gets the DevicesForHubsClient object to access its operations.
-     *
-     * @return the DevicesForHubsClient object.
-     */
-    DevicesForHubsClient getDevicesForHubs();
-
-    /**
-     * Gets the DevicesClient object to access its operations.
-     *
-     * @return the DevicesClient object.
-     */
-    DevicesClient getDevices();
-
-    /**
-     * Gets the OnPremiseIotSensorsClient object to access its operations.
-     *
-     * @return the OnPremiseIotSensorsClient object.
-     */
-    OnPremiseIotSensorsClient getOnPremiseIotSensors();
-
-    /**
-     * Gets the IotSitesClient object to access its operations.
-     *
-     * @return the IotSitesClient object.
-     */
-    IotSitesClient getIotSites();
-
-    /**
-     * Gets the IotAlertsClient object to access its operations.
-     *
-     * @return the IotAlertsClient object.
-     */
-    IotAlertsClient getIotAlerts();
-
-    /**
-     * Gets the IotAlertTypesClient object to access its operations.
-     *
-     * @return the IotAlertTypesClient object.
-     */
-    IotAlertTypesClient getIotAlertTypes();
-
-    /**
-     * Gets the IotRecommendationsClient object to access its operations.
-     *
-     * @return the IotRecommendationsClient object.
-     */
-    IotRecommendationsClient getIotRecommendations();
-
-    /**
-     * Gets the IotRecommendationTypesClient object to access its operations.
-     *
-     * @return the IotRecommendationTypesClient object.
-     */
-    IotRecommendationTypesClient getIotRecommendationTypes();
-
-    /**
      * Gets the AlertsClient object to access its operations.
      *
      * @return the AlertsClient object.
@@ -428,4 +372,11 @@ public interface SecurityCenter {
      * @return the SoftwareInventoriesClient object.
      */
     SoftwareInventoriesClient getSoftwareInventories();
+
+    /**
+     * Gets the SecurityConnectorsClient object to access its operations.
+     *
+     * @return the SecurityConnectorsClient object.
+     */
+    SecurityConnectorsClient getSecurityConnectors();
 }

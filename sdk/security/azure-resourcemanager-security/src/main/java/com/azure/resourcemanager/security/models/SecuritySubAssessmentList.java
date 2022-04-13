@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.SecuritySubAssessmentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of security sub-assessments. */
 @Immutable
 public final class SecuritySubAssessmentList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySubAssessmentList.class);
-
     /*
      * The value property.
      */

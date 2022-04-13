@@ -18,7 +18,7 @@ public interface SecuritySolutionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecuritySolutionInner> list();
@@ -30,7 +30,7 @@ public interface SecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecuritySolutionInner> list(Context context);
@@ -63,7 +63,7 @@ public interface SecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
+     * @return a specific Security Solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecuritySolutionInner> getWithResponse(

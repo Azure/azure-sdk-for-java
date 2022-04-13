@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The JitNetworkAccessPolicyInitiatePort model. */
 @Fluent
 public final class JitNetworkAccessPolicyInitiatePort {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessPolicyInitiatePort.class);
-
     /*
      * The number property.
      */
@@ -103,10 +100,12 @@ public final class JitNetworkAccessPolicyInitiatePort {
      */
     public void validate() {
         if (endTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endTimeUtc in model JitNetworkAccessPolicyInitiatePort"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessPolicyInitiatePort.class);
 }

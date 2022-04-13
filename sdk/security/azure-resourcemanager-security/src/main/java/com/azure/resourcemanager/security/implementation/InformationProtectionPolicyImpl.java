@@ -6,8 +6,8 @@ package com.azure.resourcemanager.security.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.InformationProtectionPolicyInner;
-import com.azure.resourcemanager.security.models.InformationProtectionPoliciesInformationProtectionPolicyName;
 import com.azure.resourcemanager.security.models.InformationProtectionPolicy;
+import com.azure.resourcemanager.security.models.InformationProtectionPolicyName;
 import com.azure.resourcemanager.security.models.InformationType;
 import com.azure.resourcemanager.security.models.SensitivityLabel;
 import java.time.OffsetDateTime;
@@ -68,7 +68,7 @@ public final class InformationProtectionPolicyImpl
 
     private String scope;
 
-    private InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName;
+    private InformationProtectionPolicyName informationProtectionPolicyName;
 
     public InformationProtectionPolicyImpl withExistingScope(String scope) {
         this.scope = scope;
@@ -96,8 +96,7 @@ public final class InformationProtectionPolicyImpl
     }
 
     InformationProtectionPolicyImpl(
-        InformationProtectionPoliciesInformationProtectionPolicyName name,
-        com.azure.resourcemanager.security.SecurityManager serviceManager) {
+        InformationProtectionPolicyName name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = new InformationProtectionPolicyInner();
         this.serviceManager = serviceManager;
         this.informationProtectionPolicyName = name;
@@ -140,7 +139,7 @@ public final class InformationProtectionPolicyImpl
                         + "/{informationProtectionPolicyName}",
                     "scope");
         this.informationProtectionPolicyName =
-            InformationProtectionPoliciesInformationProtectionPolicyName
+            InformationProtectionPolicyName
                 .fromString(
                     Utils
                         .getValueFromIdByParameterName(

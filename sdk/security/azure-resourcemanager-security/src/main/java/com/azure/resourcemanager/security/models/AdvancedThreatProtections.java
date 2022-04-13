@@ -28,7 +28,7 @@ public interface AdvancedThreatProtections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
+     * @return the Advanced Threat Protection settings for the specified resource along with {@link Response}.
      */
     Response<AdvancedThreatProtectionSetting> getWithResponse(String resourceId, Context context);
 
@@ -39,7 +39,7 @@ public interface AdvancedThreatProtections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
+     * @return the Advanced Threat Protection settings for the specified resource along with {@link Response}.
      */
     AdvancedThreatProtectionSetting getById(String id);
 
@@ -51,7 +51,7 @@ public interface AdvancedThreatProtections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
+     * @return the Advanced Threat Protection settings for the specified resource along with {@link Response}.
      */
     Response<AdvancedThreatProtectionSetting> getByIdWithResponse(String id, Context context);
 

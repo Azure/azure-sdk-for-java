@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TopologySingleResource model. */
 @Immutable
 public final class TopologySingleResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologySingleResource.class);
-
     /*
      * Azure resource id
      */

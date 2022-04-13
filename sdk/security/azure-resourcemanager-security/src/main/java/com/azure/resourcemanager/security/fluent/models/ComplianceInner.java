@@ -4,41 +4,30 @@
 
 package com.azure.resourcemanager.security.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.ComplianceSegment;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Compliance of a scope. */
-@JsonFlatten
-@Immutable
-public class ComplianceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComplianceInner.class);
-
+@Fluent
+public final class ComplianceInner extends ProxyResource {
     /*
-     * The timestamp when the Compliance calculation was conducted.
+     * Compliance data
      */
-    @JsonProperty(value = "properties.assessmentTimestampUtcDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime assessmentTimestampUtcDate;
+    @JsonProperty(value = "properties")
+    private ComplianceProperties innerProperties;
 
-    /*
-     * The resource count of the given subscription for which the Compliance
-     * calculation was conducted (needed for Management Group Compliance
-     * calculation).
+    /**
+     * Get the innerProperties property: Compliance data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.resourceCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer resourceCount;
-
-    /*
-     * An array of segment, which is the actually the compliance assessment.
-     */
-    @JsonProperty(value = "properties.assessmentResult", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ComplianceSegment> assessmentResult;
+    private ComplianceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the assessmentTimestampUtcDate property: The timestamp when the Compliance calculation was conducted.
@@ -46,7 +35,7 @@ public class ComplianceInner extends ProxyResource {
      * @return the assessmentTimestampUtcDate value.
      */
     public OffsetDateTime assessmentTimestampUtcDate() {
-        return this.assessmentTimestampUtcDate;
+        return this.innerProperties() == null ? null : this.innerProperties().assessmentTimestampUtcDate();
     }
 
     /**
@@ -56,7 +45,7 @@ public class ComplianceInner extends ProxyResource {
      * @return the resourceCount value.
      */
     public Integer resourceCount() {
-        return this.resourceCount;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceCount();
     }
 
     /**
@@ -65,7 +54,7 @@ public class ComplianceInner extends ProxyResource {
      * @return the assessmentResult value.
      */
     public List<ComplianceSegment> assessmentResult() {
-        return this.assessmentResult;
+        return this.innerProperties() == null ? null : this.innerProperties().assessmentResult();
     }
 
     /**
@@ -74,8 +63,8 @@ public class ComplianceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (assessmentResult() != null) {
-            assessmentResult().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

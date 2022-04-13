@@ -33,6 +33,13 @@ public interface IoTSecurityAggregatedAlert {
     String type();
 
     /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the alertType property: Name of the alert type.
      *
      * @return the alertType value.
@@ -123,13 +130,6 @@ public interface IoTSecurityAggregatedAlert {
      * @return the topDevicesList value.
      */
     List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedAlertInner object.

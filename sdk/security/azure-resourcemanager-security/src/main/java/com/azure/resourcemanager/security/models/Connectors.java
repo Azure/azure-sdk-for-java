@@ -15,7 +15,8 @@ public interface Connectors {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings.
+     * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<ConnectorSetting> list();
 
@@ -26,7 +27,8 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings.
+     * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<ConnectorSetting> list(Context context);
 
@@ -49,7 +51,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
+     * @return the connector setting along with {@link Response}.
      */
     Response<ConnectorSetting> getWithResponse(String connectorName, Context context);
 
@@ -71,7 +73,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String connectorName, Context context);
 
@@ -82,7 +84,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
+     * @return the connector setting along with {@link Response}.
      */
     ConnectorSetting getById(String id);
 
@@ -94,7 +96,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
+     * @return the connector setting along with {@link Response}.
      */
     Response<ConnectorSetting> getByIdWithResponse(String id, Context context);
 
@@ -116,7 +118,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

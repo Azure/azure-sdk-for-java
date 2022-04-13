@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.AutoProvisioningSettingInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of all the auto provisioning settings response. */
 @Fluent
 public final class AutoProvisioningSettingList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoProvisioningSettingList.class);
-
     /*
      * List of all the auto provisioning settings
      */

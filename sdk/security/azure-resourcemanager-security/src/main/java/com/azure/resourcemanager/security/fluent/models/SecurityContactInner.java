@@ -5,43 +5,28 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AlertNotifications;
 import com.azure.resourcemanager.security.models.AlertsToAdmins;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contact details for security issues. */
-@JsonFlatten
 @Fluent
-public class SecurityContactInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityContactInner.class);
-
+public final class SecurityContactInner extends ProxyResource {
     /*
-     * The email of this security contact
+     * Security contact data
      */
-    @JsonProperty(value = "properties.email")
-    private String email;
+    @JsonProperty(value = "properties")
+    private SecurityContactProperties innerProperties;
 
-    /*
-     * The phone number of this security contact
+    /**
+     * Get the innerProperties property: Security contact data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.phone")
-    private String phone;
-
-    /*
-     * Whether to send security alerts notifications to the security contact
-     */
-    @JsonProperty(value = "properties.alertNotifications")
-    private AlertNotifications alertNotifications;
-
-    /*
-     * Whether to send security alerts notifications to subscription admins
-     */
-    @JsonProperty(value = "properties.alertsToAdmins")
-    private AlertsToAdmins alertsToAdmins;
+    private SecurityContactProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the email property: The email of this security contact.
@@ -49,7 +34,7 @@ public class SecurityContactInner extends ProxyResource {
      * @return the email value.
      */
     public String email() {
-        return this.email;
+        return this.innerProperties() == null ? null : this.innerProperties().email();
     }
 
     /**
@@ -59,7 +44,10 @@ public class SecurityContactInner extends ProxyResource {
      * @return the SecurityContactInner object itself.
      */
     public SecurityContactInner withEmail(String email) {
-        this.email = email;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityContactProperties();
+        }
+        this.innerProperties().withEmail(email);
         return this;
     }
 
@@ -69,7 +57,7 @@ public class SecurityContactInner extends ProxyResource {
      * @return the phone value.
      */
     public String phone() {
-        return this.phone;
+        return this.innerProperties() == null ? null : this.innerProperties().phone();
     }
 
     /**
@@ -79,7 +67,10 @@ public class SecurityContactInner extends ProxyResource {
      * @return the SecurityContactInner object itself.
      */
     public SecurityContactInner withPhone(String phone) {
-        this.phone = phone;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityContactProperties();
+        }
+        this.innerProperties().withPhone(phone);
         return this;
     }
 
@@ -89,7 +80,7 @@ public class SecurityContactInner extends ProxyResource {
      * @return the alertNotifications value.
      */
     public AlertNotifications alertNotifications() {
-        return this.alertNotifications;
+        return this.innerProperties() == null ? null : this.innerProperties().alertNotifications();
     }
 
     /**
@@ -99,7 +90,10 @@ public class SecurityContactInner extends ProxyResource {
      * @return the SecurityContactInner object itself.
      */
     public SecurityContactInner withAlertNotifications(AlertNotifications alertNotifications) {
-        this.alertNotifications = alertNotifications;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityContactProperties();
+        }
+        this.innerProperties().withAlertNotifications(alertNotifications);
         return this;
     }
 
@@ -109,7 +103,7 @@ public class SecurityContactInner extends ProxyResource {
      * @return the alertsToAdmins value.
      */
     public AlertsToAdmins alertsToAdmins() {
-        return this.alertsToAdmins;
+        return this.innerProperties() == null ? null : this.innerProperties().alertsToAdmins();
     }
 
     /**
@@ -119,7 +113,10 @@ public class SecurityContactInner extends ProxyResource {
      * @return the SecurityContactInner object itself.
      */
     public SecurityContactInner withAlertsToAdmins(AlertsToAdmins alertsToAdmins) {
-        this.alertsToAdmins = alertsToAdmins;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityContactProperties();
+        }
+        this.innerProperties().withAlertsToAdmins(alertsToAdmins);
         return this;
     }
 
@@ -129,5 +126,8 @@ public class SecurityContactInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

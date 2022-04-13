@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Changing set of properties, depending on the task type that is derived from the name field. */
 @Fluent
 public final class SecurityTaskParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityTaskParameters.class);
-
     /*
      * Name of the task type
      */

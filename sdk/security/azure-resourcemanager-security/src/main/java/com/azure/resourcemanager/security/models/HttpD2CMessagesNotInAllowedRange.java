@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -16,8 +14,6 @@ import java.time.Duration;
 @JsonTypeName("HttpD2CMessagesNotInAllowedRange")
 @Fluent
 public final class HttpD2CMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpD2CMessagesNotInAllowedRange.class);
-
     /** {@inheritDoc} */
     @Override
     public HttpD2CMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

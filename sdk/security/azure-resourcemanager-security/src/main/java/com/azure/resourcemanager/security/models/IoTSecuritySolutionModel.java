@@ -49,6 +49,13 @@ public interface IoTSecuritySolutionModel {
     SystemData systemData();
 
     /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the workspace property: Workspace resource ID.
      *
      * @return the workspace value.
@@ -126,13 +133,6 @@ public interface IoTSecuritySolutionModel {
      * @return the additionalWorkspaces value.
      */
     List<AdditionalWorkspacesProperties> additionalWorkspaces();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the region of the resource.

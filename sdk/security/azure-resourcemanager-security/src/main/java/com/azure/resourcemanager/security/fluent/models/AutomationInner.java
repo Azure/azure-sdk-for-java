@@ -5,164 +5,30 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AutomationAction;
 import com.azure.resourcemanager.security.models.AutomationScope;
 import com.azure.resourcemanager.security.models.AutomationSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The security automation resource. */
-@JsonFlatten
 @Fluent
-public class AutomationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationInner.class);
-
+public final class AutomationInner extends Resource {
     /*
-     * The security automation description.
+     * Security automation data
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Indicates whether the security automation is enabled.
-     */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
-
-    /*
-     * A collection of scopes on which the security automations logic is
-     * applied. Supported scopes are the subscription itself or a resource
-     * group under that subscription. The automation will only apply on defined
-     * scopes.
-     */
-    @JsonProperty(value = "properties.scopes")
-    private List<AutomationScope> scopes;
-
-    /*
-     * A collection of the source event types which evaluate the security
-     * automation set of rules.
-     */
-    @JsonProperty(value = "properties.sources")
-    private List<AutomationSource> sources;
-
-    /*
-     * A collection of the actions which are triggered if all the configured
-     * rules evaluations, within at least one rule set, are true.
-     */
-    @JsonProperty(value = "properties.actions")
-    private List<AutomationAction> actions;
+    @JsonProperty(value = "properties")
+    private AutomationProperties innerProperties;
 
     /**
-     * Get the description property: The security automation description.
+     * Get the innerProperties property: Security automation data.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: The security automation description.
-     *
-     * @param description the description value to set.
-     * @return the AutomationInner object itself.
-     */
-    public AutomationInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the isEnabled property: Indicates whether the security automation is enabled.
-     *
-     * @return the isEnabled value.
-     */
-    public Boolean isEnabled() {
-        return this.isEnabled;
-    }
-
-    /**
-     * Set the isEnabled property: Indicates whether the security automation is enabled.
-     *
-     * @param isEnabled the isEnabled value to set.
-     * @return the AutomationInner object itself.
-     */
-    public AutomationInner withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
-        return this;
-    }
-
-    /**
-     * Get the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
-     * defined scopes.
-     *
-     * @return the scopes value.
-     */
-    public List<AutomationScope> scopes() {
-        return this.scopes;
-    }
-
-    /**
-     * Set the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
-     * defined scopes.
-     *
-     * @param scopes the scopes value to set.
-     * @return the AutomationInner object itself.
-     */
-    public AutomationInner withScopes(List<AutomationScope> scopes) {
-        this.scopes = scopes;
-        return this;
-    }
-
-    /**
-     * Get the sources property: A collection of the source event types which evaluate the security automation set of
-     * rules.
-     *
-     * @return the sources value.
-     */
-    public List<AutomationSource> sources() {
-        return this.sources;
-    }
-
-    /**
-     * Set the sources property: A collection of the source event types which evaluate the security automation set of
-     * rules.
-     *
-     * @param sources the sources value to set.
-     * @return the AutomationInner object itself.
-     */
-    public AutomationInner withSources(List<AutomationSource> sources) {
-        this.sources = sources;
-        return this;
-    }
-
-    /**
-     * Get the actions property: A collection of the actions which are triggered if all the configured rules
-     * evaluations, within at least one rule set, are true.
-     *
-     * @return the actions value.
-     */
-    public List<AutomationAction> actions() {
-        return this.actions;
-    }
-
-    /**
-     * Set the actions property: A collection of the actions which are triggered if all the configured rules
-     * evaluations, within at least one rule set, are true.
-     *
-     * @param actions the actions value to set.
-     * @return the AutomationInner object itself.
-     */
-    public AutomationInner withActions(List<AutomationAction> actions) {
-        this.actions = actions;
-        return this;
+    private AutomationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -180,19 +46,136 @@ public class AutomationInner extends Resource {
     }
 
     /**
+     * Get the description property: The security automation description.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The security automation description.
+     *
+     * @param description the description value to set.
+     * @return the AutomationInner object itself.
+     */
+    public AutomationInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the isEnabled property: Indicates whether the security automation is enabled.
+     *
+     * @return the isEnabled value.
+     */
+    public Boolean isEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
+    }
+
+    /**
+     * Set the isEnabled property: Indicates whether the security automation is enabled.
+     *
+     * @param isEnabled the isEnabled value to set.
+     * @return the AutomationInner object itself.
+     */
+    public AutomationInner withIsEnabled(Boolean isEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
+        return this;
+    }
+
+    /**
+     * Get the scopes property: A collection of scopes on which the security automations logic is applied. Supported
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
+     * defined scopes.
+     *
+     * @return the scopes value.
+     */
+    public List<AutomationScope> scopes() {
+        return this.innerProperties() == null ? null : this.innerProperties().scopes();
+    }
+
+    /**
+     * Set the scopes property: A collection of scopes on which the security automations logic is applied. Supported
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
+     * defined scopes.
+     *
+     * @param scopes the scopes value to set.
+     * @return the AutomationInner object itself.
+     */
+    public AutomationInner withScopes(List<AutomationScope> scopes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationProperties();
+        }
+        this.innerProperties().withScopes(scopes);
+        return this;
+    }
+
+    /**
+     * Get the sources property: A collection of the source event types which evaluate the security automation set of
+     * rules.
+     *
+     * @return the sources value.
+     */
+    public List<AutomationSource> sources() {
+        return this.innerProperties() == null ? null : this.innerProperties().sources();
+    }
+
+    /**
+     * Set the sources property: A collection of the source event types which evaluate the security automation set of
+     * rules.
+     *
+     * @param sources the sources value to set.
+     * @return the AutomationInner object itself.
+     */
+    public AutomationInner withSources(List<AutomationSource> sources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationProperties();
+        }
+        this.innerProperties().withSources(sources);
+        return this;
+    }
+
+    /**
+     * Get the actions property: A collection of the actions which are triggered if all the configured rules
+     * evaluations, within at least one rule set, are true.
+     *
+     * @return the actions value.
+     */
+    public List<AutomationAction> actions() {
+        return this.innerProperties() == null ? null : this.innerProperties().actions();
+    }
+
+    /**
+     * Set the actions property: A collection of the actions which are triggered if all the configured rules
+     * evaluations, within at least one rule set, are true.
+     *
+     * @param actions the actions value to set.
+     * @return the AutomationInner object itself.
+     */
+    public AutomationInner withActions(List<AutomationAction> actions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationProperties();
+        }
+        this.innerProperties().withActions(actions);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (scopes() != null) {
-            scopes().forEach(e -> e.validate());
-        }
-        if (sources() != null) {
-            sources().forEach(e -> e.validate());
-        }
-        if (actions() != null) {
-            actions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

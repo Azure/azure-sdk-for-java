@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** The JitNetworkAccessRequestPort model. */
 @Fluent
 public final class JitNetworkAccessRequestPort {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessRequestPort.class);
-
     /*
      * The number property.
      */
@@ -214,22 +211,24 @@ public final class JitNetworkAccessRequestPort {
      */
     public void validate() {
         if (endTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endTimeUtc in model JitNetworkAccessRequestPort"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model JitNetworkAccessRequestPort"));
         }
         if (statusReason() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property statusReason in model JitNetworkAccessRequestPort"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessRequestPort.class);
 }

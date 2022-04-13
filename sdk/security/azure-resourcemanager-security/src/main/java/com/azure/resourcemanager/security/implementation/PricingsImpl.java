@@ -14,10 +14,9 @@ import com.azure.resourcemanager.security.fluent.models.PricingListInner;
 import com.azure.resourcemanager.security.models.Pricing;
 import com.azure.resourcemanager.security.models.PricingList;
 import com.azure.resourcemanager.security.models.Pricings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PricingsImpl implements Pricings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PricingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PricingsImpl.class);
 
     private final PricingsClient innerClient;
 

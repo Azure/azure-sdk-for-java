@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.TopologiesClient;
 import com.azure.resourcemanager.security.fluent.models.TopologyResourceInner;
 import com.azure.resourcemanager.security.models.Topologies;
 import com.azure.resourcemanager.security.models.TopologyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TopologiesImpl implements Topologies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TopologiesImpl.class);
 
     private final TopologiesClient innerClient;
 

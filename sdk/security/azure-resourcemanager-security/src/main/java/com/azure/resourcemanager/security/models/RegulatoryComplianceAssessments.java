@@ -18,7 +18,7 @@ public interface RegulatoryComplianceAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance assessment response.
+     * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RegulatoryComplianceAssessment> list(
         String regulatoryComplianceStandardName, String regulatoryComplianceControlName);
@@ -33,7 +33,7 @@ public interface RegulatoryComplianceAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance assessment response.
+     * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RegulatoryComplianceAssessment> list(
         String regulatoryComplianceStandardName,
@@ -67,7 +67,7 @@ public interface RegulatoryComplianceAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance assessment details and state.
+     * @return regulatory compliance assessment details and state along with {@link Response}.
      */
     Response<RegulatoryComplianceAssessment> getWithResponse(
         String regulatoryComplianceStandardName,

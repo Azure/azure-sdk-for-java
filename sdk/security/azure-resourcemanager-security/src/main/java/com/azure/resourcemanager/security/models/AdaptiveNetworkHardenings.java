@@ -21,7 +21,8 @@ public interface AdaptiveNetworkHardenings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Adaptive Network Hardenings resources in scope of an extended resource.
+     * @return a list of Adaptive Network Hardenings resources in scope of an extended resource as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(
         String resourceGroupName, String resourceNamespace, String resourceType, String resourceName);
@@ -38,7 +39,8 @@ public interface AdaptiveNetworkHardenings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Adaptive Network Hardenings resources in scope of an extended resource.
+     * @return a list of Adaptive Network Hardenings resources in scope of an extended resource as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(
         String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context);
@@ -77,7 +79,7 @@ public interface AdaptiveNetworkHardenings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Adaptive Network Hardening resource.
+     * @return a single Adaptive Network Hardening resource along with {@link Response}.
      */
     Response<AdaptiveNetworkHardening> getWithResponse(
         String resourceGroupName,

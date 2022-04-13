@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The security automation model state property bag. */
 @Fluent
 public final class AutomationValidationStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationValidationStatusInner.class);
-
     /*
      * Indicates whether the model is valid or not.
      */

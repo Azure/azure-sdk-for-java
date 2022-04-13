@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a path that is recommended to be allowed and its properties. */
 @Fluent
 public final class PathRecommendation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PathRecommendation.class);
-
     /*
      * The full path of the file, or an identifier of the application
      */

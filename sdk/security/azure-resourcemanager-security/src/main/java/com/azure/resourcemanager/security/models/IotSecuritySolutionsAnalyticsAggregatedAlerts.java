@@ -19,7 +19,7 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated alert data.
+     * @return list of IoT Security solution aggregated alert data as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecurityAggregatedAlert> list(String resourceGroupName, String solutionName);
 
@@ -34,7 +34,7 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated alert data.
+     * @return list of IoT Security solution aggregated alert data as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecurityAggregatedAlert> list(
         String resourceGroupName, String solutionName, Integer top, Context context);
@@ -66,7 +66,7 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Solution Aggregated Alert information.
+     * @return security Solution Aggregated Alert information along with {@link Response}.
      */
     Response<IoTSecurityAggregatedAlert> getWithResponse(
         String resourceGroupName, String solutionName, String aggregatedAlertName, Context context);
@@ -95,7 +95,7 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> dismissWithResponse(
         String resourceGroupName, String solutionName, String aggregatedAlertName, Context context);

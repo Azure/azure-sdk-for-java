@@ -14,10 +14,9 @@ import com.azure.resourcemanager.security.fluent.models.AlertInner;
 import com.azure.resourcemanager.security.models.Alert;
 import com.azure.resourcemanager.security.models.AlertSimulatorRequestBody;
 import com.azure.resourcemanager.security.models.Alerts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AlertsImpl implements Alerts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AlertsImpl.class);
 
     private final AlertsClient innerClient;
 
@@ -183,8 +182,9 @@ public final class AlertsImpl implements Alerts {
         this.serviceClient().simulate(ascLocation, alertSimulatorRequestBody);
     }
 
-    public void simulate(String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody, Context context) {
-        this.serviceClient().simulate(ascLocation, alertSimulatorRequestBody, context);
+    public Response<Void> simulateWithResponse(
+        String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody, Context context) {
+        return this.serviceClient().simulateWithResponse(ascLocation, alertSimulatorRequestBody, context);
     }
 
     private AlertsClient serviceClient() {

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SecureScoreControlsClient;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDetailsInner;
 import com.azure.resourcemanager.security.models.ExpandControlsEnum;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecureScoreControlsClient. */
 public final class SecureScoreControlsClientImpl implements SecureScoreControlsClient {
-    private final ClientLogger logger = new ClientLogger(SecureScoreControlsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecureScoreControlsService service;
 
@@ -117,7 +114,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listBySecureScoreSinglePageAsync(
@@ -174,7 +172,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listBySecureScoreSinglePageAsync(
@@ -227,7 +226,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDetailsInner> listBySecureScoreAsync(
@@ -245,7 +245,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDetailsInner> listBySecureScoreAsync(String secureScoreName) {
@@ -265,7 +266,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDetailsInner> listBySecureScoreAsync(
@@ -283,7 +285,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> listBySecureScore(String secureScoreName) {
@@ -301,7 +304,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> listBySecureScore(
@@ -316,7 +320,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listSinglePageAsync(ExpandControlsEnum expand) {
@@ -365,7 +370,8 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listSinglePageAsync(
@@ -405,7 +411,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDetailsInner> listAsync(ExpandControlsEnum expand) {
@@ -417,7 +423,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDetailsInner> listAsync() {
@@ -433,7 +439,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDetailsInner> listAsync(ExpandControlsEnum expand, Context context) {
@@ -446,7 +452,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> list() {
@@ -462,7 +468,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDetailsInner> list(ExpandControlsEnum expand, Context context) {
@@ -476,7 +482,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls.
+     * @return list of security controls along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listBySecureScoreNextSinglePageAsync(String nextLink) {
@@ -512,7 +518,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls.
+     * @return list of security controls along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listBySecureScoreNextSinglePageAsync(
@@ -548,7 +554,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls.
+     * @return list of security controls along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listNextSinglePageAsync(String nextLink) {
@@ -584,7 +590,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls.
+     * @return list of security controls along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDetailsInner>> listNextSinglePageAsync(

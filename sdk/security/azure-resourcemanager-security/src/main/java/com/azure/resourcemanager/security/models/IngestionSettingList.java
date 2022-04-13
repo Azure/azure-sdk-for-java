@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.IngestionSettingInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of ingestion settings. */
 @Immutable
 public final class IngestionSettingList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IngestionSettingList.class);
-
     /*
      * List of ingestion settings
      */

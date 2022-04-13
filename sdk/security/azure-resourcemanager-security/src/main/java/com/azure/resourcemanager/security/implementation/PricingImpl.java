@@ -35,6 +35,10 @@ public final class PricingImpl implements Pricing {
         return this.innerModel().pricingTier();
     }
 
+    public String subPlan() {
+        return this.innerModel().subPlan();
+    }
+
     public Duration freeTrialRemainingTime() {
         return this.innerModel().freeTrialRemainingTime();
     }

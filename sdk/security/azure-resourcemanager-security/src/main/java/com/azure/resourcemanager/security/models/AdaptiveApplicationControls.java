@@ -27,7 +27,7 @@ public interface AdaptiveApplicationControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application control machine groups for the subscription.
+     * @return a list of application control machine groups for the subscription along with {@link Response}.
      */
     Response<AdaptiveApplicationControlGroups> listWithResponse(
         Boolean includePathRecommendations, Boolean summary, Context context);
@@ -55,7 +55,7 @@ public interface AdaptiveApplicationControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group.
+     * @return an application control VM/server group along with {@link Response}.
      */
     Response<AdaptiveApplicationControlGroup> getWithResponse(String ascLocation, String groupName, Context context);
 
@@ -81,7 +81,7 @@ public interface AdaptiveApplicationControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String ascLocation, String groupName, Context context);
 
@@ -92,7 +92,7 @@ public interface AdaptiveApplicationControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group.
+     * @return an application control VM/server group along with {@link Response}.
      */
     AdaptiveApplicationControlGroup getById(String id);
 
@@ -104,7 +104,7 @@ public interface AdaptiveApplicationControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group.
+     * @return an application control VM/server group along with {@link Response}.
      */
     Response<AdaptiveApplicationControlGroup> getByIdWithResponse(String id, Context context);
 
@@ -126,7 +126,7 @@ public interface AdaptiveApplicationControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

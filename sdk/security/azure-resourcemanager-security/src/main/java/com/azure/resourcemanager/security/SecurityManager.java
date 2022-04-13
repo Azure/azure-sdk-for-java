@@ -8,12 +8,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -34,28 +37,20 @@ import com.azure.resourcemanager.security.implementation.AutomationsImpl;
 import com.azure.resourcemanager.security.implementation.ComplianceResultsImpl;
 import com.azure.resourcemanager.security.implementation.CompliancesImpl;
 import com.azure.resourcemanager.security.implementation.ConnectorsImpl;
+import com.azure.resourcemanager.security.implementation.CustomAssessmentAutomationsImpl;
+import com.azure.resourcemanager.security.implementation.CustomEntityStoreAssignmentsImpl;
 import com.azure.resourcemanager.security.implementation.DeviceSecurityGroupsImpl;
-import com.azure.resourcemanager.security.implementation.DevicesForHubsImpl;
-import com.azure.resourcemanager.security.implementation.DevicesForSubscriptionsImpl;
-import com.azure.resourcemanager.security.implementation.DevicesImpl;
 import com.azure.resourcemanager.security.implementation.DiscoveredSecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.ExternalSecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.InformationProtectionPoliciesImpl;
 import com.azure.resourcemanager.security.implementation.IngestionSettingsImpl;
-import com.azure.resourcemanager.security.implementation.IotAlertTypesImpl;
-import com.azure.resourcemanager.security.implementation.IotAlertsImpl;
-import com.azure.resourcemanager.security.implementation.IotDefenderSettingsImpl;
-import com.azure.resourcemanager.security.implementation.IotRecommendationTypesImpl;
-import com.azure.resourcemanager.security.implementation.IotRecommendationsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionAnalyticsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionsAnalyticsAggregatedAlertsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionsAnalyticsRecommendationsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionsImpl;
-import com.azure.resourcemanager.security.implementation.IotSensorsImpl;
-import com.azure.resourcemanager.security.implementation.IotSitesImpl;
 import com.azure.resourcemanager.security.implementation.JitNetworkAccessPoliciesImpl;
 import com.azure.resourcemanager.security.implementation.LocationsImpl;
-import com.azure.resourcemanager.security.implementation.OnPremiseIotSensorsImpl;
+import com.azure.resourcemanager.security.implementation.MdeOnboardingsImpl;
 import com.azure.resourcemanager.security.implementation.OperationsImpl;
 import com.azure.resourcemanager.security.implementation.PricingsImpl;
 import com.azure.resourcemanager.security.implementation.RegulatoryComplianceAssessmentsImpl;
@@ -65,6 +60,7 @@ import com.azure.resourcemanager.security.implementation.SecureScoreControlDefin
 import com.azure.resourcemanager.security.implementation.SecureScoreControlsImpl;
 import com.azure.resourcemanager.security.implementation.SecureScoresImpl;
 import com.azure.resourcemanager.security.implementation.SecurityCenterBuilder;
+import com.azure.resourcemanager.security.implementation.SecurityConnectorsImpl;
 import com.azure.resourcemanager.security.implementation.SecurityContactsImpl;
 import com.azure.resourcemanager.security.implementation.SecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.SecuritySolutionsReferenceDatasImpl;
@@ -91,28 +87,20 @@ import com.azure.resourcemanager.security.models.Automations;
 import com.azure.resourcemanager.security.models.ComplianceResults;
 import com.azure.resourcemanager.security.models.Compliances;
 import com.azure.resourcemanager.security.models.Connectors;
+import com.azure.resourcemanager.security.models.CustomAssessmentAutomations;
+import com.azure.resourcemanager.security.models.CustomEntityStoreAssignments;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroups;
-import com.azure.resourcemanager.security.models.Devices;
-import com.azure.resourcemanager.security.models.DevicesForHubs;
-import com.azure.resourcemanager.security.models.DevicesForSubscriptions;
 import com.azure.resourcemanager.security.models.DiscoveredSecuritySolutions;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolutions;
 import com.azure.resourcemanager.security.models.InformationProtectionPolicies;
 import com.azure.resourcemanager.security.models.IngestionSettings;
-import com.azure.resourcemanager.security.models.IotAlertTypes;
-import com.azure.resourcemanager.security.models.IotAlerts;
-import com.azure.resourcemanager.security.models.IotDefenderSettings;
-import com.azure.resourcemanager.security.models.IotRecommendationTypes;
-import com.azure.resourcemanager.security.models.IotRecommendations;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionAnalytics;
 import com.azure.resourcemanager.security.models.IotSecuritySolutions;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionsAnalyticsAggregatedAlerts;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionsAnalyticsRecommendations;
-import com.azure.resourcemanager.security.models.IotSensors;
-import com.azure.resourcemanager.security.models.IotSites;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicies;
 import com.azure.resourcemanager.security.models.Locations;
-import com.azure.resourcemanager.security.models.OnPremiseIotSensors;
+import com.azure.resourcemanager.security.models.MdeOnboardings;
 import com.azure.resourcemanager.security.models.Operations;
 import com.azure.resourcemanager.security.models.Pricings;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceAssessments;
@@ -121,6 +109,7 @@ import com.azure.resourcemanager.security.models.RegulatoryComplianceStandards;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitions;
 import com.azure.resourcemanager.security.models.SecureScoreControls;
 import com.azure.resourcemanager.security.models.SecureScores;
+import com.azure.resourcemanager.security.models.SecurityConnectors;
 import com.azure.resourcemanager.security.models.SecurityContacts;
 import com.azure.resourcemanager.security.models.SecuritySolutions;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDatas;
@@ -139,9 +128,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to SecurityManager. API spec for Microsoft.Security (Azure Security Center) resource provider. */
 public final class SecurityManager {
+    private MdeOnboardings mdeOnboardings;
+
+    private CustomAssessmentAutomations customAssessmentAutomations;
+
+    private CustomEntityStoreAssignments customEntityStoreAssignments;
+
     private ComplianceResults complianceResults;
 
     private Pricings pricings;
@@ -224,28 +220,6 @@ public final class SecurityManager {
 
     private SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules;
 
-    private IotDefenderSettings iotDefenderSettings;
-
-    private IotSensors iotSensors;
-
-    private DevicesForSubscriptions devicesForSubscriptions;
-
-    private DevicesForHubs devicesForHubs;
-
-    private Devices devices;
-
-    private OnPremiseIotSensors onPremiseIotSensors;
-
-    private IotSites iotSites;
-
-    private IotAlerts iotAlerts;
-
-    private IotAlertTypes iotAlertTypes;
-
-    private IotRecommendations iotRecommendations;
-
-    private IotRecommendationTypes iotRecommendationTypes;
-
     private Alerts alerts;
 
     private Settings settings;
@@ -253,6 +227,8 @@ public final class SecurityManager {
     private IngestionSettings ingestionSettings;
 
     private SoftwareInventories softwareInventories;
+
+    private SecurityConnectors securityConnectors;
 
     private final SecurityCenter clientObject;
 
@@ -282,6 +258,19 @@ public final class SecurityManager {
     }
 
     /**
+     * Creates an instance of Security service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the Security service API instance.
+     */
+    public static SecurityManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new SecurityManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create SecurityManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -292,13 +281,14 @@ public final class SecurityManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -360,15 +350,30 @@ public final class SecurityManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -408,16 +413,34 @@ public final class SecurityManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -427,6 +450,32 @@ public final class SecurityManager {
                     .build();
             return new SecurityManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /** @return Resource collection API of MdeOnboardings. */
+    public MdeOnboardings mdeOnboardings() {
+        if (this.mdeOnboardings == null) {
+            this.mdeOnboardings = new MdeOnboardingsImpl(clientObject.getMdeOnboardings(), this);
+        }
+        return mdeOnboardings;
+    }
+
+    /** @return Resource collection API of CustomAssessmentAutomations. */
+    public CustomAssessmentAutomations customAssessmentAutomations() {
+        if (this.customAssessmentAutomations == null) {
+            this.customAssessmentAutomations =
+                new CustomAssessmentAutomationsImpl(clientObject.getCustomAssessmentAutomations(), this);
+        }
+        return customAssessmentAutomations;
+    }
+
+    /** @return Resource collection API of CustomEntityStoreAssignments. */
+    public CustomEntityStoreAssignments customEntityStoreAssignments() {
+        if (this.customEntityStoreAssignments == null) {
+            this.customEntityStoreAssignments =
+                new CustomEntityStoreAssignmentsImpl(clientObject.getCustomEntityStoreAssignments(), this);
+        }
+        return customEntityStoreAssignments;
     }
 
     /** @return Resource collection API of ComplianceResults. */
@@ -782,96 +831,6 @@ public final class SecurityManager {
         return sqlVulnerabilityAssessmentBaselineRules;
     }
 
-    /** @return Resource collection API of IotDefenderSettings. */
-    public IotDefenderSettings iotDefenderSettings() {
-        if (this.iotDefenderSettings == null) {
-            this.iotDefenderSettings = new IotDefenderSettingsImpl(clientObject.getIotDefenderSettings(), this);
-        }
-        return iotDefenderSettings;
-    }
-
-    /** @return Resource collection API of IotSensors. */
-    public IotSensors iotSensors() {
-        if (this.iotSensors == null) {
-            this.iotSensors = new IotSensorsImpl(clientObject.getIotSensors(), this);
-        }
-        return iotSensors;
-    }
-
-    /** @return Resource collection API of DevicesForSubscriptions. */
-    public DevicesForSubscriptions devicesForSubscriptions() {
-        if (this.devicesForSubscriptions == null) {
-            this.devicesForSubscriptions =
-                new DevicesForSubscriptionsImpl(clientObject.getDevicesForSubscriptions(), this);
-        }
-        return devicesForSubscriptions;
-    }
-
-    /** @return Resource collection API of DevicesForHubs. */
-    public DevicesForHubs devicesForHubs() {
-        if (this.devicesForHubs == null) {
-            this.devicesForHubs = new DevicesForHubsImpl(clientObject.getDevicesForHubs(), this);
-        }
-        return devicesForHubs;
-    }
-
-    /** @return Resource collection API of Devices. */
-    public Devices devices() {
-        if (this.devices == null) {
-            this.devices = new DevicesImpl(clientObject.getDevices(), this);
-        }
-        return devices;
-    }
-
-    /** @return Resource collection API of OnPremiseIotSensors. */
-    public OnPremiseIotSensors onPremiseIotSensors() {
-        if (this.onPremiseIotSensors == null) {
-            this.onPremiseIotSensors = new OnPremiseIotSensorsImpl(clientObject.getOnPremiseIotSensors(), this);
-        }
-        return onPremiseIotSensors;
-    }
-
-    /** @return Resource collection API of IotSites. */
-    public IotSites iotSites() {
-        if (this.iotSites == null) {
-            this.iotSites = new IotSitesImpl(clientObject.getIotSites(), this);
-        }
-        return iotSites;
-    }
-
-    /** @return Resource collection API of IotAlerts. */
-    public IotAlerts iotAlerts() {
-        if (this.iotAlerts == null) {
-            this.iotAlerts = new IotAlertsImpl(clientObject.getIotAlerts(), this);
-        }
-        return iotAlerts;
-    }
-
-    /** @return Resource collection API of IotAlertTypes. */
-    public IotAlertTypes iotAlertTypes() {
-        if (this.iotAlertTypes == null) {
-            this.iotAlertTypes = new IotAlertTypesImpl(clientObject.getIotAlertTypes(), this);
-        }
-        return iotAlertTypes;
-    }
-
-    /** @return Resource collection API of IotRecommendations. */
-    public IotRecommendations iotRecommendations() {
-        if (this.iotRecommendations == null) {
-            this.iotRecommendations = new IotRecommendationsImpl(clientObject.getIotRecommendations(), this);
-        }
-        return iotRecommendations;
-    }
-
-    /** @return Resource collection API of IotRecommendationTypes. */
-    public IotRecommendationTypes iotRecommendationTypes() {
-        if (this.iotRecommendationTypes == null) {
-            this.iotRecommendationTypes =
-                new IotRecommendationTypesImpl(clientObject.getIotRecommendationTypes(), this);
-        }
-        return iotRecommendationTypes;
-    }
-
     /** @return Resource collection API of Alerts. */
     public Alerts alerts() {
         if (this.alerts == null) {
@@ -902,6 +861,14 @@ public final class SecurityManager {
             this.softwareInventories = new SoftwareInventoriesImpl(clientObject.getSoftwareInventories(), this);
         }
         return softwareInventories;
+    }
+
+    /** @return Resource collection API of SecurityConnectors. */
+    public SecurityConnectors securityConnectors() {
+        if (this.securityConnectors == null) {
+            this.securityConnectors = new SecurityConnectorsImpl(clientObject.getSecurityConnectors(), this);
+        }
+        return securityConnectors;
     }
 
     /**

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for hybrid compute management. */
 @Fluent
 public final class HybridComputeSettingsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridComputeSettingsProperties.class);
-
     /*
      * State of the service principal and its secret
      */
@@ -175,7 +172,7 @@ public final class HybridComputeSettingsProperties {
      */
     public void validate() {
         if (autoProvision() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property autoProvision in model HybridComputeSettingsProperties"));
@@ -187,4 +184,6 @@ public final class HybridComputeSettingsProperties {
             servicePrincipal().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HybridComputeSettingsProperties.class);
 }

@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionAnalyticsClient;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionAnalyticsModelInner;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionAnalyticsModelListInner;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IotSecuritySolutionAnalyticsClient. */
 public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecuritySolutionAnalyticsClient {
-    private final ClientLogger logger = new ClientLogger(IotSecuritySolutionAnalyticsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IotSecuritySolutionAnalyticsService service;
 
@@ -97,7 +94,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelListInner>> listWithResponseAsync(
@@ -148,7 +146,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelListInner>> listWithResponseAsync(
@@ -195,7 +194,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecuritySolutionAnalyticsModelListInner> listAsync(String resourceGroupName, String solutionName) {
@@ -236,7 +235,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IoTSecuritySolutionAnalyticsModelListInner> listWithResponse(
@@ -253,7 +252,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelInner>> getWithResponseAsync(
@@ -304,7 +304,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelInner>> getWithResponseAsync(
@@ -351,7 +352,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecuritySolutionAnalyticsModelInner> getAsync(String resourceGroupName, String solutionName) {
@@ -392,7 +393,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IoTSecuritySolutionAnalyticsModelInner> getWithResponse(
