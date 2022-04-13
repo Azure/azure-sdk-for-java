@@ -168,7 +168,7 @@ public final class DataLakePathClientBuilder implements
 
         return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
             pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
-			customerProvidedKey);
+            customerProvidedKey);
     }
 
     /**
@@ -215,6 +215,8 @@ public final class DataLakePathClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryAsyncClient buildDirectoryAsyncClient() {
+        validateConstruction();
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -232,7 +234,7 @@ public final class DataLakePathClientBuilder implements
 
         return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
             pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
-			customerProvidedKey);
+            customerProvidedKey);
     }
 
     /*

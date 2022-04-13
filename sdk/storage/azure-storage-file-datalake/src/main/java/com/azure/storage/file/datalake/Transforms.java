@@ -792,11 +792,6 @@ class Transforms {
         return new PathDeletedItem(blobPrefix.getName(), true, null, null, null);
     }
 
-    private static EncryptionAlgorithmType toBlobEncryptionAlgorithmType(
-        com.azure.storage.file.datalake.models.EncryptionAlgorithmType type) {
-        return EncryptionAlgorithmType.valueOf(type.toString());
-    }
-
     static CustomerProvidedKey toBlobCustomerProvidedKey(
         com.azure.storage.file.datalake.models.CustomerProvidedKey key) {
         if (key == null) {
@@ -806,6 +801,9 @@ class Transforms {
     }
 
     static CpkInfo fromBlobCpkInfo(com.azure.storage.blob.models.CpkInfo info) {
+        if (info == null) {
+            return null;
+        }
         return new CpkInfo()
             .setEncryptionKey(info.getEncryptionKey())
             .setEncryptionAlgorithm(com.azure.storage.file.datalake.models.EncryptionAlgorithmType.fromString(
