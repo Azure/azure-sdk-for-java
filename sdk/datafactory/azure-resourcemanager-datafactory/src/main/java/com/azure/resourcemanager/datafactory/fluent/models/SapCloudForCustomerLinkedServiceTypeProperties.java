@@ -7,15 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SAP Cloud for Customer linked service properties. */
 @Fluent
 public final class SapCloudForCustomerLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SapCloudForCustomerLinkedServiceTypeProperties.class);
-
     /*
      * The URL of SAP Cloud for Customer OData API. For example,
      * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string
@@ -141,7 +137,7 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model SapCloudForCustomerLinkedServiceTypeProperties"));
@@ -150,4 +146,6 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SapCloudForCustomerLinkedServiceTypeProperties.class);
 }

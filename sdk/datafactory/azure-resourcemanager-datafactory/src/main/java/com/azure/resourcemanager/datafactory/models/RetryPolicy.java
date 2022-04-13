@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Execution policy for an activity. */
 @Fluent
 public final class RetryPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
-
     /*
      * Maximum ordinary retry attempts. Default is 0. Type: integer (or
      * Expression with resultType integer), minimum: 0.

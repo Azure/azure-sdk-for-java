@@ -33,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NotificationRecipientEmailsClient. */
 public final class NotificationRecipientEmailsClientImpl implements NotificationRecipientEmailsClient {
-    private final ClientLogger logger = new ClientLogger(NotificationRecipientEmailsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NotificationRecipientEmailsService service;
 
@@ -138,7 +136,8 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Notification Recipient Emails subscribed to a notification.
+     * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecipientEmailCollectionInner>> listByNotificationWithResponseAsync(
@@ -193,7 +192,8 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Notification Recipient Emails subscribed to a notification.
+     * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecipientEmailCollectionInner>> listByNotificationWithResponseAsync(
@@ -244,7 +244,8 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Notification Recipient Emails subscribed to a notification.
+     * @return the list of the Notification Recipient Emails subscribed to a notification on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecipientEmailCollectionInner> listByNotificationAsync(
@@ -287,7 +288,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Notification Recipient Emails subscribed to a notification.
+     * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecipientEmailCollectionInner> listByNotificationWithResponse(
@@ -305,7 +306,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Boolean>> checkEntityExistsWithResponseAsync(
@@ -365,7 +366,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Boolean>> checkEntityExistsWithResponseAsync(
@@ -425,7 +426,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Boolean> checkEntityExistsAsync(
@@ -460,7 +461,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -475,7 +476,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkEntityExistsWithResponse(
@@ -498,7 +499,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient Email details.
+     * @return recipient Email details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecipientEmailContractInner>> createOrUpdateWithResponseAsync(
@@ -558,7 +559,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient Email details.
+     * @return recipient Email details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecipientEmailContractInner>> createOrUpdateWithResponseAsync(
@@ -618,7 +619,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient Email details.
+     * @return recipient Email details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecipientEmailContractInner> createOrUpdateAsync(
@@ -663,7 +664,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient Email details.
+     * @return recipient Email details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecipientEmailContractInner> createOrUpdateWithResponse(
@@ -686,7 +687,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -746,7 +747,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -806,7 +807,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -842,7 +843,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -853,4 +854,6 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, notificationName, email, context).block();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationRecipientEmailsClientImpl.class);
 }

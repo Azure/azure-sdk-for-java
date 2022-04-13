@@ -49,6 +49,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -265,7 +266,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                     unsettled.disposition(deliveryState);
                     pendingUpdates.put(lockToken, workItem);
                 });
-            } catch (IOException error) {
+            } catch (IOException | RejectedExecutionException error) {
                 sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
                     error, handler.getErrorContext(receiver)));
             }
@@ -348,7 +349,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                     workItem.resetStartTime();
                     try {
                         provider.getReactorDispatcher().invoke(() -> delivery.disposition(workItem.getDeliveryState()));
-                    } catch (IOException error) {
+                    } catch (IOException | RejectedExecutionException error) {
                         final Throwable amqpException = logger.atError()
                             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                             .log(new AmqpException(false,

@@ -15,7 +15,7 @@ public interface Caches {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches.
+     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cache> list();
 
@@ -26,7 +26,7 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches.
+     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cache> list(Context context);
 
@@ -37,7 +37,7 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches.
+     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cache> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches.
+     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cache> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -101,7 +101,7 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
+     * @return a Cache instance along with {@link Response}.
      */
     Response<Cache> getByResourceGroupWithResponse(String resourceGroupName, String cacheName, Context context);
 
@@ -239,7 +239,7 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
+     * @return a Cache instance along with {@link Response}.
      */
     Cache getById(String id);
 
@@ -251,7 +251,7 @@ public interface Caches {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
+     * @return a Cache instance along with {@link Response}.
      */
     Response<Cache> getByIdWithResponse(String id, Context context);
 

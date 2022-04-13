@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.ManagedVirtualNetworksClient;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedVirtualNetworkResourceInner;
 import com.azure.resourcemanager.datafactory.models.ManagedVirtualNetworkListResponse;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedVirtualNetworksClient. */
 public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNetworksClient {
-    private final ClientLogger logger = new ClientLogger(ManagedVirtualNetworksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagedVirtualNetworksService service;
 

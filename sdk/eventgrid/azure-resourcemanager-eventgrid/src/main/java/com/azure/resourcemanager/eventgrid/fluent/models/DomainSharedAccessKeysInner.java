@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Shared access keys of the Domain. */
 @Fluent
 public final class DomainSharedAccessKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainSharedAccessKeysInner.class);
-
     /*
      * Shared access key1 for the domain.
      */

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProperties;
 import com.azure.resourcemanager.apimanagement.models.NamedValueEntityBaseParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NamedValue Contract properties. */
 @Fluent
 public final class NamedValueUpdateParameterProperties extends NamedValueEntityBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamedValueUpdateParameterProperties.class);
-
     /*
      * Unique name of NamedValue. It may contain only letters, digits, period,
      * dash, and underscore characters.

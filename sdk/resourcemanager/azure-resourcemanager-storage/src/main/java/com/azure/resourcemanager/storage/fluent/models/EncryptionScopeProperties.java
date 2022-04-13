@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.EncryptionScopeKeyVaultProperties;
 import com.azure.resourcemanager.storage.models.EncryptionScopeSource;
 import com.azure.resourcemanager.storage.models.EncryptionScopeState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of the encryption scope. */
 @Fluent
 public final class EncryptionScopeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeProperties.class);
-
     /*
      * The provider for the encryption scope. Possible values
      * (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.

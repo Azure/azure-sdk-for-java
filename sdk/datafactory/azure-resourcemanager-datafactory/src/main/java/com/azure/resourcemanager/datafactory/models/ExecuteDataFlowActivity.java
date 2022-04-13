@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ExecuteDataFlowActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.List;
 @JsonTypeName("ExecuteDataFlow")
 @Fluent
 public final class ExecuteDataFlowActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecuteDataFlowActivity.class);
-
     /*
      * Execute data flow activity properties.
      */
@@ -253,7 +250,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ExecuteDataFlowActivity"));
@@ -261,4 +258,6 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecuteDataFlowActivity.class);
 }

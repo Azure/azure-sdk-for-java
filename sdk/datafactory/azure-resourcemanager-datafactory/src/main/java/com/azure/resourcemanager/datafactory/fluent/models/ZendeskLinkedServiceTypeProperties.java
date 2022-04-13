@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.ZendeskAuthenticationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Zendesk linked service type properties. */
 @Fluent
 public final class ZendeskLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ZendeskLinkedServiceTypeProperties.class);
-
     /*
      * The authentication type to use.
      */
@@ -187,13 +184,13 @@ public final class ZendeskLinkedServiceTypeProperties {
      */
     public void validate() {
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model ZendeskLinkedServiceTypeProperties"));
         }
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model ZendeskLinkedServiceTypeProperties"));
@@ -205,4 +202,6 @@ public final class ZendeskLinkedServiceTypeProperties {
             apiToken().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ZendeskLinkedServiceTypeProperties.class);
 }

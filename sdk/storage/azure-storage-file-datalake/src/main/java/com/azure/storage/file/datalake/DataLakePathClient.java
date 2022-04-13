@@ -14,14 +14,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
-import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
@@ -942,67 +937,6 @@ public class DataLakePathClient {
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blockBlobClient.existsWithResponse(timeout, context), LOGGER);
-    }
-
-    /**
-     * Package-private rename method for use by {@link DataLakeFileClient} and {@link DataLakeDirectoryClient}
-     *
-     * @param destinationFileSystem The file system of the destination within the account.
-     * {@code null} for the current file system.
-     * @param destinationPath The path of the destination relative to the file system name.
-     * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
-     * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * DataLakePathClient} used to interact with the path created.
-     */
-    Mono<Response<DataLakePathClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
-        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
-        Context context) {
-
-        destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
-            : destinationRequestConditions;
-        sourceRequestConditions = sourceRequestConditions == null ? new DataLakeRequestConditions()
-            : sourceRequestConditions;
-
-        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
-        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
-            .setSourceIfModifiedSince(sourceRequestConditions.getIfModifiedSince())
-            .setSourceIfUnmodifiedSince(sourceRequestConditions.getIfUnmodifiedSince())
-            .setSourceIfMatch(sourceRequestConditions.getIfMatch())
-            .setSourceIfNoneMatch(sourceRequestConditions.getIfNoneMatch());
-
-        LeaseAccessConditions destLac = new LeaseAccessConditions()
-            .setLeaseId(destinationRequestConditions.getLeaseId());
-        ModifiedAccessConditions destMac = new ModifiedAccessConditions()
-            .setIfMatch(destinationRequestConditions.getIfMatch())
-            .setIfNoneMatch(destinationRequestConditions.getIfNoneMatch())
-            .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
-
-        DataLakePathClient dataLakePathClient = getPathClient(destinationFileSystem, destinationPath);
-
-        String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/"
-            + Utility.urlEncode(dataLakePathAsyncClient.getObjectPath());
-
-        return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
-            null /* requestId */, null /* timeout */, null /* pathResourceType */,
-            null /* continuation */, PathRenameMode.LEGACY, renameSource,
-            sourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */, null /* umask */,
-            null /* headers */, destLac, destMac, sourceConditions, context)
-            .map(response -> new SimpleResponse<>(response, dataLakePathClient));
-    }
-
-    private DataLakePathClient getPathClient(String destinationFileSystem, String destinationPath) {
-
-        if (destinationFileSystem == null) {
-            destinationFileSystem = dataLakePathAsyncClient.getFileSystemName();
-        }
-
-        return new DataLakePathClient(
-            dataLakePathAsyncClient.getPathAsyncClient(destinationFileSystem, destinationPath),
-            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
-                .buildBlockBlobClient());
     }
 
     BlockBlobClient getBlockBlobClient() {

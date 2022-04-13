@@ -1,6 +1,6 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,34 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.14.0 (2022-04-11)
+
+### Features Added
+
+- Supported disabling Kubernetes Role-Based Access Control for `KubernetesCluster` during create.
+- Supported enabling Azure AD integration for `KubernetesCluster`.
+- Supported disabling local accounts for `KubernetesCluster`.
+- Supported disk encryption set for `KubernetesCluster`.
+
+### Bugs Fixed
+
+- Fixed a bug that `orchestratorVersion` not initialized in agent pool.
+
+### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
+- Changed behavior that Linux profile is not required for `KubernetesCluster` during create.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-02-01`.
+
+## 2.12.2 (2022-03-17)
+
+### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
 
 ## 2.13.0 (2022-03-11)
 

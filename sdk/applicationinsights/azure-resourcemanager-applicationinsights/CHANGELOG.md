@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2022-03-24)
+
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2022-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Workbooks` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.Workbooks` was modified
+
+* `getByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.3 (2022-01-30)
 

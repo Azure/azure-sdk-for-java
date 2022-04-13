@@ -23,7 +23,6 @@ import org.apache.avro.util.ByteBufferInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -34,6 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerBuilder.MAX_CACHE_SIZE;
 
 /**
  * Class containing implementation of Apache Avro serializer
@@ -46,9 +48,9 @@ class AvroSerializer {
 
     private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
     private final boolean avroSpecificReader;
-    private final Schema.Parser parser;
     private final EncoderFactory encoderFactory;
     private final DecoderFactory decoderFactory;
+    private final Map<String, Schema> parsedSchemas = new ConcurrentHashMap<>();
 
     static {
         final HashMap<Class<?>, Schema> schemas = new HashMap<>();
@@ -93,15 +95,13 @@ class AvroSerializer {
      *
      * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
      *     SpecificRecords}.
-     * @param parser Schema parser to use.
      * @param encoderFactory Encoder factory
      * @param decoderFactory Decoder factory
      */
-    AvroSerializer(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
+    AvroSerializer(boolean avroSpecificReader, EncoderFactory encoderFactory,
         DecoderFactory decoderFactory) {
 
         this.avroSpecificReader = avroSpecificReader;
-        this.parser = Objects.requireNonNull(parser, "'parser' cannot be null.");
         this.encoderFactory = Objects.requireNonNull(encoderFactory, "'encoderFactory' cannot be null.");
         this.decoderFactory = Objects.requireNonNull(decoderFactory, "'decoderFactory' cannot be null.");
     }
@@ -112,13 +112,28 @@ class AvroSerializer {
      * @return avro schema
      */
     Schema parseSchemaString(String schemaString) {
-        return this.parser.parse(schemaString);
+        // Schema.Parser "remembers" all the named schemas previously parsed and throws
+        // SchemaParseException if an attempt to parse the same schema is made.
+        // So, we create a new instance of Schema.Parser each time since this method can
+        // be called multiple times for the same schema and there's no reliable way to know from the schema string
+        // that the named schema has not already been parsed.
+
+        // We'll cache the entire schema string to minimize the need to parse the same string multiple times but we
+        // should switch to LRU cache as we don't want to store unlimited schemas and some schema strings can be very
+        // large and they should not be kept in memory if it's not actively used.
+
+        // TODO(srnagar): change to LRU cache after this PR is merged - https://github.com/Azure/azure-sdk-for-java/pull/27408
+        if (parsedSchemas.size() > MAX_CACHE_SIZE) {
+            parsedSchemas.clear();
+        }
+        return parsedSchemas.computeIfAbsent(schemaString, schema -> new Schema.Parser().parse(schema));
     }
 
     /**
      * Returns A byte[] containing Avro encoding of object parameter.
      *
      * @param object Object to be encoded into byte stream
+     * @param schemaId Identifier of the schema trying to be encoded.
      *
      * @return A set of bytes that represent the object.
      *
@@ -126,7 +141,7 @@ class AvroSerializer {
      * @throws IllegalStateException if the object could not be serialized to an object stream or there was a
      *     runtime exception during serialization.
      */
-    <T> byte[] encode(T object) {
+    <T> byte[] serialize(T object, String schemaId) {
         final Schema schema = getSchema(object);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -147,7 +162,8 @@ class AvroSerializer {
             return outputStream.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
-            throw logger.logExceptionAsError(new IllegalStateException("Error serializing Avro message", e));
+            throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
+                "An error occurred while attempting to serialize to Avro.", e, schemaId));
         }
     }
 
@@ -157,7 +173,7 @@ class AvroSerializer {
      *
      * @return deserialized object
      */
-    <T> T decode(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
+    <T> T deserialize(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
         Objects.requireNonNull(contents, "'bytes' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
@@ -170,7 +186,7 @@ class AvroSerializer {
             try {
                 return messageDecoder.decode(contents);
             } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
                     "Unable to deserialize Avro schema object using binary message decoder.", e));
             }
         } else {
@@ -181,7 +197,8 @@ class AvroSerializer {
                     return reader.read(null, decoderFactory.binaryDecoder(input, null));
                 }
             } catch (IOException | RuntimeException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
+                    "Error deserializing raw Avro message.", e));
             }
         }
     }

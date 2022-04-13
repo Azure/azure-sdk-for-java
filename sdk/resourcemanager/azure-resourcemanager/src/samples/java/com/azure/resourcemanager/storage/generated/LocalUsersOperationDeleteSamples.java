@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LocalUsersOperation Delete. */
 public final class LocalUsersOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/LocalUserDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/LocalUserDelete.json
      */
     /**
      * Sample code: DeleteLocalUser.

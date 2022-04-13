@@ -1,12 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionInner;
@@ -19,6 +24,7 @@ import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
@@ -34,14 +40,16 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import reactor.core.publisher.Flux;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -55,6 +63,10 @@ public class KubernetesClusterImpl
     private List<CredentialResult> adminKubeConfigs;
     private List<CredentialResult> userKubeConfigs;
     private final Map<Format, List<CredentialResult>> formatUserKubeConfigsMap = new ConcurrentHashMap<>();
+
+    private ManagedClusterInner parameterSnapshotOnUpdate;
+    private static final SerializerAdapter SERIALIZER_ADAPTER =
+        SerializerFactory.createDefaultManagementSerializerAdapter();
 
     protected KubernetesClusterImpl(String name, ManagedClusterInner innerObject, ContainerServiceManager manager) {
         super(name, innerObject, manager);
@@ -240,6 +252,32 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public List<String> azureActiveDirectoryGroupIds() {
+        if (innerModel().aadProfile() == null
+            || CoreUtils.isNullOrEmpty(innerModel().aadProfile().adminGroupObjectIDs())) {
+            return Collections.emptyList();
+        } else {
+            return Collections.unmodifiableList(innerModel().aadProfile().adminGroupObjectIDs());
+        }
+    }
+
+    @Override
+    public boolean isLocalAccountsEnabled() {
+        return !ResourceManagerUtils.toPrimitiveBoolean(innerModel().disableLocalAccounts());
+    }
+
+    @Override
+    public boolean isAzureRbacEnabled() {
+        return innerModel().aadProfile() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(innerModel().aadProfile().enableAzureRbac());
+    }
+
+    @Override
+    public String diskEncryptionSetId() {
+        return innerModel().diskEncryptionSetId();
+    }
+
+    @Override
     public void start() {
         this.startAsync().block();
     }
@@ -259,50 +297,84 @@ public class KubernetesClusterImpl
         return manager().kubernetesClusters().stopAsync(this.resourceGroupName(), this.name());
     }
 
-    private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {
-        return this
-            .manager()
-            .kubernetesClusters()
-            .listAdminKubeConfigContentAsync(self.resourceGroupName(), self.name())
-            .map(
-                kubeConfigs -> {
-                    self.adminKubeConfigs = kubeConfigs;
-                    return self.adminKubeConfigs;
-                });
-    }
-
-    private Mono<List<CredentialResult>> listUserConfig(final KubernetesClusterImpl self) {
-        return this
-            .manager()
-            .kubernetesClusters()
-            .listUserKubeConfigContentAsync(self.resourceGroupName(), self.name())
-            .map(
-                kubeConfigs -> {
-                    self.userKubeConfigs = kubeConfigs;
-                    return self.userKubeConfigs;
-                });
-    }
-
     @Override
     protected Mono<ManagedClusterInner> getInnerAsync() {
-        final KubernetesClusterImpl self = this;
-        final Mono<List<CredentialResult>> adminConfig = listAdminConfig(self);
-        final Mono<List<CredentialResult>> userConfig = listUserConfig(self);
         return this
             .manager()
             .serviceClient()
             .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
-            .flatMap(
-                managedClusterInner ->
-                    Flux
-                        .merge(adminConfig, userConfig)
-                        .last()
-                        .map(
-                            bytes -> {
-                                formatUserKubeConfigsMap.clear();
-                                return managedClusterInner;
-                            }));
+            .map(inner -> {
+                clearKubeConfig();
+                return inner;
+            });
+    }
+
+    @Override
+    public KubernetesClusterImpl update() {
+        parameterSnapshotOnUpdate = this.deepCopyInner();
+        parameterSnapshotOnUpdate.withServicePrincipalProfile(null);    // servicePrincipalProfile is null in update
+        return super.update();
+    }
+
+    boolean isClusterModifiedDuringUpdate(ManagedClusterInner parameter) {
+        if (parameterSnapshotOnUpdate == null || parameter == null) {
+            return true;
+        } else {
+            final List<ManagedClusterAgentPoolProfile> parameterSnapshotAgentPools =
+                parameterSnapshotOnUpdate.agentPoolProfiles();
+            final List<ManagedClusterAgentPoolProfile> parameterAgentPools = parameter.agentPoolProfiles();
+
+            // intersection of agent pool names
+            Set<String> intersectAgentPoolNames = parameter.agentPoolProfiles().stream()
+                .map(ManagedClusterAgentPoolProfile::name)
+                .collect(Collectors.toSet());
+            intersectAgentPoolNames.retainAll(parameterSnapshotOnUpdate.agentPoolProfiles().stream()
+                .map(ManagedClusterAgentPoolProfile::name)
+                .collect(Collectors.toSet()));
+
+            // compare the intersection, as add/delete is handled by REST API on AgentPoolsClient
+            List<ManagedClusterAgentPoolProfile> agentPools = parameterSnapshotOnUpdate.agentPoolProfiles()
+                .stream()
+                .filter(p -> intersectAgentPoolNames.contains(p.name()))
+                .collect(Collectors.toList());
+            // will be reverted in finally block
+            parameterSnapshotOnUpdate.withAgentPoolProfiles(agentPools);
+
+            agentPools = parameter.agentPoolProfiles()
+                .stream()
+                .filter(p -> intersectAgentPoolNames.contains(p.name()))
+                .collect(Collectors.toList());
+            // will be reverted in finally block
+            parameter.withAgentPoolProfiles(agentPools);
+
+            try {
+                String jsonStrSnapshot =
+                    SERIALIZER_ADAPTER.serialize(parameterSnapshotOnUpdate, SerializerEncoding.JSON);
+                String jsonStr = SERIALIZER_ADAPTER.serialize(parameter, SerializerEncoding.JSON);
+                return !jsonStr.equals(jsonStrSnapshot);
+            } catch (IOException e) {
+                // ignored, treat as modified
+                return true;
+            } finally {
+                parameterSnapshotOnUpdate.withAgentPoolProfiles(parameterSnapshotAgentPools);
+                parameter.withAgentPoolProfiles(parameterAgentPools);
+            }
+        }
+    }
+
+    ManagedClusterInner deepCopyInner() {
+        ManagedClusterInner updateParameter;
+        try {
+            // deep copy via json
+            String jsonStr = SERIALIZER_ADAPTER.serialize(this.innerModel(), SerializerEncoding.JSON);
+            updateParameter =
+                SERIALIZER_ADAPTER.deserialize(jsonStr, ManagedClusterInner.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            // ignored, null to signify not available
+            updateParameter = null;
+        }
+        return updateParameter;
     }
 
     @Override
@@ -311,24 +383,29 @@ public class KubernetesClusterImpl
         if (!this.isInCreateMode()) {
             this.innerModel().withServicePrincipalProfile(null);
         }
-        final Mono<List<CredentialResult>> adminConfig = listAdminConfig(self);
-        final Mono<List<CredentialResult>> userConfig = listUserConfig(self);
 
-        return this
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.innerModel())
-            .flatMap(
-                inner ->
-                    Flux
-                        .merge(adminConfig, userConfig)
-                        .last()
-                        .map(
-                            bytes -> {
-                                self.setInner(inner);
-                                return self;
-                            }));
+        final boolean createOrModified = this.isInCreateMode() || this.isClusterModifiedDuringUpdate(this.innerModel());
+
+        if (createOrModified) {
+            return this
+                .manager()
+                .serviceClient()
+                .getManagedClusters()
+                .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.innerModel())
+                .map(inner -> {
+                    self.setInner(inner);
+                    clearKubeConfig();
+                    return self;
+                });
+        } else {
+            return Mono.just(this);
+        }
+    }
+
+    private void clearKubeConfig() {
+        this.adminKubeConfigs = null;
+        this.userKubeConfigs = null;
+        this.formatUserKubeConfigsMap.clear();
     }
 
     @Override
@@ -379,12 +456,6 @@ public class KubernetesClusterImpl
         return this;
     }
 
-//    @Override
-//    public KubernetesClusterImpl enableRoleBasedAccessControl() {
-//        this.innerModel().withEnableRbac(true);
-//        return this;
-//    }
-
     @Override
     public KubernetesClusterImpl withServicePrincipalSecret(String secret) {
         this.innerModel().servicePrincipalProfile().withSecret(secret);
@@ -399,8 +470,9 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterAgentPoolImpl defineAgentPool(String name) {
-        ManagedClusterAgentPoolProfile innerPoolProfile = new ManagedClusterAgentPoolProfile();
-        innerPoolProfile.withName(name);
+        ManagedClusterAgentPoolProfile innerPoolProfile = new ManagedClusterAgentPoolProfile()
+            .withName(name)
+            .withOrchestratorVersion(this.innerModel().kubernetesVersion());
         return new KubernetesClusterAgentPoolImpl(innerPoolProfile, this);
     }
 
@@ -518,6 +590,55 @@ public class KubernetesClusterImpl
                 .collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
+    }
+
+    @Override
+    public KubernetesClusterImpl withAzureActiveDirectoryGroup(String activeDirectoryGroupObjectId) {
+        this.withRBACEnabled();
+
+        if (innerModel().aadProfile() == null) {
+            innerModel().withAadProfile(new ManagedClusterAadProfile().withManaged(true));
+        }
+        if (innerModel().aadProfile().adminGroupObjectIDs() == null) {
+            innerModel().aadProfile().withAdminGroupObjectIDs(new ArrayList<>());
+        }
+        innerModel().aadProfile().adminGroupObjectIDs().add(activeDirectoryGroupObjectId);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enableAzureRbac() {
+        this.withRBACEnabled();
+
+        if (innerModel().aadProfile() == null) {
+            innerModel().withAadProfile(new ManagedClusterAadProfile().withManaged(true));
+        }
+        innerModel().aadProfile().withEnableAzureRbac(true);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enableLocalAccounts() {
+        innerModel().withDisableLocalAccounts(false);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl disableLocalAccounts() {
+        innerModel().withDisableLocalAccounts(true);
+        return this;
+    }
+
+    @Override
+    public KubernetesCluster.DefinitionStages.WithCreate disableKubernetesRbac() {
+        this.innerModel().withEnableRbac(false);
+        return this;
+    }
+
+    @Override
+    public KubernetesCluster.DefinitionStages.WithCreate withDiskEncryptionSet(String diskEncryptionSetId) {
+        this.innerModel().withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
     }
 
     private static final class PrivateLinkResourceImpl implements PrivateLinkResource {

@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Dataset;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dataset resource type. */
 @Fluent
 public final class DatasetResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetResourceInner.class);
-
     /*
      * Dataset properties.
      */
@@ -101,11 +98,13 @@ public final class DatasetResourceInner extends SubResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property properties in model DatasetResourceInner"));
         } else {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatasetResourceInner.class);
 }

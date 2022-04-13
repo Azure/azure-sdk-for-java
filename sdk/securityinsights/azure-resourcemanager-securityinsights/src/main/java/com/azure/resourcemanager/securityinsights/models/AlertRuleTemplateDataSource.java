@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** alert rule template data sources. */
 @Fluent
 public final class AlertRuleTemplateDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleTemplateDataSource.class);
-
     /*
      * The connector id that provides the following data types
      */

@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -43,8 +42,6 @@ public final class PolicyAssignmentsClientImpl
     implements InnerSupportsListing<PolicyAssignmentInner>,
         InnerSupportsDelete<PolicyAssignmentInner>,
         PolicyAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(PolicyAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyAssignmentsService service;
 

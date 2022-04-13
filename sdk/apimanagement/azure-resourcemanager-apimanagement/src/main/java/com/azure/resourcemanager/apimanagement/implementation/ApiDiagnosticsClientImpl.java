@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiDiagnosticsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiDiagnosticsCreateOrUpdateResponse;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApiDiagnosticsClient. */
 public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
-    private final ClientLogger logger = new ClientLogger(ApiDiagnosticsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApiDiagnosticsService service;
 
@@ -202,7 +199,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceSinglePageAsync(
@@ -273,7 +271,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceSinglePageAsync(
@@ -346,7 +345,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiagnosticContractInner> listByServiceAsync(
@@ -365,7 +364,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiagnosticContractInner> listByServiceAsync(
@@ -393,7 +392,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiagnosticContractInner> listByServiceAsync(
@@ -418,7 +417,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticContractInner> listByService(
@@ -444,7 +443,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticContractInner> listByService(
@@ -469,7 +468,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
+     * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -528,7 +528,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
+     * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -583,7 +584,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
+     * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(
@@ -637,7 +639,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Diagnostic for an API specified by its identifier.
+     * @return the details of the Diagnostic for an API specified by its identifier on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsGetResponse> getWithResponseAsync(
@@ -696,7 +699,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Diagnostic for an API specified by its identifier.
+     * @return the details of the Diagnostic for an API specified by its identifier on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsGetResponse> getWithResponseAsync(
@@ -751,7 +755,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Diagnostic for an API specified by its identifier.
+     * @return the details of the Diagnostic for an API specified by its identifier on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticContractInner> getAsync(
@@ -816,7 +821,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic details.
+     * @return diagnostic details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -889,7 +894,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic details.
+     * @return diagnostic details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -959,7 +964,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic details.
+     * @return diagnostic details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticContractInner> createOrUpdateAsync(
@@ -991,7 +996,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic details.
+     * @return diagnostic details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticContractInner> createOrUpdateAsync(
@@ -1078,7 +1083,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic details.
+     * @return diagnostic details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsUpdateResponse> updateWithResponseAsync(
@@ -1155,7 +1160,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic details.
+     * @return diagnostic details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiDiagnosticsUpdateResponse> updateWithResponseAsync(
@@ -1229,7 +1234,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostic details.
+     * @return diagnostic details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticContractInner> updateAsync(
@@ -1318,7 +1323,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1383,7 +1388,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1449,7 +1454,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1490,7 +1495,7 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1510,7 +1515,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1546,7 +1552,8 @@ public final class ApiDiagnosticsClientImpl implements ApiDiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceNextSinglePageAsync(

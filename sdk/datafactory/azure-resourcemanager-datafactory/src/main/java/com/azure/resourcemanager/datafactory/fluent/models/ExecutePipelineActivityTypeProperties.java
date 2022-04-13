@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.PipelineReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +14,6 @@ import java.util.Map;
 /** Execute pipeline activity properties. */
 @Fluent
 public final class ExecutePipelineActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecutePipelineActivityTypeProperties.class);
-
     /*
      * Pipeline reference.
      */
@@ -106,7 +103,7 @@ public final class ExecutePipelineActivityTypeProperties {
      */
     public void validate() {
         if (pipeline() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property pipeline in model ExecutePipelineActivityTypeProperties"));
@@ -114,4 +111,6 @@ public final class ExecutePipelineActivityTypeProperties {
             pipeline().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecutePipelineActivityTypeProperties.class);
 }

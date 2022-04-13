@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.ActivityRunsQueryResp
 import com.azure.resourcemanager.datafactory.models.ActivityRuns;
 import com.azure.resourcemanager.datafactory.models.ActivityRunsQueryResponse;
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ActivityRunsImpl implements ActivityRuns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityRunsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ActivityRunsImpl.class);
 
     private final ActivityRunsClient innerClient;
 

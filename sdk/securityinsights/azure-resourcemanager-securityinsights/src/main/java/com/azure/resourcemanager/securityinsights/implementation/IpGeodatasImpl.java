@@ -12,10 +12,9 @@ import com.azure.resourcemanager.securityinsights.fluent.IpGeodatasClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EnrichmentIpGeodataInner;
 import com.azure.resourcemanager.securityinsights.models.EnrichmentIpGeodata;
 import com.azure.resourcemanager.securityinsights.models.IpGeodatas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IpGeodatasImpl implements IpGeodatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpGeodatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpGeodatasImpl.class);
 
     private final IpGeodatasClient innerClient;
 

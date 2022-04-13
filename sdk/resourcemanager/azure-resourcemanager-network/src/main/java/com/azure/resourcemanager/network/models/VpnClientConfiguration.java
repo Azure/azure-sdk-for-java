@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VpnClientConfiguration for P2S client. */
 @Fluent
 public final class VpnClientConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConfiguration.class);
-
     /*
      * The reference to the address space resource which represents Address
      * space for P2S VpnClient.

@@ -495,7 +495,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
 
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
@@ -716,7 +716,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
         String sourceAuth = options.getSourceAuthorization() == null

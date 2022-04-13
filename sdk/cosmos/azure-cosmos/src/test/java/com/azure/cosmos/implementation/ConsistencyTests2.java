@@ -184,7 +184,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             cosmosQueryRequestOptions.setSessionToken(token);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
-            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), cosmosQueryRequestOptions);
+            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(
+                parentResource.getSelfLink(), cosmosQueryRequestOptions, Document.class);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -235,9 +236,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 try {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
                     ModelBridgeInternal.setQueryRequestOptionsEmptyPagesAllowed(cosmosQueryRequestOptions, true);
-                    FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
-                                                                                 "SELECT * FROM c WHERE c.Id = " +
-                                                                                         "'foo'", cosmosQueryRequestOptions)
+                    FeedResponse<Document> queryResponse = client.queryDocuments(
+                        createdCollection.getSelfLink(),
+                        "SELECT * FROM c WHERE c.Id = 'foo'",
+                        cosmosQueryRequestOptions,
+                        Document.class)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);
                     long lsn = Long.valueOf(lsnHeaderValue);

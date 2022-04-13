@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,8 +31,6 @@ import java.util.Map;
 })
 @Fluent
 public class Trigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Trigger.class);
-
     /*
      * Trigger description.
      */
