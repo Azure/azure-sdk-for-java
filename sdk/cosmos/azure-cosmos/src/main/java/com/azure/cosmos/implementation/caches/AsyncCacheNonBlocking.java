@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -35,6 +37,17 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                 return false;
             return value1.equals(value2);
         });
+    }
+
+    public boolean removeNotFoundFromCacheOnException(Exception exception) {
+        if (exception.equals(CosmosException.class)) {
+            CosmosException dce = Utils.as(exception, CosmosException.class);
+
+            if (dce != null && dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -72,46 +85,46 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
         if (initialLazyValue != null) {
             logger.debug("cache[{}] exists", key);
             return initialLazyValue.getValueAsync().flatMap(value -> {
-                try {
-                    if (!forceRefresh) {
-                        return Mono.just(value);
-                    }
-                } catch (Exception e) {
-                    // This is needed for scenarios where the initial GetAsync was
-                    // called but never awaited.
-                    if (initialLazyValue.shouldRemoveFromCache()) {
-                        this.remove(key);
-                        logger.debug("cache[{}] resulted in error", key, e);
-                    }
+                if(!forceRefresh) {
+                    return Mono.just(value);
                 }
 
-                try {
-                    return initialLazyValue.createAndWaitForBackgroundRefreshTaskAsync(singleValueInitFunc);
-                } catch (Exception e) {
-                    if (initialLazyValue.shouldRemoveFromCache()) {
-                        logger.debug("cache[{}] resulted in error, refresh failed", key, e);
-                        if (e.equals(CosmosException.class)) {
+                Mono<TValue> refreshMono = initialLazyValue.createAndWaitForBackgroundRefreshTaskAsync(singleValueInitFunc);
+                AsyncLazyWithRefresh<TValue> asyncLazyWithRefresh = new AsyncLazyWithRefresh<TValue>(refreshMono);
+                this.values.put(key, asyncLazyWithRefresh);
+                AsyncLazyWithRefresh<TValue> result = this.values.get(key);
+
+                return result.getValueAsync().onErrorResume(
+                    (error) -> {
+                        logger.debug("refresh cache [{}] resulted in error", key, error);
+                        if (initialLazyValue.shouldRemoveFromCache()) {
                             this.remove(key);
                         }
+                        return Mono.empty();
                     }
+                );
+            }).onErrorResume((error) -> {
+                logger.debug("cache[{}] resulted in error", key, error);
+                if (initialLazyValue.shouldRemoveFromCache()) {
+                    this.remove(key);
                 }
                 return Mono.empty();
             });
         }
 
+        logger.debug("cache[{}] doesn't exist, computing new value", key);
         AsyncLazyWithRefresh<TValue> asyncLazyWithRefresh = new AsyncLazyWithRefresh<TValue>(singleValueInitFunc);
         this.values.putIfAbsent(key, asyncLazyWithRefresh);
         AsyncLazyWithRefresh<TValue> result = this.values.get(key);
 
-        try {
-            return result.getValueAsync();
-        } catch (Exception e) {
-            logger.debug("cache[{}] resulted in error", key, e);
-            // Remove the failed task from the dictionary so future requests can send other calls..
-            this.remove(key);
-
-        }
-        return Mono.empty();
+        return result.getValueAsync().onErrorResume(
+            (error) -> {
+                logger.debug("cache[{}] resulted in error", key, error);
+                // Remove the failed task from the dictionary so future requests can send other calls..
+                this.remove(key);
+                return Mono.empty();
+            }
+        );
     }
 
     public void set(TKey key, TValue value) {
@@ -141,6 +154,12 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
         public AsyncLazyWithRefresh(TValue value) {
             this.createValueFunc = null;
             this.value = Mono.just(value);
+            this.refreshInProgress = null;
+        }
+
+        public AsyncLazyWithRefresh(Mono<TValue> value) {
+            this.createValueFunc = null;
+            this.value = value;
             this.refreshInProgress = null;
         }
 
@@ -180,32 +199,15 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                 return valueMono;
             });
 
-            AtomicReference<Mono<TValue>> refreshMono = new AtomicReference<>(this.refreshInProgress);
-            refreshMono.get().flatMap(value -> {
-                Mono<TValue> result = refreshMono.get();
-                return result;
-            });
-
-            AtomicBoolean createdRefresh = new AtomicBoolean(false);
+            AtomicReference<Mono<TValue>> refreshMono = new AtomicReference<>();
             valueLock.lock();
             try {
-                refreshMono.get().doOnNext(a -> {
-                    createdRefresh.set(true);
-                    this.refreshInProgress = createRefreshFunction.apply(originalValue.get());
-                    refreshMono.set(this.refreshInProgress);
-                });
+                this.refreshInProgress = createRefreshFunction.apply(originalValue.get());
+                refreshMono.set(this.refreshInProgress);
+                return refreshMono.get();
             } finally {
                 valueLock.unlock();
             }
-
-            if (!createdRefresh.get()) {
-                Mono<TValue> result = refreshMono.get();
-                return result;
-            }
-
-            Mono<TValue> itemResult = refreshMono.get();
-            // TODO: Didn't understand the .net implementation
-            return itemResult;
         }
 
         public boolean shouldRemoveFromCache() {

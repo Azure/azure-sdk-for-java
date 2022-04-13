@@ -43,13 +43,13 @@ import java.util.stream.Collectors;
 public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
-    private final AsyncCache<String, CollectionRoutingMap> routingMapCache;
+    private final AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapCache;
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
-        this.routingMapCache = new AsyncCache<>();
+        this.routingMapCache = new AsyncCacheNonBlocking<>();
         this.client = client;
         this.collectionCache = collectionCache;
         this.clientContext = client;
@@ -62,8 +62,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties) {
         return routingMapCache.getAsync(
                 collectionRid,
-                previousValue,
-                () -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue, properties))
+                routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue, properties), false)
                               .map(Utils.ValueHolder::new)
                               .onErrorResume(err -> {
                                   logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
@@ -151,8 +150,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties) {
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
                 collectionRid,
-                null,
-                () -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties)).map(Utils.ValueHolder::new);
+                routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties), false).map(Utils.ValueHolder::new);
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
