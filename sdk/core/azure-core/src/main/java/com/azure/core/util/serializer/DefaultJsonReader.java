@@ -101,7 +101,7 @@ public final class DefaultJsonReader implements JsonReader {
     }
 
     @Override
-    public void skipValue() {
+    public void skipChildren() {
         callWithWrappedIoException(parser::skipChildren);
     }
 

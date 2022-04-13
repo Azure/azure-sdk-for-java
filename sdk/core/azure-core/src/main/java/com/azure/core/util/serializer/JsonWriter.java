@@ -140,6 +140,21 @@ public interface JsonWriter extends Closeable {
     JsonWriter writeString(String value);
 
     /**
+     * Writes the passed value literally without any additional handling.
+     * <p>
+     * Use this API when writing a String value that is already properly formatted JSON, such as a JSON string
+     * ({@code "\"string\""}), number ({@code "42"}, {@code "42.0"}), boolean ({@code "true"}, {@code "false"}), null
+     * ({@code "null"}), array ({@code "[\"string\", \"array\"]"}), or object ({@code {"\"field\":\"value\""}}).
+     * <p>
+     * This API is used instead of {@link #writeRawField(String, String)} when the value needs to be written to the root
+     * of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     *
+     * @param value The raw JSON value to write.
+     * @return The updated JsonWriter object.
+     */
+    JsonWriter writeRawValue(String value);
+
+    /**
      * Writes a JSON binary field.
      * <p>
      * Combines {@link #writeFieldName(String)} and {@link #writeBinary(byte[])} to simplify adding a key-value to a
@@ -233,4 +248,20 @@ public interface JsonWriter extends Closeable {
      * @return The updated JsonWriter object.
      */
     JsonWriter writeStringField(String fieldName, String value);
+
+    /**
+     * Writes the passed field literally without any additional handling.
+     * <p>
+     * Use this API when writing a String value that is already properly formatted JSON, such as a JSON string
+     * ({@code "\"string\""}), number ({@code "42"}, {@code "42.0"}), boolean ({@code "true"}, {@code "false"}), null
+     * ({@code "null"}), array ({@code "[\"string\", \"array\"]"}), or object ({@code {"\"field\":\"value\""}}).
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeRawValue(String)} to simplify adding a key-value to a
+     * JSON object.
+     *
+     * @param fieldName The field name.
+     * @param value The raw JSON value to write.
+     * @return The updated JsonWriter object.
+     */
+    JsonWriter writeRawField(String fieldName, String value);
 }

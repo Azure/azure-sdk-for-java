@@ -109,12 +109,7 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
         //
         // States 1 and 3 could be combined with DefaultJsonReader.fromString("null").
 
-        JsonToken token = jsonReader.currentToken();
-
-        // The JsonReader was just initialized and isn't pointing to a current token.
-        if (token == null) {
-            token = jsonReader.nextToken();
-        }
+        JsonToken token = jsonReader.beginReadingObject();
 
         // The JSON value for this type is null, return null.
         if (token == JsonToken.NULL) {
