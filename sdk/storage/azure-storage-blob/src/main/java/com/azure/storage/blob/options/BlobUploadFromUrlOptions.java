@@ -6,7 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobCopySourceTags;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -26,7 +26,7 @@ public class BlobUploadFromUrlOptions {
     private BlobRequestConditions sourceRequestConditions;
     private Boolean copySourceBlobProperties;
     private HttpAuthorization sourceAuthorization;
-    private BlobCopySourceTags copySourceTags;
+    private BlobCopySourceTagsMode copySourceTags;
 
     /**
      * @param sourceUrl The source URL to upload from.
@@ -188,7 +188,7 @@ public class BlobUploadFromUrlOptions {
     /**
      * @return The copy source tags mode.
      */
-    public BlobCopySourceTags getCopySourceTags() {
+    public BlobCopySourceTagsMode getCopySourceTags() {
         return copySourceTags;
     }
 
@@ -198,7 +198,7 @@ public class BlobUploadFromUrlOptions {
      * @param copySourceTags Indicates if a legal hold should be placed on the blob.
      * @return The updated options.
      */
-    public BlobUploadFromUrlOptions setCopySourceTags(BlobCopySourceTags copySourceTags) {
+    public BlobUploadFromUrlOptions setCopySourceTags(BlobCopySourceTagsMode copySourceTags) {
         this.copySourceTags = copySourceTags;
         return this;
     }

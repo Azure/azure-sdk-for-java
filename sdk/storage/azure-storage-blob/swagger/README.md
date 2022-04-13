@@ -573,4 +573,13 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
+### BlobCopySourceTags expandable string enum
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.CopySourceTags
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

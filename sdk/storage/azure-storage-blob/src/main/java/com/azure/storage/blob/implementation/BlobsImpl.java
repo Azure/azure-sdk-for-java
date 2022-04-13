@@ -53,7 +53,7 @@ import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobCopySourceTags;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -487,7 +487,7 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
-                @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTags copySourceTags,
+                @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1902,7 +1902,7 @@ public final class BlobsImpl {
             BlobImmutabilityPolicyMode immutabilityPolicyMode,
             Boolean legalHold,
             String copySourceAuthorization,
-            BlobCopySourceTags copySourceTags,
+            BlobCopySourceTagsMode copySourceTags,
             EncryptionScope encryptionScopeParam,
             Context context) {
         final String xMsRequiresSync = "true";
