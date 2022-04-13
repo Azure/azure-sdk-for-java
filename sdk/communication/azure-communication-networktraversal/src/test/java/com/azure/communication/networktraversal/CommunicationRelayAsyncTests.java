@@ -13,7 +13,8 @@ import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
 import java.time.OffsetDateTime;
-
+import java.time.Instant;
+import java.time.ZoneOffset;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -218,8 +219,9 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         if (user != null) {
             GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
             options.setTtl(5000);
-            OffsetDateTime requestedTime = OffsetDateTime.now();
-            requestedTime.plusSeconds(5000);
+
+            Instant now = Instant.now();
+            OffsetDateTime requestedTime = now.atOffset(ZoneOffset.UTC).plusSeconds(5000);
 
             Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse(options, null);
 
@@ -230,6 +232,8 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
 
                 if (getTestMode() != TestMode.PLAYBACK) {
                     assertTrue(requestedTime.compareTo(response.getValue().getExpiresOn()) <= 0);
+                    OffsetDateTime limitedTime = requestedTime.plusSeconds(10);
+                    assertTrue(response.getValue().getExpiresOn().compareTo(limitedTime) < 0);
                 }
 
                 for (CommunicationIceServer iceS : response.getValue().getIceServers()) {
