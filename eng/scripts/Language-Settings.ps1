@@ -269,6 +269,8 @@ $PackageExclusions = @{
   "azure-storage-internal-avro" = "No external APIs.";
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
+  "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
+  "azure-aot-graalvm-support" = "No Javadocs for the package.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
