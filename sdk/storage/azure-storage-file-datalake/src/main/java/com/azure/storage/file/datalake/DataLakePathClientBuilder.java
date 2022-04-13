@@ -215,6 +215,8 @@ public final class DataLakePathClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryAsyncClient buildDirectoryAsyncClient() {
+        validateConstruction();
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
