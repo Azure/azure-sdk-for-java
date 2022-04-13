@@ -335,7 +335,7 @@ extends:
           - template: ../../../../sdk/spring/spring-sdk-client-test.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
-              SpringBootVersion: 2.6.5
+              SpringBootVersion: 2.7.0-M3
               SpringCloudVersion: 2021.0.1
       - stage: TestCompatibleVersion
         jobs:
