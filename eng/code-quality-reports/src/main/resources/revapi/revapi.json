@@ -113,6 +113,10 @@
           {
             "matcher": "java-package",
             "match": "/org.springframework(..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.google\\.gson(\\..*)?/"
           }
         ]
       }
