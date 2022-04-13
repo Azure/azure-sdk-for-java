@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.6 (2022-04-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-mixedreality-authentication` from `1.2.0` to version `1.2.1`.
+
 ## 1.1.5 (2022-03-10)
 
 ### Other Changes
