@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added new Azure region `Region.CHINA_NORTH3` for Azure China.
+- Added new Azure region `Region.CHINA_NORTH3` and `Region.CHINA_EAST3` for Azure China.
 
 ### Breaking Changes
 
