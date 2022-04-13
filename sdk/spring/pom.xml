@@ -202,7 +202,6 @@
       <id>dev</id>
       <modules>
         <module>../../eng/code-quality-reports</module>
-        <module>../keyvault/azure-security-keyvault-jca</module>
         <module>../boms/spring-cloud-azure-dependencies</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>

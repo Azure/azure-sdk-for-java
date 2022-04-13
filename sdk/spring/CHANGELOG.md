@@ -3,6 +3,7 @@
 ## 4.1.0-beta.1 (Unreleased)
 
 ### Features Added
+- GA the `spring-cloud-azure-starter-keyvault-certificates`. This starter supports the auto-configuration of Azure Key Vault `CertificateClient` and `CertificateAsyncClient`. 
 - Support `Spring Native` for compiling Spring Cloud Azure applications to native executables [#28053](https://github.com/Azure/azure-sdk-for-java/issues/28053), [#28158](https://github.com/Azure/azure-sdk-for-java/pull/28158).
   - spring-cloud-azure-starter-storage-blob
   - spring-cloud-azure-starter-storage-file-share
