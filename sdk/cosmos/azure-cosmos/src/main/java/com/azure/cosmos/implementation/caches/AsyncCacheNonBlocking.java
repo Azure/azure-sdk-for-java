@@ -63,14 +63,6 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
      * value is stale and will only be updated after the force refresh task is complete.
      * </para>
      * <para>
-     * Force refresh is true:
-     * If the key does not exist: It will create and await the new task
-     * If the key exists and the current task is still running: It will return the existing task
-     * If the key exists and the current task is already done: It will start a new task to get the updated values.
-     * Once the refresh task is complete it will be returned to caller.
-     * If it is a success the value in the cache will be updated. If the refresh task throws an exception the key will be removed from the cache.
-     * </para>
-     * <para>
      * If previous initialization function failed - new one will be launched.
      * </para>
      * </summary>

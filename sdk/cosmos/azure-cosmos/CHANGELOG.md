@@ -3,6 +3,7 @@
 ### 4.29.0-beta.1 (Unreleased)
 
 #### Features Added
+AsyncCacheNonBlocking - Improve availability
 
 #### Breaking Changes
 
