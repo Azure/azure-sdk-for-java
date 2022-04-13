@@ -1,14 +1,10 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.0-beta.2 (2022-04-15)
 
 ### Bugs Fixed
 
-### Other Changes
+- Set Ttl parameter in the Communication Relay Async client
 
 ## 1.1.0-beta.1 (2022-03-15)
 
