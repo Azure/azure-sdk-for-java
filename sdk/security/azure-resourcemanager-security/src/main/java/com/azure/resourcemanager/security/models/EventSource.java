@@ -13,8 +13,14 @@ public final class EventSource extends ExpandableStringEnum<EventSource> {
     /** Static value Assessments for EventSource. */
     public static final EventSource ASSESSMENTS = fromString("Assessments");
 
+    /** Static value AssessmentsSnapshot for EventSource. */
+    public static final EventSource ASSESSMENTS_SNAPSHOT = fromString("AssessmentsSnapshot");
+
     /** Static value SubAssessments for EventSource. */
     public static final EventSource SUB_ASSESSMENTS = fromString("SubAssessments");
+
+    /** Static value SubAssessmentsSnapshot for EventSource. */
+    public static final EventSource SUB_ASSESSMENTS_SNAPSHOT = fromString("SubAssessmentsSnapshot");
 
     /** Static value Alerts for EventSource. */
     public static final EventSource ALERTS = fromString("Alerts");

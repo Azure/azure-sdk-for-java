@@ -31,13 +31,22 @@ public interface Pricing {
     String type();
 
     /**
-     * Gets the pricingTier property: The pricing tier value. Azure Security Center is provided in two pricing tiers:
-     * free and standard, with the standard tier available with a trial period. The standard tier offers advanced
+     * Gets the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
+     * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced
      * security capabilities, while the free tier offers basic security features.
      *
      * @return the pricingTier value.
      */
     PricingTier pricingTier();
+
+    /**
+     * Gets the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one
+     * sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is
+     * applied.
+     *
+     * @return the subPlan value.
+     */
+    String subPlan();
 
     /**
      * Gets the freeTrialRemainingTime property: The duration left for the subscriptions free trial period - in ISO 8601

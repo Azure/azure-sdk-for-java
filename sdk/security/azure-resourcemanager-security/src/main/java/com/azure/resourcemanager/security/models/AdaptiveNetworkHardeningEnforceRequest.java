@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AdaptiveNetworkHardeningEnforceRequest model. */
 @Fluent
 public final class AdaptiveNetworkHardeningEnforceRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveNetworkHardeningEnforceRequest.class);
-
     /*
      * The rules to enforce
      */
@@ -78,7 +75,7 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
      */
     public void validate() {
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rules in model AdaptiveNetworkHardeningEnforceRequest"));
@@ -86,11 +83,13 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
             rules().forEach(e -> e.validate());
         }
         if (networkSecurityGroups() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property networkSecurityGroups in model"
                             + " AdaptiveNetworkHardeningEnforceRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdaptiveNetworkHardeningEnforceRequest.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the service principal. */
 @Fluent
 public final class ServicePrincipalProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalProperties.class);
-
     /*
      * Application ID of service principal.
      */

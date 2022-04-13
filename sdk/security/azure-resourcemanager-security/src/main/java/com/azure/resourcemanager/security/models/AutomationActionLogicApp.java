@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The logic app action that should be triggered. To learn more about Security Center's Workflow Automation
+ * The logic app action that should be triggered. To learn more about Microsoft Defender for Cloud's Workflow Automation
  * capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
 @JsonTypeName("LogicApp")
 @Fluent
 public final class AutomationActionLogicApp extends AutomationAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationActionLogicApp.class);
-
     /*
      * The triggered Logic App Azure Resource ID. This can also reside on other
      * subscriptions, given that you have permissions to trigger the Logic App

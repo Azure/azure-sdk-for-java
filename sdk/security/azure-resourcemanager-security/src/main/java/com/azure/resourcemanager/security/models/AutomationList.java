@@ -7,15 +7,12 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.AutomationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of security automations response. */
 @Fluent
 public final class AutomationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationList.class);
-
     /*
      * The list of security automations under the given scope.
      */
@@ -64,11 +61,13 @@ public final class AutomationList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model AutomationList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutomationList.class);
 }

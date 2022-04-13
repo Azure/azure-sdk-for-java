@@ -5,59 +5,19 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.security.fluent.models.SecuritySolutionsReferenceDataProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SecuritySolutionsReferenceData model. */
-@JsonFlatten
 @Fluent
-public class SecuritySolutionsReferenceData extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySolutionsReferenceData.class);
-
+public final class SecuritySolutionsReferenceData extends ProxyResource {
     /*
-     * The security family of the security solution
+     * The properties property.
      */
-    @JsonProperty(value = "properties.securityFamily", required = true)
-    private SecurityFamily securityFamily;
-
-    /*
-     * The security solutions' vendor name
-     */
-    @JsonProperty(value = "properties.alertVendorName", required = true)
-    private String alertVendorName;
-
-    /*
-     * The security solutions' package info url
-     */
-    @JsonProperty(value = "properties.packageInfoUrl", required = true)
-    private String packageInfoUrl;
-
-    /*
-     * The security solutions' product name
-     */
-    @JsonProperty(value = "properties.productName", required = true)
-    private String productName;
-
-    /*
-     * The security solutions' publisher
-     */
-    @JsonProperty(value = "properties.publisher", required = true)
-    private String publisher;
-
-    /*
-     * The security solutions' publisher display name
-     */
-    @JsonProperty(value = "properties.publisherDisplayName", required = true)
-    private String publisherDisplayName;
-
-    /*
-     * The security solutions' template
-     */
-    @JsonProperty(value = "properties.template", required = true)
-    private String template;
+    @JsonProperty(value = "properties", required = true)
+    private SecuritySolutionsReferenceDataProperties innerProperties = new SecuritySolutionsReferenceDataProperties();
 
     /*
      * Location where the resource is stored
@@ -66,143 +26,12 @@ public class SecuritySolutionsReferenceData extends ProxyResource {
     private String location;
 
     /**
-     * Get the securityFamily property: The security family of the security solution.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the securityFamily value.
+     * @return the innerProperties value.
      */
-    public SecurityFamily securityFamily() {
-        return this.securityFamily;
-    }
-
-    /**
-     * Set the securityFamily property: The security family of the security solution.
-     *
-     * @param securityFamily the securityFamily value to set.
-     * @return the SecuritySolutionsReferenceData object itself.
-     */
-    public SecuritySolutionsReferenceData withSecurityFamily(SecurityFamily securityFamily) {
-        this.securityFamily = securityFamily;
-        return this;
-    }
-
-    /**
-     * Get the alertVendorName property: The security solutions' vendor name.
-     *
-     * @return the alertVendorName value.
-     */
-    public String alertVendorName() {
-        return this.alertVendorName;
-    }
-
-    /**
-     * Set the alertVendorName property: The security solutions' vendor name.
-     *
-     * @param alertVendorName the alertVendorName value to set.
-     * @return the SecuritySolutionsReferenceData object itself.
-     */
-    public SecuritySolutionsReferenceData withAlertVendorName(String alertVendorName) {
-        this.alertVendorName = alertVendorName;
-        return this;
-    }
-
-    /**
-     * Get the packageInfoUrl property: The security solutions' package info url.
-     *
-     * @return the packageInfoUrl value.
-     */
-    public String packageInfoUrl() {
-        return this.packageInfoUrl;
-    }
-
-    /**
-     * Set the packageInfoUrl property: The security solutions' package info url.
-     *
-     * @param packageInfoUrl the packageInfoUrl value to set.
-     * @return the SecuritySolutionsReferenceData object itself.
-     */
-    public SecuritySolutionsReferenceData withPackageInfoUrl(String packageInfoUrl) {
-        this.packageInfoUrl = packageInfoUrl;
-        return this;
-    }
-
-    /**
-     * Get the productName property: The security solutions' product name.
-     *
-     * @return the productName value.
-     */
-    public String productName() {
-        return this.productName;
-    }
-
-    /**
-     * Set the productName property: The security solutions' product name.
-     *
-     * @param productName the productName value to set.
-     * @return the SecuritySolutionsReferenceData object itself.
-     */
-    public SecuritySolutionsReferenceData withProductName(String productName) {
-        this.productName = productName;
-        return this;
-    }
-
-    /**
-     * Get the publisher property: The security solutions' publisher.
-     *
-     * @return the publisher value.
-     */
-    public String publisher() {
-        return this.publisher;
-    }
-
-    /**
-     * Set the publisher property: The security solutions' publisher.
-     *
-     * @param publisher the publisher value to set.
-     * @return the SecuritySolutionsReferenceData object itself.
-     */
-    public SecuritySolutionsReferenceData withPublisher(String publisher) {
-        this.publisher = publisher;
-        return this;
-    }
-
-    /**
-     * Get the publisherDisplayName property: The security solutions' publisher display name.
-     *
-     * @return the publisherDisplayName value.
-     */
-    public String publisherDisplayName() {
-        return this.publisherDisplayName;
-    }
-
-    /**
-     * Set the publisherDisplayName property: The security solutions' publisher display name.
-     *
-     * @param publisherDisplayName the publisherDisplayName value to set.
-     * @return the SecuritySolutionsReferenceData object itself.
-     */
-    public SecuritySolutionsReferenceData withPublisherDisplayName(String publisherDisplayName) {
-        this.publisherDisplayName = publisherDisplayName;
-        return this;
-    }
-
-    /**
-     * Get the template property: The security solutions' template.
-     *
-     * @return the template value.
-     */
-    public String template() {
-        return this.template;
-    }
-
-    /**
-     * Set the template property: The security solutions' template.
-     *
-     * @param template the template value to set.
-     * @return the SecuritySolutionsReferenceData object itself.
-     */
-    public SecuritySolutionsReferenceData withTemplate(String template) {
-        this.template = template;
-        return this;
+    private SecuritySolutionsReferenceDataProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -215,52 +44,181 @@ public class SecuritySolutionsReferenceData extends ProxyResource {
     }
 
     /**
+     * Get the securityFamily property: The security family of the security solution.
+     *
+     * @return the securityFamily value.
+     */
+    public SecurityFamily securityFamily() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityFamily();
+    }
+
+    /**
+     * Set the securityFamily property: The security family of the security solution.
+     *
+     * @param securityFamily the securityFamily value to set.
+     * @return the SecuritySolutionsReferenceData object itself.
+     */
+    public SecuritySolutionsReferenceData withSecurityFamily(SecurityFamily securityFamily) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySolutionsReferenceDataProperties();
+        }
+        this.innerProperties().withSecurityFamily(securityFamily);
+        return this;
+    }
+
+    /**
+     * Get the alertVendorName property: The security solutions' vendor name.
+     *
+     * @return the alertVendorName value.
+     */
+    public String alertVendorName() {
+        return this.innerProperties() == null ? null : this.innerProperties().alertVendorName();
+    }
+
+    /**
+     * Set the alertVendorName property: The security solutions' vendor name.
+     *
+     * @param alertVendorName the alertVendorName value to set.
+     * @return the SecuritySolutionsReferenceData object itself.
+     */
+    public SecuritySolutionsReferenceData withAlertVendorName(String alertVendorName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySolutionsReferenceDataProperties();
+        }
+        this.innerProperties().withAlertVendorName(alertVendorName);
+        return this;
+    }
+
+    /**
+     * Get the packageInfoUrl property: The security solutions' package info url.
+     *
+     * @return the packageInfoUrl value.
+     */
+    public String packageInfoUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageInfoUrl();
+    }
+
+    /**
+     * Set the packageInfoUrl property: The security solutions' package info url.
+     *
+     * @param packageInfoUrl the packageInfoUrl value to set.
+     * @return the SecuritySolutionsReferenceData object itself.
+     */
+    public SecuritySolutionsReferenceData withPackageInfoUrl(String packageInfoUrl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySolutionsReferenceDataProperties();
+        }
+        this.innerProperties().withPackageInfoUrl(packageInfoUrl);
+        return this;
+    }
+
+    /**
+     * Get the productName property: The security solutions' product name.
+     *
+     * @return the productName value.
+     */
+    public String productName() {
+        return this.innerProperties() == null ? null : this.innerProperties().productName();
+    }
+
+    /**
+     * Set the productName property: The security solutions' product name.
+     *
+     * @param productName the productName value to set.
+     * @return the SecuritySolutionsReferenceData object itself.
+     */
+    public SecuritySolutionsReferenceData withProductName(String productName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySolutionsReferenceDataProperties();
+        }
+        this.innerProperties().withProductName(productName);
+        return this;
+    }
+
+    /**
+     * Get the publisher property: The security solutions' publisher.
+     *
+     * @return the publisher value.
+     */
+    public String publisher() {
+        return this.innerProperties() == null ? null : this.innerProperties().publisher();
+    }
+
+    /**
+     * Set the publisher property: The security solutions' publisher.
+     *
+     * @param publisher the publisher value to set.
+     * @return the SecuritySolutionsReferenceData object itself.
+     */
+    public SecuritySolutionsReferenceData withPublisher(String publisher) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySolutionsReferenceDataProperties();
+        }
+        this.innerProperties().withPublisher(publisher);
+        return this;
+    }
+
+    /**
+     * Get the publisherDisplayName property: The security solutions' publisher display name.
+     *
+     * @return the publisherDisplayName value.
+     */
+    public String publisherDisplayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().publisherDisplayName();
+    }
+
+    /**
+     * Set the publisherDisplayName property: The security solutions' publisher display name.
+     *
+     * @param publisherDisplayName the publisherDisplayName value to set.
+     * @return the SecuritySolutionsReferenceData object itself.
+     */
+    public SecuritySolutionsReferenceData withPublisherDisplayName(String publisherDisplayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySolutionsReferenceDataProperties();
+        }
+        this.innerProperties().withPublisherDisplayName(publisherDisplayName);
+        return this;
+    }
+
+    /**
+     * Get the template property: The security solutions' template.
+     *
+     * @return the template value.
+     */
+    public String template() {
+        return this.innerProperties() == null ? null : this.innerProperties().template();
+    }
+
+    /**
+     * Set the template property: The security solutions' template.
+     *
+     * @param template the template value to set.
+     * @return the SecuritySolutionsReferenceData object itself.
+     */
+    public SecuritySolutionsReferenceData withTemplate(String template) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySolutionsReferenceDataProperties();
+        }
+        this.innerProperties().withTemplate(template);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (securityFamily() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property securityFamily in model SecuritySolutionsReferenceData"));
-        }
-        if (alertVendorName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertVendorName in model SecuritySolutionsReferenceData"));
-        }
-        if (packageInfoUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property packageInfoUrl in model SecuritySolutionsReferenceData"));
-        }
-        if (productName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property productName in model SecuritySolutionsReferenceData"));
-        }
-        if (publisher() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisher in model SecuritySolutionsReferenceData"));
-        }
-        if (publisherDisplayName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisherDisplayName in model SecuritySolutionsReferenceData"));
-        }
-        if (template() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property template in model SecuritySolutionsReferenceData"));
+                        "Missing required property innerProperties in model SecuritySolutionsReferenceData"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionsReferenceData.class);
 }

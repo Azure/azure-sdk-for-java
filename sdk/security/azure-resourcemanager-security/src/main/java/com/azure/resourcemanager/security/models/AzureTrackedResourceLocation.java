@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes an Azure resource with location. */
 @Fluent
 public class AzureTrackedResourceLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTrackedResourceLocation.class);
-
     /*
      * Location where the resource is stored
      */

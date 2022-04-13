@@ -11,10 +11,9 @@ import com.azure.resourcemanager.security.fluent.SecureScoreControlDefinitionsCl
 import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDefinitionItemInner;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionItem;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecureScoreControlDefinitionsImpl implements SecureScoreControlDefinitions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoreControlDefinitionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecureScoreControlDefinitionsImpl.class);
 
     private final SecureScoreControlDefinitionsClient innerClient;
 

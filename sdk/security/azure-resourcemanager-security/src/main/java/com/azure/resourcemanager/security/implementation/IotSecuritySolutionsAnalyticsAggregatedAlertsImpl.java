@@ -13,12 +13,11 @@ import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsAnalyticsAg
 import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedAlertInner;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedAlert;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionsAnalyticsAggregatedAlerts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertsImpl
     implements IotSecuritySolutionsAnalyticsAggregatedAlerts {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IotSecuritySolutionsAnalyticsAggregatedAlertsImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(IotSecuritySolutionsAnalyticsAggregatedAlertsImpl.class);
 
     private final IotSecuritySolutionsAnalyticsAggregatedAlertsClient innerClient;
 

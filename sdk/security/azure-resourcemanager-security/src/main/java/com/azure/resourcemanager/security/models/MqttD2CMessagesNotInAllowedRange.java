@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -16,8 +14,6 @@ import java.time.Duration;
 @JsonTypeName("MqttD2CMessagesNotInAllowedRange")
 @Fluent
 public final class MqttD2CMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MqttD2CMessagesNotInAllowedRange.class);
-
     /** {@inheritDoc} */
     @Override
     public MqttD2CMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

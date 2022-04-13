@@ -11,7 +11,7 @@ import com.azure.resourcemanager.security.fluent.models.PricingInner;
 /** Resource collection API of Pricings. */
 public interface Pricings {
     /**
-     * Lists Security Center pricing configurations in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -20,54 +20,55 @@ public interface Pricings {
     PricingList list();
 
     /**
-     * Lists Security Center pricing configurations in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
+     * @return list of pricing configurations response along with {@link Response}.
      */
     Response<PricingList> listWithResponse(Context context);
 
     /**
-     * Gets a provided Security Center pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Security Center pricing configuration in the subscription.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      */
     Pricing get(String pricingName);
 
     /**
-     * Gets a provided Security Center pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Security Center pricing configuration in the subscription.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription along with {@link
+     *     Response}.
      */
     Response<Pricing> getWithResponse(String pricingName, Context context);
 
     /**
-     * Updates a provided Security Center pricing configuration in the subscription.
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Security Center is provided in two pricing tiers: free and standard, with the standard tier
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
      *     available with a trial period.
      */
     Pricing update(String pricingName, PricingInner pricing);
 
     /**
-     * Updates a provided Security Center pricing configuration in the subscription.
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
@@ -75,8 +76,8 @@ public interface Pricings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Security Center is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
+     *     available with a trial period along with {@link Response}.
      */
     Response<Pricing> updateWithResponse(String pricingName, PricingInner pricing, Context context);
 }

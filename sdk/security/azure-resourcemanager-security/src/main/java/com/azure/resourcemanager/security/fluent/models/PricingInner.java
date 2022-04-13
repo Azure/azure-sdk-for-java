@@ -5,61 +5,82 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.PricingTier;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /**
- * Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a
- * trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security
- * features.
+ * Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier available
+ * with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic
+ * security features.
  */
-@JsonFlatten
 @Fluent
-public class PricingInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PricingInner.class);
-
+public final class PricingInner extends ProxyResource {
     /*
-     * The pricing tier value. Azure Security Center is provided in two pricing
-     * tiers: free and standard, with the standard tier available with a trial
-     * period. The standard tier offers advanced security capabilities, while
-     * the free tier offers basic security features.
+     * Pricing data
      */
-    @JsonProperty(value = "properties.pricingTier")
-    private PricingTier pricingTier;
-
-    /*
-     * The duration left for the subscriptions free trial period - in ISO 8601
-     * format (e.g. P3Y6M4DT12H30M5S).
-     */
-    @JsonProperty(value = "properties.freeTrialRemainingTime", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration freeTrialRemainingTime;
+    @JsonProperty(value = "properties")
+    private PricingProperties innerProperties;
 
     /**
-     * Get the pricingTier property: The pricing tier value. Azure Security Center is provided in two pricing tiers:
-     * free and standard, with the standard tier available with a trial period. The standard tier offers advanced
+     * Get the innerProperties property: Pricing data.
+     *
+     * @return the innerProperties value.
+     */
+    private PricingProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
+     * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced
      * security capabilities, while the free tier offers basic security features.
      *
      * @return the pricingTier value.
      */
     public PricingTier pricingTier() {
-        return this.pricingTier;
+        return this.innerProperties() == null ? null : this.innerProperties().pricingTier();
     }
 
     /**
-     * Set the pricingTier property: The pricing tier value. Azure Security Center is provided in two pricing tiers:
-     * free and standard, with the standard tier available with a trial period. The standard tier offers advanced
+     * Set the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
+     * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced
      * security capabilities, while the free tier offers basic security features.
      *
      * @param pricingTier the pricingTier value to set.
      * @return the PricingInner object itself.
      */
     public PricingInner withPricingTier(PricingTier pricingTier) {
-        this.pricingTier = pricingTier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PricingProperties();
+        }
+        this.innerProperties().withPricingTier(pricingTier);
+        return this;
+    }
+
+    /**
+     * Get the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
+     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied.
+     *
+     * @return the subPlan value.
+     */
+    public String subPlan() {
+        return this.innerProperties() == null ? null : this.innerProperties().subPlan();
+    }
+
+    /**
+     * Set the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
+     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied.
+     *
+     * @param subPlan the subPlan value to set.
+     * @return the PricingInner object itself.
+     */
+    public PricingInner withSubPlan(String subPlan) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PricingProperties();
+        }
+        this.innerProperties().withSubPlan(subPlan);
         return this;
     }
 
@@ -70,7 +91,7 @@ public class PricingInner extends ProxyResource {
      * @return the freeTrialRemainingTime value.
      */
     public Duration freeTrialRemainingTime() {
-        return this.freeTrialRemainingTime;
+        return this.innerProperties() == null ? null : this.innerProperties().freeTrialRemainingTime();
     }
 
     /**
@@ -79,5 +100,8 @@ public class PricingInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

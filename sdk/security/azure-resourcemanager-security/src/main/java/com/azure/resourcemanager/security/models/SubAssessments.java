@@ -18,7 +18,8 @@ public interface SubAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<SecuritySubAssessment> listAll(String scope);
 
@@ -31,7 +32,8 @@ public interface SubAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<SecuritySubAssessment> listAll(String scope, Context context);
 
@@ -44,7 +46,8 @@ public interface SubAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SecuritySubAssessment> list(String scope, String assessmentName);
 
@@ -58,7 +61,8 @@ public interface SubAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SecuritySubAssessment> list(String scope, String assessmentName, Context context);
 
@@ -87,7 +91,7 @@ public interface SubAssessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
+     * @return a security sub-assessment on your scanned resource along with {@link Response}.
      */
     Response<SecuritySubAssessment> getWithResponse(
         String scope, String assessmentName, String subAssessmentName, Context context);

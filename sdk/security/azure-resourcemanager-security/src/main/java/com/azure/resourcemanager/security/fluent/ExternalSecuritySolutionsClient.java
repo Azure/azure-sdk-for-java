@@ -18,7 +18,8 @@ public interface ExternalSecuritySolutionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExternalSecuritySolutionInner> list();
@@ -30,7 +31,8 @@ public interface ExternalSecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExternalSecuritySolutionInner> list(Context context);
@@ -43,7 +45,8 @@ public interface ExternalSecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExternalSecuritySolutionInner> listByHomeRegion(String ascLocation);
@@ -57,7 +60,8 @@ public interface ExternalSecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExternalSecuritySolutionInner> listByHomeRegion(String ascLocation, Context context);
@@ -91,7 +95,7 @@ public interface ExternalSecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution.
+     * @return a specific external Security Solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExternalSecuritySolutionInner> getWithResponse(

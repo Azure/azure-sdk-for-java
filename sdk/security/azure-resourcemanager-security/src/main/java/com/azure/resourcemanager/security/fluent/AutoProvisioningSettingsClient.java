@@ -18,7 +18,7 @@ public interface AutoProvisioningSettingsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoProvisioningSettingInner> list();
@@ -30,7 +30,7 @@ public interface AutoProvisioningSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoProvisioningSettingInner> list(Context context);
@@ -55,7 +55,7 @@ public interface AutoProvisioningSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AutoProvisioningSettingInner> getWithResponse(String settingName, Context context);
@@ -82,7 +82,7 @@ public interface AutoProvisioningSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AutoProvisioningSettingInner> createWithResponse(

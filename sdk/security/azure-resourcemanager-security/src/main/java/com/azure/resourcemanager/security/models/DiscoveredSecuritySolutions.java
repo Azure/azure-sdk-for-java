@@ -15,7 +15,8 @@ public interface DiscoveredSecuritySolutions {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DiscoveredSecuritySolution> list();
 
@@ -26,7 +27,8 @@ public interface DiscoveredSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DiscoveredSecuritySolution> list(Context context);
 
@@ -38,7 +40,8 @@ public interface DiscoveredSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<DiscoveredSecuritySolution> listByHomeRegion(String ascLocation);
 
@@ -51,7 +54,8 @@ public interface DiscoveredSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<DiscoveredSecuritySolution> listByHomeRegion(String ascLocation, Context context);
 
@@ -82,7 +86,7 @@ public interface DiscoveredSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
+     * @return a specific discovered Security Solution along with {@link Response}.
      */
     Response<DiscoveredSecuritySolution> getWithResponse(
         String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName, Context context);

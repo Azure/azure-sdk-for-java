@@ -18,7 +18,7 @@ public interface SecurityContactsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityContactInner> list();
@@ -30,7 +30,7 @@ public interface SecurityContactsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityContactInner> list(Context context);
@@ -55,7 +55,7 @@ public interface SecurityContactsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details for security issues along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityContactInner> getWithResponse(String securityContactName, Context context);
@@ -82,7 +82,7 @@ public interface SecurityContactsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details for security issues along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityContactInner> createWithResponse(
@@ -107,7 +107,7 @@ public interface SecurityContactsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String securityContactName, Context context);
@@ -134,7 +134,7 @@ public interface SecurityContactsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details for security issues along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityContactInner> updateWithResponse(

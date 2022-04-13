@@ -5,27 +5,23 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The external security solution properties for AAD solutions. */
 @Fluent
 public final class AadSolutionProperties extends ExternalSecuritySolutionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AadSolutionProperties.class);
-
     /*
      * The connectivity state of the external AAD solution
      */
     @JsonProperty(value = "connectivityState")
-    private AadConnectivityStateValue connectivityState;
+    private AadConnectivityState connectivityState;
 
     /**
      * Get the connectivityState property: The connectivity state of the external AAD solution.
      *
      * @return the connectivityState value.
      */
-    public AadConnectivityStateValue connectivityState() {
+    public AadConnectivityState connectivityState() {
         return this.connectivityState;
     }
 
@@ -35,7 +31,7 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
      * @param connectivityState the connectivityState value to set.
      * @return the AadSolutionProperties object itself.
      */
-    public AadSolutionProperties withConnectivityState(AadConnectivityStateValue connectivityState) {
+    public AadSolutionProperties withConnectivityState(AadConnectivityState connectivityState) {
         this.connectivityState = connectivityState;
         return this;
     }

@@ -11,41 +11,41 @@ import com.azure.core.util.Context;
 /** Resource collection API of SecureScores. */
 public interface SecureScores {
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecureScoreItem> list();
 
     /**
-     * List secure scores for all your Security Center initiatives within your current scope.
+     * List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of secure scores.
+     * @return list of secure scores as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecureScoreItem> list(Context context);
 
     /**
-     * Get secure score for a specific Security Center initiative within your current scope. For the ASC Default
-     * initiative, use 'ascScore'.
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Security Center initiative within your current scope.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope.
      */
     SecureScoreItem get(String secureScoreName);
 
     /**
-     * Get secure score for a specific Security Center initiative within your current scope. For the ASC Default
-     * initiative, use 'ascScore'.
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
@@ -53,7 +53,8 @@ public interface SecureScores {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Security Center initiative within your current scope.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope along with
+     *     {@link Response}.
      */
     Response<SecureScoreItem> getWithResponse(String secureScoreName, Context context);
 }

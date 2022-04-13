@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JitNetworkAccessPortRule model. */
 @Fluent
 public final class JitNetworkAccessPortRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessPortRule.class);
-
     /*
      * The number property.
      */
@@ -25,7 +22,7 @@ public final class JitNetworkAccessPortRule {
      * The protocol property.
      */
     @JsonProperty(value = "protocol", required = true)
-    private ProtocolValue protocol;
+    private Protocol protocol;
 
     /*
      * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter.
@@ -73,7 +70,7 @@ public final class JitNetworkAccessPortRule {
      *
      * @return the protocol value.
      */
-    public ProtocolValue protocol() {
+    public Protocol protocol() {
         return this.protocol;
     }
 
@@ -83,7 +80,7 @@ public final class JitNetworkAccessPortRule {
      * @param protocol the protocol value to set.
      * @return the JitNetworkAccessPortRule object itself.
      */
-    public JitNetworkAccessPortRule withProtocol(ProtocolValue protocol) {
+    public JitNetworkAccessPortRule withProtocol(Protocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -161,16 +158,18 @@ public final class JitNetworkAccessPortRule {
      */
     public void validate() {
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model JitNetworkAccessPortRule"));
         }
         if (maxRequestAccessDuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property maxRequestAccessDuration in model JitNetworkAccessPortRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessPortRule.class);
 }

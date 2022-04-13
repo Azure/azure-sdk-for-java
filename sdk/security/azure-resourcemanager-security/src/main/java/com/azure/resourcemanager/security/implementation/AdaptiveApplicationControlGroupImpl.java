@@ -39,6 +39,10 @@ public final class AdaptiveApplicationControlGroupImpl
         return this.innerModel().type();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public EnforcementMode enforcementMode() {
         return this.innerModel().enforcementMode();
     }
@@ -84,10 +88,6 @@ public final class AdaptiveApplicationControlGroupImpl
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public Region region() {

@@ -37,7 +37,7 @@ public interface IotSecuritySolutionAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IoTSecuritySolutionAnalyticsModelListInner> listWithResponse(
@@ -67,7 +67,7 @@ public interface IotSecuritySolutionAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IoTSecuritySolutionAnalyticsModelInner> getWithResponse(

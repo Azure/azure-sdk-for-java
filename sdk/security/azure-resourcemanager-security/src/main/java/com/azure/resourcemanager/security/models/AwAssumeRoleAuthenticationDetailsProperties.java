@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("awsAssumeRole")
 @Fluent
 public final class AwAssumeRoleAuthenticationDetailsProperties extends AuthenticationDetailsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AwAssumeRoleAuthenticationDetailsProperties.class);
-
     /*
      * The ID of the cloud account
      */
@@ -103,18 +100,20 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     public void validate() {
         super.validate();
         if (awsAssumeRoleArn() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property awsAssumeRoleArn in model"
                             + " AwAssumeRoleAuthenticationDetailsProperties"));
         }
         if (awsExternalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property awsExternalId in model"
                             + " AwAssumeRoleAuthenticationDetailsProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AwAssumeRoleAuthenticationDetailsProperties.class);
 }

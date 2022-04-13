@@ -18,7 +18,7 @@ public interface Compliances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Compliance objects response.
+     * @return list of Compliance objects response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Compliance> list(String scope);
 
@@ -31,7 +31,7 @@ public interface Compliances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Compliance objects response.
+     * @return list of Compliance objects response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Compliance> list(String scope, Context context);
 
@@ -58,7 +58,7 @@ public interface Compliances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compliance of a scope.
+     * @return compliance of a scope along with {@link Response}.
      */
     Response<Compliance> getWithResponse(String scope, String complianceName, Context context);
 }

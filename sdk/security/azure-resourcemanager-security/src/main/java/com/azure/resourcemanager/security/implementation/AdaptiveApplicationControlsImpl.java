@@ -14,10 +14,9 @@ import com.azure.resourcemanager.security.fluent.models.AdaptiveApplicationContr
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroup;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroups;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControls;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicationControls {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveApplicationControlsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AdaptiveApplicationControlsImpl.class);
 
     private final AdaptiveApplicationControlsClient innerClient;
 
@@ -89,14 +88,14 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
     public AdaptiveApplicationControlGroup getById(String id) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,14 +109,14 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
     public Response<AdaptiveApplicationControlGroup> getByIdWithResponse(String id, Context context) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,14 +130,14 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
     public void deleteById(String id) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,20 +145,20 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
                                 "The resource ID '%s' is not valid. Missing path segment 'applicationWhitelistings'.",
                                 id)));
         }
-        this.deleteWithResponse(ascLocation, groupName, Context.NONE).getValue();
+        this.deleteWithResponse(ascLocation, groupName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String groupName = Utils.getValueFromIdByName(id, "applicationWhitelistings");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

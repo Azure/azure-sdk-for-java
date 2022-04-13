@@ -5,32 +5,20 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.TopologySingleResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The TopologyResource model. */
-@JsonFlatten
 @Immutable
-public class TopologyResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyResourceInner.class);
-
+public final class TopologyResourceInner extends ProxyResource {
     /*
-     * The UTC time on which the topology was calculated
+     * The properties property.
      */
-    @JsonProperty(value = "properties.calculatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime calculatedDateTime;
-
-    /*
-     * Azure resources which are part of this topology resource
-     */
-    @JsonProperty(value = "properties.topologyResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TopologySingleResource> topologyResources;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private TopologyResourceProperties innerProperties;
 
     /*
      * Location where the resource is stored
@@ -39,21 +27,12 @@ public class TopologyResourceInner extends ProxyResource {
     private String location;
 
     /**
-     * Get the calculatedDateTime property: The UTC time on which the topology was calculated.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the calculatedDateTime value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime calculatedDateTime() {
-        return this.calculatedDateTime;
-    }
-
-    /**
-     * Get the topologyResources property: Azure resources which are part of this topology resource.
-     *
-     * @return the topologyResources value.
-     */
-    public List<TopologySingleResource> topologyResources() {
-        return this.topologyResources;
+    private TopologyResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -66,13 +45,31 @@ public class TopologyResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the calculatedDateTime property: The UTC time on which the topology was calculated.
+     *
+     * @return the calculatedDateTime value.
+     */
+    public OffsetDateTime calculatedDateTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().calculatedDateTime();
+    }
+
+    /**
+     * Get the topologyResources property: Azure resources which are part of this topology resource.
+     *
+     * @return the topologyResources value.
+     */
+    public List<TopologySingleResource> topologyResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().topologyResources();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (topologyResources() != null) {
-            topologyResources().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

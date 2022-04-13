@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.DeviceSecurityGroupsClient;
 import com.azure.resourcemanager.security.fluent.models.DeviceSecurityGroupInner;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroup;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceSecurityGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeviceSecurityGroupsImpl.class);
 
     private final DeviceSecurityGroupsClient innerClient;
 
@@ -78,7 +77,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -90,7 +89,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "deviceSecurityGroupName");
         if (deviceSecurityGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -121,7 +120,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "deviceSecurityGroupName");
         if (deviceSecurityGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -152,7 +151,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "deviceSecurityGroupName");
         if (deviceSecurityGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -160,7 +159,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                                 "The resource ID '%s' is not valid. Missing path segment 'deviceSecurityGroups'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceId, deviceSecurityGroupName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceId, deviceSecurityGroupName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -171,7 +170,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "resourceId");
         if (resourceId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
@@ -183,7 +182,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                     "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
                     "deviceSecurityGroupName");
         if (deviceSecurityGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

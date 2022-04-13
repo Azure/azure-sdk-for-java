@@ -15,7 +15,7 @@ public interface Alerts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> list();
 
@@ -26,7 +26,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> list(Context context);
 
@@ -38,7 +38,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> listByResourceGroup(String resourceGroupName);
 
@@ -51,7 +51,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -63,7 +63,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> listSubscriptionLevelByRegion(String ascLocation);
 
@@ -76,7 +76,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> listSubscriptionLevelByRegion(String ascLocation, Context context);
 
@@ -90,7 +90,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName);
 
@@ -105,7 +105,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Alert> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName, Context context);
 
@@ -132,7 +132,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated with a subscription.
+     * @return an alert that is associated with a subscription along with {@link Response}.
      */
     Response<Alert> getSubscriptionLevelWithResponse(String ascLocation, String alertName, Context context);
 
@@ -163,7 +163,8 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated a resource group or a resource in a resource group.
+     * @return an alert that is associated a resource group or a resource in a resource group along with {@link
+     *     Response}.
      */
     Response<Alert> getResourceGroupLevelWithResponse(
         String ascLocation, String alertName, String resourceGroupName, Context context);
@@ -190,7 +191,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateSubscriptionLevelStateToDismissWithResponse(
         String ascLocation, String alertName, Context context);
@@ -217,7 +218,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateSubscriptionLevelStateToResolveWithResponse(
         String ascLocation, String alertName, Context context);
@@ -244,7 +245,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateSubscriptionLevelStateToActivateWithResponse(
         String ascLocation, String alertName, Context context);
@@ -275,7 +276,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateResourceGroupLevelStateToResolveWithResponse(
         String ascLocation, String alertName, String resourceGroupName, Context context);
@@ -306,7 +307,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateResourceGroupLevelStateToDismissWithResponse(
         String ascLocation, String alertName, String resourceGroupName, Context context);
@@ -337,7 +338,7 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateResourceGroupLevelStateToActivateWithResponse(
         String ascLocation, String alertName, String resourceGroupName, Context context);
@@ -364,6 +365,8 @@ public interface Alerts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
-    void simulate(String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody, Context context);
+    Response<Void> simulateWithResponse(
+        String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody, Context context);
 }

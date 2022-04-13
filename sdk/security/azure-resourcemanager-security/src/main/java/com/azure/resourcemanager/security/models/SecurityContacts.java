@@ -15,7 +15,7 @@ public interface SecurityContacts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityContact> list();
 
@@ -26,7 +26,7 @@ public interface SecurityContacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityContact> list(Context context);
 
@@ -49,7 +49,7 @@ public interface SecurityContacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details for security issues along with {@link Response}.
      */
     Response<SecurityContact> getWithResponse(String securityContactName, Context context);
 
@@ -71,7 +71,7 @@ public interface SecurityContacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String securityContactName, Context context);
 
@@ -82,7 +82,7 @@ public interface SecurityContacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details for security issues along with {@link Response}.
      */
     SecurityContact getById(String id);
 
@@ -94,7 +94,7 @@ public interface SecurityContacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details for security issues along with {@link Response}.
      */
     Response<SecurityContact> getByIdWithResponse(String id, Context context);
 
@@ -116,7 +116,7 @@ public interface SecurityContacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

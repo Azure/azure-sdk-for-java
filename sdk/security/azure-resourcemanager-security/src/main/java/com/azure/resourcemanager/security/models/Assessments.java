@@ -18,9 +18,10 @@ public interface Assessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
-    PagedIterable<SecurityAssessment> list(String scope);
+    PagedIterable<SecurityAssessmentResponse> list(String scope);
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
@@ -31,9 +32,10 @@ public interface Assessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
-    PagedIterable<SecurityAssessment> list(String scope, Context context);
+    PagedIterable<SecurityAssessmentResponse> list(String scope, Context context);
 
     /**
      * Get a security assessment on your scanned resource.
@@ -45,7 +47,7 @@ public interface Assessments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a security assessment on your scanned resource.
      */
-    SecurityAssessment get(String resourceId, String assessmentName);
+    SecurityAssessmentResponse get(String resourceId, String assessmentName);
 
     /**
      * Get a security assessment on your scanned resource.
@@ -57,9 +59,9 @@ public interface Assessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource.
+     * @return a security assessment on your scanned resource along with {@link Response}.
      */
-    Response<SecurityAssessment> getWithResponse(
+    Response<SecurityAssessmentResponse> getWithResponse(
         String resourceId, String assessmentName, ExpandEnum expand, Context context);
 
     /**
@@ -84,7 +86,7 @@ public interface Assessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceId, String assessmentName, Context context);
 
@@ -95,9 +97,9 @@ public interface Assessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource.
+     * @return a security assessment on your scanned resource along with {@link Response}.
      */
-    SecurityAssessment getById(String id);
+    SecurityAssessmentResponse getById(String id);
 
     /**
      * Get a security assessment on your scanned resource.
@@ -108,9 +110,9 @@ public interface Assessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource.
+     * @return a security assessment on your scanned resource along with {@link Response}.
      */
-    Response<SecurityAssessment> getByIdWithResponse(String id, ExpandEnum expand, Context context);
+    Response<SecurityAssessmentResponse> getByIdWithResponse(String id, ExpandEnum expand, Context context);
 
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
@@ -132,15 +134,15 @@ public interface Assessments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new SecurityAssessment resource.
+     * Begins definition for a new SecurityAssessmentResponse resource.
      *
      * @param name resource name.
-     * @return the first stage of the new SecurityAssessment definition.
+     * @return the first stage of the new SecurityAssessmentResponse definition.
      */
-    SecurityAssessment.DefinitionStages.Blank define(String name);
+    SecurityAssessmentResponse.DefinitionStages.Blank define(String name);
 }

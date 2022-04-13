@@ -5,52 +5,27 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.State;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Regulatory compliance standard details and state. */
-@JsonFlatten
 @Fluent
-public class RegulatoryComplianceStandardInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegulatoryComplianceStandardInner.class);
-
+public final class RegulatoryComplianceStandardInner extends ProxyResource {
     /*
-     * Aggregative state based on the standard's supported controls states
+     * Regulatory compliance standard data
      */
-    @JsonProperty(value = "properties.state")
-    private State state;
+    @JsonProperty(value = "properties")
+    private RegulatoryComplianceStandardProperties innerProperties;
 
-    /*
-     * The number of supported regulatory compliance controls of the given
-     * standard with a passed state
+    /**
+     * Get the innerProperties property: Regulatory compliance standard data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.passedControls", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer passedControls;
-
-    /*
-     * The number of supported regulatory compliance controls of the given
-     * standard with a failed state
-     */
-    @JsonProperty(value = "properties.failedControls", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer failedControls;
-
-    /*
-     * The number of supported regulatory compliance controls of the given
-     * standard with a skipped state
-     */
-    @JsonProperty(value = "properties.skippedControls", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer skippedControls;
-
-    /*
-     * The number of regulatory compliance controls of the given standard which
-     * are unsupported by automated assessments
-     */
-    @JsonProperty(value = "properties.unsupportedControls", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer unsupportedControls;
+    private RegulatoryComplianceStandardProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the state property: Aggregative state based on the standard's supported controls states.
@@ -58,7 +33,7 @@ public class RegulatoryComplianceStandardInner extends ProxyResource {
      * @return the state value.
      */
     public State state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -68,7 +43,10 @@ public class RegulatoryComplianceStandardInner extends ProxyResource {
      * @return the RegulatoryComplianceStandardInner object itself.
      */
     public RegulatoryComplianceStandardInner withState(State state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegulatoryComplianceStandardProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -79,7 +57,7 @@ public class RegulatoryComplianceStandardInner extends ProxyResource {
      * @return the passedControls value.
      */
     public Integer passedControls() {
-        return this.passedControls;
+        return this.innerProperties() == null ? null : this.innerProperties().passedControls();
     }
 
     /**
@@ -89,7 +67,7 @@ public class RegulatoryComplianceStandardInner extends ProxyResource {
      * @return the failedControls value.
      */
     public Integer failedControls() {
-        return this.failedControls;
+        return this.innerProperties() == null ? null : this.innerProperties().failedControls();
     }
 
     /**
@@ -99,7 +77,7 @@ public class RegulatoryComplianceStandardInner extends ProxyResource {
      * @return the skippedControls value.
      */
     public Integer skippedControls() {
-        return this.skippedControls;
+        return this.innerProperties() == null ? null : this.innerProperties().skippedControls();
     }
 
     /**
@@ -109,7 +87,7 @@ public class RegulatoryComplianceStandardInner extends ProxyResource {
      * @return the unsupportedControls value.
      */
     public Integer unsupportedControls() {
-        return this.unsupportedControls;
+        return this.innerProperties() == null ? null : this.innerProperties().unsupportedControls();
     }
 
     /**
@@ -118,5 +96,8 @@ public class RegulatoryComplianceStandardInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

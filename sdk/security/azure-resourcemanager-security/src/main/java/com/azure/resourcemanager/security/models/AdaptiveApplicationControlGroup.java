@@ -33,6 +33,13 @@ public interface AdaptiveApplicationControlGroup {
     String type();
 
     /**
+     * Gets the location property: Location where the resource is stored.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the enforcementMode property: The application control policy enforcement/protection mode of the machine
      * group.
      *
@@ -89,13 +96,6 @@ public interface AdaptiveApplicationControlGroup {
      * @return the pathRecommendations value.
      */
     List<PathRecommendation> pathRecommendations();
-
-    /**
-     * Gets the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    String location();
 
     /**
      * Gets the region of the resource.

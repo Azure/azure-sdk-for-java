@@ -5,89 +5,38 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AdditionalData;
 import com.azure.resourcemanager.security.models.ResourceDetails;
 import com.azure.resourcemanager.security.models.SubAssessmentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Security sub-assessment on a resource. */
-@JsonFlatten
 @Fluent
-public class SecuritySubAssessmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySubAssessmentInner.class);
-
+public final class SecuritySubAssessmentInner extends ProxyResource {
     /*
-     * Vulnerability ID
+     * Describes properties of an sub-assessment.
      */
-    @JsonProperty(value = "properties.id", access = JsonProperty.Access.WRITE_ONLY)
-    private String idPropertiesId;
-
-    /*
-     * User friendly display name of the sub-assessment
-     */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * Status of the sub-assessment
-     */
-    @JsonProperty(value = "properties.status")
-    private SubAssessmentStatus status;
-
-    /*
-     * Information on how to remediate this sub-assessment
-     */
-    @JsonProperty(value = "properties.remediation", access = JsonProperty.Access.WRITE_ONLY)
-    private String remediation;
-
-    /*
-     * Description of the impact of this sub-assessment
-     */
-    @JsonProperty(value = "properties.impact", access = JsonProperty.Access.WRITE_ONLY)
-    private String impact;
-
-    /*
-     * Category of the sub-assessment
-     */
-    @JsonProperty(value = "properties.category", access = JsonProperty.Access.WRITE_ONLY)
-    private String category;
-
-    /*
-     * Human readable description of the assessment status
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * The date and time the sub-assessment was generated
-     */
-    @JsonProperty(value = "properties.timeGenerated", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime timeGenerated;
-
-    /*
-     * Details of the resource that was assessed
-     */
-    @JsonProperty(value = "properties.resourceDetails")
-    private ResourceDetails resourceDetails;
-
-    /*
-     * Details of the sub-assessment
-     */
-    @JsonProperty(value = "properties.additionalData")
-    private AdditionalData additionalData;
+    @JsonProperty(value = "properties")
+    private SecuritySubAssessmentProperties innerProperties;
 
     /**
-     * Get the idPropertiesId property: Vulnerability ID.
+     * Get the innerProperties property: Describes properties of an sub-assessment.
      *
-     * @return the idPropertiesId value.
+     * @return the innerProperties value.
+     */
+    private SecuritySubAssessmentProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Vulnerability ID.
+     *
+     * @return the id value.
      */
     public String idPropertiesId() {
-        return this.idPropertiesId;
+        return this.innerProperties() == null ? null : this.innerProperties().id();
     }
 
     /**
@@ -96,7 +45,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -105,7 +54,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the status value.
      */
     public SubAssessmentStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -115,7 +64,10 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the SecuritySubAssessmentInner object itself.
      */
     public SecuritySubAssessmentInner withStatus(SubAssessmentStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySubAssessmentProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -125,7 +77,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the remediation value.
      */
     public String remediation() {
-        return this.remediation;
+        return this.innerProperties() == null ? null : this.innerProperties().remediation();
     }
 
     /**
@@ -134,7 +86,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the impact value.
      */
     public String impact() {
-        return this.impact;
+        return this.innerProperties() == null ? null : this.innerProperties().impact();
     }
 
     /**
@@ -143,7 +95,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the category value.
      */
     public String category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
@@ -152,7 +104,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -161,7 +113,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the timeGenerated value.
      */
     public OffsetDateTime timeGenerated() {
-        return this.timeGenerated;
+        return this.innerProperties() == null ? null : this.innerProperties().timeGenerated();
     }
 
     /**
@@ -170,7 +122,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the resourceDetails value.
      */
     public ResourceDetails resourceDetails() {
-        return this.resourceDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceDetails();
     }
 
     /**
@@ -180,7 +132,10 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the SecuritySubAssessmentInner object itself.
      */
     public SecuritySubAssessmentInner withResourceDetails(ResourceDetails resourceDetails) {
-        this.resourceDetails = resourceDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySubAssessmentProperties();
+        }
+        this.innerProperties().withResourceDetails(resourceDetails);
         return this;
     }
 
@@ -190,7 +145,7 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the additionalData value.
      */
     public AdditionalData additionalData() {
-        return this.additionalData;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalData();
     }
 
     /**
@@ -200,7 +155,10 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @return the SecuritySubAssessmentInner object itself.
      */
     public SecuritySubAssessmentInner withAdditionalData(AdditionalData additionalData) {
-        this.additionalData = additionalData;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecuritySubAssessmentProperties();
+        }
+        this.innerProperties().withAdditionalData(additionalData);
         return this;
     }
 
@@ -210,14 +168,8 @@ public class SecuritySubAssessmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-        if (resourceDetails() != null) {
-            resourceDetails().validate();
-        }
-        if (additionalData() != null) {
-            additionalData().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

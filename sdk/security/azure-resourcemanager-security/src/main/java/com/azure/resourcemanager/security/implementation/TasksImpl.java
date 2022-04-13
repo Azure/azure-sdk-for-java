@@ -12,12 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.TasksClient;
 import com.azure.resourcemanager.security.fluent.models.SecurityTaskInner;
 import com.azure.resourcemanager.security.models.SecurityTask;
+import com.azure.resourcemanager.security.models.TaskUpdateActionType;
 import com.azure.resourcemanager.security.models.Tasks;
-import com.azure.resourcemanager.security.models.TasksTaskUpdateActionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TasksImpl implements Tasks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TasksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TasksImpl.class);
 
     private final TasksClient innerClient;
 
@@ -73,12 +72,12 @@ public final class TasksImpl implements Tasks {
     }
 
     public void updateSubscriptionLevelTaskState(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
         this.serviceClient().updateSubscriptionLevelTaskState(ascLocation, taskName, taskUpdateActionType);
     }
 
     public Response<Void> updateSubscriptionLevelTaskStateWithResponse(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType, Context context) {
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
         return this
             .serviceClient()
             .updateSubscriptionLevelTaskStateWithResponse(ascLocation, taskName, taskUpdateActionType, context);
@@ -125,7 +124,7 @@ public final class TasksImpl implements Tasks {
     }
 
     public void updateResourceGroupLevelTaskState(
-        String resourceGroupName, String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
         this
             .serviceClient()
             .updateResourceGroupLevelTaskState(resourceGroupName, ascLocation, taskName, taskUpdateActionType);
@@ -135,7 +134,7 @@ public final class TasksImpl implements Tasks {
         String resourceGroupName,
         String ascLocation,
         String taskName,
-        TasksTaskUpdateActionType taskUpdateActionType,
+        TaskUpdateActionType taskUpdateActionType,
         Context context) {
         return this
             .serviceClient()

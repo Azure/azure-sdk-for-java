@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the IoT Security solution's user defined resources. */
 @Fluent
 public final class UserDefinedResourcesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserDefinedResourcesProperties.class);
-
     /*
      * Azure Resource Graph query which represents the security solution's user
      * defined resources. Required to start with "where type !=
@@ -81,16 +78,18 @@ public final class UserDefinedResourcesProperties {
      */
     public void validate() {
         if (query() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property query in model UserDefinedResourcesProperties"));
         }
         if (querySubscriptions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property querySubscriptions in model UserDefinedResourcesProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserDefinedResourcesProperties.class);
 }

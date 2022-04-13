@@ -6,14 +6,11 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the partner that created the assessment. */
 @Fluent
 public final class SecurityAssessmentMetadataPartnerData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityAssessmentMetadataPartnerData.class);
-
     /*
      * Name of the company of the partner
      */
@@ -100,16 +97,18 @@ public final class SecurityAssessmentMetadataPartnerData {
      */
     public void validate() {
         if (partnerName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property partnerName in model SecurityAssessmentMetadataPartnerData"));
         }
         if (secret() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secret in model SecurityAssessmentMetadataPartnerData"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityAssessmentMetadataPartnerData.class);
 }
