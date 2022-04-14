@@ -5,30 +5,26 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.healthcareapis.fluent.models.ServicesPropertiesUpdateParameters;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The description of the service. */
-@JsonFlatten
 @Fluent
-public class ServicesPatchDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesPatchDescription.class);
-
+public final class ServicesPatchDescription {
     /*
      * Instance tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * The properties for updating a service instance.
      */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    @JsonProperty(value = "properties")
+    private ServicesPropertiesUpdateParameters innerProperties;
 
     /**
      * Get the tags property: Instance tags.
@@ -51,13 +47,22 @@ public class ServicesPatchDescription {
     }
 
     /**
+     * Get the innerProperties property: The properties for updating a service instance.
+     *
+     * @return the innerProperties value.
+     */
+    private ServicesPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
      * private endpoint is enabled.
      *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -68,7 +73,10 @@ public class ServicesPatchDescription {
      * @return the ServicesPatchDescription object itself.
      */
     public ServicesPatchDescription withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServicesPropertiesUpdateParameters();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -78,5 +86,8 @@ public class ServicesPatchDescription {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

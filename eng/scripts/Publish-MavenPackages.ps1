@@ -247,20 +247,17 @@ foreach ($packageDetail in $packageDetails) {
 
       if ($LASTEXITCODE -eq 0) {
         Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"
-        break
+        exit 0
       }
 
-      Write-Information "Release attempt $attemt exited with code $LASTEXITCODE"
+      Write-Information "Release attempt $attempt exited with code $LASTEXITCODE"
       Write-Information "Checking Maven Central to see if release was successful"
 
       if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
         Write-Information "Package $($packageDetail.FullyQualifiedName) deployed despite non-zero exit code."
-        break
-      }
-
-      if ($attempt -ge 3) {
-        exit $LASTEXITCODE
+        exit 0
       }
     }
+    exit 1
   }
 }

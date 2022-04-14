@@ -6,10 +6,10 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.experimental.models.MessageWithMetadata;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.models.MessageContent;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
@@ -138,7 +138,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
             avroSerializer, serializerOptions);
 
         StepVerifier.create(serializer.serializeMessageDataAsync(playingCard,
-                TypeReference.createInstance(MessageWithMetadata.class)))
+                TypeReference.createInstance(MessageContent.class)))
             .assertNext(message -> {
                 // guid should match preloaded SchemaRegistryObject guid
                 assertEquals(expectedContentType, message.getContentType());
@@ -156,7 +156,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
             serializerOptions);
 
-        final MessageWithMetadata message = new MessageWithMetadata();
+        final MessageContent message = new MessageContent();
 
         // Act & Assert
         StepVerifier.create(serializer.serializeMessageDataAsync(message, null))
@@ -226,7 +226,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
         return Stream.of(
             Arguments.of(
                 new MockMessage(),
-                new MessageWithMetadata().setContentType("avro/binary"))
+                new MessageContent().setContentType("avro/binary"))
         );
     }
 
@@ -235,7 +235,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
      */
     @MethodSource
     @ParameterizedTest
-    public void testEmptyPayload(MessageWithMetadata message) {
+    public void testEmptyPayload(MessageContent message) {
         // Arrange
         final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
@@ -369,7 +369,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .setFavouriteColour(colour)
             .setFavouritePet(pet)
             .build();
-        final AtomicReference<MessageWithMetadata> outputData = new AtomicReference<>();
+        final AtomicReference<MessageContent> outputData = new AtomicReference<>();
 
         // Act: Serialize the new Person2.
         StepVerifier.create(serializer.serializeMessageDataAsync(writerPerson, TypeReference.createInstance(MockMessage.class)))
@@ -532,15 +532,15 @@ public class SchemaRegistryApacheAvroSerializerTest {
     }
 
     /**
-     * Test class that extends from MessageWithMetadata
+     * Test class that extends from MessageContent
      */
-    static class MockMessage extends MessageWithMetadata {
+    static class MockMessage extends MessageContent {
     }
 
     /**
      * This class does not expose the no-args constructor that we look for.
      */
-    static class InvalidMessage extends MessageWithMetadata {
+    static class InvalidMessage extends MessageContent {
         InvalidMessage(String contents) {
             super();
 

@@ -9,16 +9,17 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotcentral.models.AppSkuInfo;
 import com.azure.resourcemanager.iotcentral.models.AppState;
+import com.azure.resourcemanager.iotcentral.models.NetworkRuleSets;
+import com.azure.resourcemanager.iotcentral.models.ProvisioningState;
+import com.azure.resourcemanager.iotcentral.models.PublicNetworkAccess;
 import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** The IoT Central application. */
 @Fluent
 public final class AppInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppInner.class);
-
     /*
      * The common properties of an IoT Central application.
      */
@@ -98,6 +99,15 @@ public final class AppInner extends Resource {
     public AppInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the application.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -192,6 +202,62 @@ public final class AppInner extends Resource {
     }
 
     /**
+     * Get the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the AppInner object itself.
+     */
+    public AppInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @return the networkRuleSets value.
+     */
+    public NetworkRuleSets networkRuleSets() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSets();
+    }
+
+    /**
+     * Set the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @param networkRuleSets the networkRuleSets value to set.
+     * @return the AppInner object itself.
+     */
+    public AppInner withNetworkRuleSets(NetworkRuleSets networkRuleSets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withNetworkRuleSets(networkRuleSets);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections created on this IoT Central
+     * application.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -201,7 +267,7 @@ public final class AppInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property sku in model AppInner"));
         } else {
             sku().validate();
@@ -210,4 +276,6 @@ public final class AppInner extends Resource {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppInner.class);
 }
