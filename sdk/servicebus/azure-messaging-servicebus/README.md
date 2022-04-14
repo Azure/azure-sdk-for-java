@@ -64,7 +64,7 @@ and then include the direct dependency in the dependencies section without the v
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;beta_com.azure:azure-messaging-servicebus;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-servicebus;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
