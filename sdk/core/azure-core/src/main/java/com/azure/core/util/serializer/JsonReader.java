@@ -226,26 +226,26 @@ public abstract class JsonReader implements Closeable {
         return buffer;
     }
 
-    /**
-     * Prepares the {@link JsonReader} for reading an object.
-     * <p>
-     * Object reading begins by getting the {@link JsonToken} the {@link JsonReader} is currently pointing. If the
-     * current token is null it's an indicator that the {@link JsonReader} hasn't begun reading the underlying JSON
-     * stream. In this case it will iterate to the next token to begin reading.
-     * <p>
-     * If the returned {@link JsonToken} is null this is an indication that the JSON stream has completed reading.
-     *
-     * @return The {@link JsonToken} where object reading will begin.
-     */
-    public final JsonToken beginReadingObject() {
-        JsonToken token = currentToken();
-
-        if (token == null) {
-            token = nextToken();
-        }
-
-        return token;
-    }
+//    /**
+//     * Prepares the {@link JsonReader} for reading an object.
+//     * <p>
+//     * Object reading begins by getting the {@link JsonToken} the {@link JsonReader} is currently pointing. If the
+//     * current token is null it's an indicator that the {@link JsonReader} hasn't begun reading the underlying JSON
+//     * stream. In this case it will iterate to the next token to begin reading.
+//     * <p>
+//     * If the returned {@link JsonToken} is null this is an indication that the JSON stream has completed reading.
+//     *
+//     * @return The {@link JsonToken} where object reading will begin.
+//     */
+//    public final JsonToken beginReadingObject() {
+//        JsonToken token = currentToken();
+//
+//        if (token == null) {
+//            token = nextToken();
+//        }
+//
+//        return token;
+//    }
 
     /**
      * Gets the text value for the {@link #currentToken()}.
@@ -253,16 +253,16 @@ public abstract class JsonReader implements Closeable {
      * The following is how each {@link JsonToken} type is handled:
      *
      * <ul>
-     *     <li>{@link JsonToken#START_OBJECT} -> {</li>
-     *     <li>{@link JsonToken#END_OBJECT} -> }</li>
-     *     <li>{@link JsonToken#START_ARRAY} -> [</li>
-     *     <li>{@link JsonToken#END_ARRAY} -> ]</li>
-     *     <li>{@link JsonToken#FIELD_NAME} -> {@link #getFieldName()}</li>
-     *     <li>{@link JsonToken#TRUE} -> String.valueOf {@link #getBooleanValue()}</li>
-     *     <li>{@link JsonToken#FALSE} -> String.valueOf {@link #getBooleanValue()}</li>
-     *     <li>{@link JsonToken#NULL} -> "null"</li>
-     *     <li>{@link JsonToken#STRING} -> {@link #getStringValue()}</li>
-     *     <li>{@link JsonToken#NUMBER} -> String.valueOf {@link #getStringValue()}</li>
+     *     <li>{@link JsonToken#START_OBJECT} -&gt; &#123;</li>
+     *     <li>{@link JsonToken#END_OBJECT} -&gt; &#125;</li>
+     *     <li>{@link JsonToken#START_ARRAY} -&gt; [</li>
+     *     <li>{@link JsonToken#END_ARRAY} -&gt; ]</li>
+     *     <li>{@link JsonToken#FIELD_NAME} -&gt; {@link #getFieldName()}</li>
+     *     <li>{@link JsonToken#TRUE} -&gt; String.valueOf {@link #getBooleanValue()}</li>
+     *     <li>{@link JsonToken#FALSE} -&gt; String.valueOf {@link #getBooleanValue()}</li>
+     *     <li>{@link JsonToken#NULL} -&gt; "null"</li>
+     *     <li>{@link JsonToken#STRING} -&gt; {@link #getStringValue()}</li>
+     *     <li>{@link JsonToken#NUMBER} -&gt; String.valueOf {@link #getStringValue()}</li>
      * </ul>
      *
      * If the current token is null an {@link IllegalStateException} will be thrown.

@@ -13,6 +13,7 @@ import com.azure.core.util.serializer.JsonReader;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.JsonToken;
+import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.JsonWriter;
 
 import java.nio.charset.StandardCharsets;
@@ -510,32 +511,30 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
      * <p>
      * null will be returned if the {@link JsonReader} points to {@link JsonToken#NULL}.
      * <p>
-     * {@link IllegalStateException} will be thrown if the {@link JsonReader} doesn't point to either
-     * {@link JsonToken#NULL} or {@link JsonToken#START_ARRAY}.
+     * {@link IllegalStateException} will be thrown if the {@link JsonReader} doesn't point to either {@link
+     * JsonToken#NULL} or {@link JsonToken#START_ARRAY}.
      *
      * @param jsonReader The {@link JsonReader} that will be read.
-     * @return An instance of {@link JsonPatchDocument} if the {@link JsonReader} is pointing to
-     * {@link JsonPatchDocument} JSON content, or null if it's pointing to {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to either {@link JsonToken#NULL}
-     * or {@link JsonToken#START_ARRAY}.
+     * @return An instance of {@link JsonPatchDocument} if the {@link JsonReader} is pointing to {@link
+     * JsonPatchDocument} JSON content, or null if it's pointing to {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to either {@link JsonToken#NULL} or
+     * {@link JsonToken#START_ARRAY}.
      */
     public static JsonPatchDocument fromJson(JsonReader jsonReader) {
-        JsonToken token = jsonReader.beginReadingObject();
-
-        if (token == JsonToken.NULL) {
-            return null;
-        } else if (token != JsonToken.START_ARRAY) {
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + token);
-        }
+        List<JsonPatchOperation> operations = JsonUtils.deserializeArray(jsonReader, (reader, token) -> {
+            if (token == JsonToken.START_OBJECT) {
+                return JsonPatchOperation.fromJson(jsonReader);
+            } else if (token == JsonToken.NULL) {
+                return null;
+            } else {
+                throw new IllegalStateException("Array element should either be an object or null, received " + token);
+            }
+        });
 
         JsonPatchDocument document = new JsonPatchDocument();
 
-        while ((token = jsonReader.nextToken()) != JsonToken.END_ARRAY) {
-            if (token == JsonToken.START_OBJECT) {
-                document.operations.add(JsonPatchOperation.fromJson(jsonReader));
-            } else if (token == JsonToken.NULL) {
-                document.operations.add(null);
-            }
+        if (operations != null) {
+            document.operations.addAll(operations);
         }
 
         return document;

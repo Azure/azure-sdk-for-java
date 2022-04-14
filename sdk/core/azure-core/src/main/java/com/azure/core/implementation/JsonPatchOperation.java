@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.serializer.JsonCapable;
 import com.azure.core.util.serializer.JsonReader;
 import com.azure.core.util.serializer.JsonToken;
+import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.JsonWriter;
 
 import java.util.Objects;
@@ -162,63 +163,57 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
      * <p>
      * null will be returned if the {@link JsonReader} points to {@link JsonToken#NULL}.
      * <p>
-     * {@link IllegalStateException} will be thrown if the {@link JsonReader} doesn't point to either
-     * {@link JsonToken#NULL} or {@link JsonToken#START_OBJECT}.
+     * {@link IllegalStateException} will be thrown if the {@link JsonReader} doesn't point to either {@link
+     * JsonToken#NULL} or {@link JsonToken#START_OBJECT}.
      *
      * @param jsonReader The {@link JsonReader} that will be read.
-     * @return An instance of {@link JsonPatchOperation} if the {@link JsonReader} is pointing to
-     * {@link JsonPatchOperation} JSON content, or null if it's pointing to {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to either {@link JsonToken#NULL}
-     * or {@link JsonToken#START_OBJECT}.
+     * @return An instance of {@link JsonPatchOperation} if the {@link JsonReader} is pointing to {@link
+     * JsonPatchOperation} JSON content, or null if it's pointing to {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to either {@link JsonToken#NULL} or
+     * {@link JsonToken#START_OBJECT}.
      */
     public static JsonPatchOperation fromJson(JsonReader jsonReader) {
-        JsonToken token = jsonReader.beginReadingObject();
+        return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+            JsonPatchOperationKind op = null;
+            String from = null;
+            String path = null;
+            Option<String> value = Option.uninitialized();
 
-        if (token == JsonToken.NULL) {
-            return null;
-        } else if (token != JsonToken.START_OBJECT) {
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + token);
-        }
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = jsonReader.getFieldName();
+                token = jsonReader.nextToken();
 
-        JsonPatchOperationKind op = null;
-        String from = null;
-        String path = null;
-        Option<String> value = Option.uninitialized();
+                switch (fieldName) {
+                    case "op":
+                        op = JsonPatchOperationKind.fromString(jsonReader.getStringValue());
+                        break;
 
-        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-            String fieldName = jsonReader.getFieldName();
-            token = jsonReader.nextToken();
+                    case "from":
+                        from = jsonReader.getStringValue();
+                        break;
 
-            switch (fieldName) {
-                case "op":
-                    op = JsonPatchOperationKind.fromString(jsonReader.getStringValue());
-                    break;
+                    case "path":
+                        path = jsonReader.getStringValue();
+                        break;
 
-                case "from":
-                    from = jsonReader.getStringValue();
-                    break;
+                    case "value":
+                        if (token == JsonToken.START_ARRAY || token == JsonToken.START_OBJECT) {
+                            // value is an arbitrary array or object, read the entire JSON sub-stream.
+                            value = Option.of(jsonReader.readChildren());
+                        } else if (token == JsonToken.NULL) {
+                            value = Option.empty();
+                        } else {
+                            value = Option.of(jsonReader.getTextValue());
+                        }
 
-                case "path":
-                    path = jsonReader.getStringValue();
-                    break;
+                        break;
 
-                case "value":
-                    if (token == JsonToken.START_ARRAY || token == JsonToken.START_OBJECT) {
-                        // value is an arbitrary array or object, read the entire JSON sub-stream.
-                        value = Option.of(jsonReader.readChildren());
-                    } else if (token == JsonToken.NULL) {
-                        value = Option.empty();
-                    } else {
-                        value = Option.of(jsonReader.getTextValue());
-                    }
-
-                    break;
-
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-        }
 
-        return new JsonPatchOperation(op, from, path, value);
+            return new JsonPatchOperation(op, from, path, value);
+        });
     }
 }

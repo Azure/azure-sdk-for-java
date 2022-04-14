@@ -6,6 +6,7 @@ package com.azure.core.models;
 import com.azure.core.util.serializer.JsonCapable;
 import com.azure.core.util.serializer.JsonReader;
 import com.azure.core.util.serializer.JsonToken;
+import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.JsonWriter;
 
 import java.util.ArrayList;
@@ -177,73 +178,66 @@ public final class ResponseError implements JsonCapable<ResponseError> {
      * passed.
      */
     public static ResponseError fromJson(JsonReader jsonReader) {
-        // required
-        String code = null;
-        String message = null;
+        return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+            // required
+            String code = null;
+            String message = null;
 
-        // optional
-        String target = null;
-        ResponseInnerError innerError = null;
-        List<ResponseError> errorDetails = null;
+            // optional
+            String target = null;
+            ResponseInnerError innerError = null;
+            List<ResponseError> errorDetails = null;
 
-        JsonToken token = jsonReader.beginReadingObject();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                token = jsonReader.nextToken();
 
-        if (token == JsonToken.NULL) {
-            return null;
-        } else if (token != JsonToken.START_OBJECT) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + token);
-        }
+                switch (jsonReader.getFieldName()) {
+                    case "code":
+                        code = jsonReader.getStringValue();
+                        break;
 
-        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-            token = jsonReader.nextToken();
+                    case "message":
+                        message = jsonReader.getStringValue();
+                        break;
 
-            switch (jsonReader.getFieldName()) {
-                case "code":
-                    code = jsonReader.getStringValue();
-                    break;
+                    case "target":
+                        target = jsonReader.getStringValue();
+                        break;
 
-                case "message":
-                    message = jsonReader.getStringValue();
-                    break;
+                    case "innererror":
+                        innerError = ResponseInnerError.fromJson(jsonReader);
+                        break;
 
-                case "target":
-                    target = jsonReader.getStringValue();
-                    break;
+                    case "details":
+                        if (token == JsonToken.START_ARRAY) {
+                            token = jsonReader.nextToken();
+                            errorDetails = new ArrayList<>();
+                        }
 
-                case "innererror":
-                    innerError = ResponseInnerError.fromJson(jsonReader);
-                    break;
+                        while (token != JsonToken.END_ARRAY) {
+                            errorDetails.add(ResponseError.fromJson(jsonReader));
+                            token = jsonReader.nextToken();
+                        }
 
-                case "details":
-                    if (token == JsonToken.START_ARRAY) {
-                        token = jsonReader.nextToken();
-                        errorDetails = new ArrayList<>();
-                    }
+                        break;
 
-                    while (token != JsonToken.END_ARRAY) {
-                        errorDetails.add(ResponseError.fromJson(jsonReader));
-                        token = jsonReader.nextToken();
-                    }
-
-                    break;
-
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-        }
 
-        if (code == null && message == null) {
-            throw new IllegalStateException("Missing required properties 'code' and 'message'.");
-        } else if (code == null) {
-            throw new IllegalStateException("Missing required property 'code'.");
-        } else if (message == null) {
-            throw new IllegalStateException("Missing required property 'message'.");
-        } else {
-            return new ResponseError(code, message)
-                .setTarget(target)
-                .setInnerError(innerError)
-                .setErrorDetails(errorDetails);
-        }
+            if (code == null && message == null) {
+                throw new IllegalStateException("Missing required properties 'code' and 'message'.");
+            } else if (code == null) {
+                throw new IllegalStateException("Missing required property 'code'.");
+            } else if (message == null) {
+                throw new IllegalStateException("Missing required property 'message'.");
+            } else {
+                return new ResponseError(code, message)
+                    .setTarget(target)
+                    .setInnerError(innerError)
+                    .setErrorDetails(errorDetails);
+            }
+        });
     }
 }
