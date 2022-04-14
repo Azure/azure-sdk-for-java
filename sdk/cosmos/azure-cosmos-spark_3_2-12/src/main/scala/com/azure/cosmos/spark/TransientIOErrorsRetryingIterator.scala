@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.guava25.base.Throwables
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -48,6 +49,15 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   private val lastContinuationToken = new AtomicReference[String](null)
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
+  private val concurrentCalls = new AtomicLong(0)
+  private lazy val operationContextString = operationContextAndListener match {
+    case Some(o) => if (o.getOperationContext != null) {
+      o.getOperationContext.toString
+    } else {
+      "n/a"
+    }
+    case None => "n/a"
+  }
 
   private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
@@ -75,7 +85,14 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
    * @return true (more records exist), false (no more records exist), None (unknown call should be repeated)
    */
   private def hasNextInternalCore: Option[Boolean] = {
+    val concurrentCallsSnapshot = this.concurrentCalls.incrementAndGet()
+    if (concurrentCallsSnapshot > 1) {
+      this.logWarning(
+        "THREAD-SAFETY ISSUE - TOO MANY CONCURRENT CALLS, Callstack: " +
+          s"${Throwables.getStackTraceAsString(new Exception())} Context: $operationContextString")
+    }
     if (hasBufferedNext) {
+      this.concurrentCalls.decrementAndGet()
       Some(true)
     } else {
       val feedResponseIterator = currentFeedResponseIterator match {
@@ -83,7 +100,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         case None =>
           val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
           lastPagedFlux.getAndSet(newPagedFlux) match {
-            case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+            case Some(oldPagedFlux) => {
+              logInfo(s"Attempting to cancel oldPagedFlux, Context: $operationContextString")
+              oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+            }
             case None =>
           }
           currentFeedResponseIterator = Some(
@@ -113,14 +133,17 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
         if (iteratorCandidate.hasNext) {
           currentItemIterator = Some(iteratorCandidate)
+          this.concurrentCalls.decrementAndGet()
           Some(true)
         } else {
           // empty page interleaved
           // need to get attempt to get next FeedResponse to determine whether more records exist
+          this.concurrentCalls.decrementAndGet()
           None
         }
 
       } else {
+        this.concurrentCalls.decrementAndGet()
         Some(false)
       }
     }
@@ -139,10 +162,25 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   }
 
   override def next(): TSparkRow = {
+    val concurrentCallsSnapshot = this.concurrentCalls.incrementAndGet()
+    if (concurrentCallsSnapshot > 1) {
+      this.logWarning(
+        "THREAD-SAFETY ISSUE - TOO MANY CONCURRENT CALLS, Callstack: " +
+          s"${Throwables.getStackTraceAsString(new Exception())} Context: $operationContextString")
+    }
+
+    concurrentCalls.decrementAndGet()
     currentItemIterator.get.next()
   }
 
   override def head(): TSparkRow = {
+    val concurrentCallsSnapshot = this.concurrentCalls.incrementAndGet()
+    if (concurrentCallsSnapshot > 1) {
+      this.logWarning(
+        "THREAD-SAFETY ISSUE - TOO MANY CONCURRENT CALLS, Callstack: " +
+          s"${Throwables.getStackTraceAsString(new Exception())} Context: $operationContextString")
+    }
+    concurrentCalls.decrementAndGet()
     currentItemIterator.get.head
   }
 
