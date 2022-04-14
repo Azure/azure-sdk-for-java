@@ -141,11 +141,10 @@ public class AzureListenerEndpointRegistry
         }
 
         int containerPhase = listenerContainer.getPhase();
-        if (containerPhase < Integer.MAX_VALUE) {  // a custom phase value
-            if (this.getPhase() < Integer.MAX_VALUE && this.getPhase() != containerPhase) {
-                throw new IllegalStateException("Encountered phase mismatch between container factory definitions: "
-                    + this.getPhase() + " vs " + containerPhase);
-            }
+        if (containerPhase < Integer.MAX_VALUE && this.getPhase() < Integer.MAX_VALUE && this.getPhase() != containerPhase) {
+            throw new IllegalStateException("Encountered phase mismatch between container factory definitions: "
+                + this.getPhase() + " vs " + containerPhase);
+
         }
 
         return listenerContainer;

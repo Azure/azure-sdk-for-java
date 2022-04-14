@@ -21,7 +21,7 @@ public class AzureCompatibilityNotMetException extends RuntimeException {
         this.results = results;
     }
 
-    public List<VerificationResult> getResults() {
+    List<VerificationResult> getResults() {
         return results;
     }
 }

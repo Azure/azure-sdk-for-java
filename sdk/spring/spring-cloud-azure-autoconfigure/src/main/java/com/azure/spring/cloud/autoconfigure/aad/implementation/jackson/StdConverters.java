@@ -8,9 +8,12 @@ import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
-abstract class StdConverters {
+final class StdConverters {
 
     private static final String FIELD_NAME_OF_VALUE = "value";
+
+    private StdConverters() {
+    }
 
     static final class ClientAuthenticationMethodConverter extends StdConverter<JsonNode, ClientAuthenticationMethod> {
 

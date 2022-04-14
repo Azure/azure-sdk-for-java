@@ -187,7 +187,7 @@ public class KeyVaultOperation {
                 return property.toLowerCase(Locale.US)
                     .replace("-", "") // my-project -> myproject
                     .replace("_", "") // my_project -> myproject
-                    .replace("\\.", "-"); // acme.myproject -> acme-myproject
+                    .replace(".", "-"); // acme.myproject -> acme-myproject
             }
         } else {
             return property;

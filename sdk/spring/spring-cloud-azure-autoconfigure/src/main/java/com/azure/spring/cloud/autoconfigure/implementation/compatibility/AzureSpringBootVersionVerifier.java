@@ -14,14 +14,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
-public class AzureSpringBootVersionVerifier implements Predicate<String> {
+public class AzureSpringBootVersionVerifier{
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
 
-    public static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5 = "org.springframework.boot.context.properties.bind.Bindable.BindRestriction";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5 = "org.springframework.boot.context.properties.bind.Bindable.BindRestriction";
 
-    public static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6 = "org.springframework.boot.autoconfigure.data.redis.ClientResourcesBuilderCustomizer";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6 = "org.springframework.boot.autoconfigure.data.redis.ClientResourcesBuilderCustomizer";
     /**
      * Versions supported by Spring Cloud Azure, for present is [2.5, 2.6]. Update this value if needed.
      */
@@ -32,15 +31,19 @@ public class AzureSpringBootVersionVerifier implements Predicate<String> {
      */
     private final List<String> acceptedVersions;
 
-    public AzureSpringBootVersionVerifier(List<String> acceptedVersions) {
+    private final ClassNameResolverPredicate classNameResolver;
+
+    public AzureSpringBootVersionVerifier(List<String> acceptedVersions, ClassNameResolverPredicate classNameResolver) {
         this.acceptedVersions = acceptedVersions;
-        init();
+        this.classNameResolver = classNameResolver;
+        initDefaultSupportedBootVersionCheckMeta();
     }
+
 
     /**
      * Init default supported Spring Boot Version compatibility check meta data.
      */
-    private void init() {
+    private void initDefaultSupportedBootVersionCheckMeta() {
         supportedVersions.put("2.5", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5);
         supportedVersions.put("2.6", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6);
     }
@@ -74,8 +77,7 @@ public class AzureSpringBootVersionVerifier implements Predicate<String> {
                 + "You can find the latest Spring Boot versions here [%s]. %n"
                 + "If you want to learn more about the Spring Cloud Azure Release train compatibility, "
                 + "you can visit this page [%s] and check the [Release Trains] section.%nIf you want to disable this "
-                + "check, "
-                + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false]",
+                + "check, just set the property [spring.cloud.azure.compatibility-verifier.enabled=false]",
             this.acceptedVersions,
             "https://spring.io/projects/spring-boot#learn", "https://github.com/Azure/azure-sdk-for-java/wiki/Spring"
                 + "-Versions-Mapping");
@@ -96,9 +98,9 @@ public class AzureSpringBootVersionVerifier implements Predicate<String> {
                 String versionString = stripWildCardFromVersion(acceptedVersion);
                 String fullyQuallifiedClassName = this.supportedVersions.get(versionString);
 
-                if (test(fullyQuallifiedClassName)) {
+                if (classNameResolver.resolve(fullyQuallifiedClassName)) {
                     if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("Predicate [" + versionString + "] was matched");
+                        LOGGER.debug("Predicate for Spring Boot Version of [" + versionString + "] was matched");
                     }
 
                     return true;
@@ -124,20 +126,6 @@ public class AzureSpringBootVersionVerifier implements Predicate<String> {
 
     private static String stripWildCardFromVersion(String version) {
         return version.endsWith(".x") ? version.substring(0, version.indexOf(".x")) : version;
-    }
-
-    @Override
-    public boolean test(String fullyQuallifiedClassName) {
-        try {
-            if (fullyQuallifiedClassName == null) {
-                return false;
-            }
-
-            Class.forName(fullyQuallifiedClassName);
-            return true;
-        } catch (ClassNotFoundException ex) {
-            return false;
-        }
     }
 
 }
