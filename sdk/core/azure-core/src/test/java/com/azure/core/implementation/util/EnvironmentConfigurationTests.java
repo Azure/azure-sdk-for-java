@@ -29,7 +29,7 @@ public class EnvironmentConfigurationTests {
             EMPTY_SOURCE);
 
         assertEquals(EXPECTED_VALUE, configuration.getSystemProperty(MY_CONFIGURATION));
-        assertEquals(EXPECTED_VALUE, configuration.getAny(MY_CONFIGURATION));
+        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
         assertNull(configuration.getEnvironmentVariable(MY_CONFIGURATION));
     }
 
@@ -42,7 +42,7 @@ public class EnvironmentConfigurationTests {
             new TestConfigurationSource().put(MY_CONFIGURATION, EXPECTED_VALUE));
 
         assertEquals(EXPECTED_VALUE, configuration.getEnvironmentVariable(MY_CONFIGURATION));
-        assertEquals(EXPECTED_VALUE, configuration.getAny(MY_CONFIGURATION));
+        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
         assertNull(configuration.getSystemProperty(MY_CONFIGURATION));
     }
 
@@ -54,7 +54,7 @@ public class EnvironmentConfigurationTests {
         EnvironmentConfiguration configuration = emptyConfiguration();
         assertNull(configuration.getEnvironmentVariable(MY_CONFIGURATION));
         assertNull(configuration.getSystemProperty(MY_CONFIGURATION));
-        assertNull(configuration.getAny(MY_CONFIGURATION));
+        assertNull(configuration.get(MY_CONFIGURATION));
     }
 
     /**
@@ -81,8 +81,8 @@ public class EnvironmentConfigurationTests {
 
         // The clone should be a separate instance, verify its modifications won't affect the original copy.
         configurationClone.remove("foo");
-        assertNull(configurationClone.getAny("foo"));
-        assertEquals("bar", configuration.getAny("foo"));
+        assertNull(configurationClone.get("foo"));
+        assertEquals("bar", configuration.get("foo"));
     }
 
     @Test
@@ -96,12 +96,12 @@ public class EnvironmentConfigurationTests {
         // Verify that the clone has the expected values.
         assertEquals("envVal", configuration.getEnvironmentVariable("env"));
         assertEquals("sysVal", configuration.getSystemProperty("sys"));
-        assertEquals("bar", configuration.getAny("foo"));
+        assertEquals("bar", configuration.get("foo"));
 
         configuration.remove("foo");
         configuration.remove("env");
         configuration.remove("sys");
-        assertNull(configuration.getAny("foo"));
+        assertNull(configuration.get("foo"));
 
         assertEquals("envVal", configuration.getEnvironmentVariable("env"));
         assertEquals("sysVal", configuration.getSystemProperty("sys"));
@@ -117,20 +117,20 @@ public class EnvironmentConfigurationTests {
         configuration.put("sys", "bar2");
         configuration.put("foo", "bar");
 
-        assertEquals("bar1", configuration.getAny("env"));
+        assertEquals("bar1", configuration.get("env"));
         assertEquals("envVal", configuration.getEnvironmentVariable("env"));
-        assertEquals("bar2", configuration.getAny("sys"));
+        assertEquals("bar2", configuration.get("sys"));
         assertEquals("sysVal", configuration.getSystemProperty("sys"));
-        assertEquals("bar", configuration.getAny("foo"));
+        assertEquals("bar", configuration.get("foo"));
 
         configuration.remove("foo");
         configuration.remove("env");
         configuration.remove("sys");
-        assertNull(configuration.getAny("foo"));
+        assertNull(configuration.get("foo"));
 
-        assertEquals("envVal", configuration.getAny("env"));
+        assertEquals("envVal", configuration.get("env"));
         assertEquals("envVal", configuration.getEnvironmentVariable("env"));
-        assertEquals("sysVal", configuration.getAny("sys"));
+        assertEquals("sysVal", configuration.get("sys"));
         assertEquals("sysVal", configuration.getSystemProperty("sys"));
     }
 

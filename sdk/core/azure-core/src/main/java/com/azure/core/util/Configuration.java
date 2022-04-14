@@ -264,7 +264,7 @@ public class Configuration implements Cloneable {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        return environmentConfiguration.getAny(name);
+        return environmentConfiguration.get(name);
     }
 
     /**

@@ -293,7 +293,7 @@ public class ConfigurationTests {
         assertEquals("bar", configuration.get(FOO_PROPERTY));
 
         configuration.remove("foo");
-        assertNull(envConfiguration.getAny("foo"));
+        assertNull(envConfiguration.get("foo"));
         assertFalse(configuration.contains("foo"));
         assertTrue(configuration.contains(FOO_PROPERTY));
         assertEquals("bar", configuration.get(FOO_PROPERTY));

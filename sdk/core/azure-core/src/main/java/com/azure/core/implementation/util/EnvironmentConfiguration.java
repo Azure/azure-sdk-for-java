@@ -148,7 +148,7 @@ public class EnvironmentConfiguration {
      * @param name Name of the configuration.
      * @return Value of the configuration if found, otherwise null.
      */
-    public String getAny(String name) {
+    public String get(String name) {
         String value = explicitConfigurations.get(name);
         if (value != null) {
             return value;

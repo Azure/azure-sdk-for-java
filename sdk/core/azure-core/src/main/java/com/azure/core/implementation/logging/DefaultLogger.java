@@ -80,7 +80,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
     private static LogLevel fromEnvironment() {
         // LogLevel is so basic, we can't use configuration to read it (since Configuration needs to log too)
-        String level = EnvironmentConfiguration.getGlobalConfiguration().getAny(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        String level = EnvironmentConfiguration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
         return LogLevel.fromString(level);
     }
 
