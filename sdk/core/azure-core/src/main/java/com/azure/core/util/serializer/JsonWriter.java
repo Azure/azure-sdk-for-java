@@ -8,41 +8,41 @@ import java.io.Closeable;
 /**
  * Writes a JSON encoded value to a stream.
  */
-public interface JsonWriter extends Closeable {
+public abstract class JsonWriter implements Closeable {
     /**
      * Flushes any un-flushed content written to this writer.
      *
      * @return The flushed JsonWriter object.
      */
-    JsonWriter flush();
+    public abstract JsonWriter flush();
 
     /**
      * Writes a JSON start object, '{'.
      *
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeStartObject();
+    public abstract JsonWriter writeStartObject();
 
     /**
      * Writes a JSON end object, '}'.
      *
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeEndObject();
+    public abstract JsonWriter writeEndObject();
 
     /**
      * Writes a JSON start array, '['.
      *
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeStartArray();
+    public abstract JsonWriter writeStartArray();
 
     /**
      * Writes a JSON end array, ']'.
      *
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeEndArray();
+    public abstract JsonWriter writeEndArray();
 
     /**
      * Writes a JSON field name.
@@ -50,7 +50,7 @@ public interface JsonWriter extends Closeable {
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeFieldName(String fieldName);
+    public abstract JsonWriter writeFieldName(String fieldName);
 
     /**
      * Writes a JSON binary value.
@@ -61,7 +61,7 @@ public interface JsonWriter extends Closeable {
      * @param value Binary value to write.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeBinary(byte[] value);
+    public abstract JsonWriter writeBinary(byte[] value);
 
     /**
      * Writes a JSON boolean value.
@@ -72,7 +72,7 @@ public interface JsonWriter extends Closeable {
      * @param value boolean value to write.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeBoolean(boolean value);
+    public abstract JsonWriter writeBoolean(boolean value);
 
     /**
      * Writes a JSON double value.
@@ -83,7 +83,7 @@ public interface JsonWriter extends Closeable {
      * @param value double value to write.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeDouble(double value);
+    public abstract JsonWriter writeDouble(double value);
 
     /**
      * Writes a JSON float value.
@@ -94,7 +94,7 @@ public interface JsonWriter extends Closeable {
      * @param value float value to write.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeFloat(float value);
+    public abstract JsonWriter writeFloat(float value);
 
     /**
      * Writes a JSON int value.
@@ -105,7 +105,7 @@ public interface JsonWriter extends Closeable {
      * @param value int value to write.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeInt(int value);
+    public abstract JsonWriter writeInt(int value);
 
     /**
      * Writes a JSON long value.
@@ -116,7 +116,7 @@ public interface JsonWriter extends Closeable {
      * @param value long value to write.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeLong(long value);
+    public abstract JsonWriter writeLong(long value);
 
     /**
      * Writes a JSON null.
@@ -126,7 +126,7 @@ public interface JsonWriter extends Closeable {
      *
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeNull();
+    public abstract JsonWriter writeNull();
 
     /**
      * Writes a JSON String value.
@@ -137,7 +137,22 @@ public interface JsonWriter extends Closeable {
      * @param value String value to write.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeString(String value);
+    public abstract JsonWriter writeString(String value);
+
+    /**
+     * Writes the passed value literally without any additional handling.
+     * <p>
+     * Use this API when writing a String value that is already properly formatted JSON, such as a JSON string
+     * ({@code "\"string\""}), number ({@code "42"}, {@code "42.0"}), boolean ({@code "true"}, {@code "false"}), null
+     * ({@code "null"}), array ({@code "[\"string\", \"array\"]"}), or object ({@code {"\"field\":\"value\""}}).
+     * <p>
+     * This API is used instead of {@link #writeRawField(String, String)} when the value needs to be written to the root
+     * of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     *
+     * @param value The raw JSON value to write.
+     * @return The updated JsonWriter object.
+     */
+    public abstract JsonWriter writeRawValue(String value);
 
     /**
      * Writes a JSON binary field.
@@ -149,7 +164,7 @@ public interface JsonWriter extends Closeable {
      * @param value The binary value.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeBinaryField(String fieldName, byte[] value);
+    public abstract JsonWriter writeBinaryField(String fieldName, byte[] value);
 
     /**
      * Writes a JSON boolean field.
@@ -161,7 +176,7 @@ public interface JsonWriter extends Closeable {
      * @param value The boolean value.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeBooleanField(String fieldName, boolean value);
+    public abstract JsonWriter writeBooleanField(String fieldName, boolean value);
 
     /**
      * Writes a JSON double field.
@@ -173,7 +188,7 @@ public interface JsonWriter extends Closeable {
      * @param value The double value.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeDoubleField(String fieldName, double value);
+    public abstract JsonWriter writeDoubleField(String fieldName, double value);
 
     /**
      * Writes a JSON float field.
@@ -185,7 +200,7 @@ public interface JsonWriter extends Closeable {
      * @param value The float value.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeFloatField(String fieldName, float value);
+    public abstract JsonWriter writeFloatField(String fieldName, float value);
 
     /**
      * Writes a JSON int field.
@@ -197,7 +212,7 @@ public interface JsonWriter extends Closeable {
      * @param value The int value.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeIntField(String fieldName, int value);
+    public abstract JsonWriter writeIntField(String fieldName, int value);
 
     /**
      * Writes a JSON long field.
@@ -209,7 +224,7 @@ public interface JsonWriter extends Closeable {
      * @param value The binary value.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeLongField(String fieldName, long value);
+    public abstract JsonWriter writeLongField(String fieldName, long value);
 
     /**
      * Writes a JSON null field.
@@ -220,7 +235,7 @@ public interface JsonWriter extends Closeable {
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeNullField(String fieldName);
+    public abstract JsonWriter writeNullField(String fieldName);
 
     /**
      * Writes a JSON String field.
@@ -232,5 +247,21 @@ public interface JsonWriter extends Closeable {
      * @param value The String value.
      * @return The updated JsonWriter object.
      */
-    JsonWriter writeStringField(String fieldName, String value);
+    public abstract JsonWriter writeStringField(String fieldName, String value);
+
+    /**
+     * Writes the passed field literally without any additional handling.
+     * <p>
+     * Use this API when writing a String value that is already properly formatted JSON, such as a JSON string
+     * ({@code "\"string\""}), number ({@code "42"}, {@code "42.0"}), boolean ({@code "true"}, {@code "false"}), null
+     * ({@code "null"}), array ({@code "[\"string\", \"array\"]"}), or object ({@code {"\"field\":\"value\""}}).
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeRawValue(String)} to simplify adding a key-value to a
+     * JSON object.
+     *
+     * @param fieldName The field name.
+     * @param value The raw JSON value to write.
+     * @return The updated JsonWriter object.
+     */
+    public abstract JsonWriter writeRawField(String fieldName, String value);
 }

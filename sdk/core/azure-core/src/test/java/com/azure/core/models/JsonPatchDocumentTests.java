@@ -3,16 +3,17 @@
 
 package com.azure.core.models;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.DefaultJsonWriter;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.JsonWriter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -23,29 +24,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link JsonPatchDocument}.
  */
 public class JsonPatchDocumentTests {
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final JsonSerializer JSON_SERIALIZER = new DefaultJsonSerializer();
 
     @ParameterizedTest
-    @MethodSource("formattingSupplier")
-    public void toStringTest(JsonPatchDocument document, String expected) {
-        assertEquals(expected, document.toString());
+    @MethodSource("toJsonSupplier")
+    public void toJsonStringBuilder(JsonPatchDocument document, String expected) {
+        assertEquals(expected, document.toJson(new StringBuilder()).toString());
     }
 
     @ParameterizedTest
-    @MethodSource("formattingSupplier")
-    public void jsonifyDocument(JsonPatchDocument document, String expected) throws IOException {
-        assertEquals(expected, SERIALIZER.serialize(document, SerializerEncoding.JSON).replace(" ", ""));
+    @MethodSource("toJsonSupplier")
+    public void toJsonJsonWriter(JsonPatchDocument document, String expected) throws IOException {
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        try (JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream)) {
+            document.toJson(jsonWriter);
+        }
+
+        assertEquals(expected, outputStream.toString(StandardCharsets.UTF_8));
     }
 
-    @ParameterizedTest
-    @MethodSource("formattingSupplier")
-    public void jsonifyOperations(JsonPatchDocument document, String expected) throws IOException {
-        assertEquals(expected, SERIALIZER.serialize(document.getOperations(), SerializerEncoding.JSON)
-            .replace(" ", ""));
-    }
-
-    private static Stream<Arguments> formattingSupplier() {
+    private static Stream<Arguments> toJsonSupplier() {
         JsonPatchDocument complexDocument = newDocument()
             .appendTest("/a/b/c", "foo")
             .appendRemove("/a/b/c")

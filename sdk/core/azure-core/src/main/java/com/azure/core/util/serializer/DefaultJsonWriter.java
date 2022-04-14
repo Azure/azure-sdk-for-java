@@ -14,7 +14,7 @@ import java.io.UncheckedIOException;
 /**
  * Default {@link JsonWriter} implementation.
  */
-public final class DefaultJsonWriter implements JsonWriter {
+public final class DefaultJsonWriter extends JsonWriter {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultJsonWriter.class);
 
     private static final JsonFactory FACTORY = JsonFactory.builder().build();
@@ -139,6 +139,13 @@ public final class DefaultJsonWriter implements JsonWriter {
     }
 
     @Override
+    public JsonWriter writeRawValue(String value) {
+        callWithWrappedIoException(() -> generator.writeRawValue(value));
+
+        return this;
+    }
+
+    @Override
     public JsonWriter writeBinaryField(String fieldName, byte[] value) {
         callWithWrappedIoException(() -> generator.writeBinaryField(fieldName, value));
 
@@ -190,6 +197,16 @@ public final class DefaultJsonWriter implements JsonWriter {
     @Override
     public JsonWriter writeStringField(String fieldName, String value) {
         callWithWrappedIoException(() -> generator.writeStringField(fieldName, value));
+
+        return this;
+    }
+
+    @Override
+    public JsonWriter writeRawField(String fieldName, String value) {
+        callWithWrappedIoException(() -> {
+            generator.writeFieldName(fieldName);
+            generator.writeRawValue(value);
+        });
 
         return this;
     }

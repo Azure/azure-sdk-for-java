@@ -10,10 +10,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonCapable;
+import com.azure.core.util.serializer.JsonReader;
+import com.azure.core.util.serializer.JsonToken;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.core.util.serializer.JsonWriter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,8 +36,7 @@ import java.util.Optional;
 
 class ResponseConstructorsCacheBenchMarkTestData {
     // Model type for Http content
-    static final class Foo {
-        @JsonProperty("name")
+    static final class Foo implements JsonCapable<Foo> {
         private String name;
 
         public Foo setName(String name) {
@@ -44,15 +47,73 @@ class ResponseConstructorsCacheBenchMarkTestData {
         public String getName() {
             return this.name;
         }
+
+        @Override
+        public StringBuilder toJson(StringBuilder stringBuilder) {
+            return JsonUtils.appendNullableField(stringBuilder.append("{"), "name", name)
+                .append("}");
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) {
+            return jsonWriter.writeStartObject().writeStringField("name", name).writeEndObject().flush();
+        }
+
+        public static Foo fromJson(JsonReader jsonReader) {
+            return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+                String name = null;
+
+                while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = jsonReader.getFieldName();
+                    jsonReader.nextToken();
+
+                    if ("name".equals(fieldName)) {
+                        name = jsonReader.getStringValue();
+                    }
+                }
+
+                return new Foo().setName(name);
+            });
+        }
     }
 
     // Model type for custom Http headers
-    static final class FooHeader {
-        @JsonProperty("customHdr")
+    static final class FooHeader implements JsonCapable<FooHeader> {
         private String customHdr;
 
         public String getCustomHdr() {
             return this.customHdr;
+        }
+
+        @Override
+        public StringBuilder toJson(StringBuilder stringBuilder) {
+            return JsonUtils.appendNullableField(stringBuilder.append("{"), "customHdr", customHdr)
+                .append("}");
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) {
+            return jsonWriter.writeStartObject().writeStringField("customHdr", customHdr).writeEndObject().flush();
+        }
+
+        public static FooHeader fromJson(JsonReader jsonReader) {
+            return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+                String customHdr = null;
+
+                while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = jsonReader.getFieldName();
+                    jsonReader.nextToken();
+
+                    if ("customHdr".equalsIgnoreCase(fieldName)) {
+                        customHdr = jsonReader.getStringValue();
+                    }
+                }
+
+                FooHeader fooHeader = new FooHeader();
+                fooHeader.customHdr = customHdr;
+
+                return fooHeader;
+            });
         }
     }
 

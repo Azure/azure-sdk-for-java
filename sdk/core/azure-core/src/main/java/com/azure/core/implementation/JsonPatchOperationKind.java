@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Objects;
 
 /**
  * Represents the JSON Patch operation kind.
@@ -50,8 +50,42 @@ public enum JsonPatchOperationKind {
      *
      * @return The string representation of the JSON patch operation kind.
      */
-    @JsonValue
     public String toString() {
         return op;
+    }
+
+    /**
+     * Gets the {@link JsonPatchOperationKind} based on the passed operation.
+     *
+     * @param op The operation.
+     * @return The {@link JsonPatchOperationKind} that represents the operation.
+     * @throws NullPointerException If {@code op} is null.
+     * @throws IllegalArgumentException If {@code op} doesn't match any known operation.
+     */
+    public static JsonPatchOperationKind fromString(String op) {
+        Objects.requireNonNull(op, "'op' cannot be null.");
+
+        switch (op) {
+            case "add":
+                return ADD;
+
+            case "remove":
+                return REMOVE;
+
+            case "replace":
+                return REPLACE;
+
+            case "move":
+                return MOVE;
+
+            case "copy":
+                return COPY;
+
+            case "test":
+                return TEST;
+
+            default:
+                throw new IllegalArgumentException("Unknown JsonPatchOperationKind '" + op + "'.");
+        }
     }
 }

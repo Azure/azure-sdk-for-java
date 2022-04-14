@@ -241,6 +241,12 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": ".* com\\.azure\\.core.*",
+          "justification": "Removal of jackson-databind functionality."
         }
       ]
     }

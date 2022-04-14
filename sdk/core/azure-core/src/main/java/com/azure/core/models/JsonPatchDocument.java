@@ -8,10 +8,13 @@ import com.azure.core.implementation.JsonPatchOperation;
 import com.azure.core.implementation.JsonPatchOperationKind;
 import com.azure.core.implementation.Option;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonCapable;
+import com.azure.core.util.serializer.JsonReader;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.serializer.JsonToken;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.core.util.serializer.JsonWriter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -21,18 +24,15 @@ import java.util.Objects;
 /**
  * Represents a JSON Patch document.
  */
-public final class JsonPatchDocument {
-    private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
-    private static volatile JsonSerializer defaultSerializer;
+public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
+    private static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     static {
         JsonPatchDocumentHelper.setAccessor(JsonPatchDocument::getOperations);
     }
 
-    @JsonIgnore
     private final JsonSerializer serializer;
 
-    @JsonValue
     private final List<JsonPatchOperation> operations;
 
     /**
@@ -459,20 +459,9 @@ public final class JsonPatchDocument {
             return Option.empty();
         }
 
-        byte[] bytes;
-        if (serializer == null) {
-            if (defaultSerializer == null) {
-                synchronized (SERIALIZER_INSTANTIATION_SYNCHRONIZER) {
-                    if (defaultSerializer == null) {
-                        defaultSerializer = JsonSerializerProviders.createInstance();
-                    }
-                }
-            }
-
-            bytes = defaultSerializer.serializeToBytes(value);
-        } else {
-            bytes = serializer.serializeToBytes(value);
-        }
+        byte[] bytes = (serializer == null)
+            ? DEFAULT_SERIALIZER.serializeToBytes(value)
+            : serializer.serializeToBytes(value);
 
         return Option.of(new String(bytes, StandardCharsets.UTF_8));
     }
@@ -490,16 +479,64 @@ public final class JsonPatchDocument {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("[");
+        return toJson(new StringBuilder()).toString();
+    }
+
+    @Override
+    public StringBuilder toJson(StringBuilder stringBuilder) {
+        stringBuilder.append("[");
 
         for (int i = 0; i < operations.size(); i++) {
             if (i > 0) {
-                builder.append(",");
+                stringBuilder.append(",");
             }
 
-            operations.get(i).buildString(builder);
+            operations.get(i).toJson(stringBuilder);
         }
 
-        return builder.append("]").toString();
+        return stringBuilder.append("]");
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartArray();
+
+        operations.forEach(operation -> operation.toJson(jsonWriter));
+
+        return jsonWriter.writeEndArray().flush();
+    }
+
+    /**
+     * Creates an instance of {@link JsonPatchDocument} by reading the {@link JsonReader}.
+     * <p>
+     * null will be returned if the {@link JsonReader} points to {@link JsonToken#NULL}.
+     * <p>
+     * {@link IllegalStateException} will be thrown if the {@link JsonReader} doesn't point to either {@link
+     * JsonToken#NULL} or {@link JsonToken#START_ARRAY}.
+     *
+     * @param jsonReader The {@link JsonReader} that will be read.
+     * @return An instance of {@link JsonPatchDocument} if the {@link JsonReader} is pointing to {@link
+     * JsonPatchDocument} JSON content, or null if it's pointing to {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to either {@link JsonToken#NULL} or
+     * {@link JsonToken#START_ARRAY}.
+     */
+    public static JsonPatchDocument fromJson(JsonReader jsonReader) {
+        List<JsonPatchOperation> operations = JsonUtils.deserializeArray(jsonReader, (reader, token) -> {
+            if (token == JsonToken.START_OBJECT) {
+                return JsonPatchOperation.fromJson(jsonReader);
+            } else if (token == JsonToken.NULL) {
+                return null;
+            } else {
+                throw new IllegalStateException("Array element should either be an object or null, received " + token);
+            }
+        });
+
+        JsonPatchDocument document = new JsonPatchDocument();
+
+        if (operations != null) {
+            document.operations.addAll(operations);
+        }
+
+        return document;
     }
 }

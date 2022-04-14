@@ -14,7 +14,7 @@ import java.io.UncheckedIOException;
 /**
  * Default {@link JsonReader} implementation.
  */
-public final class DefaultJsonReader implements JsonReader {
+public final class DefaultJsonReader extends JsonReader {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultJsonReader.class);
 
     private static final JsonFactory FACTORY = JsonFactory.builder().build();
@@ -101,7 +101,7 @@ public final class DefaultJsonReader implements JsonReader {
     }
 
     @Override
-    public void skipValue() {
+    public void skipChildren() {
         callWithWrappedIoException(parser::skipChildren);
     }
 
