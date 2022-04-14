@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,6 +138,41 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.addressCacheByEndpoint.values().forEach(cache -> {
             cache.addressCache.setOpenConnectionHandler(openConnectionHandler);
         });
+    }
+
+    @Override
+    public Mono<Void> openAllConnections(String collectionLink) {
+        return this.collectionCache.resolveByNameAsync(null, collectionLink, null)
+                .flatMap(collection -> {
+                    if (collection == null) {
+                        logger.warn("Can not find the collection, no connections will be opened");
+                    }
+
+                    return this.routingMapProvider.tryGetOverlappingRangesAsync(
+                                null,
+                                collection.getResourceId(),
+                                PartitionKeyInternalHelper.FullRange,
+                                true,
+                                null)
+                            .flatMap(valueHolder -> {
+                                if(valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                    logger.warn("There is no pkRanges found, no connections will be opened");
+                                }
+
+                                return Mono.just(
+                                        valueHolder.v.stream().map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId())).collect(Collectors.toList()));
+                            })
+                            .flatMap(pkRangeIdentityList -> this.openAllConnections(collection, pkRangeIdentityList));
+
+                });
+    }
+
+    private Mono<Void> openAllConnections(DocumentCollection documentCollection, List<PartitionKeyRangeIdentity> pkRangeIdentityList) {
+
+        // We probably can decide which region we are going to open
+        return Flux.fromIterable(this.addressCacheByEndpoint.values())
+                .flatMap(endpointCache -> endpointCache.addressCache.openAsync(documentCollection, pkRangeIdentityList))
+                .then();
     }
 
     @Override

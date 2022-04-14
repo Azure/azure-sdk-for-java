@@ -26,6 +26,8 @@ import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
@@ -481,6 +483,15 @@ public class CosmosAsyncContainer {
                 Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
                 return listMono.flatMap(objects -> Mono.empty());
             });
+        } else {
+            logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
+            return Mono.empty();
+        }
+    }
+
+    public Mono<Void> openConnections() {
+        if (isInitialized.compareAndSet(false, true)) {
+            return this.database.getDocClientWrapper().openConnections(getLink());
         } else {
             logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
             return Mono.empty();

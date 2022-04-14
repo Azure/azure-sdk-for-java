@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
@@ -668,7 +669,9 @@ public class GatewayAddressCache implements IAddressCache {
             .doOnSuccess(addressInformations -> {
                 // start a background task to try to open connection to all the addresses
                 if (this.openConnectionHandler != null) {
-                    this.openConnectionHandler.openConnections(pkRangeIdentity, addressInformations);
+                    this.openConnectionHandler.openConnections(pkRangeIdentity, addressInformations)
+                            .subscribeOn(CosmosSchedulers.OPEN_CONNECTION_BOUNDED_ELASTIC)
+                            .subscribe();
                 }
             });
     }
@@ -882,18 +885,25 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         return Flux.concat(tasks)
-                .doOnNext(list -> {
+                .flatMap(list -> {
                     List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos = list.stream()
                             .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
                             .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
                             .values().stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
                             .collect(Collectors.toList());
 
-                    for (Pair<PartitionKeyRangeIdentity, AddressInformation[]> addressInfo : addressInfos) {
-                        this.serverPartitionAddressCache.set(
-                                new PartitionKeyRangeIdentity(collection.getResourceId(), addressInfo.getLeft().getPartitionKeyRangeId()),
-                                addressInfo.getRight());
-                    }
+                    return Flux.fromIterable(addressInfos)
+                            .flatMap(pair -> {
+                                this.serverPartitionAddressCache.set(
+                                        pair.getLeft(),
+                                        pair.getRight());
+
+                                if (this.openConnectionHandler != null) {
+                                    return this.openConnectionHandler.openConnections(pair.getLeft(), pair.getRight());
+                                }
+
+                                return Mono.empty();
+                            });
                 }).then();
     }
 

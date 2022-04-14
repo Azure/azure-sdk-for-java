@@ -4123,6 +4123,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.throughputControlStore.enableThroughputControlGroup(group);
     }
 
+    @Override
+    public Mono<Void> openConnections(String collectionLink) {
+        if (this.addressResolver != null) {
+            return this.addressResolver.openAllConnections(collectionLink);
+        }
+
+        return Mono.empty();
+    }
+
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
         PartitionKey partitionKey,
         String partitionKeySelector) {

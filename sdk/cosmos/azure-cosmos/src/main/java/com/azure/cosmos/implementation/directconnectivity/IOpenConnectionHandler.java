@@ -4,7 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import reactor.core.publisher.Mono;
 
 public interface IOpenConnectionHandler {
-    void openConnections(PartitionKeyRangeIdentity pkRangeIdentity, AddressInformation[] addressInformations);
+    Mono<Void> openConnections(PartitionKeyRangeIdentity pkRangeIdentity, AddressInformation[] addressInformations);
 }

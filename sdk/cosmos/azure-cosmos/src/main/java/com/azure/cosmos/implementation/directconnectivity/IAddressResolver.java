@@ -16,4 +16,5 @@ public interface IAddressResolver {
 
     void updateAddresses(RxDocumentServiceRequest request, URI serverKey);
     void setOpenConnectionHandler(IOpenConnectionHandler openConnectionHandler);
+    Mono<Void> openAllConnections(String collectionLink);
 }

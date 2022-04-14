@@ -1617,4 +1617,6 @@ public interface AsyncDocumentClient {
      * @param group the throughput control group.
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group);
+
+    Mono<Void> openConnections(String collectionLink);
 }

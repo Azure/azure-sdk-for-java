@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 
 public class OpenConnectionHandler implements IOpenConnectionHandler {
     private static final Logger logger = LoggerFactory.getLogger(OpenConnectionHandler.class);
+    private static final int DEFAULT_CONNECTION_CONCURRENCY = 10;
 
     private final TransportClient transportClient;
 
@@ -24,7 +24,7 @@ public class OpenConnectionHandler implements IOpenConnectionHandler {
     }
 
     @Override
-    public void openConnections(PartitionKeyRangeIdentity pkRangeIdentity, AddressInformation[] addressInformations) {
+    public Mono<Void> openConnections(PartitionKeyRangeIdentity pkRangeIdentity, AddressInformation[] addressInformations) {
         checkArgument(addressInformations != null, "addressInformations");
         checkArgument(pkRangeIdentity != null, "pkRangeIdentity");
 
@@ -35,10 +35,9 @@ public class OpenConnectionHandler implements IOpenConnectionHandler {
                 pkRangeIdentity.getPartitionKeyRangeId());
         }
 
-        Flux.fromIterable(Arrays.asList(addressInformations))
-            .flatMap(addressInformation -> this.openConnection(addressInformation.getPhysicalUri(), RxOpenConnectionRequest.INSTANCE))
-            .subscribeOn(CosmosSchedulers.OPEN_CONNECTION_BOUNDED_ELASTIC)
-            .subscribe();
+        return Flux.fromIterable(Arrays.asList(addressInformations))
+            .flatMap(addressInformation -> this.openConnection(addressInformation.getPhysicalUri(), RxOpenConnectionRequest.INSTANCE), DEFAULT_CONNECTION_CONCURRENCY)
+            .then();
     }
 
     private Mono<RntbdOpenConnectionResponse> openConnection(Uri physicalUri, RxOpenConnectionRequest openConnectionRequest) {

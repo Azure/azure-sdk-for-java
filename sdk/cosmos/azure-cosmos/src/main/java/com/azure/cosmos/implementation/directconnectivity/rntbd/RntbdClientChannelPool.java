@@ -1127,6 +1127,25 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 final Channel channel = future.channel();
 
                 channel.closeFuture().addListener((ChannelFuture f) -> {
+                    logger.info("Channel to endpoint {} is closed. " +
+                                    "isInAvailableChannels={}, " +
+                                    "isInAcquiredChannels={}, " +
+                                    "isOnChannelEventLoop={}, " +
+                                    "isActive={}, " +
+                                    "isOpen={}, " +
+                                    "isRegistered={}, " +
+                                    "isWritable={}, " +
+                                    "threadName={}",
+                            channel.remoteAddress(),
+                            availableChannels.contains(channel),
+                            acquiredChannels.contains(channel),
+                            channel.eventLoop().inEventLoop(),
+                            channel.isActive(),
+                            channel.isOpen(),
+                            channel.isRegistered(),
+                            channel.isWritable(),
+                            Thread.currentThread().getName()
+                    );
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("Channel to endpoint {} is closed. " +

@@ -703,6 +703,11 @@ public class AddressResolver implements IAddressResolver {
         this.addressCache.setOpenConnectionHandler(openConnectionHandler);
     }
 
+    @Override
+    public Mono<Void> openAllConnections(String collectionLink) {
+        return Mono.empty();
+    }
+
     private static class ResolutionResult {
         final PartitionKeyRange TargetPartitionKeyRange;
         final AddressInformation[] Addresses;
