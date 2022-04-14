@@ -5,8 +5,8 @@
   val cosmosContainerName_cf = "customer" //replace customer with the name of the container you want to migrate
   val cosmosContainerName_throughputControl = "ThroughputControl"
 
-  val cosmosEndpoint_write = "" //enter your Cosmos DB Account URI
-  val cosmosMasterKey_write = "" //enter your Cosmos DB Account PRIMARY KEY
+  val cosmosEndpoint_write = "https://cosmicworks-7owxqn2kaxrn4.documents.azure.com:443/" //enter your Cosmos DB Account URI
+  val cosmosMasterKey_write = "mBOMieRbqIXAL7VkxDpVNyZYb1rnYGwKMAfw5M6YKOkPYpoIiXpyYjkiiySimh6MciaJoGBimxMZaMqwZXcSPw==" //enter your Cosmos DB Account PRIMARY KEY
   val cosmosDatabaseName_write = "database-v4" //replace this with the name of your target database
   val cosmosContainerName_write = "customer_v2" //replace this with what you want to name your target container
 
@@ -33,6 +33,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
 // COMMAND ----------
 
   val changeFeedCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint_cf,
+    "spark.cosmos.applicationName" -> "LiveMigrationRead_",
     "spark.cosmos.accountKey" -> cosmosMasterKey_cf,
     "spark.cosmos.database" -> cosmosDatabaseName_cf,
     "spark.cosmos.container" -> cosmosContainerName_cf,
@@ -56,6 +57,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
 
   val writeCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint_cf,
     "spark.cosmos.accountKey" -> cosmosMasterKey_write,
+    "spark.cosmos.applicationName" -> "LivemigrationWrite_",                     
     "spark.cosmos.database" -> cosmosDatabaseName_write,
     "spark.cosmos.container" -> cosmosContainerName_write,
     "spark.cosmos.write.strategy" -> "ItemOverwrite",  //default                

@@ -42,7 +42,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPat
 // COMMAND ----------
 
 // MAGIC %sql
-// MAGIC -- anti join shows all documnets(versions) in the SourceView not present in SynkView
+// MAGIC -- anti join shows all documents(versions) in the SourceView not present in SinkView
 // MAGIC SELECT * FROM cosmosCatalog.`database-v4`.SourceView src -- change database-v4 to be the value of your source database
 // MAGIC LEFT ANTI JOIN cosmosCatalog.`database-v4`.SinkView sink -- change database-v4 to be the value of your target database
 // MAGIC ON src.id = sink.id and src._etag == sink._origin_etag
@@ -50,7 +50,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPat
 // COMMAND ----------
 
 // MAGIC %sql
-// MAGIC -- anti join shows count of all documnets(versions) in the SourceView not present in SynkView
+// MAGIC -- anti join shows count of all documents(versions) in the SourceView not present in SinkView
 // MAGIC SELECT count(*) FROM cosmosCatalog.`database-v4`.SourceView src  -- change database-v4 to be the value of your source database
 // MAGIC LEFT ANTI JOIN cosmosCatalog.`database-v4`.SinkView sink -- change database-v4 to be the value of your target database
 // MAGIC ON src.id = sink.id and src._etag == sink._origin_etag
