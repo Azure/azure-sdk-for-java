@@ -226,11 +226,11 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             LOGGER.debug("The clientOptions passed in is not of ClientOptionsProvider.HttpClientOptions.");
             return null;
         }
-        ClientOptionsProvider.HttpClientOptions httpClientOptions = (ClientOptionsProvider.HttpClientOptions) client;
-        if (httpClientOptions.getHeaders() == null) {
+        ClientOptionsProvider.HttpClientOptions clientOptions = (ClientOptionsProvider.HttpClientOptions) client;
+        if (clientOptions.getHeaders() == null) {
             return null;
         }
-        return httpClientOptions.getHeaders()
+        return clientOptions.getHeaders()
                                 .stream()
                                 .map(h -> new Header(h.getName(), h.getValues()))
                                 .collect(Collectors.toList());
