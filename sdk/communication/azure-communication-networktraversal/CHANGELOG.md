@@ -6,6 +6,11 @@
 
 - Set Ttl parameter in the Communication Relay Async client
 
+### Other Changes
+
+- Update of azure-core to 1.27.0
+- Update of azure-communication-common to 1.1.2
+
 ## 1.1.0-beta.1 (2022-03-15)
 
 ### Features Added
