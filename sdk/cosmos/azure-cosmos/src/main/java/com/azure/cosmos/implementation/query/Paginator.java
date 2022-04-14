@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -42,11 +40,7 @@ public class Paginator {
             executeFunc,
             top,
             maxPageSize,
-            getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getOperationContext(cosmosQueryRequestOptions));
+            getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize));
     }
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
@@ -55,8 +49,7 @@ public class Paginator {
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
             int top,
             int maxPageSize,
-            int maxPreFetchCount,
-            OperationContextAndListenerTuple operationContext) {
+            int maxPreFetchCount) {
 
         return getPaginatedQueryResultAsObservable(
             continuationToken,
@@ -65,8 +58,7 @@ public class Paginator {
             top,
             maxPageSize,
             maxPreFetchCount,
-            false,
-            operationContext);
+            false);
     }
 
     public static <T> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
@@ -78,8 +70,7 @@ public class Paginator {
         int top,
         int maxPageSize,
         int preFetchCount,
-        boolean isSplitHandlingDisabled,
-        OperationContextAndListenerTuple operationContext) {
+        boolean isSplitHandlingDisabled) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ChangeFeedFetcher<>(
@@ -90,8 +81,7 @@ public class Paginator {
                 requestOptionProperties,
                 top,
                 maxPageSize,
-                isSplitHandlingDisabled,
-                operationContext),
+                isSplitHandlingDisabled),
             preFetchCount);
     }
 
@@ -107,7 +97,7 @@ public class Paginator {
                         Mono<FeedResponse<T>> nextPage = tFetcher.nextPage();
                         sink.next(nextPage.flux());
                     } else {
-                        logger.info("No more results, Context: {}", tFetcher.getOperationContextText());
+                        logger.debug("No more results");
                         sink.complete();
                     }
                     return tFetcher;
@@ -127,8 +117,7 @@ public class Paginator {
             int top,
             int maxPageSize,
             int preFetchCount,
-            boolean isChangeFeed,
-            OperationContextAndListenerTuple operationContext) {
+            boolean isChangeFeed) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ServerSideOnlyContinuationFetcherImpl<>(
@@ -137,8 +126,7 @@ public class Paginator {
                 continuationToken,
                 isChangeFeed,
                 top,
-                maxPageSize,
-                operationContext),
+                maxPageSize),
                 preFetchCount);
     }
 

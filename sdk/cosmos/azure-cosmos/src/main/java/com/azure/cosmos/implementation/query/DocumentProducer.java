@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -39,7 +38,6 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +89,6 @@ class DocumentProducer<T> {
     }
 
     protected final IDocumentQueryClient client;
-    protected final Supplier<String> operationContextTextProvider;
     protected final String collectionRid;
     protected final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     protected final Class<T> resourceType;
@@ -122,8 +119,7 @@ class DocumentProducer<T> {
             int initialPageSize, // = -1,
             String initialContinuationToken,
             int top,
-            FeedRangeEpkImpl feedRange,
-            Supplier<String> operationContextTextProvider) {
+            FeedRangeEpkImpl feedRange) {
 
         this.client = client;
         this.collectionRid = collectionResourceId;
@@ -133,7 +129,7 @@ class DocumentProducer<T> {
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
         this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(feedRange.getRange().toString());
-        this.operationContextTextProvider = operationContextTextProvider;
+
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;
             this.fetchSchedulingMetrics.start();
@@ -185,11 +181,7 @@ class DocumentProducer<T> {
                         executeRequestFuncWithRetries,
                         top,
                         pageSize,
-                        Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getOperationContext(cosmosQueryRequestOptions)
+                        Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize)
                 )
                 .map(rsp -> {
                     lastResponseContinuationToken = rsp.getContinuationToken();
@@ -265,8 +257,7 @@ class DocumentProducer<T> {
                 pageSize,
                 initialContinuationToken,
                 top,
-                new FeedRangeEpkImpl(targetRange.toRange()),
-                this.operationContextTextProvider);
+                new FeedRangeEpkImpl(targetRange.toRange()));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {

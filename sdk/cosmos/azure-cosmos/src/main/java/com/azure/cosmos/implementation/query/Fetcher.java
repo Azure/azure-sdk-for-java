@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -21,8 +19,6 @@ abstract class Fetcher<T> {
 
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
-    private final OperationContextAndListenerTuple operationContext;
-    private Supplier<String> operationContextTextProvider;
 
     private volatile boolean shouldFetchMore;
     private volatile int maxItemCount;
@@ -32,21 +28,12 @@ abstract class Fetcher<T> {
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         boolean isChangeFeed,
         int top,
-        int maxItemCount,
-        OperationContextAndListenerTuple operationContext) {
+        int maxItemCount) {
 
         checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
 
         this.executeFunc = executeFunc;
         this.isChangeFeed = isChangeFeed;
-
-        this.operationContext = operationContext;
-        this.operationContextTextProvider = () -> {
-            String operationContextText = operationContext != null && operationContext.getOperationContext() != null ?
-                operationContext.getOperationContext().toString() : "n/a";
-            this.operationContextTextProvider = () -> operationContextText;
-            return operationContextText;
-        };
 
         this.top = top;
         if (top == -1) {
@@ -79,10 +66,6 @@ abstract class Fetcher<T> {
 
     protected abstract String getContinuationForLogging();
 
-    public String getOperationContextText() {
-        return this.operationContextTextProvider.get();
-    }
-
     private void updateState(FeedResponse<T> response, RxDocumentServiceRequest request) {
         String transformedContinuation =
             this.applyServerResponseContinuation(response.getContinuationToken(), request);
@@ -93,9 +76,7 @@ abstract class Fetcher<T> {
             if (top < 0) {
                 // this shouldn't happen
                 // this means backend retrieved more items than requested
-                logger.warn("Azure Cosmos DB BackEnd Service returned more than requested {} items, Context: {}",
-                    maxItemCount,
-                    this.operationContextTextProvider.get());
+                logger.warn("Azure Cosmos DB BackEnd Service returned more than requested {} items", maxItemCount);
                 top = 0;
             }
             maxItemCount = Math.min(maxItemCount, top);
@@ -107,11 +88,10 @@ abstract class Fetcher<T> {
             // if fullyDrained then done
             !this.isFullyDrained(this.isChangeFeed, response);
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Fetcher state updated: " +
-                    "isChangeFeed = {}, continuation token = {}, max item count = {}, should fetch more = {}, Context: {}",
-                isChangeFeed, this.getContinuationForLogging(), maxItemCount, shouldFetchMore,
-                this.operationContextTextProvider.get());
+        if (logger.isDebugEnabled()) {
+            logger.debug("Fetcher state updated: " +
+                    "isChangeFeed = {}, continuation token = {}, max item count = {}, should fetch more = {}",
+                isChangeFeed, this.getContinuationForLogging(), maxItemCount, shouldFetchMore);
         }
     }
 
@@ -122,9 +102,7 @@ abstract class Fetcher<T> {
     private RxDocumentServiceRequest createRequest() {
         if (!shouldFetchMore) {
             // this should never happen
-            logger.error(
-                "invalid state, trying to fetch more after completion, Context: {}",
-                this.operationContextTextProvider.get());
+            logger.error("invalid state, trying to fetch more after completion");
             throw new IllegalStateException("INVALID state, trying to fetch more after completion");
         }
 

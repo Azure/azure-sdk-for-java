@@ -19,7 +19,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -38,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -55,8 +53,6 @@ implements IDocumentQueryExecutionContext<T> {
     protected SqlQuerySpec query;
     protected UUID correlatedActivityId;
     protected boolean shouldExecuteQueryRequest;
-    private Supplier<String> operationContextTextProvider;
-    private final OperationContextAndListenerTuple operationContext;
 
     protected DocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                 IDocumentQueryClient client, ResourceType resourceTypeEnum,
@@ -73,16 +69,6 @@ implements IDocumentQueryExecutionContext<T> {
         this.resourceLink = resourceLink;
         this.correlatedActivityId = correlatedActivityId;
         this.diagnosticsClientContext = diagnosticsClientContext;
-        this.operationContext = ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
-            .getOperationContext(cosmosQueryRequestOptions);
-        this.operationContextTextProvider = () -> {
-            String operationContextText = operationContext != null && operationContext.getOperationContext() != null ?
-                operationContext.getOperationContext().toString() : "n/a";
-            this.operationContextTextProvider = () -> operationContextText;
-            return operationContextText;
-        };
     }
 
     @Override
@@ -101,9 +87,6 @@ implements IDocumentQueryExecutionContext<T> {
         return request;
     }
 
-    public Supplier<String> getOperationContextTextProvider() {
-        return this.operationContextTextProvider;
-    }
 
     protected RxDocumentServiceRequest createDocumentServiceRequestWithFeedRange(Map<String, String> requestHeaders,
                                                                     SqlQuerySpec querySpec,
