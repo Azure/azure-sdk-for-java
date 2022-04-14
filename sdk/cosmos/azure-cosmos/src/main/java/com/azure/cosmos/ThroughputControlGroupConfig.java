@@ -77,8 +77,7 @@ public final class ThroughputControlGroupConfig {
     public boolean isDefault() {
         return this.isDefault;
     }
-
-
+    
     /**
      * Get whether request is allowed to continue on original request flow if throughput control controller failed on initialization.
      *
