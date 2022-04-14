@@ -64,7 +64,7 @@ public final class AzureStorageFileProtocolResolver extends AbstractAzureStorage
         @Override
         public Stream<StorageItem> listItems(String itemPrefix) {
             ShareClient shareClient = getShareServiceClient().getShareClient(name);
-            if (Boolean.TRUE.equals(shareClient.exists())) {
+            if (shareClient.exists()) {
                 return shareClient.getRootDirectoryClient().listFilesAndDirectories(itemPrefix, null, null, null)
                                   .stream()
                                   .filter(file -> !file.isDirectory())

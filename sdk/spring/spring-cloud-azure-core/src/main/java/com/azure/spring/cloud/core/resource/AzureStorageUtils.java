@@ -13,7 +13,6 @@ import java.util.Locale;
 final class AzureStorageUtils {
 
     private AzureStorageUtils() {
-        throw new IllegalStateException("Utility class");
     }
 
     /**

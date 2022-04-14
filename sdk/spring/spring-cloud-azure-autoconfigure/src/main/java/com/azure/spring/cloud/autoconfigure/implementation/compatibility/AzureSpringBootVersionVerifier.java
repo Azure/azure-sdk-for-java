@@ -129,7 +129,7 @@ public class AzureSpringBootVersionVerifier implements Predicate<String> {
     @Override
     public boolean test(String fullyQuallifiedClassName) {
         try {
-            if (null == fullyQuallifiedClassName) {
+            if (fullyQuallifiedClassName == null) {
                 return false;
             }
 

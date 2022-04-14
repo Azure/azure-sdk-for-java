@@ -50,7 +50,7 @@ public class UserPrincipalManager {
 
     private final JWKSource<SecurityContext> keySource;
     private final AadAuthenticationProperties aadAuthenticationProperties;
-    private final Boolean explicitAudienceCheck;
+    private final boolean explicitAudienceCheck;
     private final Set<String> validAudiences = new HashSet<>();
 
     /**
@@ -197,7 +197,7 @@ public class UserPrincipalManager {
                 if (!isAadIssuer(issuer)) {
                     throw new BadJWTException("Invalid token issuer");
                 }
-                if (Boolean.TRUE.equals(explicitAudienceCheck)) {
+                if (explicitAudienceCheck) {
                     Optional<String> matchedAudience = claimsSet.getAudience()
                                                                 .stream()
                                                                 .filter(validAudiences::contains)

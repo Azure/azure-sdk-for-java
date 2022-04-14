@@ -31,7 +31,6 @@ public final class SerializerUtils {
     }
 
     private SerializerUtils() {
-        throw new IllegalStateException("Utility class");
     }
 
     public static String serializeOAuth2AuthorizedClientMap(Map<String, OAuth2AuthorizedClient> authorizedClients) {

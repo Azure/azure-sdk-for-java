@@ -11,7 +11,6 @@ import java.util.Set;
 
 final class JsonNodeUtils {
     private JsonNodeUtils() {
-        throw new IllegalStateException("Utility class");
     }
 
     static final TypeReference<Set<String>> STRING_SET = new TypeReference<Set<String>>() {

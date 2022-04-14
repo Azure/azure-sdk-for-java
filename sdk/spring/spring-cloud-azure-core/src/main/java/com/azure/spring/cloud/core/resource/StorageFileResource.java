@@ -206,10 +206,10 @@ public final class StorageFileResource extends AzureStorageResource {
     }
 
     private void create() throws ShareStorageException {
-        if (!Boolean.TRUE.equals(shareClient.exists())) {
+        if (!shareClient.exists()) {
             this.shareClient.create();
         }
-        if (!Boolean.TRUE.equals(shareFileClient.exists())) {
+        if (!shareFileClient.exists()) {
             ShareFileHttpHeaders header = null;
             if (StringUtils.hasText(contentType)) {
                 header = new ShareFileHttpHeaders();
