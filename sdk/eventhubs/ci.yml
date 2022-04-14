@@ -52,6 +52,9 @@ extends:
       - name: azure-messaging-eventhubs-checkpointstore-blob
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreblob
+      - name: azure-resourcemanager-eventhubs-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventhubsgenerated
     AdditionalModules:
       - name: azure-messaging-eventhubs-track1-perf
         groupId: com.azure
