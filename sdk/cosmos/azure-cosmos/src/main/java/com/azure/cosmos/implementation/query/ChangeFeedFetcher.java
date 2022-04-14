@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -45,9 +46,10 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         Map<String, Object> requestOptionProperties,
         int top,
         int maxItemCount,
-        boolean isSplitHandlingDisabled) {
+        boolean isSplitHandlingDisabled,
+        OperationContextAndListenerTuple operationContext) {
 
-        super(executeFunc, true, top, maxItemCount);
+        super(executeFunc, true, top, maxItemCount, operationContext);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
