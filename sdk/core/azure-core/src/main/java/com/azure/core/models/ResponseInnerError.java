@@ -8,17 +8,12 @@ import com.azure.core.util.serializer.JsonCapable;
 import com.azure.core.util.serializer.JsonReader;
 import com.azure.core.util.serializer.JsonToken;
 import com.azure.core.util.serializer.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The inner error of a {@link ResponseError}.
  */
 final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
-
-    @JsonProperty(value = "code")
     private String code;
-
-    @JsonProperty(value = "innererror")
     private ResponseInnerError innerError;
 
     /**
@@ -59,6 +54,19 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
     public ResponseInnerError setInnerError(ResponseInnerError innerError) {
         this.innerError = innerError;
         return this;
+    }
+
+    @Override
+    public StringBuilder toJson(StringBuilder builder) {
+        builder.append("{\"code\":\"").append(code).append("\",\"innererror\":");
+
+        if (innerError != null) {
+            innerError.toJson(builder);
+        } else {
+            builder.append("null");
+        }
+
+        return builder.append("}");
     }
 
     @Override
@@ -127,7 +135,7 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
         //
         // At this point it is assumed that the next token will always be a field name based on JsonReader reading
         // conventions.
-        while ((token = jsonReader.nextToken()) != JsonToken.END_OBJECT) {
+        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
             String fieldName = jsonReader.getFieldName();
 
             // Ignore unknown properties.

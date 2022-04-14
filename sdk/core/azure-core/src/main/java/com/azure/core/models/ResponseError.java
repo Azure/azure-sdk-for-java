@@ -3,29 +3,23 @@
 
 package com.azure.core.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonCapable;
+import com.azure.core.util.serializer.JsonReader;
+import com.azure.core.util.serializer.JsonToken;
+import com.azure.core.util.serializer.JsonWriter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class represents the error details of an HTTP response.
  */
-public final class ResponseError {
-
-    @JsonProperty(value = "code", required = true)
+public final class ResponseError implements JsonCapable<ResponseError> {
     private final String code;
-
-    @JsonProperty(value = "message", required = true)
     private final String message;
 
-    @JsonProperty(value = "target")
     private String target;
-
-    @JsonProperty(value = "innererror")
     private ResponseInnerError innerError;
-
-    @JsonProperty(value = "details")
     private List<ResponseError> errorDetails;
 
     /**
@@ -34,9 +28,7 @@ public final class ResponseError {
      * @param code the error code of this error.
      * @param message the error message of this error.
      */
-    @JsonCreator
-    public ResponseError(@JsonProperty(value = "code", required = true)String code,
-                         @JsonProperty(value = "message", required = true)String message) {
+    public ResponseError(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -116,5 +108,142 @@ public final class ResponseError {
     ResponseError setErrorDetails(List<ResponseError> errorDetails) {
         this.errorDetails = errorDetails;
         return this;
+    }
+
+    @Override
+    public StringBuilder toJson(StringBuilder builder) {
+        builder.append("{\"code\":\"").append(code)
+            .append("\",\"message\":\"").append(message).append("\"");
+
+        if (target != null) {
+            builder.append(",\"target\":\"").append(target).append("\"");
+        }
+
+        if (innerError != null) {
+            builder.append(",\"innererror\":");
+            innerError.toJson(builder);
+        }
+
+        if (errorDetails != null) {
+            builder.append(",\"details\":[");
+
+            for (int i = 0; i < errorDetails.size(); i++) {
+                if (i > 0) {
+                    builder.append(",");
+                }
+
+                errorDetails.get(i).toJson(builder);
+            }
+
+            builder.append("]");
+        }
+
+        return builder.append("}");
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject()
+            .writeStringField("code", code)
+            .writeStringField("message", message);
+
+        if (target != null) {
+            jsonWriter.writeStringField("target", target);
+        }
+
+        if (innerError != null) {
+            jsonWriter.writeFieldName("innererror");
+            innerError.toJson(jsonWriter);
+        }
+
+        if (errorDetails != null) {
+            jsonWriter.writeFieldName("details").writeStartArray();
+
+            errorDetails.forEach(error -> error.toJson(jsonWriter));
+
+            jsonWriter.writeEndArray();
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    /**
+     * Creates an instance of {@link ResponseInnerError} by reading the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} that will be read.
+     * @return An instance of {@link ResponseInnerError} if the {@link JsonReader} is pointing to
+     * {@link ResponseInnerError} JSON content, or null if it is pointing to {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to the correct {@link JsonToken} when
+     * passed.
+     */
+    public static ResponseError fromJson(JsonReader jsonReader) {
+        // required
+        String code = null;
+        String message = null;
+
+        // optional
+        String target = null;
+        ResponseInnerError innerError = null;
+        List<ResponseError> errorDetails = null;
+
+        JsonToken token = jsonReader.beginReadingObject();
+
+        if (token == JsonToken.NULL) {
+            return null;
+        } else if (token != JsonToken.START_OBJECT) {
+            // Otherwise, this is an invalid state, throw an exception.
+            throw new IllegalStateException("Unexpected token to begin deserialization: " + token);
+        }
+
+        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+            token = jsonReader.nextToken();
+
+            switch (jsonReader.getFieldName()) {
+                case "code":
+                    code = jsonReader.getStringValue();
+                    break;
+
+                case "message":
+                    message = jsonReader.getStringValue();
+                    break;
+
+                case "target":
+                    target = jsonReader.getStringValue();
+                    break;
+
+                case "innererror":
+                    innerError = ResponseInnerError.fromJson(jsonReader);
+                    break;
+
+                case "details":
+                    if (token == JsonToken.START_ARRAY) {
+                        token = jsonReader.nextToken();
+                        errorDetails = new ArrayList<>();
+                    }
+
+                    while (token != JsonToken.END_ARRAY) {
+                        errorDetails.add(ResponseError.fromJson(jsonReader));
+                        token = jsonReader.nextToken();
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        if (code == null && message == null) {
+            throw new IllegalStateException("Missing required properties 'code' and 'message'.");
+        } else if (code == null) {
+            throw new IllegalStateException("Missing required property 'code'.");
+        } else if (message == null) {
+            throw new IllegalStateException("Missing required property 'message'.");
+        } else {
+            return new ResponseError(code, message)
+                .setTarget(target)
+                .setInnerError(innerError)
+                .setErrorDetails(errorDetails);
+        }
     }
 }

@@ -22,7 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JsonPatchOperationTests {
     @ParameterizedTest
     @MethodSource("toJsonSupplier")
-    public void toJson(JsonPatchOperation operation, String expectedJson) throws IOException {
+    public void toJsonStringBuilder(JsonPatchOperation operation, String expectedJson) {
+        assertEquals(expectedJson, operation.toJson(new StringBuilder()).toString());
+    }
+
+    @ParameterizedTest
+    @MethodSource("toJsonSupplier")
+    public void toJsonJsonWriter(JsonPatchOperation operation, String expectedJson) throws IOException {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         try (JsonWriter writer = DefaultJsonWriter.toStream(outputStream)) {
             operation.toJson(writer);
@@ -62,12 +68,12 @@ public class JsonPatchOperationTests {
 
     private static Stream<Arguments> fromJsonSupplier() {
         return Stream.of(
-//            Arguments.of("{\"op\":\"remove\",\"path\":\"/a\"}",
-//                new JsonPatchOperation(JsonPatchOperationKind.REMOVE, null, "/a", Option.uninitialized())),
-//            Arguments.of("{\"op\":\"test\",\"path\":\"/a\",\"value\":\"sample\"}",
-//                new JsonPatchOperation(JsonPatchOperationKind.TEST, null, "/a", Option.of("\"simple\""))),
-//            Arguments.of("{\"op\":\"move\",\"from\":\"/a\",\"path\":\"/b\"}",
-//                new JsonPatchOperation(JsonPatchOperationKind.MOVE, "/a", "/b", Option.uninitialized())),
+            Arguments.of("{\"op\":\"remove\",\"path\":\"/a\"}",
+                new JsonPatchOperation(JsonPatchOperationKind.REMOVE, null, "/a", Option.uninitialized())),
+            Arguments.of("{\"op\":\"test\",\"path\":\"/a\",\"value\":\"simple\"}",
+                new JsonPatchOperation(JsonPatchOperationKind.TEST, null, "/a", Option.of("simple"))),
+            Arguments.of("{\"op\":\"move\",\"from\":\"/a\",\"path\":\"/b\"}",
+                new JsonPatchOperation(JsonPatchOperationKind.MOVE, "/a", "/b", Option.uninitialized())),
             Arguments.of("{\"op\":\"add\",\"path\":\"/a\",\"value\":{\"array\":[\"string\",42,true,null]}}",
                 new JsonPatchOperation(JsonPatchOperationKind.ADD, null, "/a",
                     Option.of("{\"array\":[\"string\",42,true,null]}")))

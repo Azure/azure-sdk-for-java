@@ -3,8 +3,6 @@
 
 package com.azure.core.implementation;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.Objects;
 
 /**
@@ -52,7 +50,6 @@ public enum JsonPatchOperationKind {
      *
      * @return The string representation of the JSON patch operation kind.
      */
-    @JsonValue
     public String toString() {
         return op;
     }

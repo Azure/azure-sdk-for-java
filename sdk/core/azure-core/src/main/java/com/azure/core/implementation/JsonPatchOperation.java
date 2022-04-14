@@ -4,12 +4,10 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.jackson.JsonPatchOperationSerializer;
 import com.azure.core.util.serializer.JsonCapable;
 import com.azure.core.util.serializer.JsonReader;
 import com.azure.core.util.serializer.JsonToken;
 import com.azure.core.util.serializer.JsonWriter;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -18,7 +16,6 @@ import java.util.Optional;
  * Represents a JSON Patch operation.
  */
 @Immutable
-@JsonSerialize(using = JsonPatchOperationSerializer.class)
 public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation> {
     private final JsonPatchOperationKind op;
     private final String from;
@@ -106,36 +103,31 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
 
     @Override
     public String toString() {
-        return buildString(new StringBuilder()).toString();
+        return toJson(new StringBuilder()).toString();
     }
 
-    /**
-     * Appends this operation's JSON to the passed {@link StringBuilder}.
-     *
-     * @param builder The {@link StringBuilder} where this operation's JSON is being appended.
-     * @return The updated {@link StringBuilder}.
-     */
-    public StringBuilder buildString(StringBuilder builder) {
-        builder.append("{\"op\":\"")
+    @Override
+    public StringBuilder toJson(StringBuilder stringBuilder) {
+        stringBuilder.append("{\"op\":\"")
             .append(op.toString())
             .append("\"");
 
         if (from != null) {
-            builder.append(",\"from\":\"")
+            stringBuilder.append(",\"from\":\"")
                 .append(from)
                 .append("\"");
         }
 
-        builder.append(",\"path\":\"")
+        stringBuilder.append(",\"path\":\"")
             .append(path)
             .append("\"");
 
         if (value.isInitialized()) {
-            builder.append(",\"value\":")
+            stringBuilder.append(",\"value\":")
                 .append(value.getValue());
         }
 
-        return builder.append("}");
+        return stringBuilder.append("}");
     }
 
     @Override
