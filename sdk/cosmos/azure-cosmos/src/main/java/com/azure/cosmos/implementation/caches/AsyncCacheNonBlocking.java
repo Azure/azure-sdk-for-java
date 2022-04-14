@@ -38,17 +38,6 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
         });
     }
 
-    public boolean removeNotFoundFromCacheOnException(Exception exception) {
-        if (exception.equals(CosmosException.class)) {
-            CosmosException dce = Utils.as(exception, CosmosException.class);
-
-            if (dce != null && dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * <summary>
      * <para>
@@ -159,8 +148,6 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             this.value = null;
             this.refreshInProgress = null;
         }
-
-        boolean isValueCreated = this.value != null;
 
         public Mono<TValue> getValueAsync() {
             Mono<TValue> valueMono = this.value;
