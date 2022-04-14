@@ -1,5 +1,13 @@
 ## Release History
 
+## 1.0.1 (2022-04-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-cosmos` from `4.28.0` to version `4.28.1`.
+
 ### 1.0.0 (2022-03-18)
 #### Features Added
 * Released GA version 1.0.0 of 'azure-cosmos-encryption'.
