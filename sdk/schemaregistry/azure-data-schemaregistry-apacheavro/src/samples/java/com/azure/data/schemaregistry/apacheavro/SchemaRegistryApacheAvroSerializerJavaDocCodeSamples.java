@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.models.MessageContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
@@ -69,8 +69,8 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
             .setFavouriteColour("Turquoise")
             .build();
 
-        MessageWithMetadata message = serializer.serializeMessageData(person,
-            TypeReference.createInstance(MessageWithMetadata.class));
+        MessageContent message = serializer.serializeMessageData(person,
+            TypeReference.createInstance(MessageContent.class));
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize
     }
 
@@ -110,7 +110,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
     public void deserialize() {
         // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize
         // Message to deserialize. Assume that the body contains data which has been serialized using an Avro encoder.
-        MessageWithMetadata message = new MessageWithMetadata()
+        MessageContent message = new MessageContent()
             .setBodyAsBinaryData(BinaryData.fromBytes(new byte[0]))
             .setContentType("avro/binary+{schema-id}");
 
