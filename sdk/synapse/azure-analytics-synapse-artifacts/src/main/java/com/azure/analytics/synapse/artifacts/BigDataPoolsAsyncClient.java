@@ -21,7 +21,7 @@ public final class BigDataPoolsAsyncClient {
     @Generated private final BigDataPoolsImpl serviceClient;
 
     /**
-     * Initializes an instance of BigDataPools client.
+     * Initializes an instance of BigDataPoolsAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */

@@ -46,4 +46,39 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
         this.writeBehavior = writeBehavior;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }
