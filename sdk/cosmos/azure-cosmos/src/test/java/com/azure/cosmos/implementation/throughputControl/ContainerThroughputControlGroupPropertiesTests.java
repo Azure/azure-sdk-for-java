@@ -17,7 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class ContainerThroughputControlGroupPropertiesTests {
 
-    @Test(groups = "unit")
+    @Test(groups = "emulator")
     public void enableThroughputControlGroup() {
         CosmosAsyncClient testClient = null;
         try {
