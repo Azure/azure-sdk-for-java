@@ -3,9 +3,9 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.serializer.DefaultJsonReader;
-import com.azure.core.util.serializer.DefaultJsonWriter;
-import com.azure.core.util.serializer.JsonWriter;
+import com.azure.json.DefaultJsonReader;
+import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

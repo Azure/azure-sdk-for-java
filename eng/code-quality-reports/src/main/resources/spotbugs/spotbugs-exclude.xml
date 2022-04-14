@@ -2462,7 +2462,10 @@
 
   <Match>
     <Bug pattern="EI_EXPOSE_REP"/>
-    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+    <Or>
+      <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+      <Class name="com.azure.json.implementation.AccessibleByteArrayOutputStream"/>
+    </Or>
   </Match>
 
   <!-- EventGrid swagger naming -->
@@ -2648,5 +2651,8 @@
 
   <Match>
     <Package name="~com\.azure\.core\.implementation\.jackson\.core.*"/>
+  </Match>
+  <Match>
+    <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
   </Match>
 </FindBugsFilter>

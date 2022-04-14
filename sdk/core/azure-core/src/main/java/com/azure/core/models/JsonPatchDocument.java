@@ -8,13 +8,13 @@ import com.azure.core.implementation.JsonPatchOperation;
 import com.azure.core.implementation.JsonPatchOperationKind;
 import com.azure.core.implementation.Option;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonCapable;
-import com.azure.core.util.serializer.JsonReader;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.JsonToken;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.core.util.serializer.JsonWriter;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

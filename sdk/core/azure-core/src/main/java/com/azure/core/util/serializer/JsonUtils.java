@@ -3,6 +3,9 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
