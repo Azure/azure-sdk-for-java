@@ -47,7 +47,6 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
-    <boring-ssl-classifier></boring-ssl-classifier>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
@@ -131,12 +130,6 @@
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
       <version>3.4.16</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.51.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-      <classifier>${boring-ssl-classifier}</classifier>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -237,7 +230,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.51.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor:reactor-core:[3.4.16]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
@@ -336,45 +328,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>native-linux</id>
-      <activation>
-        <property>
-          <name>native-linux</name>
-        </property>
-      </activation>
-
-      <properties>
-        <boring-ssl-classifier>linux-x86_64</boring-ssl-classifier>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>native-macos</id>
-      <activation>
-        <property>
-          <name>native-macos</name>
-        </property>
-      </activation>
-
-      <properties>
-        <boring-ssl-classifier>osx-x86_64</boring-ssl-classifier>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>native-windows</id>
-      <activation>
-        <property>
-          <name>native-windows</name>
-        </property>
-      </activation>
-
-      <properties>
-        <boring-ssl-classifier>windows-x86_64</boring-ssl-classifier>
-      </properties>
     </profile>
 
     <profile>
