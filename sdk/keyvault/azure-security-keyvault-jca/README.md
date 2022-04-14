@@ -10,15 +10,47 @@ Azure Key Vault. It is built on four principles:
 [Source code] | [API reference documentation] | [Product documentation] | [Samples]
 
 ## Getting started
-### Adding the package to your project
-Maven dependency for the Azure Key Vault JCA client library. Add it to your project's POM file.
+### Include the package
+
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-security-keyvault-jca</artifactId>
+    </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-jca;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.5.0</version>
+    <version>2.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -212,7 +244,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_cloud_shell]: https://shell.azure.com/bash
-[spring_boot_starter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
+[spring_boot_starter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/spring-cloud-azure-starter-keyvault-certificates
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key

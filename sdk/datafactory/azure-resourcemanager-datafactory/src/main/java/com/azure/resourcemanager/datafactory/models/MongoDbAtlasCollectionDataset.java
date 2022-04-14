@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.MongoDbAtlasCollectionDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("MongoDbAtlasCollection")
 @Fluent
 public final class MongoDbAtlasCollectionDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbAtlasCollectionDataset.class);
-
     /*
      * MongoDB Atlas database dataset properties.
      */
@@ -120,7 +117,7 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model MongoDbAtlasCollectionDataset"));
@@ -128,4 +125,6 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDbAtlasCollectionDataset.class);
 }

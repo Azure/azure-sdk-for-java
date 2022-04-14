@@ -36,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GroupUsersClient. */
 public final class GroupUsersClientImpl implements GroupUsersClient {
-    private final ClientLogger logger = new ClientLogger(GroupUsersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final GroupUsersService service;
 
@@ -162,7 +160,8 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listSinglePageAsync(
@@ -238,7 +237,8 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listSinglePageAsync(
@@ -316,7 +316,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UserContractInner> listAsync(
@@ -335,7 +335,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UserContractInner> listAsync(String resourceGroupName, String serviceName, String groupId) {
@@ -367,7 +367,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UserContractInner> listAsync(
@@ -392,7 +392,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UserContractInner> list(String resourceGroupName, String serviceName, String groupId) {
@@ -422,7 +422,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UserContractInner> list(
@@ -446,7 +446,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Boolean>> checkEntityExistsWithResponseAsync(
@@ -505,7 +505,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Boolean>> checkEntityExistsWithResponseAsync(
@@ -560,7 +560,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Boolean> checkEntityExistsAsync(
@@ -594,7 +594,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -609,7 +609,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkEntityExistsWithResponse(
@@ -627,7 +627,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user details.
+     * @return user details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserContractInner>> createWithResponseAsync(
@@ -686,7 +686,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user details.
+     * @return user details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserContractInner>> createWithResponseAsync(
@@ -741,7 +741,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user details.
+     * @return user details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UserContractInner> createAsync(
@@ -785,7 +785,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user details.
+     * @return user details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserContractInner> createWithResponse(
@@ -803,7 +803,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -862,7 +862,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -917,7 +917,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String groupId, String userId) {
@@ -952,7 +952,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -967,7 +967,8 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listNextSinglePageAsync(String nextLink) {
@@ -1003,7 +1004,8 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1030,4 +1032,6 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
                         res.getValue().nextLink(),
                         null));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GroupUsersClientImpl.class);
 }

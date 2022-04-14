@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** GitHub Actions Web App stack settings. */
 @Immutable
 public final class GitHubActionWebAppStackSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GitHubActionWebAppStackSettings.class);
-
     /*
      * <code>true</code> if GitHub Actions is supported for the stack;
      * otherwise, <code>false</code>.

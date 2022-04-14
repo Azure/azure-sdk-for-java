@@ -3,7 +3,13 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.DecodeException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.TooManyRedirectsException;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
@@ -13,10 +19,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
@@ -39,9 +43,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.ContextView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -49,13 +52,10 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
-import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -71,8 +71,12 @@ public final class RestProxy implements InvocationHandler {
         "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
 
     private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
+    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE =
+        new ResponseExceptionConstructorCache();
 
-    private final ClientLogger logger = new ClientLogger(RestProxy.class);
+    // RestProxy is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RestProxy.class);
+
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -148,7 +152,7 @@ public final class RestProxy implements InvocationHandler {
             return handleRestReturnType(asyncDecodedResponse, methodParser,
                 methodParser.getReturnType(), context, options);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 
@@ -157,7 +161,7 @@ public final class RestProxy implements InvocationHandler {
         // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
         // marked as deprecated.
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
         }
     }
 
@@ -333,11 +337,7 @@ public final class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-                serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
-
-                request.setHeader("Content-Length", String.valueOf(stream.size()));
-                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
+                request.setBody(serializer.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
@@ -352,11 +352,8 @@ public final class RestProxy implements InvocationHandler {
             } else if (bodyContentObject instanceof ByteBuffer) {
                 request.setBody(Flux.just((ByteBuffer) bodyContentObject));
             } else {
-                ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-                serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()), stream);
-
-                request.setHeader("Content-Length", String.valueOf(stream.size()));
-                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
+                request.setBody(serializer.serializeToBytes(bodyContentObject,
+                    SerializerEncoding.fromHeaders(request.getHeaders())));
             }
         }
 
@@ -371,31 +368,52 @@ public final class RestProxy implements InvocationHandler {
 
     private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
         final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
-        final int responseStatusCode = httpResponse.getStatusCode();
+        StringBuilder exceptionMessage = new StringBuilder("Status code ")
+            .append(httpResponse.getStatusCode())
+            .append(", ");
+
         final String contentType = httpResponse.getHeaderValue("Content-Type");
-        final String bodyRepresentation;
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
+            exceptionMessage.append("(").append(httpResponse.getHeaderValue("Content-Length")).append("-byte body)");
+        } else if (responseContent == null || responseContent.length == 0) {
+            exceptionMessage.append("(empty body)");
         } else {
-            bodyRepresentation = responseContent == null || responseContent.length == 0
-                ? "(empty body)"
-                : "\"" + new String(responseContent, StandardCharsets.UTF_8) + "\"";
+            exceptionMessage.append("\"").append(new String(responseContent, StandardCharsets.UTF_8)).append("\"");
         }
 
-        Exception result;
-        try {
-            final Constructor<? extends HttpResponseException> exceptionConstructor = exception.getExceptionType()
-                .getConstructor(String.class, HttpResponse.class, exception.getExceptionBodyType());
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
-                httpResponse, responseDecodedContent);
-        } catch (ReflectiveOperationException e) {
-            String message = "Status code " + responseStatusCode + ", but an instance of "
-                + exception.getExceptionType().getCanonicalName() + " cannot be created."
-                + " Response body: " + bodyRepresentation;
-
-            result = new IOException(message, e);
+        // For HttpResponseException types that exist in azure-core, call the constructor directly.
+        Class<? extends HttpResponseException> exceptionType = exception.getExceptionType();
+        if (exceptionType == HttpResponseException.class) {
+            return new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
+        } else if (exceptionType == ClientAuthenticationException.class) {
+            return new ClientAuthenticationException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
+        } else if (exceptionType == DecodeException.class) {
+            return new DecodeException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
+        } else if (exceptionType == ResourceExistsException.class) {
+            return new ResourceExistsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
+        } else if (exceptionType == ResourceModifiedException.class) {
+            return new ResourceModifiedException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
+        } else if (exceptionType == ResourceNotFoundException.class) {
+            return new ResourceNotFoundException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
+        } else if (exceptionType == TooManyRedirectsException.class) {
+            return new TooManyRedirectsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
+        } else {
+            // Finally, if the HttpResponseException subclass doesn't exist in azure-core, use reflection to create a
+            // new instance of it.
+            try {
+                MethodHandle handle = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
+                    exception.getExceptionBodyType());
+                return ResponseExceptionConstructorCache.invoke(handle, exceptionMessage.toString(), httpResponse,
+                    responseDecodedContent);
+            } catch (RuntimeException e) {
+                // And if reflection fails, return an IOException.
+                // TODO (alzimmer): Determine if this should be an IOException or HttpResponseException.
+                exceptionMessage.append(". An instance of ")
+                    .append(exceptionType.getCanonicalName())
+                    .append(" couldn't be created.");
+                return new IOException(exceptionMessage.toString(), e);
+            }
         }
-        return result;
     }
 
     /**
@@ -470,24 +488,51 @@ public final class RestProxy implements InvocationHandler {
 
     @SuppressWarnings("unchecked")
     private Mono<Response<?>> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
-        // determine the type of response class. If the type is the 'RestResponse' interface, we will use the
-        // 'RestResponseBase' class instead.
-        Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-        if (cls.equals(Response.class)) {
-            cls = (Class<? extends Response<?>>) (Object) ResponseBase.class;
-        } else if (cls.equals(PagedResponse.class)) {
-            cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
+        final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
-            if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                return monoError(logger, new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
-            }
+        final HttpResponse httpResponse = response.getSourceResponse();
+        final HttpRequest request = httpResponse.getRequest();
+        final int statusCode = httpResponse.getStatusCode();
+        final HttpHeaders headers = httpResponse.getHeaders();
+        final Object decodedHeaders = response.getDecodedHeaders();
+        // Inspection of the response type needs to be performed to determine which course of action should be taken to
+        // instantiate the Response<?> from the HttpResponse.
+        //
+        // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
+        // ResponseBase or PagedResponseBase can be returned.
+        if (cls.equals(Response.class)) {
+            // For Response return a new instance of ResponseBase cast to the class.
+            return Mono.defer(() -> Mono.just(cls.cast(new ResponseBase<>(request, statusCode, headers, bodyAsObject,
+                decodedHeaders))));
+        } else if (cls.equals(PagedResponse.class)) {
+            // For PagedResponse return a new instance of PagedResponseBase cast to the class.
+            //
+            // PagedResponse needs an additional check that the bodyAsObject implements Page.
+            //
+            // If the bodyAsObject is null use the constructor that take items and continuation token with null.
+            // Otherwise, use the constructor that take Page.
+            return Mono.create(sink -> {
+                if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
+                    sink.error(LOGGER.logExceptionAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR)));
+                } else if (bodyAsObject == null) {
+                    sink.success(cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null,
+                        decodedHeaders)));
+                } else {
+                    sink.success(cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
+                        decodedHeaders)));
+                }
+            });
         }
 
-        final Class<? extends Response<?>> clsFinal = cls;
-        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(clsFinal))
+        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
+        //
+        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
+        // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the
+        // body as an Object.
+        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))
             .switchIfEmpty(Mono.defer(() ->
-                Mono.error(new RuntimeException("Cannot find suitable constructor for class " + clsFinal))))
-            .flatMap(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
+                Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls))))
+            .map(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
     }
 
     private Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
@@ -498,8 +543,8 @@ public final class RestProxy implements InvocationHandler {
 
         final Mono<?> asyncResult;
         if (httpMethod == HttpMethod.HEAD
-            && (TypeUtil.isTypeOrSubTypeOf(
-            entityType, Boolean.TYPE) || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
+            && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
+                || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Mono.just(isSuccess);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
@@ -635,13 +680,8 @@ public final class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline
      */
     private static HttpPipeline createDefaultPipeline() {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new CookiePolicy());
-
         return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
             .build();
     }
 

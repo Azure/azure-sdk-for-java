@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed
- * operation (if the AllocationState is Steady).
+ * Details about the current or last completed resize operation. Describes either the current operation (if the pool
+ * AllocationState is Resizing) or the previously completed operation (if the AllocationState is Steady).
  */
 @Fluent
 public final class ResizeOperationStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResizeOperationStatus.class);
-
     /*
      * The desired number of dedicated compute nodes in the pool.
      */
@@ -27,7 +23,7 @@ public final class ResizeOperationStatus {
     private Integer targetDedicatedNodes;
 
     /*
-     * The desired number of low-priority compute nodes in the pool.
+     * The desired number of Spot/low-priority compute nodes in the pool.
      */
     @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
@@ -84,7 +80,7 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Get the targetLowPriorityNodes property: The desired number of low-priority compute nodes in the pool.
+     * Get the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool.
      *
      * @return the targetLowPriorityNodes value.
      */
@@ -93,7 +89,7 @@ public final class ResizeOperationStatus {
     }
 
     /**
-     * Set the targetLowPriorityNodes property: The desired number of low-priority compute nodes in the pool.
+     * Set the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool.
      *
      * @param targetLowPriorityNodes the targetLowPriorityNodes value to set.
      * @return the ResizeOperationStatus object itself.

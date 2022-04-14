@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Maintenance Operation Status. */
 @Fluent
 public final class MaintenanceRedeployStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceRedeployStatus.class);
-
     /*
      * True, if customer is allowed to perform Maintenance.
      */

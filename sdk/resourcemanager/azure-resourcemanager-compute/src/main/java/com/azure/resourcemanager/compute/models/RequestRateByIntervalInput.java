@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Api request input for LogAnalytics getRequestRateByInterval Api. */
 @Fluent
 public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestRateByIntervalInput.class);
-
     /*
      * Interval value in minutes used to create LogAnalytics call rate logs.
      */
@@ -106,10 +103,12 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     public void validate() {
         super.validate();
         if (intervalLength() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property intervalLength in model RequestRateByIntervalInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RequestRateByIntervalInput.class);
 }

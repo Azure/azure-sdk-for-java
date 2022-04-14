@@ -13,9 +13,9 @@ import com.azure.identity.implementation.util.ValidationUtil;
  * @see IntelliJCredential
  */
 public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudioCodeCredentialBuilder> {
-    private String tenantId;
-    private final ClientLogger logger = new ClientLogger(IntelliJCredentialBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntelliJCredentialBuilder.class);
 
+    private String tenantId;
 
     /**
      * Sets the tenant id of the user to authenticate through the {@link IntelliJCredential}. The default is
@@ -25,7 +25,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @return An updated instance of this builder with the tenant id set as specified.
      */
     public IntelliJCredentialBuilder tenantId(String tenantId) {
-        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
+        ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         this.tenantId = tenantId;
         return this;
     }
@@ -44,7 +44,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      */
     public IntelliJCredentialBuilder keePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                  + " Please configure it on the builder."));
         }

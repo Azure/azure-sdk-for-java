@@ -6,12 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** disk encryption set resource. */
 @Fluent
 public final class DiskEncryptionSetInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetInner.class);
-
     /*
      * The managed identity for the disk encryption set. It should be given
      * permission on the key vault before it can be used to encrypt disks.

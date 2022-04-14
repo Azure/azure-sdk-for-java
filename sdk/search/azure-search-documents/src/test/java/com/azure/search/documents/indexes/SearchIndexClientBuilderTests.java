@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -124,6 +125,7 @@ public class SearchIndexClientBuilderTests {
         SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .httpClient(new FreshDateTestClient())
             .buildAsyncClient();
 

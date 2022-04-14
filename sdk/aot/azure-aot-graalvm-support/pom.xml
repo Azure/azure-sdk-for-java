@@ -7,7 +7,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
+    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
 
     <packaging>jar</packaging>
     <name>Microsoft Azure GraalVM support</name>
@@ -58,12 +58,12 @@
         <dependency>
             <groupId>org.graalvm.sdk</groupId>
             <artifactId>graal-sdk</artifactId>
-            <version>21.3.0</version>  <!-- {x-version-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
+            <version>22.0.0.2</version>  <!-- {x-version-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.graalvm.nativeimage</groupId>
             <artifactId>svm</artifactId>
-            <version>21.3.0</version>  <!-- {x-version-update;org.graalvm.nativeimage:svm;external_dependency} -->
+            <version>22.0.0.2</version>  <!-- {x-version-update;org.graalvm.nativeimage:svm;external_dependency} -->
         </dependency>
     </dependencies>
 
@@ -72,18 +72,37 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M3
-                </version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+                <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
                 <configuration>
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>org.graalvm.sdk:graal-sdk:[21.3.0]</include> <!-- {x-include-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
-                                <include>org.graalvm.nativeimage:svm:[21.3.0]</include> <!-- {x-include-update;org.graalvm.nativeimage:svm;external_dependency} -->
+                                <include>org.graalvm.sdk:graal-sdk:[22.0.0.2]</include> <!-- {x-include-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
+                                <include>org.graalvm.nativeimage:svm:[22.0.0.2]</include> <!-- {x-include-update;org.graalvm.nativeimage:svm;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
                 </configuration>
+            </plugin>
+
+            <!-- We must generate an empty javadoc JAR file to publish to Maven Central because this package does not contain any public sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>empty-javadoc-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>javadoc</classifier>
+                            <classesDirectory>${basedir}/javadoc</classesDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

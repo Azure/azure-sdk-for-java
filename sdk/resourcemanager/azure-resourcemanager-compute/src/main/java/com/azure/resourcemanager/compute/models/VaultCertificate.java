@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a single certificate reference in a Key Vault, and where the certificate should reside on the VM. */
 @Fluent
 public final class VaultCertificate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultCertificate.class);
-
     /*
      * This is the URL of a certificate that has been uploaded to Key Vault as
      * a secret. For adding a secret to the Key Vault, see [Add a key or secret

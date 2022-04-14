@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The service properties for soft delete. */
 @Fluent
 public final class DeleteRetentionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteRetentionPolicy.class);
-
     /*
      * Indicates whether DeleteRetentionPolicy is enabled.
      */
@@ -26,6 +22,15 @@ public final class DeleteRetentionPolicy {
      */
     @JsonProperty(value = "days")
     private Integer days;
+
+    /*
+     * This property when set to true allows deletion of the soft deleted blob
+     * versions and snapshots. This property cannot be used blob restore
+     * policy. This property only applies to blob service and does not apply to
+     * containers or file share.
+     */
+    @JsonProperty(value = "allowPermanentDelete")
+    private Boolean allowPermanentDelete;
 
     /**
      * Get the enabled property: Indicates whether DeleteRetentionPolicy is enabled.
@@ -66,6 +71,30 @@ public final class DeleteRetentionPolicy {
      */
     public DeleteRetentionPolicy withDays(Integer days) {
         this.days = days;
+        return this;
+    }
+
+    /**
+     * Get the allowPermanentDelete property: This property when set to true allows deletion of the soft deleted blob
+     * versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob
+     * service and does not apply to containers or file share.
+     *
+     * @return the allowPermanentDelete value.
+     */
+    public Boolean allowPermanentDelete() {
+        return this.allowPermanentDelete;
+    }
+
+    /**
+     * Set the allowPermanentDelete property: This property when set to true allows deletion of the soft deleted blob
+     * versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob
+     * service and does not apply to containers or file share.
+     *
+     * @param allowPermanentDelete the allowPermanentDelete value to set.
+     * @return the DeleteRetentionPolicy object itself.
+     */
+    public DeleteRetentionPolicy withAllowPermanentDelete(Boolean allowPermanentDelete) {
+        this.allowPermanentDelete = allowPermanentDelete;
         return this;
     }
 

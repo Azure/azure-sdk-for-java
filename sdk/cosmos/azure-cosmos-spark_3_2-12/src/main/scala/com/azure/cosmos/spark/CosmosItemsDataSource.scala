@@ -27,31 +27,32 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with B
   private lazy val sparkSession = SparkSession.active
 
   /**
-    * Infer the schema of the table identified by the given options.
-    * @param options an immutable case-insensitive string-to-string
-    * @return StructType inferred schema
-    */
+   * Infer the schema of the table identified by the given options.
+   *
+   * @param options an immutable case-insensitive string-to-string
+   * @return StructType inferred schema
+   */
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
     new ItemsTable(sparkSession, Array.empty, None, None, options).schema()
   }
 
   /**
-    * Represents the format that this data source provider uses.
-    */
+   * Represents the format that this data source provider uses.
+   */
   override def shortName(): String = CosmosConstants.Names.ItemsDataSourceShortName
 
   /**
-    * Return a `Table` instance with the specified table schema, partitioning and properties
-    * to do read/write. The returned table should report the same schema and partitioning with the
-    * specified ones, or Spark may fail the operation.
-    *
-    * @param schema The specified table schema.
-    * @param partitioning The specified table partitioning.
-    * @param properties The specified table properties. It's case preserving (contains exactly what
-    *                   users specified) and implementations are free to use it case sensitively or
-    *                   insensitively. It should be able to identify a table, e.g. file path, Kafka
-    *                   topic name, etc.
-    */
+   * Return a `Table` instance with the specified table schema, partitioning and properties
+   * to do read/write. The returned table should report the same schema and partitioning with the
+   * specified ones, or Spark may fail the operation.
+   *
+   * @param schema       The specified table schema.
+   * @param partitioning The specified table partitioning.
+   * @param properties   The specified table properties. It's case preserving (contains exactly what
+   *                     users specified) and implementations are free to use it case sensitively or
+   *                     insensitively. It should be able to identify a table, e.g. file path, Kafka
+   *                     topic name, etc.
+   */
   override def getTable(schema: StructType, partitioning: Array[Transform], properties: util.Map[String, String]): Table = {
     val diagnostics = DiagnosticsConfig.parseDiagnosticsConfig(properties.asScala.toMap)
     // getTable - This is used for loading table with user specified schema and other transformations.
@@ -65,9 +66,19 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with B
   }
 
   /**
-    * Returns true if the source has the ability of accepting external table metadata when getting
-    * tables. The external table metadata includes user-specified schema from
-    * `DataFrameReader`/`DataStreamReader` and schema/partitioning stored in Spark catalog.
-    */
+   * Returns true if the source has the ability of accepting external table metadata when getting
+   * tables. The external table metadata includes user-specified schema from
+   * `DataFrameReader`/`DataStreamReader` and schema/partitioning stored in Spark catalog.
+   */
   override def supportsExternalMetadata(): Boolean = true
+}
+
+object CosmosItemsDataSource {
+  /**
+   * Easy way to validate the version of the Cosmos Data Source
+   * @return the version of teh Cosmos Data Source
+   */
+  def version : String = {
+    CosmosConstants.currentVersion
+  }
 }

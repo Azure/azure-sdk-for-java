@@ -3,12 +3,13 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
@@ -50,17 +51,17 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
-        EncryptionKeyWrapProvider encryptionKeyWrapProvider = new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
+        KeyEncryptionKeyResolver keyEncryptionKeyResolver = new EncryptionAsyncApiCrudTest.TestKeyEncryptionKeyResolver();
         //Creating DB
         CosmosDatabaseProperties cosmosDatabaseProperties = this.client.createDatabase("TestDBForEncryptionCacheTest"
             , ThroughputProperties.createManualThroughput(1000)).block().getProperties();
-        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).encryptionKeyWrapProvider(
-            encryptionKeyWrapProvider).buildAsyncClient();
+        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).keyEncryptionKeyResolver(
+            keyEncryptionKeyResolver).keyEncryptionKeyResolver(keyEncryptionKeyResolver).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
         //Create ClientEncryptionKeys
-        metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key1", "tempmetadata1", "RSA-OAEP");
+        metadata2 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key2", "tempmetadata2", "RSA-OAEP");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
@@ -95,7 +96,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
-        Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString());
+        Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
 
         //Testing clientEncryptionPolicy cache
         AsyncCache<String, CosmosContainerProperties> cosmosContainerPropertiesAsyncCache =  ReflectionUtils.getContainerPropertiesCacheByContainerId(cosmosEncryptionAsyncClient);
@@ -139,7 +140,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         ReflectionUtils.setCosmosEncryptionAsyncClient(cosmosEncryptionAsyncContainer.getEncryptionProcessor(), spyCosmosEncryptionAsyncClient);
         cosmosEncryptionAsyncContainer.readItem(properties.getId(),
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions(), EncryptionCodeSnippet.Pojo.class).block();
-        Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(0)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString());
+        Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(0)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

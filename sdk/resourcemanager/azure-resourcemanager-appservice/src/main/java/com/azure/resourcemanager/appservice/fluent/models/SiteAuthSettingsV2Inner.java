@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AuthPlatform;
 import com.azure.resourcemanager.appservice.models.GlobalValidation;
 import com.azure.resourcemanager.appservice.models.HttpSettings;
 import com.azure.resourcemanager.appservice.models.IdentityProviders;
 import com.azure.resourcemanager.appservice.models.Login;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration settings for the Azure App Service Authentication / Authorization V2 feature. */
 @Fluent
 public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteAuthSettingsV2Inner.class);
-
     /*
      * SiteAuthSettingsV2 resource specific properties
      */

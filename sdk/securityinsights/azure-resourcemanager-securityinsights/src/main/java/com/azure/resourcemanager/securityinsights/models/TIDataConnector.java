@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.TIDataConnectorProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("ThreatIntelligence")
 @Fluent
 public final class TIDataConnector extends DataConnectorInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TIDataConnector.class);
-
     /*
      * TI (Threat Intelligence) data connector properties.
      */

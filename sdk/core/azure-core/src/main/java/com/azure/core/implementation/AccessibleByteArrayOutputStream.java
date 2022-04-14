@@ -11,8 +11,34 @@ import java.io.ByteArrayOutputStream;
  * directly access the {@code byte[]} without copying.
  */
 public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
+    /**
+     * Constructs an instance of {@link AccessibleByteArrayOutputStream} with the default initial capacity.
+     */
+    public AccessibleByteArrayOutputStream() {
+        super();
+    }
+
+    /**
+     * Constructs an instance of {@link AccessibleByteArrayOutputStream} with a specified initial capacity.
+     *
+     * @param initialCapacity The initial capacity.
+     * @throws IllegalArgumentException If {@code initialCapacity} is less than 0.
+     */
+    public AccessibleByteArrayOutputStream(int initialCapacity) {
+        super(initialCapacity);
+    }
+
     @Override
     public synchronized byte[] toByteArray() {
         return buf;
+    }
+
+    /**
+     * The number of bytes that have been written to the stream.
+     *
+     * @return The number of byte written to the stream.
+     */
+    public int count() {
+        return count;
     }
 }

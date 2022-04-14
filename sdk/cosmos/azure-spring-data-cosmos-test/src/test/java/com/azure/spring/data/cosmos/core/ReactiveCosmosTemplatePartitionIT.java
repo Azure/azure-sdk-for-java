@@ -79,8 +79,7 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
-            //  Enable Query plan caching for testing
-            System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
+            //  Query plan caching is enabled by default
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 

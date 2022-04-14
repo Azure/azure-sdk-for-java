@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.17 (Unreleased)
+## 12.0.0-beta.19 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.0.0-beta.18 (2022-04-07)
+
+### Other Changes
+#### Dependency Updates
+- Updated blob dependency to 12.16.0
+
+## 12.0.0-beta.17 (2022-03-09)
+
+### Features Added
+- Enabled support for Files.exists()
+- Enabled support for Files.walkFileTree()
+
+### Breaking Changes
+- `AzureFileSystemProvider.readAttributes()` no longer throws an IOException for virtual directories and instead returns a set of attributes that are all empty except for an `isVirtual` property set to true.
+
+### Other Changes
+- Enabling support for Files.exists() to support virtual directories required supporting virtual directories in reading file attributes. This required introducing a perf hit in the way of an extra getProps request
+
+#### Dependency Updates
+
+- Updated blob dependency to 12.15.0
 
 ## 12.0.0-beta.16 (2022-02-11)
 

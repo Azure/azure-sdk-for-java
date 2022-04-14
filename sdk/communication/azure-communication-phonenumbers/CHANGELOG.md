@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.4 (2022-04-11)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.1.2
+- Upgraded `azure-core` to 1.27.0
+- Upgraded `azure-identity` to 1.5.0
+
+## 1.1.0-beta.3 (2022-03-15)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
+- Added `retryOptions` to `PhoneNumbersClientBuilder`
+- Added environment variable `AZURE_USERAGENT_OVERRIDE`, that overrides the HTTP header `x-ms-useragent` on the tests
+- Upgraded `azure-communication-common` to 1.1.1
+- Upgraded `azure-identity` to 1.4.6
 
 ## 1.1.0-beta.2 (2022-02-17)
 

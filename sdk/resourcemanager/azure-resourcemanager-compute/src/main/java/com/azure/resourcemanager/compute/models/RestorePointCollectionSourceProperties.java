@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the source resource that this restore point collection is created from. */
 @Fluent
 public final class RestorePointCollectionSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointCollectionSourceProperties.class);
-
     /*
      * Location of the source resource used to create this restore point
      * collection.

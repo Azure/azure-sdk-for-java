@@ -7,7 +7,6 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.AuthorizationOperationsClient;
 import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
@@ -18,8 +17,6 @@ import java.time.Duration;
 /** Initializes a new instance of the ManagementLockClientImpl type. */
 @ServiceClient(builder = ManagementLockClientBuilder.class)
 public final class ManagementLockClientImpl extends AzureServiceClient implements ManagementLockClient {
-    private final ClientLogger logger = new ClientLogger(ManagementLockClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -139,7 +136,7 @@ public final class ManagementLockClientImpl extends AzureServiceClient implement
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2016-09-01";
+        this.apiVersion = "2017-04-01";
         this.authorizationOperations = new AuthorizationOperationsClientImpl(this);
         this.managementLocks = new ManagementLocksClientImpl(this);
     }

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.TroubleshootingDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.List;
 /** Troubleshooting information gained from specified resource. */
 @Fluent
 public final class TroubleshootingResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingResultInner.class);
-
     /*
      * The start time of the troubleshooting.
      */

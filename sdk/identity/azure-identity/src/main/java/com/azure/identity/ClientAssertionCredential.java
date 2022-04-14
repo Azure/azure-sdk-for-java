@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -18,15 +19,16 @@ import java.util.function.Supplier;
 /**
  * Authenticates a service principal with AAD using a client assertion.
  */
+@Immutable
 public class ClientAssertionCredential implements TokenCredential {
-    private final ClientLogger logger = new ClientLogger(ClientAssertionCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredential.class);
     private final IdentityClient identityClient;
     /**
      * Creates an instance of ClientAssertionCredential.
      *
-     * @param clientId the client id of user assigned or system assigned identity.
+     * @param clientId the client ID of user assigned or system assigned identity.
      * @param tenantId the tenant ID of the application
-     * @param clientId the client ID of the application
+     * @param clientAssertion the supplier of the client assertion
      * @param identityClientOptions the options to configure the identity client
      */
     ClientAssertionCredential(String clientId, String tenantId, Supplier<String> clientAssertion,
@@ -44,7 +46,8 @@ public class ClientAssertionCredential implements TokenCredential {
         return identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
+                error));
     }
 }

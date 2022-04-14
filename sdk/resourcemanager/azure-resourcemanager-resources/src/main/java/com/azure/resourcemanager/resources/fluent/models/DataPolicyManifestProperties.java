@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DataEffect;
 import com.azure.resourcemanager.resources.models.DataManifestCustomResourceFunctionDefinition;
 import com.azure.resourcemanager.resources.models.ResourceTypeAliases;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of the data policy manifest. */
 @Fluent
 public final class DataPolicyManifestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataPolicyManifestProperties.class);
-
     /*
      * The list of namespaces for the data policy manifest.
      */

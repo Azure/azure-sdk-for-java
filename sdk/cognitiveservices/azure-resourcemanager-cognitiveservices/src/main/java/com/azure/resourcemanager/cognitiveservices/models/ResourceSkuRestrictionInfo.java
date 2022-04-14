@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceSkuRestrictionInfo model. */
 @Fluent
 public final class ResourceSkuRestrictionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictionInfo.class);
-
     /*
      * Locations where the SKU is restricted
      */

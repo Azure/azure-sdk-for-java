@@ -11,10 +11,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedCapabil
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.CapabilityPropertiesInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CapabilityProperties;
 import com.azure.resourcemanager.mysqlflexibleserver.models.LocationBasedCapabilities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedCapabilitiesImpl implements LocationBasedCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationBasedCapabilitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationBasedCapabilitiesImpl.class);
 
     private final LocationBasedCapabilitiesClient innerClient;
 

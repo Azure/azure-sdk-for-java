@@ -5,10 +5,30 @@
 ### Features Added
 
 ### Breaking Changes
+- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
+- Renamed method `beginCopyModel` to `beginCopyModelTo`
+- Removed `modelId` as a required parameter from `beginBuildModel`, `beginCreateComposedModel` and `getCopyAuthorization`
+and moved to `BuildModelOptions`, `CreateComposedModelOptions` and `CopyAuthorizationOptions` respectively
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 3.1.10 (2022-04-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+
+## 3.1.9 (2022-03-08)
+### Bug Fixes
+- Fixed referencing selection mark form element from FormField element.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
 
 ## 4.0.0-beta.4 (2022-02-10)
 
@@ -24,6 +44,12 @@ and `CopyAuthorizationOptions` model.
 
 ### Breaking Changes
 - Added `DocumentBuildMode` on `beginBuildModel` APIs to support building models with techniques for diverse templates.
+
+## 3.1.8 (2022-02-08)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
 
 ## 4.0.0-beta.3 (2022-01-13)
 ### Bugs Fixed

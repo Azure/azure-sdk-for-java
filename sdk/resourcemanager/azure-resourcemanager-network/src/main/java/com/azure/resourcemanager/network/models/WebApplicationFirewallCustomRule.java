@@ -6,15 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines contents of a web application rule. */
 @Fluent
 public final class WebApplicationFirewallCustomRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallCustomRule.class);
-
     /*
      * The name of the resource that is unique within a policy. This name can
      * be used to access the resource.
@@ -173,13 +170,13 @@ public final class WebApplicationFirewallCustomRule {
      */
     public void validate() {
         if (ruleType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleType in model WebApplicationFirewallCustomRule"));
         }
         if (matchConditions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property matchConditions in model WebApplicationFirewallCustomRule"));
@@ -187,10 +184,12 @@ public final class WebApplicationFirewallCustomRule {
             matchConditions().forEach(e -> e.validate());
         }
         if (action() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property action in model WebApplicationFirewallCustomRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebApplicationFirewallCustomRule.class);
 }

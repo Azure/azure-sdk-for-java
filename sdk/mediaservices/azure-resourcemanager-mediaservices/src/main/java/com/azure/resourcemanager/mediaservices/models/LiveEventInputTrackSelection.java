@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class LiveEventInputTrackSelection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventInputTrackSelection.class);
-
     /*
      * Property name to select. This property is reserved for future use, any
      * value set on this property will be ignored.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OS version properties. */
 @Immutable
 public final class OSVersionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSVersionProperties.class);
-
     /*
      * The family of this OS version.
      */

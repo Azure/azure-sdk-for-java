@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for how to dynamically override alert static details. */
 @Fluent
 public final class AlertDetailsOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertDetailsOverride.class);
-
     /*
      * the format containing columns name(s) to override the alert name
      */

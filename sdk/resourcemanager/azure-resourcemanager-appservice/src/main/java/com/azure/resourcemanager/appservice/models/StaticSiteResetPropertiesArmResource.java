@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteResetPropertiesArmResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static Site Reset Properties ARM resource. */
 @Fluent
 public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteResetPropertiesArmResource.class);
-
     /*
      * StaticSiteResetPropertiesARMResource resource specific properties
      */

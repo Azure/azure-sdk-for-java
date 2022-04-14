@@ -19,7 +19,7 @@ import java.util.Set;
  * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
  */
 final class BlobBatchOperationResponse<T> implements Response<T> {
-    private final ClientLogger logger = new ClientLogger(BlobBatchOperationResponse.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobBatchOperationResponse.class);
 
     private final Set<Integer> expectedStatusCodes;
 
@@ -103,7 +103,7 @@ final class BlobBatchOperationResponse<T> implements Response<T> {
     private void assertResponseReceived() {
         if (!responseReceived) {
             // This is programmatically recoverable by sending the batch request.
-            throw logger.logExceptionAsWarning(new UnsupportedOperationException("Batch request has not been sent."));
+            throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException("Batch request has not been sent."));
         }
 
         if (!expectedStatusCodes.contains(statusCode)) {

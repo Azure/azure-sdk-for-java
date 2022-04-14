@@ -21,12 +21,13 @@ public class SimpleTokenCache {
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
+    // SimpleTokenCache is commonly used, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(SimpleTokenCache.class);
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final Supplier<Mono<AccessToken>> tokenSupplier;
     private final Predicate<AccessToken> shouldRefresh;
-    private final ClientLogger logger = new ClientLogger(SimpleTokenCache.class);
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
@@ -86,13 +87,13 @@ public class SimpleTokenCache {
                             AccessToken accessToken = signal.get();
                             Throwable error = signal.getThrowable();
                             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                                logger.info(refreshLog(cache, now, "Acquired a new access token"));
+                                LOGGER.info(refreshLog(cache, now, "Acquired a new access token"));
                                 cache = accessToken;
                                 sinksOne.tryEmitValue(accessToken);
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return Mono.just(accessToken);
                             } else if (signal.isOnError() && error != null) { // ERROR
-                                logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
+                                LOGGER.error(refreshLog(cache, now, "Failed to acquire a new access token"));
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return fallback.switchIfEmpty(Mono.defer(() -> Mono.error(error)));
                             } else { // NO REFRESH
@@ -116,7 +117,7 @@ public class SimpleTokenCache {
                         return sinksOne.asMono().switchIfEmpty(Mono.defer(() -> Mono.just(cache)));
                     }
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 return Mono.error(t);
             }
         });

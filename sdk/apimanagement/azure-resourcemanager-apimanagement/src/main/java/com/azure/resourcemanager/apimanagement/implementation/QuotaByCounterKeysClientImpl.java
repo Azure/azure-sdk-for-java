@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.QuotaByCounterKeysClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterCollectionInner;
 import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueUpdateContract;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QuotaByCounterKeysClient. */
 public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysClient {
-    private final ClientLogger logger = new ClientLogger(QuotaByCounterKeysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QuotaByCounterKeysService service;
 
@@ -104,7 +101,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterCollectionInner>> listByServiceWithResponseAsync(
@@ -163,7 +161,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterCollectionInner>> listByServiceWithResponseAsync(
@@ -218,7 +217,7 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotaCounterCollectionInner> listByServiceAsync(
@@ -269,7 +268,7 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaCounterCollectionInner> listByServiceWithResponse(
@@ -291,7 +290,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterCollectionInner>> updateWithResponseAsync(
@@ -360,7 +360,8 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterCollectionInner>> updateWithResponseAsync(
@@ -426,7 +427,7 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotaCounterCollectionInner> updateAsync(
@@ -485,7 +486,7 @@ public final class QuotaByCounterKeysClientImpl implements QuotaByCounterKeysCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaCounterCollectionInner> updateWithResponse(

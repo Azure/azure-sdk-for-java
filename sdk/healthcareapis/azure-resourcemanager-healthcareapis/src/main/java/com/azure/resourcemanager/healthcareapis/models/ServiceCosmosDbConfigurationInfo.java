@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings for the Cosmos DB database backing the service. */
 @Fluent
 public final class ServiceCosmosDbConfigurationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceCosmosDbConfigurationInfo.class);
-
     /*
      * The provisioned throughput for the backing database.
      */

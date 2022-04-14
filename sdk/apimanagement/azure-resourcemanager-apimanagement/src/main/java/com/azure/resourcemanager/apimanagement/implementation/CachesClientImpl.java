@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.CachesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.CacheContractInner;
 import com.azure.resourcemanager.apimanagement.models.CacheCollection;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CachesClient. */
 public final class CachesClientImpl implements CachesClient {
-    private final ClientLogger logger = new ClientLogger(CachesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CachesService service;
 
@@ -191,7 +188,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceSinglePageAsync(
@@ -253,7 +251,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceSinglePageAsync(
@@ -311,7 +310,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CacheContractInner> listByServiceAsync(
@@ -329,7 +328,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CacheContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
@@ -351,7 +350,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CacheContractInner> listByServiceAsync(
@@ -369,7 +368,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheContractInner> listByService(String resourceGroupName, String serviceName) {
@@ -389,7 +388,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheContractInner> listByService(
@@ -407,7 +406,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the Cache specified by its identifier.
+     * @return the entity state (Etag) version of the Cache specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -462,7 +462,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the Cache specified by its identifier.
+     * @return the entity state (Etag) version of the Cache specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -513,7 +514,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the Cache specified by its identifier.
+     * @return the entity state (Etag) version of the Cache specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String cacheId) {
@@ -566,7 +568,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Cache specified by its identifier.
+     * @return the details of the Cache specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName, String cacheId) {
@@ -620,7 +622,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Cache specified by its identifier.
+     * @return the details of the Cache specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesGetResponse> getWithResponseAsync(
@@ -671,7 +673,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Cache specified by its identifier.
+     * @return the details of the Cache specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CacheContractInner> getAsync(String resourceGroupName, String serviceName, String cacheId) {
@@ -734,7 +736,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache details.
+     * @return cache details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -798,7 +800,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache details.
+     * @return cache details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -863,7 +865,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache details.
+     * @return cache details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CacheContractInner> createOrUpdateAsync(
@@ -890,7 +892,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache details.
+     * @return cache details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CacheContractInner> createOrUpdateAsync(
@@ -967,7 +969,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache details.
+     * @return cache details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesUpdateResponse> updateWithResponseAsync(
@@ -1039,7 +1041,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache details.
+     * @return cache details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesUpdateResponse> updateWithResponseAsync(
@@ -1108,7 +1110,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cache details.
+     * @return cache details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CacheContractInner> updateAsync(
@@ -1192,7 +1194,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1253,7 +1255,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1310,7 +1312,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String cacheId, String ifMatch) {
@@ -1349,7 +1351,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1364,7 +1366,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1400,7 +1403,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceNextSinglePageAsync(String nextLink, Context context) {

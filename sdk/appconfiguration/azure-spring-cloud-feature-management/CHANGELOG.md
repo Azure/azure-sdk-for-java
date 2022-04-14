@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.4.0 (2022-03-28)
+This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5.
+
+### Features Added
+- Updated PercentageFilter to support Strings and Doubles.
+
+### Dependency Upgrades
+- Regular updates for Azure SDK dependency versions.
+- Upgrade external dependencies' version according to [spring-boot-dependencies:2.6.3](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.3/spring-boot-dependencies-2.6.3.pom) and [spring-cloud-dependencies:2021.0.1](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2021.0.1/).
+
+## 2.3.0 (2022-03-01)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Regular updates for Azure SDK dependency versions.
+- Upgrade external dependencies' version according to [spring-boot-dependencies:2.6.2](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.2/spring-boot-dependencies-2.6.2.pom).
 
 ## 2.2.0 (2022-01-06)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.

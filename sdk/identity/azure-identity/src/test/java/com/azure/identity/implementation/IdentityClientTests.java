@@ -190,7 +190,7 @@ public class IdentityClientTests {
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
-    
+
 
     @Test
     public void testValidServiceFabricCodeFlow() throws Exception {
@@ -235,7 +235,7 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }

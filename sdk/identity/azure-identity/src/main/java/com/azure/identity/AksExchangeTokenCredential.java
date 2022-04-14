@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * Authenticates a service principal with AAD using a client assertion.
  */
 class AksExchangeTokenCredential extends ManagedIdentityServiceCredential {
-    private final ClientLogger logger = new ClientLogger(AksExchangeTokenCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AksExchangeTokenCredential.class);
 
     /**
      * Creates an instance of AksExchangeTokenCredential.
@@ -29,10 +29,10 @@ class AksExchangeTokenCredential extends ManagedIdentityServiceCredential {
     @Override
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
         if (this.getClientId() == null) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException("The client id is not configured via"
+            return Mono.error(LOGGER.logExceptionAsError(new IllegalStateException("The client id is not configured via"
                 + " 'AZURE_CLIENT_ID' environment variable or through the credential builder."
                 + " Please ensure client id is provided to authenticate via token exchange in AKS environment.")));
         }
-        return identityClient.authenticatewithExchangeToken(request);
+        return identityClient.authenticateWithExchangeToken(request);
     }
 }

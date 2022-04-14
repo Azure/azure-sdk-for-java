@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this linked service type. */
 @Fluent
 public final class SapBWLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapBWLinkedServiceTypeProperties.class);
-
     /*
      * Host name of the SAP BW instance. Type: string (or Expression with
      * resultType string).
@@ -194,19 +191,19 @@ public final class SapBWLinkedServiceTypeProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property server in model SapBWLinkedServiceTypeProperties"));
         }
         if (systemNumber() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property systemNumber in model SapBWLinkedServiceTypeProperties"));
         }
         if (clientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientId in model SapBWLinkedServiceTypeProperties"));
@@ -215,4 +212,6 @@ public final class SapBWLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SapBWLinkedServiceTypeProperties.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.GoogleAdWordsAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Google AdWords service linked service properties. */
 @Fluent
 public final class GoogleAdWordsLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleAdWordsLinkedServiceTypeProperties.class);
-
     /*
      * Properties used to connect to GoogleAds. It is mutually exclusive with
      * any other properties in the linked service. Type: object.

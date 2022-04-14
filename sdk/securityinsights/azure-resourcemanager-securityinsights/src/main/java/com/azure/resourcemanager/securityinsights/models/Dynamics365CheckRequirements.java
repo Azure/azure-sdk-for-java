@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.Dynamics365CheckRequirementsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Dynamics365")
 @Fluent
 public final class Dynamics365CheckRequirements extends DataConnectorsCheckRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dynamics365CheckRequirements.class);
-
     /*
      * Dynamics365 requirements check properties.
      */

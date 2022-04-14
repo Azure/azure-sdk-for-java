@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the Power State of the cluster. */
 @Fluent
 public final class PowerState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PowerState.class);
-
     /*
      * Tells whether the cluster is Running or Stopped
      */

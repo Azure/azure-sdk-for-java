@@ -6,7 +6,7 @@ param(
 )
 
 Write-Information "PS Script Root is: $PSScriptRoot"
-$RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+$RepoRoot = Resolve-Path "${PSScriptRoot}../../.."
 $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1"
 $BomHelpersFilePath = Join-Path $PSScriptRoot "bomhelpers.ps1"
 . $CommonScriptFilePath
@@ -19,7 +19,7 @@ class ArtifactInfo {
     [string]$ServiceDirectoryName
     [string]$ArtifactDirPath
     [string]$LatestGAOrPatchVersion
-    [string]$FutureReleasedPatchVersion
+    [string]$FutureReleasePatchVersion
     [string]$CurrentPomFileVersion
     [string]$ChangeLogPath
     [string]$ReadMePath
@@ -42,6 +42,7 @@ function ConvertToPatchInfo([ArtifactInfo]$ArInfo) {
     $patchInfo.ChangeLogPath = $ArInfo.ChangeLogPath
     $patchInfo.ReadMePath = $ArInfo.ReadMePath
     $patchInfo.PipelineName = $ArInfo.PipelineName
+    $patchInfo.FutureReleasePatchVersion = $arInfo.FutureReleasePatchVersion
 
     return $patchInfo    
 }
@@ -147,9 +148,9 @@ function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersio
 
     foreach ($id in $ArtifactInfos.Keys) {
         $arInfo = $ArtifactInfos[$id]
-        $futureReleasedPatchVersion = $arInfo.FutureReleasedPatchVersion
+        $futureReleasePatchVersion = $arInfo.FutureReleasePatchVersion
 
-        if($futureReleasedPatchVersion) {
+        if ($futureReleasePatchVersion) {
             # This library is already being patched and hence analyzed so we don't need to analyze it again.
             if ($id -ne 'azure-core' -or $id -ne 'azure-core-http-netty') {
                 continue;
@@ -160,7 +161,7 @@ function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersio
         if ($depVersion -and $depVersion -ne $PatchVersion) {
             $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
             $newPatchVersion = GetPatchVersion -ReleaseVersion $currentGAOrPatchVersion
-            $arInfo.FutureReleasedPatchVersion = $newPatchVersion
+            $arInfo.FutureReleasePatchVersion = $newPatchVersion
             $artifactsToPatch[$id] = $id
             $depArtifactsToPatch = FindAllArtifactsToBePatched -DependencyId $id -PatchVersion $newPatchVersion -ArtifactInfos $ArtifactInfos
             foreach ($recArtifacts in $depArtifactsToPatch.Keys) {
@@ -175,10 +176,10 @@ function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersio
 function GetPatchSets($artifactsToPatch, [hashtable]$ArtifactInfos) {
     $patchSets = @()
 
-    foreach($artifactToPatch in $artifactsToPatch.Keys) {
+    foreach ($artifactToPatch in $artifactsToPatch.Keys) {
         $patchDependencies = @{}
         $dependencies = $artifactInfos[$artifactToPatch].Dependencies
-        $dependencies.Keys | Where-Object { $null -ne $artifactsToPatch[$_]} | ForEach-Object  {$patchDependencies[$_] = $_}
+        $dependencies.Keys | Where-Object { $null -ne $artifactsToPatch[$_] } | ForEach-Object { $patchDependencies[$_] = $_ }
         $patchDependencies[$artifactToPatch] = $artifactToPatch
 
         $unionSet = @{}
@@ -186,14 +187,15 @@ function GetPatchSets($artifactsToPatch, [hashtable]$ArtifactInfos) {
 
         $reducedPatchSets = @()
         # Add this set to the exiting sets and reduce duplicates.
-        foreach($patchSet in $patchSets) {
-             $matches = $patchDependencies.Keys | Where-Object {$patchSet[$_]} | Select-Object $_ -First 1
+        foreach ($patchSet in $patchSets) {
+            $matches = $patchDependencies.Keys | Where-Object { $patchSet[$_] } | Select-Object $_ -First 1
 
-             if($matches) {
-                 $patchSet.Keys | ForEach-Object {$unionSet[$_] = $_ }
-             } else {
+            if ($matches) {
+                $patchSet.Keys | ForEach-Object { $unionSet[$_] = $_ }
+            }
+            else {
                 $reducedPatchSets += $patchSet
-             }
+            }
         }
 
         $patchSets = $reducedPatchSets
@@ -208,7 +210,7 @@ function UpdateDependenciesInVersionClient([string]$ArtifactId, [hashtable]$Arti
     $dependencies = $arInfo.Dependencies
     foreach ($depId in $dependencies.Keys) {
         $depArtifactInfo = $ArtifactInfos[$depId]
-        $newDependencyVersion = $depArtifactInfo.FutureReleasedPatchVersion
+        $newDependencyVersion = $depArtifactInfo.FutureReleasePatchVersion
 
         if (!$newDependencyVersion) {
             $newDependencyVersion = $depArtifactInfo.LatestGAOrPatchVersion
@@ -220,7 +222,7 @@ function UpdateDependenciesInVersionClient([string]$ArtifactId, [hashtable]$Arti
     }
 }
 function UndoVersionClientFile() {
-    $repoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+    $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
     $versionClientFile = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
     $cmdOutput = git checkout $versionClientFile
 }
@@ -250,19 +252,19 @@ $AzCoreVersion = $ArtifactInfos[$AzCoreArtifactId].LatestGAOrPatchVersion
 
 # For testing only.
 # $AzCoreVersion = "1.26.0"
-# $ArtifactInfos[$AzCoreArtifactId].FutureReleasedPatchVersion = $AzCoreVersion
+# $ArtifactInfos[$AzCoreArtifactId].FutureReleasePatchVersion = $AzCoreVersion
 # $AzCoreNettyArtifactId = "azure-core-http-netty"
 # $ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
 
 $ArtifactsToPatch = FindAllArtifactsToBePatched -DependencyId $AzCoreArtifactId -PatchVersion $AzCoreVersion -ArtifactInfos $ArtifactInfos
 $ReleaseSets = GetPatchSets -ArtifactsToPatch $ArtifactsToPatch -ArtifactInfos $ArtifactInfos
 $RemoteName = GetRemoteName
-$CurrentBranchName = git rev-parse --abbrev-ref HEAD
+$CurrentBranchName = GetCurrentBranchName
 if ($LASTEXITCODE -ne 0) {
     LogError "Could not correctly get the current branch name."
     exit 1
 }
-UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
+# UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
 $fileContent = [System.Text.StringBuilder]::new()
 $fileContent.AppendLine("BranchName;ArtifactId");
@@ -281,6 +283,9 @@ foreach ($patchSet in $ReleaseSets) {
 
         $remoteBranchName = GetBranchName -ArtifactId "PatchSet"
         GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
+
+        $artifactIds = @()
+        $patchInfos | ForEach-Object { $artifactIds += $_.ArtifactId }
         $fileContent.AppendLine("$remoteBranchName;$($artifactIds);");
     }
     finally {
@@ -289,6 +294,3 @@ foreach ($patchSet in $ReleaseSets) {
 }
 
 New-Item -Path . -Name "ReleasePatchInfo.csv" -ItemType "file" -Value $fileContent.ToString() -Force
-
-
-

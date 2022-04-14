@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of available agent pool versions. */
 @Fluent
 public final class AgentPoolAvailableVersionsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolAvailableVersionsProperties.class);
-
     /*
      * List of versions available for agent pool.
      */

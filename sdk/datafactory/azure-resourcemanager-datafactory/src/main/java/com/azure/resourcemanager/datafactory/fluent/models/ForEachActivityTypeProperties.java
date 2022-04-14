@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ForEach activity properties. */
 @Fluent
 public final class ForEachActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForEachActivityTypeProperties.class);
-
     /*
      * Should the loop be executed in sequence or in parallel (max 50)
      */
@@ -131,7 +128,7 @@ public final class ForEachActivityTypeProperties {
      */
     public void validate() {
         if (items() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property items in model ForEachActivityTypeProperties"));
@@ -139,7 +136,7 @@ public final class ForEachActivityTypeProperties {
             items().validate();
         }
         if (activities() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property activities in model ForEachActivityTypeProperties"));
@@ -147,4 +144,6 @@ public final class ForEachActivityTypeProperties {
             activities().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ForEachActivityTypeProperties.class);
 }

@@ -16,10 +16,9 @@ import java.util.regex.Pattern;
  * Utility class for validating parameters.
  */
 public final class ValidationUtil {
-    private static Pattern tenantIdentifierCharPattern = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-|.)+$");
+    private static final Pattern TENANT_IDENTIFIER_CHAR_PATTERN = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-|.)+$");
 
-    public static void validate(String className, Map<String, Object> parameters) {
-        ClientLogger logger = new ClientLogger(className);
+    public static void validate(String className, Map<String, Object> parameters, ClientLogger logger) {
         List<String> missing = new ArrayList<>();
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             if (entry.getValue() == null) {
@@ -32,8 +31,7 @@ public final class ValidationUtil {
         }
     }
 
-    public static void validateAuthHost(String className, String authHost) {
-        ClientLogger logger = new ClientLogger(className);
+    public static void validateAuthHost(String authHost, ClientLogger logger) {
         try {
             new URI(authHost);
         } catch (URISyntaxException e) {
@@ -46,10 +44,9 @@ public final class ValidationUtil {
         }
     }
 
-    public static void validateTenantIdCharacterRange(String className, String id) {
-        ClientLogger logger = new ClientLogger(className);
+    public static void validateTenantIdCharacterRange(String id, ClientLogger logger) {
         if (id != null) {
-            if (!tenantIdentifierCharPattern.matcher(id).matches()) {
+            if (!TENANT_IDENTIFIER_CHAR_PATTERN.matcher(id).matches()) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException(
                         "Invalid tenant id provided. You can locate your tenant id by following the instructions"
@@ -58,9 +55,9 @@ public final class ValidationUtil {
         }
     }
 
-    public static void validateInteractiveBrowserRedirectUrlSetup(String className, Integer port, String redirecrUrl) {
-        ClientLogger logger = new ClientLogger(className);
-        if (port != null && redirecrUrl != null) {
+    public static void validateInteractiveBrowserRedirectUrlSetup(Integer port, String redirectUrl,
+        ClientLogger logger) {
+        if (port != null && redirectUrl != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Port and Redirect URL cannot be configured at the same time. "
                                                  + "Port is deprecated now. Use the redirectUrl setter to specify"

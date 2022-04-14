@@ -12,7 +12,8 @@ import java.util.function.Function;
  * Represents a credential that uses a shared access signature to authenticate to an Azure Service.
  */
 public final class AzureSasCredential {
-    private final ClientLogger logger = new ClientLogger(AzureSasCredential.class);
+    // AzureSasCredential is a commonly used credential type, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredential.class);
     private final Function<String, String> signatureEncoder;
 
     private volatile String signature;
@@ -46,7 +47,7 @@ public final class AzureSasCredential {
     public AzureSasCredential(String signature, Function<String, String> signatureEncoder) {
         Objects.requireNonNull(signature, "'signature' cannot be null.");
         if (signature.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'signature' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'signature' cannot be empty."));
         }
 
         this.signatureEncoder = signatureEncoder;
@@ -73,7 +74,7 @@ public final class AzureSasCredential {
     public AzureSasCredential update(String signature) {
         Objects.requireNonNull(signature, "'signature' cannot be null.");
         if (signature.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'signature' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'signature' cannot be empty."));
         }
 
         this.signature = (signatureEncoder == null) ? signature : signatureEncoder.apply(signature);

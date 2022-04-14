@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The instance view of a disk restore point. */
 @Fluent
 public final class DiskRestorePointInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskRestorePointInstanceView.class);
-
     /*
      * Disk restore point Id.
      */

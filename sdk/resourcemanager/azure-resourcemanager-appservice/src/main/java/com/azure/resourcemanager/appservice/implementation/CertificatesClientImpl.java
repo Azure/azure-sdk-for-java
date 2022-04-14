@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appservice.models.CertificateCollection;
@@ -45,8 +44,6 @@ public final class CertificatesClientImpl
         InnerSupportsListing<CertificateInner>,
         InnerSupportsDelete<Void>,
         CertificatesClient {
-    private final ClientLogger logger = new ClientLogger(CertificatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CertificatesService service;
 

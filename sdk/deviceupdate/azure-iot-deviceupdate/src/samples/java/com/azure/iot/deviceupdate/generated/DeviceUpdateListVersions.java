@@ -13,13 +13,15 @@ import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
 
 public class DeviceUpdateListVersions {
     public static void main(String[] args) {
-        DeviceUpdateClient client =
+        // BEGIN: com.azure.iot.deviceupdate.generated.deviceupdatelistversions.deviceupdatelistversions
+        DeviceUpdateClient deviceUpdateClient =
                 new DeviceUpdateClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
-                        .buildDeviceUpdateClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.listVersions("microsoft", "adu", requestOptions);
+        PagedIterable<BinaryData> response = deviceUpdateClient.listVersions("microsoft", "adu", requestOptions);
+        // END: com.azure.iot.deviceupdate.generated.deviceupdatelistversions.deviceupdatelistversions
     }
 }

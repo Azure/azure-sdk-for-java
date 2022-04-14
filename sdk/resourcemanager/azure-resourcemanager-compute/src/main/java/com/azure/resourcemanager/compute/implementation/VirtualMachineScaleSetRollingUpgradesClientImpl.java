@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
  */
 public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     implements VirtualMachineScaleSetRollingUpgradesClient {
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetRollingUpgradesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineScaleSetRollingUpgradesService service;
 

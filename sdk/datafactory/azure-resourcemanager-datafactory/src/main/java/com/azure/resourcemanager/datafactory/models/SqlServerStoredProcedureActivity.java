@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SqlServerStoredProcedureActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("SqlServerStoredProcedure")
 @Fluent
 public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerStoredProcedureActivity.class);
-
     /*
      * SQL stored procedure activity properties.
      */
@@ -137,7 +134,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model SqlServerStoredProcedureActivity"));
@@ -145,4 +142,6 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlServerStoredProcedureActivity.class);
 }

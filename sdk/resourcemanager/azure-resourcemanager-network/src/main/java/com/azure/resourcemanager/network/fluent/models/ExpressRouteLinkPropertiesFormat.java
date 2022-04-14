@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRouteLink Resource Properties Properties specific to ExpressRouteLink resources. */
 @Fluent
 public final class ExpressRouteLinkPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkPropertiesFormat.class);
-
     /*
      * Name of Azure router associated with physical port.
      */

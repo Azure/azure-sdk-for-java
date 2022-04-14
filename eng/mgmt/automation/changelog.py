@@ -8,17 +8,18 @@ pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from generate import update_parameters
-from generate import get_version
+from generate_utils import get_version
 from generate import compile_package
 from generate import compare_with_maven_package
+
 os.chdir(pwd)
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--service', required = True)
+    parser.add_argument('-s', '--service', required=True)
     parser.add_argument('--suffix')
-    parser.add_argument('-c', '--compile', action = 'store_true')
+    parser.add_argument('-c', '--compile', action='store_true')
     return parser.parse_args()
 
 
@@ -40,8 +41,9 @@ def main():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level = logging.INFO,
-        format = '%(asctime)s %(levelname)s %(message)s',
-        datefmt = '%Y-%m-%d %X',
+        stream=sys.stdout,
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s',
+        datefmt='%Y-%m-%d %X',
     )
     main()

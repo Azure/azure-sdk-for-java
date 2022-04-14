@@ -6,16 +6,12 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information from validate template deployment response. */
 @Fluent
 public final class DeploymentValidateResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentValidateResultInner.class);
-
     /*
      * Error Response The deployment validation error.
      */

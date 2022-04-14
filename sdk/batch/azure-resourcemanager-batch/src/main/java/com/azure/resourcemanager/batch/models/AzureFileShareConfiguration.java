@@ -6,14 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information used to connect to an Azure Fileshare. */
 @Fluent
 public final class AzureFileShareConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileShareConfiguration.class);
-
     /*
      * The Azure Storage account name.
      */
@@ -164,28 +161,30 @@ public final class AzureFileShareConfiguration {
      */
     public void validate() {
         if (accountName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accountName in model AzureFileShareConfiguration"));
         }
         if (azureFileUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azureFileUrl in model AzureFileShareConfiguration"));
         }
         if (accountKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accountKey in model AzureFileShareConfiguration"));
         }
         if (relativeMountPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property relativeMountPath in model AzureFileShareConfiguration"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFileShareConfiguration.class);
 }

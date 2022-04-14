@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
 
@@ -10,11 +10,39 @@
 
 ### Other Changes
 
+## 1.0.0-beta.11 (2022-04-07)
+
+### Bugs Fixed
+
+- Fixed a bug that caused deserialize operation to throw `SchemaParseException` when multiple messages with same schema
+  were deserialized (https://github.com/Azure/azure-sdk-for-java/issues/27602).
+- Wrap Apache Avro exceptions with new exception type, `SchemaRegistryApacheAvroException`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.1.1`.
+
+## 1.0.0-beta.10 (2022-03-15)
+
+### Breaking Changes
+
+- Changed `SchemaRegistryApacheAvroEncoder` to `SchemaRegistryApacheAvroSerializer`.
+- Changed `decodeMessageData` and `decodeMessageDataAsync` to `deserializeMessageData` and `deserializeMessageDataAsync`.
+- Changed `encodeMessageData` and `encodeMessageDataAsync` to `serializeMessageData` and `serializeMessageDataAsync`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.1.0`.
+
 ## 1.0.0-beta.9 (2022-02-12)
 
 ### Features Added
 
-- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageWithMetadata` rather than tied to a binary format 
+- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageContent` rather than tied to a binary format
   with preamble. Backwards compatibility with preamble format supported for this release. See issue #26449.
 
 ### Breaking Changes
