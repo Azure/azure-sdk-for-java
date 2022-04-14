@@ -111,7 +111,7 @@ public interface Mediaservices {
         String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -124,7 +124,7 @@ public interface Mediaservices {
     EdgePolicies listEdgePolicies(String resourceGroupName, String accountName, ListEdgePoliciesInput parameters);
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

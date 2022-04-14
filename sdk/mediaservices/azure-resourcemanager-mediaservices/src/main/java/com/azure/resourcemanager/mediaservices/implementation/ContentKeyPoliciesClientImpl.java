@@ -210,7 +210,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -221,7 +220,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             top,
                             orderby,
@@ -277,7 +276,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -286,7 +284,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 top,
                 orderby,
@@ -445,7 +443,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -457,7 +454,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -502,7 +499,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -512,7 +508,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -620,7 +616,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -632,7 +627,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -687,7 +682,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -697,7 +691,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -809,7 +803,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -821,7 +814,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -865,7 +858,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -875,7 +867,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -973,7 +965,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -985,7 +976,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -1040,7 +1031,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1050,7 +1040,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -1162,7 +1152,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1174,7 +1163,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1219,7 +1208,6 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1229,7 +1217,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }

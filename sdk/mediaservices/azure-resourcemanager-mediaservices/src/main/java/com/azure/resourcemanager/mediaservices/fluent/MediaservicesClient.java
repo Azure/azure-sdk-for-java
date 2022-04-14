@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.models.EdgePoliciesInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
@@ -79,6 +81,37 @@ public interface MediaservicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, MediaServiceInner parameters);
+
+    /**
+     * Creates or updates a Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context);
+
+    /**
+     * Creates or updates a Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -94,10 +127,10 @@ public interface MediaservicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Media Services account along with {@link Response}.
+     * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MediaServiceInner> createOrUpdateWithResponse(
+    MediaServiceInner createOrUpdate(
         String resourceGroupName, String accountName, MediaServiceInner parameters, Context context);
 
     /**
@@ -135,6 +168,37 @@ public interface MediaservicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
+        String resourceGroupName, String accountName, MediaServiceUpdate parameters);
+
+    /**
+     * Updates an existing Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
+        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context);
+
+    /**
+     * Updates an existing Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -150,10 +214,10 @@ public interface MediaservicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Media Services account along with {@link Response}.
+     * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MediaServiceInner> updateWithResponse(
+    MediaServiceInner update(
         String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context);
 
     /**
@@ -186,7 +250,7 @@ public interface MediaservicesClient {
         String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -200,7 +264,7 @@ public interface MediaservicesClient {
     EdgePoliciesInner listEdgePolicies(String resourceGroupName, String accountName, ListEdgePoliciesInput parameters);
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

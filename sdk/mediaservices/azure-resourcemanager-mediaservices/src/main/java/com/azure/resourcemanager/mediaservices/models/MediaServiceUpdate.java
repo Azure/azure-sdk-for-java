@@ -210,6 +210,25 @@ public final class MediaServiceUpdate {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the Media Services account.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The Private Endpoint Connections created for the Media Service
+     * account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public Object privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
