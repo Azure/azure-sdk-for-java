@@ -10,7 +10,6 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.MockedConstruction;
 import reactor.test.StepVerifier;
 
@@ -59,6 +58,7 @@ public class ManagedIdentityCredentialTest {
                     .expectNextMatches(token -> token1.equals(token.getToken())
                         && expiresAt.getSecond() == token.getExpiresAt().getSecond())
                     .verifyComplete();
+                Assert.assertNotNull(identityClientMock);
             }
         } finally {
             // clean up

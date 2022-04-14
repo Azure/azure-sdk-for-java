@@ -1,15 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.azure.identity.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.HttpRequest;
 import org.junit.Test;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
 public class HttpPipelineAdapterTests {
