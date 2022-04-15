@@ -1778,6 +1778,82 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  '/servicePrincipals/{servicePrincipal-id}/microsoft.graph.addKey':
+      post:
+          tags:
+              - servicePrincipals.Actions
+          summary: Invoke action addKey
+          operationId: servicePrincipals_addKey
+          parameters:
+              - name: servicePrincipal-id
+                in: path
+                description: 'key: id of servicePrincipal'
+                required: true
+                schema:
+                    type: string
+                x-ms-docs-key-type: servicePrincipal
+          requestBody:
+              description: Action parameters
+              content:
+                  application/json:
+                      schema:
+                          type: object
+                          properties:
+                              keyCredential:
+                                  $ref: '#/components/schemas/microsoft.graph.keyCredential'
+                              passwordCredential:
+                                  $ref: '#/components/schemas/microsoft.graph.passwordCredential'
+                              proof:
+                                  type: string
+                          additionalProperties:
+                              type: object
+              required: true
+          responses:
+              '200':
+                  description: Success
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/microsoft.graph.keyCredential'
+              default:
+                  $ref: '#/components/responses/error'
+          x-ms-docs-operation-type: action
+  '/servicePrincipals/{servicePrincipal-id}/microsoft.graph.addPassword':
+      post:
+          tags:
+              - servicePrincipals.Actions
+          summary: Invoke action addPassword
+          operationId: servicePrincipals_addPassword
+          parameters:
+              - name: servicePrincipal-id
+                in: path
+                description: 'key: id of servicePrincipal'
+                required: true
+                schema:
+                    type: string
+                x-ms-docs-key-type: servicePrincipal
+          requestBody:
+              description: Action parameters
+              content:
+                  application/json:
+                      schema:
+                          type: object
+                          properties:
+                              passwordCredential:
+                                  $ref: '#/components/schemas/microsoft.graph.passwordCredential'
+                          additionalProperties:
+                              type: object
+              required: true
+          responses:
+              '200':
+                  description: Success
+                  content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/microsoft.graph.passwordCredential'
+              default:
+                  $ref: '#/components/responses/error'
+          x-ms-docs-operation-type: action
 components:
   schemas:
     microsoft.graph.application:
