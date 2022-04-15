@@ -38,7 +38,7 @@ public class ResourceGroupCrud extends AbstractResourceCrud<ResourceGroup, Strin
         try {
             return resourceManager.resourceGroups().getByName(key);
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;
