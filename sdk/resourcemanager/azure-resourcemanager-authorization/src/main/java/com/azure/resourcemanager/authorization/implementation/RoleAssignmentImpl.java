@@ -145,7 +145,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String condition() {
-        return null;
+        return innerModel().properties().condition();
     }
 
     @Override

@@ -28,6 +28,21 @@ public final class RoleAssignmentPropertiesWithScope {
     @JsonProperty(value = "principalId")
     private String principalId;
 
+    /*
+     * The conditions on the role assignment. This limits the resources it can
+     * be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'
+     */
+    @JsonProperty(value = "condition")
+    private String condition;
+
+    /*
+     * Version of the condition. Currently accepted value is '2.0'
+     */
+    @JsonProperty(value = "conditionVersion")
+    private String conditionVersion;
+
     /**
      * Get the scope property: The role assignment scope.
      *
@@ -85,6 +100,50 @@ public final class RoleAssignmentPropertiesWithScope {
      */
     public RoleAssignmentPropertiesWithScope withPrincipalId(String principalId) {
         this.principalId = principalId;
+        return this;
+    }
+
+    /**
+     * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
+     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'.
+     *
+     * @return the condition value.
+     */
+    public String condition() {
+        return this.condition;
+    }
+
+    /**
+     * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
+     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'.
+     *
+     * @param condition the condition value to set.
+     * @return the RoleAssignmentPropertiesWithScope object itself.
+     */
+    public RoleAssignmentPropertiesWithScope withCondition(String condition) {
+        this.condition = condition;
+        return this;
+    }
+
+    /**
+     * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     *
+     * @return the conditionVersion value.
+     */
+    public String conditionVersion() {
+        return this.conditionVersion;
+    }
+
+    /**
+     * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     *
+     * @param conditionVersion the conditionVersion value to set.
+     * @return the RoleAssignmentPropertiesWithScope object itself.
+     */
+    public RoleAssignmentPropertiesWithScope withConditionVersion(String conditionVersion) {
+        this.conditionVersion = conditionVersion;
         return this;
     }
 

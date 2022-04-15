@@ -20,9 +20,6 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         String roleAssignmentName = generateRandomUuid();
         String spName = generateRandomResourceName("sp", 20);
 
-        List<RoleAssignment> rss = authorizationManager.roleAssignments().listByScope("/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg-weidxu")
-            .stream().collect(Collectors.toList());
-
         ServicePrincipal sp =
             authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
 
