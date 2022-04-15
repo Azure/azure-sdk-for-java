@@ -4,6 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -25,5 +26,14 @@ public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
     public CatWithTypeIdContainingDot withBreed(String presetName) {
         this.breed = presetName;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        return jsonWriter.writeStartObject()
+            .writeStringField("@odata.type", "#Favourite.Pet.CatWithTypeIdContainingDot")
+            .writeStringField("breed", breed)
+            .writeEndObject()
+            .flush();
     }
 }

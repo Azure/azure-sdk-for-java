@@ -4,6 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.json.JsonCapable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,5 +23,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Favourite.Pet.RabbitWithTypeIdContainingDot",
         value = RabbitWithTypeIdContainingDot.class)
 })
-public class AnimalWithTypeIdContainingDot {
+public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<AnimalWithTypeIdContainingDot> {
 }
