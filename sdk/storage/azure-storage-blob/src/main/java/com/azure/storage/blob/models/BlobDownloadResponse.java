@@ -18,4 +18,14 @@ public final class BlobDownloadResponse extends ResponseBase<BlobDownloadHeaders
         super(response.getRequest(), response.getStatusCode(), response.getHeaders(), null,
             response.getDeserializedHeaders());
     }
+
+    /**
+     * Constructs a {@link BlobDownloadResponse}.
+     *
+     * @param response Response returned from the service.
+     */
+    public BlobDownloadResponse(BlobDownloadSyncResponse response) {
+        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), null,
+            response.getDeserializedHeaders());
+    }
 }

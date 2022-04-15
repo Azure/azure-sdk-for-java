@@ -13,6 +13,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.StreamUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
@@ -26,6 +27,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobDownloadSyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
@@ -59,6 +61,7 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -865,12 +868,17 @@ public class BlobClientBase {
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
-        Mono<BlobDownloadResponse> download = client
-            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new BlobDownloadResponse(response)));
-
-        return blockWithOptionalTimeout(download, timeout);
+        // TODO (kasobol-msft) what about timeout?
+        BlobDownloadSyncResponse download = client.downloadStreamWithResponseSync(
+            range, options, requestConditions, getRangeContentMd5, context);
+        try (InputStream inputStream = download.getValue()) {
+            if (inputStream != null) {
+                StreamUtils.INSTANCE.transfer(inputStream, stream);
+            }
+            return new BlobDownloadResponse(download);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     /**

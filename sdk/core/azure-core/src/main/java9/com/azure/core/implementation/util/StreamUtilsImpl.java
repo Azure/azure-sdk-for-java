@@ -10,6 +10,7 @@ import com.azure.core.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Implementation of {@link StreamUtils}.
@@ -19,6 +20,11 @@ public class StreamUtilsImpl implements StreamUtils {
     @Override
     public byte[] readAllBytes(InputStream inputStream) throws IOException {
         return inputStream.readAllBytes();
+    }
+
+    @Override
+    public long transfer(InputStream in, OutputStream out) throws IOException {
+        return in.transferTo(out);
     }
 
     static int getJavaImplementationMajorVersion() {

@@ -6,17 +6,16 @@ package com.azure.storage.blob.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import reactor.core.publisher.Flux;
 
-import java.nio.ByteBuffer;
+import java.io.InputStream;
 
 /**
  * This class contains the response information returned from the server when downloading a blob.
  */
-public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> {
+public final class BlobDownloadSyncResponse extends ResponseBase<BlobDownloadHeaders, InputStream> {
 
     /**
-     * Constructs a {@link BlobDownloadAsyncResponse}.
+     * Constructs a {@link BlobDownloadSyncResponse}.
      *
      * @param request Request sent to the service.
      * @param statusCode Response status code returned by the service.
@@ -24,8 +23,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      * @param value Stream of download data being returned by the service.
      * @param deserializedHeaders Headers deserialized into an object.
      */
-    public BlobDownloadAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value,
-        BlobDownloadHeaders deserializedHeaders) {
+    public BlobDownloadSyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, InputStream value,
+                                    BlobDownloadHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
     }
 

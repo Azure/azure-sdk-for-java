@@ -4,13 +4,19 @@
 package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.BinaryDataResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
+import com.azure.core.implementation.RetriableDownloadInputStream;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.reactivestreams.Subscriber;
@@ -169,6 +175,41 @@ public final class FluxUtil {
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
         return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
+    }
+
+    // TODO (kasobol-msft) this should find better place before we ship this.
+    /**
+     * Creates a {@link BinaryData} that is capable of resuming a download by applying retry logic when an error occurs.
+     *
+     * @param initialResponse The initial download.
+     * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs.
+     * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
+     * @param position The initial offset for the download.
+     * @return A {@link BinaryData} that downloads reliably.
+     */
+    public static BinaryData createRetriableDownloadBinaryData(BinaryDataResponse initialResponse,
+        BiFunction<Throwable, Long, BinaryDataResponse> onDownloadErrorResume, int maxRetries, long position) {
+
+        BinaryData initialData = initialResponse.getValue();
+        if (initialData == null) {
+            return null;
+        }
+        BinaryDataContent content = BinaryDataHelper.getContent(initialData);
+        if (content instanceof InputStreamContent) {
+            InputStream retriableStream = new RetriableDownloadInputStream(
+                initialResponse, onDownloadErrorResume, maxRetries, position);
+            return BinaryDataHelper.createBinaryData(new InputStreamContent(retriableStream));
+        } else if (content instanceof FluxByteBufferContent) {
+            Flux<ByteBuffer> retriableDownloadFlux = createRetriableDownloadFlux(
+                content::toFluxByteBuffer,
+                (t, l) -> onDownloadErrorResume.apply(t, l).getValue().toFluxByteBuffer(),
+                maxRetries, position);
+            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(retriableDownloadFlux));
+        } else {
+            // These are in memory, pass-through
+            return initialData;
+        }
     }
 
     /**

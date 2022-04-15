@@ -505,6 +505,8 @@ public final class RestProxy implements InvocationHandler {
                         decodedHeaders)));
                 }
             });
+        } else if (cls.equals(BinaryDataResponse.class)) {
+            return Mono.just(new BinaryDataResponse(request, httpResponse));
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response sub-type.
@@ -548,7 +550,7 @@ public final class RestProxy implements InvocationHandler {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
+            asyncResult = Mono.justOrEmpty(response.getSourceResponse().getBodyAsBinaryData());
         } else {
             // Mono<Object> or Mono<Page<T>>
             asyncResult = response.getDecodedBody((byte[]) null);
