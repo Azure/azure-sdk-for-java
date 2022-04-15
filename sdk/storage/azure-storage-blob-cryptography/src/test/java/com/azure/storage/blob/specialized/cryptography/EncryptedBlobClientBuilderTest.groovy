@@ -247,7 +247,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
             .credential(credentials)
             .blobName("foo")
             .containerName("container")
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
             .buildClient()
 
         when:
@@ -280,7 +280,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .credential(new AzureSasCredential("foo"))
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
             .buildEncryptedBlobClient()
         def pipeline = cryptoClient.getHttpPipeline()
         def foundPolicy = false

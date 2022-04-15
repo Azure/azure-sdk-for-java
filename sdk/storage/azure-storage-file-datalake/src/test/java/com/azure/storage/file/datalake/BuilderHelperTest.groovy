@@ -473,7 +473,7 @@ class BuilderHelperTest extends Specification {
         def serviceClient = new DataLakeServiceClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
             .buildClient()
 
         then:
@@ -488,7 +488,7 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint)
             .fileSystemName("fileSystem")
             .credential(credentials)
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
             .buildClient()
 
         then:
@@ -504,7 +504,7 @@ class BuilderHelperTest extends Specification {
             .fileSystemName("fileSystem")
             .pathName("path")
             .credential(credentials)
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
 
         when:
         def directoryClient = pathClientBuilder.buildDirectoryClient()

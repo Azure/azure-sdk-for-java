@@ -39,8 +39,8 @@ class BuilderTest extends Specification {
         def serviceClient = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
-                                                // This is supposed to be matching the following azsdk-java-azure-storage-blob/<version> azsdk-java-azure-storage-blob-batch/<version> <this part is the OS/runtime information>
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            // This is supposed to be matching the following azsdk-java-storage-blob/<version> azsdk-java-storage-blob-batch/<version> <this part is the OS/runtime information>
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
             .buildClient()
 
         when:
@@ -64,7 +64,7 @@ class BuilderTest extends Specification {
             .endpoint(endpoint)
             .containerName("containerName")
             .credential(credentials)
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
             .buildClient()
 
         when:

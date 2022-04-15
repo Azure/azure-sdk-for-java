@@ -38,7 +38,7 @@ class BuilderTest extends Specification {
         def serviceClient = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azsdk-java-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName.replaceFirst("azure-", "") + "/" + clientVersion + " " + "(.)*"))
             .buildClient()
 
         when:

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.regex.Matcher;
@@ -16,8 +17,8 @@ import java.util.regex.Pattern;
 /**
  * This policy modifies the blob user agent string for clients created in packages that are dependencies of blob.
  * It transforms a User Agent String as follows
- * UAbefore: "azsdk-java-azure-storage-blob/12.11.0-beta.2 (11.0.6; Windows 10; 10.0)"
- * UAafter: "azsdk-java-azure-storage-blob/12.11.0-beta.2 azsdk-java-azure-storage-blob-batch/12.8.0-beta.2 (11.0.6; Windows 10; 10.0) "
+ * UAbefore: "azsdk-java-storage-blob/12.11.0-beta.2 (11.0.6; Windows 10; 10.0)"
+ * UAafter: "azsdk-java-storage-blob/12.11.0-beta.2 azsdk-java-storage-blob-batch/12.8.0-beta.2 (11.0.6; Windows 10; 10.0) "
  */
 public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
 
@@ -25,7 +26,7 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
     private final String clientVersion;
 
     private static final String USER_AGENT = "User-Agent";
-    private static final String REGEX = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
+    private static final String REGEX = "(.*? )?(azsdk-java-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     /**
@@ -35,8 +36,15 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
      * @param clientVersion The version of the package.
      */
     public BlobUserAgentModificationPolicy(String clientName, String clientVersion) {
-        this.clientName = clientName;
+        this.clientName = standardizeSdkName(clientName);
         this.clientVersion = clientVersion;
+    }
+
+    static String standardizeSdkName(String sdkName) {
+        if (CoreUtils.isNullOrEmpty(sdkName)) {
+            return sdkName;
+        }
+        return sdkName.replaceAll("^azure-", "");
     }
 
     @Override

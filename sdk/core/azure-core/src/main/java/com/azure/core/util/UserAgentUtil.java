@@ -3,8 +3,6 @@
 
 package com.azure.core.util;
 
-import java.util.regex.Pattern;
-
 /**
  * Utility for building user agent string for Azure client libraries as specified in the
  * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">design guidelines</a>.
@@ -14,7 +12,6 @@ public final class UserAgentUtil {
     private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
-    private static final Pattern AZURE_PREFIX = Pattern.compile("^azure-");
 
     /**
      * Default {@code UserAgent} header.
@@ -89,7 +86,7 @@ public final class UserAgentUtil {
         if (CoreUtils.isNullOrEmpty(sdkName)) {
             return sdkName;
         }
-        return AZURE_PREFIX.matcher(sdkName).replaceFirst("");
+        return sdkName.replaceFirst("^azure-", "");
     }
 
     /**
