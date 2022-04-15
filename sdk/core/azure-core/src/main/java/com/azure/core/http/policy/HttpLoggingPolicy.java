@@ -122,20 +122,20 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // No logging will be performed, trigger a no-op.
         if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
-            return next.processSynchronously();
+            return next.processSync();
         }
 
         final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
-        requestLogger.logRequestSynchronously(logger, getRequestLoggingOptions(context));
+        requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
         try {
-            HttpResponse response = next.processSynchronously();
+            HttpResponse response = next.processSync();
             if (response != null) {
-                response = responseLogger.logResponseSynchronously(
+                response = responseLogger.logResponseSync(
                     logger, getResponseLoggingOptions(response, startNs, context));
             }
             return response;
@@ -243,7 +243,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public void logRequestSynchronously(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+        public void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
 
             if (!logger.canLogAtLevel(logLevel)) {
@@ -294,7 +294,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (shouldBodyBeLogged(contentType, contentLength)) {
                 // Buffer data and log.
                 // TODO (kasobol-msft) is this enough? Perhaps, we don't log bodies larger than 16kb anyway.
-                byte[] bytes = request.getContent().toBytes();
+                byte[] bytes = request.getBodyAsBinaryData().toBytes();
                 requestLogMessage.append(contentLength)
                     .append("-byte body:")
                     .append(System.lineSeparator())
@@ -304,7 +304,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     .append("--> END ")
                     .append(request.getHttpMethod())
                     .append(System.lineSeparator());
-                request.setContent(BinaryData.fromBytes(bytes));
+                request.setBody(BinaryData.fromBytes(bytes));
                 log(logger, logLevel, requestLogMessage);
             } else {
                 requestLogMessage.append(contentLength)
@@ -386,7 +386,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public HttpResponse logResponseSynchronously(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+        public HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
             final HttpResponse response = loggingOptions.getHttpResponse();
 
@@ -431,7 +431,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 responseLogMessage.append("Response body:")
                     .append(System.lineSeparator())
                     .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                        bufferedResponse.getContent().toString()))
+                        bufferedResponse.getBodyAsBinaryData().toString()))
                     .append(System.lineSeparator())
                     .append("<-- END HTTP");
 

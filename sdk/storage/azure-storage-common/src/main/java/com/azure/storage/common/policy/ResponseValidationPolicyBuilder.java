@@ -4,10 +4,12 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,11 +56,20 @@ public class ResponseValidationPolicyBuilder {
     /**
      * Immutable policy for asserting validations on general responses.
      */
-    public static class ResponseValidationPolicy extends HttpPipelineSynchronousPolicy {
+    public static class ResponseValidationPolicy implements HttpPipelinePolicy {
 
         private static final ClientLogger LOGGER = new ClientLogger(ResponseValidationPolicy.class);
 
         private final Iterable<BiConsumer<HttpResponse, ClientLogger>> assertions;
+        private final HttpPipelineSynchronousPolicy inner = new HttpPipelineSynchronousPolicy() {
+            @Override
+            protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
+                for (BiConsumer<HttpResponse, ClientLogger> assertion : assertions) {
+                    assertion.accept(response, LOGGER);
+                }
+                return response;
+            }
+        };
 
         /**
          * Creates a policy that executes each provided assertion on responses.
@@ -72,11 +83,13 @@ public class ResponseValidationPolicyBuilder {
         }
 
         @Override
-        protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
-            for (BiConsumer<HttpResponse, ClientLogger> assertion : assertions) {
-                assertion.accept(response, LOGGER);
-            }
-            return response;
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return inner.process(context, next);
+        }
+
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return inner.processSync(context, next);
         }
     }
 }

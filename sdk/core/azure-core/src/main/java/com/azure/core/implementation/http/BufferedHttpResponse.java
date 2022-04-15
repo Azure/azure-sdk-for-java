@@ -70,7 +70,7 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 

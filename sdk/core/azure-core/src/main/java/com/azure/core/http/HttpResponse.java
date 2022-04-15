@@ -69,10 +69,11 @@ public abstract class HttpResponse implements Closeable {
     /**
      * Gets the {@link BinaryData} that represents the body of the response.
      *
+     * Subclasses should override this method.
+     *
      * @return The {@link BinaryData} response body.
      */
-    public BinaryData getContent() {
-        // TODO (kasobol-msft) validate is this correct ? (added by g2vinay).
+    public BinaryData getBodyAsBinaryData() {
         return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 

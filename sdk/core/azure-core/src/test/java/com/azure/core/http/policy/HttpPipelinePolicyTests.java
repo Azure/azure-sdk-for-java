@@ -14,6 +14,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.test.junit.extensions.SyncAsyncExtension;
 import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +41,7 @@ public class HttpPipelinePolicyTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, url));
+                pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
                 assertEquals(0, policy1.asyncCalls.get());
                 assertEquals(1, policy1.syncCalls.get());
                 assertEquals(0, policy2.asyncCalls.get());
@@ -70,7 +71,7 @@ public class HttpPipelinePolicyTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, url));
+                pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
                 assertEquals(0, policy1.asyncCalls.get());
                 assertEquals(1, policy1.syncCalls.get());
                 assertEquals(0, policy2.asyncCalls.get());
@@ -90,7 +91,7 @@ public class HttpPipelinePolicyTests {
     public void throwsIfAsyncPolicyCallsIntoSyncInAsyncContext() throws Exception {
         SyncAsyncPolicy policy1 = new SyncAsyncPolicy();
         SyncAsyncPolicy policy2 = new SyncAsyncPolicy();
-        HttpPipelinePolicy badPolicy = (context, next) -> Mono.fromCallable(next::processSynchronously);
+        HttpPipelinePolicy badPolicy = (context, next) -> Mono.fromCallable(next::processSync);
         URL url = new URL("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -120,7 +121,7 @@ public class HttpPipelinePolicyTests {
             .policies(policy1, badPolicy1, badPolicy2)
             .build();
 
-        pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, url));
+        pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
     }
 
 
@@ -135,9 +136,9 @@ public class HttpPipelinePolicyTests {
         }
 
         @Override
-        public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
-            return next.processSynchronously();
+            return next.processSync();
         }
     }
 }

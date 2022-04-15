@@ -51,7 +51,7 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return BinaryDataHelper.createBinaryData(new InputStreamContent(this.responseBody.byteStream()));
     }
 

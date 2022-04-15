@@ -1,56 +1,56 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
- package com.azure.core.http.netty;
+package com.azure.core.http.netty;
 
- import com.azure.core.http.HttpClient;
- import com.azure.core.http.HttpHeader;
- import com.azure.core.http.HttpRequest;
- import com.azure.core.http.HttpResponse;
- import com.azure.core.http.ProxyOptions;
- import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
- import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
- import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
- import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
- import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
- import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
- import com.azure.core.implementation.util.BinaryDataContent;
- import com.azure.core.implementation.util.BinaryDataHelper;
- import com.azure.core.implementation.util.ByteArrayContent;
- import com.azure.core.implementation.util.FileContent;
- import com.azure.core.implementation.util.InputStreamContent;
- import com.azure.core.implementation.util.StringContent;
- import com.azure.core.util.Context;
- import com.azure.core.util.FluxUtil;
- import com.azure.core.util.logging.ClientLogger;
- import com.azure.core.util.logging.LogLevel;
- import io.netty.buffer.ByteBuf;
- import io.netty.buffer.Unpooled;
- import io.netty.channel.EventLoopGroup;
- import io.netty.handler.codec.http.HttpMethod;
- import io.netty.handler.proxy.ProxyConnectException;
- import io.netty.handler.stream.ChunkedNioFile;
- import io.netty.handler.stream.ChunkedStream;
- import io.netty.handler.stream.ChunkedWriteHandler;
- import org.reactivestreams.Publisher;
- import reactor.core.Exceptions;
- import reactor.core.publisher.Flux;
- import reactor.core.publisher.Mono;
- import reactor.netty.Connection;
- import reactor.netty.NettyOutbound;
- import reactor.netty.http.client.HttpClientRequest;
- import reactor.netty.http.client.HttpClientResponse;
- import reactor.util.retry.Retry;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
+import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
+import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
+import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.EventLoopGroup;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.proxy.ProxyConnectException;
+import io.netty.handler.stream.ChunkedNioFile;
+import io.netty.handler.stream.ChunkedStream;
+import io.netty.handler.stream.ChunkedWriteHandler;
+import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.netty.Connection;
+import reactor.netty.NettyOutbound;
+import reactor.netty.http.client.HttpClientRequest;
+import reactor.netty.http.client.HttpClientResponse;
+import reactor.util.retry.Retry;
 
- import javax.net.ssl.SSLException;
- import java.io.IOException;
- import java.nio.channels.FileChannel;
- import java.nio.file.StandardOpenOption;
- import java.time.Duration;
- import java.util.Objects;
- import java.util.function.BiFunction;
+import javax.net.ssl.SSLException;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.StandardOpenOption;
+import java.time.Duration;
+import java.util.Objects;
+import java.util.function.BiFunction;
 
- import static com.azure.core.http.netty.implementation.Utility.closeConnection;
+import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
@@ -170,11 +170,11 @@ class NettyAsyncHttpClient implements HttpClient {
                 }
             }
 
-            if (restRequest.getContent() == null) {
+            if (restRequest.getBodyAsBinaryData() == null) {
                 return reactorNettyOutbound;
             }
 
-            BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getContent());
+            BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getBodyAsBinaryData());
             if (binaryDataContent instanceof ByteArrayContent) {
                 return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(binaryDataContent.toBytes())));
             } else if (binaryDataContent instanceof StringContent) {

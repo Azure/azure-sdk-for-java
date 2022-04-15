@@ -341,7 +341,7 @@ public abstract class HttpClientTests {
 
     private String sendRequestSync(String requestPath) {
         HttpResponse response = createHttpClient()
-            .sendSynchronously(
+            .sendSync(
                 new HttpRequest(HttpMethod.GET, REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath),
                 Context.NONE);
         // TODO (kasobol-msft) response.getContent().toString() doesn't respect the encoding. How do we do this?
@@ -365,7 +365,7 @@ public abstract class HttpClientTests {
     private String sendEchoRequestSync(BinaryData content) {
         try {
             HttpResponse response = createHttpClient()
-                .sendSynchronously(new HttpRequest(
+                .sendSync(new HttpRequest(
                     HttpMethod.PUT,
                     new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
                     new HttpHeaders(),

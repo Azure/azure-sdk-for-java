@@ -77,9 +77,9 @@ public class DeadlockTests {
         String endpoint = server.baseUrl() + GET_ENDPOINT;
 
         for (int i = 0; i < 100; i++) {
-            HttpResponse response = httpClient.sendSynchronously(
+            HttpResponse response = httpClient.sendSync(
                 new HttpRequest(HttpMethod.GET, endpoint), Context.NONE);
-            byte[] bytes = response.getContent().toBytes();
+            byte[] bytes = response.getBodyAsBinaryData().toBytes();
             assertEquals(200, response.getStatusCode());
             assertArrayEquals(expectedGetBytes, bytes);
         }

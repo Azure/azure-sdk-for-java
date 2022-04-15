@@ -42,7 +42,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 

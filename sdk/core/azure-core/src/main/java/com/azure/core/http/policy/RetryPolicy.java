@@ -120,7 +120,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return attemptSync(context, next, context.getHttpRequest(), 0);
     }
 
@@ -166,7 +166,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         HttpResponse httpResponse;
 
         try {
-            httpResponse = next.clone().processSynchronously();
+            httpResponse = next.clone().processSync();
         } catch (RuntimeException e) {
             Throwable err = Exceptions.unwrap(e);
             if (shouldRetryException(err, tryCount)) {

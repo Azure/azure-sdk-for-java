@@ -59,11 +59,11 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      *
      * @param context The request context.
      */
-    public void authorizeRequestSynchronously(HttpPipelineCallContext context) {
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
         if (this.scopes == null || this.scopes.length == 0) {
             return;
         }
-        setAuthorizationHeaderHelperSynchronously(context, new TokenRequestContext().addScopes(this.scopes), false);
+        setAuthorizationHeaderHelperSync(context, new TokenRequestContext().addScopes(this.scopes), false);
     }
 
     /**
@@ -88,7 +88,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param response The Http Response containing the authentication challenge header.
      * @return A boolean
      */
-    public boolean authorizeRequestOnChallengeSynchronously(HttpPipelineCallContext context, HttpResponse response) {
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         return false;
     }
 
@@ -117,23 +117,23 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
-        authorizeRequestSynchronously(context);
+        authorizeRequestSync(context);
 
-        HttpResponse httpResponse = next.processSynchronously();
+        HttpResponse httpResponse = next.processSync();
 
         if (httpResponse != null) {
             String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
             if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                boolean retry = authorizeRequestOnChallengeSynchronously(context, httpResponse);
+                boolean retry = authorizeRequestOnChallengeSync(context, httpResponse);
                 if (retry) {
-                    return nextPolicy.processSynchronously();
+                    return nextPolicy.processSync();
                 } else {
                     return httpResponse;
                 }
@@ -159,9 +159,9 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param context the HTTP pipeline context.
      * @param tokenRequestContext the token request context to be used for token acquisition.
      */
-    public void setAuthorizationHeaderSynchronously(
+    public void setAuthorizationHeaderSync(
         HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
-        setAuthorizationHeaderHelperSynchronously(context, tokenRequestContext, true);
+        setAuthorizationHeaderHelperSync(context, tokenRequestContext, true);
     }
 
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
@@ -173,9 +173,9 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
             });
     }
 
-    private void setAuthorizationHeaderHelperSynchronously(HttpPipelineCallContext context,
-                                        TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        AccessToken token = cache.getTokenSynchronously(tokenRequestContext, checkToForceFetchToken);
+    private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,
+                                                  TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+        AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
         if (token != null) {
             context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
         }

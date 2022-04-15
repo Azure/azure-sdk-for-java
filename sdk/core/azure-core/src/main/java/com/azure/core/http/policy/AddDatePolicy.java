@@ -4,6 +4,9 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -13,14 +16,27 @@ import java.util.Locale;
 /**
  * The pipeline policy that adds a "Date" header in RFC 1123 format when sending an HTTP request.
  */
-public class AddDatePolicy extends HttpPipelineSynchronousPolicy {
-    private final DateTimeFormatter format = DateTimeFormatter
+public class AddDatePolicy implements HttpPipelinePolicy {
+
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter
             .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
             .withZone(ZoneId.of("UTC"))
             .withLocale(Locale.US);
 
+    private static final HttpPipelinePolicy INNER = new HttpPipelineSynchronousPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            context.getHttpRequest().getHeaders().set("Date", FORMAT.format(OffsetDateTime.now()));
+        }
+    };
+
     @Override
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        context.getHttpRequest().getHeaders().set("Date", format.format(OffsetDateTime.now()));
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.process(context, next);
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.processSync(context, next);
     }
 }

@@ -47,7 +47,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUrls for each individual request.
         return attemptRedirectSync(context, next, context.getHttpRequest(), 1, new HashSet<>());
     }
@@ -89,7 +89,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
-        HttpResponse httpResponse = next.clone().processSynchronously();
+        HttpResponse httpResponse = next.clone().processSync();
 
         if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
             attemptedRedirectUrls)) {

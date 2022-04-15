@@ -4,9 +4,13 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
+import reactor.core.publisher.Mono;
 
 import java.util.Locale;
 
@@ -16,26 +20,38 @@ import java.util.Locale;
  * We do this since the service trims whitespace for the string to sign, but the client does not, resulting in an auth
  * failure.
  */
-public class MetadataValidationPolicy extends HttpPipelineSynchronousPolicy {
+public class MetadataValidationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(MetadataValidationPolicy.class);
     private static final int X_MS_META_LENGTH = Constants.HeaderConstants.X_MS_META.length();
 
+    private static final HttpPipelineSynchronousPolicy INNER = new HttpPipelineSynchronousPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            context.getHttpRequest().getHeaders().stream()
+                .filter(header -> header.getName().toLowerCase(Locale.ROOT)
+                    .startsWith(Constants.HeaderConstants.X_MS_META))
+                .forEach(header -> {
+                    String name = header.getName();
+                    String value = header.getValue();
+                    boolean foundWhitespace = Character.isWhitespace(name.charAt(X_MS_META_LENGTH))
+                        || Character.isWhitespace(name.charAt(name.length() - 1))
+                        || Character.isWhitespace(value.charAt(0))
+                        || Character.isWhitespace(value.charAt(value.length() - 1));
+                    if (foundWhitespace) {
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
+                            + "can not contain leading or trailing whitespace. Please remove or encode them."));
+                    }
+                });
+        }
+    };
+
     @Override
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        context.getHttpRequest().getHeaders().stream()
-            .filter(header -> header.getName().toLowerCase(Locale.ROOT)
-                .startsWith(Constants.HeaderConstants.X_MS_META))
-            .forEach(header -> {
-                String name = header.getName();
-                String value = header.getValue();
-                boolean foundWhitespace = Character.isWhitespace(name.charAt(X_MS_META_LENGTH))
-                    || Character.isWhitespace(name.charAt(name.length() - 1))
-                    || Character.isWhitespace(value.charAt(0))
-                    || Character.isWhitespace(value.charAt(value.length() - 1));
-                if (foundWhitespace) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
-                        + "can not contain leading or trailing whitespace. Please remove or encode them."));
-                }
-            });
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.process(context, next);
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.processSync(context, next);
     }
 }

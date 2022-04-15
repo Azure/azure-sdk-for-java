@@ -43,7 +43,7 @@ public interface HttpRequestLogger {
      * @param logger The {@link ClientLogger} used to log the HTTP request.
      * @param loggingOptions The information available during request logging.
      */
-    default void logRequestSynchronously(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+    default void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
         throw new UnsupportedOperationException("Must be overridden");
     }
 }
