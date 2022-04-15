@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
+import java.time.OffsetDateTime
 import java.util.function.Consumer
 import java.util.stream.Collectors
 
@@ -249,21 +250,149 @@ class DirectoryAPITest extends APISpec {
     def "Create options with ACL"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
-        def options = new DataLakePathCreateOptions()
-            .setAccessControlList(pathAccessControlEntries).setOwner(owner).setGroup(group)
-        def result = dc.createWithResponse(options, null, null)
-        //dc.setAccessControlList(pathAccessControlEntries, group, owner)
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        dc.createWithResponse(options, null, null)
 
         then:
         notThrown(DataLakeStorageException)
-        //dc.getAccessControl().getAccessControlList() ==
-        for (PathAccessControlEntry entry : dc.getAccessControl().getAccessControlList()) {
-            System.out.println(entry.toString())
+        def acl = dc.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    def "Create options with owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        def result = dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == ownerName
+        dc.getAccessControl().getGroup() == groupName
+    }
+
+    def "Create options with null owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setOwner(owner).setGroup(group)
+        def result = dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == "\$superuser"
+        dc.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create options with path http headers"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        dc.createWithResponse(options, null, null)
+
+        expect:
+        validatePathProperties(
+            dc.getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create options with metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
         }
-        System.out.println(" ")
-        for (PathAccessControlEntry entry : pathAccessControlEntries) {
-            System.out.println(entry.toString())
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
         }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+
+        expect:
+        dc.createWithResponse(options, null, null).getStatusCode() == statusCode
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            dc.getProperties().getMetadata().containsKey(k)
+            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create options with permissions and umask"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        dc.createWithResponse(options, null, null)
+
+        when:
+        def acl = dc.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+
+    }
+
+    def "Create options lease id"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setLeaseId(receivedLeaseID)
+        def response = dc.createWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create options lease duration"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
+        def response = dc.createWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create options time expires on"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def expiryTime = OffsetDateTime.now()
+        def options = new DataLakePathCreateOptions().setExpiresOn(expiryTime.toString())
+            .setProposedLeaseId(leaseId).setExpiryOptions(expiryOptions)
+        def response = dc.createWithResponse(options, null, null)
+
+        then:
+        // assert ExpiryNotSupportedForDirectory
+        thrown(DataLakeStorageException)
+
+        where:
+        expiryOptions               | _
+        PathExpiryOptions.RELATIVE_TO_NOW     | _
+        PathExpiryOptions.ABSOLUTE    | _
+        PathExpiryOptions.RELATIVE_TO_CREATION | _
+        PathExpiryOptions.NEVER_EXPIRE | _
     }
 
     def "Delete min"() {

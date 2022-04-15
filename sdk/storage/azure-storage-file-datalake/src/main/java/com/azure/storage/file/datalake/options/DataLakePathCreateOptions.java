@@ -5,8 +5,7 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
-import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
-import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
