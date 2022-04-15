@@ -512,7 +512,7 @@ public class ProxyOptions {
     /**
      * Lists available configuration property names for HTTP {@link ProxyOptions}.
      */
-    public static class ConfigurationProperties {
+    private static class ConfigurationProperties {
         /**
          * Represents a list of hosts that should be reached directly, bypassing the proxy.
          * This is a list of patterns separated by '|'. The patterns may start or end with a '*' for wildcards.

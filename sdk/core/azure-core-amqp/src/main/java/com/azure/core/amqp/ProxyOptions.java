@@ -246,7 +246,7 @@ public class ProxyOptions implements AutoCloseable {
     /**
      * Lists available configuration property names for AMQP {@link ProxyOptions}.
      */
-    public static class ConfigurationProperties {
+    private static class ConfigurationProperties {
         /**
          * The AMQP proxy server authentication type that match {@link ProxyAuthenticationType} enum.
          * Supported values are {@code NONE} (no authentication), {@code BASIC} or {@code DIGEST}.
