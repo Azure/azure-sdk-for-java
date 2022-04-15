@@ -372,7 +372,7 @@ paths:
                   value:
                     type: array
                     items:
-                      $ref: '#/components/schemas/microsoft.graph.user'
+                      $ref: './Groups.yml#/components/schemas/microsoft.graph.user'
                   '@odata.nextLink':
                     type: string
                 additionalProperties:
@@ -393,7 +393,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.user'
+              $ref: './Groups.yml#/components/schemas/microsoft.graph.user'
         required: true
       responses:
         '201':
@@ -401,7 +401,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.user'
+                $ref: './Groups.yml#/components/schemas/microsoft.graph.user'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
@@ -614,7 +614,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/microsoft.graph.user'
+                $ref: './Groups.yml#/components/schemas/microsoft.graph.user'
           links:
             appRoleAssignments:
               operationId: users.ListAppRoleAssignments
@@ -809,7 +809,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/microsoft.graph.user'
+              $ref: './Groups.yml#/components/schemas/microsoft.graph.user'
         required: true
       responses:
         '204':
@@ -4066,9 +4066,9 @@ components:
               description: URL that displays the resource in the browser. Read-only.
               nullable: true
             createdByUser:
-              $ref: '#/components/schemas/microsoft.graph.user'
+              $ref: './Groups.yml#/components/schemas/microsoft.graph.user'
             lastModifiedByUser:
-              $ref: '#/components/schemas/microsoft.graph.user'
+              $ref: './Groups.yml#/components/schemas/microsoft.graph.user'
           additionalProperties:
             type: object
     microsoft.graph.identitySet:
