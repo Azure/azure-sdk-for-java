@@ -176,4 +176,46 @@ public class HDInsightPigActivity extends ExecutionActivity {
         this.defines = defines;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
+        return this;
+    }
 }

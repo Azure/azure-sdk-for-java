@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.schemaregistry.apacheavro;
 
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.models.MessageContent;
 
 import java.time.OffsetDateTime;
 
 /**
  * Sample type used in {@link SchemaRegistryApacheAvroSerializerJavaDocCodeSamples#serializeMessageFactory()}.
  */
-public class ComplexMessage extends MessageWithMetadata {
+public class ComplexMessage extends MessageContent {
     private final String id;
     private final OffsetDateTime creationTime;
 

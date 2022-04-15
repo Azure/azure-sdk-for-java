@@ -67,6 +67,20 @@ public interface SignalRManagementClient {
     UsagesClient getUsages();
 
     /**
+     * Gets the SignalRCustomCertificatesClient object to access its operations.
+     *
+     * @return the SignalRCustomCertificatesClient object.
+     */
+    SignalRCustomCertificatesClient getSignalRCustomCertificates();
+
+    /**
+     * Gets the SignalRCustomDomainsClient object to access its operations.
+     *
+     * @return the SignalRCustomDomainsClient object.
+     */
+    SignalRCustomDomainsClient getSignalRCustomDomains();
+
+    /**
      * Gets the SignalRPrivateEndpointConnectionsClient object to access its operations.
      *
      * @return the SignalRPrivateEndpointConnectionsClient object.
