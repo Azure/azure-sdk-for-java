@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Administrator%27&api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Administrator%27&api-version=2015-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "db3ab1be-4f7b-4c39-9d5d-d5e4c9ad53d7",
@@ -308,7 +308,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2015-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "4936d66a-fef6-46b4-bb9a-fe8949a1b703",
@@ -560,7 +560,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2015-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "09beafb2-3650-41bb-9ed1-58daa70ce2df",
