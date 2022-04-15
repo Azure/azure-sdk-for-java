@@ -542,22 +542,22 @@ public final class SyncRestProxy implements InvocationHandler {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             result = isSuccess;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
-            // Mono<byte[]>
+            // byte[]
             byte[] responseBodyBytes = response.getSourceResponse().getBodyAsBinaryData().toBytes();
             if (returnValueWireType == Base64Url.class) {
-                // Mono<Base64Url>
+                // Base64Url
                 responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
             }
             result = responseBodyBytes;
         }  else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
-            // Mono<BinaryData>
+            // BinaryData
             // The raw response is directly used to create an instance of BinaryData which then provides
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
             result = response.getSourceResponse().getBodyAsBinaryData();
         } else {
-            // Mono<Object> or Mono<Page<T>>
+            // Object or Page<T>
             result = response.getDecodedBodySync((byte[]) null);
         }
         return result;
@@ -584,7 +584,6 @@ public final class SyncRestProxy implements InvocationHandler {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
             Void.class)) {
             // ProxyMethod ReturnType: Void
-//            asyncExpectedResponse.block();
             result = expectedResponse;
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
@@ -597,14 +596,16 @@ public final class SyncRestProxy implements InvocationHandler {
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
     private static void endTracingSpan(HttpDecodedResponse httpDecodedResponse, Throwable throwable, Context tracingContext) {
-
+        if (tracingContext == null) {
+            return;
+        }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         Object disableTracingValue = (tracingContext.getData(Tracer.DISABLE_TRACING_KEY).isPresent()
             ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get() : null);
         boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
 
-        if (tracingContext == null || disableTracing) {
+        if (disableTracing) {
             return;
         }
 
