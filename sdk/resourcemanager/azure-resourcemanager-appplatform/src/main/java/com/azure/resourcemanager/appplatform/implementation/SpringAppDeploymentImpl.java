@@ -140,9 +140,17 @@ public class SpringAppDeploymentImpl
         }
     }
 
+    private void ensureSource() {
+        ensureSource(null);
+    }
+
     private void ensureSource(UserSourceType type) {
         if (innerModel().properties() == null) {
             innerModel().withProperties(new DeploymentResourceProperties());
+        }
+        if (type == null) {
+            innerModel().properties().withSource(new UserSourceInfo());
+            return;
         }
         if (innerModel().properties().source() == null) {
             switch (type.toString()) {
@@ -367,7 +375,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withVersionName(String versionName) {
-        ensureSource(UserSourceType.fromString("Other"));
+        ensureSource();
         innerModel().properties().source().withVersion(versionName);
         return this;
     }
