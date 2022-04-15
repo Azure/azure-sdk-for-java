@@ -678,11 +678,17 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   }
 }
 
-function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
-{
-  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
-  {
-    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
+function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
+  # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
+  if (!$PackageInfos) {
+    $PackageInfos =  @($PackageInfo)
   }
+
+  foreach ($package in $PackageInfos) {
+    if (!(ValidatePackage $package.Group $package.Name $package.Version $DocValidationImageId)) {
+      Write-Error "Package $($package.Name) failed on validation" -ErrorAction Continue
+    }
+  }
+
   return
 }
