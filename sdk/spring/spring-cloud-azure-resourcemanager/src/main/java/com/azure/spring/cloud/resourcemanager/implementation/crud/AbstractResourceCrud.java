@@ -20,11 +20,11 @@ import org.springframework.util.StopWatch;
 public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractResourceCrud.class);
+    static final int RESOURCE_NOT_FOUND = 404;
 
     protected final AzureResourceManager resourceManager;
     protected final AzureResourceMetadata resourceMetadata;
 
-    protected final int RESOURCE_NOT_FOUND = 404;
     /**
      * Creates a new instance of {@link AbstractResourceCrud}.
      *
