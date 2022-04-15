@@ -127,4 +127,25 @@ public final class DocumentDbCollectionSource extends CopySource {
         this.additionalColumns = additionalColumns;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentDbCollectionSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentDbCollectionSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentDbCollectionSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

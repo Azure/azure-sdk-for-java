@@ -3,6 +3,7 @@
 ## 4.1.0-beta.1 (Unreleased)
 
 ### Features Added
+- GA the `spring-cloud-azure-starter-keyvault-certificates`. This starter supports the auto-configuration of Azure Key Vault `CertificateClient` and `CertificateAsyncClient`. 
 
 ### Breaking Changes
 

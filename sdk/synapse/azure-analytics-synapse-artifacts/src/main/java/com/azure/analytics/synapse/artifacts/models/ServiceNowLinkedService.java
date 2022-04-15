@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** ServiceNow server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -291,6 +293,34 @@ public class ServiceNowLinkedService extends LinkedService {
      */
     public ServiceNowLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceNowLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceNowLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceNowLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceNowLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

@@ -48,12 +48,13 @@ def generate(
         'sdk/{0}'.format(service),
         module,
     )
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
+    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
         # samples contains hand-written code
-        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'), ignore_errors = True)
+        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
+                      ignore_errors=True)
     else:
-        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
+        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors=True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -63,14 +64,16 @@ def generate(
     tag_option = '--tag={0}'.format(tag) if tag else ''
     version_option = '--package-version={0}'.format(version) if version else ''
 
-    command = 'autorest --version={0} --use={1} --java --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
-        autorest,
-        use,
-        os.path.abspath(sdk_root),
-        os.path.abspath(output_dir),
-        namespace,
-        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
-    )
+    command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} ' \
+              '--java.namespace={4} {5}'\
+        .format(
+            autorest,
+            use,
+            os.path.abspath(sdk_root),
+            os.path.abspath(output_dir),
+            namespace,
+            ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
+        )
     logging.info(command)
     if os.system(command) != 0:
         logging.error('[GENERATE] Autorest fail')
@@ -233,7 +236,7 @@ def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
 def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
     with open(api_specs_file, 'w') as fout:
         fout.write(comment)
-        fout.write(yaml.dump(api_specs, Dumper = ListIndentDumper))
+        fout.write(yaml.dump(api_specs, Dumper=ListIndentDumper))
 
 
 def get_and_update_service_from_api_specs(

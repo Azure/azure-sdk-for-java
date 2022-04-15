@@ -6,10 +6,10 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.experimental.models.MessageWithMetadata;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.models.MessageContent;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
@@ -131,8 +131,8 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         assertNotNull(schemaProperties);
 
         // Act & Assert
-        final MessageWithMetadata encodedMessage = encoder.serializeMessageData(cards,
-            TypeReference.createInstance(MessageWithMetadata.class));
+        final MessageContent encodedMessage = encoder.serializeMessageData(cards,
+            TypeReference.createInstance(MessageContent.class));
         assertNotNull(encodedMessage);
 
         final byte[] outputArray = encodedMessage.getBodyAsBinaryData().toBytes();

@@ -508,4 +508,7 @@ the main ServiceBusClientBuilder. -->
   files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+
+  <!-- AzureFileSystemProvider requires a deferred instantiation of the static logger to prevent a potential runtime exception. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.nio.AzureFileSystemProvider"/>
 </suppressions>
