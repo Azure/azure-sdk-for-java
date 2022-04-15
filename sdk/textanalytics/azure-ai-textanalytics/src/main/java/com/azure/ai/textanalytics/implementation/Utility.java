@@ -3,37 +3,49 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
 import com.azure.ai.textanalytics.implementation.models.Association;
 import com.azure.ai.textanalytics.implementation.models.Certainty;
 import com.azure.ai.textanalytics.implementation.models.ClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.Conditionality;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomMultiClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.EntitiesTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
-import com.azure.ai.textanalytics.implementation.models.ExtractedDocumentSummary;
 import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
+import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseTaskResult;
+import com.azure.ai.textanalytics.implementation.models.LanguageDetectionDocumentResult;
+import com.azure.ai.textanalytics.implementation.models.LanguageDetectionResult;
+import com.azure.ai.textanalytics.implementation.models.LanguageDetectionTaskResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
+import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiClassificationDocument;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
+import com.azure.ai.textanalytics.implementation.models.PiiTaskResult;
 import com.azure.ai.textanalytics.implementation.models.RelationType;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
@@ -41,6 +53,8 @@ import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentenceTarget;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.SentimentResponseDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.SentimentTaskResult;
 import com.azure.ai.textanalytics.implementation.models.SingleClassificationDocument;
 import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
@@ -51,11 +65,11 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
-import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
-import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassificationCategoryCollection;
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.EntityAssociation;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.EntityCertainty;
@@ -73,6 +87,7 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -82,6 +97,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -94,14 +110,15 @@ import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
-import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -175,7 +192,7 @@ public final class Utility {
             final ErrorResponse errorResponse = errorException.getValue();
             com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
             if (errorResponse != null && errorResponse.getError() != null) {
-                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
+//                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
             }
             return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
                 textAnalyticsError);
@@ -350,6 +367,157 @@ public final class Utility {
         return new HashMap<>();
     }
 
+    // Sentiment Analysis
+    public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse(
+        Response<SentimentResponse> response) {
+        return new SimpleResponse<>(response, toAnalyzeSentimentResultCollection(response.getValue()));
+    }
+
+    public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse2(
+        Response<AnalyzeTextTaskResult> response) {
+        return new SimpleResponse<>(response,
+            toAnalyzeSentimentResultCollection(((SentimentTaskResult)response.getValue()).getResults()));
+    }
+
+
+    // Detect Language
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse(
+        Response<LanguageResult> response) {
+        final LanguageResult languageResult = response.getValue();
+        final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
+        for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
+            com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
+                documentLanguage.getDetectedLanguage();
+
+            // warnings
+            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
+                                                            .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+
+            detectLanguageResults.add(new DetectLanguageResult(
+                documentLanguage.getId(),
+                documentLanguage.getStatistics() == null
+                    ? null : toTextDocumentStatistics(documentLanguage.getStatistics()),
+                null,
+                new DetectedLanguage(detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
+                    new IterableStream<>(warnings))));
+        }
+        // Document errors
+        for (DocumentError documentError : languageResult.getErrors()) {
+            detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
+                null, null));
+//                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        return new SimpleResponse<>(response,
+            new DetectLanguageResultCollection(detectLanguageResults, languageResult.getModelVersion(),
+                languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
+    }
+
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse2(
+        Response<AnalyzeTextTaskResult> response) {
+        final LanguageDetectionResult languageResult =
+            ((LanguageDetectionTaskResult) response.getValue()).getResults();
+        final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
+
+        for (LanguageDetectionDocumentResult documentLanguage : languageResult.getDocuments()) {
+            com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
+                documentLanguage.getDetectedLanguage();
+
+            // warnings
+            final List<TextAnalyticsWarning> warnings = null;
+//                documentLanguage.getWarnings()
+//                    .stream()
+//                    .map(warning -> toTextAnalyticsWarning(warning))
+//                    .collect(Collectors.toList());
+
+            detectLanguageResults.add(new DetectLanguageResult(
+                documentLanguage.getId(),
+                documentLanguage.getStatistics() == null
+                    ? null : toTextDocumentStatistics(documentLanguage.getStatistics()),
+                null,
+                new DetectedLanguage(detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
+//                    new IterableStream<>(warnings)
+                    null
+                )));
+        }
+        // Document errors
+        for (DocumentError documentError : languageResult.getErrors()) {
+            detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
+                null, null));
+//                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        return new SimpleResponse<>(response,
+            new DetectLanguageResultCollection(detectLanguageResults, languageResult.getModelVersion(),
+                languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
+    }
+
+    // Key Phrase Extraction
+    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
+        final Response<KeyPhraseResult> response) {
+        final KeyPhraseResult keyPhraseResult = response.getValue();
+        // List of documents results
+        final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
+        for (KeyPhraseResultDocumentsItem documentKeyPhrases : keyPhraseResult.getDocuments()) {
+            final String documentId = documentKeyPhrases.getId();
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(
+                documentId,
+                documentKeyPhrases.getStatistics() == null ? null
+                    : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
+                new KeyPhrasesCollection(
+                    new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
+//                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
+//                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
+                    null
+                )));
+        }
+        // Document errors
+        for (DocumentError documentError : keyPhraseResult.getErrors()) {
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
+//                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
+        }
+
+        return new SimpleResponse<>(response,
+            new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
+                keyPhraseResult.getStatistics() == null ? null
+                    : toBatchStatistics(keyPhraseResult.getStatistics())));
+    }
+
+    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse2(
+        final Response<AnalyzeTextTaskResult> response) {
+        final KeyPhraseResult keyPhraseResult = ((KeyPhraseTaskResult) response.getValue()).getResults();
+        // List of documents results
+        final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
+        for (KeyPhraseResultDocumentsItem documentKeyPhrases : keyPhraseResult.getDocuments()) {
+            final String documentId = documentKeyPhrases.getId();
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(
+                documentId,
+                documentKeyPhrases.getStatistics() == null ? null
+                    : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
+                new KeyPhrasesCollection(
+                    new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
+//                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
+//                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
+                    null
+                )));
+        }
+        // Document errors
+        for (DocumentError documentError : keyPhraseResult.getErrors()) {
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
+//                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
+        }
+
+        return new SimpleResponse<>(response,
+            new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
+                keyPhraseResult.getStatistics() == null ? null
+                    : toBatchStatistics(keyPhraseResult.getStatistics())));
+    }
+
+    // Named Entities Recognition
     public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollectionResponse(
         final EntitiesResult entitiesResult) {
         // List of documents results
@@ -359,12 +527,170 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : entitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
+//                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
     }
+
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollection(
+        final Response<EntitiesResult> response) {
+        EntitiesResult entitiesResult = response.getValue();
+        return new SimpleResponse<>(response,
+            new RecognizeEntitiesResultCollection(
+                toRecognizeEntitiesResults(entitiesResult),
+                entitiesResult.getModelVersion(),
+                entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics())));
+    }
+
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollection2(
+        final Response<AnalyzeTextTaskResult> response) {
+        EntitiesTaskResult entitiesTaskResult = (EntitiesTaskResult) response.getValue();
+        final EntitiesResult results = entitiesTaskResult.getResults();
+        return new SimpleResponse<>(response,
+            new RecognizeEntitiesResultCollection(
+                toRecognizeEntitiesResults(results),
+                results.getModelVersion(),
+                results.getStatistics() == null ? null : toBatchStatistics(results.getStatistics())));
+    }
+
+    public static List<RecognizeEntitiesResult> toRecognizeEntitiesResults(EntitiesResult results) {
+        // List of documents results
+        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        results.getDocuments().forEach(
+            documentEntities ->
+                recognizeEntitiesResults.add(new RecognizeEntitiesResult(
+                    documentEntities.getId(),
+                    documentEntities.getStatistics() == null ? null
+                        : toTextDocumentStatistics(documentEntities.getStatistics()),
+                    null,
+                    new CategorizedEntityCollection(
+                        new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
+                            final CategorizedEntity categorizedEntity =
+                                new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                                    entity.getSubcategory(), entity.getConfidenceScore());
+                            CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                            CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                            return categorizedEntity;
+                        }).collect(Collectors.toList())),
+                        //                    new IterableStream<>(documentEntities.getWarnings().stream()
+                        //                        .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
+                        null
+                    ))));
+        // Document errors
+        for (DocumentError documentError : results.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
+//                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
+        }
+        return recognizeEntitiesResults;
+    }
+
+    public static RecognizeEntitiesResult toRecognizeEntitiesResult(EntitiesResultDocumentsItem documentEntities) {
+        return new RecognizeEntitiesResult(
+            documentEntities.getId(),
+            documentEntities.getStatistics() == null ? null
+                : toTextDocumentStatistics(documentEntities.getStatistics()),
+            null,
+            new CategorizedEntityCollection(
+                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
+                    final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
+                        EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
+                        entity.getConfidenceScore());
+                    CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                    CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                    return categorizedEntity;
+                }).collect(Collectors.toList())),
+                null));
+//                new IterableStream<>(documentEntities.getWarnings().stream().map(
+//                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
+    }
+
+    public static RecognizeEntitiesResult toRecognizeEntitiesResult(CustomEntitiesResultDocumentsItem documentEntities) {
+        return new RecognizeEntitiesResult(
+            documentEntities.getId(),
+            documentEntities.getStatistics() == null ? null
+                : toTextDocumentStatistics(documentEntities.getStatistics()),
+            null,
+            new CategorizedEntityCollection(
+                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
+                    final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
+                        EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
+                        entity.getConfidenceScore());
+                    CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                    CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                    return categorizedEntity;
+                }).collect(Collectors.toList())),
+                null));
+//                new IterableStream<>(documentEntities.getWarnings().stream().map(
+//                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
+    }
+
+    public static Response<RecognizePiiEntitiesResultCollection> toRecognizePiiEntitiesResultCollectionResponse(
+        final Response<PiiResult> response) {
+        final PiiResult piiEntitiesResult = response.getValue();
+        return new SimpleResponse<>(response,
+            new RecognizePiiEntitiesResultCollection(
+                toRecognizePiiEntitiesResults(piiEntitiesResult),
+                piiEntitiesResult.getModelVersion(),
+                piiEntitiesResult.getStatistics() == null ? null : toBatchStatistics(piiEntitiesResult.getStatistics())
+            ));
+    }
+
+    public static Response<RecognizePiiEntitiesResultCollection> toRecognizePiiEntitiesResultCollectionResponse2(
+        final Response<AnalyzeTextTaskResult> response) {
+        final PiiResult piiEntitiesResult = ((PiiTaskResult) response.getValue()).getResults();
+        return new SimpleResponse<>(response,
+            new RecognizePiiEntitiesResultCollection(
+                toRecognizePiiEntitiesResults(piiEntitiesResult),
+                piiEntitiesResult.getModelVersion(),
+                piiEntitiesResult.getStatistics() == null ? null : toBatchStatistics(piiEntitiesResult.getStatistics())
+            ));
+    }
+
+    public static List<RecognizePiiEntitiesResult> toRecognizePiiEntitiesResults(PiiResult piiEntitiesResult) {
+        // List of documents results
+        final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        piiEntitiesResult.getDocuments().forEach(documentEntities -> {
+            // Pii entities list
+            final List<PiiEntity> piiEntities =
+                documentEntities.getEntities().stream().map(
+                    entity -> {
+                        final PiiEntity piiEntity = new PiiEntity();
+                        PiiEntityPropertiesHelper.setText(piiEntity, entity.getText());
+                        PiiEntityPropertiesHelper.setCategory(piiEntity,
+                            PiiEntityCategory.fromString(entity.getCategory()));
+                        PiiEntityPropertiesHelper.setSubcategory(piiEntity, entity.getSubcategory());
+                        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity, entity.getConfidenceScore());
+                        PiiEntityPropertiesHelper.setOffset(piiEntity, entity.getOffset());
+                        PiiEntityPropertiesHelper.setLength(piiEntity, entity.getLength());
+                        return piiEntity;
+                    })
+                    .collect(Collectors.toList());
+            // Warnings
+//            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
+//                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+            final List<TextAnalyticsWarning> warnings = null;
+            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
+                documentEntities.getId(),
+                documentEntities.getStatistics() == null ? null
+                    : toTextDocumentStatistics(documentEntities.getStatistics()),
+                null,
+                new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(), null)
+//                    new IterableStream<>(warnings))
+            ));
+        });
+        // Document errors
+        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
+                null, null));
+//                toTextAnalyticsError(documentError.getError()), null));
+        }
+        return recognizeEntitiesResults;
+    }
+
 
     public static RecognizeEntitiesResult toRecognizeEntitiesResult(DocumentEntities documentEntities) {
         return new RecognizeEntitiesResult(
@@ -401,8 +727,10 @@ public final class Utility {
                 return piiEntity;
             }).collect(Collectors.toList());
             // Warnings
-            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
-                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+            final List<TextAnalyticsWarning> warnings = null;
+//
+//                documentEntities.getWarnings().stream().map(
+//                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentEntities.getId(),
@@ -416,7 +744,8 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : piiEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
+//                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
         }
 
         return new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, piiEntitiesResult.getModelVersion(),
@@ -427,7 +756,8 @@ public final class Utility {
         final KeyPhraseResult keyPhraseResult) {
         // List of documents results
         final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
-        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
+//        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
+        for (KeyPhraseResultDocumentsItem documentKeyPhrases : keyPhraseResult.getDocuments()) {
             final String documentId = documentKeyPhrases.getId();
             keyPhraseResultList.add(new ExtractKeyPhraseResult(
                 documentId,
@@ -435,13 +765,15 @@ public final class Utility {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new KeyPhrasesCollection(
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
-                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
+                    null)));
+//                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
+//                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
+//                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
@@ -451,6 +783,16 @@ public final class Utility {
     public static Response<RecognizeLinkedEntitiesResultCollection> toRecognizeLinkedEntitiesResultCollectionResponse(
         final Response<EntityLinkingResult> response) {
         final EntityLinkingResult entityLinkingResult = response.getValue();
+        return new SimpleResponse<>(response,
+            new RecognizeLinkedEntitiesResultCollection(toRecognizeLinkedEntitiesResultCollection(entityLinkingResult),
+                entityLinkingResult.getModelVersion(),
+                entityLinkingResult.getStatistics() == null ? null
+                    : toBatchStatistics(entityLinkingResult.getStatistics())));
+    }
+
+    public static Response<RecognizeLinkedEntitiesResultCollection> toRecognizeLinkedEntitiesResultCollection(
+        final Response<AnalyzeTextTaskResult> response) {
+        final EntityLinkingResult entityLinkingResult = ((EntityLinkingTaskResult) response.getValue()).getResults();
         return new SimpleResponse<>(response,
             new RecognizeLinkedEntitiesResultCollection(toRecognizeLinkedEntitiesResultCollection(entityLinkingResult),
                 entityLinkingResult.getModelVersion(),
@@ -491,15 +833,17 @@ public final class Utility {
                                 LinkedEntityPropertiesHelper.setBingEntitySearchApiId(entity, linkedEntity.getBingId());
                                 return entity;
                             }).collect(Collectors.toList())),
-                        new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
-                            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
+                        null
+//                        new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
+//                            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
                     )
                 )
             ).collect(Collectors.toList());
         // Document errors
         for (DocumentError documentError : entityLinkingResult.getErrors()) {
             linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
+//                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
         }
 
         return new RecognizeLinkedEntitiesResultCollection(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
@@ -517,13 +861,14 @@ public final class Utility {
     public static AnalyzeSentimentResultCollection toAnalyzeSentimentResultCollection(
         SentimentResponse sentimentResponse) {
         final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
-        final List<DocumentSentiment> documentSentiments = sentimentResponse.getDocuments();
-        for (DocumentSentiment documentSentiment : documentSentiments) {
+        final List<SentimentResponseDocumentsItem> documentSentiments = sentimentResponse.getDocuments();
+        for (SentimentResponseDocumentsItem documentSentiment : documentSentiments) {
             analyzeSentimentResults.add(toAnalyzeSentimentResult(documentSentiment, documentSentiments));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
+//                toTextAnalyticsError(documentError.getError()), null));
         }
         return new AnalyzeSentimentResultCollection(analyzeSentimentResults, sentimentResponse.getModelVersion(),
             sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics()));
@@ -539,14 +884,15 @@ public final class Utility {
     public static ExtractSummaryResultCollection toExtractSummaryResultCollection(
         ExtractiveSummarizationResult extractiveSummarizationResult) {
         final List<ExtractSummaryResult> extractSummaryResults = new ArrayList<>();
-        final List<ExtractedDocumentSummary> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
+        final List<ExtractiveSummarizationResultDocumentsItem> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
 
-        for (ExtractedDocumentSummary documentSummary : extractedDocumentSummaries) {
+        for (ExtractiveSummarizationResultDocumentsItem documentSummary : extractedDocumentSummaries) {
             extractSummaryResults.add(toExtractSummaryResult(documentSummary));
         }
         for (DocumentError documentError : extractiveSummarizationResult.getErrors()) {
             extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError())));
+                null));
+//                toTextAnalyticsError(documentError.getError())));
         }
         return new ExtractSummaryResultCollection(extractSummaryResults,
             extractiveSummarizationResult.getModelVersion(),
@@ -660,7 +1006,8 @@ public final class Utility {
             analyzeHealthcareEntitiesResults.add(new AnalyzeHealthcareEntitiesResult(
                 documentError.getId(),
                 null,
-                toTextAnalyticsError(documentError.getError())))
+                null))
+//                toTextAnalyticsError(documentError.getError())))
         );
         return IterableStream.of(analyzeHealthcareEntitiesResults);
     }
@@ -791,13 +1138,13 @@ public final class Utility {
     /**
      * Helper method to convert the service response of {@link DocumentSentiment} to {@link AnalyzeSentimentResult}.
      *
-     * @param documentSentiment The {@link DocumentSentiment} returned by the service.
+     * @param documentSentiment The {@link SentimentResponseDocumentsItem} returned by the service.
      * @param documentSentimentList The document sentiment list returned by the service.
      *
      * @return The {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
-    private static AnalyzeSentimentResult toAnalyzeSentimentResult(DocumentSentiment documentSentiment,
-        List<DocumentSentiment> documentSentimentList) {
+    private static AnalyzeSentimentResult toAnalyzeSentimentResult(SentimentResponseDocumentsItem documentSentiment,
+        List<SentimentResponseDocumentsItem> documentSentimentList) {
         // Document text sentiment
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getConfidenceScores();
         // Sentence text sentiment
@@ -818,8 +1165,9 @@ public final class Utility {
             }).collect(Collectors.toList());
 
         // Warnings
-        final List<TextAnalyticsWarning> warnings = documentSentiment.getWarnings().stream().map(
-            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+        final List<TextAnalyticsWarning> warnings = null;
+//            documentSentiment.getWarnings().stream().map(
+//                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
         final DocumentSentimentValue documentSentimentValue = documentSentiment.getSentiment();
         return new AnalyzeSentimentResult(
@@ -834,7 +1182,9 @@ public final class Utility {
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
                 new IterableStream<>(sentenceSentiments),
-                new IterableStream<>(warnings)));
+//                new IterableStream<>(warnings)
+                null
+            ));
     }
 
     /*
@@ -842,7 +1192,7 @@ public final class Utility {
      */
     private static IterableStream<SentenceOpinion> toSentenceOpinionList(
         com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment,
-        List<DocumentSentiment> documentSentimentList) {
+        List<SentimentResponseDocumentsItem> documentSentimentList) {
         // If include opinion mining indicator is false, the service return null for the target list.
         final List<SentenceTarget> sentenceTargets = sentenceSentiment.getTargets();
         if (sentenceTargets == null) {
@@ -902,7 +1252,8 @@ public final class Utility {
         return assessmentSentiment;
     }
 
-    private static ExtractSummaryResult toExtractSummaryResult(ExtractedDocumentSummary documentSummary) {
+    private static ExtractSummaryResult toExtractSummaryResult(
+        ExtractiveSummarizationResultDocumentsItem documentSummary) {
         final List<ExtractedSummarySentence> sentences = documentSummary.getSentences();
         final List<SummarySentence> summarySentences = sentences.stream().map(sentence -> {
             final SummarySentence summarySentence = new SummarySentence();
@@ -914,8 +1265,9 @@ public final class Utility {
         }).collect(Collectors.toList());
 
         // Warnings
-        final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
-            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+        final List<TextAnalyticsWarning> warnings = null;
+//        documentSummary.getWarnings().stream().map(
+//            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
         final SummarySentenceCollection summarySentenceCollection = new SummarySentenceCollection(
             new IterableStream<>(summarySentences),
@@ -941,15 +1293,16 @@ public final class Utility {
     public static RecognizeCustomEntitiesResultCollection toRecognizeCustomEntitiesResultCollection(
         CustomEntitiesResult customEntitiesResult) {
         final List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
-        final List<DocumentEntities> customEntitiesResultDocuments = customEntitiesResult.getDocuments();
+        final List<CustomEntitiesResultDocumentsItem> customEntitiesResultDocuments = customEntitiesResult.getDocuments();
 
-        for (DocumentEntities documentSummary : customEntitiesResultDocuments) {
+        for (CustomEntitiesResultDocumentsItem documentSummary : customEntitiesResultDocuments) {
             recognizeEntitiesResults.add(toRecognizeEntitiesResult(documentSummary));
         }
 
         for (DocumentError documentError : customEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
+                null, null));
+//                toTextAnalyticsError(documentError.getError()), null));
         }
 
         final RecognizeCustomEntitiesResultCollection resultCollection =
@@ -985,7 +1338,8 @@ public final class Utility {
 
         for (DocumentError documentError : customSingleClassificationResult.getErrors()) {
             singleCategoryClassifyResults.add(new SingleCategoryClassifyResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError())));
+                null));
+//                toTextAnalyticsError(documentError.getError())));
         }
 
         final SingleCategoryClassifyResultCollection resultCollection =
@@ -1048,7 +1402,8 @@ public final class Utility {
 
         for (DocumentError documentError : customMultiClassificationResult.getErrors()) {
             multiCategoryClassifyResults.add(new MultiCategoryClassifyResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError())));
+                null));
+//                toTextAnalyticsError(documentError.getError())));
         }
 
         final MultiCategoryClassifyResultCollection resultCollection =
@@ -1120,7 +1475,7 @@ public final class Utility {
      * Find the specific sentence assessment in the document sentiment list by given the assessment reference pointer.
      */
     public static SentenceAssessment findSentimentAssessment(String assessmentPointer,
-        List<DocumentSentiment> documentSentiments) {
+        List<SentimentResponseDocumentsItem> documentSentiments) {
         final int[] assessmentIndexes = parseRefPointerToIndexArray(assessmentPointer);
         final int documentIndex = assessmentIndexes[0];
         final int sentenceIndex = assessmentIndexes[1];
@@ -1129,7 +1484,7 @@ public final class Utility {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 String.format("Invalid document index '%s' in '%s'.", documentIndex, assessmentPointer)));
         }
-        final DocumentSentiment documentsentiment = documentSentiments.get(documentIndex);
+        final SentimentResponseDocumentsItem documentsentiment = documentSentiments.get(documentIndex);
 
         final List<com.azure.ai.textanalytics.implementation.models.SentenceSentiment> sentenceSentiments =
             documentsentiment.getSentences();

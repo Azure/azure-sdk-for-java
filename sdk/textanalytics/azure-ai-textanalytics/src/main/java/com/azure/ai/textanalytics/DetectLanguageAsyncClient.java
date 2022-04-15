@@ -3,37 +3,28 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLanguageDetectionInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.LanguageDetectionAnalysisInput;
+import com.azure.ai.textanalytics.implementation.models.LanguageDetectionTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -43,8 +34,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class DetectLanguageAsyncClient {
     private final ClientLogger logger = new ClientLogger(DetectLanguageAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-
+    private TextAnalyticsClientImpl service;
+    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
     /**
      * Create a {@link DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
      * endpoint.
@@ -53,6 +44,10 @@ class DetectLanguageAsyncClient {
      */
     DetectLanguageAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+    }
+
+    DetectLanguageAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.languageSyncApiService = service;
     }
 
     /**
@@ -93,46 +88,6 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper method to convert the service response of {@link LanguageResult} to {@link Response} that contains
-     * {@link DetectLanguageResultCollection}.
-     *
-     * @param response the {@link SimpleResponse} of {@link LanguageResult} returned by the service.
-     *
-     * @return A {@link Response} that contains {@link DetectLanguageResultCollection}.
-     */
-    private Response<DetectLanguageResultCollection> toTextAnalyticsResultDocumentResponse(
-        Response<LanguageResult> response) {
-        final LanguageResult languageResult = response.getValue();
-        final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
-        for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
-            com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
-                documentLanguage.getDetectedLanguage();
-
-            // warnings
-            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
-                .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
-
-            detectLanguageResults.add(new DetectLanguageResult(
-                documentLanguage.getId(),
-                documentLanguage.getStatistics() == null
-                    ? null : toTextDocumentStatistics(documentLanguage.getStatistics()),
-                null,
-                new DetectedLanguage(detectedLanguage.getName(),
-                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
-                    new IterableStream<>(warnings))));
-        }
-        // Document errors
-        for (DocumentError documentError : languageResult.getErrors()) {
-            detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
-        }
-
-        return new SimpleResponse<>(response,
-            new DetectLanguageResultCollection(detectLanguageResults, languageResult.getModelVersion(),
-                languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
-    }
-
-    /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} of
      * {@link DetectLanguageResult} from a {@link SimpleResponse} of {@link LanguageResult}.
      *
@@ -145,6 +100,26 @@ class DetectLanguageAsyncClient {
     private Mono<Response<DetectLanguageResultCollection>> getDetectedLanguageResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
+        if (languageSyncApiService != null) {
+            LanguageDetectionTaskParameters languageDetectionTaskParameters = new LanguageDetectionTaskParameters();
+            languageDetectionTaskParameters = (LanguageDetectionTaskParameters) languageDetectionTaskParameters
+                                                                  .setModelVersion(options.getModelVersion())
+                                                                  .setLoggingOptOut(options.isServiceLogsDisabled());
+            final AnalyzeTextLanguageDetectionInput languageDetectionInput =
+                new AnalyzeTextLanguageDetectionInput()
+                    .setParameters(languageDetectionTaskParameters)
+                    .setAnalysisInput(new LanguageDetectionAnalysisInput().setDocuments(toLanguageInput(documents)));
+            return languageSyncApiService
+                       .analyzeTextWithResponseAsync(languageDetectionInput, options.isIncludeStatistics(), context)
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
+                           response.getValue()))
+                       .doOnError(error -> logger.warning("Failed to detect language - {}", error))
+                       .map(Utility::toDetectLanguageResultCollectionResponse2)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
         return service.languagesWithResponseAsync(
             new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
             options.getModelVersion(),
@@ -156,7 +131,7 @@ class DetectLanguageAsyncClient {
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-            .map(this::toTextAnalyticsResultDocumentResponse)
+            .map(Utility::toDetectLanguageResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

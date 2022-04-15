@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.Utility;
@@ -58,7 +59,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class AnalyzeHealthcareEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeHealthcareEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private TextAnalyticsClientImpl service;
+    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
 
     /**
      * Create an {@link AnalyzeHealthcareEntityAsyncClient} that sends requests to the Text Analytics service's
@@ -68,6 +70,10 @@ class AnalyzeHealthcareEntityAsyncClient {
      */
     AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+    }
+
+    AnalyzeHealthcareEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.languageSyncApiService = service;
     }
 
     PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>

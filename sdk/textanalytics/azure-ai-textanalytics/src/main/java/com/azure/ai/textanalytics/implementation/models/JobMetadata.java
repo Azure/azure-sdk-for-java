@@ -11,7 +11,7 @@ import java.util.UUID;
 
 /** The JobMetadata model. */
 @Fluent
-public final class JobMetadata {
+public class JobMetadata {
     /*
      * The displayName property.
      */

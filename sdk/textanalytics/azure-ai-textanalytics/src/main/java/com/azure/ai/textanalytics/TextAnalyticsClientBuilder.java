@@ -4,6 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.Constants;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImplBuilder;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -251,13 +253,25 @@ public final class TextAnalyticsClientBuilder implements
                 .build();
         }
 
-        final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
+        if (!isConsolidatedServiceVersion(version)) {
+            final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
+                                                                 .endpoint(endpoint)
+                                                                 .apiVersion(serviceVersion.getVersion())
+                                                                 .pipeline(pipeline)
+                                                                 .buildClient();
 
-        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
+            return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
+        } else {
+            final MicrosoftCognitiveLanguageServiceImpl syncApiTextAnalyticsClient =
+                new MicrosoftCognitiveLanguageServiceImplBuilder()
+                    .endpoint(endpoint)
+                    .apiVersion(serviceVersion.getVersion())
+                    .pipeline(pipeline)
+                    .buildClient();
+
+            return new TextAnalyticsAsyncClient(syncApiTextAnalyticsClient, serviceVersion,
+                defaultCountryHint, defaultLanguage);
+        }
     }
 
     /**
@@ -534,5 +548,14 @@ public final class TextAnalyticsClientBuilder implements
     public TextAnalyticsClientBuilder serviceVersion(TextAnalyticsServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+
+    private boolean isConsolidatedServiceVersion(TextAnalyticsServiceVersion serviceVersion) {
+        if (serviceVersion == null) {
+            serviceVersion = TextAnalyticsServiceVersion.V2022_03_01;
+        }
+        return !(TextAnalyticsServiceVersion.V3_0 == serviceVersion
+                     || TextAnalyticsServiceVersion.V3_1 == serviceVersion);
     }
 }

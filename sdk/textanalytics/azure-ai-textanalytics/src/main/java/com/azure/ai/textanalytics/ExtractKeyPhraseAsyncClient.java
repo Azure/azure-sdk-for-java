@@ -3,11 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextKeyPhraseExtractionInput;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
@@ -17,25 +19,17 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -45,7 +39,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class ExtractKeyPhraseAsyncClient {
     private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private TextAnalyticsClientImpl service;
+    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
 
     /**
      * Create an {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
@@ -55,6 +50,10 @@ class ExtractKeyPhraseAsyncClient {
      */
     ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+    }
+
+    ExtractKeyPhraseAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.languageSyncApiService = service;
     }
 
     /**
@@ -128,42 +127,6 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper method to convert the service response of {@link KeyPhraseResult} to {@link Response}
-     * which contains {@link ExtractKeyPhrasesResultCollection}.
-     *
-     * @param response the {@link Response} returned by the service.
-     *
-     * @return A {@link Response} which contains {@link ExtractKeyPhrasesResultCollection}.
-     */
-    private Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
-        final Response<KeyPhraseResult> response) {
-        final KeyPhraseResult keyPhraseResult = response.getValue();
-        // List of documents results
-        final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
-        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
-            final String documentId = documentKeyPhrases.getId();
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(
-                documentId,
-                documentKeyPhrases.getStatistics() == null ? null
-                    : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
-                new KeyPhrasesCollection(
-                    new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
-                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
-        }
-        // Document errors
-        for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
-        }
-
-        return new SimpleResponse<>(response,
-            new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
-                keyPhraseResult.getStatistics() == null ? null
-                    : toBatchStatistics(keyPhraseResult.getStatistics())));
-    }
-
-    /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} which contains
      * {@link ExtractKeyPhrasesResultCollection} from a {@link SimpleResponse} of {@link KeyPhraseResult}.
      *
@@ -176,6 +139,27 @@ class ExtractKeyPhraseAsyncClient {
     private Mono<Response<ExtractKeyPhrasesResultCollection>> getExtractedKeyPhrasesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
+
+        if (languageSyncApiService != null) {
+            KeyPhraseTaskParameters keyPhraseTaskParameters = new KeyPhraseTaskParameters();
+            keyPhraseTaskParameters = (KeyPhraseTaskParameters) keyPhraseTaskParameters
+                                                                  .setModelVersion(options.getModelVersion())
+                                                                  .setLoggingOptOut(options.isServiceLogsDisabled());
+            final AnalyzeTextKeyPhraseExtractionInput keyPhraseInput =
+                new AnalyzeTextKeyPhraseExtractionInput()
+                    .setParameters(keyPhraseTaskParameters)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)));
+            return languageSyncApiService
+                       .analyzeTextWithResponseAsync(keyPhraseInput, options.isIncludeStatistics(), context)
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
+                           response.getValue()))
+                       .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
+                       .map(Utility::toExtractKeyPhrasesResultCollectionResponse2)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
         return service.keyPhrasesWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),
@@ -186,7 +170,7 @@ class ExtractKeyPhraseAsyncClient {
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-            .map(this::toExtractKeyPhrasesResultCollectionResponse)
+            .map(Utility::toExtractKeyPhrasesResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

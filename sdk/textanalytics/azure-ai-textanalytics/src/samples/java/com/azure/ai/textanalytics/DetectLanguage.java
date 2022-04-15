@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 /**
  * Sample demonstrates how to detect the language of document.
@@ -18,8 +19,9 @@ public class DetectLanguage {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
+                                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
+                                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+
             .buildClient();
 
         // The document that needs be analyzed.

@@ -3,9 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextEntityLinkingInput;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -37,7 +41,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizeLinkedEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizeLinkedEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private TextAnalyticsClientImpl service;
+    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
 
     /**
      * Create a {@link RecognizeLinkedEntityAsyncClient} that sends requests to the Text Analytics services's recognize
@@ -47,6 +52,10 @@ class RecognizeLinkedEntityAsyncClient {
      */
     RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+    }
+
+    RecognizeLinkedEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.languageSyncApiService = service;
     }
 
     /**
@@ -132,6 +141,27 @@ class RecognizeLinkedEntityAsyncClient {
     private Mono<Response<RecognizeLinkedEntitiesResultCollection>> getRecognizedLinkedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
+
+        if (languageSyncApiService != null) {
+            EntityLinkingTaskParameters entityLinkingTaskParameters = new EntityLinkingTaskParameters();
+            entityLinkingTaskParameters = (EntityLinkingTaskParameters) entityLinkingTaskParameters
+                                                                  .setModelVersion(options.getModelVersion())
+                                                                  .setLoggingOptOut(options.isServiceLogsDisabled());
+            final AnalyzeTextEntityLinkingInput entityLinkingInput =
+                new AnalyzeTextEntityLinkingInput()
+                    .setParameters(entityLinkingTaskParameters)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)));
+            return languageSyncApiService
+                       .analyzeTextWithResponseAsync(entityLinkingInput, options.isIncludeStatistics(), context)
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
+                           response.getValue()))
+                       .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
+                       .map(Utility::toRecognizeLinkedEntitiesResultCollection)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
         return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),

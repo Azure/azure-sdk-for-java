@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
@@ -25,11 +27,11 @@ import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -74,7 +76,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private TextAnalyticsClientImpl service;
+    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
@@ -114,6 +117,22 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
         this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(service);
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(service);
+    }
+
+    TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceImpl service, TextAnalyticsServiceVersion serviceVersion,
+        String defaultCountryHint, String defaultLanguage) {
+        this.languageSyncApiService = service;
+        this.serviceVersion = serviceVersion;
+        this.defaultCountryHint = defaultCountryHint;
+        this.defaultLanguage = defaultLanguage;
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(service);
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service));
     }
 
     /**
