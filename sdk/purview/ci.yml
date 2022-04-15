@@ -50,3 +50,6 @@ extends:
       - name: azure-resourcemanager-purview
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
+      - name: azure-analytics-purview-account
+        groupId: com.azure
+        safeName: azureanalyticspurviewaccount

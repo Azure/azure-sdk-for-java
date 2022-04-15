@@ -49,6 +49,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-analytics-purview-account</module>
         <module>azure-analytics-purview-administration</module>
         <module>azure-analytics-purview-catalog</module>
         <module>azure-analytics-purview-scanning</module>
