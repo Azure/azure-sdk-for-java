@@ -109,7 +109,7 @@ public class SpringAppImpl
 
     @Override
     public Mono<SpringAppDeployment> getActiveDeploymentAsync() {
-        return Mono.justOrEmpty(deployments.list().stream().filter(SpringAppDeployment::isActive).findFirst());
+        return deployments.listAsync().filter(SpringAppDeployment::isActive).singleOrEmpty();
     }
 
     @Override
