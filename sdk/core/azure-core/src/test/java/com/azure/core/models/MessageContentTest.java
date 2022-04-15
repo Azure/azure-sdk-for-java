@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.experimental.models;
+package com.azure.core.models;
 
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
@@ -9,16 +9,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Tests for {@link MessageWithMetadata}
+ * Tests for {@link MessageContent}
  */
-public class MessageWithMetadataTest {
+public class MessageContentTest {
     /**
      * Verify default parameters.
      */
     @Test
     public void initialize() {
         // Act
-        final MessageWithMetadata message = new MessageWithMetadata();
+        final MessageContent message = new MessageContent();
 
         // Assert
         assertNull(message.getBodyAsBinaryData(), "'body' should initially be null.");
@@ -33,10 +33,10 @@ public class MessageWithMetadataTest {
         // Arrange
         final BinaryData binaryData = BinaryData.fromString("foo.bar.baz");
         final String contentType = "some-content";
-        final MessageWithMetadata message = new MessageWithMetadata();
+        final MessageContent message = new MessageContent();
 
         // Act
-        final MessageWithMetadata actual = message.setContentType(contentType)
+        final MessageContent actual = message.setContentType(contentType)
             .setBodyAsBinaryData(binaryData);
 
         // Assert

@@ -21,7 +21,7 @@ public final class KqlScriptAsyncClient {
     @Generated private final KqlScriptsOperationsImpl serviceClient;
 
     /**
-     * Initializes an instance of KqlScriptsOperations client.
+     * Initializes an instance of KqlScriptAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
