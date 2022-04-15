@@ -12,9 +12,9 @@ import com.azure.cosmos.implementation.RequestTimeline;
  **/
 public class DirectBridgeInternal {
 
-    public static void setCosmosDiagnostics(StoreResponse storeResponse, CosmosDiagnostics cosmosDiagnostics) {
-        storeResponse.setCosmosDiagnostics(cosmosDiagnostics);
-    }
+//    public static void setCosmosDiagnostics(StoreResponse storeResponse, CosmosDiagnostics cosmosDiagnostics) {
+//        storeResponse.setCosmosDiagnostics(cosmosDiagnostics);
+//    }
 
     public static int getSubStatusCode(StoreResponse storeResponse) {
         return storeResponse.getSubStatusCode();

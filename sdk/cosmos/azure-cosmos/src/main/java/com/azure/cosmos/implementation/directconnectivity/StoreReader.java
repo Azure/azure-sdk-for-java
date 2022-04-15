@@ -664,7 +664,7 @@ public class StoreReader {
         StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
 
         try {
-            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult);
+            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult, addressSelector.getGlobalEndpointManager());
             if (request.requestContext.requestChargeTracker != null) {
                 request.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
             }

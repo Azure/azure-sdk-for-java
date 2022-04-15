@@ -153,8 +153,11 @@ public class StoreClient implements IStoreClient {
         this.updateResponseHeader(request, headers);
         this.captureSessionToken(request, headers);
         BridgeInternal.recordRetryContextEndTime(request.requestContext.cosmosDiagnostics);
-        storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
-        return new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
+//        storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+        RxDocumentServiceResponse rxDocumentServiceResponse =
+            new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
+        rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+        return rxDocumentServiceResponse;
     }
 
     private long getLSN(Map<String, String> headers) {

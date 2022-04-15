@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
@@ -93,6 +94,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
 
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
+    private final GlobalEndpointManager globalEndpointManager;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -103,7 +105,8 @@ public class GatewayAddressCache implements IAddressCache {
         HttpClient httpClient,
         long suboptimalPartitionForceRefreshIntervalInSeconds,
         boolean tcpConnectionEndpointRediscoveryEnabled,
-        ApiType apiType) {
+        ApiType apiType,
+        GlobalEndpointManager globalEndpointManager) {
         this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
@@ -144,6 +147,7 @@ public class GatewayAddressCache implements IAddressCache {
         this.serverPartitionAddressToPkRangeIdMap = new ConcurrentHashMap<>();
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     public GatewayAddressCache(
@@ -154,7 +158,8 @@ public class GatewayAddressCache implements IAddressCache {
         UserAgentContainer userAgent,
         HttpClient httpClient,
         boolean tcpConnectionEndpointRediscoveryEnabled,
-        ApiType apiType) {
+        ApiType apiType,
+        GlobalEndpointManager globalEndpointManager) {
         this(clientContext,
             serviceEndpoint,
             protocol,
@@ -163,7 +168,8 @@ public class GatewayAddressCache implements IAddressCache {
             httpClient,
             DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
             tcpConnectionEndpointRediscoveryEnabled,
-            apiType);
+            apiType,
+            globalEndpointManager);
     }
 
     @Override
@@ -437,7 +443,7 @@ public class GatewayAddressCache implements IAddressCache {
 
             if (request.requestContext.cosmosDiagnostics != null) {
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
+                    dce, this.globalEndpointManager);
                 BridgeInternal.setCosmosDiagnostics(dce,
                     request.requestContext.cosmosDiagnostics);
             }
@@ -762,7 +768,7 @@ public class GatewayAddressCache implements IAddressCache {
 
             if (request.requestContext.cosmosDiagnostics != null) {
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
+                    dce, this.globalEndpointManager);
                 BridgeInternal.setCosmosDiagnostics(dce,
                     request.requestContext.cosmosDiagnostics);
             }

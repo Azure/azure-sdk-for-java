@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
@@ -81,5 +82,8 @@ public class AddressSelector {
                 }
             }
         );
+    }
+    public GlobalEndpointManager getGlobalEndpointManager() {
+        return this.addressResolver.getGlobalEndpointManager();
     }
 }

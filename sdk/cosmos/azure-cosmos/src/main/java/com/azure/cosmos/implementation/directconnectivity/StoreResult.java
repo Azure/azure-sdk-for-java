@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
@@ -172,6 +173,19 @@ public class StoreResult {
                 ", backendLatencyInMs: " + this.backendLatencyInMs +
                 ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
     }
+
+    /**
+     * Static factory method to create serializable store result to be used in CosmosDiagnostics
+     * @param storeResult store result
+     * @return serializable store result
+     */
+    public static StoreResult createSerializableStoreResult(StoreResult storeResult) {
+        if (storeResult == null) {
+            return null;
+        }
+        return new StoreResult(storeResult);
+    }
+
     public static class StoreResultSerializer extends StdSerializer<StoreResult> {
         private static final long serialVersionUID = 5315472126043077905L;
 
@@ -246,5 +260,38 @@ public class StoreResult {
 
              jsonGenerator.writeObjectField(fieldName, object);
         }
+    }
+
+    /**
+     * Private copy constructor, only to be used internally for serialization purposes
+     * <p>
+     * NOTE: This constructor does not copy all the fields to avoid memory issues.
+     */
+    private StoreResult(StoreResult storeResult) {
+        this.storeResponse = StoreResponse.createSerializableStoreResponse(storeResult.storeResponse);
+        this.exception = ImplementationBridgeHelpers
+            .CosmosExceptionHelper
+            .getCosmosExceptionAccessor()
+            .createSerializableCosmosException(storeResult.exception);
+        this.lsn = storeResult.lsn;
+        this.partitionKeyRangeId = storeResult.partitionKeyRangeId;
+        this.quorumAckedLSN = storeResult.quorumAckedLSN;
+        this.globalCommittedLSN = storeResult.globalCommittedLSN;
+        this.numberOfReadRegions = storeResult.numberOfReadRegions;
+        this.itemLSN = storeResult.itemLSN;
+        this.sessionToken = storeResult.sessionToken;
+        this.requestCharge = storeResult.requestCharge;
+        this.activityId = storeResult.activityId;
+        this.correlatedActivityId = storeResult.correlatedActivityId;
+        this.currentReplicaSetSize = storeResult.currentReplicaSetSize;
+        this.currentWriteQuorum = storeResult.currentWriteQuorum;
+        this.isValid = storeResult.isValid;
+        this.isGoneException = storeResult.isGoneException;
+        this.isNotFoundException = storeResult.isNotFoundException;
+        this.isInvalidPartitionException = storeResult.isInvalidPartitionException;
+        //  TODO (kuthapar): We can store just the string representation of storePhysicalAddress
+        this.storePhysicalAddress = storeResult.storePhysicalAddress;
+        this.isThroughputControlRequestRateTooLargeException = storeResult.isThroughputControlRequestRateTooLargeException;
+        this.backendLatencyInMs = storeResult.backendLatencyInMs;
     }
 }
