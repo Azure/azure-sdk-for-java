@@ -272,6 +272,7 @@ begin {
         "azure-service-bus",
         "azure-service-fabric",
         "azure-service-health",
+        "azure-service-linker",
         "azure-signalr-service",
         "azure-site-recovery",
         "azure-sovereign-china",
