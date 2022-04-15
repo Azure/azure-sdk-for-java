@@ -131,7 +131,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     }
 
     @Override
-    public void authorizeRequestSynchronously(HttpPipelineCallContext context) {
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
         HttpRequest request = context.getHttpRequest();
 
         // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
@@ -146,7 +146,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 .addScopes(this.challenge.getScopes())
                 .setTenantId(this.challenge.getTenantId());
 
-            setAuthorizationHeaderSynchronously(context, tokenRequestContext);
+            setAuthorizationHeaderSync(context, tokenRequestContext);
             return;
         }
 
@@ -230,7 +230,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean authorizeRequestOnChallengeSynchronously(HttpPipelineCallContext context, HttpResponse response) {
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         HttpRequest request = context.getHttpRequest();
         Optional<Object> contentOptional = context.getData(KEY_VAULT_STASHED_CONTENT_KEY);
         Optional<Object> contentLengthOptional = context.getData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
@@ -282,7 +282,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             .addScopes(this.challenge.getScopes())
             .setTenantId(this.challenge.getTenantId());
 
-        setAuthorizationHeaderSynchronously(context, tokenRequestContext);
+        setAuthorizationHeaderSync(context, tokenRequestContext);
         return true;
     }
 
