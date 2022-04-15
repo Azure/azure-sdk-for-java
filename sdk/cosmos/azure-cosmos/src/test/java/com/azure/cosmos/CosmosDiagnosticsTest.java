@@ -982,7 +982,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(writeResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
             assertThat(writeResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
             assertThat(writeResourceResponse.getDiagnostics().toString()).doesNotContain("\"errorMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information");
+                ".channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused:");
 
             client2 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -1025,7 +1025,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
+                ".channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused:");
         } catch (Exception ex) {
             logger.error("Error in test addressResolutionStatistics", ex);
             fail("This test should not throw exception " + ex);

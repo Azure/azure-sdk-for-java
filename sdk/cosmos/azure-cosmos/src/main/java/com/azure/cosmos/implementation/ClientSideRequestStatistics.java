@@ -79,7 +79,6 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext =
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
-        this.globalEndpointManager = toBeCloned.globalEndpointManager;
     }
 
     public Duration getDuration() {
@@ -100,7 +99,6 @@ public class ClientSideRequestStatistics {
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
-//        storeResponseStatistics.storeResult = storeResult;
         storeResponseStatistics.storeResult = StoreResult.createSerializableStoreResult(storeResult);
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();

@@ -89,19 +89,15 @@ public class Paginator {
         Supplier<Fetcher<T>> fetcherFactory,
         int preFetchCount) {
 
-        logger.info("preFetchCount is : {}", preFetchCount);
-
         return Flux.defer(() -> {
             Flux<Flux<FeedResponse<T>>> generate = Flux.generate(
                 fetcherFactory::get,
                 (tFetcher, sink) -> {
                     if (tFetcher.shouldFetchMore()) {
-                        logger.info("Inside should fetch more");
                         Mono<FeedResponse<T>> nextPage = tFetcher.nextPage();
-                        logger.info("Emitting next page");
                         sink.next(nextPage.flux());
                     } else {
-                        logger.info("No more results");
+                        logger.debug("No more results");
                         sink.complete();
                     }
                     return tFetcher;

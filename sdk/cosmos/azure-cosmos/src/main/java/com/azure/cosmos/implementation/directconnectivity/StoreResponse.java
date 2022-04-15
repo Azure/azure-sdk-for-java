@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -25,7 +24,6 @@ public class StoreResponse {
     final private String[] responseHeaderValues;
     final private byte[] content;
 
-//    private CosmosDiagnostics cosmosDiagnostics;
     private int pendingRequestQueueSize;
     private int requestPayloadLength;
     private int responsePayloadLength;
@@ -151,10 +149,6 @@ public class StoreResponse {
         return null;
     }
 
-//    public CosmosDiagnostics getCosmosDiagnostics() {
-//        return cosmosDiagnostics;
-//    }
-
     public double getRequestCharge() {
         String value = this.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
         if (StringUtils.isEmpty(value)) {
@@ -174,11 +168,6 @@ public class StoreResponse {
         }
         return new StoreResponse(storeResponse);
     }
-
-//    StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-//        this.cosmosDiagnostics = cosmosDiagnostics;
-//        return this;
-//    }
 
     void setRequestTimeline(RequestTimeline requestTimeline) {
         this.requestTimeline = requestTimeline;
@@ -226,8 +215,6 @@ public class StoreResponse {
         this.responseHeaderValues = null;
         this.responseHeaderNames = null;
         this.content = null;
-        //  Setting cosmosDiagnostics null to break circular dependency
-//        this.cosmosDiagnostics = null;
         this.status = storeResponse.status;
         this.pendingRequestQueueSize = storeResponse.pendingRequestQueueSize;
         this.requestPayloadLength = storeResponse.requestPayloadLength;

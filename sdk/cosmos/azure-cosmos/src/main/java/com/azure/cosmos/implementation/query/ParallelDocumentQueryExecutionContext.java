@@ -282,7 +282,6 @@ public class ParallelDocumentQueryExecutionContext<T>
             // Emit an empty page so the downstream observables know when there are no more
             // results.
             return source.filter(documentProducerFeedResponse -> {
-                logger.info("Filtering documentProducerFeedResponse");
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
                         && !ModelBridgeInternal
                                 .getEmptyPagesAllowedFromQueryRequestOptions(this.cosmosQueryRequestOptions)) {
@@ -308,7 +307,6 @@ public class ParallelDocumentQueryExecutionContext<T>
                 }
                 return true;
             }).map(documentProducerFeedResponse -> {
-                logger.info("Mapping documentProducerFeedResponse");
                 //Combining previous empty page query metrics with current non empty page query metrics
                 if (!emptyPageQueryMetricsMap.isEmpty()) {
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
@@ -326,7 +324,6 @@ public class ParallelDocumentQueryExecutionContext<T>
                     return new ValueHolder<>(documentProducerFeedResponse);
                 }
             }).concatWith(Flux.just(new ValueHolder<>(null))).map(heldValue -> {
-                logger.info("held value -> {}", heldValue);
                 DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse = heldValue.v;
                 // CREATE pairs from the stream to allow the observables downstream to "peek"
                 // 1, 2, 3, null -> (null, 1), (1, 2), (2, 3), (3, null)
@@ -336,7 +333,6 @@ public class ParallelDocumentQueryExecutionContext<T>
                     this.previousPage = documentProducerFeedResponse;
                     return previousCurrent;
             }).skip(1).map(currentNext -> {
-                logger.info("currentNext : {}", currentNext);
                 // remove the (null, 1)
                 // Add the continuation token based on the current and next page.
                 DocumentProducer<T>.DocumentProducerFeedResponse current = currentNext.left;
@@ -372,11 +368,9 @@ public class ParallelDocumentQueryExecutionContext<T>
 
                 return page;
             }).map(documentProducerFeedResponse -> {
-                logger.info("filtered documentProducerFeedResponse");
                 // Unwrap the documentProducerFeedResponse and get back the feedResponse
                 return documentProducerFeedResponse.pageResult;
             }).switchIfEmpty(Flux.defer(() -> {
-                 logger.info("Returning an empty flux here");
                 // create an empty page if there is no result
                 return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
                     headerResponse(tracker.getAndResetCharge()),

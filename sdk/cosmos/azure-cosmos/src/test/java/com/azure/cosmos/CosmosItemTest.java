@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -27,10 +26,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -150,10 +147,6 @@ public class CosmosItemTest extends TestSuiteBase {
                                                                                     new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                                                     new CosmosItemRequestOptions(),
                                                                                     InternalObjectNode.class);
-
-        CosmosDiagnostics cosmosDiagnostics = readResponse1.getDiagnostics();
-        logger.info("CosmosDiagnostics are : {}", cosmosDiagnostics);
-
         validateItemResponse(properties, readResponse1);
 
     }
@@ -240,34 +233,19 @@ public class CosmosItemTest extends TestSuiteBase {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", "something");
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        logger.info("Querying now");
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
                 container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
-
-        Iterator<InternalObjectNode> iterator = feedResponseIterator1.iterator();
 
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
-//        SqlQuerySpec querySpec = new SqlQuerySpec(query);
-//        CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
-//                container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
-//        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void testFluxPublishOn() throws Exception{
-        Flux.range(0, 10).map(number -> {
-            logger.info("Number is : {} on thread : {}", number, Thread.currentThread().getName());
-            return number;
-        }).publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC).map(number -> {
-            logger.info("Number is : {} on thread : {}", number, Thread.currentThread().getName());
-            return number;
-        }).subscribe();
-        Thread.sleep(1000);
+        SqlQuerySpec querySpec = new SqlQuerySpec(query);
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
+                container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -293,8 +271,6 @@ public class CosmosItemTest extends TestSuiteBase {
         feedResponseIterator1
             .iterableByPage()
             .forEach(response -> {
-                CosmosDiagnostics cosmosDiagnostics = response.getCosmosDiagnostics();
-                logger.info("Cosmos diagnostics : {}", cosmosDiagnostics);
                 assertThat(response.getCorrelationActivityId() == correlationId)
                     .withFailMessage("response.getCorrelationActivityId");
                 assertThat(response.getCosmosDiagnostics().toString().contains(correlationId.toString()))
