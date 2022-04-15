@@ -52,7 +52,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
     private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
     private static final String PETCLINIC_CONFIG_URL = "https://github.com/Azure-Samples/spring-petclinic-microservices-config";
-    private static final String PETCLINIC_JAR = "spring-petclinic-api-gateway-2.3.6.jar";
+    private static final String PETCLINIC_GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/api-gateway.jar";
+    private static final String PETCLINIC_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/petclinic.tar.gz";
 
     private static final String SPRING_CLOUD_SERVICE_OBJECT_ID = "938df8e2-2b9d-40b1-940c-c75c33494239";
 
@@ -72,16 +73,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withNewResourceGroup(rgName)
             .create();
 
-        File jarFile = new File("gateway.jar");
-        if (!jarFile.exists()) {
-            HttpURLConnection connection = (HttpURLConnection) new URL(GATEWAY_JAR_URL).openConnection();
-            connection.connect();
-            try (InputStream inputStream = connection.getInputStream();
-                 OutputStream outputStream = new FileOutputStream(jarFile)) {
-                IOUtils.copy(inputStream, outputStream);
-            }
-            connection.disconnect();
-        }
+        File jarFile = downloadFile(GATEWAY_JAR_URL);
 
         SpringApp app = service.apps().define(appName)
             .defineActiveDeployment(deploymentName)
@@ -107,16 +99,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 //        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
         Assertions.assertEquals(2, deployment.instances().size());
 
-        File gzFile = new File("piggymetrics.tar.gz");
-        if (!gzFile.exists()) {
-            HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
-            connection.connect();
-            try (InputStream inputStream = connection.getInputStream();
-                 OutputStream outputStream = new FileOutputStream(gzFile)) {
-                IOUtils.copy(inputStream, outputStream);
-            }
-            connection.disconnect();
-        }
+        File gzFile = downloadFile(PIGGYMETRICS_TAR_GZ_URL);
 
         deployment = app.deployments().define(deploymentName1)
             .withSourceCodeTarGzFile(gzFile)
@@ -256,31 +239,30 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     @DoNotRecord(skipInPlayback = true)
     public void canCRUDEnterpriseTierDeployment() throws Exception {
         allowAllSSL();
+        File tarGzFile = downloadFile(PETCLINIC_TAR_GZ_URL);
+        File jarFile = downloadFile(PETCLINIC_GATEWAY_JAR_URL);
 
         String serviceName = generateRandomResourceName("springsvc", 15);
-        String appName = "api-gateway";
-        String deploymentName = generateRandomResourceName("deploy", 15);
         Region region = Region.US_EAST;
 
-        List<String> filePatterns = new ArrayList<>();
-        filePatterns.add("api-gateway");
-
+        List<String> configFilePatterns = Arrays.asList("api-gateway", "customer-service");
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEnterpriseTierSku()
-            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", filePatterns)
+            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns)
             .create();
 
-        File jarFile = new File(PETCLINIC_JAR);
+        String deploymentName = generateRandomResourceName("deploy", 15);
 
+        List<String> apiGatewayConfigFilePatterns = Arrays.asList("api-gateway");
+        String appName = "api-gateway";
         SpringApp app = service.apps().define(appName)
             .defineActiveDeployment(deploymentName)
-            .withJarFile(jarFile)
+            .withJarFile(jarFile, apiGatewayConfigFilePatterns)
             .withInstance(2)
             .withCpu(2)
             .withMemory(4)
-            .withRuntime(RuntimeVersion.JAVA_11)
             .attach()
             .withDefaultPublicEndpoint()
             .create();
@@ -288,6 +270,36 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         Assertions.assertNotNull(app.url());
         Assertions.assertNotNull(app.activeDeploymentName());
         Assertions.assertEquals(1, app.deployments().list().stream().count());
+
+        String appName2 = "customers-service";
+        String module = "spring-petclinic-customers-service";
+        List<String> customerServiceConfigFilePatterns = Arrays.asList("customers-service");
+        SpringApp app2 = service.apps().define(appName2)
+            .defineActiveDeployment(deploymentName)
+            .withSourceCodeTarGzFile(tarGzFile, customerServiceConfigFilePatterns)
+            .withTargetModule(module)
+            .attach()
+            .create();
+
+        // no public endpoint
+        Assertions.assertNull(app2.url());
+    }
+
+    private File downloadFile(String remoteFileUrl) throws Exception {
+        String[] split = remoteFileUrl.split("/");
+        String filename = split[split.length - 1];
+        File downloaded = new File(filename);
+        if (!downloaded.exists()) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(remoteFileUrl).openConnection();
+            connection.connect();
+            try (InputStream inputStream = connection.getInputStream();
+                 OutputStream outputStream = new FileOutputStream(downloaded)) {
+                IOUtils.copy(inputStream, outputStream);
+            } finally {
+                connection.disconnect();
+            }
+        }
+        return downloaded;
     }
 
     private void extraTarGzSource(File folder, URL url) throws IOException {

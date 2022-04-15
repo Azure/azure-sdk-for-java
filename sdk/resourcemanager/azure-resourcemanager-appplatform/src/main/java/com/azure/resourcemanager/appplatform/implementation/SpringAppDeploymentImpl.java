@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -35,12 +36,13 @@ import com.azure.resourcemanager.appplatform.models.UserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,7 @@ public class SpringAppDeploymentImpl
         SpringAppDeployment.Update {
 
     private final ClientLogger logger = new ClientLogger(SpringAppDeploymentImpl.class);
+    private BuildServiceTask buildServiceTask;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);
@@ -207,6 +210,25 @@ public class SpringAppDeploymentImpl
     //     return compressFile;
     // }
 
+    @Override
+    public SpringAppDeploymentImpl withJarFile(File jar) {
+        if (service().isEnterpriseTier()) {
+            return withJarFile(jar, null);
+        } else {
+            ensureSource(UserSourceType.JAR);
+            this.addDependency(
+                context -> parent().getResourceUploadUrlAsync()
+                    .flatMap(option -> {
+                        UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
+                        uploadedUserSourceInfo.withRelativePath(option.relativePath());
+                        return uploadToStorage(jar, option)
+                            .then(context.voidMono());
+                    })
+            );
+            return this;
+        }
+    }
+
     private ShareFileAsyncClient createShareFileAsyncClient(ResourceUploadDefinition option) {
         return new ShareFileClientBuilder()
             .endpoint(option.uploadUrl())
@@ -223,94 +245,6 @@ public class SpringAppDeploymentImpl
         } catch (Exception e) {
             return Mono.error(e);
         }
-    }
-
-    private Mono<String> uploadAndBuild(File source, ResourceUploadDefinition option) {
-        AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
-        return uploadToStorage(source, option)
-            .then(
-                // manually create lro
-                new PollerFlux<>(
-                    manager().serviceClient().getDefaultPollInterval(),
-                    context -> enqueueBuild(option, context),
-                    this::waitForBuild,
-                    (pollResultPollingContext, pollResultPollResponse) -> Mono.error(new RuntimeException("build canceled")), // throw if build canceled
-                    this::getBuildResult)
-                    .last()
-                    .flatMap(client::getLroFinalResultOrError)
-                    .flatMap((Function<Object, Mono<String>>) o -> {
-                        BuildResultInner result = (BuildResultInner) o;
-                        return Mono.just(result.id());
-                    })
-            );
-    }
-
-    private Mono<BuildResultInner> getBuildResult(PollingContext<PollResult<BuildInner>> context) {
-        return manager().serviceClient().getBuildServices()
-            .getBuildResultAsync(
-                service().resourceGroupName(),
-                service().name(),
-                Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                parent().name(),
-                ResourceUtils.nameFromResourceId(context.getData("buildId")));
-    }
-
-    private Mono<PollResponse<PollResult<BuildInner>>> waitForBuild(PollingContext<PollResult<BuildInner>> context) {
-        return getBuildResult(context)
-            .flatMap((Function<BuildResultInner, Mono<PollResponse<PollResult<BuildInner>>>>) buildResultInner -> {
-                BuildResultProvisioningState state = buildResultInner.properties().provisioningState();
-                PollResult<BuildInner> result = new PollResult<>(new BuildInner().withProperties(new BuildProperties()));
-                if (state == BuildResultProvisioningState.SUCCEEDED) {
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result));
-                } else if (state == BuildResultProvisioningState.FAILED || state == BuildResultProvisioningState.DELETING) {
-                    return Mono.error(new RuntimeException("build failed"));
-                } else if (state == BuildResultProvisioningState.QUEUING) {
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, result));
-                }
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, result));
-            });
-    }
-
-    private Mono<PollResult<BuildInner>> enqueueBuild(ResourceUploadDefinition option, PollingContext<PollResult<BuildInner>> context) {
-        return manager().serviceClient().getBuildServices()
-            // This method enqueues the build request, response with provision state "Succeeded" only means the build is enqueued.
-            // Attempting to continue deploying without waiting for the build to complete will result in failure.
-            .createOrUpdateBuildAsync(
-                service().resourceGroupName(),
-                service().name(),
-                Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                app().name(),
-                new BuildInner().withProperties(
-                    new BuildProperties()
-                        .withBuilder(String.format("%s/buildservices/default/builders/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME))
-                        .withAgentPool(String.format("%s/buildservices/default/agentPools/default", service().id()))
-                        .withRelativePath(option.relativePath())
-                ))
-            .map(inner -> {
-                context.setData("buildId", inner.properties().triggeredBuildResult().id());
-                return new PollResult<>(inner);
-            });
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withJarFile(File jar) {
-        if (service().isEnterpriseTier()) {
-            List<String> configFilePatterns = new ArrayList<>();
-            configFilePatterns.add(app().name());
-            withArtifact(jar, configFilePatterns);
-        } else {
-            ensureSource(UserSourceType.JAR);
-            this.addDependency(
-                context -> parent().getResourceUploadUrlAsync()
-                    .flatMap(option -> {
-                        UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
-                        uploadedUserSourceInfo.withRelativePath(option.relativePath());
-                        return uploadToStorage(jar, option)
-                            .then(context.voidMono());
-                    })
-            );
-        }
-        return this;
     }
 
     // @Override
@@ -352,28 +286,9 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl withArtifact(File artifact, List<String> configFilePatterns) {
-        ensureSource(UserSourceType.fromString(Constants.BUILD_RESULT_SOURCE_TYPE));
-        this.addDependency(
-            context -> app().getResourceUploadUrlAsync()
-                .flatMap(option ->
-                    uploadAndBuild(artifact, option)
-                        .flatMap(buildId -> {
-                            BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
-                            userSourceInfo.withBuildResultId(buildId);
-                            // set config file patterns
-                            ensureAddonConfigs();
-                            Map<String, Map<String, Object>> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
-                            addonConfigs.computeIfAbsent("applicationConfigurationService", s -> {
-                                Map<String, Object> config = new HashMap<>();
-                                config.put(
-                                    "configFilePatterns",
-                                    configFilePatterns == null ? new ArrayList<>() : String.join(",", configFilePatterns));
-                                return config;
-                            });
-                            return Mono.empty();
-                        }).then(context.voidMono()))
-        );
+    public SpringAppDeploymentImpl withJarFile(File jar, List<String> configFilePatterns) {
+        ensureSource(UserSourceType.BUILD_RESULT);
+        this.buildServiceTask = new BuildServiceTask(jar, configFilePatterns);
         return this;
     }
 
@@ -383,35 +298,48 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withSourceCodeTarGzFile(File sourceCodeTarGz) {
-        ensureSource(UserSourceType.SOURCE);
-        this.addDependency(
-            context -> parent().getResourceUploadUrlAsync()
-                .flatMap(option -> uploadToStorage(sourceCodeTarGz, option)
-                    .then(context.voidMono()))
-        );
+        return withSourceCodeTarGzFile(sourceCodeTarGz, null);
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns) {
+        if (isEnterpriseTier()) {
+            ensureSource(UserSourceType.BUILD_RESULT);
+            this.buildServiceTask = new BuildServiceTask(sourceCodeTarGz, configFilePatterns, true);
+        } else {
+            ensureSource(UserSourceType.SOURCE);
+            this.addDependency(
+                context -> parent().getResourceUploadUrlAsync()
+                    .flatMap(option -> {
+                        UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
+                        uploadedUserSourceInfo.withRelativePath(option.relativePath());
+                        return uploadToStorage(sourceCodeTarGz, option)
+                            .then(context.voidMono());
+                    })
+            );
+        }
         return this;
     }
 
     @Override
     public SpringAppDeploymentImpl withTargetModule(String moduleName) {
-        ensureSource(UserSourceType.SOURCE);
-        UserSourceInfo userSourceInfo = innerModel().properties().source();
-        if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
-            SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
-            sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
+        if (isEnterpriseTier()) {
+            ensureSource(UserSourceType.BUILD_RESULT);
+            this.buildServiceTask.module = moduleName;
+        } else {
+            ensureSource(UserSourceType.SOURCE);
+            UserSourceInfo userSourceInfo = innerModel().properties().source();
+            if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
+                SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
+                sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
+            }
         }
         return this;
     }
 
     @Override
     public SpringAppDeploymentImpl withSingleModule() {
-        ensureSource(UserSourceType.SOURCE);
-        UserSourceInfo userSourceInfo = innerModel().properties().source();
-        if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
-            SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
-            sourceUploadedUserSourceInfo.withArtifactSelector(null);
-        }
-        return this;
+        return withTargetModule(null);
     }
 
     @Override
@@ -513,6 +441,15 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
+    public void beforeGroupCreateOrUpdate() {
+        super.beforeGroupCreateOrUpdate();
+        if (this.buildServiceTask != null) {
+            this.addDependency(this.buildServiceTask);
+            this.buildServiceTask = null;
+        }
+    }
+
+    @Override
     public Mono<SpringAppDeployment> createResourceAsync() {
         return manager().serviceClient().getDeployments().createOrUpdateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
@@ -576,5 +513,121 @@ public class SpringAppDeploymentImpl
 
     private SpringServiceImpl service() {
         return parent().parent();
+    }
+
+    private class BuildServiceTask implements FunctionalTaskItem {
+        private final File file;
+        private final boolean sourceCodeTarGz;
+        private final List<String> configFilePatterns;
+        private String module;
+
+        public BuildServiceTask(File file, List<String> configFilePatterns) {
+            this(file, configFilePatterns, false);
+        }
+
+        public BuildServiceTask(File file, List<String> configFilePatterns, boolean sourceCodeTarGz) {
+            this.file = file;
+            this.configFilePatterns = configFilePatterns;
+            this.sourceCodeTarGz = sourceCodeTarGz;
+        }
+
+        @Override
+        public Mono<Indexable> apply(Context context) {
+            return app().getResourceUploadUrlAsync()
+                .flatMap(option ->
+                    uploadAndBuild(file, option)
+                        .flatMap(buildId -> {
+                            BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
+                            userSourceInfo.withBuildResultId(buildId);
+                            // set config file patterns
+                            ensureAddonConfigs();
+                            Map<String, Map<String, Object>> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
+                            addonConfigs.computeIfAbsent("applicationConfigurationService", s -> {
+                                Map<String, Object> config = new HashMap<>();
+                                config.put(
+                                    "configFilePatterns",
+                                    CoreUtils.isNullOrEmpty(configFilePatterns) ? "" : String.join(",", configFilePatterns));
+                                return config;
+                            });
+                            return Mono.empty();
+                        }).then(context.voidMono()));
+        }
+
+        private Mono<String> uploadAndBuild(File source, ResourceUploadDefinition option) {
+            AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
+            return uploadToStorage(source, option)
+                .then(
+                    new PollerFlux<>(
+                        manager().serviceClient().getDefaultPollInterval(),
+                        context -> enqueueBuild(option, context),
+                        this::waitForBuild,
+                        (pollResultPollingContext, pollResultPollResponse) -> Mono.error(new RuntimeException("build canceled")), // throw if build canceled
+                        this::getBuildResult)
+                        .last()
+                        .flatMap(client::getLroFinalResultOrError)
+                        .flatMap((Function<Object, Mono<String>>) o -> {
+                            BuildResultInner result = (BuildResultInner) o;
+                            return Mono.just(result.id());
+                        })
+                );
+        }
+
+        private Mono<BuildResultInner> getBuildResult(PollingContext<PollResult<BuildInner>> context) {
+            return manager().serviceClient().getBuildServices()
+                .getBuildResultAsync(
+                    service().resourceGroupName(),
+                    service().name(),
+                    Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                    parent().name(),
+                    // get "buildId" from context set in "enqueueBuild" step
+                    ResourceUtils.nameFromResourceId(context.getData("buildId")));
+        }
+
+        private Mono<PollResponse<PollResult<BuildInner>>> waitForBuild(PollingContext<PollResult<BuildInner>> context) {
+            return getBuildResult(context)
+                .flatMap((Function<BuildResultInner, Mono<PollResponse<PollResult<BuildInner>>>>) buildResultInner -> {
+                    BuildResultProvisioningState state = buildResultInner.properties().provisioningState();
+                    // construct empty result, "buildId" from context is the real result
+                    PollResult<BuildInner> emptyResult = new PollResult<>(new BuildInner().withProperties(new BuildProperties()));
+                    if (state == BuildResultProvisioningState.SUCCEEDED) {
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, emptyResult));
+                    } else if (state == BuildResultProvisioningState.FAILED || state == BuildResultProvisioningState.DELETING) {
+                        return Mono.error(new RuntimeException("build failed"));
+                    } else if (state == BuildResultProvisioningState.QUEUING) {
+                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, emptyResult));
+                    }
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, emptyResult));
+                });
+        }
+
+        private Mono<PollResult<BuildInner>> enqueueBuild(ResourceUploadDefinition option, PollingContext<PollResult<BuildInner>> context) {
+            BuildProperties buildProperties = new BuildProperties()
+                .withBuilder(String.format("%s/buildservices/default/builders/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME))
+                .withAgentPool(String.format("%s/buildservices/default/agentPools/default", service().id()))
+                .withRelativePath(option.relativePath());
+            // source code
+            if (this.sourceCodeTarGz) {
+                Map<String, String> buildEnv = buildProperties.env() == null ? new HashMap<>() : buildProperties.env();
+                buildProperties.withEnv(buildEnv);
+                if (module != null) {
+                    // for now, only support maven project
+                    buildEnv.put("BP_MAVEN_BUILT_MODULE", module);
+                }
+            }
+            return manager().serviceClient().getBuildServices()
+                // This method enqueues the build request, response with provision state "Succeeded" only means the build is enqueued.
+                // Attempting to continue deploying without waiting for the build to complete will result in failure.
+                .createOrUpdateBuildAsync(
+                    service().resourceGroupName(),
+                    service().name(),
+                    Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                    app().name(),
+                    new BuildInner().withProperties(buildProperties))
+                .map(inner -> {
+                    // set "buildId" for reference afterwards
+                    context.setData("buildId", inner.properties().triggeredBuildResult().id());
+                    return new PollResult<>(inner);
+                });
+        }
     }
 }

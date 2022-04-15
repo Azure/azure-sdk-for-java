@@ -97,12 +97,23 @@ public interface SpringAppDeployment
              */
             T withJarFile(File jar);
 
+            /**
+             * (Enterprise Tier Only)
+             * Specifies the jar package for the deployment.
+             * @param jar the file of the jar
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             * @return the next stage of deployment definition
+             */
+            T withJarFile(File jar, List<String> configFilePatterns);
+
             // Remove compression first due to tar.gz needs extern dependency
             // /**
             //  * Specifies the source code for the deployment.
             //  * @param sourceCodeFolder the folder of the source code
             //  * @return the next stage of deployment definition
             //  */
+
             // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
@@ -113,14 +124,22 @@ public interface SpringAppDeployment
             WithModule<T> withSourceCodeTarGzFile(File sourceCodeTarGz);
 
             /**
+             * (Enterprise Tier Only)
+             * Specifies the source code for the deployment.
+             * @param sourceCodeTarGz a tar.gz file of the source code
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             * @return the next stage of deployment definition
+             */
+            WithModule<T> withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns);
+
+            /**
              * Specifies the a existing source in the cloud storage.
              * @param type the source type in previous upload
              * @param relativePath the relative path gotten from getResourceUploadUrl
              * @return the next stage of deployment definition
              */
             T withExistingSource(UserSourceType type, String relativePath);
-
-            T withArtifact(File artifact, List<String> configFilePatterns);
         }
 
         /** The stage of a deployment definition allowing to specify the module of the source code. */
@@ -293,24 +312,48 @@ public interface SpringAppDeployment
         interface WithSource {
             /**
              * Specifies the jar package for the deployment.
+             * If it's enterprise tier, consider using {@link WithSource#withJarFile(File, List)}.
              * @param jar the file of the jar
              * @return the next stage of deployment update
              */
             Update withJarFile(File jar);
+
+            /**
+             * (Enterprise Tier Only)
+             * Specifies the jar package for the deployment.
+             * @param jar the file of the jar
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             *                           If the app has a binding to Configuration Service, similar as Config Server in standard tier,
+             *                           this is a required parameter.
+             * @return the next stage of deployment update
+             */
+            Update withJarFile(File jar, List<String> configFilePatterns);
 
             // /**
             //  * Specifies the source code for the deployment.
             //  * @param sourceCodeFolder the folder of the source code
             //  * @return the next stage of deployment update
             //  */
+
             // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
              * Specifies the source code for the deployment.
+             * For enterprise tier service， consider using {@link WithSource#withSourceCodeTarGzFile(File, List)}.
              * @param sourceCodeTarGz a tar.gz file of the source code
              * @return the next stage of deployment update
              */
             WithModule withSourceCodeTarGzFile(File sourceCodeTarGz);
+
+            /**
+             * Specifies the source code for the deployment.
+             * @param sourceCodeTarGz a tar.gz file of the source code
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             * @return the next stage of deployment update
+             */
+            WithModule withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns);
 
             /**
              * Specifies the a existing source in the cloud storage.
@@ -319,8 +362,6 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             Update withExistingSource(UserSourceType type, String relativePath);
-
-            Update withArtifact(File artifact, List<String> configFilePatterns);
         }
 
         /** The stage of a deployment update allowing to specify the module of the source code. */
