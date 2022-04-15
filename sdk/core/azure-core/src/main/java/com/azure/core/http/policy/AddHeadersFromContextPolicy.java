@@ -6,8 +6,11 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.util.Context;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
@@ -34,23 +37,35 @@ import java.util.Objects;
  * // Above three HttpHeader will be added in outgoing HttpRequest.
  * </pre>
  */
-public class AddHeadersFromContextPolicy extends HttpPipelineSynchronousPolicy {
+public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
 
     /**Key used to override headers in HttpRequest. The Value for this key should be {@link HttpHeaders}.*/
     public static final String AZURE_REQUEST_HTTP_HEADERS_KEY = "azure-http-headers-key";
 
-    @Override
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).ifPresent(headers -> {
-            if (headers instanceof HttpHeaders) {
-                HttpHeaders customHttpHeaders = (HttpHeaders) headers;
-                // loop through customHttpHeaders and add headers in HttpRequest
-                for (HttpHeader httpHeader : customHttpHeaders) {
-                    if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
-                        context.getHttpRequest().getHeaders().set(httpHeader.getName(), httpHeader.getValue());
+    private static final HttpPipelinePolicy INNER = new HttpPipelineSynchronousPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).ifPresent(headers -> {
+                if (headers instanceof HttpHeaders) {
+                    HttpHeaders customHttpHeaders = (HttpHeaders) headers;
+                    // loop through customHttpHeaders and add headers in HttpRequest
+                    for (HttpHeader httpHeader : customHttpHeaders) {
+                        if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
+                            context.getHttpRequest().getHeaders().set(httpHeader.getName(), httpHeader.getValue());
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+    };
+
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.process(context, next);
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return INNER.processSync(context, next);
     }
 }

@@ -205,8 +205,6 @@ public class OkHttpAsyncHttpClientTests {
                 assertNotNull(response);
                 assertEquals(200, response.getStatusCode());
 
-                System.out.println("reading body");
-
                 StepVerifier.create(response.getBodyAsByteArray())
                     .verifyError(IOException.class);
             }

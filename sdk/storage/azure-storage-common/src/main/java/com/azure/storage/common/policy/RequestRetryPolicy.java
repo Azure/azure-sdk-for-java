@@ -53,7 +53,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         boolean considerSecondary = (this.requestRetryOptions.getSecondaryHost() != null)
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
             || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
@@ -274,7 +274,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
         HttpResponse response;
         try {
-            response = next.clone().processSynchronously();
+            response = next.clone().processSync();
         } catch (Throwable throwable) {
                     /*
                     It is likely that many users will not realize that their Flux must be replayable and

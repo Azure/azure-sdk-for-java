@@ -99,7 +99,7 @@ public class OpenTelemetryHttpPolicyTests {
         HttpRequest request = new HttpRequest(HttpMethod.POST, "https://httpbin.org/hello?there#otel");
         request.setHeader("User-Agent", "user-agent");
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpPipeline(tracer).sendSynchronously(request, tracingContext),
+            () -> createHttpPipeline(tracer).sendSync(request, tracingContext),
             () -> createHttpPipeline(tracer).send(request, tracingContext).block()
         );
 
@@ -159,7 +159,7 @@ public class OpenTelemetryHttpPolicyTests {
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpPipeline(tracer).sendSynchronously(request),
+            () -> createHttpPipeline(tracer).sendSync(request, Context.NONE),
             () -> createHttpPipeline(tracer).send(request).block()
         );
 
@@ -174,7 +174,7 @@ public class OpenTelemetryHttpPolicyTests {
     public void clientRequestIdIsStamped() throws Exception {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, "https://httpbin.org/hello?there#otel");
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpPipeline(tracer, new RequestIdPolicy()).sendSynchronously(request),
+            () -> createHttpPipeline(tracer, new RequestIdPolicy()).sendSync(request, Context.NONE),
             () -> createHttpPipeline(tracer, new RequestIdPolicy()).send(request).block()
         );
 
@@ -235,7 +235,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext);
+                HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext);
                 assertEquals(200, response.getStatusCode());
             },
             () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))

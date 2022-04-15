@@ -51,7 +51,7 @@ public class MockDownloadHttpResponse extends HttpResponse {
     }
 
     @Override
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return BinaryData.fromFlux(body).block();
     }
 

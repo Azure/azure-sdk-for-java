@@ -241,14 +241,6 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.nonFinalClassInheritsFromNewClass",
-          "old": "class .*Policy",
-          "new": "class .*Policy",
-          "description": "Non-final class now inherits from 'com\\.azure\\.core\\.http\\.policy\\.HttpPipelineSynchronousPolicy'",
-          "justification": "No final methods introduced, per revapi guidance."
         }
       ]
     }

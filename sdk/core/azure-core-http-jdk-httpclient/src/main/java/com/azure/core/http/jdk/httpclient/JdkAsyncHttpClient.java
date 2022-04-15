@@ -124,7 +124,7 @@ class JdkAsyncHttpClient implements HttpClient {
                     return builder.method("HEAD", noBody()).build();
                 default:
                     final String contentLength = request.getHeaders().getValue("content-length");
-                    final BodyPublisher bodyPublisher = toBodyPublisher(request.getContent(), contentLength);
+                    final BodyPublisher bodyPublisher = toBodyPublisher(request.getBodyAsBinaryData(), contentLength);
                     return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
             }
         });

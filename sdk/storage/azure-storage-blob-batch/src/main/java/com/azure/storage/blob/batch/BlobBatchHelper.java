@@ -219,7 +219,7 @@ class BlobBatchHelper {
             }
 
             @Override
-            public BinaryData getContent() {
+            public BinaryData getBodyAsBinaryData() {
                 return BinaryData.fromString(body);
             }
 
@@ -263,7 +263,7 @@ class BlobBatchHelper {
             }
 
             @Override
-            public BinaryData getContent() {
+            public BinaryData getBodyAsBinaryData() {
                 return BinaryData.fromFlux(getBody()).block();
             }
 

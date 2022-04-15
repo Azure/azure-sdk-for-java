@@ -393,7 +393,7 @@ public final class CoreUtils {
      * @return Mono.
      */
     public static Mono<Void> consumeResponseBodyAsync(HttpResponse response) {
-        BinaryData responseBody = response.getContent();
+        BinaryData responseBody = response.getBodyAsBinaryData();
         if (responseBody != null) {
             BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
             if (content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
@@ -414,7 +414,7 @@ public final class CoreUtils {
      * @param response The response.
      */
     public static void consumeResponseBodySync(HttpResponse response) {
-        BinaryData responseBody = response.getContent();
+        BinaryData responseBody = response.getBodyAsBinaryData();
         if (responseBody != null) {
             BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
             if (content instanceof FluxByteBufferContent) {
@@ -451,7 +451,7 @@ public final class CoreUtils {
             : httpRequest.getBody().map(ByteBuffer::duplicate);
         httpRequest.setBody(bufferedBody); */
 
-        BinaryData content = httpRequest.getContent();
+        BinaryData content = httpRequest.getBodyAsBinaryData();
         if (content != null) {
             BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(content);
             if (binaryDataContent instanceof FluxByteBufferContent) {

@@ -223,7 +223,7 @@ public class HttpRequest {
      *
      * @return The {@link BinaryData} request body.
      */
-    public BinaryData getContent() {
+    public BinaryData getBodyAsBinaryData() {
         return data;
     }
 
@@ -233,7 +233,7 @@ public class HttpRequest {
      * @param data The {@link BinaryData} request body.
      * @return this HttpRequest
      */
-    public HttpRequest setContent(BinaryData data) {
+    public HttpRequest setBody(BinaryData data) {
         this.data = data;
         return this;
     }

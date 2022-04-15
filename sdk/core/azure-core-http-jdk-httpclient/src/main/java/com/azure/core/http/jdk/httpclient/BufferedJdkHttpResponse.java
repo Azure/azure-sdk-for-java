@@ -16,26 +16,26 @@ import java.nio.ByteBuffer;
  * A JDK response where the response body has been buffered into memory.
  */
 final class BufferedJdkHttpResponse extends JdkHttpResponseBase {
-    private final byte[] body;
+    private final BinaryData body;
 
     BufferedJdkHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] body) {
         super(request, statusCode, headers);
-        this.body = body;
+        this.body = BinaryData.fromBytes(body);
     }
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(body)));
+        return body.toFluxByteBuffer();
     }
 
     @Override
-    public BinaryData getContent() {
-        return BinaryData.fromBytes(body);
+    public BinaryData getBodyAsBinaryData() {
+        return body;
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.defer(() -> Mono.just(body));
+        return Mono.fromCallable(body::toBytes);
     }
 
     @Override

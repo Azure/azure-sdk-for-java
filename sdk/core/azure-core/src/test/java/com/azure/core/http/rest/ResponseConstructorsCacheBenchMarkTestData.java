@@ -148,7 +148,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         @Override
-        public BinaryData getContent() {
+        public BinaryData getBodyAsBinaryData() {
             return null;
         }
 

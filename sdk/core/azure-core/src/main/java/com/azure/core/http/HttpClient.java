@@ -38,7 +38,7 @@ public interface HttpClient {
      * @param context Contextual information about the request.
      * @return The response.
      */
-    default HttpResponse sendSynchronously(HttpRequest request, Context context) {
+    default HttpResponse sendSync(HttpRequest request, Context context) {
         return send(request, context).block();
     }
 

@@ -1541,7 +1541,7 @@ class AzureFileSystemProviderTest extends APISpec {
         }
 
         @Override
-        BinaryData getContent() {
+        BinaryData getBodyAsBinaryData() {
             return null
         }
 

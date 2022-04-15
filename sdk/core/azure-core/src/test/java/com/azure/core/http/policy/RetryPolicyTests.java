@@ -16,6 +16,7 @@ import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.test.junit.extensions.SyncAsyncExtension;
 import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
@@ -101,7 +102,8 @@ public class RetryPolicyTests {
             })
             .build();
 
-        HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+        HttpResponse response = pipeline.sendSync(
+            new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
 
         assertEquals(200, response.getStatusCode());
     }
@@ -143,7 +145,8 @@ public class RetryPolicyTests {
             })
             .build();
 
-        HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+        HttpResponse response = pipeline.sendSync(
+            new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
 
         assertEquals(returnCode, response.getStatusCode());
     }
@@ -185,7 +188,8 @@ public class RetryPolicyTests {
             })
             .build();
 
-        HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+        HttpResponse response = pipeline.sendSync(
+            new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
 
         assertEquals(200, response.getStatusCode());
     }
@@ -225,7 +229,8 @@ public class RetryPolicyTests {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, statusCodes[attempt.getAndIncrement()])))
             .build();
 
-        HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+        HttpResponse response = pipeline.sendSync(
+            new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
 
         assertEquals(expectedStatusCode, response.getStatusCode());
     }
@@ -274,7 +279,7 @@ public class RetryPolicyTests {
             .build();
 
         try {
-            pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+            pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
             fail();
         } catch (Exception e) {
             assertTrue(expectedException.isAssignableFrom(e.getClass())
@@ -329,7 +334,8 @@ public class RetryPolicyTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+                HttpResponse response = pipeline.sendSync(
+                    new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
                 assertEquals(500, response.getStatusCode());
             },
             () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
@@ -362,7 +368,8 @@ public class RetryPolicyTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+                HttpResponse response = pipeline.sendSync(
+                    new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
                 assertEquals(500, response.getStatusCode());
             },
             () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
@@ -401,7 +408,8 @@ public class RetryPolicyTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+                HttpResponse response = pipeline.sendSync(
+                    new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
                 assertEquals(503, response.getStatusCode());
             },
             () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
@@ -444,7 +452,7 @@ public class RetryPolicyTests {
                 }
 
                 @Override
-                public BinaryData getContent() {
+                public BinaryData getBodyAsBinaryData() {
                     return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(errorBody));
                 }
 
@@ -467,7 +475,8 @@ public class RetryPolicyTests {
 
         SyncAsyncExtension.execute(
             () -> {
-                pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "https://example.com"));
+                pipeline.sendSync(
+                    new HttpRequest(HttpMethod.GET, "https://example.com"), Context.NONE);
             },
             () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")))
                 .expectNextCount(1)

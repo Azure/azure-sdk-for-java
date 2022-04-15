@@ -45,7 +45,7 @@ public interface HttpResponseLogger {
      * @param loggingOptions The information available during response logging.
      * @return A response that returns the HTTP response that was logged.
      */
-    default HttpResponse logResponseSynchronously(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+    default HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
         throw new UnsupportedOperationException("Must be overridden");
     }
 }

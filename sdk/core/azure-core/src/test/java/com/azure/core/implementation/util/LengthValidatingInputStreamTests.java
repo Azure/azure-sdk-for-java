@@ -36,6 +36,7 @@ public class LengthValidatingInputStreamTests {
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
         assertThrows(UnexpectedLengthException.class, () -> readStream(validatorStream));
+        assertThrows(UnexpectedLengthException.class, () -> readStreamByteByByte(validatorStream));
     }
 
     @Test
@@ -44,6 +45,7 @@ public class LengthValidatingInputStreamTests {
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
         assertThrows(UnexpectedLengthException.class, () -> readStream(validatorStream));
+        assertThrows(UnexpectedLengthException.class, () -> readStreamByteByByte(validatorStream));
     }
 
     @ParameterizedTest
@@ -59,6 +61,18 @@ public class LengthValidatingInputStreamTests {
         assertArrayEquals(bytes, afterRead);
     }
 
+    @Test
+    public void canReadStreamByteByByte() throws Exception {
+        byte[] bytes = new byte[4096];
+        new Random().nextBytes(bytes);
+        InputStream inner = new ByteArrayInputStream(bytes);
+        InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
+
+        byte[] afterRead = readStreamByteByByte(validatorStream);
+
+        assertArrayEquals(bytes, afterRead);
+    }
+
     private byte[] readStream(InputStream stream) throws Exception {
         return readStream(stream, 8 * 1024);
     }
@@ -69,6 +83,15 @@ public class LengthValidatingInputStreamTests {
         int length;
         while ((length = stream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, length);
+        }
+        return outputStream.toByteArray();
+    }
+
+    private byte[] readStreamByteByByte(InputStream stream) throws Exception {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int tmp;
+        while ((tmp = stream.read()) != -1) {
+            outputStream.write(tmp);
         }
         return outputStream.toByteArray();
     }

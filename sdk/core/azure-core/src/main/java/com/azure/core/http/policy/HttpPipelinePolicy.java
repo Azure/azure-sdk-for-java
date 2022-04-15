@@ -33,7 +33,7 @@ public interface HttpPipelinePolicy {
      * @param next The next policy to invoke.
      * @return The response.
      */
-    default HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    default HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return process(context, next).block();
     }
 

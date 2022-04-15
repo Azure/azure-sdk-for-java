@@ -450,7 +450,7 @@ public final class BlobBatch {
         }
 
         @Override
-        public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             buildBatchOperation(context);
             return null;
         }
