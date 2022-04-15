@@ -550,7 +550,14 @@ public final class RestProxy implements InvocationHandler {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
+            if (methodParser.getReturnType().equals(BinaryDataResponse.class)) {
+                // TODO (kasobol-msft) this is a hack.
+                // We don't need entity in that case but we can't change the else case yet
+                // it somehow relies on eager consumption and tests hang otherwise.
+                asyncResult = Mono.empty();
+            } else {
+                asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
+            }
         } else {
             // Mono<Object> or Mono<Page<T>>
             asyncResult = response.getDecodedBody((byte[]) null);
