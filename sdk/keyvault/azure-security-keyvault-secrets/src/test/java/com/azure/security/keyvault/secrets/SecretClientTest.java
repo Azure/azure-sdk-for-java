@@ -6,6 +6,7 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
@@ -17,6 +18,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +44,15 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) {
+        HttpPipeline pipeline = getHttpPipeline(httpClient, testTenantId);
+        URL vaultUrl;
+        try {
+            vaultUrl = new URL(getEndpoint());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
         SecretAsyncClient asyncClient = spy(new SecretClientBuilder()
-            .pipeline(getHttpPipeline(httpClient, testTenantId))
+            .pipeline(pipeline)
             .vaultUrl(getEndpoint())
             .serviceVersion(serviceVersion)
             .buildAsyncClient());
@@ -51,7 +61,7 @@ public class SecretClientTest extends SecretClientTestBase {
             when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        client = new SecretClient(asyncClient);
+        client = new SecretClient(vaultUrl, pipeline, serviceVersion, asyncClient);
     }
 
     /**

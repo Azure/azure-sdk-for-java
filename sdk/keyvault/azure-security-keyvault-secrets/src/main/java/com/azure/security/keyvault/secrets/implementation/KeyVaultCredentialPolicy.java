@@ -130,6 +130,44 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         });
     }
 
+    @Override
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
+        HttpRequest request = context.getHttpRequest();
+
+        // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
+        if (this.challenge == null) {
+            String authority = getRequestAuthority(request);
+            this.challenge = CHALLENGE_CACHE.get(authority);
+        }
+
+        if (this.challenge != null) {
+            // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
+            TokenRequestContext tokenRequestContext = new TokenRequestContext()
+                .addScopes(this.challenge.getScopes())
+                .setTenantId(this.challenge.getTenantId());
+
+            setAuthorizationHeaderSync(context, tokenRequestContext);
+            return;
+        }
+
+        // The body is removed from the initial request because Key Vault supports other authentication schemes which
+        // also protect the body of the request. As a result, before we know the auth scheme we need to avoid sending
+        // an unprotected body to Key Vault. We don't currently support this enhanced auth scheme in the SDK but we
+        // still don't want to send any unprotected data to vaults which require it.
+
+        // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
+        if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
+            if (request.getBody() != null) {
+                context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
+                context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
+                    request.getHeaders().getValue(CONTENT_LENGTH_HEADER));
+                request.setHeader(CONTENT_LENGTH_HEADER, "0");
+                request.setBody((Flux<ByteBuffer>) null);
+            }
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
@@ -188,6 +226,64 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             return setAuthorizationHeader(context, tokenRequestContext)
                 .then(Mono.just(true));
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
+        HttpRequest request = context.getHttpRequest();
+        Optional<Object> contentOptional = context.getData(KEY_VAULT_STASHED_CONTENT_KEY);
+        Optional<Object> contentLengthOptional = context.getData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
+
+        if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
+            request.setBody((Flux<ByteBuffer>) contentOptional.get());
+            request.setHeader(CONTENT_LENGTH_HEADER, (String) contentLengthOptional.get());
+        }
+
+        String authority = getRequestAuthority(request);
+        Map<String, String> challengeAttributes =
+            extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+        String scope = challengeAttributes.get("resource");
+
+        if (scope != null) {
+            scope = scope + "/.default";
+        } else {
+            scope = challengeAttributes.get("scope");
+        }
+
+        if (scope == null) {
+            this.challenge = CHALLENGE_CACHE.get(authority);
+
+            if (this.challenge == null) {
+                return false;
+            }
+        } else {
+            String authorization = challengeAttributes.get("authorization");
+
+            if (authorization == null) {
+                authorization = challengeAttributes.get("authorization_uri");
+            }
+
+            final URI authorizationUri;
+
+            try {
+                authorizationUri = new URI(authorization);
+            } catch (URISyntaxException e) {
+                // The challenge authorization URI is invalid.
+                return false;
+            }
+
+            this.challenge = new ChallengeParameters(authorizationUri, new String[] { scope });
+
+            CHALLENGE_CACHE.put(authority, this.challenge);
+        }
+
+        TokenRequestContext tokenRequestContext = new TokenRequestContext()
+            .addScopes(this.challenge.getScopes())
+            .setTenantId(this.challenge.getTenantId());
+
+        setAuthorizationHeaderSync(context, tokenRequestContext);
+        return true;
     }
 
     private static class ChallengeParameters {
