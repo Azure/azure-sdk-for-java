@@ -36,15 +36,15 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
      * @param clientVersion The version of the package.
      */
     public BlobUserAgentModificationPolicy(String clientName, String clientVersion) {
-        this.clientName = standardizeSdkName(clientName);
+        this.clientName = standardizeClientName(clientName);
         this.clientVersion = clientVersion;
     }
 
-    static String standardizeSdkName(String sdkName) {
-        if (CoreUtils.isNullOrEmpty(sdkName)) {
-            return sdkName;
+    private static String standardizeClientName(String clientName) {
+        if (CoreUtils.isNullOrEmpty(clientName)) {
+            return clientName;
         }
-        return sdkName.replaceAll("^azure-", "");
+        return clientName.replaceAll("^azure-", "");
     }
 
     @Override
