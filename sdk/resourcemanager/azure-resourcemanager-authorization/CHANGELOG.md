@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated `api-version` of authentication to `2020-10-01`
+
 ## 2.14.0 (2022-04-11)
 
 ### Features Added
