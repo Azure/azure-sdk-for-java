@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 public final class CheckpointManagers {
     private static final Logger LOG = LoggerFactory.getLogger(CheckpointManagers.class);
 
+    private CheckpointManagers() {
+    }
 
     /**
      * Mapping checkpoint mode in config to a {@link EventCheckpointManager}.
@@ -24,7 +26,7 @@ public final class CheckpointManagers {
      * @throws IllegalArgumentException If no checkpoint manager could be found.
      */
     public static EventCheckpointManager of(CheckpointConfig checkpointConfig, ListenerMode listenerMode) {
-        if (listenerMode.equals(ListenerMode.BATCH)) {
+        if (listenerMode == ListenerMode.BATCH) {
             switch (checkpointConfig.getMode()) {
                 case BATCH:
                     return new BatchCheckpointManager(checkpointConfig);

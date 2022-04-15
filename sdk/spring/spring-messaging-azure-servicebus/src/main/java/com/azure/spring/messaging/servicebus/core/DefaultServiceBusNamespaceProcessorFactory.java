@@ -172,7 +172,6 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
             }
 
             ServiceBusProcessorClient client;
-            //TODO(yiliu6): whether to use shared ServiceBusClientBuilder
             if (Boolean.TRUE.equals(processorProperties.getSessionEnabled())) {
 
                 ServiceBusSessionProcessorClientBuilderFactory factory =

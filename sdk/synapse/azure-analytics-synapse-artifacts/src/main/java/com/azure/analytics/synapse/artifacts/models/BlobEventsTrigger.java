@@ -160,4 +160,25 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
         this.scope = scope;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobEventsTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
+        super.setPipelines(pipelines);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobEventsTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobEventsTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
 }
