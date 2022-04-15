@@ -68,14 +68,6 @@ The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` var
 
 See [Authentication][authenticate] for more options.
 
-### Special Case
-
-The Service Linker provider need user token in a separated header in the following scenarios. Please refer to [sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicelinker/azure-resourcemanager-servicelinker/src/samples/java/com/azure/resourcemanager/servicelinker/CreateServiceLinker.java) for usage.
-
-* The target resource is Key Vault
-* SecretStore is used to store secret in Key Vault
-* VNetSolutionInfo is specified
-
 ## Key concepts
 
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
