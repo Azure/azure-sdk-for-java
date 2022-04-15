@@ -1,8 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.servicelinker;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
@@ -49,24 +55,7 @@ public class CreateServiceLinker {
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         // create a policy for setting user token into a specific header for some special scenarios
-        HttpPipelinePolicy userTokenPolicy = (context, next) -> {
-            Mono<String> token = null;
-            String bearerTokenPrefix = "bearer ";
-            String authorization = context.getHttpRequest().getHeaders().getValue("Authorization");
-            if (authorization != null && authorization.toLowerCase(Locale.ROOT).startsWith(bearerTokenPrefix)) {
-                token = Mono.just(authorization.substring(bearerTokenPrefix.length()));
-            } else {
-                token = credential
-                    .getToken(new TokenRequestContext().addScopes(profile.getEnvironment().getResourceManagerEndpoint() + "/.default"))
-                    .map(AccessToken::getToken);
-            }
-
-            return token
-                .flatMap(accessToken -> {
-                    context.getHttpRequest().getHeaders().set(USER_TOKEN_HEADER, accessToken);
-                    return next.process();
-                });
-        };
+        HttpPipelinePolicy userTokenPolicy = new UserTokenPolicy(credential, profile.getEnvironment());
 
         // build resource manager to create azure resource
         AzureResourceManager azureResourceManager = AzureResourceManager.authenticate(credential, profile).withDefaultSubscription();
@@ -180,5 +169,35 @@ public class CreateServiceLinker {
 
     private static String randomString(int length) {
         return UUID.randomUUID().toString().replace("-", "").substring(0, length);
+    }
+
+    public static class UserTokenPolicy implements HttpPipelinePolicy {
+        private final TokenCredential credential;
+        private final AzureEnvironment environment;
+
+        public UserTokenPolicy(TokenCredential credential, AzureEnvironment environment) {
+                this.credential = credential;
+                this.environment = environment;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            Mono<String> token = null;
+            String bearerTokenPrefix = "bearer ";
+            String authorization = context.getHttpRequest().getHeaders().getValue("Authorization");
+            if (authorization != null && authorization.toLowerCase(Locale.ROOT).startsWith(bearerTokenPrefix)) {
+                token = Mono.just(authorization.substring(bearerTokenPrefix.length()));
+            } else {
+                token = credential
+                    .getToken(new TokenRequestContext().addScopes(environment.getResourceManagerEndpoint() + "/.default"))
+                    .map(AccessToken::getToken);
+            }
+
+            return token
+                .flatMap(accessToken -> {
+                    context.getHttpRequest().getHeaders().set(USER_TOKEN_HEADER, accessToken);
+                    return next.process();
+                });
+        }
     }
 }
