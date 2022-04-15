@@ -132,21 +132,21 @@ public class ProxyOptions implements AutoCloseable {
             return SYSTEM_DEFAULTS;
         }
 
-        Configuration proxyConfiguration = (configuration == null)
+        configuration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
         String host = configuration.get(HOST_PROPERTY);
         if (CoreUtils.isNullOrEmpty(host)) {
-            return loadFromEnvironmentConfiguration(proxyConfiguration);
+            return loadFromEnvironmentConfiguration(configuration);
         }
 
         int port = configuration.get(PORT_PROPERTY);
         InetSocketAddress socketAddress = new InetSocketAddress(host, port);
-        Proxy.Type proxyType = proxyConfiguration.get(TYPE_PROPERTY);
-        ProxyAuthenticationType authType = proxyConfiguration.get(AUTH_TYPE_PROPERTY);
-        String username = proxyConfiguration.get(USER_PROPERTY);
-        String password = proxyConfiguration.get(PASSWORD_PROPERTY);
+        Proxy.Type proxyType = configuration.get(TYPE_PROPERTY);
+        ProxyAuthenticationType authType = configuration.get(AUTH_TYPE_PROPERTY);
+        String username = configuration.get(USER_PROPERTY);
+        String password = configuration.get(PASSWORD_PROPERTY);
 
         return new ProxyOptions(authType, new Proxy(proxyType, socketAddress), username, password);
     }
