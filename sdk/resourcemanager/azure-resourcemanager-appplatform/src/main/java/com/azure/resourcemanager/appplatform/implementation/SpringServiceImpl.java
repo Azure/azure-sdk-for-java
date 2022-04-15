@@ -31,7 +31,8 @@ public class SpringServiceImpl
     private final SpringAppsImpl apps = new SpringAppsImpl(this);
     private FunctionalTaskItem configServerTask = null;
     private FunctionalTaskItem monitoringSettingTask = null;
-    private ServiceResourceInner patchToUpdate;
+    private ServiceResourceInner patchToUpdate = new ServiceResourceInner();
+    private boolean updated;
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
@@ -39,7 +40,6 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl update() {
-        patchToUpdate = new ServiceResourceInner();
         return super.update();
     }
 
@@ -139,9 +139,8 @@ public class SpringServiceImpl
     public SpringServiceImpl withSku(Sku sku) {
         innerModel().withSku(sku);
         if (isInUpdateMode()) {
-            if (patchToUpdate != null) {
-                patchToUpdate.withSku(sku);
-            }
+            patchToUpdate.withSku(sku);
+            updated = true;
         }
         return this;
     }
@@ -236,10 +235,11 @@ public class SpringServiceImpl
         if (isInCreateMode()) {
             createOrUpdate = manager().serviceClient().getServices()
                 .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
-        } else if (patchToUpdate != null) {
+        } else if (updated) {
             createOrUpdate = manager().serviceClient().getServices().updateAsync(
                 resourceGroupName(), name(), patchToUpdate);
-            patchToUpdate = null;
+            patchToUpdate = new ServiceResourceInner();
+            updated = false;
         } else {
             return Mono.just(this);
         }
