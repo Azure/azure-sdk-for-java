@@ -292,19 +292,21 @@ public class FlatteningSerializerTests {
      * Validates that decoding and encoding of a composed type with type id containing dot and can be done.
      */
     @Test
-    public void canHandleComposedTypeWithTypeIdContainingDot0() {
+    public void canHandleComposedTypeWithTypeIdContainingDot0() throws IOException {
         List<String> meals = Arrays.asList("carrot", "apple");
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         FlattenableAnimalInfo animalInfoToSerialize = new FlattenableAnimalInfo().withAnimal(animalToSerialize);
         List<FlattenableAnimalInfo> animalsInfoSerialized = ImmutableList.of(animalInfoToSerialize);
         AnimalShelter animalShelterToSerialize = new AnimalShelter().withAnimalsInfo(animalsInfoSerialized);
-        String serialized = serialize(animalShelterToSerialize);
+        String serialized = ADAPTER.serialize(animalShelterToSerialize, SerializerEncoding.JSON);
         String[] results = {
             "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}}]}}",
             "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}}]}}",
         };
 
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertTrue(Arrays.asList(results).contains(serialized),
+            () -> String.format("Expected serialized results to either be %n%n%s%n%n%s%n%n but got %n%n%s",
+                results[0], results[1], serialized));
 
         // de-serialization
         //

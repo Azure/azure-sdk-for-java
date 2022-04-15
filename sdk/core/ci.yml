@@ -76,6 +76,8 @@ extends:
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
     AdditionalModules:
+      - name: azure-json
+        groupId: com.azure
       - name: perf-test-core
         groupId: com.azure
     MatrixReplace:

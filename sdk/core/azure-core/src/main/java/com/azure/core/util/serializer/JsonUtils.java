@@ -3,8 +3,13 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 /**
@@ -15,8 +20,8 @@ public final class JsonUtils {
     /**
      * Appends a nullable field to the {@link StringBuilder} constructing the JSON.
      * <p>
-     * If the {@code value} is null {@code "fieldName":null} is appended to the {@link StringBuilder}, otherwise
-     * {@code "fieldName":"toString(value)"} is appended.
+     * If the {@code value} is null nothing is appended to the {@link StringBuilder}, otherwise {@code
+     * "fieldName":value} is appended.
      *
      * @param stringBuilder The {@link StringBuilder} being appended.
      * @param fieldName The name of the field.
@@ -24,28 +29,182 @@ public final class JsonUtils {
      * @return The updated {@link StringBuilder} object.
      */
     public static StringBuilder appendNullableField(StringBuilder stringBuilder, String fieldName, Object value) {
-        stringBuilder.append("\"").append(fieldName).append("\":");
-
         if (value == null) {
-            stringBuilder.append("null");
-        } else {
-            stringBuilder.append("\"").append(value).append("\"");
+            return stringBuilder;
         }
 
-        return stringBuilder;
+        stringBuilder.append("\"").append(fieldName).append("\":");
+
+        // Characters and CharSequences need to be quoted.
+        return (value instanceof Character || value instanceof CharSequence)
+            ? stringBuilder.append("\"").append(value).append("\"")
+            : stringBuilder.append(value);
+    }
+
+    /**
+     * Serializes an array.
+     * <p>
+     * Handles three scenarios for the array:
+     *
+     * <ul>
+     *     <li>null {@code array} writes JSON null</li>
+     *     <li>empty {@code array} writes {@code []}</li>
+     *     <li>non-empty {@code array} writes a populated JSON array</li>
+     * </ul>
+     *
+     * @param stringBuilder {@link StringBuilder} where JSON will be written.
+     * @param fieldName Field name for the array.
+     * @param array The array.
+     * @param elementWriterFunc Function that writes the array element.
+     * @param <T> Type of array element.
+     * @return The updated {@link StringBuilder} object.
+     */
+    public static <T> StringBuilder appendArray(StringBuilder stringBuilder, String fieldName, Iterable<T> array,
+        BiConsumer<StringBuilder, T> elementWriterFunc) {
+        stringBuilder.append("\"").append(fieldName).append("\":");
+
+        if (array == null) {
+            return stringBuilder.append("null");
+        }
+
+        stringBuilder.append("[");
+
+        int i = 0;
+        for (T element : array) {
+            if (i > 0) {
+                stringBuilder.append(",");
+            }
+
+            elementWriterFunc.accept(stringBuilder, element);
+            i++;
+        }
+
+        return stringBuilder.append("]");
+    }
+
+    /**
+     * Serializes an array.
+     * <p>
+     * Handles three scenarios for the array:
+     *
+     * <ul>
+     *     <li>null {@code array} writes JSON null</li>
+     *     <li>empty {@code array} writes {@code []}</li>
+     *     <li>non-empty {@code array} writes a populated JSON array</li>
+     * </ul>
+     *
+     * @param stringBuilder {@link StringBuilder} where JSON will be written.
+     * @param fieldName Field name for the array.
+     * @param array The array.
+     * @param elementWriterFunc Function that writes the array element.
+     * @param <T> Type of array element.
+     * @return The updated {@link StringBuilder} object.
+     */
+    public static <T> StringBuilder appendArray(StringBuilder stringBuilder, String fieldName, T[] array,
+        BiConsumer<StringBuilder, T> elementWriterFunc) {
+        stringBuilder.append("\"").append(fieldName).append("\":");
+
+        if (array == null) {
+            return stringBuilder.append("null");
+        }
+
+        stringBuilder.append("[");
+
+        int i = 0;
+        for (T element : array) {
+            if (i > 0) {
+                stringBuilder.append(",");
+            }
+
+            elementWriterFunc.accept(stringBuilder, element);
+            i++;
+        }
+
+        return stringBuilder.append("]");
+    }
+
+    /**
+     * Serializes an array.
+     * <p>
+     * Handles three scenarios for the array:
+     *
+     * <ul>
+     *     <li>null {@code array} writes JSON null</li>
+     *     <li>empty {@code array} writes {@code []}</li>
+     *     <li>non-empty {@code array} writes a populated JSON array</li>
+     * </ul>
+     *
+     * @param jsonWriter {@link JsonWriter} where JSON will be written.
+     * @param fieldName Field name for the array.
+     * @param array The array.
+     * @param elementWriterFunc Function that writes the array element.
+     * @param <T> Type of array element.
+     * @return The updated {@link JsonWriter} object.
+     */
+    public static <T> JsonWriter serializeArray(JsonWriter jsonWriter, String fieldName, T[] array,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        jsonWriter.writeFieldName(fieldName);
+
+        if (array == null) {
+            return jsonWriter.writeNull().flush();
+        }
+
+        jsonWriter.writeStartArray();
+
+        for (T element : array) {
+            elementWriterFunc.accept(jsonWriter, element);
+        }
+
+        return jsonWriter.writeEndArray().flush();
+    }
+
+    /**
+     * Serializes an array.
+     * <p>
+     * Handles three scenarios for the array:
+     *
+     * <ul>
+     *     <li>null {@code array} writes JSON null</li>
+     *     <li>empty {@code array} writes {@code []}</li>
+     *     <li>non-empty {@code array} writes a populated JSON array</li>
+     * </ul>
+     *
+     * @param jsonWriter {@link JsonWriter} where JSON will be written.
+     * @param fieldName Field name for the array.
+     * @param array The array.
+     * @param elementWriterFunc Function that writes the array element.
+     * @param <T> Type of array element.
+     * @return The updated {@link JsonWriter} object.
+     */
+    public static <T> JsonWriter serializeArray(JsonWriter jsonWriter, String fieldName, Iterable<T> array,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        jsonWriter.writeFieldName(fieldName);
+
+        if (array == null) {
+            return jsonWriter.writeNull().flush();
+        }
+
+        jsonWriter.writeStartArray();
+
+        for (T element : array) {
+            elementWriterFunc.accept(jsonWriter, element);
+        }
+
+        return jsonWriter.writeEndArray().flush();
     }
 
     /**
      * Handles basic logic for deserializing an object before passing it into the deserialization function.
      * <p>
-     * This will initialize the {@link JsonReader} for object reading and then check if the current token is
-     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw
-     * an {@link IllegalStateException}.
+     * This will initialize the {@link JsonReader} for object reading and then check if the current token is {@link
+     * JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw an
+     * {@link IllegalStateException}.
      * <p>
      * Use {@link #deserializeArray(JsonReader, BiFunction)} if a JSON array is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
-     * @param deserializationFunc The function that handles deserialization logic, passing the reader and current token.
+     * @param deserializationFunc The function that handles deserialization logic, passing the reader and current
+     * token.
      * @param <T> The type of object that is being deserialized.
      * @return The deserialized object, or null if the {@link JsonToken#NULL} represents the object.
      * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_OBJECT}.
@@ -71,9 +230,9 @@ public final class JsonUtils {
     /**
      * Handles basic logic for deserializing an array before passing it into the deserialization function.
      * <p>
-     * This will initialize the {@link JsonReader} for array reading and then check if the current token is
-     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw
-     * an {@link IllegalStateException}.
+     * This will initialize the {@link JsonReader} for array reading and then check if the current token is {@link
+     * JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw an {@link
+     * IllegalStateException}.
      * <p>
      * Use {@link #deserializeObject(JsonReader, BiFunction)} if a JSON object is being deserialized.
      *

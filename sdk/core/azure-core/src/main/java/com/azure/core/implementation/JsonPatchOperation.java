@@ -4,11 +4,11 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.serializer.JsonCapable;
-import com.azure.core.util.serializer.JsonReader;
-import com.azure.core.util.serializer.JsonToken;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.core.util.serializer.JsonWriter;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.util.Objects;
 import java.util.Optional;

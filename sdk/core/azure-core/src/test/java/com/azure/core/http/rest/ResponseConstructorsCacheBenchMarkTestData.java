@@ -11,13 +11,13 @@ import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonCapable;
-import com.azure.core.util.serializer.JsonReader;
-import com.azure.core.util.serializer.JsonToken;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.core.util.serializer.JsonWriter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
