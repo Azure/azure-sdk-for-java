@@ -21,7 +21,7 @@ public class HealthcareTaskResult {
      * The errors property.
      */
     @JsonProperty(value = "errors")
-    private List<TextAnalyticsError> errors;
+    private List<DocumentWarning> errors;
 
     /**
      * Get the results property: The results property.
@@ -48,7 +48,7 @@ public class HealthcareTaskResult {
      *
      * @return the errors value.
      */
-    public List<TextAnalyticsError> getErrors() {
+    public List<DocumentWarning> getErrors() {
         return this.errors;
     }
 
@@ -58,7 +58,7 @@ public class HealthcareTaskResult {
      * @param errors the errors value to set.
      * @return the HealthcareTaskResult object itself.
      */
-    public HealthcareTaskResult setErrors(List<TextAnalyticsError> errors) {
+    public HealthcareTaskResult setErrors(List<DocumentWarning> errors) {
         this.errors = errors;
         return this;
     }

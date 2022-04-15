@@ -21,7 +21,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * The errors property.
      */
     @JsonProperty(value = "errors")
-    private List<TextAnalyticsError> errors;
+    private List<DocumentWarning> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -61,7 +61,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      *
      * @return the errors value.
      */
-    public List<TextAnalyticsError> getErrors() {
+    public List<DocumentWarning> getErrors() {
         return this.errors;
     }
 
@@ -71,7 +71,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * @param errors the errors value to set.
      * @return the AnalyzeJobState object itself.
      */
-    public AnalyzeJobState setErrors(List<TextAnalyticsError> errors) {
+    public AnalyzeJobState setErrors(List<DocumentWarning> errors) {
         this.errors = errors;
         return this;
     }

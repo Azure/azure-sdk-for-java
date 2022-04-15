@@ -18,12 +18,14 @@ import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
+import com.azure.ai.textanalytics.implementation.models.DocumentWarning;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskResult;
-import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.ErrorCode;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
@@ -31,8 +33,8 @@ import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationR
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
-import com.azure.ai.textanalytics.implementation.models.InnerError;
-import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
+import com.azure.ai.textanalytics.implementation.models.InnerErrorCode;
+import com.azure.ai.textanalytics.implementation.models.InnerErrorModel;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseTaskResult;
@@ -58,7 +60,6 @@ import com.azure.ai.textanalytics.implementation.models.SentimentTaskResult;
 import com.azure.ai.textanalytics.implementation.models.SingleClassificationDocument;
 import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -101,6 +102,7 @@ import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -192,7 +194,7 @@ public final class Utility {
             final ErrorResponse errorResponse = errorException.getValue();
             com.azure.ai.textanalytics.models.TextAnalyticsError textAnalyticsError = null;
             if (errorResponse != null && errorResponse.getError() != null) {
-//                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
+                textAnalyticsError = toTextAnalyticsError(errorResponse.getError());
             }
             return new HttpResponseException(errorException.getMessage(), errorException.getResponse(),
                 textAnalyticsError);
@@ -240,27 +242,25 @@ public final class Utility {
     }
 
     /**
-     * Convert {@link TextAnalyticsError} to {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
-     * This function maps the service returned {@link TextAnalyticsError inner error} to the top level
+     * Convert {@link Error} to {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * This function maps the service returned {@link Error inner error} to the top level
      * {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}, if inner error present.
      *
-     * @param textAnalyticsError the {@link TextAnalyticsError} returned by the service.
+     * @param error the {@link Error} returned by the service.
      * @return the {@link com.azure.ai.textanalytics.models.TextAnalyticsError} returned by the SDK.
      */
-    public static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
-        TextAnalyticsError textAnalyticsError) {
-
-        final InnerError innerError = textAnalyticsError.getInnererror();
+    public static TextAnalyticsError toTextAnalyticsError(Error error) {
+        final InnerErrorModel innerError = error.getInnererror();
 
         if (innerError == null) {
-            final ErrorCodeValue errorCodeValue = textAnalyticsError.getCode();
+            final ErrorCode errorCode = error.getCode();
             return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                TextAnalyticsErrorCode.fromString(errorCodeValue == null ? null : errorCodeValue.toString()),
-                textAnalyticsError.getMessage(),
-                textAnalyticsError.getTarget());
+                TextAnalyticsErrorCode.fromString(errorCode == null ? null : errorCode.toString()),
+                error.getMessage(),
+                error.getTarget());
         }
 
-        final InnerErrorCodeValue innerErrorCodeValue = innerError.getCode();
+        final InnerErrorCode innerErrorCodeValue = innerError.getCode();
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
             TextAnalyticsErrorCode.fromString(innerErrorCodeValue == null ? null : innerErrorCodeValue.toString()),
             innerError.getMessage(),
@@ -268,7 +268,7 @@ public final class Utility {
     }
 
     public static TextAnalyticsWarning toTextAnalyticsWarning(
-        com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarning warning) {
+        DocumentWarning warning) {
         final WarningCodeValue warningCodeValue = warning.getCode();
         return new TextAnalyticsWarning(
             WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
@@ -390,8 +390,10 @@ public final class Utility {
                 documentLanguage.getDetectedLanguage();
 
             // warnings
-            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
-                                                            .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+            final List<TextAnalyticsWarning> warnings =
+                documentLanguage.getWarnings().stream()
+                    .map(warning -> toTextAnalyticsWarning(warning))
+                    .collect(Collectors.toList());
 
             detectLanguageResults.add(new DetectLanguageResult(
                 documentLanguage.getId(),
@@ -405,8 +407,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : languageResult.getErrors()) {
             detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
-                null, null));
-//                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new SimpleResponse<>(response,
@@ -425,11 +426,11 @@ public final class Utility {
                 documentLanguage.getDetectedLanguage();
 
             // warnings
-            final List<TextAnalyticsWarning> warnings = null;
-//                documentLanguage.getWarnings()
-//                    .stream()
-//                    .map(warning -> toTextAnalyticsWarning(warning))
-//                    .collect(Collectors.toList());
+            final List<TextAnalyticsWarning> warnings =
+                documentLanguage.getWarnings()
+                    .stream()
+                    .map(warning -> toTextAnalyticsWarning(warning))
+                    .collect(Collectors.toList());
 
             detectLanguageResults.add(new DetectLanguageResult(
                 documentLanguage.getId(),
@@ -438,15 +439,13 @@ public final class Utility {
                 null,
                 new DetectedLanguage(detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
-//                    new IterableStream<>(warnings)
-                    null
+                    new IterableStream<>(warnings)
                 )));
         }
         // Document errors
         for (DocumentError documentError : languageResult.getErrors()) {
             detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
-                null, null));
-//                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new SimpleResponse<>(response,
@@ -476,8 +475,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
-//                toTextAnalyticsError(documentError.getError()), null));
-                null, null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new SimpleResponse<>(response,
@@ -507,8 +505,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
-//                toTextAnalyticsError(documentError.getError()), null));
-                null, null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new SimpleResponse<>(response,
@@ -527,8 +524,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : entitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
-                null, null));
-//                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
@@ -582,8 +578,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : results.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
-//                toTextAnalyticsError(documentError.getError()), null));
-                null, null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
         return recognizeEntitiesResults;
     }
@@ -670,23 +665,21 @@ public final class Utility {
                     })
                     .collect(Collectors.toList());
             // Warnings
-//            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
-//                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
-            final List<TextAnalyticsWarning> warnings = null;
+            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
-                new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(), null)
-//                    new IterableStream<>(warnings))
+                new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(),
+                    new IterableStream<>(warnings))
             ));
         });
         // Document errors
         for (DocumentError documentError : piiEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
-                null, null));
-//                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
         return recognizeEntitiesResults;
     }
@@ -727,10 +720,8 @@ public final class Utility {
                 return piiEntity;
             }).collect(Collectors.toList());
             // Warnings
-            final List<TextAnalyticsWarning> warnings = null;
-//
-//                documentEntities.getWarnings().stream().map(
-//                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentEntities.getId(),
@@ -744,8 +735,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : piiEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
-//                toTextAnalyticsError(documentError.getError()), null));
-                null, null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, piiEntitiesResult.getModelVersion(),
@@ -756,7 +746,6 @@ public final class Utility {
         final KeyPhraseResult keyPhraseResult) {
         // List of documents results
         final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
-//        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
         for (KeyPhraseResultDocumentsItem documentKeyPhrases : keyPhraseResult.getDocuments()) {
             final String documentId = documentKeyPhrases.getId();
             keyPhraseResultList.add(new ExtractKeyPhraseResult(
@@ -772,8 +761,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
-                null, null));
-//                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
@@ -842,8 +830,7 @@ public final class Utility {
         // Document errors
         for (DocumentError documentError : entityLinkingResult.getErrors()) {
             linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
-//                toTextAnalyticsError(documentError.getError()), null));
-                null, null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new RecognizeLinkedEntitiesResultCollection(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
@@ -867,8 +854,7 @@ public final class Utility {
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
-                null, null));
-//                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
         return new AnalyzeSentimentResultCollection(analyzeSentimentResults, sentimentResponse.getModelVersion(),
             sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics()));
@@ -891,8 +877,7 @@ public final class Utility {
         }
         for (DocumentError documentError : extractiveSummarizationResult.getErrors()) {
             extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
-                null));
-//                toTextAnalyticsError(documentError.getError())));
+                toTextAnalyticsError(documentError.getError())));
         }
         return new ExtractSummaryResultCollection(extractSummaryResults,
             extractiveSummarizationResult.getModelVersion(),
@@ -1004,10 +989,7 @@ public final class Utility {
         // Document errors
         healthcareResult.getErrors().forEach(documentError ->
             analyzeHealthcareEntitiesResults.add(new AnalyzeHealthcareEntitiesResult(
-                documentError.getId(),
-                null,
-                null))
-//                toTextAnalyticsError(documentError.getError())))
+                documentError.getId(), null, toTextAnalyticsError(documentError.getError())))
         );
         return IterableStream.of(analyzeHealthcareEntitiesResults);
     }
@@ -1165,9 +1147,8 @@ public final class Utility {
             }).collect(Collectors.toList());
 
         // Warnings
-        final List<TextAnalyticsWarning> warnings = null;
-//            documentSentiment.getWarnings().stream().map(
-//                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+        final List<TextAnalyticsWarning> warnings = documentSentiment.getWarnings().stream().map(
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
         final DocumentSentimentValue documentSentimentValue = documentSentiment.getSentiment();
         return new AnalyzeSentimentResult(
@@ -1182,8 +1163,7 @@ public final class Utility {
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
                 new IterableStream<>(sentenceSentiments),
-//                new IterableStream<>(warnings)
-                null
+                new IterableStream<>(warnings)
             ));
     }
 
@@ -1265,9 +1245,8 @@ public final class Utility {
         }).collect(Collectors.toList());
 
         // Warnings
-        final List<TextAnalyticsWarning> warnings = null;
-//        documentSummary.getWarnings().stream().map(
-//            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+        final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
+            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
         final SummarySentenceCollection summarySentenceCollection = new SummarySentenceCollection(
             new IterableStream<>(summarySentences),
@@ -1301,8 +1280,7 @@ public final class Utility {
 
         for (DocumentError documentError : customEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
-                null, null));
-//                toTextAnalyticsError(documentError.getError()), null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         final RecognizeCustomEntitiesResultCollection resultCollection =
@@ -1338,8 +1316,7 @@ public final class Utility {
 
         for (DocumentError documentError : customSingleClassificationResult.getErrors()) {
             singleCategoryClassifyResults.add(new SingleCategoryClassifyResult(documentError.getId(), null,
-                null));
-//                toTextAnalyticsError(documentError.getError())));
+                toTextAnalyticsError(documentError.getError())));
         }
 
         final SingleCategoryClassifyResultCollection resultCollection =
@@ -1402,8 +1379,7 @@ public final class Utility {
 
         for (DocumentError documentError : customMultiClassificationResult.getErrors()) {
             multiCategoryClassifyResults.add(new MultiCategoryClassifyResult(documentError.getId(), null,
-                null));
-//                toTextAnalyticsError(documentError.getError())));
+                toTextAnalyticsError(documentError.getError())));
         }
 
         final MultiCategoryClassifyResultCollection resultCollection =
