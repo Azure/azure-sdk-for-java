@@ -19,7 +19,7 @@ Please refer it to add dependency and configure authentication environment varia
 
 ## Samples Details
 
-All samples are located in [CreateServiceLinker](SERVICELINKER_SAMPLE_CODE) file, you can use `main()` entrypoint to run it directly.
+All samples are located in [CreateServiceLinker][SERVICELINKER_SAMPLE_CODE] file, you can use `main()` entrypoint to run it directly.
 
 ### CreatSpringCloudAndSQLConnection
 
@@ -45,11 +45,13 @@ The Service Linker provider need user token in a separated header in the followi
 ## Next steps
 
 Start using Service Linker Java SDK in your solutions.
+
 For more information about Service Linker, refer [here][SERVICELINKER_DOCS].
+
 For more information about other Azure Management SDK, refer [here][MGMT_SDK_LINK].
 
 <!-- LINKS -->
-[SERVICELINKER_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicelinker/azure-resourcemanager-eventgrid#getting-started
-[SERVICELINKER_SAMPLE_CODE]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicelinker/azure-resourcemanager-servicelinker/src/samples/java/com/azure/resourcemanager/servicelinker/CreateServiceLinker.java
-[SERVICELINKER_DOCS]:https://docs.microsoft.com/azure/service-connector
+[SERVICELINKER_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicelinker/azure-resourcemanager-servicelinker#getting-started
+[SERVICELINKER_SAMPLE_CODE]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicelinker/azure-resourcemanager-servicelinker/src/samples/java/com/azure/resourcemanager/servicelinker/CreateServiceLinker.java
+[SERVICELINKER_DOCS]: https://docs.microsoft.com/azure/service-connector
 [MGMT_SDK_LINK]: https://aka.ms/azsdk/java/mgmt
