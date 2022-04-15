@@ -12,7 +12,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SyncRestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -61,7 +60,7 @@ public final class SecretClient {
     private final SecretAsyncClient client;
     private final String vaultUrl;
     private final SecretServiceSync service;
-    private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(SecretClient.class);
     private final HttpPipeline pipeline;
 
     /**
