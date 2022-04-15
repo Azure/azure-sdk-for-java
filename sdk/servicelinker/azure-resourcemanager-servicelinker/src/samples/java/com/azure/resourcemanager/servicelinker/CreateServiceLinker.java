@@ -176,8 +176,8 @@ public class CreateServiceLinker {
         private final AzureEnvironment environment;
 
         public UserTokenPolicy(TokenCredential credential, AzureEnvironment environment) {
-                this.credential = credential;
-                this.environment = environment;
+            this.credential = credential;
+            this.environment = environment;
         }
 
         @Override
