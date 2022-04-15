@@ -416,12 +416,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
-        try {
-            return blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        return client.uploadWithResponseSync(options, context);
     }
 
     /**
