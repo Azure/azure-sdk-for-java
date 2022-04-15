@@ -99,7 +99,7 @@ public final class SyncRestProxy implements InvocationHandler {
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
     public HttpResponse send(HttpRequest request, Context contextData) {
-        return httpPipeline.sendSynchronously(request, contextData);
+        return httpPipeline.sendSync(request, contextData);
     }
 
     @Override
@@ -134,7 +134,7 @@ public final class SyncRestProxy implements InvocationHandler {
             }
 
             if (request.getBody() != null) {
-                request.setContent(validateLengthSync(request));
+                request.setBody(validateLengthSync(request));
             }
 
             final HttpResponse response = send(request, context);
@@ -180,7 +180,7 @@ public final class SyncRestProxy implements InvocationHandler {
     }
 
     static BinaryData validateLengthSync(final HttpRequest request) {
-        final BinaryData binaryData = request.getContent();
+        final BinaryData binaryData = request.getBodyAsBinaryData();
         if (binaryData == null) {
             return binaryData;
         }
@@ -332,7 +332,7 @@ public final class SyncRestProxy implements InvocationHandler {
                 // sending the request to the service. There is no memory copy that happens here. Sources like
                 // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
                 // by the HttpClient implementations.
-                request.setContent(binaryData);
+                request.setBody(binaryData);
                 return request;
             }
 
@@ -355,7 +355,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
 //                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
 
-                request.setContent(BinaryData.fromStream(new ByteArrayInputStream(stream.toByteArray(), 0, stream.size())));
+                request.setBody(BinaryData.fromStream(new ByteArrayInputStream(stream.toByteArray(), 0, stream.size())));
 //                request.setContent(BinaryData.fromBytes(stream.toByteArray()));
 
             } else if (bodyContentObject instanceof byte[]) {
@@ -433,7 +433,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
         Exception e;
-        byte[] responseBytes = decodedResponse.getSourceResponse().getContent().toBytes();
+        byte[] responseBytes = decodedResponse.getSourceResponse().getBodyAsBinaryData().toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
             e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
@@ -539,7 +539,7 @@ public final class SyncRestProxy implements InvocationHandler {
             result = isSuccess;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // Mono<byte[]>
-            byte[] responseBodyBytes = response.getSourceResponse().getContent().toBytes();
+            byte[] responseBodyBytes = response.getSourceResponse().getBodyAsBinaryData().toBytes();
             if (returnValueWireType == Base64Url.class) {
                 // Mono<Base64Url>
                 responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
@@ -551,7 +551,7 @@ public final class SyncRestProxy implements InvocationHandler {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            result = response.getSourceResponse().getContent();
+            result = response.getSourceResponse().getBodyAsBinaryData();
         } else {
             // Mono<Object> or Mono<Page<T>>
             result = response.getDecodedBodySync((byte[]) null);
