@@ -130,7 +130,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
             };
         }
 
-        public static void setLogger(Log logger) {
+        private static void setLogger(Log logger) {
             AzureCoreEnvMapping.logger = logger;
         }
 

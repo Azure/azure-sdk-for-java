@@ -18,7 +18,8 @@ public interface Deployments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account.
+     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Deployment> list(String resourceGroupName, String accountName);
 
@@ -31,7 +32,8 @@ public interface Deployments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account.
+     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Deployment> list(String resourceGroupName, String accountName, Context context);
 
@@ -58,7 +60,7 @@ public interface Deployments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deployments associated with the Cognitive Services account.
+     * @return the specified deployments associated with the Cognitive Services account along with {@link Response}.
      */
     Response<Deployment> getWithResponse(
         String resourceGroupName, String accountName, String deploymentName, Context context);
@@ -95,7 +97,7 @@ public interface Deployments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deployments associated with the Cognitive Services account.
+     * @return the specified deployments associated with the Cognitive Services account along with {@link Response}.
      */
     Deployment getById(String id);
 
@@ -107,7 +109,7 @@ public interface Deployments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deployments associated with the Cognitive Services account.
+     * @return the specified deployments associated with the Cognitive Services account along with {@link Response}.
      */
     Response<Deployment> getByIdWithResponse(String id, Context context);
 

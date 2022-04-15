@@ -3,8 +3,10 @@
 
 package com.azure.resourcemanager.appplatform.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
+import com.azure.resourcemanager.appplatform.models.ActiveDeploymentCollection;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
@@ -20,10 +22,12 @@ import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.TemporaryDisk;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class SpringAppImpl
     extends ExternalChildResourceImpl<SpringApp, AppResourceInner, SpringServiceImpl, SpringService>
@@ -32,6 +36,7 @@ public class SpringAppImpl
     private final SpringAppDeploymentsImpl deployments = new SpringAppDeploymentsImpl(this);
     private final SpringAppServiceBindingsImpl serviceBindings = new SpringAppServiceBindingsImpl(this);
     private final SpringAppDomainsImpl domains = new SpringAppDomainsImpl(this);
+    private FunctionalTaskItem setActiveDeploymentTask = null;
 
     SpringAppImpl(String name, SpringServiceImpl parent, AppResourceInner innerObject) {
         super(name, parent, innerObject);
@@ -91,19 +96,10 @@ public class SpringAppImpl
     }
 
     @Override
-    public OffsetDateTime createdTime() {
-        if (innerModel().properties() == null) {
-            return null;
-        }
-        return innerModel().properties().createdTime();
-    }
-
-    @Override
     public String activeDeploymentName() {
-        if (innerModel().properties() == null) {
-            return null;
-        }
-        return innerModel().properties().activeDeploymentName();
+        // get the first active deployment
+        Optional<SpringAppDeployment> deployment = deployments.list().stream().filter(SpringAppDeployment::isActive).findFirst();
+        return deployment.map(SpringAppDeployment::appName).orElse(null);
     }
 
     @Override
@@ -113,11 +109,7 @@ public class SpringAppImpl
 
     @Override
     public Mono<SpringAppDeployment> getActiveDeploymentAsync() {
-        String activeDeploymentName = activeDeploymentName();
-        if (activeDeploymentName == null || activeDeploymentName.isEmpty()) {
-            return Mono.empty();
-        }
-        return deployments().getByNameAsync(activeDeploymentName);
+        return deployments.listAsync().filter(SpringAppDeployment::isActive).singleOrEmpty();
     }
 
     @Override
@@ -217,9 +209,22 @@ public class SpringAppImpl
 
     @Override
     public SpringAppImpl withActiveDeployment(String name) {
-        ensureProperty();
-        innerModel().properties().withActiveDeploymentName(name);
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return this;
+        }
+        this.setActiveDeploymentTask =
+            context -> manager().serviceClient().getApps()
+                .setActiveDeploymentsAsync(parent().resourceGroupName(), parent().name(), name(), new ActiveDeploymentCollection().withActiveDeploymentNames(Arrays.asList(name)))
+                .then(context.voidMono());
         return this;
+    }
+
+    @Override
+    public void beforeGroupCreateOrUpdate() {
+        if (setActiveDeploymentTask != null) {
+            this.addPostRunDependent(setActiveDeploymentTask);
+        }
+        setActiveDeploymentTask = null;
     }
 
     @Override

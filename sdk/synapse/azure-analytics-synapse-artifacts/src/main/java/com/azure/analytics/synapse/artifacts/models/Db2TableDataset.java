@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Db2 table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -97,6 +99,55 @@ public class Db2TableDataset extends Dataset {
      */
     public Db2TableDataset setTable(Object table) {
         this.table = table;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2TableDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2TableDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2TableDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2TableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2TableDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2TableDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2TableDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

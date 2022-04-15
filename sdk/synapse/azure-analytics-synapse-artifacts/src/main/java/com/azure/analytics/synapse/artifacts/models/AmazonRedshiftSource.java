@@ -72,4 +72,39 @@ public final class AmazonRedshiftSource extends TabularSource {
         this.redshiftUnloadSettings = redshiftUnloadSettings;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }
