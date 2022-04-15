@@ -137,7 +137,6 @@
         <module>azure-core-test</module>
         <module>azure-core-tracing-opentelemetry</module>
         <module>azure-core-jackson-tests</module>
-        <module>../storage</module>
       </modules>
     </profile>
   </profiles>
