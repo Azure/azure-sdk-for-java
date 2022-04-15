@@ -231,9 +231,9 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             return null;
         }
         return clientOptions.getHeaders()
-                                .stream()
-                                .map(h -> new Header(h.getName(), h.getValues()))
-                                .collect(Collectors.toList());
+                            .stream()
+                            .map(h -> new Header(h.getName(), h.getValues()))
+                            .collect(Collectors.toList());
     }
 
     /**

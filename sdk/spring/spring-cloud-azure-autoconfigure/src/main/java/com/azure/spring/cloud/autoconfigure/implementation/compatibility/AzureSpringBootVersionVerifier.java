@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AzureSpringBootVersionVerifier{
+public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
 
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5 = "org.springframework.boot.context.properties.bind.Bindable.BindRestriction";
