@@ -2631,7 +2631,7 @@
     <Bug pattern="SR_NOT_CHECKED"/>
   </Match>
 
-  <!-- False Positive, exception won't be null>
+  <!-- False Positive, exception won't be null> -->
   <Match>
     <Class name="com.azure.core.http.rest.SyncRestProxy"/>
     <Method name="invoke"/>
