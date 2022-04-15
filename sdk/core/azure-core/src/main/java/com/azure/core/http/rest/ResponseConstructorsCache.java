@@ -169,10 +169,10 @@ final class ResponseConstructorsCache {
 
     private static Response<?> constructResponseSync(MethodHandle handle, String exceptionMessage,
                                                        ClientLogger logger, Object... params) {
-            try {
-                return (Response<?>) handle.invokeWithArguments(params);
-            } catch (Throwable throwable) {
-                throw logger.logExceptionAsError(new RuntimeException(exceptionMessage, throwable));
-            }
+        try {
+            return (Response<?>) handle.invokeWithArguments(params);
+        } catch (Throwable throwable) {
+            throw logger.logExceptionAsError(new RuntimeException(exceptionMessage, throwable));
+        }
     }
 }

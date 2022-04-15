@@ -58,7 +58,7 @@ import java.util.List;
 
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
-//TODO g2vinay: Address any Pending comments from this PR: https://github.com/Azure/azure-sdk-for-java/pull/27911/
+//TODO (g2vinay): Address any Pending comments from this PR: https://github.com/Azure/azure-sdk-for-java/pull/27911/
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  *
