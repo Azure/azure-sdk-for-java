@@ -148,24 +148,15 @@ public class SpringAppDeploymentImpl
         if (innerModel().properties() == null) {
             innerModel().withProperties(new DeploymentResourceProperties());
         }
-        if (type == null) {
-            innerModel().properties().withSource(new UserSourceInfo());
-            return;
-        }
         if (innerModel().properties().source() == null) {
-            switch (type.toString()) {
-                case "Jar":
-                    innerModel().properties().withSource(new JarUploadedUserSourceInfo());
-                    break;
-                case "Source":
-                    innerModel().properties().withSource(new SourceUploadedUserSourceInfo());
-                    break;
-                case "NetCoreZip":
-                    innerModel().properties().withSource(new NetCoreZipUploadedUserSourceInfo());
-                    break;
-                default:
-                    innerModel().properties().withSource(new UserSourceInfo());
-                    break;
+            if (type == UserSourceType.JAR) {
+                innerModel().properties().withSource(new JarUploadedUserSourceInfo());
+            } else if (type == UserSourceType.SOURCE) {
+                innerModel().properties().withSource(new SourceUploadedUserSourceInfo());
+            } else if (type == UserSourceType.NET_CORE_ZIP) {
+                innerModel().properties().withSource(new NetCoreZipUploadedUserSourceInfo());
+            } else {
+                innerModel().properties().withSource(new UserSourceInfo());
             }
         }
     }
