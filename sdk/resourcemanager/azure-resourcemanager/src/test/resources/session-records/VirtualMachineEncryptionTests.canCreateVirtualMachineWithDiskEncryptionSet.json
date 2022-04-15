@@ -161,7 +161,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/c7c4f95c-de77-42fe-a51b-3a4f98a85fab?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/c7c4f95c-de77-42fe-a51b-3a4f98a85fab?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "147b34d3-7093-4b1d-9c42-3e5e5a0782c2",
@@ -335,7 +335,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "7b8c6ffd-dfa6-4c52-a906-081a1ef4aaec",
@@ -362,7 +362,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "037e5021-4270-4139-b6dd-3fa30f201f83",
@@ -389,7 +389,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "12c1eb4b-f2dd-4852-9c86-2bb3811a321c",
@@ -416,7 +416,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "44547f31-0ec2-402f-8a08-98f3f0abe5cc",
@@ -443,7 +443,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/877ad3c5-fbe4-4de4-9379-00a099ead730?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "156be82d-2474-40bb-9c64-4033cb897c24",
@@ -587,7 +587,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/e5722028-e332-42be-be08-3762150bb5e0?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96586/providers/Microsoft.KeyVault/vaults/kv47387/providers/Microsoft.Authorization/roleAssignments/e5722028-e332-42be-be08-3762150bb5e0?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "5296ae8d-02d0-4ff9-998c-00da4cfde320",

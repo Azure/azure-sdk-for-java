@@ -658,7 +658,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Authorization/roleAssignments/2f5da358-44b2-4362-b2e8-489d8570ab4b?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Authorization/roleAssignments/2f5da358-44b2-4362-b2e8-489d8570ab4b?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fd10d1b1-4303-4525-be39-a0bd41e4307c",
@@ -685,7 +685,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Storage/storageAccounts/35a1f24b39/providers/Microsoft.Authorization/roleAssignments/e8407579-139a-4715-8f32-bcb5749b19a4?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Storage/storageAccounts/35a1f24b39/providers/Microsoft.Authorization/roleAssignments/e8407579-139a-4715-8f32-bcb5749b19a4?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "27ad6711-6a2a-47b6-86b1-33f9b7aada9d",
@@ -712,7 +712,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Authorization/roleAssignments?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Authorization/roleAssignments?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "34371325-293e-497f-9732-acab4cf89ade",
@@ -739,7 +739,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Storage/storageAccounts/35a1f24b39/providers/Microsoft.Authorization/roleAssignments?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg62927/providers/Microsoft.Storage/storageAccounts/35a1f24b39/providers/Microsoft.Authorization/roleAssignments?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4ba0892e-389e-4085-b273-7c44e326ccbb",

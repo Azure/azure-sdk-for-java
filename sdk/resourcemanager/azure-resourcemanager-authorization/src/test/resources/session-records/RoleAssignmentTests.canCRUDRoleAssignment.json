@@ -126,7 +126,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/7002a4fb-9fab-4fb7-a2ea-0d3873d0f949?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/7002a4fb-9fab-4fb7-a2ea-0d3873d0f949?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.11.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2baf8862-177e-4538-a2b7-ed5a55843bc7",
@@ -153,7 +153,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/7002a4fb-9fab-4fb7-a2ea-0d3873d0f949?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/7002a4fb-9fab-4fb7-a2ea-0d3873d0f949?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.11.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "93ad8bed-ee33-4610-84fb-0df39e027762",
@@ -180,7 +180,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments?api-version=2020-08-01-preview&$filter=principalId+eq+%274979fbeb-21e7-4be9-af66-cf1702b480fd%27",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments?api-version=2020-10-01&$filter=principalId+eq+%274979fbeb-21e7-4be9-af66-cf1702b480fd%27",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.11.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e37b997f-b2e2-400d-bf79-726b00b7f9ce",

@@ -458,7 +458,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a5219c99-d53d-4032-a7b2-89cd7be6c30b",
@@ -485,7 +485,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "24dadc4e-3acf-4cb7-b963-829a8a5510c1",
@@ -512,7 +512,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "908fc96c-adf9-4b47-870e-bf798f4d22e1",
@@ -539,7 +539,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4903aee8-9ffc-4004-b146-272c129f9487",
@@ -566,7 +566,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7132b1c2-e706-4866-98ab-e774b829f598",
@@ -593,7 +593,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0a3b4707-2cd4-4231-8b87-e05c5a621eaa",
@@ -620,7 +620,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/9b4c4cf5-e5a0-4f7a-a2e2-2c3242f91dda?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "66a3481d-3dd6-4232-8f1f-b4181e70486a",
@@ -991,7 +991,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fe46f8e5-5188-4806-91cb-9bb51f0885ce",
@@ -1018,7 +1018,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6586ce0c-6b52-408e-9035-4072bc5ae3d5",
@@ -1045,7 +1045,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "37f958e1-0ed3-491c-9438-dccb66b18328",
@@ -1072,7 +1072,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "12ca0f97-d3a7-4acd-9191-a25b64c6c126",
@@ -1099,7 +1099,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f901bdd7-fb9d-46d9-aef1-5e5f36c54aa9",
@@ -1126,7 +1126,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cb3bf009-7611-487c-9f37-d624370fefe2",
@@ -1153,7 +1153,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/a1ff658a2c76477/providers/Microsoft.Authorization/roleAssignments/c4151b1a-c3da-48bb-9af1-3fdea8e5ef86?api-version=2020-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cd7659ec-da3d-4943-b034-5d52cdcb3e1b",
