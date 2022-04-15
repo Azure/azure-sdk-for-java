@@ -102,6 +102,10 @@ public final class FileContent extends BinaryDataContent {
         return this.position;
     }
 
+    public int getChunkSize() {
+        return chunkSize;
+    }
+
     @Override
     public String toString() {
         return new String(toBytes(), StandardCharsets.UTF_8);

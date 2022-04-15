@@ -4,6 +4,8 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -70,8 +72,8 @@ public abstract class HttpResponse implements Closeable {
      * @return The {@link BinaryData} response body.
      */
     public BinaryData getContent() {
-        // TODO (kasobol-msft) revapi isn't happy about adding abstract method.
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("This hasn't been implemented"));
+        // TODO (kasobol-msft) validate is this correct ? (added by g2vinay).
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 
     /**

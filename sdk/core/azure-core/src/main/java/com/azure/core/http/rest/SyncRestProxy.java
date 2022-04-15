@@ -145,7 +145,11 @@ public final class SyncRestProxy implements InvocationHandler {
                 methodParser.getReturnType(), context, options);
         } catch (Exception e) {
             throwable = e;
-            throw new RuntimeException(e);
+            if (e instanceof RuntimeException) {
+                throw e;
+            } else {
+                throw new RuntimeException(e);
+            }
         } finally {
             if (decodedResponse != null || throwable != null) {
                 endTracingSpan(decodedResponse, throwable, context);
@@ -428,18 +432,23 @@ public final class SyncRestProxy implements InvocationHandler {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
+        Exception e;
         byte[] responseBytes = decodedResponse.getSourceResponse().getContent().toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
-            throw new RuntimeException(instantiateUnexpectedException(
-                methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
-                null, null));
+            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody =  decodedResponse.getDecodedBodySync(responseBytes);
             // create exception with un-decodable content string and without exception body object.
-            throw new RuntimeException(instantiateUnexpectedException(
-                methodParser.getUnexpectedException(responseStatusCode),
-                decodedResponse.getSourceResponse(), responseBytes, decodedBody));
+            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                decodedResponse.getSourceResponse(), responseBytes, decodedBody);
+        }
+
+        if (e instanceof HttpResponseException) {
+            throw ((HttpResponseException) e);
+        } else {
+            throw new RuntimeException(e);
         }
     }
 
@@ -450,7 +459,7 @@ public final class SyncRestProxy implements InvocationHandler {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                response.getSourceResponse().getContent().toBytes();
+                response.getSourceResponse().close();
                 return createResponseSync(response, entityType, null);
             } else {
                 Object bodyAsObject =  handleBodyReturnTypeSync(response, methodParser, bodyType);
@@ -566,10 +575,6 @@ public final class SyncRestProxy implements InvocationHandler {
         final RequestOptions options) {
         final HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options);
-        //TODO: Wire Tracing and Context Flow synchronously.
-//                .doOnEach(SyncRestProxy::endTracingSpan)
-//                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
-
         final Object result;
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
