@@ -56,7 +56,6 @@ public class SpringServiceCertificateImpl
         return innerModel().id();
     }
 
-
     public AppPlatformManager manager() {
         return parent().manager();
     }
