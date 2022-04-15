@@ -25,41 +25,6 @@ import java.util.regex.PatternSyntaxException;
  * This represents proxy configuration to be used in http clients..
  */
 public class ProxyOptions {
-    /**
-     * Represents a list of hosts that should be reached directly, bypassing the proxy.
-     * This is a list of patterns separated by '|'. The patterns may start or end with a '*' for wildcards.
-     * Any host matching one of these patterns will be reached through a direct connection instead of through a proxy.
-     *
-     * Default value is {@code null}
-     */
-    public static final String PROPERTY_HTTP_PROXY_NON_PROXY_HOSTS = "http.proxy.non-proxy-hosts";
-
-    /**
-     * The HTTP host name of the proxy server.
-     *
-     * Default value is {@code null}.
-     */
-    public static final String PROPERTY_HTTP_PROXY_HOST = "http.proxy.hostname";
-
-    /**
-     * The port number of the proxy server.
-     *
-     * Default value is {@code 443}.
-     */
-    public static final String PROPERTY_HTTP_PROXY_PORT = "http.proxy.port";
-
-    /**
-     * The HTTP proxy server user.
-     * Default value is {@code null}.
-     */
-    public static final String PROPERTY_HTTP_PROXY_USER = "http.proxy.username";
-
-    /**
-     * The HTTP proxy server password.
-     * Default value is {@code null}.
-     */
-    public static final String PROPERTY_HTTP_PROXY_PASSWORD = "http.proxy.password";
-
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final String INVALID_AZURE_PROXY_URL = "Configuration {} is an invalid URL and is being ignored.";
 
@@ -97,23 +62,23 @@ public class ProxyOptions {
     private static final Pattern UNESCAPED_PERIOD = Pattern.compile("(?<!\\\\)\\.");
     private static final Pattern ANY = Pattern.compile("\\*");
 
-    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder.ofString(PROPERTY_HTTP_PROXY_NON_PROXY_HOSTS)
+    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
         .shared(true)
         .logValue(true)
         .build();
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(PROPERTY_HTTP_PROXY_HOST)
+    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
         .shared(true)
         .logValue(true)
         .build();
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(PROPERTY_HTTP_PROXY_PORT)
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
         .shared(true)
         .defaultValue(DEFAULT_HTTPS_PORT)
         .build();
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(PROPERTY_HTTP_PROXY_USER)
+    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
         .shared(true)
         .logValue(true)
         .build();
-    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(PROPERTY_HTTP_PROXY_PASSWORD)
+    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD)
         .shared(true)
         .build();
 
@@ -264,11 +229,7 @@ public class ProxyOptions {
             return null;
         }
 
-        ProxyOptions proxyOptions = attemptToLoadAzureSdkProxy(configuration, createUnresolved);
-        if (proxyOptions != null) {
-            return proxyOptions;
-        }
-
+        ProxyOptions proxyOptions = null;
         // System proxy configuration is only possible through system properties.
         // Only use system proxies when the prerequisite property is 'true'.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
@@ -283,6 +244,11 @@ public class ProxyOptions {
                 LOGGER.verbose("Using proxy created from HTTP_PROXY environment variable.");
                 return proxyOptions;
             }
+        }
+
+        proxyOptions = attemptToLoadAzureSdkProxy(configuration, createUnresolved);
+        if (proxyOptions != null) {
+            return proxyOptions;
         }
 
         proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, HTTPS);
@@ -541,5 +507,45 @@ public class ProxyOptions {
         public Proxy.Type toProxyType() {
             return proxyType;
         }
+    }
+
+    /**
+     * Lists available configuration property names for HTTP {@link ProxyOptions}.
+     */
+    public static class ConfigurationProperties {
+        /**
+         * Represents a list of hosts that should be reached directly, bypassing the proxy.
+         * This is a list of patterns separated by '|'. The patterns may start or end with a '*' for wildcards.
+         * Any host matching one of these patterns will be reached through a direct connection instead of through a proxy.
+         * <p>
+         * Default value is {@code null}
+         */
+        public static final String HTTP_PROXY_NON_PROXY_HOSTS = "http.proxy.non-proxy-hosts";
+
+        /**
+         * The HTTP host name of the proxy server.
+         * <p>
+         * Default value is {@code null}.
+         */
+        public static final String HTTP_PROXY_HOST = "http.proxy.hostname";
+
+        /**
+         * The port number of the proxy server.
+         * <p>
+         * Default value is {@code 443}.
+         */
+        public static final String HTTP_PROXY_PORT = "http.proxy.port";
+
+        /**
+         * The HTTP proxy server user.
+         * Default value is {@code null}.
+         */
+        public static final String HTTP_PROXY_USER = "http.proxy.username";
+
+        /**
+         * The HTTP proxy server password.
+         * Default value is {@code null}.
+         */
+        public static final String HTTP_PROXY_PASSWORD = "http.proxy.password";
     }
 }
