@@ -790,10 +790,10 @@ public class ShareJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#Duration-Context
         Response<Void> response = shareClient.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
-        if (response != null) {
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("Share does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#Duration-Context
 
@@ -801,10 +801,10 @@ public class ShareJavaDocCodeSamples {
         Response<Void> res = shareClient.deleteIfExistsWithResponse(new ShareDeleteOptions()
                 .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)),
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (res != null) {
-            System.out.printf("Delete completed with status %d%n", res.getStatusCode());
+        if (res.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("Share does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#ShareDeleteOptions-Duration-Context
     }
@@ -851,10 +851,10 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExistsWithResponse#string-duration-context
         Response<Void> response = shareClient.deleteDirectoryIfExistsWithResponse("mydirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (response != null) {
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("Directory does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExistsWithResponse#string-duration-context
     }
@@ -874,10 +874,10 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-duration-context
         Response<Void> response = shareClient.deleteFileIfExistsWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (response != null) {
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("File does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-duration-context
 
@@ -887,10 +887,10 @@ public class ShareJavaDocCodeSamples {
 
         Response<Void> res = shareClient.deleteFileIfExistsWithResponse("myfile", options,
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (res != null) {
-            System.out.printf("Delete completed with status %d%n", res.getStatusCode());
+        if (res.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("File does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions-duration-context
     }

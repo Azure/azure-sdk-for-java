@@ -534,10 +534,10 @@ public class FileSystemClientJavaDocCodeSamples {
             .setRequestConditions(requestConditions);
 
         Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, context);
-        if (response != null) {
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("File system does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
     }
@@ -584,8 +584,12 @@ public class FileSystemClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(requestConditions);
 
-        client.deleteFileIfExistsWithResponse(fileName, options, timeout, new Context(key1, value1));
-        System.out.println("Delete request completed");
+        Response<Void> response = client.deleteFileIfExistsWithResponse(fileName, options, timeout, new Context(key1, value1));
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context
     }
 
@@ -636,7 +640,7 @@ public class FileSystemClientJavaDocCodeSamples {
 
         Response<Void> response = client.deleteDirectoryIfExistsWithResponse(directoryName, options,
             timeout, new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());

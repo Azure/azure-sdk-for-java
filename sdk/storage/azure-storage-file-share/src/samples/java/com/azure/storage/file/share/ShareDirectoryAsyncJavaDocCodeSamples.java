@@ -699,10 +699,13 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse
-        shareDirectoryAsyncClient.deleteIfExistsWithResponse()
-            .switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        shareDirectoryAsyncClient.deleteIfExistsWithResponse().subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse
     }
 
@@ -753,10 +756,13 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string
-        shareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory")
-            .switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        shareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory").subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string
     }
 
@@ -778,19 +784,26 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string
-        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile").switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile").subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         ShareDeleteOptions options = new ShareDeleteOptions().setRequestConditions(requestConditions);
 
-        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile", options)
-            .switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile", options).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions
     }
 }

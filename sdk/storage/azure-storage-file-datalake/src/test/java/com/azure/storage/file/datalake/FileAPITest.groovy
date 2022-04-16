@@ -470,7 +470,7 @@ class FileAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 200
-        secondResponse == null
+        secondResponse.getStatusCode() == 404
     }
 
     @Unroll

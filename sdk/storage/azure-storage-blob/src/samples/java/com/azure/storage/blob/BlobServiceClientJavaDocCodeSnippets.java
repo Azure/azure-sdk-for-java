@@ -381,7 +381,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         Response<Void> response = client.deleteBlobContainerIfExistsWithResponse("containerName", context);
-        if (response == null) {
+        if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());

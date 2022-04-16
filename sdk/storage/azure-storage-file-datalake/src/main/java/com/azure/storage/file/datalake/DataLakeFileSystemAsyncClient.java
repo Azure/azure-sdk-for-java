@@ -354,7 +354,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null, null).map(response -> true).switchIfEmpty(Mono.just(false));
+        return createIfNotExistsWithResponse(null, null).map(response -> response.getStatusCode() != 409);
     }
 
     /**
@@ -471,8 +471,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> true)
-            .switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> response.getStatusCode() != 404);
     }
 
     /**
@@ -490,16 +489,19 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteIfExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
      * @param options {@link DataLakePathDeleteOptions}
-     * @return A reactive response containing status code and HTTP headers signaling completion. The presence of a
-     * {@link Response} item indicates the file system was successfully deleted. An empty {@code Mono} indicates that
-     * the file system did not exist.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the file system was
+     * successfully deleted. If status code is 404, the file system does not exist.
      * @throws UnsupportedOperationException If either {@link DataLakeRequestConditions#getIfMatch()} or
      * {@link DataLakeRequestConditions#getIfNoneMatch()} is set.
      */
@@ -1067,8 +1069,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).map(response -> true)
-            .switchIfEmpty(Mono.just(false));
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).map(response ->
+            response.getStatusCode() != 404);
     }
 
     /**
@@ -1085,18 +1087,21 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteFileIfExistsWithResponse&#40;fileName, options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteFileIfExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
      * @param options {@link DataLakePathDeleteOptions}
-     * @return A reactive response {@link Mono} containing status code and HTTP headers signaling completion. The
-     * presence of a {@link Response} item indicates the file was successfully deleted. An empty {@code Mono} indicates
-     * that the file did not exist.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the file was
+     * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
@@ -1370,8 +1375,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteDirectoryIfExists(String directoryName) {
-        return deleteDirectoryIfExistsWithResponse(directoryName, new DataLakePathDeleteOptions()).map(response -> true)
-            .switchIfEmpty(Mono.just(false));
+        return deleteDirectoryIfExistsWithResponse(directoryName, new DataLakePathDeleteOptions()).map(response ->
+            response.getStatusCode() != 404);
     }
 
     /**
@@ -1389,18 +1394,21 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;recursive&#41;
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteDirectoryIfExistsWithResponse&#40;directoryName, options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteDirectoryIfExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
      * @param options {@link DataLakePathDeleteOptions}
-     * @return A reactive response {@link Mono} containing status code and HTTP headers signaling completion. The
-     * presence of a {@link Response} item indicates the directory was successfully deleted. An empty {@code Mono}
-     * indicates that the specified directory did not exist.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the file was
+     * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName,

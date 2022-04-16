@@ -666,10 +666,10 @@ public class ShareDirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context
         Response<Void> response = shareDirectoryClient.deleteIfExistsWithResponse(Duration.ofSeconds(1),
             new Context(key1, value1));
-        if (response != null) {
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("Directory does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context
     }
@@ -715,7 +715,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context
         Response<Void> response = shareDirectoryClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
@@ -738,7 +738,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-Duration-Context
         Response<Void> response = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
@@ -751,7 +751,7 @@ public class ShareDirectoryJavaDocCodeSamples {
 
         Response<Void> fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile", options,
             Duration.ofSeconds(1), new Context(key1, value1));
-        if (fileResponse == null) {
+        if (fileResponse.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());

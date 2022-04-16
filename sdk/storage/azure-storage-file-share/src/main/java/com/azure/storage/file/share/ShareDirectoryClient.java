@@ -366,7 +366,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
         Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
-        return response != null && response.getStatusCode() == 202;
+        return response.getStatusCode() == 202;
     }
 
     /**
@@ -380,10 +380,10 @@ public class ShareDirectoryClient {
      * <pre>
      * Response&lt;Void&gt; response = shareDirectoryClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;,
      *     new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response != null&#41; &#123;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *     System.out.println&#40;&quot;Directory does not exist.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context -->
@@ -394,8 +394,8 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * directory was deleted successfully, {@code null} indicates the directory does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the directory
+     * was successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
@@ -1139,7 +1139,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteSubdirectoryIfExists(String subdirectoryName) {
         Response<Void> response = deleteSubdirectoryIfExistsWithResponse(subdirectoryName, null, Context.NONE);
-        return response != null && response.getStatusCode() == 202;
+        return response.getStatusCode() == 202;
     }
 
     /**
@@ -1154,7 +1154,7 @@ public class ShareDirectoryClient {
      * <pre>
      * Response&lt;Void&gt; response = shareDirectoryClient.deleteSubdirectoryIfExistsWithResponse&#40;&quot;mysubdirectory&quot;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -1169,15 +1169,15 @@ public class ShareDirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * subdirectory was deleted successfully, {@code null} indicates the specified subdirectory does not exist.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the
+     * subdirectory was successfully deleted. If status code is 404, the subdirectory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = shareDirectoryAsyncClient
             .deleteSubdirectoryIfExistsWithResponse(subdirectoryName, context);
-        return response == null ? null : StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -1443,7 +1443,7 @@ public class ShareDirectoryClient {
     public boolean deleteFileIfExists(String fileName) {
         Response<Void> response = deleteFileIfExistsWithResponse(fileName, new ShareDeleteOptions(), null,
             Context.NONE);
-        return response != null && response.getStatusCode() == 202;
+        return response.getStatusCode() == 202;
     }
 
     /**
@@ -1457,7 +1457,7 @@ public class ShareDirectoryClient {
      * <pre>
      * Response&lt;Void&gt; response = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -1472,7 +1472,8 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response that only contains headers and response status code, or null if the specified file does not exist.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
+     * was successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
@@ -1493,7 +1494,7 @@ public class ShareDirectoryClient {
      *
      * Response&lt;Void&gt; fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;fileResponse == null&#41; &#123;
+     * if &#40;fileResponse.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -1509,7 +1510,8 @@ public class ShareDirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response that only contains headers and response status code, or null if the specified file does not exist.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
+     * was successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options, Duration timeout,

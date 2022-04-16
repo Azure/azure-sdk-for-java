@@ -429,7 +429,7 @@ public class DataLakeFileClientJavaDocSamples {
             .setRequestConditions(requestConditions);
 
         Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
-        if (response == null) {
+        if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());

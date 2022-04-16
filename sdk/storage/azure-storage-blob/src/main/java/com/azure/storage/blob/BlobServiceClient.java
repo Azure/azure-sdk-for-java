@@ -269,7 +269,7 @@ public final class BlobServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteBlobContainerIfExists(String containerName) {
         Response<Void> response = deleteBlobContainerIfExistsWithResponse(containerName, Context.NONE);
-        return response != null && response.getStatusCode() == 202;
+        return response.getStatusCode() == 202;
     }
 
     /**
@@ -284,7 +284,7 @@ public final class BlobServiceClient {
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
      * Response&lt;Void&gt; response = client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;, context&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -294,8 +294,8 @@ public final class BlobServiceClient {
      *
      * @param containerName Name of the container to delete
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * container was deleted successfully, {@code null} indicates the container does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the blob
+     * container was successfully deleted. If status code is 404, the container does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {

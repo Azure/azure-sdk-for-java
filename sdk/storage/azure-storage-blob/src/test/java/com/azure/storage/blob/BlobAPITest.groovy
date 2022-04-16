@@ -2815,7 +2815,7 @@ class BlobAPITest extends APISpec {
         def response = bc.deleteIfExistsWithResponse(null, null, null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Delete if exists container that was already deleted"() {
@@ -2825,7 +2825,7 @@ class BlobAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 202
-        secondResponse == null
+        secondResponse.getStatusCode() == 404
 
     }
 

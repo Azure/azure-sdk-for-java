@@ -450,7 +450,7 @@ class DirectoryAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 200
-        secondResponse == null
+        secondResponse.getStatusCode() == 404
     }
 
     @Unroll
@@ -2886,7 +2886,20 @@ class DirectoryAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 200
-        client.exists() == false
+        !client.exists()
+    }
+
+    def "Delete if exists file file that was already deleted"() {
+        when:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        def response = dc.deleteFileIfExistsWithResponse(pathName, null, null, null)
+        def response2 = dc.deleteFileIfExistsWithResponse(pathName, null, null, null)
+
+        then:
+        response.getStatusCode() == 200
+        !client.exists()
+        response2.getStatusCode() == 404
     }
 
     @Unroll

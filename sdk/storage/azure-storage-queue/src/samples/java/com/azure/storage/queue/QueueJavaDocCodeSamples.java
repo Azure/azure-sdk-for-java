@@ -619,10 +619,10 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context
         Response<Void> response = client.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
-        if (response != null) {
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
         } else {
-            System.out.println("Queue does not exist.");
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context
     }

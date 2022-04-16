@@ -247,7 +247,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null).block()
 
         then:
-        response == null
+        response.getStatusCode() == 404
         !client.exists().block()
     }
 
@@ -261,7 +261,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 202
-        secondResponse == null
+        secondResponse.getStatusCode() == 404
     }
 
     def "Get properties"() {
@@ -726,8 +726,8 @@ class DirectoryAsyncAPITests extends APISpec {
         def response = client.deleteSubdirectoryIfExistsWithResponse(subdirectoryName, null).block()
 
         then:
-        response == null
-        client.getSubdirectoryClient(subdirectoryName).exists().block() == false
+        response.getStatusCode() == 404
+        !client.getSubdirectoryClient(subdirectoryName).exists().block()
     }
 
     def "Create file"() {
@@ -911,8 +911,8 @@ class DirectoryAsyncAPITests extends APISpec {
         def response = client.deleteFileIfExistsWithResponse(subdirectoryName, null).block()
 
         then:
-        response == null
-        client.getSubdirectoryClient(subdirectoryName).exists().block() == false
+        response.getStatusCode() == 404
+        !client.getSubdirectoryClient(subdirectoryName).exists().block()
     }
 
     def "Get snapshot id"() {

@@ -380,8 +380,8 @@ class DirectoryAPITests extends APISpec {
         def response = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
 
         then:
-        response == null
-        primaryDirectoryClient.exists() == false
+        response.getStatusCode() == 404
+        !primaryDirectoryClient.exists()
     }
 
     def "Delete if exists directory that was already deleted"() {
@@ -394,7 +394,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 202
-        secondResponse == null
+        secondResponse.getStatusCode() == 404
 
     }
 
@@ -1195,7 +1195,7 @@ class DirectoryAPITests extends APISpec {
         def response = primaryDirectoryClient.deleteSubdirectoryIfExistsWithResponse("testsubdirectory", null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
 
@@ -1312,7 +1312,7 @@ class DirectoryAPITests extends APISpec {
         def response = primaryDirectoryClient.deleteFileIfExistsWithResponse("testfile", null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Get snapshot id"() {

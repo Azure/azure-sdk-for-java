@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.queue.core.windows.net/9a72cf9c9a72cf9ca0c95754ac037d4eb42a47e3a9",
+    "Uri" : "http://REDACTED.queue.core.windows.net/9a72cf9c9a72cf9c29d90529241e2097538f49debb",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b8f0c927-eadd-4f84-ab60-95469f2605e5"
+      "x-ms-client-request-id" : "a4864aae-acac-45b6-a23e-8b59eb0201ae"
     },
     "Response" : {
       "content-length" : "217",
@@ -14,20 +14,20 @@
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9af397ae-1003-0079-6c8b-44eedc000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:9af397ae-1003-0079-6c8b-44eedc000000\nTime:2022-03-30T23:14:03.2381066Z</Message></Error>",
-      "x-ms-client-request-id" : "b8f0c927-eadd-4f84-ab60-95469f2605e5",
-      "Date" : "Wed, 30 Mar 2022 23:14:02 GMT",
+      "x-ms-request-id" : "3695f7a7-a003-001e-1a72-51fe20000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:3695f7a7-a003-001e-1a72-51fe20000000\nTime:2022-04-16T09:15:08.4217480Z</Message></Error>",
+      "x-ms-client-request-id" : "a4864aae-acac-45b6-a23e-8b59eb0201ae",
+      "Date" : "Sat, 16 Apr 2022 09:15:07 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://REDACTED.queue.core.windows.net/9a72cf9c9a72cf9ca0c95754ac037d4eb42a47e3a9?comp=metadata",
+    "Uri" : "http://REDACTED.queue.core.windows.net/9a72cf9c9a72cf9c29d90529241e2097538f49debb?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "945e3606-bb58-4675-b09d-24852b42041d"
+      "x-ms-client-request-id" : "432b81cf-22b0-4653-bb84-bb18b926187a"
     },
     "Response" : {
       "content-length" : "217",
@@ -36,13 +36,13 @@
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9af397ce-1003-0079-0b8b-44eedc000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:9af397ce-1003-0079-0b8b-44eedc000000\nTime:2022-03-30T23:14:03.4169950Z</Message></Error>",
-      "x-ms-client-request-id" : "945e3606-bb58-4675-b09d-24852b42041d",
-      "Date" : "Wed, 30 Mar 2022 23:14:02 GMT",
+      "x-ms-request-id" : "eff8c234-0003-0007-2572-517e9b000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:eff8c234-0003-0007-2572-517e9b000000\nTime:2022-04-16T09:15:08.6393532Z</Message></Error>",
+      "x-ms-client-request-id" : "432b81cf-22b0-4653-bb84-bb18b926187a",
+      "Date" : "Sat, 16 Apr 2022 09:15:08 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "9a72cf9c9a72cf9ca0c97303aa7e337642824ba791", "9a72cf9c9a72cf9ca0c95754ac037d4eb42a47e3a9" ]
+  "variables" : [ "9a72cf9c9a72cf9c29d05976ca24ba3330e3444da7", "9a72cf9c9a72cf9c29d90529241e2097538f49debb" ]
 }

@@ -602,7 +602,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(null).map(response -> response.getStatusCode() != 404);
     }
 
     /**
@@ -618,15 +618,19 @@ public final class BlobContainerAsyncClient {
      *     .setLeaseId&#40;leaseId&#41;
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
-     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *     .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions -->
      *
      * @param requestConditions {@link BlobRequestConditions}
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates the container
-     * was successfully deleted. An empty {@code Mono} indicates that the container did not exist.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the container was
+     * successfully deleted. If status code is 404, the container does not exist.
      * @throws UnsupportedOperationException If either {@link BlobRequestConditions#getIfMatch()} or
      * {@link BlobRequestConditions#getIfNoneMatch()} is set.
      */
@@ -644,7 +648,11 @@ public final class BlobContainerAsyncClient {
         try {
             return deleteWithResponse(requestConditions, context)
                 .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-                    t -> Mono.empty());
+                    t -> {
+                        HttpResponse response = ((BlobStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -1014,8 +1014,8 @@ class FileAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null)
 
         then:
-        response == null
-        client.exists() == false
+        response.getStatusCode() == 404
+        !client.exists()
     }
 
     def "Delete if exists file that was already deleted"() {

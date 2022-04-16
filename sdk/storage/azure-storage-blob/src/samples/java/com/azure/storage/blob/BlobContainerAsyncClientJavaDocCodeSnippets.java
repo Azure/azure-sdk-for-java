@@ -493,9 +493,13 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.deleteIfExistsWithResponse(requestConditions).switchIfEmpty(Mono.<Response<Void>>empty()
-            .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        client.deleteIfExistsWithResponse(requestConditions).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
     }
 

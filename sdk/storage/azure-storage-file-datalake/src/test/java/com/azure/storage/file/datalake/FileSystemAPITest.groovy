@@ -491,7 +491,7 @@ class FileSystemAPITest extends APISpec {
         def response = fsc.deleteIfExistsWithResponse(null, null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
         !fsc.getBlobContainerClient().exists()
     }
 
@@ -934,7 +934,7 @@ class FileSystemAPITest extends APISpec {
         def response = fsc.deleteFileIfExistsWithResponse(pathName, null, null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Delete if exists file that was already deleted"() {
@@ -948,7 +948,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 200
-        secondResponse == null
+        secondResponse.getStatusCode() == 404
     }
 
     @Unroll
@@ -1389,7 +1389,7 @@ class FileSystemAPITest extends APISpec {
         def response = fsc.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
         !fsc.getDirectoryClient(pathName).exists()
     }
 
@@ -1404,7 +1404,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 200
-        secondResponse == null
+        secondResponse.getStatusCode() == 404
 
     }
 

@@ -203,7 +203,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
         Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, Context.NONE);
-        return response != null && response.getStatusCode() == 200;
+        return response.getStatusCode() == 200;
     }
 
     /**
@@ -219,7 +219,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -235,8 +235,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * file was deleted successfully, {@code null} indicates the file does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 200, the file
+     * was successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,

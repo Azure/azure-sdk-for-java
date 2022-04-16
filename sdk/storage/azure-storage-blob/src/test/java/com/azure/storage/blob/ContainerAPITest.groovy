@@ -783,7 +783,7 @@ class ContainerAPITest extends APISpec {
         def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Delete if exists service container min"() {
@@ -804,7 +804,7 @@ class ContainerAPITest extends APISpec {
         def response = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(generateContainerName(), null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Delete if exists container that was already deleted"() {

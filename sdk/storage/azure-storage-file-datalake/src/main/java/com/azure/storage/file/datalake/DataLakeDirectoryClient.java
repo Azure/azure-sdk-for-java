@@ -162,7 +162,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
         Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, Context.NONE);
-        return response != null && response.getStatusCode() == 200;
+        return response.getStatusCode() == 200;
     }
 
     /**
@@ -179,7 +179,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -195,8 +195,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates the directory
-     * was deleted successfully. An empty {@code Mono} indicates that the directory does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 200, the directory
+     * was successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
@@ -456,7 +456,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public boolean deleteFileIfExists(String fileName) {
         Response<Void> response = deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()
             .setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
-        return response != null && response.getStatusCode() == 200;
+        return response.getStatusCode() == 200;
     }
 
     /**
@@ -475,7 +475,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * Response&lt;Void&gt; response = client.deleteFileIfExistsWithResponse&#40;fileName, options, timeout,
      *     new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -487,8 +487,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * file was deleted successfully, {@code null} indicates the file does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 200, the specified
+     * file was successfully deleted. If status code is 404, the specified file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
@@ -757,7 +757,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public boolean deleteSubdirectoryIfExists(String subdirectoryName) {
         Response<Void> res = deleteSubdirectoryIfExistsWithResponse(subdirectoryName, new DataLakePathDeleteOptions()
             .setIsRecursive(false).setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
-        return res != null && res.getStatusCode() == 200;
+        return res.getStatusCode() == 200;
     }
 
     /**
@@ -777,7 +777,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * Response&lt;Void&gt; response = client.deleteSubdirectoryIfExistsWithResponse&#40;directoryName, options,
      *     timeout, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -789,8 +789,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * subdirectory was deleted successfully, {@code null} indicates the subdirectory does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 200, the specified
+     * subdirectory was successfully deleted. If status code is 404, the specified subdirectory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName,

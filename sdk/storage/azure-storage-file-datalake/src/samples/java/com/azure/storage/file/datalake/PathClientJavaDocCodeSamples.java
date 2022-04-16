@@ -533,10 +533,10 @@ public class PathClientJavaDocCodeSamples {
 
         Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
 
-        if (response != null) {
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
-        } else {
+        if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
     }

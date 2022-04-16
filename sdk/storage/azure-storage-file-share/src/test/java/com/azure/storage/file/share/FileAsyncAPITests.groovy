@@ -886,8 +886,8 @@ class FileAsyncAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null).block()
 
         then:
-        response == null
-        client.exists().block() == false
+        response.getStatusCode() == 404
+        !client.exists().block()
     }
 
     def "Delete if exists file that was already deleted"() {

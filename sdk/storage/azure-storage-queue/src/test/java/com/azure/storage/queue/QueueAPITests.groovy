@@ -161,7 +161,7 @@ class QueueAPITests extends APISpec {
 
         then:
         thrown(QueueStorageException)
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Get properties"() {

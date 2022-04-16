@@ -450,9 +450,13 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
             .setRequestConditions(requestConditions);
 
-        client.deleteIfExistsWithResponse(options).switchIfEmpty(Mono.<Response<Void>>empty()
-            .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        client.deleteIfExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions
     }
 

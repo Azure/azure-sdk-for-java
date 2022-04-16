@@ -619,9 +619,13 @@ public class QueueAsyncJavaDocCodeSamples {
         // END: com.azure.storage.queue.queueAsyncClient.deleteIfExists
 
         // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse
-        client.deleteIfExistsWithResponse().switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        client.deleteIfExistsWithResponse().subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse
     }
 

@@ -316,7 +316,7 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
         Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, null);
-        return response != null && response.getStatusCode() == 200;
+        return response.getStatusCode() == 200;
     }
 
     /**
@@ -334,10 +334,10 @@ public class DataLakePathClient {
      *
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
      *
-     * if &#40;response != null&#41; &#123;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * &#125; else &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
@@ -350,9 +350,8 @@ public class DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A reactive response containing status code and HTTP headers signaling completion. The presence of a
-     * {@link Response} item indicates the resource was deleted successfully. An empty {@code Mono} indicates that the
-     * resource does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 200, the resource
+     * was successfully deleted. If status code is 404, the resource does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,

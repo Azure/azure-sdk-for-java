@@ -386,13 +386,13 @@ public final class BlobServiceAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      * <pre>
-     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *     if &#40;deleted&#41; &#123;
-     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      *
@@ -402,8 +402,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteBlobContainerIfExists(String containerName) {
-        return deleteBlobContainerIfExistsWithResponse(containerName).map(response -> true)
-            .switchIfEmpty(Mono.just(false));
+        return deleteBlobContainerIfExistsWithResponse(containerName).map(response -> response.getStatusCode() != 404);
     }
 
     /**
@@ -423,8 +422,8 @@ public final class BlobServiceAsyncClient {
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
      *
      * @param containerName Name of the container to delete
-     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates the container
-     * was deleted. An empty {@code Mono} indicates the container does not exist at this location.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the blob container was
+     * successfully deleted. If status code is 404, the blob container does not exist.
      *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -439,8 +438,12 @@ public final class BlobServiceAsyncClient {
     Mono<Response<Void>> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
         try {
             return deleteBlobContainerWithResponse(containerName, context)
-                .onErrorResume(t -> t instanceof BlobStorageException
-                    && ((BlobStorageException) t).getStatusCode() == 404, t -> Mono.empty());
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((BlobStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

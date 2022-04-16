@@ -251,8 +251,7 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null).map(response -> true)
-            .switchIfEmpty(Mono.just(false));
+        return createIfNotExistsWithResponse(null).map(response -> response.getStatusCode() != 409);
     }
 
     /**
@@ -396,7 +395,7 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().map(response -> true).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse().map(response -> response.getStatusCode() != 404);
     }
 
     /**
@@ -408,18 +407,21 @@ public final class QueueAsyncClient {
      *
      * <!-- src_embed com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse -->
      * <pre>
-     * client.deleteIfExistsWithResponse&#40;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
-     * @return A reactive response {@link Mono} containing status code and HTTP headers signaling completion. The
-     * presence of a {@link Response} item indicates the queue was successfully deleted. An empty {@code Mono} indicates
-     * that the queue did not exist.
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 204, the queue was
+     * successfully deleted. If status code is 404, the queue does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse() {
@@ -434,7 +436,12 @@ public final class QueueAsyncClient {
         context = context == null ? Context.NONE : context;
         return deleteWithResponse(context).onErrorResume(t -> t instanceof QueueStorageException
             && ((QueueStorageException) t).getStatusCode() == 404,
-            t -> Mono.empty()).map(response -> new SimpleResponse<>(response, null));
+            t -> {
+                HttpResponse response = ((QueueStorageException) t).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
+            }
+            ).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

@@ -502,7 +502,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         Context context = new Context("Key", "Value");
 
         Response<Void> response = client.deleteIfExistsWithResponse(requestConditions, timeout, context);
-        if (response == null) {
+        if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());

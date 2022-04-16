@@ -812,9 +812,13 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists
 
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions
-        client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null).switchIfEmpty(Mono.<Response<Void>>empty()
-            .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions
     }
 }

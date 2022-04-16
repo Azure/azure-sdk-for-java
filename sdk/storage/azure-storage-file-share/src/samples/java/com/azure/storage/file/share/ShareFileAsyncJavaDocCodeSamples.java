@@ -1160,16 +1160,24 @@ public class ShareFileAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
-        shareFileAsyncClient.deleteIfExistsWithResponse().switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        shareFileAsyncClient.deleteIfExistsWithResponse().subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
 
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).switchIfEmpty(Mono.<Response<Void>>empty()
-                .doOnSuccess(x -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
     }
 }

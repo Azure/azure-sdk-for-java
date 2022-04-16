@@ -405,23 +405,24 @@ class ShareAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
         !client.exists()
     }
 
     def "Delete if exists dir that was already deleted"() {
         setup:
-        primaryShareClient.create()
+        def client = premiumFileServiceClient.getShareClient(generateShareName())
+        client.create()
 
         when:
-        def initialResponse = primaryShareClient.deleteIfExistsWithResponse(null, null, null)
-        def secondResponse = primaryShareClient.deleteIfExistsWithResponse(null, null, null)
+        def initialResponse = client.deleteIfExistsWithResponse(null, null, null)
+        // Calling delete again after garbage collection is completed
+        sleepIfRecord(45000)
+        def secondResponse = client.deleteIfExistsWithResponse(null, null, null)
 
         then:
         initialResponse.getStatusCode() == 202
-        // Confirming the behavior of the api when the container is in the deleting state.
-        // After delete has been called once but before it has been garbage collected
-        secondResponse.getStatusCode() == 202
+        secondResponse.getStatusCode() == 404
     }
 
 
@@ -1123,7 +1124,7 @@ class ShareAPITests extends APISpec {
         def response = primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Delete file"() {
@@ -1178,7 +1179,7 @@ class ShareAPITests extends APISpec {
         def response = primaryShareClient.deleteFileIfExistsWithResponse("testCreateFile", null, null)
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Create permission"() {

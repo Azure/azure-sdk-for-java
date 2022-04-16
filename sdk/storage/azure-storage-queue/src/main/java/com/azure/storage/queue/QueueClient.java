@@ -289,7 +289,7 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
         Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
-        return response != null && response.getStatusCode() == 204;
+        return response.getStatusCode() == 204;
     }
 
     /**
@@ -302,10 +302,10 @@ public final class QueueClient {
      * <!-- src_embed com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context -->
      * <pre>
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response != null&#41; &#123;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *     System.out.println&#40;&quot;Queue does not exist.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context -->
@@ -316,8 +316,8 @@ public final class QueueClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * queue was deleted successfully, {@code null} indicates the queue does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 204, the queue
+     * was successfully deleted. If status code is 404, the queue does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {

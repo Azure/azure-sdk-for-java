@@ -246,7 +246,7 @@ class ShareAsyncAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null).block()
 
         then:
-        response == null
+        response.getStatusCode() == 404
         !client.exists().block()
     }
 
@@ -256,13 +256,13 @@ class ShareAsyncAPITests extends APISpec {
 
         when:
         def initialResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block()
+        sleepIfRecord(45000)
+        // Calling delete again after garbage collection is completed
         def secondResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block()
 
         then:
         initialResponse.getStatusCode() == 202
-        // Confirming the behavior of the api when the container is in the deleting state.
-        // After delete has been called once but before it has been garbage collected
-        secondResponse.getStatusCode() == 202
+        secondResponse.getStatusCode() == 404
     }
 
 
@@ -733,7 +733,7 @@ class ShareAsyncAPITests extends APISpec {
         def response = primaryShareAsyncClient.deleteDirectoryIfExistsWithResponse(directoryName).block()
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Delete file"() {
@@ -821,7 +821,7 @@ class ShareAsyncAPITests extends APISpec {
         def response = primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName).block()
 
         then:
-        response == null
+        response.getStatusCode() == 404
     }
 
     def "Delete if exists file lease fail"() {

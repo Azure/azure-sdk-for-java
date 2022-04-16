@@ -1195,7 +1195,7 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
         Response<Void> response = deleteIfExistsWithResponse(null, null, null, Context.NONE);
-        return response != null && response.getStatusCode() == 202;
+        return response.getStatusCode() == 202;
     }
 
     /**
@@ -1209,7 +1209,7 @@ public class BlobClientBase {
      * <pre>
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null, timeout,
      *     new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response == null&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -1226,8 +1226,8 @@ public class BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
-     * blob was deleted successfully, {@code null} indicates the blob does not exist at this location.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the base
+     * blob was successfully deleted. If status code is 404, the base blob does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,

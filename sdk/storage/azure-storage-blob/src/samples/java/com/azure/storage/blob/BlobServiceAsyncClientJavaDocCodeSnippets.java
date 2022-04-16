@@ -379,9 +379,13 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String
         Context context = new Context("Key", "Value");
-        client.deleteBlobContainerIfExistsWithResponse("containerName").switchIfEmpty(Mono.<Response<Void>>empty()
-            .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        client.deleteBlobContainerIfExistsWithResponse("containerName").subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
         // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String
     }
 
