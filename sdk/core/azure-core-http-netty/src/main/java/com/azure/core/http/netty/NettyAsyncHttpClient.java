@@ -99,6 +99,15 @@ class NettyAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        return send(request, context, false);
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        return send(request, context, true).block();
+    }
+
+    private Mono<HttpResponse> send(HttpRequest request, Context context, boolean isSync) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
@@ -117,7 +126,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse))
+            .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse, isSync))
             .single()
             .onErrorMap(throwable -> {
                 // The exception was an SSLException that was caused by a failure to connect to a proxy.
@@ -241,7 +250,8 @@ class NettyAsyncHttpClient implements HttpClient {
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
-        final HttpRequest restRequest, final boolean disableBufferCopy, final boolean eagerlyReadResponse) {
+        final HttpRequest restRequest, final boolean disableBufferCopy, final boolean eagerlyReadResponse,
+        final boolean isSync) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
@@ -256,7 +266,7 @@ class NettyAsyncHttpClient implements HttpClient {
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
             } else {
                 return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                    disableBufferCopy));
+                    disableBufferCopy, isSync));
             }
         };
     }
