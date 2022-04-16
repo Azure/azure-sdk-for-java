@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of clusters. */
 @Fluent
 public final class ClusterList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterList.class);
-
     /*
      * List of clusters.
      */

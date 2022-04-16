@@ -68,4 +68,25 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
         this.exportSettings = exportSettings;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

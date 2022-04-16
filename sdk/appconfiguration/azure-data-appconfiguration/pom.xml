@@ -99,7 +99,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -111,13 +111,13 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-aot-graalvm-support;dependency} -->
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support-netty</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-aot-graalvm-support-netty;dependency} -->
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
