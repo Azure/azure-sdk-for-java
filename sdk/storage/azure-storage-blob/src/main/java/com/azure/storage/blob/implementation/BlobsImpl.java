@@ -23,6 +23,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.BinaryDataResponse;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.http.rest.SyncRestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -69,6 +70,7 @@ import reactor.core.publisher.Mono;
 public final class BlobsImpl {
     /** The proxy service used to perform REST calls. */
     private final BlobsService service;
+    private final BlobsSyncService syncService;
 
     /** The service client containing this operation class. */
     private final AzureBlobStorageImpl client;
@@ -80,7 +82,45 @@ public final class BlobsImpl {
      */
     BlobsImpl(AzureBlobStorageImpl client) {
         this.service = RestProxy.create(BlobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.syncService = SyncRestProxy.create(BlobsSyncService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for AzureBlobStorageBlobs to be used by the proxy service to perform REST
+     * calls.
+     */
+    @Host("{url}")
+    @ServiceInterface(name = "AzureBlobStorageBlob")
+    public interface BlobsSyncService {
+
+        @Get("/{containerName}/{blob}")
+        @ExpectedResponses({200, 206})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        BinaryDataResponse downloadSync(
+            @HostParam("url") String url,
+            @PathParam("containerName") String containerName,
+            @PathParam("blob") String blob,
+            @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId,
+            @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("x-ms-if-tags") String ifTags,
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -116,33 +156,6 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
                 Context context);
-
-        @Get("/{containerName}/{blob}")
-        @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        BinaryDataResponse downloadSync(
-            @HostParam("url") String url,
-            @PathParam("containerName") String containerName,
-            @PathParam("blob") String blob,
-            @QueryParam("snapshot") String snapshot,
-            @QueryParam("versionid") String versionId,
-            @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-range") String range,
-            @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
-            @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
-            @HeaderParam("x-ms-encryption-key") String encryptionKey,
-            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
-            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
-            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @HeaderParam("x-ms-if-tags") String ifTags,
-            @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("Accept") String accept,
-            Context context);
 
         @Head("/{containerName}/{blob}")
         @ExpectedResponses({200})
@@ -808,7 +821,7 @@ public final class BlobsImpl {
             ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
             ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.downloadSync(
+        return syncService.downloadSync(
             this.client.getUrl(),
             containerName,
             blob,
