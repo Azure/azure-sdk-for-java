@@ -406,7 +406,7 @@ public class IdentityClientTests {
 
     private void mockForClientSecret(String secret, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) throws Exception {
 
-        try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationBuilderMock = mockStatic(ConfidentialClientApplication.class);
+        try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationBuilderMock = mockStatic(ConfidentialClientApplication.class, Mockito.withSettings().verboseLogging());
             MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, Mockito.withSettings().verboseLogging(), (builder, context) -> {
 
             when(builder.authority(any())).thenReturn(builder);
@@ -424,11 +424,10 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
         })) {
-            ArgumentMatcher<IClientCredential> matcher = cred -> ((IClientSecret)cred).clientSecret().equals(secret);
             // Mocking the static builder to ensure we pass the right thing to it.
-            staticConfidentialClientApplicationBuilderMock.when(() -> ConfidentialClientApplication.builder(eq(CLIENT_ID), argThat(matcher))).thenCallRealMethod();
-            staticConfidentialClientApplicationBuilderMock.when(() -> ConfidentialClientApplication.builder(eq(CLIENT_ID), any(IClientSecret.class))).thenThrow(new MsalServiceException("Invalid clientSecret", "InvalidClientSecret"));
-            staticConfidentialClientApplicationBuilderMock.when(() -> ConfidentialClientApplication.builder(anyString(), argThat(matcher))).thenThrow(new MsalServiceException("Invalid clientSecret", "InvalidClientSecret"));
+            staticConfidentialClientApplicationBuilderMock.when(() -> ConfidentialClientApplication.builder(eq(CLIENT_ID), argThat(cred -> ((IClientSecret)cred).clientSecret().equals(secret)))).thenCallRealMethod();
+            staticConfidentialClientApplicationBuilderMock.when(() -> ConfidentialClientApplication.builder(anyString(), argThat(cred -> !((IClientSecret)cred).clientSecret().equals(secret)))).thenThrow(new MsalServiceException("Invalid clientSecret", "InvalidClientSecret"));
+            staticConfidentialClientApplicationBuilderMock.when(() -> ConfidentialClientApplication.builder(AdditionalMatchers.not(eq(CLIENT_ID)), any(IClientSecret.class))).thenThrow(new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId"));
 
             test.run();
             Assert.assertNotNull(confidentialClientApplicationBuilderMock);
