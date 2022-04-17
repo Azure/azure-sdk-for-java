@@ -1085,7 +1085,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedFlux<ClearRange> listPageRangesDiff(GetPageRangesDiffOptions options) {
-        return listPageRangesDiffWithOptionalTimeout(options, null);
+        return new PagedFlux<ClearRange>();
+    }
+
+    Mono<PagedResponse<ClearRange>> listFirstPageDiff(GetPageRangesDiffOptions options, Context context) {
+
+    }
+
+    Mono<PagedResponse<ClearRange>> listNextPageDiff(GetPageRangesDiffOptions options, String continuationToken,
+        Context context) {
+
     }
 
     /**
