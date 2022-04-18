@@ -76,4 +76,9 @@ public class RetriableOutputStream extends OutputStream {
         target.write(b, off, len);
         position += len;
     }
+
+    @Override
+    public void close() throws IOException {
+        currentResponse.close();
+    }
 }

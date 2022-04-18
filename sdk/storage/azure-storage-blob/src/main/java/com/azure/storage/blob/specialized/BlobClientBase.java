@@ -932,7 +932,7 @@ public class BlobClientBase {
             finalOptions.getMaxRetryRequests(),
             finalRange.getOffset());
 
-        try {
+        try (RetriableOutputStream ignored = retriableOutputStream) {
             // TODO (kasobol-msft) what about timeout?
             retriableOutputStream.transfer();
             return new BlobDownloadResponse(
