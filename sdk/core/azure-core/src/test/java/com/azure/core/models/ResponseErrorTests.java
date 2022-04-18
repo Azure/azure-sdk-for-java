@@ -37,6 +37,7 @@ public class ResponseErrorTests {
 
     @ParameterizedTest
     @MethodSource("toJsonSupplier")
+    @Execution(ExecutionMode.SAME_THREAD)
     public void toJsonJsonWriter(ResponseError error, String expectedJson) {
         AccessibleByteArrayOutputStream os = new AccessibleByteArrayOutputStream();
         JsonWriter writer = DefaultJsonWriter.toStream(os);

@@ -4,11 +4,32 @@
 package com.azure.json;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * Writes a JSON encoded value to a stream.
  */
 public abstract class JsonWriter implements Closeable {
+    /**
+     * Gets the current {@link JsonWriteContext writing context} for the JSON object.
+     * <p>
+     * The writing context can help determine whether a write operation would be illegal.
+     * <p>
+     * The initial write context is {@link JsonWriteContext#ROOT}.
+     *
+     * @return The current writing context.
+     */
+    public abstract JsonWriteContext writeContext();
+
+    /**
+     * Closes the JSON stream.
+     * <p>
+     * If the {@link #writeContext() writing context} isn't {@link JsonWriteContext#COMPLETED} when this is called an
+     * {@link IllegalStateException}.
+     */
+    @Override
+    public abstract void close() throws IOException;
+
     /**
      * Flushes any un-flushed content written to this writer.
      * <p>
