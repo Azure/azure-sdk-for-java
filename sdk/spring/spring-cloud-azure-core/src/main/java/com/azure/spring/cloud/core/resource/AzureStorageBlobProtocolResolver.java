@@ -40,12 +40,6 @@ public final class AzureStorageBlobProtocolResolver extends AbstractAzureStorage
     }
 
     /**
-     * The default constructor of AzureStorageBlobProtocolResolver.
-     */
-    public AzureStorageBlobProtocolResolver() {
-    }
-
-    /**
      * The storageType of current protocolResolver.
      *
      * @return StorageType.BLOB;

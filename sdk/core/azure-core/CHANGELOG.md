@@ -4,7 +4,19 @@
 
 ### Features Added
 
+- Add `com.azure.core.models.MessageContent`.
+- Added support for custom configuration sources and rich configuration properties:
+  - `ConfigurationSource` supplies properties from the give source
+  - `ConfigurationBuilder` allows to build immutable `Configuration` per-client instances with shared properties sections.
+  - `ConfigurationProperty<T>` describes how configuration property is retrieved. `ConfigurationPropertyBuilder` allows
+    to conveniently build properties.
+  - `Configuration.get(ConfigurationProperty<T>)` allows to retrieve new properties and 
+    `Configuration.contains(ConfigurationProperty<T>)` checks if 
+
 ### Breaking Changes
+
+- Deprecated `Configuration.put`, `Configuration.remove`, `Configuration.clone`, and default `Configuration` constructor.
+  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`. 
 
 ### Bugs Fixed
 

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Trigger that schedules pipeline reruns for all fixed time interval windows from a requested start time to requested
@@ -130,6 +131,20 @@ public class RerunTumblingWindowTrigger extends Trigger {
      */
     public RerunTumblingWindowTrigger setRerunConcurrency(int rerunConcurrency) {
         this.rerunConcurrency = rerunConcurrency;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RerunTumblingWindowTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RerunTumblingWindowTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

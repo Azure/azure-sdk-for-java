@@ -50,7 +50,7 @@ public class UserPrincipalManager {
 
     private final JWKSource<SecurityContext> keySource;
     private final AadAuthenticationProperties aadAuthenticationProperties;
-    private final Boolean explicitAudienceCheck;
+    private final boolean explicitAudienceCheck;
     private final Set<String> validAudiences = new HashSet<>();
 
     /**
@@ -93,7 +93,6 @@ public class UserPrincipalManager {
                 endpoints.getJwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever);
         } catch (MalformedURLException e) {
-            LOGGER.error("Failed to parse active directory key discovery uri.", e);
             throw new IllegalArgumentException("Failed to parse active directory key discovery uri.", e);
         }
     }
@@ -151,7 +150,7 @@ public class UserPrincipalManager {
         UserPrincipal userPrincipal = new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
         Set<String> roles = Optional.of(userPrincipal)
                                     .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
-                                    .map(r -> (JSONArray) r)
+                                    .map(JSONArray.class::cast)
                                     .map(Collection<Object>::stream)
                                     .orElseGet(Stream::empty)
                                     .map(Object::toString)

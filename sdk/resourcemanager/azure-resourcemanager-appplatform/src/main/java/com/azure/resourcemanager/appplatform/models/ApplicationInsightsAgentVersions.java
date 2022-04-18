@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application Insights agent versions properties payload. */
 @Immutable
 public final class ApplicationInsightsAgentVersions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsAgentVersions.class);
-
     /*
      * Indicates the version of application insight java agent
      */

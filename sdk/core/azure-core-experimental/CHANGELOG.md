@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Move `MessageWithMetadata` to `com.azure` package as `com.azure.core.models.MessageContent`.
+
 ### Bugs Fixed
 
 ### Other Changes

@@ -24,7 +24,7 @@ public final class MetastoreClient {
     @Generated private final MetastoresImpl serviceClient;
 
     /**
-     * Initializes an instance of Metastores client.
+     * Initializes an instance of MetastoreClient class.
      *
      * @param serviceClient the service client implementation.
      */
