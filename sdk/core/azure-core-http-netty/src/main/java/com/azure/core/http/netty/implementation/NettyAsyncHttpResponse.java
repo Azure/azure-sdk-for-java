@@ -82,6 +82,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         bodyIntern().flatMap(byteBuff -> {
             while (byteBuff.isReadable()) {
                 try {
+                    // TODO (kasobol-msft) this could be optimized further,i.e. make sure we're utilizing
+                    // whole buffer before passing to outputstream.
                     int numberOfBytes = Math.min(buffer.length, byteBuff.readableBytes());
                     byteBuff.readBytes(buffer, 0, numberOfBytes);
                     outputStream.write(buffer, 0, numberOfBytes);
