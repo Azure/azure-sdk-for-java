@@ -14,6 +14,8 @@
       <id>coverage</id>
       <modules>
         <module>azure-sdk-template</module>
+        <module>azure-sdk-template-two</module>
+        <module>azure-sdk-template-three</module>
       </modules>
       <dependencies>
         <dependency>
