@@ -3345,7 +3345,6 @@ public final class Utils {
         StringBuilder info = new StringBuilder("Spring Service: ")
             .append("\n\tId: ").append(springApp.id())
             .append("\n\tName: ").append(springApp.name())
-            .append("\n\tCreated Time: ").append(springApp.createdTime())
             .append("\n\tPublic Endpoint: ").append(springApp.isPublic())
             .append("\n\tUrl: ").append(springApp.url())
             .append("\n\tHttps Only: ").append(springApp.isHttpsOnly())
