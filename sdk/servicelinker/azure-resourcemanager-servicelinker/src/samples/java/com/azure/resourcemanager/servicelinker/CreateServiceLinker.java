@@ -62,13 +62,13 @@ public class CreateServiceLinker {
         ServiceLinkerManager serviceLinkerManager = ServiceLinkerManager.authenticate(credential, profile);
         ServiceLinkerManager serviceLinkerManagerWithUserToken = ServiceLinkerManager.configure().withPolicy(userTokenPolicy).authenticate(credential, profile);
 
-        creatSpringCloudAndSQLConnection(azureResourceManager, serviceLinkerManager);
+        createSpringCloudAndSQLConnection(azureResourceManager, serviceLinkerManager);
 
         // for KeyVault/SecretStore/VirtualNetwork scenario, it needs user token in header for creating connection
         createWebAppAndKeyVaultConnectionWithUserIdentity(azureResourceManager, serviceLinkerManagerWithUserToken);
     }
 
-    private static void creatSpringCloudAndSQLConnection(AzureResourceManager azureResourceManager, ServiceLinkerManager serviceLinkerManager) {
+    private static void createSpringCloudAndSQLConnection(AzureResourceManager azureResourceManager, ServiceLinkerManager serviceLinkerManager) {
         String resourceGroupName = "rg" + randomString(8);
         Region region = Region.US_EAST;
         String springServiceName = "spring" + randomString(8);

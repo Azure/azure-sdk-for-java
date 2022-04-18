@@ -21,7 +21,7 @@ Please refer it to add dependency and configure authentication environment varia
 
 All samples are located in [CreateServiceLinker][SERVICELINKER_SAMPLE_CODE] file, you can use `main()` entrypoint to run it directly.
 
-### CreatSpringCloudAndSQLConnection
+### CreateSpringCloudAndSQLConnection
 
 1. Create Spring Cloud Deployment
 2. Create SQL Database
