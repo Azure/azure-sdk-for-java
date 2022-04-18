@@ -73,7 +73,7 @@ public abstract class JsonWriterContractTests {
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(null)), "null"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(new byte[0])), "\"\""),
             Arguments.of(createJsonConsumer(
-                jsonWriter -> jsonWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
+                    jsonWriter -> jsonWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
                 "\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\""),
 
             // Boolean
@@ -126,7 +126,7 @@ public abstract class JsonWriterContractTests {
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(null)), "null"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(new byte[0])), "\"\""),
             Arguments.of(createJsonConsumer(
-                jsonWriter -> jsonWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
+                    jsonWriter -> jsonWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
                 "\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\""),
 
             // Boolean
@@ -267,6 +267,102 @@ public abstract class JsonWriterContractTests {
                     throw new RuntimeException(e);
                 }
             }), IllegalStateException.class)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("basicWriteStateSupplier")
+    public void basicWriteState(Consumer<JsonWriter> operation, JsonWriteState expectedState) {
+        JsonWriter writer = getJsonWriter();
+
+        operation.accept(writer);
+
+        assertEquals(expectedState, writer.getWriteContext().getWriteState());
+    }
+
+    private static Stream<Arguments> basicWriteStateSupplier() {
+        return Stream.of(
+            // Initial state is root.
+            Arguments.of(createJsonConsumer(Function.identity()), JsonWriteState.ROOT),
+
+            // Starting an object enters OBJECT state.
+            Arguments.of(createJsonConsumer(JsonWriter::writeStartObject), JsonWriteState.OBJECT),
+
+            // Starting an array enters ARRAY state.
+            Arguments.of(createJsonConsumer(JsonWriter::writeStartArray), JsonWriteState.ARRAY),
+
+            // Writing a simple value at ROOT enters COMPLETED state.
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(null)), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(true)), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(0.0D)), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(0.0F)), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeInt(0)), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeLong(0L)), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(JsonWriter::writeNull), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString(null)), JsonWriteState.COMPLETED),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("\"\"")), JsonWriteState.COMPLETED),
+
+            // Ending an object at ROOT enters COMPLETED state.
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartObject().writeEndObject()),
+                JsonWriteState.COMPLETED),
+
+            // Ending an array at ROOT enters COMPLETED state.
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeEndArray()),
+                JsonWriteState.COMPLETED),
+
+            // Writing an object in an array enters OBJECT state.
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeStartObject()),
+                JsonWriteState.OBJECT),
+
+            // Writing an array in an array maintains ARRAY state.
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeStartArray()),
+                JsonWriteState.ARRAY),
+
+            // Closing an array contained in an array maintains ARRAY state.
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartArray().writeStartArray().writeEndArray()), JsonWriteState.ARRAY),
+
+            // Writing a field name in an object enters FIELD_VALUE state.
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName")),
+                JsonWriteState.FIELD_VALUE),
+
+            // Writing a field and value maintains OBJECT state.
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeBinaryField("fieldName", null)), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeBooleanField("fieldName", true)), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeDoubleField("fieldName", 0.0D)), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeFloatField("fieldName", 0.0F)), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeIntField("fieldName", 0)), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeLongField("fieldName", 0L)), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeNullField("fieldName")), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeStringField("fieldName", null)), JsonWriteState.OBJECT),
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeRawField("fieldName", "\"\"")), JsonWriteState.OBJECT),
+
+            // Starting an object in FIELD_VALUE enters OBJECT state.
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartObject()), JsonWriteState.OBJECT),
+
+            // Starting an array in FIELD_VALUE enters ARRAY state.
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartArray()), JsonWriteState.ARRAY),
+
+            // Closing an object that is a field value enters OBJECT state.
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                    jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartObject().writeEndObject()),
+                JsonWriteState.OBJECT),
+
+            // Closing an array that is a field value enters OBJECT state.
+            Arguments.of(createJsonConsumer(jsonWriter ->
+                    jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartArray().writeEndArray()),
+                JsonWriteState.OBJECT)
         );
     }
 

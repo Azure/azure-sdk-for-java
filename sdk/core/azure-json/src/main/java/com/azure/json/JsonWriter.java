@@ -19,16 +19,16 @@ public abstract class JsonWriter implements Closeable {
      *
      * @return The current writing context.
      */
-    public abstract JsonWriteContext writeContext();
+    public abstract JsonWriteContext getWriteContext();
 
     /**
      * Closes the JSON stream.
      * <p>
-     * If the {@link #writeContext() writing context} isn't {@link JsonWriteContext#COMPLETED} when this is called an
+     * If the {@link #getWriteContext() writing context} isn't {@link JsonWriteContext#COMPLETED} when this is called an
      * {@link IllegalStateException} will be thrown.
      *
      * @throws IllegalStateException If the {@link JsonWriter} is closed before the
-     * {@link #writeContext() writing context} is {@link JsonWriteContext#COMPLETED}.
+     * {@link #getWriteContext() writing context} is {@link JsonWriteContext#COMPLETED}.
      */
     @Override
     public abstract void close() throws IOException;

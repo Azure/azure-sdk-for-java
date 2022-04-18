@@ -4,11 +4,11 @@
 package com.azure.json;
 
 /**
- * Context of the JSON stream.
+ * Writing context of the JSON stream.
  * <p>
  * Used by {@link JsonWriter} to maintain state and determine validity of a write operation.
  */
-public enum JsonContext {
+public enum JsonWriteState {
     /**
      * Root of the JSON stream.
      * <p>

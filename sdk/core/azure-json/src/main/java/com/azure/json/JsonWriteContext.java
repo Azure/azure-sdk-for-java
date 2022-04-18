@@ -13,17 +13,17 @@ public final class JsonWriteContext {
     /**
      * Initial writing context.
      */
-    public static final JsonWriteContext ROOT = new JsonWriteContext(null, JsonContext.ROOT);
+    public static final JsonWriteContext ROOT = new JsonWriteContext(null, JsonWriteState.ROOT);
 
     /**
      * Final writing context.
      */
-    public static final JsonWriteContext COMPLETED = new JsonWriteContext(null, JsonContext.COMPLETED);
+    public static final JsonWriteContext COMPLETED = new JsonWriteContext(null, JsonWriteState.COMPLETED);
 
     private final JsonWriteContext parent;
-    private final JsonContext context;
+    private final JsonWriteState context;
 
-    private JsonWriteContext(JsonWriteContext parent, JsonContext context) {
+    private JsonWriteContext(JsonWriteContext parent, JsonWriteState context) {
         this.parent = parent;
         this.context = context;
     }
@@ -41,55 +41,55 @@ public final class JsonWriteContext {
     }
 
     /**
-     * Gets the {@link JsonContext} associated to the writing context.
+     * Gets the {@link JsonWriteState} associated to the writing context.
      *
-     * @return The {@link JsonContext} associated to the writing context.
+     * @return The {@link JsonWriteState} associated to the writing context.
      */
-    public JsonContext getContext() {
+    public JsonWriteState getWriteState() {
         return context;
     }
 
     /**
-     * Determines whether the writing operation is allowed based on the {@link JsonContext}.
+     * Determines whether the writing operation is allowed based on the {@link JsonWriteState}.
      * <p>
-     * The following is the allowed {@link JsonWriteOperation JsonWriteOperations} based on the {@link JsonContext}.
+     * The following is the allowed {@link JsonWriteOperation JsonWriteOperations} based on the {@link JsonWriteState}.
      *
      * <ul>
-     *     <li>{@link JsonContext#ROOT} - {@link JsonWriteOperation#START_OBJECT},
+     *     <li>{@link JsonWriteState#ROOT} - {@link JsonWriteOperation#START_OBJECT},
      *     {@link JsonWriteOperation#START_ARRAY}, {@link JsonWriteOperation#SIMPLE_VALUE}</li>
-     *     <li>{@link JsonContext#OBJECT} - {@link JsonWriteOperation#START_OBJECT},
+     *     <li>{@link JsonWriteState#OBJECT} - {@link JsonWriteOperation#START_OBJECT},
      *     {@link JsonWriteOperation#END_OBJECT}, {@link JsonWriteOperation#FIELD_NAME},
      *     {@link JsonWriteOperation#FIELD_AND_VALUE}</li>
-     *     <li>{@link JsonContext#ARRAY} - {@link JsonWriteOperation#START_OBJECT},
+     *     <li>{@link JsonWriteState#ARRAY} - {@link JsonWriteOperation#START_OBJECT},
      *     {@link JsonWriteOperation#START_ARRAY}, {@link JsonWriteOperation#END_ARRAY},
      *     {@link JsonWriteOperation#SIMPLE_VALUE}</li>
-     *     <li>{@link JsonContext#FIELD_VALUE} - {@link JsonWriteOperation#START_OBJECT},
+     *     <li>{@link JsonWriteState#FIELD_VALUE} - {@link JsonWriteOperation#START_OBJECT},
      *     {@link JsonWriteOperation#START_ARRAY}, {@link JsonWriteOperation#SIMPLE_VALUE}</li>
-     *     <li>{@link JsonContext#COMPLETED} - none</li>
+     *     <li>{@link JsonWriteState#COMPLETED} - none</li>
      * </ul>
      *
      * Any operation that isn't allowed based on the context will result in an {@link IllegalStateException} to be
      * thrown.
      *
      * @param operation The {@link JsonWriteOperation} being checked.
-     * @throws IllegalStateException If the {@link JsonWriteOperation} is invalid based on the {@link JsonContext}.
+     * @throws IllegalStateException If the {@link JsonWriteOperation} is invalid based on the {@link JsonWriteState}.
      */
     public void validateOperation(JsonWriteOperation operation) {
-        if (context == JsonContext.ROOT) {
+        if (context == JsonWriteState.ROOT) {
             if (!(operation == JsonWriteOperation.START_OBJECT
                 || operation == JsonWriteOperation.START_ARRAY
                 || operation == JsonWriteOperation.SIMPLE_VALUE)) {
                 throw new IllegalStateException("Writing context is 'ROOT', only 'START_OBJECT', 'START_ARRAY',"
                     + " or 'SIMPLE_VALUE' operations are allowed. Attempted: '" + operation + "'.");
             }
-        } else if (context == JsonContext.OBJECT) {
+        } else if (context == JsonWriteState.OBJECT) {
             if (!(operation == JsonWriteOperation.END_OBJECT
                 || operation == JsonWriteOperation.FIELD_NAME
                 || operation == JsonWriteOperation.FIELD_AND_VALUE)) {
                 throw new IllegalStateException("Writing context is 'OBJECT', only 'END_OBJECT', 'FIELD_NAME', or "
                     + "'FIELD_AND_VALUE' operations are allowed. Attempted: '" + operation + "'.");
             }
-        } else if (context == JsonContext.ARRAY) {
+        } else if (context == JsonWriteState.ARRAY) {
             if (!(operation == JsonWriteOperation.START_OBJECT
                 || operation == JsonWriteOperation.START_ARRAY
                 || operation == JsonWriteOperation.END_ARRAY
@@ -97,7 +97,7 @@ public final class JsonWriteContext {
                 throw new IllegalStateException("Writing context is 'ARRAY', only 'START_OBJECT', 'START_ARRAY',"
                     + ", 'END_ARRAY', or 'SIMPLE_VALUE' operations are allowed. Attempted: '" + operation + "'.");
             }
-        } else if (context == JsonContext.FIELD_VALUE) {
+        } else if (context == JsonWriteState.FIELD_VALUE) {
             if (!(operation == JsonWriteOperation.START_OBJECT
                 || operation == JsonWriteOperation.START_ARRAY
                 || operation == JsonWriteOperation.SIMPLE_VALUE)) {
@@ -118,7 +118,7 @@ public final class JsonWriteContext {
      * the parent context is {@link JsonWriteContext#ROOT} then {@link JsonWriteContext#COMPLETED} is the updated
      * context as the JSON stream has completed writing. But if the {@link JsonWriteContext} isn't
      * {@link JsonWriteContext#ROOT} and the operation is {@link JsonWriteOperation#END_OBJECT} or
-     * {@link JsonWriteOperation#END_ARRAY} and the parent context is {@link JsonContext#FIELD_VALUE} that will be
+     * {@link JsonWriteOperation#END_ARRAY} and the parent context is {@link JsonWriteState#FIELD_VALUE} that will be
      * completed as well as the value has completed writing.
      * <p>
      * Operations {@link JsonWriteOperation#START_OBJECT}, {@link JsonWriteOperation#START_ARRAY}, and {@link
@@ -137,7 +137,7 @@ public final class JsonWriteContext {
         //   becomes COMPLETE.
         // - Current context isn't the root, writing context becomes the parent context and the context is completed.
         if (operation == JsonWriteOperation.SIMPLE_VALUE) {
-            return context == JsonContext.ROOT ? COMPLETED : parent;
+            return context == JsonWriteState.ROOT ? COMPLETED : parent;
         }
 
         // Ending an array or object has three scenarios, but before the scenarios play out the current context is
@@ -153,12 +153,12 @@ public final class JsonWriteContext {
             JsonWriteContext toReturn = parent;
 
             // Parent context is the root, complete writing by returning the COMPLETED context.
-            if (toReturn.context == JsonContext.ROOT) {
+            if (toReturn.context == JsonWriteState.ROOT) {
                 return COMPLETED;
             }
 
             // Parent context is a FIELD_VALUE, close the field context by returning the grandparent context.
-            if (toReturn.context == JsonContext.FIELD_VALUE) {
+            if (toReturn.context == JsonWriteState.FIELD_VALUE) {
                 return toReturn.parent;
             }
 
@@ -168,11 +168,11 @@ public final class JsonWriteContext {
 
         // The next set of checks are straight forward and return a new sub-context.
         if (operation == JsonWriteOperation.START_OBJECT) {
-            return new JsonWriteContext(this, JsonContext.OBJECT);
+            return new JsonWriteContext(this, JsonWriteState.OBJECT);
         } else if (operation == JsonWriteOperation.START_ARRAY) {
-            return new JsonWriteContext(this, JsonContext.ARRAY);
+            return new JsonWriteContext(this, JsonWriteState.ARRAY);
         } else if (operation == JsonWriteOperation.FIELD_NAME) {
-            return new JsonWriteContext(this, JsonContext.FIELD_VALUE);
+            return new JsonWriteContext(this, JsonWriteState.FIELD_VALUE);
         }
 
         // Otherwise, we had a special scenario of field and value which is a self-closing operation.

@@ -233,7 +233,7 @@ public final class DefaultJsonWriter extends JsonWriter {
     }
 
     @Override
-    public JsonWriteContext writeContext() {
+    public JsonWriteContext getWriteContext() {
         return context;
     }
 
@@ -241,7 +241,7 @@ public final class DefaultJsonWriter extends JsonWriter {
     public void close() throws IOException {
         if (context != JsonWriteContext.COMPLETED) {
             throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
-                + "closed. Current writing state is '" + context.getContext() + "'.");
+                + "closed. Current writing state is '" + context.getWriteState() + "'.");
         }
 
         generator.close();
