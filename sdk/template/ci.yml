@@ -39,6 +39,32 @@ pr:
       - sdk/template/azure-sdk-template-three/pom.xml
       - sdk/template/azure-template-perf/pom.xml
 
+# These are parameters that will setup the checkboxes for batch release and they're only going
+# to show up for manually scheduled runs.
+# Every Artifact in the Artifacts list will need one of these.
+# AdditionalModules will not have entries, only libraries that can be released from this pipeline
+# The format is as follows
+# -name: release_safename - this is parameter's variable that's used to set the forRelease boolean
+#        in the Artifacts list. The reason we're using the release_<safename> is because the name
+#        cannot have dashes (-) in it.
+#  displayName: the artifact name only, no group Id. There is a 57 character limit before
+#               truncation occurs which why this should only the artifact's name
+#  type: boolean - this type being boolean creates the checkbox
+#  default: true
+parameters:
+- name: release_azuresdktemplate
+  displayName: 'azure-sdk-template'
+  type: boolean
+  default: true
+- name: release_azuresdktemplatetwo
+  displayName: 'azure-sdk-template-two'
+  type: boolean
+  default: true
+- name: release_azuresdktemplatethree
+  displayName: 'azure-sdk-template-three'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -47,12 +73,15 @@ extends:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
+        forRelease: ${{ parameters.release_azuresdktemplate }}
       - name: azure-sdk-template-two
         groupId: com.azure
         safeName: azuresdktemplatetwo
+        forRelease: ${{ parameters.release_azuresdktemplatetwo }}
       - name: azure-sdk-template-three
         groupId: com.azure
         safeName: azuresdktemplatethree
+        forRelease: ${{ parameters.release_azuresdktemplatethree }}
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
