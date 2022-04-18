@@ -255,8 +255,11 @@ public class SpringAppDeploymentImpl
     public SpringAppDeploymentImpl withExistingSource(UserSourceType type, String relativePath) {
         if (isEnterpriseTier()) {
             ensureSource(UserSourceType.BUILD_RESULT);
-            BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
-            userSourceInfo.withBuildResultId(relativePath);
+            UserSourceInfo sourceInfo = innerModel().properties().source();
+            if (sourceInfo instanceof BuildResultUserSourceInfo) {
+                BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) sourceInfo;
+                userSourceInfo.withBuildResultId(relativePath);
+            }
         } else {
             ensureSource(type);
             UserSourceInfo userSourceInfo = innerModel().properties().source();
