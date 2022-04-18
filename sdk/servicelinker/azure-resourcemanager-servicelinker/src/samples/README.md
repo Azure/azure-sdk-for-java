@@ -23,16 +23,16 @@ All samples are located in [CreateServiceLinker][SERVICELINKER_SAMPLE_CODE] file
 
 ### CreateSpringCloudAndSQLConnection
 
-1. Create Spring Cloud Deployment
+1. Create Spring Cloud App and Deployment
 2. Create SQL Database
-3. Create Service Linker for Deployment and SQL using SQL username and password
+3. Setup connection between Spring Cloud App and SQL Database using username and password by creating Service Linker
 
 ### CreateWebAppAndKeyVaultConnectionWithUserIdentity
 
 1. Create Web App
 2. Create Key Vault
 3. Create User Assigned Identity
-4. Create Service Linker for Web App and Key Vault using User Assigned Identity
+4. Setup connection between Web App and Key Vault using User Assigned Identity by creating Service Linker
 
 ### Special Case
 
