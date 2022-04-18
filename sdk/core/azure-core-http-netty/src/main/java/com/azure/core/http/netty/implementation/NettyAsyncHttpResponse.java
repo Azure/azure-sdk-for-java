@@ -6,7 +6,6 @@ package com.azure.core.http.netty.implementation;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
@@ -28,15 +27,12 @@ import static com.azure.core.http.netty.implementation.Utility.deepCopyBuffer;
 public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     private final Connection reactorNettyConnection;
     private final boolean disableBufferCopy;
-    // TODO (kasobol-msft) we should perhaps have NettySyncHttpResponse
-    private final boolean isSync;
 
     public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-        HttpRequest httpRequest, boolean disableBufferCopy, boolean isSync) {
+        HttpRequest httpRequest, boolean disableBufferCopy) {
         super(reactorNettyResponse, httpRequest);
         this.reactorNettyConnection = reactorNettyConnection;
         this.disableBufferCopy = disableBufferCopy;
-        this.isSync = isSync;
     }
 
     @Override
@@ -47,12 +43,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public BinaryData getBodyAsBinaryData() {
-        if (isSync) {
-            return BinaryDataHelper.createBinaryData(
-                new InputStreamContent(bodyIntern().aggregate().asInputStream().block()));
-        } else {
-            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
-        }
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 
     @Override
