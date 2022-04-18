@@ -41,8 +41,9 @@ class JdkAsyncHttpClient implements HttpClient {
 
     JdkAsyncHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
         this.jdkHttpClient = httpClient;
-        int javaVersion = getJavaVersion();
-        if (javaVersion <= 11) {
+        // JDK HttpClient requires Java 11+, so newer APIs can be used to determine Java version.
+        // Runtime.version().feature() gets the major Java version.
+        if (Runtime.version().feature() <= 11) {
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("JdkAsyncHttpClient is not supported in Java version 11 and below."));
         }
@@ -137,42 +138,6 @@ class JdkAsyncHttpClient implements HttpClient {
                 return noBody();
             } else {
                 return fromPublisher(bbFlowPublisher, contentLengthLong);
-            }
-        }
-    }
-
-    /**
-     * Get the java runtime major version.
-     *
-     * @return the java major version
-     */
-    private int getJavaVersion() {
-        // java.version format:
-        // 8 and lower: 1.7, 1.8.0
-        // 9 and above: 12, 14.1.1
-        String version = System.getProperty("java.version");
-        if (CoreUtils.isNullOrEmpty(version)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
-        }
-        if (version.startsWith("1.")) {
-            if (version.length() < 3) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
-            }
-            try {
-                return Integer.parseInt(version.substring(2, 3));
-            } catch (Exception t) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
-            }
-        } else {
-            int idx = version.indexOf(".");
-
-            if (idx == -1) {
-                return Integer.parseInt(version);
-            }
-            try {
-                return Integer.parseInt(version.substring(0, idx));
-            } catch (Exception t) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
             }
         }
     }

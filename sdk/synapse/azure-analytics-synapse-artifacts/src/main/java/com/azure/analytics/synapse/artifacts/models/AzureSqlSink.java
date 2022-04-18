@@ -182,4 +182,39 @@ public final class AzureSqlSink extends CopySink {
         this.tableOption = tableOption;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

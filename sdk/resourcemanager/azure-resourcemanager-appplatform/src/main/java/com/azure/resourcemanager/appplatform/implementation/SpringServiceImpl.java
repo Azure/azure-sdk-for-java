@@ -7,11 +7,12 @@ import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.ConfigServerResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.MonitoringSettingResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
-import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
+import com.azure.resourcemanager.appplatform.models.KeyVaultCertificateProperties;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
+import com.azure.resourcemanager.appplatform.models.RegenerateTestKeyRequestPayload;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SkuName;
 import com.azure.resourcemanager.appplatform.models.SpringApps;
@@ -30,10 +31,16 @@ public class SpringServiceImpl
     private final SpringAppsImpl apps = new SpringAppsImpl(this);
     private FunctionalTaskItem configServerTask = null;
     private FunctionalTaskItem monitoringSettingTask = null;
-    private boolean needUpdate = false;
+    private ServiceResourceInner patchToUpdate = new ServiceResourceInner();
+    private boolean updated;
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
+    }
+
+    @Override
+    public SpringServiceImpl update() {
+        return super.update();
     }
 
     @Override
@@ -90,7 +97,7 @@ public class SpringServiceImpl
 
     @Override
     public Mono<TestKeys> regenerateTestKeysAsync(TestKeyType keyType) {
-        return manager().serviceClient().getServices().regenerateTestKeyAsync(resourceGroupName(), name(), keyType);
+        return manager().serviceClient().getServices().regenerateTestKeyAsync(resourceGroupName(), name(), new RegenerateTestKeyRequestPayload().withKeyType(keyType));
     }
 
     @Override
@@ -130,8 +137,11 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withSku(Sku sku) {
-        needUpdate = true;
         innerModel().withSku(sku);
+        if (isInUpdateMode()) {
+            patchToUpdate.withSku(sku);
+            updated = true;
+        }
         return this;
     }
 
@@ -139,9 +149,10 @@ public class SpringServiceImpl
     public SpringServiceImpl withTracing(String appInsightInstrumentationKey) {
         monitoringSettingTask =
             context -> manager().serviceClient().getMonitoringSettings()
-                .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties()
-                    .withAppInsightsInstrumentationKey(appInsightInstrumentationKey)
-                    .withTraceEnabled(true))
+                .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingResourceInner().withProperties(
+                    new MonitoringSettingProperties()
+                        .withAppInsightsInstrumentationKey(appInsightInstrumentationKey)
+                        .withTraceEnabled(true)))
                 .then(context.voidMono());
         return this;
     }
@@ -151,7 +162,9 @@ public class SpringServiceImpl
         monitoringSettingTask =
             context -> manager().serviceClient().getMonitoringSettings()
                 .updatePatchAsync(
-                    resourceGroupName(), name(), new MonitoringSettingProperties().withTraceEnabled(false))
+                    resourceGroupName(), name(), new MonitoringSettingResourceInner().withProperties(
+                        new MonitoringSettingProperties().withTraceEnabled(false)
+                    ))
                 .then(context.voidMono());
         return this;
     }
@@ -160,10 +173,12 @@ public class SpringServiceImpl
     public SpringServiceImpl withGitUri(String uri) {
         configServerTask =
             context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
-                    .withConfigServer(new ConfigServerSettings().withGitProperty(
-                        new ConfigServerGitProperty().withUri(uri)
-                    )))
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerResourceInner().withProperties(
+                    new ConfigServerProperties()
+                        .withConfigServer(new ConfigServerSettings().withGitProperty(
+                            new ConfigServerGitProperty().withUri(uri)
+                        ))
+                ))
                 .then(context.voidMono());
         return this;
     }
@@ -172,13 +187,15 @@ public class SpringServiceImpl
     public SpringServiceImpl withGitUriAndCredential(String uri, String username, String password) {
         configServerTask =
             context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
-                    .withConfigServer(new ConfigServerSettings().withGitProperty(
-                        new ConfigServerGitProperty()
-                            .withUri(uri)
-                            .withUsername(username)
-                            .withPassword(password)
-                    )))
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerResourceInner().withProperties(
+                    new ConfigServerProperties()
+                        .withConfigServer(new ConfigServerSettings().withGitProperty(
+                            new ConfigServerGitProperty()
+                                .withUri(uri)
+                                .withUsername(username)
+                                .withPassword(password)
+                        ))
+                ))
                 .then(context.voidMono());
         return this;
     }
@@ -187,19 +204,17 @@ public class SpringServiceImpl
     public SpringServiceImpl withGitConfig(ConfigServerGitProperty gitConfig) {
         configServerTask =
             context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
-                    .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig)))
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerResourceInner().withProperties(
+                    new ConfigServerProperties()
+                        .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig))
+                ))
                 .then(context.voidMono());
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutGitConfig() {
-        configServerTask =
-            context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties())
-                .then(context.voidMono());
-        return this;
+        return withGitConfig(null);
     }
 
     @Override
@@ -220,10 +235,11 @@ public class SpringServiceImpl
         if (isInCreateMode()) {
             createOrUpdate = manager().serviceClient().getServices()
                 .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
-        } else if (needUpdate) {
-            needUpdate = false;
+        } else if (updated) {
             createOrUpdate = manager().serviceClient().getServices().updateAsync(
-                resourceGroupName(), name(), innerModel());
+                resourceGroupName(), name(), patchToUpdate);
+            patchToUpdate = new ServiceResourceInner();
+            updated = false;
         } else {
             return Mono.just(this);
         }
@@ -243,7 +259,7 @@ public class SpringServiceImpl
     public SpringServiceImpl withCertificate(String name, String keyVaultUri, String certNameInKeyVault) {
         certificates.prepareCreateOrUpdate(
             name,
-            new CertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
+            new KeyVaultCertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
         );
         return this;
     }
@@ -253,7 +269,7 @@ public class SpringServiceImpl
                                              String certNameInKeyVault, String certVersion) {
         certificates.prepareCreateOrUpdate(
             name,
-            new CertificateProperties()
+            new KeyVaultCertificateProperties()
                 .withVaultUri(keyVaultUri)
                 .withKeyVaultCertName(certNameInKeyVault)
                 .withCertVersion(certVersion)
@@ -265,5 +281,9 @@ public class SpringServiceImpl
     public SpringServiceImpl withoutCertificate(String name) {
         certificates.prepareDelete(name);
         return this;
+    }
+
+    private boolean isInUpdateMode() {
+        return !isInCreateMode();
     }
 }

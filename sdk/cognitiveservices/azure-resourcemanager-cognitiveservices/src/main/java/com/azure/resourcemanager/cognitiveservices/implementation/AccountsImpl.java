@@ -11,19 +11,20 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
+import com.azure.resourcemanager.cognitiveservices.models.AccountModel;
 import com.azure.resourcemanager.cognitiveservices.models.AccountSkuListResult;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.ApiKeys;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.cognitiveservices.models.UsageListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsImpl.class);
 
     private final AccountsClient innerClient;
 
@@ -183,10 +184,21 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
+    public PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName) {
+        PagedIterable<AccountModelInner> inner = this.serviceClient().listModels(resourceGroupName, accountName);
+        return Utils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName, Context context) {
+        PagedIterable<AccountModelInner> inner =
+            this.serviceClient().listModels(resourceGroupName, accountName, context);
+        return Utils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
+    }
+
     public Account getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -194,7 +206,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -205,7 +217,7 @@ public final class AccountsImpl implements Accounts {
     public Response<Account> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -213,7 +225,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -224,7 +236,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -232,7 +244,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -243,7 +255,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -251,7 +263,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));

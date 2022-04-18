@@ -11,10 +11,9 @@ import com.azure.resourcemanager.signalr.fluent.SignalRPrivateLinkResourcesClien
 import com.azure.resourcemanager.signalr.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.signalr.models.PrivateLinkResource;
 import com.azure.resourcemanager.signalr.models.SignalRPrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignalRPrivateLinkResourcesImpl implements SignalRPrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRPrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SignalRPrivateLinkResourcesImpl.class);
 
     private final SignalRPrivateLinkResourcesClient innerClient;
 

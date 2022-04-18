@@ -117,6 +117,7 @@ org.springframework.boot:spring-boot-actuator;2.6.3
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.6.3
 org.springframework.boot:spring-boot-autoconfigure-processor;2.6.3
 org.springframework.boot:spring-boot-autoconfigure;2.6.3
+org.springframework.boot:spring-boot-configuration-metadata;2.6.3
 org.springframework.boot:spring-boot-configuration-processor;2.6.3
 org.springframework.boot:spring-boot-starter-actuator;2.6.3
 org.springframework.boot:spring-boot-starter-aop;2.6.3

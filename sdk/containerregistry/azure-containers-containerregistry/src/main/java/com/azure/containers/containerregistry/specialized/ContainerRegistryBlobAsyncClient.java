@@ -284,7 +284,7 @@ public class ContainerRegistryBlobAsyncClient {
 
         return this.registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, UtilsImpl.OCI_MANIFEST_MEDIA_TYPE, context)
             .flatMap(response -> {
-                String digest = UtilsImpl.getDigestFromHeader(response);
+                String digest = UtilsImpl.getDigestFromHeader(response.getHeaders());
                 ManifestWrapper wrapper = response.getValue();
 
                 // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
@@ -341,7 +341,7 @@ public class ContainerRegistryBlobAsyncClient {
         }
 
         return this.blobsImpl.getBlobWithResponseAsync(repositoryName, digest, context).flatMap(streamResponse -> {
-            String resDigest = UtilsImpl.getDigestFromHeader(streamResponse);
+            String resDigest = UtilsImpl.getDigestFromHeader(streamResponse.getHeaders());
 
             return BinaryData.fromFlux(streamResponse.getValue())
                 .flatMap(binaryData -> {

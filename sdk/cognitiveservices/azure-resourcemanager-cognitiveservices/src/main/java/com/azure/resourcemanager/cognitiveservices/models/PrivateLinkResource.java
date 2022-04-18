@@ -6,15 +6,11 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A private link resource. */
 @Fluent
 public final class PrivateLinkResource extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
-
     /*
      * Resource properties.
      */

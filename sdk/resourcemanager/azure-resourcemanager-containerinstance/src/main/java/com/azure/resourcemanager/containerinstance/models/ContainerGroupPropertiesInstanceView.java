@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of the container group. Only valid in response. */
 @Immutable
 public final class ContainerGroupPropertiesInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupPropertiesInstanceView.class);
-
     /*
      * The events of this container group.
      */
