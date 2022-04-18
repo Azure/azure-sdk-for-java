@@ -32,8 +32,8 @@ public final class BinaryDataResponse extends SimpleResponse<BinaryData> impleme
      * @param outputStream {@link OutputStream}.
      * @throws IOException if an I/O error occurs when reading or writing.
      */
-    public void writeTo(OutputStream outputStream) throws IOException {
-        response.writeTo(outputStream);
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
+        response.writeBodyTo(outputStream);
     }
 
     /**

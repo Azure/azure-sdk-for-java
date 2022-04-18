@@ -107,7 +107,7 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     }
 
     @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
         StreamUtils.INSTANCE.transfer(responseBody.byteStream(), outputStream);
     }
 

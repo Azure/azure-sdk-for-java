@@ -138,7 +138,7 @@ public abstract class HttpResponse implements Closeable {
      * @param outputStream {@link OutputStream}.
      * @throws IOException if an I/O error occurs when reading or writing.
      */
-    public void writeTo(OutputStream outputStream) throws IOException {
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
         BinaryData bodyAsBinaryData = getBodyAsBinaryData();
         if (bodyAsBinaryData != null) {
             StreamUtils.INSTANCE.transfer(bodyAsBinaryData.toStream(), outputStream);

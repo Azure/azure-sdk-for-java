@@ -74,7 +74,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     }
 
     @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
         // TODO (kasobol-msft) handle other cases optimizations from ImplUtils.writeByteBufferToStream.
         // However it seems that buffers here don't have backing arrays. And for files we should probably have
         // writeTo(Channel) API.

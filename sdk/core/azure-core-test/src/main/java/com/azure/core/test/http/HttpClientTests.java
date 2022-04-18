@@ -317,7 +317,7 @@ public abstract class HttpClientTests {
                 content), Context.NONE);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        response.writeTo(outputStream);
+        response.writeBodyTo(outputStream);
 
         byte[] receivedBytes = outputStream.toByteArray();
         assertEquals(expectedString, new String(receivedBytes, StandardCharsets.UTF_8));

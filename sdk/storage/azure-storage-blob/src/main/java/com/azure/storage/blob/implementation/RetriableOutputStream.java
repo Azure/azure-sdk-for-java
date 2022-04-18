@@ -38,7 +38,7 @@ public class RetriableOutputStream extends OutputStream {
     public void transfer() throws IOException {
         while (true) {
             try {
-                currentResponse.writeTo(this);
+                currentResponse.writeBodyTo(this);
                 return;
             } catch (RuntimeException | IOException e) {
                 reacquireResponse(e);
