@@ -29,7 +29,8 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance in a specified resource group and container group.
+     * @return the logs for a specified container instance in a specified resource group and container group along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LogsInner>> listLogsWithResponseAsync(
@@ -48,7 +49,8 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance in a specified resource group and container group.
+     * @return the logs for a specified container instance in a specified resource group and container group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogsInner> listLogsAsync(
@@ -63,7 +65,8 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance in a specified resource group and container group.
+     * @return the logs for a specified container instance in a specified resource group and container group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogsInner> listLogsAsync(String resourceGroupName, String containerGroupName, String containerName);
@@ -96,7 +99,8 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the logs for a specified container instance in a specified resource group and container group.
+     * @return the logs for a specified container instance in a specified resource group and container group along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LogsInner> listLogsWithResponse(
@@ -117,7 +121,8 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the container exec command.
+     * @return the information for the container exec command along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(
@@ -136,7 +141,7 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the container exec command.
+     * @return the information for the container exec command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ContainerExecResponseInner> executeCommandAsync(
@@ -175,7 +180,7 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the container exec command.
+     * @return the information for the container exec command along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ContainerExecResponseInner> executeCommandWithResponse(
@@ -194,7 +199,8 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the output stream from container attach.
+     * @return the information for the output stream from container attach along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(
@@ -209,7 +215,7 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the output stream from container attach.
+     * @return the information for the output stream from container attach on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ContainerAttachResponseInner> attachAsync(
@@ -239,7 +245,7 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information for the output stream from container attach.
+     * @return the information for the output stream from container attach along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ContainerAttachResponseInner> attachWithResponse(

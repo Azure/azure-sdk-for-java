@@ -59,10 +59,9 @@ public class ResponseConstructorsCacheBenchMark {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using Reflection.
-            Mono<Response<?>> response = defaultCache.invoke(handle, inputs[i].decodedResponse(),
-                inputs[i].bodyAsObject());
+            Response<?> response = defaultCache.invoke(handle, inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
-            blackhole.consume(response.block());
+            blackhole.consume(response);
         }
     }
 

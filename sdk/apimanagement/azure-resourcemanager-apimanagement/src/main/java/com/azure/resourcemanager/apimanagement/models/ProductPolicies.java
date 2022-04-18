@@ -33,7 +33,7 @@ public interface ProductPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level.
+     * @return the policy configuration at the Product level along with {@link Response}.
      */
     Response<PolicyCollection> listByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context);
@@ -175,7 +175,7 @@ public interface ProductPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,

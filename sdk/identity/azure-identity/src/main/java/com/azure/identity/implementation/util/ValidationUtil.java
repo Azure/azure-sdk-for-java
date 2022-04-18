@@ -10,14 +10,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * Utility class for validating parameters.
  */
 public final class ValidationUtil {
-    private static final Pattern TENANT_IDENTIFIER_CHAR_PATTERN = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-|.)+$");
-
     public static void validate(String className, Map<String, Object> parameters, ClientLogger logger) {
         List<String> missing = new ArrayList<>();
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
@@ -46,11 +43,13 @@ public final class ValidationUtil {
 
     public static void validateTenantIdCharacterRange(String id, ClientLogger logger) {
         if (id != null) {
-            if (!TENANT_IDENTIFIER_CHAR_PATTERN.matcher(id).matches()) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Invalid tenant id provided. You can locate your tenant id by following the instructions"
-                            + " listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"));
+            for (int i = 0; i < id.length(); i++) {
+                if (!isValidTenantCharacter(id.charAt(i))) {
+                    throw logger.logExceptionAsError(
+                        new IllegalArgumentException(
+                            "Invalid tenant id provided. You can locate your tenant id by following the instructions"
+                                + " listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"));
+                }
             }
         }
     }
@@ -63,5 +62,9 @@ public final class ValidationUtil {
                                                  + "Port is deprecated now. Use the redirectUrl setter to specify"
                                                  + " the redirect URL on the builder."));
         }
+    }
+
+    private static boolean isValidTenantCharacter(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '.') || (c == '-');
     }
 }

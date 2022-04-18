@@ -15,7 +15,7 @@
     "dir": "azure-resourcemanager-appplatform",
     "source": "specification/appplatform/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appplatform",
-    "args": "--tag=package-preview-2020-11 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability"
+    "args": "--tag=package-preview-2022-01 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability --preserve-model=UserSourceType,RuntimeVersion"
   },
   "appservice": {
     "dir": "azure-resourcemanager-appservice",
@@ -108,7 +108,7 @@
     "dir": "azure-resourcemanager-containerinstance",
     "source": "specification/containerinstance/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerinstance",
-    "args": "--tag=package-2021-09 --remove-inner=Container,Operation,CachedImages,Capabilities"
+    "args": "--tag=package-2021-10 --remove-inner=Container,Operation,CachedImages,Capabilities"
   },
   "containerregistry": {
     "dir": "azure-resourcemanager-containerregistry",
@@ -409,7 +409,7 @@
     "dir": "azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=package-2021-08"
+    "args": "--tag=package-2021-09"
   },
   "storage-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",

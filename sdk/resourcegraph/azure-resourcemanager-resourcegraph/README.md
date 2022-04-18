@@ -2,7 +2,7 @@
 
 Azure Resource Manager ResourceGraph client library for Java.
 
-This package contains Microsoft Azure SDK for ResourceGraph Management SDK. Azure Resource Graph API Reference. Package tag package-preview-2021-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for ResourceGraph Management SDK. Azure Resource Graph API Reference. Package tag package-2021-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-resourcegraph</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -88,6 +88,7 @@ queryRequest.withOptions(new QueryRequestOptions().withResultFormat(ResultFormat
 response = manager.resourceProviders().resources(queryRequest);
 
 ```
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcegraph/azure-resourcemanager-resourcegraph/SAMPLE.md)
 
 
 ## Troubleshooting

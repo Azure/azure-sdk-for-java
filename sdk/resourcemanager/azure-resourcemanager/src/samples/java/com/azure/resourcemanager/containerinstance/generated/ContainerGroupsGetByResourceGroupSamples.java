@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerGroups GetByResourceGroup. */
 public final class ContainerGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsGet_Succeeded.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsGet_Succeeded.json
      */
     /**
      * Sample code: ContainerGroupsGet_Succeeded.
@@ -26,7 +26,7 @@ public final class ContainerGroupsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsGet_Failed.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsGet_Failed.json
      */
     /**
      * Sample code: ContainerGroupsGet_Failed.

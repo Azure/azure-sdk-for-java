@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Http message diagnostic settings. */
 @Fluent
 public final class HttpMessageDiagnostic {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpMessageDiagnostic.class);
-
     /*
      * Array of HTTP Headers to log.
      */

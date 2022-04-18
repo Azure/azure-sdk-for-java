@@ -15,7 +15,7 @@ required-parameter-client-methods: false
 generate-client-as-impl: true
 service-interface-as-public: true
 use-iterable: true
-low-level-client: true
+data-plane: true
 generate-sync-async-clients: true
 service-name: WebPubSubService
 service-versions:

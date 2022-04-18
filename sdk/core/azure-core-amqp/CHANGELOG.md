@@ -7,10 +7,27 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
+- Updated ProxyOptions.SYSTEM_DEFAULTS to use ProxyAuthenticationType.NONE
 
 - Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
 
 ### Other Changes
+
+## 2.4.2 (2022-04-01)
+
+### Bugs Fixed
+
+- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the 
+  receivers. ([#27716](https://github.com/Azure/azure-sdk-for-java/issues/27716))
+- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often 
+  recover from this error, but due to the log level, it generates false alerts in monitoring systems. ([26968](https://github.com/Azure/azure-sdk-for-java/issues/26968))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
 
 ## 2.4.1 (2022-03-16)
 

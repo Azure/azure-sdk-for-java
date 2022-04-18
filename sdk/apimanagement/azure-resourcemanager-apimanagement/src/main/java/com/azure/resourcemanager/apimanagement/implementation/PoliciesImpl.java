@@ -19,10 +19,9 @@ import com.azure.resourcemanager.apimanagement.models.PolicyCollection;
 import com.azure.resourcemanager.apimanagement.models.PolicyContract;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PoliciesImpl implements Policies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PoliciesImpl.class);
 
     private final PoliciesClient innerClient;
 

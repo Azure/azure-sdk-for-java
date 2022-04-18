@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The supported capabilities. */
 @Immutable
 public final class CapabilitiesCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilitiesCapabilities.class);
-
     /*
      * The maximum allowed memory request in GB.
      */
