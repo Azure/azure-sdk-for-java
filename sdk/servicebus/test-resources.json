@@ -71,7 +71,7 @@
   "resources": [
     {
       "type": "Microsoft.ServiceBus/namespaces",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-06-01-preview",
       "name": "[variables('namespaceName')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -80,7 +80,7 @@
       "properties": {},
       "resources": [
         {
-          "apiVersion": "2021-05-01",
+          "apiVersion": "2021-06-01-preview",
           "type": "AuthorizationRules",
           "name": "[variables('sharedAccessKeyName')]",
           "dependsOn": [
@@ -134,7 +134,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-06-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex())]",
       "properties": {
         "maxSizeInMegabytes": 1024,
@@ -150,7 +150,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-06-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('queueName'), '-', copyIndex())]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
@@ -168,7 +168,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-06-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('queueSessionName'), '-', copyIndex())]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
@@ -185,7 +185,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-06-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'))]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
@@ -202,7 +202,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-06-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionSessionName'))]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
@@ -237,7 +237,7 @@
     },
     "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING": {
       "type": "string",
-      "value": "[listkeys(variables('authRuleResourceId'), '2021-05-01').primaryConnectionString]"
+      "value": "[listkeys(variables('authRuleResourceId'), '2021-06-01-preview').primaryConnectionString]"
     },
     "AZURE_SERVICEBUS_QUEUE_NAME": {
       "type": "string",
