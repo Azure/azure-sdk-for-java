@@ -16,7 +16,7 @@ public class DefaultInstrumentation implements Instrumentation {
 
     private volatile Status status = Status.DOWN;
 
-    private volatile Throwable exception;
+    private Throwable exception;
 
     /**
      * Construct a {@link DefaultInstrumentation} with the specified name and type.

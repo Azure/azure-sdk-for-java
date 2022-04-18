@@ -6,15 +6,12 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Property of git. */
 @Fluent
 public final class ConfigServerGitProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigServerGitProperty.class);
-
     /*
      * Repositories of git.
      */
@@ -285,9 +282,11 @@ public final class ConfigServerGitProperty {
             repositories().forEach(e -> e.validate());
         }
         if (uri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property uri in model ConfigServerGitProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigServerGitProperty.class);
 }
