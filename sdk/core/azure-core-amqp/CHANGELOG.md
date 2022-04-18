@@ -9,7 +9,6 @@
 ### Bugs Fixed
 - Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
 - Updated ProxyOptions.SYSTEM_DEFAULTS to use ProxyAuthenticationType.NONE
-
 - Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
 
 ### Other Changes
