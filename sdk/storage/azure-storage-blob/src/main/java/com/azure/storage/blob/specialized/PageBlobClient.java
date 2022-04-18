@@ -30,7 +30,7 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.ListPageRangesDiffOptions;
-import com.azure.storage.blob.options.GetPageRangesOptions;
+import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -619,7 +619,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the page ranges.
-     * @deprecated See {@link #listPageRanges(GetPageRangesOptions)}
+     * @deprecated See {@link #listPageRanges(ListPageRangesOptions,Duration,Context)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Deprecated
@@ -654,7 +654,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedIterable<PageRangeItem> listPageRanges(BlobRange blobRange) {
-        return listPageRanges(new GetPageRangesOptions(blobRange));
+        return listPageRanges(new ListPageRangesOptions(blobRange), null, null);
     }
 
     /**
@@ -678,12 +678,19 @@ public final class PageBlobClient extends BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions -->
      *
-     * @param options {@link GetPageRangesOptions}
+     * @param options {@link ListPageRangesOptions}
      * @return A reactive response emitting all the page ranges.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<PageRangeItem> listPageRanges(GetPageRangesOptions options) {
-        return new PagedIterable<>(pageBlobAsyncClient.listPageRangesWithOptionalTimeout(options, options.getTimeout()));
+    public PagedIterable<PageRangeItem> listPageRanges(ListPageRangesOptions options, Duration timeout,
+        Context context) {
+        return new PagedIterable<>(
+            // pull timeout out of options
+            new PagedFlux<>(
+                pageSize -> pageBlobAsyncClient.listPageRangesWithOptionalTimeout(
+                    options, timeout, context).apply(null, pageSize),
+                (continuationToken, pageSize) -> pageBlobAsyncClient.listPageRangesWithOptionalTimeout(
+                    options, timeout, context).apply(continuationToken, pageSize)));
     }
 
     /**
@@ -752,7 +759,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
-     * @deprecated See {@link #listPageRanges(GetPageRangesOptions)} )}
+     * @deprecated See {@link #listPageRanges(ListPageRangesOptions,Duration,Context)} )}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Deprecated
@@ -792,7 +799,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return A reactive response emitting all the different page ranges.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<ClearRange> listPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+    public PagedIterable<PageRangeItem> listPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return listPageRangesDiff(new ListPageRangesDiffOptions(blobRange, prevSnapshot), null, null);
     }
 
@@ -825,7 +832,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<ClearRange> listPageRangesDiff(ListPageRangesDiffOptions options, Duration timeout,
+    public PagedIterable<PageRangeItem> listPageRangesDiff(ListPageRangesDiffOptions options, Duration timeout,
         Context context) {
         return new PagedIterable<>(
             // pull timeout out of options

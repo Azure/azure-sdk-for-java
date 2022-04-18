@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpRange
 import com.azure.core.util.CoreUtils
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerClient
@@ -22,6 +23,7 @@ import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import com.azure.storage.blob.options.ListPageRangesOptions
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.common.implementation.Constants
@@ -801,6 +803,177 @@ class PageBlobAPITest extends APISpec {
         then:
         thrown(BlobStorageException)
     }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    def "List page ranges"() {
+        setup:
+        bc.create(4 * Constants.KB, true)
+        def data = new ByteArrayInputStream(getRandomByteArray(4 * Constants.KB))
+        data.mark(Integer.MAX_VALUE)
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data)
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1))
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1))
+
+        when:
+        def iterable = bc.listPageRanges(new BlobRange(0, 4 * Constants.KB)).iterator()
+        def item = iterable.next()
+
+        then:
+        item.getRange().equals(new HttpRange(0, Constants.KB))
+        !item.isClear()
+
+        when:
+        item = iterable.next()
+
+        then:
+        item.getRange().equals(new HttpRange(2 * Constants.KB, Constants.KB))
+        !item.isClear()
+
+        !iterable.hasNext()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    def "List page ranges pageSize"() {
+        setup:
+        bc.create(4 * Constants.KB, true)
+        def data = new ByteArrayInputStream(getRandomByteArray(4 * Constants.KB))
+        data.mark(Integer.MAX_VALUE)
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data)
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1))
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1))
+
+        when: "max results on options"
+        def iterable = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4 * Constants.KB))
+            .setMaxResultsPerPage(1), null, null).iterableByPage().iterator()
+        def page = iterable.next()
+
+        then:
+        page.getValue().size() == 1
+
+        when:
+        page = iterable.next()
+
+        then:
+        page.getValue().size() == 1
+        !iterable.hasNext()
+
+        when: "max results on iterableByPage"
+        iterable = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4 * Constants.KB)), null, null)
+            .iterableByPage(1).iterator()
+        page = iterable.next()
+
+        then:
+        page.getValue().size() == 1
+
+        when:
+        page = iterable.next()
+
+        then:
+        page.getValue().size() == 1
+        !iterable.hasNext()
+    }
+
+    def "List pages continuation token"() {
+        setup:
+        bc.create(4 * Constants.KB, true)
+        def data = new ByteArrayInputStream(getRandomByteArray(4 * Constants.KB))
+        data.mark(Integer.MAX_VALUE)
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data)
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1))
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1))
+
+        when: "max results on options"
+        def iterable = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4 * Constants.KB))
+            .setMaxResultsPerPage(1), null, null).iterableByPage().iterator()
+        def token = iterable.next().getContinuationToken()
+
+        iterable = bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4 * Constants.KB)), null, null)
+            .iterableByPage(token).iterator()
+        def page = iterable.next()
+
+        then:
+        page.getValue().size() == 1
+        !iterable.hasNext()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "List page ranges AC"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, PageBlobClient.PAGE_BYTES))
+            .setRequestConditions(bac), null, null)
+
+        then:
+        notThrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "List page ranges AC fail"() {
+        setup:
+        def bac = new BlobRequestConditions()
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
+    }
+
+    /*
+    when:
+        item = iterable.next()
+
+        then:
+        item.getRange().equals(new HttpRange(Constants.KB, Constants.KB))
+        item.isClear()
+
+        when:
+        item = iterable.next()
+
+        then:
+        item.getRange().equals(new HttpRange(3 * Constants.KB, Constants.KB))
+        item.isClear()
+     */
 
     @Unroll
     def "Get page ranges diff"() {

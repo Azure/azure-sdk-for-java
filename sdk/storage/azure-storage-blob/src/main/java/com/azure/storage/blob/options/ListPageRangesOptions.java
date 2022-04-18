@@ -11,17 +11,16 @@ import java.util.Objects;
 /**
  * Extended options that may be passed when getting the page ranges of a page blob.
  */
-public class GetPageRangesOptions {
+public class ListPageRangesOptions {
     private final BlobRange range;
     private BlobRequestConditions requestConditions;
     private Integer pageSize;
-    private Duration timeout;
 
 
     /**
      * @param range The range to diff.
      */
-    public GetPageRangesOptions(BlobRange range) {
+    public ListPageRangesOptions(BlobRange range) {
         Objects.requireNonNull(range);
         this.range = new BlobRange(range.getOffset(), range.getCount());
     }
@@ -50,7 +49,7 @@ public class GetPageRangesOptions {
      * @param requestConditions The requestConditions value to set.
      * @return The updated object
      */
-    public GetPageRangesOptions setRequestConditions(BlobRequestConditions requestConditions) {
+    public ListPageRangesOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
     }
@@ -70,28 +69,8 @@ public class GetPageRangesOptions {
      * @param pageSize The pageSize value to set.
      * @return The updated object
      */
-    public GetPageRangesOptions setMaxResultsPerPage(Integer pageSize) {
+    public ListPageRangesOptions setMaxResultsPerPage(Integer pageSize) {
         this.pageSize = pageSize;
-        return this;
-    }
-
-    /**
-     * Gets the timeout property.
-     *
-     * @return The timeout property.
-     */
-    public Duration getTimeout() {
-        return timeout;
-    }
-
-    /**
-     * Sets the timeout property.
-     *
-     * @param timeout The timeout value to set.
-     * @return The updated object
-     */
-    public GetPageRangesOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }
