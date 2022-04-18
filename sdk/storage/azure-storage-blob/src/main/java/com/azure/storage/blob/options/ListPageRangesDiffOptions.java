@@ -5,25 +5,23 @@ package com.azure.storage.blob.options;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /**
  * Extended options that may be passed when getting the page ranges diff of a page blob.
  */
-public class GetPageRangesDiffOptions {
+public class ListPageRangesDiffOptions {
     private final BlobRange range;
     private final String previousSnapshot;
     private BlobRequestConditions requestConditions;
     private Integer pageSize;
-    private Duration timeout;
 
 
     /**
      * @param range The range to diff.
      * @param previousSnapshot The previous snapshot that will serve as the base of the diff.
      */
-    public GetPageRangesDiffOptions(BlobRange range, String previousSnapshot) {
+    public ListPageRangesDiffOptions(BlobRange range, String previousSnapshot) {
         Objects.requireNonNull(range);
         Objects.requireNonNull(previousSnapshot);
         this.range = new BlobRange(range.getOffset(), range.getCount());
@@ -63,7 +61,7 @@ public class GetPageRangesDiffOptions {
      * @param requestConditions The requestConditions value to set.
      * @return The updated object
      */
-    public GetPageRangesDiffOptions setRequestConditions(BlobRequestConditions requestConditions) {
+    public ListPageRangesDiffOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
     }
@@ -83,28 +81,8 @@ public class GetPageRangesDiffOptions {
      * @param pageSize The pageSize value to set.
      * @return The updated object
      */
-    public GetPageRangesDiffOptions setMaxResultsPerPage(Integer pageSize) {
+    public ListPageRangesDiffOptions setMaxResultsPerPage(Integer pageSize) {
         this.pageSize = pageSize;
-        return this;
-    }
-
-    /**
-     * Gets the timeout property.
-     *
-     * @return The timeout property.
-     */
-    public Duration getTimeout() {
-        return timeout;
-    }
-
-    /**
-     * Sets the timeout property.
-     *
-     * @param timeout The timeout value to set.
-     * @return The updated object
-     */
-    public GetPageRangesDiffOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

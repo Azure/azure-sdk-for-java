@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -28,7 +29,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.options.GetPageRangesDiffOptions;
+import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.GetPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
@@ -44,6 +45,8 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -749,7 +752,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
-     * @deprecated See {@link #listPageRangesDiff(GetPageRangesDiffOptions)}
+     * @deprecated See {@link #listPageRanges(GetPageRangesOptions)} )}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Deprecated
@@ -790,7 +793,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedIterable<ClearRange> listPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return listPageRangesDiff(new GetPageRangesDiffOptions(blobRange, prevSnapshot));
+        return listPageRangesDiff(new ListPageRangesDiffOptions(blobRange, prevSnapshot), null, null);
     }
 
     /**
@@ -816,15 +819,21 @@ public final class PageBlobClient extends BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions -->
      *
-     * @param options {@link GetPageRangesDiffOptions}.
+     * @param options {@link ListPageRangesDiffOptions}.
      * @return A reactive response emitting all the different page ranges.
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<ClearRange> listPageRangesDiff(GetPageRangesDiffOptions options) {
-        return new PagedIterable<>(pageBlobAsyncClient
-            .listPageRangesDiffWithOptionalTimeout(options, options.getTimeout()));
+    public PagedIterable<ClearRange> listPageRangesDiff(ListPageRangesDiffOptions options, Duration timeout,
+        Context context) {
+        return new PagedIterable<>(
+            // pull timeout out of options
+            new PagedFlux<>(
+                pageSize -> pageBlobAsyncClient.listPageRangesDiffWithOptionalTimeout(
+                    options, timeout, context).apply(null, pageSize),
+                (continuationToken, pageSize) -> pageBlobAsyncClient.listPageRangesDiffWithOptionalTimeout(
+                    options, timeout, context).apply(continuationToken, pageSize)));
     }
 
     /**

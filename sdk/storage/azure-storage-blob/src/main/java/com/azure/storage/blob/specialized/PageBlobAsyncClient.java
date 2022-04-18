@@ -47,7 +47,7 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
-import com.azure.storage.blob.options.GetPageRangesDiffOptions;
+import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.GetPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
@@ -1008,7 +1008,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting all the different page ranges.
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
-     * @deprecated See {@link #listPageRangesDiff(GetPageRangesDiffOptions)}
+     * @deprecated See {@link #listPageRangesDiff(ListPageRangesDiffOptions)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Deprecated
@@ -1052,7 +1052,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedFlux<ClearRange> listPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return listPageRangesDiff(new GetPageRangesDiffOptions(blobRange, prevSnapshot));
+        return listPageRangesDiff(new ListPageRangesDiffOptions(blobRange, prevSnapshot));
     }
 
     /**
@@ -1078,23 +1078,18 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions -->
      *
-     * @param options {@link GetPageRangesDiffOptions}.
+     * @param options {@link ListPageRangesDiffOptions}.
      * @return A reactive response emitting all the different page ranges.
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<ClearRange> listPageRangesDiff(GetPageRangesDiffOptions options) {
-        return new PagedFlux<ClearRange>();
-    }
-
-    Mono<PagedResponse<ClearRange>> listFirstPageDiff(GetPageRangesDiffOptions options, Context context) {
-
-    }
-
-    Mono<PagedResponse<ClearRange>> listNextPageDiff(GetPageRangesDiffOptions options, String continuationToken,
-        Context context) {
-
+    public PagedFlux<ClearRange> listPageRangesDiff(ListPageRangesDiffOptions options) {
+        return new PagedFlux<>(
+            pageSize -> withContext(context ->
+                listPageRangesDiffWithOptionalTimeout(options, null, context).apply(null, pageSize)),
+            (continuationToken, pageSize) -> withContext(context ->
+                listPageRangesDiffWithOptionalTimeout(options, null, context).apply(continuationToken, pageSize)));
     }
 
     /**
@@ -1214,23 +1209,23 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    PagedFlux<ClearRange> listPageRangesDiffWithOptionalTimeout(GetPageRangesDiffOptions options,
-        Duration timeout) {
-        BiFunction<String, Integer, Mono<PagedResponse<ClearRange>>> func =
+    BiFunction<String, Integer, Mono<PagedResponse<ClearRange>>> listPageRangesDiffWithOptionalTimeout(ListPageRangesDiffOptions options,
+        Duration timeout, Context context) {
+        return
             (marker, pageSize) -> {
-                GetPageRangesDiffOptions finalOptions;
+                ListPageRangesDiffOptions finalOptions;
                 /*
                  If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
                  Otherwise, prefer the new value.
                  */
                 if (pageSize != null) {
                     finalOptions =
-                        new GetPageRangesDiffOptions(options.getRange(), options.getPreviousSnapshot())
+                        new ListPageRangesDiffOptions(options.getRange(), options.getPreviousSnapshot())
                             .setMaxResultsPerPage(pageSize);
                 } else {
                     finalOptions = options;
                 }
-                return getPageRangesDiffSegment(marker, finalOptions, timeout)
+                return getPageRangesDiffSegment(marker, finalOptions, timeout, context)
                     .map(response -> {
                         List<ClearRange> value = response.getValue() == null
                             ? Collections.emptyList()
@@ -1245,11 +1240,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                             response.getDeserializedHeaders());
                     });
             };
-        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffSegment(String marker,
-        GetPageRangesDiffOptions options, Duration timeout, Context context) {
+        ListPageRangesDiffOptions options, Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
 
         return StorageImplUtils.applyOptionalTimeout(
