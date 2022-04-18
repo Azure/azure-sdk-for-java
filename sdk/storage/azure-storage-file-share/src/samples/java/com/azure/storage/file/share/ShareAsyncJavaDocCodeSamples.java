@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
@@ -831,12 +830,12 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse#ShareDeleteOptions
         shareAsyncClient.deleteIfExistsWithResponse(new ShareDeleteOptions()
             .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))).subscribe(response -> {
-            if (response.getStatusCode() == 404) {
-                System.out.println("Does not exist.");
-            } else {
-                System.out.println("successfully deleted.");
-            }
-        });
+                if (response.getStatusCode() == 404) {
+                    System.out.println("Does not exist.");
+                } else {
+                    System.out.println("successfully deleted.");
+                }
+            });
         // END: com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse#ShareDeleteOptions
     }
 

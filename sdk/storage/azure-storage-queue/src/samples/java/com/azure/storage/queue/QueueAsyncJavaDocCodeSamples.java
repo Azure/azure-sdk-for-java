@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -12,7 +11,6 @@ import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.sas.QueueSasPermission;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
