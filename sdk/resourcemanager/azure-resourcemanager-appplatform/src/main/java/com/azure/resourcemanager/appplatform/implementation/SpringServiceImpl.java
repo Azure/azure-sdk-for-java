@@ -264,12 +264,14 @@ public class SpringServiceImpl
         if (monitoringSettingTask != null) {
             this.addPostRunDependent(monitoringSettingTask);
         }
-        if (updateConfigurationServiceTask) {
-            prepareCreateOrUpdateConfigurationService();
+        if (isEnterpriseTier()) {
+            if (updateConfigurationServiceTask) {
+                prepareCreateOrUpdateConfigurationService();
+            }
+            updateConfigurationServiceTask = false;
         }
         configServerTask = null;
         monitoringSettingTask = null;
-        updateConfigurationServiceTask = false;
     }
 
     @Override
@@ -280,7 +282,7 @@ public class SpringServiceImpl
                 .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
             if (isEnterpriseTier()) {
                 createOrUpdate = createOrUpdate
-                    // update build service agent pool size
+                    // initialize build service agent pool
                     .flatMap(inner ->
                         manager().serviceClient().getBuildServiceAgentPools().updatePutAsync(
                             resourceGroupName(),
@@ -290,7 +292,9 @@ public class SpringServiceImpl
                             new BuildServiceAgentPoolResourceInner()
                                 .withProperties(
                                     new BuildServiceAgentPoolProperties()
-                                        .withPoolSize(new BuildServiceAgentPoolSizeProperties().withName("S1")))
+                                        .withPoolSize(
+                                            new BuildServiceAgentPoolSizeProperties()
+                                                .withName("S1"))) // S1, S2, S3, S4, S5.
                         ).then(Mono.just(inner)));
             }
         } else if (updated) {
@@ -397,7 +401,7 @@ public class SpringServiceImpl
     }
 
     boolean isEnterpriseTier() {
-        return SkuName.E0.toString().equals(innerModel().sku().name());
+        return innerModel().sku() != null && SkuName.E0.toString().equals(innerModel().sku().name());
     }
 
     private void clearCache() {

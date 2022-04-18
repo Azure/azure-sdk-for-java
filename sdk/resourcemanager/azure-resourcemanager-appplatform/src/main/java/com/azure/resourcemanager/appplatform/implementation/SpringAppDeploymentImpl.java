@@ -254,9 +254,9 @@ public class SpringAppDeploymentImpl
     @Override
     public SpringAppDeploymentImpl withExistingSource(UserSourceType type, String relativePath) {
         if (isEnterpriseTier()) {
-            ensureSource(UserSourceType.fromString(Constants.BUILD_RESULT_SOURCE_TYPE));
+            ensureSource(UserSourceType.BUILD_RESULT);
             BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
-            userSourceInfo.withBuildResultId(String.format("<%s>", Constants.DEFAULT_TANZU_COMPONENT_NAME));
+            userSourceInfo.withBuildResultId(relativePath);
         } else {
             ensureSource(type);
             UserSourceInfo userSourceInfo = innerModel().properties().source();

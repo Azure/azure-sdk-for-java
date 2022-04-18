@@ -37,7 +37,7 @@ public class EnterpriseTierTest extends AppPlatformTest {
         Assertions.assertEquals(springService.getDefaultConfigurationService().gitUri(), GIT_CONFIG_URI);
         Assertions.assertEquals(springService.getDefaultConfigurationService().filePatterns(), filePatterns);
         BuildServiceInner buildServiceInner = appPlatformManager.serviceClient().getBuildServices().getBuildService(rgName, serviceName, "default");
-        Assertions.assertNotNull(buildServiceInner.properties().resourceRequests().cpu());
+        Assertions.assertNotNull(buildServiceInner);
 
         springService.update()
             .withoutGitConfig()
