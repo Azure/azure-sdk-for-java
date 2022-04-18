@@ -30,6 +30,7 @@ public class StreamUtilsImpl implements StreamUtils {
         return outputStream.toByteArray();
     }
 
+    // TODO (kasobol-msft) think about detecting InputStream subtype and port optimizations for most common subtypes.
     @Override
     public long transfer(InputStream in, OutputStream out) throws IOException {
         Objects.requireNonNull(in, "in");
