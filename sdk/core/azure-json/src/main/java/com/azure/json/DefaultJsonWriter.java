@@ -234,7 +234,6 @@ public final class DefaultJsonWriter extends JsonWriter {
     private static <T> T callWithWrappedIoException(IoExceptionSupplier<T> func) {
         return func.getWithUncheckedIoException();
     }
-
     private void callWithWrappedIoException(IoExceptionInvoker func) {
         func.invokeWithUncheckedIoException();
     }
