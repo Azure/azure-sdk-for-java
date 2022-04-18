@@ -7,13 +7,16 @@ import com.azure.core.implementation.http.BufferedHttpResponse;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.StreamUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -128,6 +131,18 @@ public abstract class HttpResponse implements Closeable {
      */
     public HttpResponse buffer() {
         return new BufferedHttpResponse(this);
+    }
+
+    /**
+     * Writes body content to {@link OutputStream}.
+     * @param outputStream {@link OutputStream}.
+     * @throws IOException if an I/O error occurs when reading or writing.
+     */
+    public void writeTo(OutputStream outputStream) throws IOException {
+        BinaryData bodyAsBinaryData = getBodyAsBinaryData();
+        if (bodyAsBinaryData != null) {
+            StreamUtils.INSTANCE.transfer(bodyAsBinaryData.toStream(), outputStream);
+        }
     }
 
     /**

@@ -1397,7 +1397,7 @@ public class BlobAsyncClientBase {
             customerProvidedKey, context);
     }
 
-    private BinaryDataResponse downloadRangeSync(BlobRange range, BlobRequestConditions requestConditions,
+    BinaryDataResponse downloadRangeSync(BlobRange range, BlobRequestConditions requestConditions,
                                                    String eTag, Boolean getMD5, Context context) {
         return azureBlobStorage.getBlobs().downloadWithResponseSync(containerName, blobName, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),

@@ -14,7 +14,9 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.http.client.HttpClientResponse;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -69,6 +71,26 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     @Override
     public void close() {
         closeConnection(reactorNettyConnection);
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        // TODO (kasobol-msft) handle other cases optimizations from ImplUtils.writeByteBufferToStream.
+        // However it seems that buffers here don't have backing arrays. And for files we should probably have
+        // writeTo(Channel) API.
+        byte[] buffer = new byte[8 * 1024];
+        bodyIntern().flatMap(byteBuff -> {
+            while (byteBuff.isReadable()) {
+                try {
+                    int numberOfBytes = Math.min(buffer.length, byteBuff.readableBytes());
+                    byteBuff.readBytes(buffer, 0, numberOfBytes);
+                    outputStream.write(buffer, 0, numberOfBytes);
+                } catch (IOException e) {
+                    return Mono.error(e);
+                }
+            }
+            return Mono.empty();
+        }).blockLast();
     }
 
     private ByteBufFlux bodyIntern() {

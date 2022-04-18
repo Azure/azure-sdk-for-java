@@ -7,6 +7,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 
 import java.io.Closeable;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * REST response with a streaming content.
@@ -23,6 +25,15 @@ public final class BinaryDataResponse extends SimpleResponse<BinaryData> impleme
     public BinaryDataResponse(HttpRequest request, HttpResponse response) {
         super(request, response.getStatusCode(), response.getHeaders(), response.getBodyAsBinaryData());
         this.response = response;
+    }
+
+    /**
+     * Writes body content to {@link OutputStream}.
+     * @param outputStream {@link OutputStream}.
+     * @throws IOException if an I/O error occurs when reading or writing.
+     */
+    public void writeTo(OutputStream outputStream) throws IOException {
+        response.writeTo(outputStream);
     }
 
     /**
