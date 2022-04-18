@@ -3,12 +3,10 @@
 
 package com.azure.storage.file.datalake;
 
-import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
-import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.Map;
