@@ -42,6 +42,7 @@ pr:
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    Skip.CreateApiReview: true
     ServiceDirectory: template
     Artifacts:
       - name: azure-sdk-template
