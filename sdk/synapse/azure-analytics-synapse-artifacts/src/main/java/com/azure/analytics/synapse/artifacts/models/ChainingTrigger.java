@@ -100,4 +100,18 @@ public class ChainingTrigger extends Trigger {
         this.runDimension = runDimension;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ChainingTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ChainingTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
 }

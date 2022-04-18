@@ -403,6 +403,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation.java"/>
 
+  <suppress checks="MethodName" files="com.azure.resourcemanager.appplatform.models.BuildProperties.java"/>
   <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
@@ -506,4 +507,7 @@ the main ServiceBusClientBuilder. -->
   files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+
+  <!-- AzureFileSystemProvider requires a deferred instantiation of the static logger to prevent a potential runtime exception. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.nio.AzureFileSystemProvider"/>
 </suppressions>

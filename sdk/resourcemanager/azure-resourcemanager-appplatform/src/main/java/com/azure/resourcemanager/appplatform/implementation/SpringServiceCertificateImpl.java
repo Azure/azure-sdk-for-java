@@ -22,7 +22,7 @@ public class SpringServiceCertificateImpl
     @Override
     public Mono<SpringServiceCertificate> createResourceAsync() {
         return manager().serviceClient().getCertificates().createOrUpdateAsync(
-            parent().resourceGroupName(), parent().name(), name(), innerModel().properties())
+            parent().resourceGroupName(), parent().name(), name(), innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;

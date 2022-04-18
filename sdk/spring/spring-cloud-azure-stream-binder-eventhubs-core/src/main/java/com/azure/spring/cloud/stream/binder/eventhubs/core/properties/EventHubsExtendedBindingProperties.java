@@ -41,6 +41,7 @@ public class EventHubsExtendedBindingProperties
      *
      * @return Bindings value
      */
+    @Override
     public Map<String, EventHubsBindingProperties> getBindings() {
         return doGetBindings();
     }

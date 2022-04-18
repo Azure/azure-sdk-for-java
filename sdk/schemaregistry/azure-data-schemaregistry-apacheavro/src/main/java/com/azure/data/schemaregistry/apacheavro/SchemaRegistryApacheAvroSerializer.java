@@ -5,7 +5,7 @@ package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.models.MessageContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -50,9 +50,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
  *
  * <p><strong>Serialize an object</strong></p>
- * Serializes an Avro generated object into {@link MessageWithMetadata}.
+ * Serializes an Avro generated object into {@link MessageContent}.
  * {@link #serializeMessageData(Object, TypeReference)} assumes that there is a no argument constructor used to
- * instantiate the {@link MessageWithMetadata} type. If there is a different way to instantiate the concrete type, use
+ * instantiate the {@link MessageContent} type. If there is a different way to instantiate the concrete type, use
  * the overload which takes a message factory function, {@link #serializeMessageData(Object, TypeReference, Function)}.
  *
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
@@ -73,8 +73,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
  *     .build&#40;&#41;;
  *
- * MessageWithMetadata message = serializer.serializeMessageData&#40;person,
- *     TypeReference.createInstance&#40;MessageWithMetadata.class&#41;&#41;;
+ * MessageContent message = serializer.serializeMessageData&#40;person,
+ *     TypeReference.createInstance&#40;MessageContent.class&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
  *
@@ -82,7 +82,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
  * <pre>
  * &#47;&#47; Message to deserialize. Assume that the body contains data which has been serialized using an Avro encoder.
- * MessageWithMetadata message = new MessageWithMetadata&#40;&#41;
+ * MessageContent message = new MessageContent&#40;&#41;
  *     .setBodyAsBinaryData&#40;BinaryData.fromBytes&#40;new byte[0]&#41;&#41;
  *     .setContentType&#40;&quot;avro&#47;binary+&#123;schema-id&#125;&quot;&#41;;
  *
@@ -92,7 +92,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
  *
  * <p><strong>Serialize an object using a message factory</strong></p>
- * Serializes an Avro generated object into {@link MessageWithMetadata}. It uses the {@link Function messageFactory} to
+ * Serializes an Avro generated object into {@link MessageContent}. It uses the {@link Function messageFactory} to
  * instantiate and populate the type.
  *
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory -->
@@ -154,7 +154,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @param object Object to serialize.
      * @param typeReference Type of message to create.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link MessageContent}.
      *
      * @return The message encoded or {@code null} if the message could not be serialized.
      *
@@ -168,7 +168,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference) {
+    public <T extends MessageContent> T serializeMessageData(Object object, TypeReference<T> typeReference) {
         return serializeMessageDataAsync(object, typeReference).block();
     }
 
@@ -178,7 +178,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link MessageContent}.
      *
      * @return The message encoded or {@code null} if the message could not be serialized.
      *
@@ -191,7 +191,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference,
+    public <T extends MessageContent> T serializeMessageData(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
         return serializeMessageDataAsync(object, typeReference, messageFactory).block();
     }
@@ -201,7 +201,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @param object Object to serialize.
      * @param typeReference Type of message to create.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link MessageContent}.
      *
      * @return A Mono that completes with the serialized message.
      *
@@ -214,7 +214,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
+    public <T extends MessageContent> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference) {
 
         return serializeMessageDataAsync(object, typeReference, null);
@@ -227,7 +227,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro. If null is passed in, then the
      *     no argument constructor will be used.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link MessageContent}.
      *
      * @return A Mono that completes with the serialized message.
      *
@@ -240,7 +240,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
+    public <T extends MessageContent> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
@@ -304,7 +304,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @param message Object to deserialize.
      * @param typeReference Message type to deserialize to.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link MessageContent}.
      *
      * @return The message deserialized.
      *
@@ -318,7 +318,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T> T deserializeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
+    public <T> T deserializeMessageData(MessageContent message, TypeReference<T> typeReference) {
         return deserializeMessageDataAsync(message, typeReference).block();
     }
 
@@ -327,7 +327,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @param message Object to deserialize.
      * @param typeReference Message to deserialize to.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link MessageContent}.
      *
      * @return A Mono that completes when the message encoded. If {@code message.getBodyAsBinaryData()} is null or
      *     empty, then an empty Mono is returned.
@@ -342,7 +342,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T> Mono<T> deserializeMessageDataAsync(MessageWithMetadata message, TypeReference<T> typeReference) {
+    public <T> Mono<T> deserializeMessageDataAsync(MessageContent message, TypeReference<T> typeReference) {
         if (message == null) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         } else if (typeReference == null) {
@@ -433,7 +433,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @throws RuntimeException if an instance of {@code T} could not be instantiated.
      */
     @SuppressWarnings("unchecked")
-    private static <T extends MessageWithMetadata> T createNoArgumentInstance(TypeReference<T> typeReference) {
+    private static <T extends MessageContent> T createNoArgumentInstance(TypeReference<T> typeReference) {
 
         final Optional<Constructor<?>> constructor =
             Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())

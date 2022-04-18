@@ -422,6 +422,9 @@ searchAsyncClient.search("luxury")
 
 ## Troubleshooting
 
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/TROUBLESHOOTING.md) 
+for details on how to diagnose various failure scenarios.
+
 ### General
 
 When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond

@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure ML Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -218,6 +220,34 @@ public class AzureMLServiceLinkedService extends LinkedService {
      */
     public AzureMLServiceLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

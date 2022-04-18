@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Amazon Redshift table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -98,6 +100,55 @@ public class AmazonRedshiftTableDataset extends Dataset {
      */
     public AmazonRedshiftTableDataset setSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
         this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftTableDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftTableDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftTableDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftTableDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftTableDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }
