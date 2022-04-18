@@ -868,7 +868,8 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
+    public BlobDownloadResponse downloadStreamWithResponse(
+        OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
@@ -898,7 +899,7 @@ public class BlobClientBase {
             finalCount = finalRange.getCount();
         }
 
-        RetriableOutputStream retriableOutputStream = new RetriableOutputStream(
+        try (RetriableOutputStream retriableOutputStream = new RetriableOutputStream(
             stream,
             initialResponse,
             (throwable, offset) -> {
@@ -930,11 +931,9 @@ public class BlobClientBase {
                     new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context);
             },
             finalOptions.getMaxRetryRequests(),
-            finalRange.getOffset());
-
-        try (RetriableOutputStream closeableStream = retriableOutputStream) {
+            finalRange.getOffset())) {
             // TODO (kasobol-msft) what about timeout?
-            closeableStream.transfer();
+            retriableOutputStream.transfer();
             return new BlobDownloadResponse(
                 initialResponse.getRequest(),
                 initialResponse.getStatusCode(),
