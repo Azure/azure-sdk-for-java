@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
 
 @JsonSerialize(using = RntbdEndpointStatistics.RntbdEndpointStatsJsonSerializer.class)
 public class RntbdEndpointStatistics implements Serializable {
@@ -57,6 +56,11 @@ public class RntbdEndpointStatistics implements Serializable {
         return this;
     }
 
+    RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListenerMetrics metrics) {
+        this.connectionStateListenerMetrics = metrics;
+        return this;
+    }
+
     private int availableChannels;
     private int acquiredChannels;
     private int executorTaskQueueSize;
@@ -65,6 +69,7 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastSuccessfulRequestNanoTime;
     private long lastRequestNanoTime;
     private Instant createdTime;
+    private RntbdConnectionStateListenerMetrics connectionStateListenerMetrics;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
@@ -83,6 +88,10 @@ public class RntbdEndpointStatistics implements Serializable {
             writer.writeStringField("lastRequestTime", toInstantString(stats.lastRequestNanoTime));
             writer.writeStringField("createdTime", toInstantString(stats.createdTime));
             writer.writeBooleanField("isClosed", stats.closed);
+            if (stats.connectionStateListenerMetrics != null)
+            {
+                writer.writeObjectField("cerMetrics", stats.connectionStateListenerMetrics);
+            }
             writer.writeEndObject();
         }
 

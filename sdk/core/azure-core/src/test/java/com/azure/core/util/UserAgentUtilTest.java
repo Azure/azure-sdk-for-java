@@ -17,6 +17,7 @@ import java.util.stream.Stream;
  * Unit tests for {@link UserAgentUtil}.
  */
 public class UserAgentUtilTest {
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @MethodSource("getUserAgentTestCases")
     @ParameterizedTest
@@ -55,9 +56,11 @@ public class UserAgentUtilTest {
 
                 // without platform info
                 Arguments.of("azsdk-java-storage-blob/12.0.0", null, "azure-storage-blob", "12.0.0",
-                        Configuration.getGlobalConfiguration().clone().put("AZURE_TELEMETRY_DISABLED", "true")),
+                        new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                                .put("AZURE_TELEMETRY_DISABLED", "true")).build()),
                 Arguments.of("myapp azsdk-java-storage-blob/12.0.0", "myapp", "azure-storage-blob", "12.0.0",
-                        Configuration.getGlobalConfiguration().clone().put("AZURE_TELEMETRY_DISABLED", "true"))
+                        new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                                .put("AZURE_TELEMETRY_DISABLED", "true")).build())
         );
     }
 
