@@ -36,4 +36,8 @@ if ($originalVersion -and $originalVersion.IsPrerelease) {
 $packageNameLocation = "$DocRepoLocation/metadata/$metadataMoniker"
 New-Item -ItemType Directory -Path $packageNameLocation -Force
 Write-Host "The moniker $packageNameLocation"
+if (!(Test-Path $jarFile.FullName)) {
+  LogWarning "We cannot find the javadoc jar for the package. $($jarFile.FullName)."
+  return
+}
 Fetch-Namespaces-From-Javadoc $jarFile.FullName "$packageNameLocation/$ArtifactName.txt"
