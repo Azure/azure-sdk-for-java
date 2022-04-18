@@ -29,6 +29,27 @@ public final class JsonWriteContext {
     }
 
     /**
+     * Gets the parent {@link JsonWriteContext}.
+     * <p>
+     * {@link JsonWriteContext#ROOT} and {@link JsonWriteContext#COMPLETED} are terminal writing contexts and don't have
+     * parent contexts. These are the only writing contexts that will return null.
+     *
+     * @return The parent writing context.
+     */
+    public JsonWriteContext getParent() {
+        return parent;
+    }
+
+    /**
+     * Gets the {@link JsonContext} associated to the writing context.
+     *
+     * @return The {@link JsonContext} associated to the writing context.
+     */
+    public JsonContext getContext() {
+        return context;
+    }
+
+    /**
      * Determines whether the writing operation is allowed based on the {@link JsonContext}.
      * <p>
      * The following is the allowed {@link JsonWriteOperation JsonWriteOperations} based on the {@link JsonContext}.
@@ -62,12 +83,11 @@ public final class JsonWriteContext {
                     + " or 'SIMPLE_VALUE' operations are allowed. Attempted: '" + operation + "'.");
             }
         } else if (context == JsonContext.OBJECT) {
-            if (!(operation == JsonWriteOperation.START_OBJECT
-                || operation == JsonWriteOperation.END_OBJECT
+            if (!(operation == JsonWriteOperation.END_OBJECT
                 || operation == JsonWriteOperation.FIELD_NAME
                 || operation == JsonWriteOperation.FIELD_AND_VALUE)) {
-                throw new IllegalStateException("Writing context is 'OBJECT', only 'START_OBJECT', 'END_OBJECT',"
-                    + " 'FIELD_NAME', or 'FIELD_AND_VALUE' operations are allowed. Attempted: '" + operation + "'.");
+                throw new IllegalStateException("Writing context is 'OBJECT', only 'END_OBJECT', 'FIELD_NAME', or "
+                    + "'FIELD_AND_VALUE' operations are allowed. Attempted: '" + operation + "'.");
             }
         } else if (context == JsonContext.ARRAY) {
             if (!(operation == JsonWriteOperation.START_OBJECT
@@ -111,22 +131,34 @@ public final class JsonWriteContext {
      * @return The updated writing context.
      */
     public JsonWriteContext updateContext(JsonWriteOperation operation) {
-        // Ending an array, object, or writing a simple value completes a writing context, prepare the parent as the
-        // return context.
+        // Simple value has two scenarios:
+        //
+        // - Current context is the root, writing a simple value completes the JSON stream and the writing context
+        //   becomes COMPLETE.
+        // - Current context isn't the root, writing context becomes the parent context and the context is completed.
+        if (operation == JsonWriteOperation.SIMPLE_VALUE) {
+            return context == JsonContext.ROOT ? COMPLETED : parent;
+        }
+
+        // Ending an array or object has three scenarios, but before the scenarios play out the current context is
+        // completed. The scenarios are:
+        //
+        // - Parent context is the root, closing the array or object completes the JSON stream and the writing context
+        //   becomes complete.
+        // - Parent context is a FIELD_VALUE, closing the array or object completes the field value and the writing
+        //   context becomes the grandparent context.
+        // - The parent context is a wrapping array or object, return the parent context.
         if (operation == JsonWriteOperation.END_ARRAY
-            || operation == JsonWriteOperation.END_OBJECT
-            || operation == JsonWriteOperation.SIMPLE_VALUE) {
+            || operation == JsonWriteOperation.END_OBJECT) {
             JsonWriteContext toReturn = parent;
 
-            // If the parent was ROOT writing has completed, return COMPLETED.
-            if (toReturn == ROOT) {
+            // Parent context is the root, complete writing by returning the COMPLETED context.
+            if (toReturn.context == JsonContext.ROOT) {
                 return COMPLETED;
             }
 
-            // If the parent was a FIELD_VALUE and the operation was ending an array or object complete that context
-            // as well and return the grandparent.
-            if (toReturn.context == JsonContext.FIELD_VALUE
-                && (operation == JsonWriteOperation.END_ARRAY || operation == JsonWriteOperation.END_OBJECT)) {
+            // Parent context is a FIELD_VALUE, close the field context by returning the grandparent context.
+            if (toReturn.context == JsonContext.FIELD_VALUE) {
                 return toReturn.parent;
             }
 

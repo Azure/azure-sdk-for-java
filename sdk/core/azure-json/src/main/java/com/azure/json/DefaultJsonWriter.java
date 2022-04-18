@@ -31,8 +31,8 @@ public final class DefaultJsonWriter extends JsonWriter {
      *
      * @param stream The {@link OutputStream} that will be written.
      * @return An instance of {@link DefaultJsonWriter}.
-     * @throws UncheckedIOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the {@link
-     * OutputStream}.
+     * @throws UncheckedIOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the
+     * {@link OutputStream}.
      */
     public static DefaultJsonWriter toStream(OutputStream stream) {
         return callWithWrappedIoException(() -> new DefaultJsonWriter(FACTORY.createGenerator(stream)));
@@ -86,7 +86,13 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeBinary(byte[] value) {
-        callWithWrappedIoException(() -> generator.writeBinary(value), JsonWriteOperation.SIMPLE_VALUE);
+        callWithWrappedIoException(() -> {
+            if (value == null) {
+                generator.writeNull();
+            } else {
+                generator.writeBinary(value);
+            }
+        }, JsonWriteOperation.SIMPLE_VALUE);
 
         return this;
     }
@@ -149,8 +155,13 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeBinaryField(String fieldName, byte[] value) {
-        callWithWrappedIoException(() -> generator.writeBinaryField(fieldName, value),
-            JsonWriteOperation.FIELD_AND_VALUE);
+        callWithWrappedIoException(() -> {
+            if (value == null) {
+                generator.writeNullField(fieldName);
+            } else {
+                generator.writeBinaryField(fieldName, value);
+            }
+        }, JsonWriteOperation.FIELD_AND_VALUE);
 
         return this;
     }
@@ -228,12 +239,18 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     @Override
     public void close() throws IOException {
+        if (context != JsonWriteContext.COMPLETED) {
+            throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
+                + "closed. Current writing state is '" + context.getContext() + "'.");
+        }
+
         generator.close();
     }
 
     private static <T> T callWithWrappedIoException(IoExceptionSupplier<T> func) {
         return func.getWithUncheckedIoException();
     }
+
     private void callWithWrappedIoException(IoExceptionInvoker func) {
         func.invokeWithUncheckedIoException();
     }

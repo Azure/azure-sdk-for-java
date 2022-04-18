@@ -46,6 +46,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
 
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.json/com.azure.json=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+
     <!-- Ignore shaded code -->
     <checkstyle.excludes>**/jackson/core/**/*.java</checkstyle.excludes>
   </properties>

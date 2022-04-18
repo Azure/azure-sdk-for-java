@@ -25,7 +25,10 @@ public abstract class JsonWriter implements Closeable {
      * Closes the JSON stream.
      * <p>
      * If the {@link #writeContext() writing context} isn't {@link JsonWriteContext#COMPLETED} when this is called an
-     * {@link IllegalStateException}.
+     * {@link IllegalStateException} will be thrown.
+     *
+     * @throws IllegalStateException If the {@link JsonWriter} is closed before the
+     * {@link #writeContext() writing context} is {@link JsonWriteContext#COMPLETED}.
      */
     @Override
     public abstract void close() throws IOException;
@@ -84,6 +87,8 @@ public abstract class JsonWriter implements Closeable {
      * <p>
      * This API converts the binary value to a Base64 encoded string.
      * <p>
+     * If {@code value} is null this API will be the equivalent to {@link #writeNull()}.
+     * <p>
      * This API is used instead of {@link #writeBinaryField(String, byte[])} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      *
@@ -128,8 +133,8 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON int value.
      * <p>
-     * This API is used instead of {@link #writeIntField(String, int)} when the value needs to be written to the
-     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     * This API is used instead of {@link #writeIntField(String, int)} when the value needs to be written to the root of
+     * the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      *
      * @param value int value to write.
      * @return The updated JsonWriter object.
@@ -139,8 +144,8 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON long value.
      * <p>
-     * This API is used instead of {@link #writeLongField(String, long)} when the value needs to be written to the
-     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     * This API is used instead of {@link #writeLongField(String, long)} when the value needs to be written to the root
+     * of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      *
      * @param value long value to write.
      * @return The updated JsonWriter object.
@@ -150,8 +155,8 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON null.
      * <p>
-     * This API is used instead of {@link #writeNullField(String)} when the value needs to be written to the
-     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     * This API is used instead of {@link #writeNullField(String)} when the value needs to be written to the root of the
+     * JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      *
      * @return The updated JsonWriter object.
      */
@@ -172,6 +177,7 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeString(String value);
 
     // Should this be an overload to writeString with a boolean flag?
+
     /**
      * Writes a JSON String value if the passed {@code value} isn't null.
      * <p>
@@ -242,8 +248,8 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON float field.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeFloat(float)} to simplify adding a key-value to a
-     * JSON object.
+     * Combines {@link #writeFieldName(String)} and {@link #writeFloat(float)} to simplify adding a key-value to a JSON
+     * object.
      *
      * @param fieldName The field name.
      * @param value The float value.
@@ -254,8 +260,8 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON int field.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeInt(int)} to simplify adding a key-value to a
-     * JSON object.
+     * Combines {@link #writeFieldName(String)} and {@link #writeInt(int)} to simplify adding a key-value to a JSON
+     * object.
      *
      * @param fieldName The field name.
      * @param value The int value.
@@ -266,8 +272,8 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON long field.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeLong(long)} to simplify adding a key-value to a
-     * JSON object.
+     * Combines {@link #writeFieldName(String)} and {@link #writeLong(long)} to simplify adding a key-value to a JSON
+     * object.
      *
      * @param fieldName The field name.
      * @param value The binary value.
@@ -278,8 +284,8 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON null field ({@code "fieldName":null}).
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeNull()} to simplify adding a key-value to a
-     * JSON object.
+     * Combines {@link #writeFieldName(String)} and {@link #writeNull()} to simplify adding a key-value to a JSON
+     * object.
      *
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
@@ -302,6 +308,7 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeStringField(String fieldName, String value);
 
     // Should this be an overload to writeStringField with a boolean flag?
+
     /**
      * Writes a JSON String field if the passed {@code value} isn't null.
      * <p>
