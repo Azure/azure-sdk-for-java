@@ -76,7 +76,7 @@ final class PageListDeserializer extends JsonDeserializer<PageList> {
                 clearRanges.add((ClearRange) clearRangeDeserializer.deserialize(p, ctxt));
             } else if (p.getCurrentName().equals("NextMarker")) {
                 // Current token is the next marker
-                nextMarker = p.getText();
+                nextMarker = "null".equals(p.getText()) ? null : p.getText();
             }
         }
 

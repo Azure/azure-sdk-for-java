@@ -1012,11 +1012,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
     private Mono<PageBlobsGetPageRangesResponse> getPageRangesSegment(String marker,
         ListPageRangesOptions options, Duration timeout, Context context) {
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getPageBlobs().getPageRangesWithResponseAsync(containerName, blobName,
-                null, null, null, null, null, null, null, null, null, null, marker, options.getMaxResultsPerPage(),
+                getSnapshotId(), null, options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)),
             timeout);
     }
@@ -1334,12 +1339,17 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
     private Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffSegment(String marker,
         ListPageRangesDiffOptions options, Duration timeout, Context context) {
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponseAsync(containerName, blobName,
-                null, null, null, null, null, null, null, null, null, null, null, null, marker,
-                options.getMaxResultsPerPage(),
+                getSnapshotId(), null, options.getPreviousSnapshot(), null,
+                options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)),
             timeout);
     }
