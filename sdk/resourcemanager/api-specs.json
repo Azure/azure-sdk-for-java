@@ -279,5 +279,11 @@
     "source": "specification/msi/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.msi",
     "args": "--tag=package-2018-11-30 --add-client-flatten=Identity"
+  },
+  "changes": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-changes-2022-03-01-preview --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType"
   }
 }
