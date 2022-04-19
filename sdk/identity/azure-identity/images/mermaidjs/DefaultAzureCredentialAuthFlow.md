@@ -9,11 +9,10 @@ flowchart LR;
 
     subgraph CREDENTIAL TYPES;
         direction LR;
-        Deployed(Deployed service):::deployed ==> Developer(Developer):::developer ==> Interactive(Interactive developer):::interactive;
+        Deployed(Deployed service):::deployed ==> Developer(Developer):::developer;
 
         %% Hide links between boxes in the legend by setting width to 0. The integers after "linkStyle" represent link indices.
         linkStyle 5 stroke-width:0px;
-        linkStyle 6 stroke-width:0px;
     end;
 
     %% Define styles for credential type boxes
