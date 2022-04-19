@@ -43,12 +43,12 @@ public enum JsonToken {
     NULL,
 
     /**
-     * String, in value context.
-     */
-    STRING,
-
-    /**
      * Number.
      */
-    NUMBER
+    NUMBER,
+
+    /**
+     * String, in value context.
+     */
+    STRING
 }

@@ -7,8 +7,6 @@ import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
 import com.azure.json.JsonWriter;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ResponseErrorTests {
     @ParameterizedTest
     @MethodSource("toJsonSupplier")
-    @Execution(ExecutionMode.SAME_THREAD)
     public void toJsonStringBuilder(ResponseError error, String expectedJson) {
         assertEquals(expectedJson, error.toJson(new StringBuilder()).toString());
     }

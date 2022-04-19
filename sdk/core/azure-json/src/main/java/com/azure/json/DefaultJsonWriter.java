@@ -20,6 +20,9 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     private final JsonGenerator generator;
 
+    // Initial state is always root.
+    private JsonWriteContext context = JsonWriteContext.ROOT;
+
     /**
      * Creates a {@link DefaultJsonWriter} that writes the given {@link OutputStream}.
      * <p>
@@ -48,154 +51,166 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeStartObject() {
-        callWithWrappedIoException(() -> generator.writeStartObject());
+        callWithWrappedIoException(generator::writeStartObject, JsonToken.START_OBJECT, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeEndObject() {
-        callWithWrappedIoException(generator::writeEndObject);
+        callWithWrappedIoException(generator::writeEndObject, JsonToken.END_OBJECT, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeStartArray() {
-        callWithWrappedIoException(() -> generator.writeStartArray());
+        callWithWrappedIoException(generator::writeStartArray, JsonToken.START_ARRAY, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeEndArray() {
-        callWithWrappedIoException(generator::writeEndArray);
+        callWithWrappedIoException(generator::writeEndArray, JsonToken.END_ARRAY, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeFieldName(String fieldName) {
-        callWithWrappedIoException(() -> generator.writeFieldName(fieldName));
+        callWithWrappedIoException(() -> generator.writeFieldName(fieldName), JsonToken.FIELD_NAME, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeBinary(byte[] value) {
-        callWithWrappedIoException(() -> generator.writeBinary(value));
+        callWithWrappedIoException(() -> {
+            if (value == null) {
+                generator.writeNull();
+            } else {
+                generator.writeBinary(value);
+            }
+        }, JsonToken.STRING, false); // Binary is written into JSON as a string.
 
         return this;
     }
 
     @Override
     public JsonWriter writeBoolean(boolean value) {
-        callWithWrappedIoException(() -> generator.writeBoolean(value));
+        callWithWrappedIoException(() -> generator.writeBoolean(value), JsonToken.BOOLEAN, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeDouble(double value) {
-        callWithWrappedIoException(() -> generator.writeNumber(value));
+        callWithWrappedIoException(() -> generator.writeNumber(value), JsonToken.NUMBER, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeFloat(float value) {
-        callWithWrappedIoException(() -> generator.writeNumber(value));
+        callWithWrappedIoException(() -> generator.writeNumber(value), JsonToken.NUMBER, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeInt(int value) {
-        callWithWrappedIoException(() -> generator.writeNumber(value));
+        callWithWrappedIoException(() -> generator.writeNumber(value), JsonToken.NUMBER, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeLong(long value) {
-        callWithWrappedIoException(() -> generator.writeNumber(value));
+        callWithWrappedIoException(() -> generator.writeNumber(value), JsonToken.NUMBER, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeNull() {
-        callWithWrappedIoException(generator::writeNull);
+        callWithWrappedIoException(generator::writeNull, JsonToken.NULL, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeString(String value) {
-        callWithWrappedIoException(() -> generator.writeString(value));
+        callWithWrappedIoException(() -> generator.writeString(value), JsonToken.STRING, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeRawValue(String value) {
-        callWithWrappedIoException(() -> generator.writeRawValue(value));
+        callWithWrappedIoException(() -> generator.writeRawValue(value), JsonToken.STRING, false);
 
         return this;
     }
 
     @Override
     public JsonWriter writeBinaryField(String fieldName, byte[] value) {
-        callWithWrappedIoException(() -> generator.writeBinaryField(fieldName, value));
+        callWithWrappedIoException(() -> {
+            if (value == null) {
+                generator.writeNullField(fieldName);
+            } else {
+                generator.writeBinaryField(fieldName, value);
+            }
+        }, JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
     public JsonWriter writeBooleanField(String fieldName, boolean value) {
-        callWithWrappedIoException(() -> generator.writeBooleanField(fieldName, value));
+        callWithWrappedIoException(() -> generator.writeBooleanField(fieldName, value), JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
     public JsonWriter writeDoubleField(String fieldName, double value) {
-        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value));
+        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value), JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
     public JsonWriter writeFloatField(String fieldName, float value) {
-        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value));
+        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value), JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
     public JsonWriter writeIntField(String fieldName, int value) {
-        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value));
+        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value), JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
     public JsonWriter writeLongField(String fieldName, long value) {
-        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value));
+        callWithWrappedIoException(() -> generator.writeNumberField(fieldName, value), JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
     public JsonWriter writeNullField(String fieldName) {
-        callWithWrappedIoException(() -> generator.writeNullField(fieldName));
+        callWithWrappedIoException(() -> generator.writeNullField(fieldName), JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
     public JsonWriter writeStringField(String fieldName, String value) {
-        callWithWrappedIoException(() -> generator.writeStringField(fieldName, value));
+        callWithWrappedIoException(() -> generator.writeStringField(fieldName, value), JsonToken.FIELD_NAME, true);
 
         return this;
     }
@@ -205,13 +220,23 @@ public final class DefaultJsonWriter extends JsonWriter {
         callWithWrappedIoException(() -> {
             generator.writeFieldName(fieldName);
             generator.writeRawValue(value);
-        });
+        }, JsonToken.FIELD_NAME, true);
 
         return this;
     }
 
     @Override
+    public JsonWriteContext getWriteContext() {
+        return context;
+    }
+
+    @Override
     public void close() throws IOException {
+        if (context != JsonWriteContext.COMPLETED) {
+            throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
+                + "closed. Current writing state is '" + context.getWriteState() + "'.");
+        }
+
         generator.close();
     }
 
@@ -219,7 +244,20 @@ public final class DefaultJsonWriter extends JsonWriter {
         return func.getWithUncheckedIoException();
     }
 
-    private static void callWithWrappedIoException(IoExceptionInvoker func) {
+    private void callWithWrappedIoException(IoExceptionInvoker func) {
         func.invokeWithUncheckedIoException();
+    }
+
+    private void callWithWrappedIoException(IoExceptionInvoker func, JsonToken token, boolean fieldAndValue) {
+        // Validate the token.
+        context.validateToken(token);
+
+        // Perform the operation.
+        func.invokeWithUncheckedIoException();
+
+        // Update state if the operation wasn't a field and value.
+        if (!fieldAndValue) {
+            context = context.updateContext(token);
+        }
     }
 }
