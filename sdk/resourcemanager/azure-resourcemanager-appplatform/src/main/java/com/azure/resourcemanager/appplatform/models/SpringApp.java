@@ -66,6 +66,12 @@ public interface SpringApp
     /** @return the blob url to upload deployment */
     ResourceUploadDefinition getResourceUploadUrl();
 
+    /**
+     * (Enterprise Tier Only)
+     * @return whether this app has binding to the default Configuration Service
+     */
+    boolean hasConfigurationServiceBinding();
+
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -165,6 +171,24 @@ public interface SpringApp
         }
 
         /**
+         * (Enterprise Tier Only)
+         * The stage of spring app definition allowing to bind it to default configuration service.
+         */
+        interface WithConfigurationServiceBinding {
+            /**
+             * Specifies a binding to the default configuration service.
+             * @return the next stage of spring app definition
+             */
+            WithCreate withConfigurationServiceBinding();
+
+            /**
+             * Removes a binding to the default configuration service.
+             * @return the next stage of spring app definition
+             */
+            WithCreate withoutConfigurationServiceBinding();
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
@@ -173,7 +197,8 @@ public interface SpringApp
                 DefinitionStages.WithEndpoint,
                 DefinitionStages.WithDisk,
                 DefinitionStages.WithDeployment,
-                DefinitionStages.WithServiceBinding { }
+                DefinitionStages.WithServiceBinding,
+                DefinitionStages.WithConfigurationServiceBinding { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -182,7 +207,8 @@ public interface SpringApp
         UpdateStages.WithEndpoint,
         UpdateStages.WithDisk,
         UpdateStages.WithDeployment,
-        UpdateStages.WithServiceBinding { }
+        UpdateStages.WithServiceBinding,
+        UpdateStages.WithConfigurationServiceBinding { }
 
     /** Grouping of spring app update stages. */
     interface UpdateStages {
@@ -283,6 +309,24 @@ public interface SpringApp
              * @return the next stage of spring app update
              */
             Update withoutServiceBinding(String name);
+        }
+
+        /**
+         * (Enterprise Tier Only)
+         * The stage of a spring app update allowing to bind it to the default configuration service.
+         */
+        interface WithConfigurationServiceBinding {
+            /**
+             * Specifies a binding to the default configuration service.
+             * @return the next stage of spring app update
+             */
+            Update withConfigurationServiceBinding();
+
+            /**
+             * Removes a binding to the default configuration service.
+             * @return the next stage of spring app update
+             */
+            Update withoutConfigurationServiceBinding();
         }
     }
 }
