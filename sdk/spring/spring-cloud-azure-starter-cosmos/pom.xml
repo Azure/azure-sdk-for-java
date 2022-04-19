@@ -98,12 +98,6 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-<!--      <exclusions>-->
-<!--        <exclusion>-->
-<!--          <groupId>io.micrometer</groupId>-->
-<!--          <artifactId>micrometer-core</artifactId>-->
-<!--        </exclusion>-->
-<!--      </exclusions>-->
       <version>4.28.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
   </dependencies>

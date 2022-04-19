@@ -98,16 +98,6 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-<!--      <exclusions>-->
-<!--        <exclusion>-->
-<!--          <groupId>org.springframework.data</groupId>-->
-<!--          <artifactId>spring-data-commons</artifactId>-->
-<!--        </exclusion>-->
-<!--        <exclusion>-->
-<!--          <groupId>io.micrometer</groupId>-->
-<!--          <artifactId>micrometer-core</artifactId>-->
-<!--        </exclusion>-->
-<!--      </exclusions>-->
       <version>3.19.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
     </dependency>
   </dependencies>
