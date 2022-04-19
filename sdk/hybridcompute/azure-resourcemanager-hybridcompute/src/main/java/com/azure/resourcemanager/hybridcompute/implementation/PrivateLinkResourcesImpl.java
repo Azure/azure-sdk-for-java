@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkResourcesClient
 import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResource;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 

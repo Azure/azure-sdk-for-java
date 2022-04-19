@@ -6,14 +6,11 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** State of the private endpoint connection. */
 @Fluent
 public final class PrivateLinkServiceConnectionStateProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionStateProperty.class);
-
     /*
      * The private link service connection status.
      */
@@ -88,16 +85,18 @@ public final class PrivateLinkServiceConnectionStateProperty {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model PrivateLinkServiceConnectionStateProperty"));
         }
         if (description() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property description in model PrivateLinkServiceConnectionStateProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServiceConnectionStateProperty.class);
 }

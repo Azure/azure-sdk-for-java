@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Hybrid Compute Operation Value Display. */
 @Immutable
 public final class OperationValueDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationValueDisplay.class);
-
     /*
      * The display name of the compute operation.
      */

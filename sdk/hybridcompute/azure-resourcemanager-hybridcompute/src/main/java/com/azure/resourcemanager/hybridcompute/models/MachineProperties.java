@@ -6,8 +6,7 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Describes the properties of a hybrid machine. */
 @Fluent
 public final class MachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineProperties.class);
-
     /*
      * Metadata pertaining to the geographic location of the resource.
      */
@@ -25,9 +22,28 @@ public final class MachineProperties {
     private LocationData locationData;
 
     /*
+     * Configurable properties that the user can set locally via the azcmagent
+     * config command, or remotely via ARM.
+     */
+    @JsonProperty(value = "agentConfiguration", access = JsonProperty.Access.WRITE_ONLY)
+    private AgentConfiguration agentConfiguration;
+
+    /*
+     * Statuses of dependent services that are reported back to ARM.
+     */
+    @JsonProperty(value = "serviceStatuses")
+    private ServiceStatuses serviceStatuses;
+
+    /*
+     * The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     */
+    @JsonProperty(value = "cloudMetadata")
+    private CloudMetadata cloudMetadata;
+
+    /*
      * Specifies the operating system settings for the hybrid machine.
      */
-    @JsonProperty(value = "osProfile", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
@@ -98,6 +114,12 @@ public final class MachineProperties {
     private String osVersion;
 
     /*
+     * The type of Operating System (windows/linux).
+     */
+    @JsonProperty(value = "osType")
+    private String osType;
+
+    /*
      * Specifies the Arc Machine's unique SMBIOS ID
      */
     @JsonProperty(value = "vmUuid", access = JsonProperty.Access.WRITE_ONLY)
@@ -148,9 +170,16 @@ public final class MachineProperties {
     private String parentClusterResourceId;
 
     /*
+     * Specifies whether any MS SQL instance is discovered on the machine.
+     */
+    @JsonProperty(value = "mssqlDiscovered")
+    private String mssqlDiscovered;
+
+    /*
      * Detected properties from the machine.
      */
     @JsonProperty(value = "detectedProperties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> detectedProperties;
 
     /**
@@ -174,12 +203,73 @@ public final class MachineProperties {
     }
 
     /**
+     * Get the agentConfiguration property: Configurable properties that the user can set locally via the azcmagent
+     * config command, or remotely via ARM.
+     *
+     * @return the agentConfiguration value.
+     */
+    public AgentConfiguration agentConfiguration() {
+        return this.agentConfiguration;
+    }
+
+    /**
+     * Get the serviceStatuses property: Statuses of dependent services that are reported back to ARM.
+     *
+     * @return the serviceStatuses value.
+     */
+    public ServiceStatuses serviceStatuses() {
+        return this.serviceStatuses;
+    }
+
+    /**
+     * Set the serviceStatuses property: Statuses of dependent services that are reported back to ARM.
+     *
+     * @param serviceStatuses the serviceStatuses value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withServiceStatuses(ServiceStatuses serviceStatuses) {
+        this.serviceStatuses = serviceStatuses;
+        return this;
+    }
+
+    /**
+     * Get the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     *
+     * @return the cloudMetadata value.
+     */
+    public CloudMetadata cloudMetadata() {
+        return this.cloudMetadata;
+    }
+
+    /**
+     * Set the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     *
+     * @param cloudMetadata the cloudMetadata value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withCloudMetadata(CloudMetadata cloudMetadata) {
+        this.cloudMetadata = cloudMetadata;
+        return this;
+    }
+
+    /**
      * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
      *
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
         return this.osProfile;
+    }
+
+    /**
+     * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @param osProfile the osProfile value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withOsProfile(OSProfile osProfile) {
+        this.osProfile = osProfile;
+        return this;
     }
 
     /**
@@ -306,6 +396,26 @@ public final class MachineProperties {
     }
 
     /**
+     * Get the osType property: The type of Operating System (windows/linux).
+     *
+     * @return the osType value.
+     */
+    public String osType() {
+        return this.osType;
+    }
+
+    /**
+     * Set the osType property: The type of Operating System (windows/linux).
+     *
+     * @param osType the osType value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withOsType(String osType) {
+        this.osType = osType;
+        return this;
+    }
+
+    /**
      * Get the vmUuid property: Specifies the Arc Machine's unique SMBIOS ID.
      *
      * @return the vmUuid value.
@@ -415,6 +525,26 @@ public final class MachineProperties {
     }
 
     /**
+     * Get the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
+     *
+     * @return the mssqlDiscovered value.
+     */
+    public String mssqlDiscovered() {
+        return this.mssqlDiscovered;
+    }
+
+    /**
+     * Set the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
+     *
+     * @param mssqlDiscovered the mssqlDiscovered value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withMssqlDiscovered(String mssqlDiscovered) {
+        this.mssqlDiscovered = mssqlDiscovered;
+        return this;
+    }
+
+    /**
      * Get the detectedProperties property: Detected properties from the machine.
      *
      * @return the detectedProperties value.
@@ -431,6 +561,15 @@ public final class MachineProperties {
     public void validate() {
         if (locationData() != null) {
             locationData().validate();
+        }
+        if (agentConfiguration() != null) {
+            agentConfiguration().validate();
+        }
+        if (serviceStatuses() != null) {
+            serviceStatuses().validate();
+        }
+        if (cloudMetadata() != null) {
+            cloudMetadata().validate();
         }
         if (osProfile() != null) {
             osProfile().validate();

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Machine Extension. */
 @Fluent
 public final class MachineExtensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineExtensionProperties.class);
-
     /*
      * How the extension handler should be forced to update even if the
      * extension configuration has not changed.
@@ -39,6 +35,13 @@ public final class MachineExtensionProperties {
      */
     @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
+
+    /*
+     * Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     */
+    @JsonProperty(value = "enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
 
     /*
      * Indicates whether the extension should use a newer minor version if one
@@ -153,6 +156,28 @@ public final class MachineExtensionProperties {
      */
     public MachineExtensionProperties withTypeHandlerVersion(String typeHandlerVersion) {
         this.typeHandlerVersion = typeHandlerVersion;
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the MachineExtensionProperties object itself.
+     */
+    public MachineExtensionProperties withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;
     }
 

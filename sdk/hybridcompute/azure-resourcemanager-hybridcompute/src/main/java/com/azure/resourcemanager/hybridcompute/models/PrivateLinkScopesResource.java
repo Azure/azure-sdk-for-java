@@ -4,17 +4,13 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** An azure resource object. */
-@Immutable
+@Fluent
 public class PrivateLinkScopesResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkScopesResource.class);
-
     /** {@inheritDoc} */
     @Override
     public PrivateLinkScopesResource withLocation(String location) {

@@ -15,10 +15,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkScopeVal
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopeValidationDetails;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkScopesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkScopesImpl.class);
 
     private final PrivateLinkScopesClient innerClient;
 
@@ -140,7 +139,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     public HybridComputePrivateLinkScope getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
         }
         String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +160,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     public Response<HybridComputePrivateLinkScope> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
         }
         String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -182,7 +181,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -190,7 +189,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
         }
         String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -203,7 +202,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -211,7 +210,7 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
         }
         String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

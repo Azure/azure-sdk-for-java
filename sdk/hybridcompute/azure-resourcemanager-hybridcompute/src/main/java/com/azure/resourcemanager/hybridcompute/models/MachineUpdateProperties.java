@@ -5,20 +5,28 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the ARM updatable properties of a hybrid machine. */
 @Fluent
 public final class MachineUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineUpdateProperties.class);
-
     /*
      * Metadata pertaining to the geographic location of the resource.
      */
     @JsonProperty(value = "locationData")
     private LocationData locationData;
+
+    /*
+     * Specifies the operating system settings for the hybrid machine.
+     */
+    @JsonProperty(value = "osProfile")
+    private OSProfile osProfile;
+
+    /*
+     * The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     */
+    @JsonProperty(value = "cloudMetadata")
+    private CloudMetadata cloudMetadata;
 
     /*
      * The resource id of the parent cluster (Azure HCI) this machine is
@@ -51,6 +59,46 @@ public final class MachineUpdateProperties {
      */
     public MachineUpdateProperties withLocationData(LocationData locationData) {
         this.locationData = locationData;
+        return this;
+    }
+
+    /**
+     * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @return the osProfile value.
+     */
+    public OSProfile osProfile() {
+        return this.osProfile;
+    }
+
+    /**
+     * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @param osProfile the osProfile value to set.
+     * @return the MachineUpdateProperties object itself.
+     */
+    public MachineUpdateProperties withOsProfile(OSProfile osProfile) {
+        this.osProfile = osProfile;
+        return this;
+    }
+
+    /**
+     * Get the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     *
+     * @return the cloudMetadata value.
+     */
+    public CloudMetadata cloudMetadata() {
+        return this.cloudMetadata;
+    }
+
+    /**
+     * Set the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
+     *
+     * @param cloudMetadata the cloudMetadata value to set.
+     * @return the MachineUpdateProperties object itself.
+     */
+    public MachineUpdateProperties withCloudMetadata(CloudMetadata cloudMetadata) {
+        this.cloudMetadata = cloudMetadata;
         return this;
     }
 
@@ -106,6 +154,12 @@ public final class MachineUpdateProperties {
     public void validate() {
         if (locationData() != null) {
             locationData().validate();
+        }
+        if (osProfile() != null) {
+            osProfile().validate();
+        }
+        if (cloudMetadata() != null) {
+            cloudMetadata().validate();
         }
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Machine Extension. */
 @Fluent
 public final class MachineExtensionUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineExtensionUpdateProperties.class);
-
     /*
      * How the extension handler should be forced to update even if the
      * extension configuration has not changed.

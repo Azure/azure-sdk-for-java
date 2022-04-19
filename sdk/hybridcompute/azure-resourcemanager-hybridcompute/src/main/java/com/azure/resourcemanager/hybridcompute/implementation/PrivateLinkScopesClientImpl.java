@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkScopesClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkScopesClient. */
 public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkScopesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkScopesService service;
 
@@ -213,7 +210,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listSinglePageAsync() {
@@ -259,7 +257,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listSinglePageAsync(Context context) {
@@ -300,7 +299,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HybridComputePrivateLinkScopeInner> listAsync() {
@@ -314,7 +314,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HybridComputePrivateLinkScopeInner> listAsync(Context context) {
@@ -327,7 +328,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> list() {
@@ -341,7 +343,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> list(Context context) {
@@ -355,7 +358,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listByResourceGroupSinglePageAsync(
@@ -408,7 +412,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listByResourceGroupSinglePageAsync(
@@ -457,7 +462,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HybridComputePrivateLinkScopeInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -474,7 +480,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HybridComputePrivateLinkScopeInner> listByResourceGroupAsync(
@@ -491,7 +498,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(String resourceGroupName) {
@@ -506,7 +514,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(
@@ -522,7 +531,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String scopeName) {
@@ -570,7 +579,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -615,14 +624,15 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String scopeName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, scopeName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -634,9 +644,9 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String scopeName, Context context) {
         context = this.client.mergeContext(context);
@@ -654,9 +664,9 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName) {
         return beginDeleteAsync(resourceGroupName, scopeName).getSyncPoller();
     }
@@ -670,9 +680,9 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, Context context) {
         return beginDeleteAsync(resourceGroupName, scopeName, context).getSyncPoller();
     }
@@ -685,7 +695,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String scopeName) {
@@ -701,7 +711,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String scopeName, Context context) {
@@ -747,7 +757,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridComputePrivateLinkScopeInner>> getByResourceGroupWithResponseAsync(
@@ -796,7 +807,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridComputePrivateLinkScopeInner>> getByResourceGroupWithResponseAsync(
@@ -841,7 +853,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HybridComputePrivateLinkScopeInner> getByResourceGroupAsync(
@@ -881,7 +893,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridComputePrivateLinkScopeInner> getByResourceGroupWithResponse(
@@ -900,7 +912,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridComputePrivateLinkScopeInner>> createOrUpdateWithResponseAsync(
@@ -958,7 +971,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridComputePrivateLinkScopeInner>> createOrUpdateWithResponseAsync(
@@ -1012,7 +1026,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HybridComputePrivateLinkScopeInner> createOrUpdateAsync(
@@ -1059,7 +1073,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridComputePrivateLinkScopeInner> createOrUpdateWithResponse(
@@ -1076,7 +1090,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridComputePrivateLinkScopeInner>> updateTagsWithResponseAsync(
@@ -1133,7 +1148,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridComputePrivateLinkScopeInner>> updateTagsWithResponseAsync(
@@ -1186,7 +1202,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HybridComputePrivateLinkScopeInner> updateTagsAsync(
@@ -1229,7 +1245,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridComputePrivateLinkScopeInner> updateTagsWithResponse(
@@ -1245,7 +1261,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkScopeValidationDetailsInner>> getValidationDetailsWithResponseAsync(
@@ -1294,7 +1310,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkScopeValidationDetailsInner>> getValidationDetailsWithResponseAsync(
@@ -1339,7 +1355,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkScopeValidationDetailsInner> getValidationDetailsAsync(
@@ -1379,7 +1395,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsWithResponse(
@@ -1395,7 +1411,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkScopeValidationDetailsInner>> getValidationDetailsForMachineWithResponseAsync(
@@ -1444,7 +1460,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkScopeValidationDetailsInner>> getValidationDetailsForMachineWithResponseAsync(
@@ -1489,7 +1505,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkScopeValidationDetailsInner> getValidationDetailsForMachineAsync(
@@ -1530,7 +1546,7 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsForMachineWithResponse(
@@ -1545,7 +1561,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Azure Arc PrivateLinkScope resources.
+     * @return describes the list of Azure Arc PrivateLinkScope resources along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listNextSinglePageAsync(String nextLink) {
@@ -1581,7 +1598,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Azure Arc PrivateLinkScope resources.
+     * @return describes the list of Azure Arc PrivateLinkScope resources along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listNextSinglePageAsync(
@@ -1617,7 +1635,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Azure Arc PrivateLinkScope resources.
+     * @return describes the list of Azure Arc PrivateLinkScope resources along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listByResourceGroupNextSinglePageAsync(
@@ -1655,7 +1674,8 @@ public final class PrivateLinkScopesClientImpl implements PrivateLinkScopesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of Azure Arc PrivateLinkScope resources.
+     * @return describes the list of Azure Arc PrivateLinkScope resources along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridComputePrivateLinkScopeInner>> listByResourceGroupNextSinglePageAsync(

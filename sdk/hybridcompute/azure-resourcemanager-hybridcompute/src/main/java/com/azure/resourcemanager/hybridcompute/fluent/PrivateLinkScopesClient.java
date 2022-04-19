@@ -22,7 +22,8 @@ public interface PrivateLinkScopesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> list();
@@ -34,7 +35,8 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> list(Context context);
@@ -46,7 +48,8 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(String resourceGroupName);
@@ -59,7 +62,8 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -72,9 +76,9 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName);
 
     /**
@@ -86,9 +90,9 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, Context context);
 
     /**
@@ -138,7 +142,7 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HybridComputePrivateLinkScopeInner> getByResourceGroupWithResponse(
@@ -173,7 +177,7 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HybridComputePrivateLinkScopeInner> createOrUpdateWithResponse(
@@ -204,7 +208,7 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HybridComputePrivateLinkScopeInner> updateTagsWithResponse(
@@ -232,7 +236,7 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsWithResponse(
@@ -260,7 +264,7 @@ public interface PrivateLinkScopesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsForMachineWithResponse(

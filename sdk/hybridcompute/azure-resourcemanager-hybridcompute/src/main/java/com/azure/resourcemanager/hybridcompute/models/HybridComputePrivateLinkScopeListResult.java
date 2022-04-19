@@ -7,15 +7,12 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.models.HybridComputePrivateLinkScopeInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the list of Azure Arc PrivateLinkScope resources. */
 @Fluent
 public final class HybridComputePrivateLinkScopeListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridComputePrivateLinkScopeListResult.class);
-
     /*
      * List of Azure Arc PrivateLinkScope definitions.
      */
@@ -78,7 +75,7 @@ public final class HybridComputePrivateLinkScopeListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model HybridComputePrivateLinkScopeListResult"));
@@ -86,4 +83,6 @@ public final class HybridComputePrivateLinkScopeListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HybridComputePrivateLinkScopeListResult.class);
 }

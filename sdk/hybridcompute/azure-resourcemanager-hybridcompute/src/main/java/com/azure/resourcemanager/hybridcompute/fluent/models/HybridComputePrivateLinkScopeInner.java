@@ -6,18 +6,14 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScopeProperties;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Arc PrivateLinkScope definition. */
 @Fluent
 public final class HybridComputePrivateLinkScopeInner extends PrivateLinkScopesResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridComputePrivateLinkScopeInner.class);
-
     /*
      * Properties that define a Azure Arc PrivateLinkScope resource.
      */

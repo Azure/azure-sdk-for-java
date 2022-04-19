@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.models.OperationValueDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Compute Operation value. */
 @Fluent
 public final class OperationValueInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationValueInner.class);
-
     /*
      * The origin of the compute operation.
      */
@@ -32,6 +28,12 @@ public final class OperationValueInner {
      */
     @JsonProperty(value = "display")
     private OperationValueDisplay display;
+
+    /*
+     * This property indicates if the operation is an action or a data action
+     */
+    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isDataAction;
 
     /**
      * Get the origin property: The origin of the compute operation.
@@ -69,6 +71,15 @@ public final class OperationValueInner {
     public OperationValueInner withDisplay(OperationValueDisplay display) {
         this.display = display;
         return this;
+    }
+
+    /**
+     * Get the isDataAction property: This property indicates if the operation is an action or a data action.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
     }
 
     /**

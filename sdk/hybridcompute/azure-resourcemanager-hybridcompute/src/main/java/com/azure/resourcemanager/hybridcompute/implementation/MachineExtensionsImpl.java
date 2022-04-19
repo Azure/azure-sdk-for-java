@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.MachineExtensionsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInner;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MachineExtensionsImpl implements MachineExtensions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineExtensionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MachineExtensionsImpl.class);
 
     private final MachineExtensionsClient innerClient;
 
@@ -76,7 +75,7 @@ public final class MachineExtensionsImpl implements MachineExtensions {
     public MachineExtension getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,14 +83,14 @@ public final class MachineExtensionsImpl implements MachineExtensions {
         }
         String machineName = Utils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         String extensionName = Utils.getValueFromIdByName(id, "extensions");
         if (extensionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'extensions'.", id)));
@@ -102,7 +101,7 @@ public final class MachineExtensionsImpl implements MachineExtensions {
     public Response<MachineExtension> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,14 +109,14 @@ public final class MachineExtensionsImpl implements MachineExtensions {
         }
         String machineName = Utils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         String extensionName = Utils.getValueFromIdByName(id, "extensions");
         if (extensionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'extensions'.", id)));
@@ -128,7 +127,7 @@ public final class MachineExtensionsImpl implements MachineExtensions {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,14 +135,14 @@ public final class MachineExtensionsImpl implements MachineExtensions {
         }
         String machineName = Utils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         String extensionName = Utils.getValueFromIdByName(id, "extensions");
         if (extensionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'extensions'.", id)));
@@ -154,7 +153,7 @@ public final class MachineExtensionsImpl implements MachineExtensions {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,14 +161,14 @@ public final class MachineExtensionsImpl implements MachineExtensions {
         }
         String machineName = Utils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         String extensionName = Utils.getValueFromIdByName(id, "extensions");
         if (extensionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'extensions'.", id)));

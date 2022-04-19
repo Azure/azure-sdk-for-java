@@ -28,6 +28,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.OperationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkScopesClient;
+import com.azure.resourcemanager.hybridcompute.fluent.ResourceProvidersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -41,8 +42,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the HybridComputeManagementClientImpl type. */
 @ServiceClient(builder = HybridComputeManagementClientBuilder.class)
 public final class HybridComputeManagementClientImpl implements HybridComputeManagementClient {
-    private final ClientLogger logger = new ClientLogger(HybridComputeManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -139,6 +138,18 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         return this.machineExtensions;
     }
 
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -209,9 +220,10 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-25-preview";
+        this.apiVersion = "2022-03-10";
         this.machines = new MachinesClientImpl(this);
         this.machineExtensions = new MachineExtensionsClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.privateLinkScopes = new PrivateLinkScopesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
@@ -301,7 +313,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -360,4 +372,6 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HybridComputeManagementClientImpl.class);
 }

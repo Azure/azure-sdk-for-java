@@ -14,10 +14,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
 import com.azure.resourcemanager.hybridcompute.models.Machines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MachinesImpl implements Machines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MachinesImpl.class);
 
     private final MachinesClient innerClient;
 

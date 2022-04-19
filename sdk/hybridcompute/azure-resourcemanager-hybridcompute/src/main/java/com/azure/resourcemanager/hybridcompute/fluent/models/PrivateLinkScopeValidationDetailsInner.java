@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.models.ConnectionDetail;
 import com.azure.resourcemanager.hybridcompute.models.PublicNetworkAccessType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PrivateLinkScopeValidationDetails model. */
 @Fluent
 public final class PrivateLinkScopeValidationDetailsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkScopeValidationDetailsInner.class);
-
     /*
      * Azure resource Id
      */

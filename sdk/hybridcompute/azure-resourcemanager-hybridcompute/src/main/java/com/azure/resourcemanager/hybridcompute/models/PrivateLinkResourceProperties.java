@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a private link resource. */
 @Immutable
 public final class PrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
-
     /*
      * The private link resource group id.
      */
