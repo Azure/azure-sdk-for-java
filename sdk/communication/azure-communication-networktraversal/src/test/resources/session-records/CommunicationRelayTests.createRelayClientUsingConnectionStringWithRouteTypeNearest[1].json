@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/identities?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.1.7 (11.0.12; Mac OS X; 12.3.1)",
       "x-ms-client-request-id" : "c86fa396-99b8-4239-822e-7a81eeaeca8a",
@@ -26,7 +26,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/networkTraversal/:issueRelayConfiguration?api-version=2022-03-01-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/networkTraversal/:issueRelayConfiguration?api-version=2022-03-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-networktraversal/1.1.0-beta.2 (11.0.12; Mac OS X; 12.3.1)",
       "x-ms-client-request-id" : "cd6e86b2-7b3a-4197-b663-f5225b039928",
