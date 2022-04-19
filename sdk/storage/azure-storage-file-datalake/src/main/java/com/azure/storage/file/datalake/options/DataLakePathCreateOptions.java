@@ -35,6 +35,10 @@ public class DataLakePathCreateOptions {
     private String expiresOn;
     private CpkInfo cpkInfo;
 
+
+    /**
+     * Constructs a {@link DataLakePathCreateOptions}.
+     */
     public DataLakePathCreateOptions() {
     }
 

@@ -1225,6 +1225,120 @@ public class ShareFileAsyncClient {
     }
 
     /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists -->
+     * <pre>
+     * shareFileAsyncClient.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @return a reactive response signaling completion. {@code true} indicates that the file was successfully
+     * deleted, {@code false} indicates that the file did not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteIfExists() {
+        return deleteIfExistsWithResponse().map(response -> response.getStatusCode() != 404);
+    }
+
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
+     * <pre>
+     * shareFileAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the file was
+     * successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse() {
+        try {
+            return deleteIfExistsWithResponse(null);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Deletes the file associate with the client if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions -->
+     * <pre>
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * shareFileAsyncClient.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt; &#123;
+     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the file was
+     * successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions) {
+        try {
+            return withContext(context -> this.deleteIfExistsWithResponse(requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
+        try {
+            return deleteWithResponse(requestConditions, context).onErrorResume(t -> t instanceof ShareStorageException
+                && ((ShareStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
