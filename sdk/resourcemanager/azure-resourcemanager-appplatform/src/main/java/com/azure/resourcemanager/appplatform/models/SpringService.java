@@ -96,9 +96,6 @@ public interface SpringService
     /** @return default Configuration Service for Enterprise Tier */
     SpringConfigurationService getDefaultConfigurationService();
 
-    /** @return the entry point of Tanzu Configuration Service for Enterprise Tier */
-    SpringConfigurationServices configurationServices();
-
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -191,7 +188,10 @@ public interface SpringService
             WithCreate withGitConfig(ConfigServerGitProperty gitConfig);
         }
 
-        /** The stage of a spring service definition allowing to specify the enterprise tier configuration service */
+        /**
+         * (Enterprise Tier Only)
+         * The stage of a spring service definition allowing to specify the enterprise tier configuration service
+         */
         interface WithConfigurationService {
             /**
              * Specifies the default git repository for the spring service.
@@ -327,6 +327,7 @@ public interface SpringService
         /** The stage of a spring service update allowing to specify the server configuration. */
         interface WithConfiguration {
             /**
+             * (Basic/Standard Tier Only)
              * Specifies the git repository for the spring service.
              * @param uri the uri of the git repository
              * @return the next stage of spring service update
@@ -334,6 +335,7 @@ public interface SpringService
             Update withGitUri(String uri);
 
             /**
+             * (Basic/Standard Tier Only)
              * Specifies the git repository for the spring service.
              * @param uri the uri of the git repository
              * @param username the username of the private git repository
@@ -343,6 +345,7 @@ public interface SpringService
             Update withGitUriAndCredential(String uri, String username, String password);
 
             /**
+             * (Basic/Standard Tier Only)
              * Specifies the git repository for the spring service.
              * @param gitConfig the configuration of the git repository
              * @return the next stage of spring service update
@@ -354,6 +357,45 @@ public interface SpringService
              * @return the next stage of spring service update
              */
             Update withoutGitConfig();
+
+            /**
+             * (Enterprise Tier Only)
+             * Specifies the default git repository for the spring service.
+             * @param uri the uri of the git repository
+             * @param branch branch of the git repository
+             * @param filePatterns patterns for configuration files to be selected from the git repository
+             * @return the next stage of spring service update
+             */
+            Update withGitConfig(String uri, String branch, List<String> filePatterns);
+
+            /**
+             * (Enterprise Tier Only)
+             * Specifies additional git repository for the spring service.
+             * New repository configurations will override the old with the same name.
+             * @param name the name of the git repository
+             * @param uri the uri of the git repository
+             * @param branch branch of the git repository
+             * @param filePatterns patterns for configuration files to be selected from the git repository
+             * @return the next stage of spring service update
+             */
+            Update withGitConfigRepository(String name, String uri, String branch, List<String> filePatterns);
+
+            /**
+             * (Enterprise Tier Only)
+             * Specifies additional git repository for the spring service.
+             * New repository configurations will override the old with the same name.
+             * @param gitConfig git repository configuration
+             * @return the next stage of spring service update
+             */
+            Update withGitConfig(ConfigurationServiceGitProperty gitConfig);
+
+            /**
+             * (Enterprise Tier Only)
+             * Removes git repository with specified name.
+             * @param name name of the git repository to remove
+             * @return the next stage of spring service update
+             */
+            Update withoutGitConfig(String name);
         }
 
         /** The stage of a spring service update allowing to specify the certificate. */

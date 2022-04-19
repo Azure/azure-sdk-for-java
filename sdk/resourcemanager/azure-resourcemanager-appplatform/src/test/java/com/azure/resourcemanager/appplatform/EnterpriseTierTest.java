@@ -6,17 +6,20 @@ package com.azure.resourcemanager.appplatform;
 
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildServiceInner;
+import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitProperty;
+import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitRepository;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EnterpriseTierTest extends AppPlatformTest {
 
-    private static final String GIT_CONFIG_URI = "https://github.com/Azure-Samples/spring-petclinic-microservices-config";
+    private static final String GIT_CONFIG_URI = "https://github.com/XiaofeiCao/spring-petclinic-microservices-config";
 
     @Test
     public void canCRUDService() {
@@ -31,19 +34,45 @@ public class EnterpriseTierTest extends AppPlatformTest {
             .withNewResourceGroup(rgName)
             .withEnterpriseTierSku()
             .withGitConfig(GIT_CONFIG_URI, "master", filePatterns)
+            .withGitConfigRepository("config1", GIT_CONFIG_URI, "master", filePatterns)
             .create();
 
         // tanzu components
         Assertions.assertEquals(springService.getDefaultConfigurationService().gitUri(), GIT_CONFIG_URI);
         Assertions.assertEquals(springService.getDefaultConfigurationService().filePatterns(), filePatterns);
+        Assertions.assertNotNull(springService.getDefaultConfigurationService().getGitRepository("config1"));
         BuildServiceInner buildServiceInner = appPlatformManager.serviceClient().getBuildServices().getBuildService(rgName, serviceName, "default");
         Assertions.assertNotNull(buildServiceInner);
+
+        springService.update()
+            .withoutGitConfig("config1")
+            .apply();
+
+        // default is not cleared
+        Assertions.assertNotNull(springService.getDefaultConfigurationService().gitUri());
+        // config1 is cleared
+        Assertions.assertNull(springService.getDefaultConfigurationService().getGitRepository("config1"));
+
+        springService.update()
+            .withGitConfig(new ConfigurationServiceGitProperty()
+                .withRepositories(Arrays.asList(new ConfigurationServiceGitRepository()
+                    .withName("config2")
+                    .withLabel("master")
+                    .withPatterns(filePatterns)
+                    .withUri(GIT_CONFIG_URI)
+                )))
+            .apply();
+
+        // default is overridden
+        Assertions.assertNull(springService.getDefaultConfigurationService().gitUri());
+        Assertions.assertNotNull(springService.getDefaultConfigurationService().getGitRepository("config2"));
 
         springService.update()
             .withoutGitConfig()
             .apply();
 
-        Assertions.assertNull(springService.getDefaultConfigurationService().gitUri());
+        // config2 is cleared
+        Assertions.assertNull(springService.getDefaultConfigurationService().getGitRepository("config2"));
     }
 
     @Test

@@ -23,7 +23,6 @@ import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SkuName;
 import com.azure.resourcemanager.appplatform.models.SpringApps;
 import com.azure.resourcemanager.appplatform.models.SpringConfigurationService;
-import com.azure.resourcemanager.appplatform.models.SpringConfigurationServices;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
@@ -33,8 +32,12 @@ import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SpringServiceImpl
@@ -47,8 +50,7 @@ public class SpringServiceImpl
     private FunctionalTaskItem monitoringSettingTask = null;
     private ServiceResourceInner patchToUpdate = new ServiceResourceInner();
     private boolean updated;
-    private boolean updateConfigurationServiceTask = true;
-    private final Map<String, ConfigurationServiceGitRepository> gitRepositoryMap = new ConcurrentHashMap<>();
+    private final ConfigurationServiceConfig configurationServiceConfig = new ConfigurationServiceConfig();
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
@@ -142,11 +144,6 @@ public class SpringServiceImpl
             .switchIfEmpty(Mono.empty())
             .map(inner -> new SpringConfigurationServiceImpl(inner.name(), this, inner))
             .block();
-    }
-
-    @Override
-    public SpringConfigurationServices configurationServices() {
-        return this.configurationServices;
     }
 
     @Override
@@ -250,7 +247,8 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withoutGitConfig() {
         if (isEnterpriseTier()) {
-            return withGitConfig((ConfigurationServiceGitProperty) null);
+            this.configurationServiceConfig.clearRepositories();
+            return this;
         } else {
             return withGitConfig((ConfigServerGitProperty) null);
         }
@@ -265,10 +263,10 @@ public class SpringServiceImpl
             this.addPostRunDependent(monitoringSettingTask);
         }
         if (isEnterpriseTier()) {
-            if (updateConfigurationServiceTask) {
+            if (isInCreateMode() || configurationServiceConfig.needUpdate()) {
                 prepareCreateOrUpdateConfigurationService();
+                configurationServiceConfig.clearUpdate();
             }
-            updateConfigurationServiceTask = false;
         }
         configServerTask = null;
         monitoringSettingTask = null;
@@ -314,11 +312,14 @@ public class SpringServiceImpl
 
     @Override
     public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
-        clearCache();
-        if (isGroupFaulted) {
-            return Mono.empty();
-        }
-        return refreshAsync().then();
+        return Mono
+            .just(true)
+            .map(
+                ignored -> {
+                    clearCache();
+                    return ignored;
+                })
+            .then();
     }
 
     @Override
@@ -368,31 +369,34 @@ public class SpringServiceImpl
         if (CoreUtils.isNullOrEmpty(name)) {
             return this;
         }
-        this.gitRepositoryMap.computeIfAbsent(name, key ->
+        this.configurationServiceConfig.addRepository(
             new ConfigurationServiceGitRepository()
                 .withName(name)
                 .withUri(uri)
                 .withPatterns(filePatterns)
-                .withLabel(branch)
-        );
-        updateConfigurationServiceTask = true;
+                .withLabel(branch));
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitConfig(ConfigurationServiceGitProperty gitConfig) {
-        gitRepositoryMap.clear();
+        this.configurationServiceConfig.clearRepositories();
         if (gitConfig != null && CoreUtils.isNullOrEmpty(gitConfig.repositories())) {
             for (ConfigurationServiceGitRepository repository : gitConfig.repositories()) {
-                this.gitRepositoryMap.put(repository.name(), repository);
+                this.configurationServiceConfig.addRepository(repository);
             }
         }
-        updateConfigurationServiceTask = true;
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withoutGitConfig(String name) {
+        this.configurationServiceConfig.removeRepository(name);
         return this;
     }
 
     private void prepareCreateOrUpdateConfigurationService() {
-        List<ConfigurationServiceGitRepository> repositories = new ArrayList<>(this.gitRepositoryMap.values());
+        List<ConfigurationServiceGitRepository> repositories = this.configurationServiceConfig.mergeRepositories();
         this.configurationServices.prepareCreateOrUpdate(new ConfigurationServiceGitProperty().withRepositories(repositories));
     }
 
@@ -405,7 +409,73 @@ public class SpringServiceImpl
     }
 
     private void clearCache() {
-        this.gitRepositoryMap.clear();
         this.configurationServices.clear();
+        this.configurationServiceConfig.reset();
+    }
+
+    private class ConfigurationServiceConfig {
+        private final Map<String, ConfigurationServiceGitRepository> gitRepositoryMap = new ConcurrentHashMap<>();
+        private final Set<String> repositoriesToDelete = new HashSet<>();
+        private boolean update;
+        private boolean clearRepositories;
+
+        boolean needUpdate() {
+            return update;
+        }
+
+        public void clearUpdate() {
+            this.update = false;
+        }
+
+        void reset() {
+            this.gitRepositoryMap.clear();
+            this.update = false;
+            this.repositoriesToDelete.clear();
+            this.clearRepositories = false;
+        }
+
+        public void addRepository(ConfigurationServiceGitRepository repository) {
+            this.gitRepositoryMap.putIfAbsent(repository.name(), repository);
+            this.update = true;
+        }
+
+        public void clearRepositories() {
+            this.gitRepositoryMap.clear();
+            this.clearRepositories = true;
+            this.update = true;
+        }
+
+        public void removeRepository(String name) {
+            this.repositoriesToDelete.add(name);
+            this.update = true;
+        }
+
+        public List<ConfigurationServiceGitRepository> mergeRepositories() {
+            if (this.clearRepositories) {
+                // in case addRepository() is called after calling clearRepositories()
+                return new ArrayList<>(this.gitRepositoryMap.values());
+            } else {
+                Map<String, ConfigurationServiceGitRepository> existingGitRepositories = new HashMap<>();
+                if (isInUpdateMode()) {
+                    // get existing git repositories
+                    SpringConfigurationService configurationService = getDefaultConfigurationService();
+                    if (configurationService != null) {
+                        List<ConfigurationServiceGitRepository> repositoryList =
+                            configurationService.innerModel().properties().settings() == null
+                                ? Collections.emptyList()
+                                : configurationService.innerModel().properties().settings().gitProperty().repositories();
+                        if (repositoryList != null) {
+                            repositoryList.forEach(repository -> existingGitRepositories.put(repository.name(), repository));
+                        }
+                    }
+                }
+                // merge with updated ones
+                existingGitRepositories.putAll(gitRepositoryMap);
+                for (String repositoryToDelete : repositoriesToDelete) {
+                    existingGitRepositories.remove(repositoryToDelete);
+                }
+                return new ArrayList<>(existingGitRepositories.values());
+            }
+        }
     }
 }
