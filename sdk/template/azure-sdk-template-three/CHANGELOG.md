@@ -1,4 +1,4 @@
 # Release History
 
-## 1.0.0 (2022-04-18)
+## 1.0.0-beta.1 (Unreleased)
 - Test batch release
