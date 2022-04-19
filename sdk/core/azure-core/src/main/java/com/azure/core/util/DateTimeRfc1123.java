@@ -152,6 +152,8 @@ public final class DateTimeRfc1123 {
      *
      * @param dateTime The date time in OffsetDateTime format.
      * @return The date time string in RFC1123 format.
+     * @throws IllegalArgumentException If {@link OffsetDateTime#getDayOfWeek()} or
+     * {@link OffsetDateTime#getDayOfMonth()} is an unknown value.
      */
     public static String toRfc1123String(OffsetDateTime dateTime) {
         // ensure datetime is UTC offset.

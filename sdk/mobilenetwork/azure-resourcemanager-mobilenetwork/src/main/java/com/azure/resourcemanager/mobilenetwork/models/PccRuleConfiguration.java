@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PCC rule configuration. */
 @Fluent
 public final class PccRuleConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PccRuleConfiguration.class);
-
     /*
      * The name of the rule. This must be unique within the parent Service. You
      * must not use any of the following reserved strings - `default`,
@@ -166,7 +163,7 @@ public final class PccRuleConfiguration {
      */
     public void validate() {
         if (ruleName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ruleName in model PccRuleConfiguration"));
         }
@@ -174,7 +171,7 @@ public final class PccRuleConfiguration {
             ruleQosPolicy().validate();
         }
         if (serviceDataFlowTemplates() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serviceDataFlowTemplates in model PccRuleConfiguration"));
@@ -182,4 +179,6 @@ public final class PccRuleConfiguration {
             serviceDataFlowTemplates().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PccRuleConfiguration.class);
 }

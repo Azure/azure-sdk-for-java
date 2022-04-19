@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sign-in settings contract properties. */
 @Fluent
 public final class PortalSigninSettingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSigninSettingProperties.class);
-
     /*
      * Redirect Anonymous users to the Sign-In page.
      */

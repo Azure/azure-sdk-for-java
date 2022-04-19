@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -78,11 +79,31 @@ import static org.assertj.core.api.Assertions.fail;
 public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = DateTimeFormatter.ISO_INSTANT;
+    private static final String tempMachineId = getTempMachineId();
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
+
+    private static String getTempMachineId() {
+        Field field = null;
+        try {
+            field = RxDocumentClientImpl.class.getDeclaredField("tempMachineId");
+        } catch (NoSuchFieldException e) {
+            fail(e.toString());
+        }
+        field.setAccessible(true);
+
+        try {
+            return (String)field.get(null);
+        } catch (IllegalAccessException e) {
+            fail(e.toString());
+
+            return null;
+        }
+    }
+
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
@@ -147,6 +168,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "connectionStateListenerArgProvider")
+    public Object[][] connectionStateListenerArgProvider() {
+        return new Object[][]{
+            {true},
+            {false}
+        };
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() throws Exception {
         CosmosClient testGatewayClient = null;
@@ -157,6 +186,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .contentResponseOnWriteEnabled(true)
                 .gatewayMode()
                 .buildClient();
+            // Adding a delay to allow async VM instance metadata initialization to complete
+            Thread.sleep(2000);
             CosmosContainer container =
                 testGatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -168,6 +199,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).containsAnyOf(
+                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+            );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
@@ -206,6 +241,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).containsAnyOf(
+                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+            );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
@@ -256,6 +295,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).containsAnyOf(
+                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+            );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             // TODO: Add this check back when enable the channelAcquisitionContext again
@@ -789,17 +832,22 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         validate(deleteItemResponse.getDiagnostics(), 0, 0);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void rntbdStatistics() throws Exception {
+    @Test(groups = {"simple"}, dataProvider = "connectionStateListenerArgProvider", timeOut = TIMEOUT)
+    public void rntbdStatistics(boolean connectionStateListenerEnabled) throws Exception {
         Instant beforeClientInitialization = Instant.now();
 
         CosmosClient client1 = null;
         try {
 
+            DirectConnectionConfig connectionConfig = DirectConnectionConfig.getDefaultConfig();
+            if (connectionStateListenerEnabled) {
+                connectionConfig.setConnectionEndpointRediscoveryEnabled(true);
+            }
+
             client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
-                .directMode()
+                .directMode(connectionConfig)
                 .buildClient();
 
             TestItem testItem = new TestItem();
@@ -834,7 +882,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 beforeOperation2,
                 afterOperation2,
                 beforeOperation3,
-                afterOperation3);
+                afterOperation3,
+                connectionStateListenerEnabled);
 
             // read
             CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
@@ -857,7 +906,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                                          Instant beforeOperation2,
                                          Instant afterOperation2,
                                          Instant beforeOperation3,
-                                         Instant afterOperation3) throws Exception {
+                                         Instant afterOperation3,
+                                         boolean connectionStateListenerEnabled) throws Exception {
         ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
         JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
         assertThat(responseStatisticsList.isArray()).isTrue();
@@ -879,6 +929,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(serviceEndpointStatistics.get("inflightRequests").asInt(-1)).isEqualTo(1);
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
+
+        JsonNode connectionStateListenerMetrics = serviceEndpointStatistics.get("cerMetrics");
+        if (connectionStateListenerEnabled) {
+
+            assertThat(connectionStateListenerMetrics).isNotNull();
+            assertThat(connectionStateListenerMetrics.get("lastCallTimestamp")).isEqualTo("N/A");
+            assertThat(connectionStateListenerMetrics.get("lastActionableContext")).isNull();
+        } else {
+            assertThat(connectionStateListenerMetrics).isNull();
+        }
 
         // first request initialized the rntbd service endpoint
         Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(1);
@@ -1051,6 +1111,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"channelAcquisitionStarted\"");
         assertThat(diagnostics).contains("\"eventName\":\"pipelined\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
+        assertThat(diagnostics).contains("\"eventName\":\"decodeTime");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
         assertThat(diagnostics).contains("\"startTimeUTC\"");

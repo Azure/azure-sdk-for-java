@@ -106,4 +106,24 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         identityClientOptions.setConfiguration(configuration);
         return (T) this;
     }
+
+    /**
+     * Enables account identifiers to be logged on client side for debugging/monitoring purposes.
+     * By default, it is disabled.
+     * <p>
+     * The Account Identifier logs can contain sensitive information and should be enabled on protected machines only.
+     * Enabling this logs Application ID, Object ID, Tenant ID and User Principal Name at INFO level when an
+     * access token is successfully retrieved. Ensure that INFO level logs are enabled to
+     * see the account identifier logs.
+     * </p>
+     *
+     * @return An updated instance of this builder.
+     */
+    @SuppressWarnings("unchecked")
+    public T enableAccountIdentifierLogging() {
+        identityClientOptions
+            .getIdentityLogOptionsImpl()
+            .setLoggingAccountIdentifiersAllowed(true);
+        return (T) this;
+    }
 }

@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /** An immutable client-side representation of an Azure Spring App Deployment. */
@@ -34,9 +33,6 @@ public interface SpringAppDeployment
 
     /** @return whether the deployment is active */
     boolean isActive();
-
-    /** @return the creation time of the deployment */
-    OffsetDateTime createdTime();
 
     /** @return all the instances of the deployment */
     List<DeploymentInstance> instances();

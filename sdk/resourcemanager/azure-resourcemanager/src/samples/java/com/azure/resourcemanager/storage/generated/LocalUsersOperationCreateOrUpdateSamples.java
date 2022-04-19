@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for LocalUsersOperation CreateOrUpdate. */
 public final class LocalUsersOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/LocalUserCreate.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/LocalUserCreate.json
      */
     /**
      * Sample code: CreateLocalUser.
@@ -51,7 +51,7 @@ public final class LocalUsersOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/LocalUserUpdate.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/LocalUserUpdate.json
      */
     /**
      * Sample code: UpdateLocalUser.

@@ -11,7 +11,7 @@ Monitor Query client library for Java.
     * [Troubleshooting authentication issues with logs and metrics query requests](#authentication-errors)
     * [Troubleshooting NoSuchMethodError or NoClassDefFoundError](#dependency-conflicts)
 * [Troubleshooting Logs Query](#troubleshooting-logs-query)
-    * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error-for-logs-query)
+    * [Troubleshooting authorization errors](#troubleshooting-authorization-errors-for-logs-query)
     * [Troubleshooting invalid Kusto query](#troubleshooting-invalid-kusto-query)
     * [Troubleshooting empty log query results](#troubleshooting-empty-log-query-results)
     * [Troubleshooting client timeouts when executing logs query request](#troubleshooting-client-timeouts-when-executing-logs-query-request)
@@ -19,7 +19,7 @@ Monitor Query client library for Java.
     * [Troubleshooting server timeouts on OkHTTP client](#troubleshooting-server-timeouts-on-okhttp-client)
     * [Troubleshooting partially successful logs query requests](#troubleshooting-partially-successful-logs-query-requests)
 * [Troubleshooting Metrics Query](#troubleshooting-metrics-query)
-    * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error-for-metrics-query)
+    * [Troubleshooting authorization errors](#troubleshooting-authorization-errors-for-metrics-query)
     * [Troubleshooting unsupported granularity for metrics query](#troubleshooting-unsupported-granularity-for-metrics-query)
 
 ## General Troubleshooting
@@ -94,7 +94,7 @@ why this happens and [ways to mitigate this issue](https://docs.microsoft.com/az
 
 ## Troubleshooting Logs Query
 
-### Troubleshooting insufficient access error for logs query
+### Troubleshooting authorization errors for logs query
 
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
 sufficient permissions to query the workspace.
@@ -110,6 +110,9 @@ com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"mes
    [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)
    then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
    client logging](#enable-client-logging) section above.
+
+For more help on troubleshooting authentication errors, please see the Azure Identity client library [troubleshooting 
+guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md).
 
 ### Troubleshooting invalid Kusto query
 
@@ -200,7 +203,7 @@ client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", Query
 
 ## Troubleshooting Metrics Query
 
-### Troubleshooting insufficient access error for metrics query
+### Troubleshooting authorization errors for metrics query
 
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
 sufficient permissions to query the workspace.
@@ -216,6 +219,9 @@ com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"cod
    [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)
    then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
    client logging](#enable-client-logging) section above.
+
+For more help on troubleshooting authentication errors, please see the Azure Identity client library [troubleshooting
+guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md).
 
 ### Troubleshooting unsupported granularity for metrics query
 

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.MdatpCheckRequirementsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MicrosoftDefenderAdvancedThreatProtection")
 @Fluent
 public final class MdatpCheckRequirements extends DataConnectorsCheckRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MdatpCheckRequirements.class);
-
     /*
      * MDATP (Microsoft Defender Advanced Threat Protection) requirements check
      * properties.

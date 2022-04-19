@@ -6,8 +6,6 @@ package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ExtensionInner;
-import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionsClusterResourceName;
-import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionsClusterRp;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Scope;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ScopeCluster;
 import java.util.HashMap;
@@ -16,7 +14,7 @@ import java.util.Map;
 /** Samples for Extensions Create. */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2021-09-01/examples/CreateExtension.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateExtension.json
      */
     /**
      * Sample code: Create Extension.
@@ -29,8 +27,8 @@ public final class ExtensionsCreateSamples {
             .extensions()
             .create(
                 "rg1",
-                ExtensionsClusterRp.MICROSOFT_KUBERNETES,
-                ExtensionsClusterResourceName.CONNECTED_CLUSTERS,
+                "Microsoft.Kubernetes",
+                "connectedClusters",
                 "clusterName1",
                 "ClusterMonitor",
                 new ExtensionInner()

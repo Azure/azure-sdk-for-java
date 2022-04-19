@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Columns that define the physical type schema of the dataset. */
 @Fluent
 public final class DatasetSchemaDataElement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetSchemaDataElement.class);
-
     /*
      * Name of the schema column. Type: string (or Expression with resultType
      * string).

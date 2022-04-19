@@ -46,11 +46,11 @@ class ArtifactVersion:
     def __init__(self, dependency_version: str, current_version: str):
         self.dependency_version = dependency_version
         self.current_version = current_version
-    
+
     def matches_version(self, version: str, match_any_version: bool = False):
         if match_any_version:
             return version == self.dependency_version or version == self.current_version
-        
+
         return version == self.current_version
 
 default_project = Project(None, None, None, None)
@@ -119,7 +119,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
     add_source_projects(source_projects, project_list_identifiers, projects)
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
-    
+
     modules = sorted(list(set([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
@@ -206,7 +206,7 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
         return Project(project_identifier, directory_path, module_path, parent_pom)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in project_list_identifiers and not parent_pom in valid_parents:
+    if not project_identifier in project_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
@@ -228,7 +228,7 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
             continue
 
         project.add_dependency(dependency_identifier)
-    
+
     return project
 
 # Function which resolves the dependent projects of the project.
@@ -259,8 +259,15 @@ def get_parent_pom(tree_root: ET.Element):
 
     if parent_node is None:
         return None
-    
+
     return create_artifact_identifier(parent_node)
+
+# Determines if the passed POM XML is a Spring library.
+def is_spring_child_pom(tree_root: ET.Element):
+    group_id_node = element_find(tree_root, 'groupId')
+    artifact_id_node = element_find(tree_root, 'artifactId')
+    return not group_id_node is None and group_id_node.text == 'com.azure.spring' \
+           and not artifact_id_node is None and artifact_id_node.text != 'spring-cloud-azure' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
 
 # Creates an artifacts identifier.
 def create_artifact_identifier(element: ET.Element):
@@ -301,7 +308,7 @@ def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -
         if project.parent_pom == 'com.azure:azure-client-sdk-parent':
             return True
         project = projects.get(project.parent_pom, default_project)
-    
+
     return False
 
 def main():

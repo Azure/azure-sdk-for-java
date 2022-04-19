@@ -46,7 +46,7 @@ public interface StorageTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageTarget> listByCache(String resourceGroupName, String cacheName);
 
@@ -60,7 +60,7 @@ public interface StorageTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageTarget> listByCache(String resourceGroupName, String cacheName, Context context);
 
@@ -142,7 +142,7 @@ public interface StorageTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response}.
      */
     Response<StorageTarget> getWithResponse(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
@@ -154,7 +154,7 @@ public interface StorageTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response}.
      */
     StorageTarget getById(String id);
 
@@ -166,7 +166,7 @@ public interface StorageTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response}.
      */
     Response<StorageTarget> getByIdWithResponse(String id, Context context);
 

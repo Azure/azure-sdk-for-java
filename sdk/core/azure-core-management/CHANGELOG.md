@@ -4,11 +4,25 @@
 
 ### Features Added
 
+- Added new Azure region `Region.CHINA_NORTH3` and `Region.CHINA_EAST3` for Azure China.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.4 (2022-04-01)
+
+### Bugs Fixed
+
+- Corrected the Portal URL in `AzureEnvironment`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
 
 ## 1.5.3 (2022-03-04)
 

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The parameters that can be provided when updating the storage account properties. */
 @Fluent
 public final class StorageAccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountUpdateParameters.class);
-
     /*
      * Gets or sets the SKU name. Note that the SKU name cannot be updated to
      * Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU
@@ -253,8 +249,9 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -263,8 +260,9 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountUpdateParameters object itself.
@@ -647,6 +645,33 @@ public final class StorageAccountUpdateParameters {
             this.innerProperties = new StorageAccountPropertiesUpdateParameters();
         }
         this.innerProperties().withAllowedCopyScope(allowedCopyScope);
+        return this;
+    }
+
+    /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsEndpointType();
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDnsEndpointType(dnsEndpointType);
         return this;
     }
 

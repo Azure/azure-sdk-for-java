@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -69,6 +70,8 @@ public class DataLakeServiceAsyncClient {
 
     private final BlobServiceAsyncClient blobServiceAsyncClient;
 
+    private final AzureSasCredential sasToken;
+
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      *
@@ -79,7 +82,7 @@ public class DataLakeServiceAsyncClient {
      * @param blobServiceAsyncClient The underlying {@link BlobServiceAsyncClient}
      */
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, BlobServiceAsyncClient blobServiceAsyncClient) {
+        String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -90,6 +93,8 @@ public class DataLakeServiceAsyncClient {
         this.accountName = accountName;
 
         this.blobServiceAsyncClient = blobServiceAsyncClient;
+
+        this.sasToken = sasToken;
     }
 
     /**
@@ -114,7 +119,8 @@ public class DataLakeServiceAsyncClient {
             fileSystemName = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
         return new DataLakeFileSystemAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName));
+            getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName),
+            sasToken);
     }
 
     /**

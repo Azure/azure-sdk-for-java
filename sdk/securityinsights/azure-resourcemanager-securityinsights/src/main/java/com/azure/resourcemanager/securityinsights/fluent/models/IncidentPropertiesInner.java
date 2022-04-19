@@ -13,7 +13,6 @@ import com.azure.resourcemanager.securityinsights.models.IncidentLabel;
 import com.azure.resourcemanager.securityinsights.models.IncidentOwnerInfo;
 import com.azure.resourcemanager.securityinsights.models.IncidentSeverity;
 import com.azure.resourcemanager.securityinsights.models.IncidentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,8 +20,6 @@ import java.util.List;
 /** Describes incident properties. */
 @Fluent
 public final class IncidentPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentPropertiesInner.class);
-
     /*
      * Additional data on the incident
      */
@@ -493,13 +490,13 @@ public final class IncidentPropertiesInner {
             owner().validate();
         }
         if (severity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property severity in model IncidentPropertiesInner"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model IncidentPropertiesInner"));
         }
@@ -507,9 +504,11 @@ public final class IncidentPropertiesInner {
             teamInformation().validate();
         }
         if (title() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property title in model IncidentPropertiesInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IncidentPropertiesInner.class);
 }

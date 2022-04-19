@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Results of network security group evaluation. */
 @Fluent
 public final class EvaluatedNetworkSecurityGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EvaluatedNetworkSecurityGroup.class);
-
     /*
      * Network security group ID.
      */

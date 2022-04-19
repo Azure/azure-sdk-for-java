@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Resource SKU location information. */
 @Fluent
 public final class ResourceSkuLocationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
-
     /*
      * Location where this SKU is available.
      */

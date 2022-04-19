@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,28 @@
 
 ### Other Changes
 
+## 1.5.0 (2022-04-05)
+
+### Breaking Changes
+- Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
+- Replaced `identityLogOptions` setter with the `enableAccountIdentifierLogging` setter on the credential builders. This is not a breaking change from last GA.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.27.0
+
+### Bugs Fixed
+Correctly use an `AppServiceMsiCredential` in the case both `IDENTITY_ENDPOINT` and `IDENTITY_HEADER` are set.
+
+## 1.5.0-beta.2 (2022-03-21)
+
+### Features Added
+- Added ability to configure `IdentityLogOptions` on Credential Builders to make account Identifier logging configurable.
+- Added the option `disableAuthoriyValidaionSafetyCheck` on Credential Builders.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
 
 ## 1.4.6 (2022-03-08)
 

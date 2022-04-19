@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a resource type that has been onboarded to private link service. */
 @Fluent
 public final class ShareablePrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareablePrivateLinkResourceProperties.class);
-
     /*
      * The description of the resource type that has been onboarded to private
      * link service

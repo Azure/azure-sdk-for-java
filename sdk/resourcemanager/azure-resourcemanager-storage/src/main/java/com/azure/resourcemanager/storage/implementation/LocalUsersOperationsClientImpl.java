@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.LocalUsersOperationsClient;
 import com.azure.resourcemanager.storage.fluent.models.LocalUserInner;
 import com.azure.resourcemanager.storage.fluent.models.LocalUserKeysInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LocalUsersOperationsClient. */
 public final class LocalUsersOperationsClientImpl implements LocalUsersOperationsClient {
-    private final ClientLogger logger = new ClientLogger(LocalUsersOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LocalUsersOperationsService service;
 

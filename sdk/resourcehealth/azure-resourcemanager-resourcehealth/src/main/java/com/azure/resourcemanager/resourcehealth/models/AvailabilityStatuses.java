@@ -15,7 +15,7 @@ public interface AvailabilityStatuses {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailabilityStatus> listBySubscriptionId();
 
@@ -29,7 +29,7 @@ public interface AvailabilityStatuses {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailabilityStatus> listBySubscriptionId(String filter, String expand, Context context);
 
@@ -40,7 +40,7 @@ public interface AvailabilityStatuses {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailabilityStatus> listByResourceGroup(String resourceGroupName);
 
@@ -55,7 +55,7 @@ public interface AvailabilityStatuses {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailabilityStatus> listByResourceGroup(
         String resourceGroupName, String filter, String expand, Context context);
@@ -90,7 +90,7 @@ public interface AvailabilityStatuses {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
+     * @return current availability status for a single resource along with {@link Response}.
      */
     Response<AvailabilityStatus> getByResourceWithResponse(
         String resourceUri, String filter, String expand, Context context);
@@ -106,7 +106,7 @@ public interface AvailabilityStatuses {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailabilityStatus> list(String resourceUri);
 
@@ -125,7 +125,7 @@ public interface AvailabilityStatuses {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailabilityStatus> list(String resourceUri, String filter, String expand, Context context);
 }

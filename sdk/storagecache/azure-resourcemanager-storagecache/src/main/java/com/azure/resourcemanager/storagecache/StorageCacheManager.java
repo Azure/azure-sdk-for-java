@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -22,6 +23,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.fluent.StorageCacheManagementClient;
 import com.azure.resourcemanager.storagecache.implementation.AscOperationsImpl;
+import com.azure.resourcemanager.storagecache.implementation.AscUsagesImpl;
 import com.azure.resourcemanager.storagecache.implementation.CachesImpl;
 import com.azure.resourcemanager.storagecache.implementation.OperationsImpl;
 import com.azure.resourcemanager.storagecache.implementation.SkusImpl;
@@ -30,6 +32,7 @@ import com.azure.resourcemanager.storagecache.implementation.StorageTargetOperat
 import com.azure.resourcemanager.storagecache.implementation.StorageTargetsImpl;
 import com.azure.resourcemanager.storagecache.implementation.UsageModelsImpl;
 import com.azure.resourcemanager.storagecache.models.AscOperations;
+import com.azure.resourcemanager.storagecache.models.AscUsages;
 import com.azure.resourcemanager.storagecache.models.Caches;
 import com.azure.resourcemanager.storagecache.models.Operations;
 import com.azure.resourcemanager.storagecache.models.Skus;
@@ -41,6 +44,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Entry point to StorageCacheManager. A Storage Cache provides scalable caching service for NAS clients, serving data
@@ -55,6 +59,8 @@ public final class StorageCacheManager {
     private UsageModels usageModels;
 
     private AscOperations ascOperations;
+
+    private AscUsages ascUsages;
 
     private Caches caches;
 
@@ -100,7 +106,7 @@ public final class StorageCacheManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -174,9 +180,11 @@ public final class StorageCacheManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -198,7 +206,7 @@ public final class StorageCacheManager {
                 .append("-")
                 .append("com.azure.resourcemanager.storagecache")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -221,11 +229,24 @@ public final class StorageCacheManager {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -267,6 +288,14 @@ public final class StorageCacheManager {
             this.ascOperations = new AscOperationsImpl(clientObject.getAscOperations(), this);
         }
         return ascOperations;
+    }
+
+    /** @return Resource collection API of AscUsages. */
+    public AscUsages ascUsages() {
+        if (this.ascUsages == null) {
+            this.ascUsages = new AscUsagesImpl(clientObject.getAscUsages(), this);
+        }
+        return ascUsages;
     }
 
     /** @return Resource collection API of Caches. */

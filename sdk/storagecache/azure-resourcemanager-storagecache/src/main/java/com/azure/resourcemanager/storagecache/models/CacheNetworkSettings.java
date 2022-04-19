@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cache network settings. */
 @Fluent
 public final class CacheNetworkSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheNetworkSettings.class);
-
     /*
      * The IPv4 maximum transmission unit configured for the subnet.
      */

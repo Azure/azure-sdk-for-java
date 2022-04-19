@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.UebaDataSources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Ueba property bag. */
 @Fluent
 public final class UebaProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UebaProperties.class);
-
     /*
      * The relevant data sources that enriched by ueba
      */

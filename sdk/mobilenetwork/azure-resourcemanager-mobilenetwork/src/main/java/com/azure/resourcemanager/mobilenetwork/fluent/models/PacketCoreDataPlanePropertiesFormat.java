@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** PacketCoreDataPlane properties. */
 @Fluent
 public final class PacketCoreDataPlanePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCoreDataPlanePropertiesFormat.class);
-
     /*
      * The provisioning state of the packet core data plane resource.
      */
@@ -69,7 +66,7 @@ public final class PacketCoreDataPlanePropertiesFormat {
      */
     public void validate() {
         if (userPlaneAccessInterface() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property userPlaneAccessInterface in model"
@@ -78,4 +75,6 @@ public final class PacketCoreDataPlanePropertiesFormat {
             userPlaneAccessInterface().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PacketCoreDataPlanePropertiesFormat.class);
 }
