@@ -86,6 +86,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
                     // whole buffer before passing to outputstream.
                     int numberOfBytes = Math.min(buffer.length, byteBuff.readableBytes());
                     byteBuff.readBytes(buffer, 0, numberOfBytes);
+                    // TODO (kasobol-msft) consider farming this out to Schedulers.boundedElastic.
                     outputStream.write(buffer, 0, numberOfBytes);
                 } catch (IOException e) {
                     return Mono.error(e);
