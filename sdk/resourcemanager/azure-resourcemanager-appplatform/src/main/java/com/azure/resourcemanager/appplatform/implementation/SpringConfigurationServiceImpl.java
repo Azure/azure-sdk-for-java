@@ -63,7 +63,7 @@ public class SpringConfigurationServiceImpl
     }
 
     private Optional<ConfigurationServiceGitRepository> findRepository(String name) {
-        if (name == null) {
+        if (name == null || innerModel().properties() == null || innerModel().properties().settings() == null) {
             return Optional.empty();
         }
         ConfigurationServiceGitProperty property = innerModel().properties().settings().gitProperty();
