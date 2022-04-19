@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.2 (11.0.12; Mac OS X; 12.3.1)",
+      "x-ms-client-request-id" : "07b4f180-be1b-4482-883e-1fc0b9d56e2c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "818",
+      "api-supported-versions" : "2021-10-31-preview, 2022-06-01",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 19 Apr 2022 09:08:13 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "565ms",
+      "MS-CV" : "VJDu4q2hqkyreN/D/xuI5w.0",
+      "X-Azure-Ref" : "0/HteYgAAAABnaouwoq4SSJV8v8vgYTK6UFJHMDFFREdFMDYwNgBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2022-04-19T10:21:25.0731096+00:00\"}",
+      "x-ms-client-request-id" : "07b4f180-be1b-4482-883e-1fc0b9d56e2c",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
