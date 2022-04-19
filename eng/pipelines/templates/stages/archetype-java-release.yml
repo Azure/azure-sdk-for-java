@@ -272,39 +272,39 @@ stages:
 
         # JRS - This needs to be updated with changes to batch up Docs.MS publishing otherwise
         #       it'll take way too long and timeout for areas with large numbers of libraries.
-        - ${{ each artifact in parameters.Artifacts }}:
-          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-            - deployment: PublishDocsMs
-              displayName: Docs.MS Release
-              condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-              environment: githubio
-              dependsOn: PublishPackage
+        - deployment: PublishDocsMs
+          displayName: Docs.MS Release
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          environment: githubio
+          dependsOn: PublishPackage
 
-              pool:
-                name: azsdk-pool-mms-ubuntu-2004-general
-                vmImage: MMSUbuntu20.04
+          pool:
+            name: azsdk-pool-mms-ubuntu-2004-general
+            vmImage: MMSUbuntu20.04
 
-              variables:
-                - template: /eng/pipelines/templates/variables/globals.yml
-                - name: DocValidationImageId
-                  value: azuresdkimages.azurecr.io/javarefautocr:latest
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+            - name: DocValidationImageId
+              value: azuresdkimages.azurecr.io/javarefautocr:latest
 
-              strategy:
-                runOnce:
-                  deploy:
-                    steps:
-                      - download: current
-                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
-                        artifact: ${{parameters.ArtifactName}}
-                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                        parameters:
-                          SkipDefaultCheckout: true
-                          Paths:
-                            - sdk
-                            - common/perf-test-core
-                            - .github/CODEOWNERS
-                            - '!sdk/**/test-recordings'
-                            - '!sdk/**/session-records'
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                    artifact: ${{parameters.ArtifactName}}
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    parameters:
+                      SkipDefaultCheckout: true
+                      Paths:
+                        - sdk
+                        - common/perf-test-core
+                        - .github/CODEOWNERS
+                        - '!sdk/**/test-recordings'
+                        - '!sdk/**/session-records'
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                       - download: current
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
