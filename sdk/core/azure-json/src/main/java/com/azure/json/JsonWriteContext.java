@@ -6,8 +6,8 @@ package com.azure.json;
 /**
  * Context of JSON handling.
  * <p>
- * Writing context is immutable, any calls to {@link #updateContext(JsonWriteOperation)} will result in either a
- * previous context being returned or the creation of a new context.
+ * Writing context is immutable, any calls to {@link #updateContext(JsonToken)} will result in either a previous context
+ * being returned or the creation of a new context.
  */
 public final class JsonWriteContext {
     /**
@@ -50,93 +50,86 @@ public final class JsonWriteContext {
     }
 
     /**
-     * Determines whether the writing operation is allowed based on the {@link JsonWriteState}.
+     * Determines whether the {@link JsonToken} is allowed to be written based on the {@link JsonWriteState}.
      * <p>
-     * The following is the allowed {@link JsonWriteOperation JsonWriteOperations} based on the {@link JsonWriteState}.
+     * The following is the allowed {@link JsonToken JsonTokens} based on the {@link JsonWriteState}.
      *
      * <ul>
-     *     <li>{@link JsonWriteState#ROOT} - {@link JsonWriteOperation#START_OBJECT},
-     *     {@link JsonWriteOperation#START_ARRAY}, {@link JsonWriteOperation#SIMPLE_VALUE}</li>
-     *     <li>{@link JsonWriteState#OBJECT} - {@link JsonWriteOperation#START_OBJECT},
-     *     {@link JsonWriteOperation#END_OBJECT}, {@link JsonWriteOperation#FIELD_NAME},
-     *     {@link JsonWriteOperation#FIELD_AND_VALUE}</li>
-     *     <li>{@link JsonWriteState#ARRAY} - {@link JsonWriteOperation#START_OBJECT},
-     *     {@link JsonWriteOperation#START_ARRAY}, {@link JsonWriteOperation#END_ARRAY},
-     *     {@link JsonWriteOperation#SIMPLE_VALUE}</li>
-     *     <li>{@link JsonWriteState#FIELD_VALUE} - {@link JsonWriteOperation#START_OBJECT},
-     *     {@link JsonWriteOperation#START_ARRAY}, {@link JsonWriteOperation#SIMPLE_VALUE}</li>
+     *     <li>{@link JsonWriteState#ROOT} - {@link JsonToken#START_OBJECT}, {@link JsonToken#START_ARRAY},
+     *     {@link JsonToken#BOOLEAN}, {@link JsonToken#NULL}, {@link JsonToken#NUMBER}, {@link JsonToken#STRING}</li>
+     *     <li>{@link JsonWriteState#OBJECT} - {@link JsonToken#END_OBJECT}, {@link JsonToken#FIELD_NAME}</li>
+     *     <li>{@link JsonWriteState#ARRAY} - {@link JsonToken#START_OBJECT}, {@link JsonToken#START_ARRAY},
+     *     {@link JsonToken#END_ARRAY}, {@link JsonToken#BOOLEAN}, {@link JsonToken#NULL}, {@link JsonToken#NUMBER},
+     *     {@link JsonToken#STRING}</li>
+     *     <li>{@link JsonWriteState#FIELD} - {@link JsonToken#START_OBJECT}, {@link JsonToken#START_ARRAY},
+     *     {@link JsonToken#BOOLEAN}, {@link JsonToken#NULL}, {@link JsonToken#NUMBER}, {@link JsonToken#STRING}</li>
      *     <li>{@link JsonWriteState#COMPLETED} - none</li>
      * </ul>
      *
-     * Any operation that isn't allowed based on the context will result in an {@link IllegalStateException} to be
-     * thrown.
+     * Any token that isn't allowed based on the context will result in an {@link IllegalStateException}.
+     * <p>
+     * Field and value APIs in {@link JsonWriter}, such as {@link JsonWriter#writeStringField(String, String)}, will
+     * validate with {@link JsonToken#FIELD_NAME} as they're self-closing operations.
      *
-     * @param operation The {@link JsonWriteOperation} being checked.
-     * @throws IllegalStateException If the {@link JsonWriteOperation} is invalid based on the {@link JsonWriteState}.
+     * @param token The {@link JsonToken} that is being validated for being writable in the current state.
+     * @throws IllegalStateException If the {@link JsonToken} is invalid based on the {@link JsonWriteState}.
      */
-    public void validateOperation(JsonWriteOperation operation) {
+    public void validateToken(JsonToken token) {
         if (context == JsonWriteState.ROOT) {
-            if (!(operation == JsonWriteOperation.START_OBJECT
-                || operation == JsonWriteOperation.START_ARRAY
-                || operation == JsonWriteOperation.SIMPLE_VALUE)) {
+            if (token == JsonToken.END_OBJECT || token == JsonToken.END_ARRAY || token == JsonToken.FIELD_NAME) {
                 throw new IllegalStateException("Writing context is 'ROOT', only 'START_OBJECT', 'START_ARRAY',"
-                    + " or 'SIMPLE_VALUE' operations are allowed. Attempted: '" + operation + "'.");
+                    + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token + "'.");
             }
         } else if (context == JsonWriteState.OBJECT) {
-            if (!(operation == JsonWriteOperation.END_OBJECT
-                || operation == JsonWriteOperation.FIELD_NAME
-                || operation == JsonWriteOperation.FIELD_AND_VALUE)) {
-                throw new IllegalStateException("Writing context is 'OBJECT', only 'END_OBJECT', 'FIELD_NAME', or "
-                    + "'FIELD_AND_VALUE' operations are allowed. Attempted: '" + operation + "'.");
+            if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY || token == JsonToken.END_ARRAY
+                || isSimpleValue(token)) {
+                throw new IllegalStateException("Writing context is 'OBJECT', only 'END_OBJECT' and 'FIELD_NAME'"
+                    + " tokens are allowed. Attempted: '" + token + "'.");
             }
         } else if (context == JsonWriteState.ARRAY) {
-            if (!(operation == JsonWriteOperation.START_OBJECT
-                || operation == JsonWriteOperation.START_ARRAY
-                || operation == JsonWriteOperation.END_ARRAY
-                || operation == JsonWriteOperation.SIMPLE_VALUE)) {
+            if (token == JsonToken.END_OBJECT || token == JsonToken.FIELD_NAME) {
                 throw new IllegalStateException("Writing context is 'ARRAY', only 'START_OBJECT', 'START_ARRAY',"
-                    + ", 'END_ARRAY', or 'SIMPLE_VALUE' operations are allowed. Attempted: '" + operation + "'.");
+                    + ", 'END_ARRAY', 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '"
+                    + token + "'.");
             }
-        } else if (context == JsonWriteState.FIELD_VALUE) {
-            if (!(operation == JsonWriteOperation.START_OBJECT
-                || operation == JsonWriteOperation.START_ARRAY
-                || operation == JsonWriteOperation.SIMPLE_VALUE)) {
-                throw new IllegalStateException("Writing context is 'FIELD_VALUE', only 'START_OBJECT', 'START_ARRAY',"
-                    + " or 'SIMPLE_VALUE' operations are allowed. Attempted: '" + operation + "'.");
+        } else if (context == JsonWriteState.FIELD) {
+            if (token == JsonToken.END_OBJECT || token == JsonToken.END_ARRAY || token == JsonToken.FIELD_NAME) {
+                throw new IllegalStateException("Writing context is 'FIELD', only 'START_OBJECT', 'START_ARRAY',"
+                    + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token + "'.");
             }
         } else {
-            throw new IllegalStateException("Writing context is 'COMPLETED', no further writing operations allowed. "
-                + "Attempted: '" + operation + "'.");
+            throw new IllegalStateException("Writing context is 'COMPLETED', no further tokens are allowed. "
+                + "Attempted: '" + token + "'.");
         }
     }
 
     /**
-     * Updates the context based on the writing operation.
+     * Updates the context based on the {@link JsonToken} that was written.
      * <p>
-     * Operations {@link JsonWriteOperation#END_OBJECT}, {@link JsonWriteOperation#END_ARRAY}, and {@link
-     * JsonWriteOperation#SIMPLE_VALUE} complete the current context and prepare set the parent context for return. If
-     * the parent context is {@link JsonWriteContext#ROOT} then {@link JsonWriteContext#COMPLETED} is the updated
-     * context as the JSON stream has completed writing. But if the {@link JsonWriteContext} isn't
-     * {@link JsonWriteContext#ROOT} and the operation is {@link JsonWriteOperation#END_OBJECT} or
-     * {@link JsonWriteOperation#END_ARRAY} and the parent context is {@link JsonWriteState#FIELD_VALUE} that will be
-     * completed as well as the value has completed writing.
+     * Tokens {@link JsonToken#END_OBJECT}, {@link JsonToken#END_ARRAY}, {@link JsonToken#BOOLEAN},
+     * {@link JsonToken#NULL}, {@link JsonToken#NUMBER}, and {@link JsonToken#STRING} complete the current context and
+     * prepare set the parent context for return. If the parent context is {@link JsonWriteContext#ROOT} then
+     * {@link JsonWriteContext#COMPLETED} is the updated context as the JSON stream has completed writing. But if the
+     * {@link JsonWriteContext} isn't {@link JsonWriteContext#ROOT} and the token is {@link JsonToken#END_OBJECT} or
+     * {@link JsonToken#END_ARRAY} and the parent context is {@link JsonWriteState#FIELD} that will be completed as well
+     * as the field has completed writing.
      * <p>
-     * Operations {@link JsonWriteOperation#START_OBJECT}, {@link JsonWriteOperation#START_ARRAY}, and {@link
-     * JsonWriteOperation#FIELD_NAME} create a child context where the current context becomes the parent context.
+     * Tokens {@link JsonToken#START_OBJECT}, {@link JsonToken#START_ARRAY}, and {@link JsonToken#FIELD_NAME} create a
+     * child context where the current context becomes the parent context.
      * <p>
-     * Lastly, {@link JsonWriteOperation#FIELD_AND_VALUE} is a special case as it's performing both open state and
-     * close state operations, so it's self-closing. This results in the current context being return.
+     * Field and value APIs in {@link JsonWriter}, such as {@link JsonWriter#writeStringField(String, String)}, are
+     * self-closing operations that will maintain the current context.
      *
-     * @param operation The {@link JsonWriteOperation} triggering the update.
+     * @param token The {@link JsonToken} triggering the update.
      * @return The updated writing context.
      */
-    public JsonWriteContext updateContext(JsonWriteOperation operation) {
+    public JsonWriteContext updateContext(JsonToken token) {
         // Simple value has two scenarios:
         //
         // - Current context is the root, writing a simple value completes the JSON stream and the writing context
         //   becomes COMPLETE.
         // - Current context isn't the root, writing context becomes the parent context and the context is completed.
-        if (operation == JsonWriteOperation.SIMPLE_VALUE) {
+        if (isSimpleValue(token)) {
             return context == JsonWriteState.ROOT ? COMPLETED : parent;
         }
 
@@ -148,8 +141,7 @@ public final class JsonWriteContext {
         // - Parent context is a FIELD_VALUE, closing the array or object completes the field value and the writing
         //   context becomes the grandparent context.
         // - The parent context is a wrapping array or object, return the parent context.
-        if (operation == JsonWriteOperation.END_ARRAY
-            || operation == JsonWriteOperation.END_OBJECT) {
+        if (token == JsonToken.END_ARRAY || token == JsonToken.END_OBJECT) {
             JsonWriteContext toReturn = parent;
 
             // Parent context is the root, complete writing by returning the COMPLETED context.
@@ -158,7 +150,7 @@ public final class JsonWriteContext {
             }
 
             // Parent context is a FIELD_VALUE, close the field context by returning the grandparent context.
-            if (toReturn.context == JsonWriteState.FIELD_VALUE) {
+            if (toReturn.context == JsonWriteState.FIELD) {
                 return toReturn.parent;
             }
 
@@ -167,15 +159,22 @@ public final class JsonWriteContext {
         }
 
         // The next set of checks are straight forward and return a new sub-context.
-        if (operation == JsonWriteOperation.START_OBJECT) {
+        if (token == JsonToken.START_OBJECT) {
             return new JsonWriteContext(this, JsonWriteState.OBJECT);
-        } else if (operation == JsonWriteOperation.START_ARRAY) {
+        } else if (token == JsonToken.START_ARRAY) {
             return new JsonWriteContext(this, JsonWriteState.ARRAY);
-        } else if (operation == JsonWriteOperation.FIELD_NAME) {
-            return new JsonWriteContext(this, JsonWriteState.FIELD_VALUE);
+        } else if (token == JsonToken.FIELD_NAME) {
+            return new JsonWriteContext(this, JsonWriteState.FIELD);
         }
 
-        // Otherwise, we had a special scenario of field and value which is a self-closing operation.
+        // Otherwise, we had a special scenario of field and value which is a self-closing token.
         return this;
+    }
+
+    private static boolean isSimpleValue(JsonToken token) {
+        return token == JsonToken.BOOLEAN
+            || token == JsonToken.NULL
+            || token == JsonToken.NUMBER
+            || token == JsonToken.STRING;
     }
 }

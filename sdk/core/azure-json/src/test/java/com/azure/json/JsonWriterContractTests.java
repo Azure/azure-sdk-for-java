@@ -324,7 +324,7 @@ public abstract class JsonWriterContractTests {
 
             // Writing a field name in an object enters FIELD_VALUE state.
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName")),
-                JsonWriteState.FIELD_VALUE),
+                JsonWriteState.FIELD),
 
             // Writing a field and value maintains OBJECT state.
             Arguments.of(createJsonConsumer(jsonWriter ->

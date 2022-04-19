@@ -36,7 +36,7 @@ public enum JsonWriteState {
      * <p>
      * Indicates that a JSON value (binary data, boolean, number, string, object, or array) should be written.
      */
-    FIELD_VALUE,
+    FIELD,
 
     /**
      * JSON stream has completed.
