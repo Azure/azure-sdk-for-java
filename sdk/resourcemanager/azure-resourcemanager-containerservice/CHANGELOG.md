@@ -2,6 +2,10 @@
 
 ## 2.15.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Removed unused class `AgentPoolsUpgradeNodeImageVersionResponse` and `AgentPoolsUpgradeNodeImageVersionHeaders`.
+
 ### Other Changes
 
 #### Dependency Updates
