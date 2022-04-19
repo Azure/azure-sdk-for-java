@@ -7,5 +7,4 @@ package com.azure.resourcemanager.appplatform.implementation;
 /** (internal use) Implementation-shared constants. */
 class Constants {
     public static final String DEFAULT_TANZU_COMPONENT_NAME = "default";
-    public static final String BUILD_RESULT_SOURCE_TYPE = "BuildResult";
 }

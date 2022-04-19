@@ -381,7 +381,7 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withGitConfig(ConfigurationServiceGitProperty gitConfig) {
         this.configurationServiceConfig.clearRepositories();
-        if (gitConfig != null && CoreUtils.isNullOrEmpty(gitConfig.repositories())) {
+        if (gitConfig != null && !CoreUtils.isNullOrEmpty(gitConfig.repositories())) {
             for (ConfigurationServiceGitRepository repository : gitConfig.repositories()) {
                 this.configurationServiceConfig.addRepository(repository);
             }
@@ -413,6 +413,7 @@ public class SpringServiceImpl
         this.configurationServiceConfig.reset();
     }
 
+    // Configuration Service config for Enterprise Tier
     private class ConfigurationServiceConfig {
         private final Map<String, ConfigurationServiceGitRepository> gitRepositoryMap = new ConcurrentHashMap<>();
         private final Set<String> repositoriesToDelete = new HashSet<>();
