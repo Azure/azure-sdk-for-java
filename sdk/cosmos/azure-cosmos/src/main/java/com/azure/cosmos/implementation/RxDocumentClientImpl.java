@@ -560,7 +560,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
         } else {
-            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig);
+            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig.toDiagnosticsString());
             return HttpClient.createFixed(httpClientConfig);
         }
     }

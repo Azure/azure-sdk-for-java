@@ -51,7 +51,7 @@ public class StoreClientFactory implements AutoCloseable {
                 RntbdTransportClient.Options rntbdOptions =
                     new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
                 this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver, clientTelemetry);
-                diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
+                diagnosticsClientConfig.withRntbdOptions(rntbdOptions.toDiagnosticsString());
 
             } else {
                 throw new IllegalArgumentException(String.format("protocol: %s", protocol));

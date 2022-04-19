@@ -41,14 +41,14 @@ public class CilentConfigDiagnosticsTest {
         StringWriter jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
-        DiagnosticsClientContext.ClientContextSerializer.INSTACE.serialize(clientContext, jsonGenerator, serializerProvider);
+        DiagnosticsClientContext.DiagnosticsClientConfigSerializer.INSTANCE.serialize(clientContext.getConfig(), jsonGenerator, serializerProvider);
         jsonGenerator.flush();
         ObjectNode objectNode = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
 
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false)");
@@ -65,22 +65,22 @@ public class CilentConfigDiagnosticsTest {
         diagnosticsClientConfig.withClientId(1);
         diagnosticsClientConfig.withConnectionMode(ConnectionMode.DIRECT);
         diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
-        diagnosticsClientConfig.withRntbdOptions( new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build());
-        diagnosticsClientConfig.withGatewayHttpClientConfig(new HttpClientConfig(new Configs()));
+        diagnosticsClientConfig.withRntbdOptions( new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build().toDiagnosticsString());
+        diagnosticsClientConfig.withGatewayHttpClientConfig(new HttpClientConfig(new Configs()).toDiagnosticsString());
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 
         StringWriter jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
-        DiagnosticsClientContext.ClientContextSerializer.INSTACE.serialize(clientContext, jsonGenerator, serializerProvider);
+        DiagnosticsClientContext.DiagnosticsClientConfigSerializer.INSTANCE.serialize(clientContext.getConfig(), jsonGenerator, serializerProvider);
         jsonGenerator.flush();
         ObjectNode objectNode = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
 
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("(cto:PT5S, nrto:PT5S, icto:PT0S, ieto:PT1H, mcpe:130, mrpc:30, cer:false)");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:null, nrto:null, icto:null, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false)");
@@ -101,21 +101,21 @@ public class CilentConfigDiagnosticsTest {
         httpConfig.withPoolSize(500);
         httpConfig.withMaxIdleConnectionTimeout(Duration.ofSeconds(17));
         httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
-        diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig);
+        diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig.toDiagnosticsString());
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 
         StringWriter jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
-        DiagnosticsClientContext.ClientContextSerializer.INSTACE.serialize(clientContext, jsonGenerator, serializerProvider);
+        DiagnosticsClientContext.DiagnosticsClientConfigSerializer.INSTANCE.serialize(clientContext.getConfig(), jsonGenerator, serializerProvider);
         jsonGenerator.flush();
         ObjectNode objectNode = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
 
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false)");
@@ -135,7 +135,7 @@ public class CilentConfigDiagnosticsTest {
         httpConfig.withPoolSize(500);
         httpConfig.withMaxIdleConnectionTimeout(Duration.ofSeconds(17));
         httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
-        diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig);
+        diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig.toDiagnosticsString());
         diagnosticsClientConfig.withPreferredRegions(ImmutableList.of("west us 1", "west us 2"));
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
@@ -145,7 +145,7 @@ public class CilentConfigDiagnosticsTest {
         StringWriter jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
-        DiagnosticsClientContext.ClientContextSerializer.INSTACE.serialize(clientContext, jsonGenerator, serializerProvider);
+        DiagnosticsClientContext.DiagnosticsClientConfigSerializer.INSTANCE.serialize(clientContext.getConfig(), jsonGenerator, serializerProvider);
         jsonGenerator.flush();
         ObjectNode objectNode = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
 

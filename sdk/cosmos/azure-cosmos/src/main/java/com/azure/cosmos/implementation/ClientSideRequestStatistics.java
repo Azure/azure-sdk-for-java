@@ -29,7 +29,7 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private final DiagnosticsClientContext diagnosticsClientContext;
+    private final DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig;
     private String activityId;
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
@@ -48,7 +48,7 @@ public class ClientSideRequestStatistics {
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
-        this.diagnosticsClientContext = diagnosticsClientContext;
+        this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
@@ -64,7 +64,7 @@ public class ClientSideRequestStatistics {
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
-        this.diagnosticsClientContext = toBeCloned.diagnosticsClientContext;
+        this.diagnosticsClientConfig = toBeCloned.diagnosticsClientConfig;
         this.requestStartTimeUTC = toBeCloned.requestStartTimeUTC;
         this.requestEndTimeUTC = toBeCloned.requestEndTimeUTC;
         this.responseStatisticsList = new ArrayList<>(toBeCloned.responseStatisticsList);
@@ -89,8 +89,8 @@ public class ClientSideRequestStatistics {
         return requestStartTimeUTC;
     }
 
-    public DiagnosticsClientContext getDiagnosticsClientContext() {
-        return diagnosticsClientContext;
+    public DiagnosticsClientContext.DiagnosticsClientConfig getDiagnosticsClientConfig() {
+        return diagnosticsClientConfig;
     }
 
     public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult, GlobalEndpointManager globalEndpointManager) {
@@ -381,7 +381,7 @@ public class ClientSideRequestStatistics {
                 // Error while evaluating system information, do nothing
             }
 
-            generator.writeObjectField("clientCfgs", statistics.diagnosticsClientContext);
+            generator.writeObjectField("clientCfgs", statistics.diagnosticsClientConfig);
             generator.writeEndObject();
         }
     }

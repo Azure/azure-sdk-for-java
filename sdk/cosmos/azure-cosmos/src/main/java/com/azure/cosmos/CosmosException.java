@@ -572,8 +572,8 @@ public class CosmosException extends AzureException {
                     exception.rntbdRequestLength = cosmosException.rntbdRequestLength;
                     exception.rntbdResponseLength = cosmosException.rntbdResponseLength;
                     exception.sendingRequestHasStarted = cosmosException.sendingRequestHasStarted;
-                    exception.requestHeaders = cosmosException.requestHeaders;
-                    exception.cosmosDiagnostics = cosmosException.cosmosDiagnostics;
+                    exception.requestHeaders = null;
+                    exception.cosmosDiagnostics = null;
                     return exception;
                 }
             });

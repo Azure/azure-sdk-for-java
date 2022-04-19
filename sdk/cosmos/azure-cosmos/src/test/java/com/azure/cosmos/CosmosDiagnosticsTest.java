@@ -538,7 +538,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
-            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+            if (!query.contains("group by") || qroupByFirstResponse) {
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
                 validateGatewayModeQueryDiagnostics(queryDiagnostics);
                 if (query.contains("group by")) {

@@ -620,6 +620,17 @@ public class RntbdTransportClient extends TransportClient {
             return RntbdObjectMapper.toJson(this);
         }
 
+        public String toDiagnosticsString() {
+            return lenientFormat("(cto:%s, nrto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
+                connectTimeout,
+                tcpNetworkRequestTimeout,
+                idleChannelTimeout,
+                idleEndpointTimeout,
+                maxChannelsPerEndpoint,
+                maxRequestsPerChannel,
+                connectionEndpointRediscoveryEnabled);
+        }
+
         // endregion
 
         // region Types

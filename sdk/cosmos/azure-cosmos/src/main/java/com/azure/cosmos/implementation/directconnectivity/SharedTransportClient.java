@@ -52,7 +52,9 @@ public class SharedTransportClient extends TransportClient {
 
             counter.incrementAndGet();
 
-            diagnosticsClientConfig.withRntbdOptions(sharedTransportClient.rntbdOptions);
+            if (sharedTransportClient.rntbdOptions != null) {
+                diagnosticsClientConfig.withRntbdOptions(sharedTransportClient.rntbdOptions.toDiagnosticsString());
+            }
             return sharedTransportClient;
         }
     }
