@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** message. */
 @Fluent
 public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphMessage.class);
-
     /*
      * The Bcc: recipients for the message.
      */
@@ -81,13 +78,13 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private Boolean hasAttachments;
 
     /*
-     * The importance property.
+     * importance
      */
     @JsonProperty(value = "importance")
     private MicrosoftGraphImportance importance;
 
     /*
-     * The inferenceClassification property.
+     * inferenceClassificationType
      */
     @JsonProperty(value = "inferenceClassification")
     private MicrosoftGraphInferenceClassificationType inferenceClassification;
@@ -210,7 +207,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * The collection of open extensions defined for the message. Nullable.
      */
     @JsonProperty(value = "extensions")
-    private List<MicrosoftGraphExtensionInner> extensions;
+    private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The collection of multi-value extended properties defined for the
@@ -338,7 +335,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      */
     public byte[] conversationIndex() {
         if (this.conversationIndex == null) {
-            return null;
+            return new byte[0];
         }
         return this.conversationIndex.decodedBytes();
     }
@@ -425,7 +422,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Get the importance property: The importance property.
+     * Get the importance property: importance.
      *
      * @return the importance value.
      */
@@ -434,7 +431,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Set the importance property: The importance property.
+     * Set the importance property: importance.
      *
      * @param importance the importance value to set.
      * @return the MicrosoftGraphMessage object itself.
@@ -445,7 +442,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Get the inferenceClassification property: The inferenceClassification property.
+     * Get the inferenceClassification property: inferenceClassificationType.
      *
      * @return the inferenceClassification value.
      */
@@ -454,7 +451,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Set the inferenceClassification property: The inferenceClassification property.
+     * Set the inferenceClassification property: inferenceClassificationType.
      *
      * @param inferenceClassification the inferenceClassification value to set.
      * @return the MicrosoftGraphMessage object itself.
@@ -817,7 +814,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      *
      * @return the extensions value.
      */
-    public List<MicrosoftGraphExtensionInner> extensions() {
+    public List<MicrosoftGraphExtension> extensions() {
         return this.extensions;
     }
 
@@ -827,7 +824,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
-    public MicrosoftGraphMessage withExtensions(List<MicrosoftGraphExtensionInner> extensions) {
+    public MicrosoftGraphMessage withExtensions(List<MicrosoftGraphExtension> extensions) {
         this.extensions = extensions;
         return this;
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for a Redis Enterprise export operation. */
+/** Export an RDB file into a target database Parameters for a Redis Enterprise export operation. */
 @Fluent
 public final class ExportClusterParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportClusterParameters.class);
-
     /*
      * SAS URI for the target directory to export to
      */
@@ -47,9 +44,11 @@ public final class ExportClusterParameters {
      */
     public void validate() {
         if (sasUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sasUri in model ExportClusterParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportClusterParameters.class);
 }
