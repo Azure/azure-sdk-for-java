@@ -55,6 +55,11 @@
         <updatePolicy>daily</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>repository.springframework.maven.milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>https://repo.spring.io/milestone/</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -93,12 +98,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>io.micrometer</groupId>
-          <artifactId>micrometer-core</artifactId>
-        </exclusion>
-      </exclusions>
+<!--      <exclusions>-->
+<!--        <exclusion>-->
+<!--          <groupId>io.micrometer</groupId>-->
+<!--          <artifactId>micrometer-core</artifactId>-->
+<!--        </exclusion>-->
+<!--      </exclusions>-->
       <version>4.28.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
   </dependencies>
