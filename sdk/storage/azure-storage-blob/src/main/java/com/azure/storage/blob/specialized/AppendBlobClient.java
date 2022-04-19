@@ -243,6 +243,64 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;Created AppendBlob&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
+     *
+     * @return {@link AppendBlobItem} containing information of the created appended blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppendBlobItem createIfNotExists() {
+        return createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null).getValue();
+    }
+
+    /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tags&quot;, &quot;value&quot;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * Response&lt;AppendBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context -->
+     *
+     * @param options {@link AppendBlobCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains the {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status
+     * code is 201, a new append blob was successfully created. If status code is 409, an append blob already existed at
+     * this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,
+        Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
+            createIfNotExistsWithResponse(options, context), timeout);
+    }
+
+    /**
      * Commits a new block of data to the end of the existing append blob.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the

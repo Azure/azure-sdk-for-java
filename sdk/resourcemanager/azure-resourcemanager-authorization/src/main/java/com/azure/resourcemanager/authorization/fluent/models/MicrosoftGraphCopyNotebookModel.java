@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** CopyNotebookModel. */
 @Fluent
 public final class MicrosoftGraphCopyNotebookModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCopyNotebookModel.class);
-
     /*
      * The createdBy property.
      */
@@ -104,7 +101,7 @@ public final class MicrosoftGraphCopyNotebookModel {
     private String self;
 
     /*
-     * The userRole property.
+     * onenoteUserRole
      */
     @JsonProperty(value = "userRole")
     private MicrosoftGraphOnenoteUserRole userRole;
@@ -396,7 +393,7 @@ public final class MicrosoftGraphCopyNotebookModel {
     }
 
     /**
-     * Get the userRole property: The userRole property.
+     * Get the userRole property: onenoteUserRole.
      *
      * @return the userRole value.
      */
@@ -405,7 +402,7 @@ public final class MicrosoftGraphCopyNotebookModel {
     }
 
     /**
-     * Set the userRole property: The userRole property.
+     * Set the userRole property: onenoteUserRole.
      *
      * @param userRole the userRole value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
