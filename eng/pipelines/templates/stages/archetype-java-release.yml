@@ -63,8 +63,6 @@ stages:
   # pipeline completes.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
     - stage:
-      #JRS I'm not sure if this is going to work...${{ numArtifacts }} is the template expression syntax and this
-      # may need to be $[variables.numArtifacts] which is the runtime expression syntax
       variables:
         numArtifacts: ${{ length(parameters.Artifacts) }}
       displayName: 'Releasing: ${{ variables.numArtifacts }} libraries'
@@ -97,6 +95,18 @@ stages:
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
                 PackageName: "azure-sdk-template"
+                ServiceDirectory: "template"
+                TestPipeline: ${{ parameters.TestPipeline }}
+
+            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+              parameters:
+                PackageName: "azure-sdk-template-two"
+                ServiceDirectory: "template"
+                TestPipeline: ${{ parameters.TestPipeline }}
+
+            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+              parameters:
+                PackageName: "azure-sdk-template-three"
                 ServiceDirectory: "template"
                 TestPipeline: ${{ parameters.TestPipeline }}
 
