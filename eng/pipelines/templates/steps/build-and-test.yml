@@ -65,17 +65,18 @@ steps:
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
-    displayName: 'Generate aggregate code coverage report'
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
-    inputs:
-      mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
-      options: '$(DefaultOptions) -Pcoverage'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      goals: jacoco:report-aggregate
+#  Notes it for 2.7.0 test
+#  - task: Maven@3
+#    displayName: 'Generate aggregate code coverage report'
+#    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+#    inputs:
+#      mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
+#      options: '$(DefaultOptions) -Pcoverage'
+#      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+#      javaHomeOption: 'JDKVersion'
+#      jdkVersionOption: $(JavaTestVersion)
+#      jdkArchitectureOption: 'x64'
+#      goals: jacoco:report-aggregate
 
   - task: Maven@3
     displayName: 'Build for From Source run'

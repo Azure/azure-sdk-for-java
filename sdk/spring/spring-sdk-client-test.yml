@@ -115,7 +115,7 @@ jobs:
           python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c ${{parameters.SpringCloudVersion}}
         displayName: 'insert dependency management'
       - script: |
-          mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end $(WagonOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am clean install
+          mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end $(WagonOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
         displayName: 'maven_install'
       - script: |
           mvn dependency:tree>./sdk/spring/dependency_tree.txt -f ./sdk/spring && python ./sdk/spring/scripts/ci_read_dependency_tree.py
