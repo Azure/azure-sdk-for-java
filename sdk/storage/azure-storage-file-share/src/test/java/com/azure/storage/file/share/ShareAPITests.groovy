@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
@@ -30,7 +29,6 @@ import com.azure.storage.file.share.options.ShareGetStatisticsOptions
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import com.azure.storage.file.share.options.ShareSetMetadataOptions
-import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -225,7 +223,7 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
-            .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
+            .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(getHttpClient())
             .buildClient()
         then:
         Objects.equals(createSnapshotResponse.getValue().getSnapshot(),
@@ -249,7 +247,7 @@ class ShareAPITests extends APISpec {
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)
         def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
-            .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
+            .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(getHttpClient())
             .buildClient()
         then:
         Objects.equals(createSnapshotResponse.getValue().getSnapshot(),
