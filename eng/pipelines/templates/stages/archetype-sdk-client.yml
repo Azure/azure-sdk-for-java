@@ -104,7 +104,7 @@ stages:
         # passed to archetype-java-release.yml
         Artifacts:
         - ${{ each artifact in parameters.Artifacts }}:
-          - ${{ if eq(artifact.forRelease, 'true') }}:
+          - ${{ if ne(artifact.skipRelease, 'false') }}:
             - ${{ artifact }}
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
           TestPipeline: true
