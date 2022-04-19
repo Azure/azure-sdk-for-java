@@ -37,17 +37,4 @@ public class AadB2cLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         return AadB2cUrl.getEndSessionUrl(properties.getBaseUri(), logoutSuccessUrl, userFlow);
     }
 
-    /**
-     * A strategy that is called after a successful logout,
-     * to handle redirection or forwarding to the appropriate destination.
-     *
-     * @param request the http servlet reqoest
-     * @param response the http servlet response
-     * @param authentication the authentication
-     */
-    @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                                Authentication authentication) throws IOException, ServletException {
-        super.onLogoutSuccess(request, response, authentication);
-    }
 }

@@ -8,6 +8,8 @@ public final class PropertiesValidator {
     public static final String ILLEGAL_SYMBOL_ERROR = "The namespace can contain only letters, numbers, and hyphens.";
     public static final String START_SYMBOL_ERROR = "The namespace must start with a letter.";
     public static final String END_SYMBOL_ERROR = "The namespace must end with a letter or number.";
+    private static final int NAMESPACE_MAX_LENGTH = 50;
+    private static final int NAMESPACE_MIN_LENGTH = 6;
 
     public static void validateNamespace(String namespace) {
         validateLength(namespace);
@@ -17,7 +19,7 @@ public final class PropertiesValidator {
     }
 
     private static void validateLength(String namespace) {
-        if (namespace.length() < 6 || namespace.length() > 50) {
+        if (namespace.length() < NAMESPACE_MIN_LENGTH || namespace.length() > NAMESPACE_MAX_LENGTH) {
             throw new IllegalArgumentException(LENGTH_ERROR);
         }
     }

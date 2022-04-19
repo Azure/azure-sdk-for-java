@@ -72,6 +72,7 @@ public class EventHubsMessageChannelBinder extends
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageChannelBinder.class);
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
+    private static final int DEFAULT_NONE_ERROR_WINDOW = 2;
 
     private NamespaceProperties namespaceProperties;
     private EventHubsTemplate eventHubsTemplate;
@@ -244,7 +245,7 @@ public class EventHubsMessageChannelBinder extends
 
             processorFactory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
-                Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(DEFAULT_NONE_ERROR_WINDOW));
                 instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });

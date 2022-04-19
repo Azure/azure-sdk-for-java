@@ -34,12 +34,8 @@ public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
             this.secretAsyncClient.getSecretWithResponse("spring-cloud-azure-not-existing-secret", "")
                 .block(timeout);
             builder.up();
-        } catch (Exception e) {
-            if (e instanceof ResourceNotFoundException) {
-                builder.up();
-            } else {
-                throw e;
-            }
+        } catch (ResourceNotFoundException e) {
+            builder.up();
         }
     }
 

@@ -30,7 +30,7 @@ public abstract class AbstractProcessorInstrumentation<T> implements Instrumenta
      * @param type the type
      * @param noneErrorWindow the period of a none error window
      */
-    public AbstractProcessorInstrumentation(String name, Type type, Duration noneErrorWindow) {
+    protected AbstractProcessorInstrumentation(String name, Type type, Duration noneErrorWindow) {
         this.name = name;
         this.type = type;
         this.noneErrorWindow = noneErrorWindow;

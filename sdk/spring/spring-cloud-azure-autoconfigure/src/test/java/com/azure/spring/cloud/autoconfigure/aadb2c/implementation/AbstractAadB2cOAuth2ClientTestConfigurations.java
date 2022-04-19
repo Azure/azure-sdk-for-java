@@ -54,11 +54,9 @@ abstract class AbstractAadB2cOAuth2ClientTestConfigurations {
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 Assertions.assertTrue(authorizationClients.size() > 0);
                 for (String clientName: authorizationClients.keySet()) {
-                    Assertions.assertEquals(clientName, AadB2cConstants.CLIENT_CREDENTIAL_NAME);
-                    Assertions.assertEquals(authorizationClients.get(clientName).getScopes().get(0),
-                        AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES);
-                    Assertions.assertEquals(authorizationClients.get(clientName).getAuthorizationGrantType(),
-                        AadAuthorizationGrantType.CLIENT_CREDENTIALS);
+                    Assertions.assertEquals(AadB2cConstants.CLIENT_CREDENTIAL_NAME, clientName);
+                    Assertions.assertEquals(AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES, authorizationClients.get(clientName).getScopes().get(0));
+                    Assertions.assertEquals(AadAuthorizationGrantType.CLIENT_CREDENTIALS, authorizationClients.get(clientName).getAuthorizationGrantType());
                 }
             });
     }

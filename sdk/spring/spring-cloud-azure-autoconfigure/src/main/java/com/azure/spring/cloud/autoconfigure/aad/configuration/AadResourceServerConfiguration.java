@@ -91,18 +91,6 @@ public class AadResourceServerConfiguration {
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAadResourceServerWebSecurityConfigurerAdapter extends
         AadResourceServerWebSecurityConfigurerAdapter {
-
-        /**
-         * configure
-         *
-         * @param http the {@link HttpSecurity} to use
-         * @throws Exception Configuration failed
-         *
-         */
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
-        }
     }
 }
 

@@ -74,6 +74,7 @@ public class ServiceBusMessageChannelBinder extends
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
     private static final String EXCEPTION_MESSAGE = "exception-message";
+    private static final int DEFAULT_NONE_ERROR_WINDOW = 2;
 
     private ServiceBusExtendedBindingProperties bindingProperties = new ServiceBusExtendedBindingProperties();
     private NamespaceProperties namespaceProperties;
@@ -293,7 +294,7 @@ public class ServiceBusMessageChannelBinder extends
                 boolean isTopic = StringUtils.hasText(subscriptionName);
                 String entityName = isTopic ? client.getTopicName() : client.getQueueName();
                 String instrumentationName = entityName + "/" + getGroup(subscriptionName);
-                Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(DEFAULT_NONE_ERROR_WINDOW));
                 instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });

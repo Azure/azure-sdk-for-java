@@ -20,12 +20,6 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
         AzurePropertiesUtils.copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
     }
 
-    /**
-     * Get the Azure environment.
-     * @return The Azure environment.
-     */
-    public abstract AzureProfileOptionsProvider.AzureEnvironmentOptions getEnvironment();
-
     private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloud) {
         AzureEnvironment managementAzureEnvironment = decideAzureManagementEnvironment(cloud, null);
         return getEnvironment().fromAzureManagementEnvironment(managementAzureEnvironment);

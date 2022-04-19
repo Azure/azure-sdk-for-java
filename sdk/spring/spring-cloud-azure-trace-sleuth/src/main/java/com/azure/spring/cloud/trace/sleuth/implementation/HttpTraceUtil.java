@@ -21,7 +21,7 @@ public final class HttpTraceUtil {
         }
 
         // Good response from the server.
-        if (statusCode >= 200 && statusCode < 400) {
+        if (statusCode >= HttpStatus.OK.value() && statusCode < HttpStatus.BAD_REQUEST.value()) {
             return span;
         }
 
