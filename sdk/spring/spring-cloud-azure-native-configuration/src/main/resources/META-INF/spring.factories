@@ -13,7 +13,6 @@ org.springframework.nativex.type.NativeConfiguration=\
   com.azure.spring.cloud.stream.binder.eventhubs.EventHubsBinderHints,\
   com.azure.spring.messaging.eventhubs.core.properties.MessageEventHubsHints,\
   com.azure.spring.messaging.storage.queue.StorageQueueHints,\
-  com.fasterxml.jackson.JacksonCoreHints,\
   org.springframework.beans.BeansHints,\
   org.springframework.cloud.stream.binder.BinderHints,\
   org.springframework.context.ContextHints,\
