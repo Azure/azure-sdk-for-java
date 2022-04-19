@@ -155,11 +155,11 @@ stages:
                           displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
                           artifact: ${{parameters.ArtifactName}}-signed
                           patterns: ${{artifact.groupId}}/${{artifact.name}}/**
-                          - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                            parameters:
-                              ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                              PackageRepository: Maven
-                              ReleaseSha: $(Build.SourceVersion)
+                        - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                          parameters:
+                            ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                            PackageRepository: Maven
+                            ReleaseSha: $(Build.SourceVersion)
 
           - deployment: PublishPackage
             displayName: "Publish to Maven Central"
