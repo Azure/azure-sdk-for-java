@@ -69,7 +69,7 @@ public final class HttpResponseBodyDecoder {
             }
 
             try {
-                return deserializeBody(body, decodeData.getReturnType(), decodeData.getReturnValueWireType(),
+                return deserializeBody(body, decodeData.getReturnEntityType(), decodeData.getReturnValueWireType(),
                     decodeData.getWireResponseType(), serializer,
                     SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
             } catch (MalformedValueException e) {

@@ -14,13 +14,6 @@ import com.azure.core.util.ConfigurationSource;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
@@ -30,6 +23,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -339,10 +338,10 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromSystemProperties() {
-        System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+        Properties properties = new Properties();
+        properties.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
-        Properties properties = new Properties();
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
@@ -354,10 +353,10 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testCaseInsensitivity() {
-        System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
+        Properties properties = new Properties();
+        properties.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
-        Properties properties = new Properties();
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> restrictedHeaders = jdkAsyncHttpClientBuilder.getRestrictedHeaders();
