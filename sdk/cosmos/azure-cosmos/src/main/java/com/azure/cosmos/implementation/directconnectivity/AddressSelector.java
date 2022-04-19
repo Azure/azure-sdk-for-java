@@ -83,6 +83,7 @@ public class AddressSelector {
             }
         );
     }
+    
     public GlobalEndpointManager getGlobalEndpointManager() {
         return this.addressResolver.getGlobalEndpointManager();
     }
