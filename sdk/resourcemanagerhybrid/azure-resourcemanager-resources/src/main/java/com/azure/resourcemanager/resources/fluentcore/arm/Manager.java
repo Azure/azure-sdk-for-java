@@ -19,7 +19,7 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     private ResourceManager resourceManager;
     private final String subscriptionId;
     private final AzureEnvironment environment;
-    private final HttpPipeline httpPipeline;
+    private HttpPipeline httpPipeline;
 
     private final InnerT innerManagementClient;
 
@@ -69,6 +69,10 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
      */
     protected final void withResourceManager(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
+        if (this.httpPipeline == null) {
+            // fill httpPipeline from resourceManager
+            this.httpPipeline = resourceManager.serviceClient().getHttpPipeline();
+        }
     }
 
     /**
