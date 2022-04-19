@@ -97,7 +97,6 @@ public final class StorageFileResource extends AzureStorageResource {
             }
             return this.shareFileClient.getFileOutputStream();
         } catch (ShareStorageException e) {
-            LOGGER.error(MSG_FAIL_OPEN_OUTPUT, e);
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
         }
     }
@@ -191,7 +190,6 @@ public final class StorageFileResource extends AzureStorageResource {
             assertExisted();
             return this.shareFileClient.openInputStream();
         } catch (ShareStorageException e) {
-            LOGGER.error("Failed to open input stream of cloud file", e);
             throw new IOException("Failed to open input stream of cloud file", e);
         }
     }

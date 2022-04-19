@@ -69,4 +69,18 @@ public final class AmazonS3Location extends DatasetLocation {
         this.version = version;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Location setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Location setFileName(Object fileName) {
+        super.setFileName(fileName);
+        return this;
+    }
 }

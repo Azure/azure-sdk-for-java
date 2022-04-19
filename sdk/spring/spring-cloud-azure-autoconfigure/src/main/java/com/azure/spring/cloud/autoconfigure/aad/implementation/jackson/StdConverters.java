@@ -8,13 +8,18 @@ import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
-abstract class StdConverters {
+final class StdConverters {
+
+    private static final String FIELD_NAME_OF_VALUE = "value";
+
+    private StdConverters() {
+    }
 
     static final class ClientAuthenticationMethodConverter extends StdConverter<JsonNode, ClientAuthenticationMethod> {
 
         @Override
         public ClientAuthenticationMethod convert(JsonNode jsonNode) {
-            String value = JsonNodeUtils.findStringValue(jsonNode, "value");
+            String value = JsonNodeUtils.findStringValue(jsonNode, FIELD_NAME_OF_VALUE);
             if (ClientAuthenticationMethod.CLIENT_SECRET_BASIC.getValue().equalsIgnoreCase(value)
                 || ClientAuthenticationMethod.BASIC.getValue().equalsIgnoreCase(value)) {
                 return ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
@@ -35,7 +40,7 @@ abstract class StdConverters {
 
         @Override
         public AuthorizationGrantType convert(JsonNode jsonNode) {
-            String value = JsonNodeUtils.findStringValue(jsonNode, "value");
+            String value = JsonNodeUtils.findStringValue(jsonNode, FIELD_NAME_OF_VALUE);
             if (AuthorizationGrantType.AUTHORIZATION_CODE.getValue().equalsIgnoreCase(value)) {
                 return AuthorizationGrantType.AUTHORIZATION_CODE;
             }
@@ -57,7 +62,7 @@ abstract class StdConverters {
 
         @Override
         public AuthenticationMethod convert(JsonNode jsonNode) {
-            String value = JsonNodeUtils.findStringValue(jsonNode, "value");
+            String value = JsonNodeUtils.findStringValue(jsonNode, FIELD_NAME_OF_VALUE);
             if (AuthenticationMethod.HEADER.getValue().equalsIgnoreCase(value)) {
                 return AuthenticationMethod.HEADER;
             }

@@ -221,6 +221,14 @@ public final class Region {
      * China East 2
      */
     public static final Region CHINA_EAST2 = new Region("chinaeast2", "China East 2");
+    /**
+     * China North 3
+     */
+    public static final Region CHINA_NORTH3 = new Region("chinanorth3", "China North 3");
+    /**
+     * China East 3
+     */
+    public static final Region CHINA_EAST3 = new Region("chinaeast3", "China East 3");
     /*
      * Azure German Cloud
      */
