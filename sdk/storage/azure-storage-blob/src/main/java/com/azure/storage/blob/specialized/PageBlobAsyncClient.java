@@ -1312,7 +1312,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             if (pageSize != null) {
                 finalOptions =
                     new ListPageRangesDiffOptions(options.getRange(), options.getPreviousSnapshot())
-                        .setMaxResultsPerPage(pageSize);
+                        .setRequestConditions(options.getRequestConditions()).setMaxResultsPerPage(pageSize);
             } else {
                 finalOptions = options;
             }

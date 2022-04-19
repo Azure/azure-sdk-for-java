@@ -1039,6 +1039,7 @@ class PageBlobAPITest extends APISpec {
         !iterator.hasNext()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
     def "List pages range"() {
         setup:
         bc.create(4 * Constants.KB, true)
@@ -1075,7 +1076,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, PageBlobClient.PAGE_BYTES))
-            .setRequestConditions(bac), null, null)
+            .setRequestConditions(bac), null, null).size()
 
         then:
         notThrown(BlobStorageException)
@@ -1105,7 +1106,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, PageBlobClient.PAGE_BYTES))
-            .setRequestConditions(bac), null, null)
+            .setRequestConditions(bac), null, null).size()
 
         then:
         thrown(BlobStorageException)
@@ -1317,6 +1318,7 @@ class PageBlobAPITest extends APISpec {
         Integer.parseInt(response.getHeaders().getValue("x-ms-blob-content-length")) == PageBlobClient.PAGE_BYTES * 2
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
     def "List page ranges diff"() {
         setup:
         bc.create(4 * Constants.KB, true)
@@ -1438,6 +1440,7 @@ class PageBlobAPITest extends APISpec {
         !iterator.hasNext()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
     def "List pages diff range"() {
         setup:
         bc.create(4 * Constants.KB, true)
@@ -1484,7 +1487,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapshot)
-            .setRequestConditions(bac), null, null)
+            .setRequestConditions(bac), null, null).size()
 
         then:
         notThrown(BlobStorageException)
@@ -1515,7 +1518,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapshot)
-            .setRequestConditions(bac), null, null)
+            .setRequestConditions(bac), null, null).size()
 
         then:
         thrown(BlobStorageException)
