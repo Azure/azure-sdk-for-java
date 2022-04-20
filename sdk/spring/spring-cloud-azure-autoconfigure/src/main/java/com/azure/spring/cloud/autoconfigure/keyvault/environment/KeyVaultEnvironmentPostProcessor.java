@@ -37,7 +37,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     public static final int ORDER = ConfigDataEnvironmentPostProcessor.ORDER + 1;
 
-    private static final String MSG_SKIP = "Skip configuring Key Vault PropertySource. ";
+    private static final String SKIP_CONFIGURE_REASON_FORMAT = "Skip configuring Key Vault PropertySource because %s.";
 
     private final Log logger;
 
@@ -67,20 +67,17 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!isKeyVaultClientOnClasspath()) {
-            logger.debug(MSG_SKIP
-                    + "Because com.azure:azure-security-keyvault-secrets doesn't exist in classpath.");
+            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "com.azure:azure-security-keyvault-secrets doesn't exist in classpath."));
             return;
         }
 
         final AzureKeyVaultSecretProperties secretProperties = loadProperties(environment);
         if (!secretProperties.isPropertySourceEnabled()) {
-            logger.debug(MSG_SKIP
-                    + "Because spring.cloud.azure.keyvault.secret.property-source-enabled=false");
+            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-source-enabled=false"));
             return;
         }
         if (secretProperties.getPropertySources().isEmpty()) {
-            logger.debug(MSG_SKIP
-                    + "Because spring.cloud.azure.keyvault.secret.property-sources is empty.");
+            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-sources is empty."));
             return;
         }
 
@@ -105,13 +102,11 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         for (int i = 0; i < propertiesList.size(); i++) {
             AzureKeyVaultPropertySourceProperties properties = propertiesList.get(i);
             if (!properties.isEnabled()) {
-                logger.debug(MSG_SKIP
-                        + "Because spring.cloud.azure.keyvault.secret.property-sources[" + i + "].enabled = false.");
+                logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-sources[" + i + "].enabled = false."));
                 continue;
             }
             if (!StringUtils.hasText(properties.getEndpoint())) {
-                logger.debug(MSG_SKIP
-                        + "Because spring.cloud.azure.keyvault.secret.property-sources[" + i + "].endpoint is empty.");
+                logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-sources[" + i + "].endpoint is empty."));
                 continue;
             }
             propertySources.add(buildKeyVaultPropertySource(properties));
