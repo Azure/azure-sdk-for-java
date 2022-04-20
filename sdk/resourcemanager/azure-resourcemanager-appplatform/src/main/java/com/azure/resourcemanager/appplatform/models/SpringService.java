@@ -353,6 +353,7 @@ public interface SpringService
             Update withGitConfig(ConfigServerGitProperty gitConfig);
 
             /**
+             * (Basic/Standard Tier Only)
              * Removes the git configuration.
              * @return the next stage of spring service update
              */
