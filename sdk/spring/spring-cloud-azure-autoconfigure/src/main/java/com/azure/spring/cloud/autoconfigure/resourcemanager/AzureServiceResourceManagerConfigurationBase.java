@@ -18,7 +18,7 @@ public abstract class AzureServiceResourceManagerConfigurationBase {
      * Create {@link AzureServiceResourceManagerConfigurationBase} instance
      * @param azureResourceManager the azure resource manager
      */
-    protected AzureServiceResourceManagerConfigurationBase(AzureResourceManager azureResourceManager) {
+    public AzureServiceResourceManagerConfigurationBase(AzureResourceManager azureResourceManager) {
         this.azureResourceManager = azureResourceManager;
     }
 
