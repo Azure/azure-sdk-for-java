@@ -934,7 +934,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         if (connectionStateListenerEnabled) {
 
             assertThat(connectionStateListenerMetrics).isNotNull();
-            assertThat(connectionStateListenerMetrics.get("lastCallTimestamp").toString()).isEqualTo("\"N/A\"");
+            assertThat(connectionStateListenerMetrics.get("lastCallTimestamp")).isNull();
             assertThat(connectionStateListenerMetrics.get("lastActionableContext")).isNull();
         } else {
             assertThat(connectionStateListenerMetrics).isNull();
@@ -954,11 +954,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
         Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
-            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
+            .isAfterOrEqualTo(beforeOperation2Threshold)
+            .isBeforeOrEqualTo(afterOperation2Threshold);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
-            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
+            .isAfterOrEqualTo(beforeOperation2Threshold)
+            .isBeforeOrEqualTo(afterOperation2Threshold);
     }
 
     private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {
@@ -1050,7 +1050,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information");
+                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
         } catch (Exception ex) {
             logger.error("Error in test addressResolutionStatistics", ex);
             fail("This test should not throw exception " + ex);
