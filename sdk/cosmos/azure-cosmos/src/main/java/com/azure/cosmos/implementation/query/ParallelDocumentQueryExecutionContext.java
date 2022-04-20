@@ -401,8 +401,8 @@ public class ParallelDocumentQueryExecutionContext<T>
             BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
 
         try {
-            if (logger.isInfoEnabled()) {
-                logger.info(
+            if (logger.isDebugEnabled()) {
+                logger.debug(
                     "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}], Context: {}",
                     correlatedActivityId,
                     activityId,

@@ -22,7 +22,7 @@ abstract class Fetcher<T> {
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
     private final OperationContextAndListenerTuple operationContext;
-    private Supplier<String> operationContextTextProvider;
+    protected Supplier<String> operationContextTextProvider;
 
     private volatile boolean shouldFetchMore;
     private volatile int maxItemCount;
@@ -107,8 +107,8 @@ abstract class Fetcher<T> {
             // if fullyDrained then done
             !this.isFullyDrained(this.isChangeFeed, response);
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Fetcher state updated: " +
+        if (logger.isDebugEnabled()) {
+            logger.debug("Fetcher state updated: " +
                     "isChangeFeed = {}, continuation token = {}, max item count = {}, should fetch more = {}, Context: {}",
                 isChangeFeed, this.getContinuationForLogging(), maxItemCount, shouldFetchMore,
                 this.operationContextTextProvider.get());

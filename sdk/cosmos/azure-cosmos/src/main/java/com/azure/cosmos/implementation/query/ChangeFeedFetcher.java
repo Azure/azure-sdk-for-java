@@ -207,7 +207,10 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             return this.nextRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
                 if (!shouldRetryResult.shouldRetry) {
                     if (!(e instanceof GoneException)) {
-                        LOGGER.warn("Exception not applicable - will fail the request.", e);
+                        LOGGER.warn(
+                            "Exception not applicable - will fail the request. Context: {}",
+                            this.operationContextTextProvider.get(),
+                            e);
                         return Mono.just(ShouldRetryResult.noRetry());
                     }
 
@@ -237,9 +240,15 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                         .handleSplit(client, (GoneException)e)
                         .flatMap(splitShouldRetryResult -> {
                             if (!splitShouldRetryResult.shouldRetry) {
-                                LOGGER.warn("No partition split error - will fail the request.", e);
+                                LOGGER.warn(
+                                    "No partition split error - will fail the request. Context: {}",
+                                    this.operationContextTextProvider.get(),
+                                    e);
                             } else {
-                                LOGGER.debug("HandleSplit will retry.", e);
+                                LOGGER.debug(
+                                    "HandleSplit will retry. Context: {}",
+                                    this.operationContextTextProvider.get(),
+                                    e);
                             }
 
                             return Mono.just(shouldRetryResult);

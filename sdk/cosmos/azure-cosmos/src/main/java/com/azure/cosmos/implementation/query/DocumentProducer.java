@@ -206,12 +206,19 @@ class DocumentProducer<T> {
         return sourceFeedResponseObservable.onErrorResume( t -> {
             CosmosException dce = Utils.as(t, CosmosException.class);
             if (dce == null || !isSplit(dce)) {
-                logger.error("Unexpected failure", t);
+                logger.error(
+                    "Unexpected failure, Context: {}",
+                    this.operationContextTextProvider.get(),
+                    t);
                 return Flux.error(t);
             }
 
             // we are dealing with Split
-            logger.info("DocumentProducer handling a partition split in [{}], detail:[{}]", feedRange, dce);
+            logger.info(
+                "DocumentProducer handling a partition split in [{}], detail:[{}], Context: {}",
+                feedRange,
+                dce,
+                this.operationContextTextProvider.get());
             Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(feedRange.getRange());
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
@@ -219,14 +226,15 @@ class DocumentProducer<T> {
             // so this is resilient to split on splits.
             Flux<DocumentProducer<T>> replacementProducers = replacementRangesObs.flux().flatMap(
                     partitionKeyRangesValueHolder ->  {
-                        if (logger.isDebugEnabled()) {
+                        if (logger.isInfoEnabled()) {
                             logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
-                                    + " last continuation token is [{}].",
-                                    feedRange,
-                                    partitionKeyRangesValueHolder.v.stream()
-                                                                   .map(ModelBridgeInternal::toJsonFromJsonSerializable)
-                                                                   .collect(Collectors.joining(", ")),
-                                    lastResponseContinuationToken);
+                                + " last continuation token is [{}]. - Context: {}",
+                                feedRange,
+                                partitionKeyRangesValueHolder.v.stream()
+                                                               .map(ModelBridgeInternal::toJsonFromJsonSerializable)
+                                                               .collect(Collectors.joining(", ")),
+                                lastResponseContinuationToken,
+                                this.operationContextTextProvider.get());
                         }
                         return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRangesValueHolder.v));
                     });
