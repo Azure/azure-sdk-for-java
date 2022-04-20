@@ -52,6 +52,7 @@
         <module>azure-monitor-opentelemetry-exporter</module>
         <module>azure-monitor-query</module>
         <module>azure-monitor-query-perf</module>
+        <module>azure-resourcemanager-monitor-generated</module>
       </modules>
     </profile>
   </profiles>
