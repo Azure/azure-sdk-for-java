@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object of optional configuration settings for encoder. */
 @Fluent
 public final class PresetConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PresetConfigurations.class);
-
     /*
      * Allows you to configure the encoder settings to control the balance
      * between speed and quality. Example: set Complexity as Speed for faster

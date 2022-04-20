@@ -26,7 +26,7 @@ public interface ApiVersionSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api Version Set list representation.
+     * @return paged API Version Set list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApiVersionSetContractInner> listByService(String resourceGroupName, String serviceName);
@@ -44,7 +44,7 @@ public interface ApiVersionSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api Version Set list representation.
+     * @return paged API Version Set list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApiVersionSetContractInner> listByService(
@@ -119,7 +119,7 @@ public interface ApiVersionSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Version Set Contract details.
+     * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApiVersionSetContractInner createOrUpdate(
@@ -137,7 +137,7 @@ public interface ApiVersionSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Version Set Contract details.
+     * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApiVersionSetsCreateOrUpdateResponse createOrUpdateWithResponse(
@@ -160,7 +160,7 @@ public interface ApiVersionSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Version Set Contract details.
+     * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApiVersionSetContractInner update(
@@ -183,7 +183,7 @@ public interface ApiVersionSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Version Set Contract details.
+     * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApiVersionSetsUpdateResponse updateWithResponse(
@@ -221,7 +221,7 @@ public interface ApiVersionSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

@@ -1,10 +1,21 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.15.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.14.0 (2022-04-11)
 
 ###  Bugs Fixed
 
 - Fixed a bug that `WebAppBase.getPublishingProfile()` failed to extract FTP profile, when web app is FTPS-only.
+- Supported Java SE 17 in `RuntimeStack` for `WebApp`.
 
 ## 2.13.0 (2022-03-11)
 

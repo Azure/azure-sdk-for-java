@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -18,6 +19,7 @@ import java.util.function.Supplier;
 /**
  * Authenticates a service principal with AAD using a client assertion.
  */
+@Immutable
 public class ClientAssertionCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredential.class);
     private final IdentityClient identityClient;

@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Represents a ContentKeyPolicyRestriction that is unavailable in the current API version. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyUnknownRestriction")
-@JsonFlatten
 @Immutable
-public class ContentKeyPolicyUnknownRestriction extends ContentKeyPolicyRestriction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyUnknownRestriction.class);
-
+public final class ContentKeyPolicyUnknownRestriction extends ContentKeyPolicyRestriction {
     /**
      * Validates the instance.
      *

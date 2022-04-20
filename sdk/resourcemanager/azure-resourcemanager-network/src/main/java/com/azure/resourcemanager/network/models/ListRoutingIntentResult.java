@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.RoutingIntentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of the routing intent result and a URL nextLink to get the next set of results. */
 @Fluent
 public final class ListRoutingIntentResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListRoutingIntentResult.class);
-
     /*
      * List of RoutingIntent resource.
      */

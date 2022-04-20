@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VirtualNetworkGatewayConnection properties. */
 @Immutable
 public final class TunnelConnectionHealth {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TunnelConnectionHealth.class);
-
     /*
      * Tunnel name.
      */

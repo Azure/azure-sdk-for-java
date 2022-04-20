@@ -21,6 +21,10 @@ class SparkE2EChangeFeedITest
     this.reinitializeContainer()
   }
 
+  "spark change feed DataSource version" can "be determined" in {
+    CosmosChangeFeedDataSource.version shouldEqual CosmosConstants.currentVersion
+  }
+
   "spark change feed query (incremental)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY

@@ -5,6 +5,9 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
+$packageDownloadUrl = "https://repo1.maven.org/maven2"
+
+. "$PSScriptRoot/docs/Docs-ToC.ps1"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -59,34 +62,43 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 # Returns the maven (really sonatype) publish status of a package id and version.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
-  try
+  $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  
+  $attempt = 1
+  while ($attempt -le 3)
   {
-    $uri = "https://oss.sonatype.org/content/repositories/releases/$groupId/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
-    $pomContent = Invoke-RestMethod -MaximumRetryCount 3 -RetryIntervalSec 10 -Method "GET" -uri $uri
-
-    if ($pomContent -ne $null -or $pomContent.Length -eq 0)
+    try
     {
-      return $true
+      if ($attempt -gt 1) {
+        Start-Sleep -Seconds ([Math]::Pow(2, $attempt))
+      }
+
+      Write-Host "Checking published package at $uri"
+      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck
+
+      if ($response.BaseResponse.IsSuccessStatusCode)
+      {
+        return $true
+      }
+
+      $statusCode = $response.StatusCode
+
+      if ($statusCode -eq 404)
+      {
+        return $false
+      }
+
+      Write-Host "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed attempt $attempt with statuscode $statusCode"
     }
-    else
+    catch
     {
-      return $false
-    }
-  }
-  catch
-  {
-    $statusCode = $_.Exception.Response.StatusCode.value__
-    $statusDescription = $_.Exception.Response.StatusDescription
-
-    # if this is 404ing, then this pkg has never been published before
-    if ($statusCode -eq 404) {
-      return $false
+      Write-Host "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed attempt $attempt with exception $($_.Exception.Message)"
     }
 
-    Write-Host "VersionCheck to maven for packageId $pkgId failed with statuscode $statusCode"
-    Write-Host $statusDescription
-    exit(1)
+    $attempt += 1
   }
+
+  throw "Http request for maven package $groupId`:$pkgId`:$pkgVersion failed after 3 attempts"
 }
 
 # Parse out package publishing information given a maven POM file
@@ -243,7 +255,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
     }
     else {
       $newItem = New-Object PSObject -Property @{
-        packageDownloadUrl = "https://repo1.maven.org/maven2"
+        packageDownloadUrl = $packageDownloadUrl
         packageGroupId = $releasingPkg.GroupId
         packageArtifactId = $releasingPkg.PackageId
         packageVersion = $releasingPkg.PackageVersion
@@ -262,10 +274,13 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 
 $PackageExclusions = @{
   "azure-core-experimental" = "Don't want to include an experimental package.";
+  "azure-core-test" = "Don't want to include the test framework package.";
   "azure-sdk-bom" = "Don't want to include the sdk bom.";
   "azure-storage-internal-avro" = "No external APIs.";
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
+  "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
+  "azure-aot-graalvm-support" = "No Javadocs for the package.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -536,7 +551,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
       packageArtifactId = $packageName
       packageGroupId = $packageGroupId
       packageVersion = $packageVersion
-      packageDownloadUrl = "https://repo1.maven.org/maven2"
+      packageDownloadUrl = $packageDownloadUrl
     }
 
     $outputPackages += $package
@@ -561,6 +576,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 # function is used to filter packages to submit to API view tool
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 {
+  # skip spark packages
+  if ($pkgName.Contains("-spark")) {
+    return $null
+  }
+
   # Find all source jar files in given artifact directory
   # Filter for package in "com.azure*" groupid.
   $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
@@ -658,11 +678,17 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   }
 }
 
-function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
-{
-  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
-  {
-    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
+function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
+  # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
+  if (!$PackageInfos) {
+    $PackageInfos =  @($PackageInfo)
   }
+
+  foreach ($package in $PackageInfos) {
+    if (!(ValidatePackage $package.Group $package.Name $package.Version $DocValidationImageId)) {
+      Write-Error "Package $($package.Name) failed on validation" -ErrorAction Continue
+    }
+  }
+
   return
 }

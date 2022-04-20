@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.GatewayRoute;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of virtual network gateway routes. */
 @Fluent
 public final class GatewayRouteListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRouteListResultInner.class);
-
     /*
      * List of gateway routes.
      */

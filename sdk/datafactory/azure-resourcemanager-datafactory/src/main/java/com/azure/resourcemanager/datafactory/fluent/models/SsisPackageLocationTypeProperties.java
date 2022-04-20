@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SsisAccessCredential;
 import com.azure.resourcemanager.datafactory.models.SsisChildPackage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SSIS package location properties. */
 @Fluent
 public final class SsisPackageLocationTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisPackageLocationTypeProperties.class);
-
     /*
      * Password of the package.
      */

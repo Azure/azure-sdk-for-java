@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties that define a Continuous Export configuration. */
 @Fluent
 public final class ApplicationInsightsComponentExportConfigurationInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentExportConfigurationInner.class);
-
     /*
      * The unique ID of the export configuration inside an Application Insights
      * component. It is auto generated when the Continuous Export configuration

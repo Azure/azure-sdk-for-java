@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Url configuration of the Actions set in Application Gateway. */
 @Fluent
 public final class ApplicationGatewayUrlConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayUrlConfiguration.class);
-
     /*
      * Url path which user has provided for url rewrite. Null means no path
      * will be updated. Default value is null.

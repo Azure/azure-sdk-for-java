@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 /** Scheduled alert rule template property bag. */
 @Fluent
 public class ScheduledAlertRuleCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduledAlertRuleCommonProperties.class);
+    /*
+     * The query that creates alerts for this rule.
+     */
+    @JsonProperty(value = "query")
+    private String query;
 
     /*
      * The frequency (in ISO 8601 duration format) for this alert rule to run.
@@ -26,6 +31,12 @@ public class ScheduledAlertRuleCommonProperties {
      */
     @JsonProperty(value = "queryPeriod")
     private Duration queryPeriod;
+
+    /*
+     * The severity for alerts created by this alert rule.
+     */
+    @JsonProperty(value = "severity")
+    private AlertSeverity severity;
 
     /*
      * The operation against the threshold that triggers alert rule.
@@ -44,6 +55,46 @@ public class ScheduledAlertRuleCommonProperties {
      */
     @JsonProperty(value = "eventGroupingSettings")
     private EventGroupingSettings eventGroupingSettings;
+
+    /*
+     * Dictionary of string key-value pairs of columns to be attached to the
+     * alert
+     */
+    @JsonProperty(value = "customDetails")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> customDetails;
+
+    /*
+     * Array of the entity mappings of the alert rule
+     */
+    @JsonProperty(value = "entityMappings")
+    private List<EntityMapping> entityMappings;
+
+    /*
+     * The alert details override settings
+     */
+    @JsonProperty(value = "alertDetailsOverride")
+    private AlertDetailsOverride alertDetailsOverride;
+
+    /**
+     * Get the query property: The query that creates alerts for this rule.
+     *
+     * @return the query value.
+     */
+    public String query() {
+        return this.query;
+    }
+
+    /**
+     * Set the query property: The query that creates alerts for this rule.
+     *
+     * @param query the query value to set.
+     * @return the ScheduledAlertRuleCommonProperties object itself.
+     */
+    public ScheduledAlertRuleCommonProperties withQuery(String query) {
+        this.query = query;
+        return this;
+    }
 
     /**
      * Get the queryFrequency property: The frequency (in ISO 8601 duration format) for this alert rule to run.
@@ -82,6 +133,26 @@ public class ScheduledAlertRuleCommonProperties {
      */
     public ScheduledAlertRuleCommonProperties withQueryPeriod(Duration queryPeriod) {
         this.queryPeriod = queryPeriod;
+        return this;
+    }
+
+    /**
+     * Get the severity property: The severity for alerts created by this alert rule.
+     *
+     * @return the severity value.
+     */
+    public AlertSeverity severity() {
+        return this.severity;
+    }
+
+    /**
+     * Set the severity property: The severity for alerts created by this alert rule.
+     *
+     * @param severity the severity value to set.
+     * @return the ScheduledAlertRuleCommonProperties object itself.
+     */
+    public ScheduledAlertRuleCommonProperties withSeverity(AlertSeverity severity) {
+        this.severity = severity;
         return this;
     }
 
@@ -146,6 +217,66 @@ public class ScheduledAlertRuleCommonProperties {
     }
 
     /**
+     * Get the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
+     *
+     * @return the customDetails value.
+     */
+    public Map<String, String> customDetails() {
+        return this.customDetails;
+    }
+
+    /**
+     * Set the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
+     *
+     * @param customDetails the customDetails value to set.
+     * @return the ScheduledAlertRuleCommonProperties object itself.
+     */
+    public ScheduledAlertRuleCommonProperties withCustomDetails(Map<String, String> customDetails) {
+        this.customDetails = customDetails;
+        return this;
+    }
+
+    /**
+     * Get the entityMappings property: Array of the entity mappings of the alert rule.
+     *
+     * @return the entityMappings value.
+     */
+    public List<EntityMapping> entityMappings() {
+        return this.entityMappings;
+    }
+
+    /**
+     * Set the entityMappings property: Array of the entity mappings of the alert rule.
+     *
+     * @param entityMappings the entityMappings value to set.
+     * @return the ScheduledAlertRuleCommonProperties object itself.
+     */
+    public ScheduledAlertRuleCommonProperties withEntityMappings(List<EntityMapping> entityMappings) {
+        this.entityMappings = entityMappings;
+        return this;
+    }
+
+    /**
+     * Get the alertDetailsOverride property: The alert details override settings.
+     *
+     * @return the alertDetailsOverride value.
+     */
+    public AlertDetailsOverride alertDetailsOverride() {
+        return this.alertDetailsOverride;
+    }
+
+    /**
+     * Set the alertDetailsOverride property: The alert details override settings.
+     *
+     * @param alertDetailsOverride the alertDetailsOverride value to set.
+     * @return the ScheduledAlertRuleCommonProperties object itself.
+     */
+    public ScheduledAlertRuleCommonProperties withAlertDetailsOverride(AlertDetailsOverride alertDetailsOverride) {
+        this.alertDetailsOverride = alertDetailsOverride;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -153,6 +284,12 @@ public class ScheduledAlertRuleCommonProperties {
     public void validate() {
         if (eventGroupingSettings() != null) {
             eventGroupingSettings().validate();
+        }
+        if (entityMappings() != null) {
+            entityMappings().forEach(e -> e.validate());
+        }
+        if (alertDetailsOverride() != null) {
+            alertDetailsOverride().validate();
         }
     }
 }

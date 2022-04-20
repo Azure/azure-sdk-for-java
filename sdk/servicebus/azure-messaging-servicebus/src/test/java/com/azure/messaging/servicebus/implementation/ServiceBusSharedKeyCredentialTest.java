@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.messaging.servicebus.TestUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,7 +25,7 @@ public class ServiceBusSharedKeyCredentialTest {
     public void testSharedAccessSignatureCredential(String sas, OffsetDateTime expectedExpirationTime) {
         ServiceBusSharedKeyCredential serviceBusSharedKeyCredential = new ServiceBusSharedKeyCredential(sas);
         StepVerifier.create(serviceBusSharedKeyCredential.getToken(new TokenRequestContext().addScopes("sb://test"
-            + "-entity.servicebus.windows.net/.default")))
+            + "-entity" + TestUtils.getEndpoint() + "/.default")))
             .assertNext(token -> {
                 assertNotNull(token.getToken());
                 assertEquals(sas, token.getToken());
@@ -35,16 +36,16 @@ public class ServiceBusSharedKeyCredentialTest {
 
     private static Stream<Arguments> getSas() {
         String validSas = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + TestUtils.getEndpoint() + "%2F"
             + "&sig=encodedsignature%3D"
             + "&se=1599537084"
             + "&skn=test-sas-key";
         String validSasWithNoExpirationTime = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + TestUtils.getEndpoint() + "%2F"
             + "&sig=encodedsignature%3D"
             + "&skn=test-sas-key";
         String validSasInvalidExpirationTimeFormat = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + TestUtils.getEndpoint() + "%2F"
             + "&sig=encodedsignature%3D"
             + "&se=se=2020-12-31T13:37:45Z"
             + "&skn=test-sas-key";

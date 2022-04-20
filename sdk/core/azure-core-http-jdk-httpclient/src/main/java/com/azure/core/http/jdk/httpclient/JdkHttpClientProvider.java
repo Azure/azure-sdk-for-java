@@ -5,6 +5,7 @@ package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.Configuration;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpClient.
@@ -13,9 +14,42 @@ import com.azure.core.http.HttpClientProvider;
  * introduced.
  */
 public final class JdkHttpClientProvider implements HttpClientProvider {
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
+        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private final boolean enableHttpClientSharing;
+
+    // Enum Singleton Pattern
+    private enum GlobalJdkAsyncHttpClient {
+        HTTP_CLIENT(new JdkAsyncHttpClientBuilder().build());
+
+        private final HttpClient httpClient;
+
+        GlobalJdkAsyncHttpClient(HttpClient httpClient) {
+            this.httpClient = httpClient;
+        }
+
+        private HttpClient getHttpClient() {
+            return httpClient;
+        }
+    }
+
+    /**
+     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
+     * 'final' modifier.
+     */
+    public JdkHttpClientProvider() {
+        enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
+    }
+
+    JdkHttpClientProvider(Configuration configuration) {
+        enableHttpClientSharing = configuration.get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    }
 
     @Override
     public HttpClient createInstance() {
+        if (enableHttpClientSharing) {
+            return GlobalJdkAsyncHttpClient.HTTP_CLIENT.getHttpClient();
+        }
         return new JdkAsyncHttpClientBuilder().build();
     }
 }

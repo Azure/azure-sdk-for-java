@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.WebActivityAuthentication;
 import com.azure.resourcemanager.datafactory.models.WebhookActivityMethod;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** WebHook activity type properties. */
 @Fluent
 public final class WebhookActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookActivityTypeProperties.class);
-
     /*
      * Rest API method for target endpoint.
      */
@@ -232,13 +229,13 @@ public final class WebhookActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property method in model WebhookActivityTypeProperties"));
         }
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model WebhookActivityTypeProperties"));
@@ -247,4 +244,6 @@ public final class WebhookActivityTypeProperties {
             authentication().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebhookActivityTypeProperties.class);
 }

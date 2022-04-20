@@ -12,8 +12,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-
 /** An immutable client-side representation of an Azure Spring App. */
 @Fluent
 public interface SpringApp
@@ -40,9 +38,6 @@ public interface SpringApp
 
     /** @return the identity property of the app */
     ManagedIdentityProperties identity();
-
-    /** @return the creation time of the app */
-    OffsetDateTime createdTime();
 
     /** @return the active deployment name */
     String activeDeploymentName();

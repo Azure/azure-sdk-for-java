@@ -19,7 +19,7 @@ import java.util.Arrays;
 /** Samples for Metadata Create. */
 public final class MetadataCreateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/metadata/PutMetadata.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/PutMetadata.json
      */
     /**
      * Sample code: Create/update full metadata.
@@ -85,11 +85,17 @@ public final class MetadataCreateSamples {
             .withProviders(Arrays.asList("Amazon", "Microsoft"))
             .withFirstPublishDate(LocalDate.parse("2021-05-18"))
             .withLastPublishDate(LocalDate.parse("2021-05-18"))
+            .withCustomVersion("1.0")
+            .withContentSchemaVersion("2.0")
+            .withThreatAnalysisTactics(Arrays.asList("reconnaissance", "commandandcontrol"))
+            .withThreatAnalysisTechniques(Arrays.asList("T1548", "T1548.001"))
+            .withPreviewImages(Arrays.asList("firstImage.png", "secondImage.jpeg"))
+            .withPreviewImagesDark(Arrays.asList("firstImageDark.png", "secondImageDark.jpeg"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/metadata/PutMetadataMinimal.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/PutMetadataMinimal.json
      */
     /**
      * Sample code: Create/update minimal metadata.

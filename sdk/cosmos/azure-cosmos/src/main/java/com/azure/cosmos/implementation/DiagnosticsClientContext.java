@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @JsonSerialize(using = DiagnosticsClientContext.ClientContextSerializer.class)
@@ -33,6 +35,8 @@ public interface DiagnosticsClientContext {
     static final class ClientContextSerializer extends StdSerializer<DiagnosticsClientContext> {
         private final static Logger logger = LoggerFactory.getLogger(ClientContextSerializer.class);
         public final static ClientContextSerializer INSTACE = new ClientContextSerializer();
+
+        private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
         private static final long serialVersionUID = 1;
 
@@ -50,6 +54,7 @@ public interface DiagnosticsClientContext {
             generator.writeStartObject();
             try {
                 generator.writeNumberField("id", clientContext.getConfig().getClientId());
+                generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientContext));
                 generator.writeStringField("connectionMode", clientContext.getConfig().getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientContext.getConfig().getActiveClientsCount());
                 generator.writeObjectFieldStart("connCfg");
@@ -87,6 +92,11 @@ public interface DiagnosticsClientContext {
         private RntbdTransportClient.Options options;
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
+        private String machineId;
+
+        public void withMachineId(String machineId) {
+            this.machineId = machineId;
+        }
 
         public void withActiveClientCounter(AtomicInteger activeClientsCnt) {
             this.activeClientsCnt = activeClientsCnt;
@@ -178,6 +188,8 @@ public interface DiagnosticsClientContext {
             return this.clientId;
         }
 
+        public String getMachineId() { return this.machineId; }
+
         public int getActiveClientsCount() {
             return this.activeClientsCnt != null ? this.activeClientsCnt.get() : -1;
         }
@@ -212,7 +224,9 @@ public interface DiagnosticsClientContext {
                 return "";
             }
 
-            return preferredRegions.stream().map(r -> r.toLowerCase(Locale.ROOT).replaceAll(" ", "")).collect(Collectors.joining(","));
+            return preferredRegions.stream()
+                .map(r -> ClientContextSerializer.SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
+                .collect(Collectors.joining(","));
         }
 
         private String consistencyRelatedConfigInternal() {

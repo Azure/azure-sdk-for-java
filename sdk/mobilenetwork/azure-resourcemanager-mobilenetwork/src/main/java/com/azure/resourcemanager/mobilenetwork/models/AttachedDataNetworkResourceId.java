@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reference to an Attached Data Network resource. */
 @Fluent
 public final class AttachedDataNetworkResourceId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDataNetworkResourceId.class);
-
     /*
      * Attached Data Network resource ID.
      */
@@ -47,10 +44,12 @@ public final class AttachedDataNetworkResourceId {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property id in model AttachedDataNetworkResourceId"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AttachedDataNetworkResourceId.class);
 }

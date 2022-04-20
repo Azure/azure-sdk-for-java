@@ -4,6 +4,7 @@ package com.azure.communication.networktraversal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -11,9 +12,12 @@ import com.azure.communication.networktraversal.models.CommunicationRelayConfigu
 import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
-
+import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -196,6 +200,47 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
                     assertNotNull(iceS.getUsername());
                     assertNotNull(iceS.getCredential());
                     assertEquals(RouteType.NEAREST, iceS.getRouteType());
+                }
+            }).verifyComplete();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getRelayConfigWithResponseWithTtl(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
+        asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentityAsync");
+
+        // Action & Assert
+        assertNotNull(asyncClient);
+
+        if (user != null) {
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            int ttl = 5000;
+            options.setTtl(ttl);
+
+            Instant now = Instant.now();
+            OffsetDateTime requestedTime = now.atOffset(ZoneOffset.UTC).plusSeconds(ttl);
+
+            Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse(options, null);
+
+            StepVerifier.create(relayConfig)
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+                assertNotNull(response.getValue().getIceServers());
+
+                if (getTestMode() != TestMode.PLAYBACK) {
+                    assertTrue(requestedTime.compareTo(response.getValue().getExpiresOn()) <= 0);
+                    OffsetDateTime limitedTime = requestedTime.plusSeconds(10);
+                    assertTrue(response.getValue().getExpiresOn().compareTo(limitedTime) < 0);
+                }
+
+                for (CommunicationIceServer iceS : response.getValue().getIceServers()) {
+                    assertNotNull(iceS.getUrls());
+                    assertNotNull(iceS.getUsername());
+                    assertNotNull(iceS.getCredential());
                 }
             }).verifyComplete();
         }

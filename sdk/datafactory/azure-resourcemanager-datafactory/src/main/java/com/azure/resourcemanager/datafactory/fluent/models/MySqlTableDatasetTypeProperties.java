@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MySql table dataset properties. */
 @Fluent
 public final class MySqlTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MySqlTableDatasetTypeProperties.class);
-
     /*
      * The MySQL table name. Type: string (or Expression with resultType
      * string).

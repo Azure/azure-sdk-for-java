@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The blob service properties for Last access time based tracking policy. */
 @Fluent
 public final class LastAccessTimeTrackingPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LastAccessTimeTrackingPolicy.class);
-
     /*
      * When set to true last access time based tracking is enabled.
      */

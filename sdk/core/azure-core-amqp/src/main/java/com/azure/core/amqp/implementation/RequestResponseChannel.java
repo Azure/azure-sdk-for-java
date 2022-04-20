@@ -218,7 +218,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 this.receiveLink.open();
             });
         } catch (IOException | RejectedExecutionException e) {
-            throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
+            throw logger.logExceptionAsWarning(new RuntimeException("Unable to open send and receive link.", e));
         }
     }
 
@@ -403,7 +403,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
-        logger.atError()
+        logger.atWarning()
             .log("{} Disposing unconfirmed sends.", message, error);
 
         endpointStates.emitError(error, (signalType, emitResult) -> {

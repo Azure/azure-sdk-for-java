@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ServiceTagInformationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for Get ServiceTagInformation API service call. Retrieves the list of service tag information resources. */
 @Fluent
 public final class ServiceTagInformationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagInformationListResult.class);
-
     /*
      * The list of service tag information resources.
      */

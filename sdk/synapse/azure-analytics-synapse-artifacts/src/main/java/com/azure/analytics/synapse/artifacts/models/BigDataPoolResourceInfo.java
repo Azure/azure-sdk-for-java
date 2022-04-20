@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** Big Data pool A Big Data pool. */
 @JsonFlatten
@@ -472,5 +473,19 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      */
     public OffsetDateTime getLastSucceededTimestamp() {
         return this.lastSucceededTimestamp;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BigDataPoolResourceInfo setTags(Map<String, String> tags) {
+        super.setTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BigDataPoolResourceInfo setLocation(String location) {
+        super.setLocation(location);
+        return this;
     }
 }

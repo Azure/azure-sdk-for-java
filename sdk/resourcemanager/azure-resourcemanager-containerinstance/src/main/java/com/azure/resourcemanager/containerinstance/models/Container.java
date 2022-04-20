@@ -7,15 +7,12 @@ package com.azure.resourcemanager.containerinstance.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A container instance. */
 @Fluent
 public final class Container {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Container.class);
-
     /*
      * The user-provided name of the container instance.
      */
@@ -257,15 +254,17 @@ public final class Container {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Container"));
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model Container"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Container.class);
 }

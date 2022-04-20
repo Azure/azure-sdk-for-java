@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListBackendAddressPool API service call. */
 @Fluent
 public final class LoadBalancerBackendAddressPoolListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddressPoolListResult.class);
-
     /*
      * A list of backend address pools in a load balancer.
      */
