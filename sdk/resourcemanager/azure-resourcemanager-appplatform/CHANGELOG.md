@@ -2,6 +2,11 @@
 
 ## 2.15.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported Enterprise Tier `Configuration Service`.
+- Supported Enterprise Tier `Build Service`.
+
 ### Breaking Changes
 
 - Removed `createdTime` from `AppResourceProperties` and `DeploymentResourceProperties`.

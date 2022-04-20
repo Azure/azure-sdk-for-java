@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.ClassicAdministratorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ClassicAdministrator list result information. */
 @Fluent
 public final class ClassicAdministratorListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClassicAdministratorListResult.class);
-
     /*
      * An array of administrators.
      */
