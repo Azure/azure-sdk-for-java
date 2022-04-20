@@ -151,8 +151,11 @@ public class AadOboOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
                 .filter(StringUtils::hasText)
                 .ifPresent(this::replyForbiddenWithWwwAuthenticateHeader);
             LOGGER.error("Failed to load authorized client.", exception);
-        } catch (InterruptedException | ParseException exception) {
+        } catch (ParseException exception) {
             LOGGER.error("Failed to load authorized client.", exception);
+        } catch (InterruptedException exception) {
+            LOGGER.error("Interrupted loading authorized client.", exception);
+            Thread.currentThread().interrupt();
         }
         return null;
     }

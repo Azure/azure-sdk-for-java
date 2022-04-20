@@ -58,11 +58,8 @@ class OnAnyPropertyCondition extends PropertyCondition {
         private final boolean matchIfMissing;
 
         Spec(AnnotationAttributes annotationAttributes) {
-            String prefixAttr = annotationAttributes.getString("prefix").trim();
-            if (StringUtils.hasText(prefixAttr) && !prefixAttr.endsWith(".")) {
-                prefixAttr = prefixAttr + ".";
-            }
-            this.prefix = prefixAttr;
+            String prefixAttr = annotationAttributes.getString("prefix");
+            prefix = PropertyConditionUtil.getValidPrefix(prefixAttr);
             this.havingValue = annotationAttributes.getString("havingValue");
             this.names = getNames(annotationAttributes);
             this.matchIfMissing = annotationAttributes.getBoolean("matchIfMissing");

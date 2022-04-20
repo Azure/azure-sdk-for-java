@@ -40,18 +40,6 @@ class PropertyMapperTests {
     }
 
     @Test
-    void testWillThrowNPE() {
-        PropertyMapper propertyMapper = new PropertyMapper();
-
-        Foo source = new Foo(), target = new Foo();
-
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            propertyMapper.from(source.getBar().getA()).to(v -> target.getBar().setA(v));
-            propertyMapper.from(source.getBar().getB()).to(v -> target.getBar().setB(v));
-        });
-    }
-
-    @Test
     void testAlwaysApplyNonNullFalse() {
         PropertyMapper propertyMapper = new PropertyMapper(false);
 

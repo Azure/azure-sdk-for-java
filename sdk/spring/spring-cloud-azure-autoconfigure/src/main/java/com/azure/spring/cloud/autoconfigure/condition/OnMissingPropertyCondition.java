@@ -44,11 +44,8 @@ class OnMissingPropertyCondition extends PropertyCondition {
         private final String[] names;
 
         Spec(AnnotationAttributes annotationAttributes) {
-            String prefixAttr = annotationAttributes.getString("prefix").trim();
-            if (StringUtils.hasText(prefixAttr) && !prefixAttr.endsWith(".")) {
-                prefixAttr = prefixAttr + ".";
-            }
-            this.prefix = prefixAttr;
+            String prefixAttr = annotationAttributes.getString("prefix");
+            this.prefix = PropertyConditionUtil.getValidPrefix(prefixAttr);
             this.names = getNames(annotationAttributes);
         }
 

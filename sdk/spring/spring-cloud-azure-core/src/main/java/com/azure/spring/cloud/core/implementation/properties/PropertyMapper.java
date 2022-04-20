@@ -147,9 +147,9 @@ public final class PropertyMapper {
 
         @Override
         public T get() {
-            if (supplier != null) {
+            try {
                 return supplier.get();
-            } else {
+            } catch (Exception ignored) {
                 return null;
             }
         }

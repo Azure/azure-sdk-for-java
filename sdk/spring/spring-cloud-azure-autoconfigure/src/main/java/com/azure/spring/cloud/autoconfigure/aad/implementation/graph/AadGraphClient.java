@@ -28,7 +28,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
@@ -36,7 +35,6 @@ import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.DEFAULT_AUTHORITY_SET;
@@ -176,7 +174,10 @@ public class AadGraphClient {
             scopes.add(MICROSOFT_GRAPH_SCOPE);
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
             result = application.acquireToken(onBehalfOfParameters).get();
-        } catch (ExecutionException | InterruptedException | MalformedURLException e) {
+        } catch (InterruptedException e) {
+            LOGGER.error("Interrupted acquiring on behalf of token for graph api", e);
+            Thread.currentThread().interrupt();
+        } catch (Exception e) {
             // Handle conditional access policy, step 1.
             final Throwable cause = e.getCause();
             if (cause instanceof MsalServiceException) {
