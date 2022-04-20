@@ -22,7 +22,7 @@ public abstract class AzureServiceConfigurationBase {
      * Create an instance of {@link AzureServiceConfigurationBase}.
      * @param azureProperties the {@link AzureProperties} object.
      */
-    public AzureServiceConfigurationBase(AzureGlobalProperties azureProperties) {
+    protected AzureServiceConfigurationBase(AzureGlobalProperties azureProperties) {
         this.azureGlobalProperties = azureProperties;
     }
 
