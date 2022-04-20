@@ -37,6 +37,8 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
 
+    private static final String MSG_PACKAGE_COMMON = " 'spring.cloud.azure.active-directory.authorization-clients.";
+
     /**
      * Profile of Azure cloud environment.
      */
@@ -590,27 +592,26 @@ public class AadAuthenticationProperties implements InitializingBean {
                 case WEB_APPLICATION:
                     if (ON_BEHALF_OF.getValue().equals(grantType)) {
                         throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=web_application',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
+                            + MSG_PACKAGE_COMMON + registrationId
                             + ".authorization-grant-type' can not be 'on_behalf_of'.");
                     }
                     break;
                 case RESOURCE_SERVER:
                     if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
                         throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
+                            + MSG_PACKAGE_COMMON + registrationId
                             + ".authorization-grant-type' can not be 'authorization_code'.");
                     }
                     if (ON_BEHALF_OF.getValue().equals(grantType)) {
                         throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
+                            + MSG_PACKAGE_COMMON + registrationId
                             + ".authorization-grant-type' can not be 'on_behalf_of'.");
                     }
                     break;
                 case RESOURCE_SERVER_WITH_OBO:
                     if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory"
-                            + ".application-type=resource_server_with_obo',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
+                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server_with_obo',"
+                            + MSG_PACKAGE_COMMON + registrationId
                             + ".authorization-grant-type' can not be 'authorization_code'.");
                     }
                     break;

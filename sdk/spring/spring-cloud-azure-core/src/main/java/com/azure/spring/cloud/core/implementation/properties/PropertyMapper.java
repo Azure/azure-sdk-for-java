@@ -15,6 +15,8 @@ import java.util.function.Supplier;
  */
 public final class PropertyMapper {
 
+    private static final String MSG_PREDICATE_NOT_NULL = "Predicate must not be null";
+
     private final boolean alwaysApplyNonNull;
 
     /**
@@ -71,7 +73,7 @@ public final class PropertyMapper {
         private final Predicate<T> predicate;
 
         Source(Supplier<T> supplier, Predicate<T> predicate) {
-            Assert.notNull(predicate, "Predicate must not be null");
+            Assert.notNull(predicate, MSG_PREDICATE_NOT_NULL);
             this.supplier = supplier;
             this.predicate = predicate;
         }
@@ -93,7 +95,7 @@ public final class PropertyMapper {
          * @return a new filtered source instance.
          */
         public Source<T> when(Predicate<T> predicate) {
-            Assert.notNull(predicate, "Predicate must not be null");
+            Assert.notNull(predicate, MSG_PREDICATE_NOT_NULL);
             return new Source<>(this.supplier, this.predicate.and(predicate));
         }
 
@@ -103,7 +105,7 @@ public final class PropertyMapper {
          * @return a new filtered source instance.
          */
         public Source<T> whenNot(Predicate<T> predicate) {
-            Assert.notNull(predicate, "Predicate must not be null");
+            Assert.notNull(predicate, MSG_PREDICATE_NOT_NULL);
             return when(predicate.negate());
         }
 
