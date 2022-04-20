@@ -15,6 +15,7 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import com.azure.storage.file.share.models.DownloadRetryOptions
+import com.azure.storage.file.share.models.FileLastWrittenMode
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -22,6 +23,7 @@ import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareFileUploadOptions
+import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
@@ -30,6 +32,7 @@ import com.azure.storage.file.share.options.ShareFileCreateOptions
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
@@ -855,6 +858,33 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), downloadFile.getName())
     }
 
+    //@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Upload range preserve file last written on"() {
+        setup:
+        primaryFileClient.create(Constants.KB)
+        def initialProps = primaryFileClient.getProperties()
+
+        when:
+        primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions
+            (new ByteArrayInputStream(getRandomBuffer(Constants.KB)), Constants.KB).setLastWrittenMode(mode), null, null)
+        def resultProps = primaryFileClient.getProperties()
+
+        then:
+        if (mode.equals(FileLastWrittenMode.PRESERVE)) {
+            assert initialProps.getSmbProperties().getFileLastWriteTime()
+                == resultProps.getSmbProperties().getFileLastWriteTime()
+        } else {
+            assert initialProps.getSmbProperties().getFileLastWriteTime()
+                != resultProps.getSmbProperties().getFileLastWriteTime()
+        }
+
+        where:
+        mode                         | _
+        FileLastWrittenMode.NOW      | _
+        FileLastWrittenMode.PRESERVE | _
+    }
+
     @Unroll
     def "Upload range from URL"() {
         given:
@@ -895,6 +925,35 @@ class FileAPITests extends APISpec {
         pathSuffix || _
         ""         || _
         "ü1ü"      || _ /* Something that needs to be url encoded. */
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Upload range from Url preserve file last written on"() {
+        setup:
+        def destinationClient = shareClient.getFileClient(generatePathName())
+        def initialProps = destinationClient.getProperties()
+
+        primaryFileClient.uploadRange(new ByteArrayInputStream(getRandomBuffer(Constants.KB)), Constants.KB)
+
+        when:
+        destinationClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(Constants.KB,
+            primaryFileClient.getFileUrl()).setLastWrittenMode(mode), null, null)
+        def resultProps = destinationClient.getProperties()
+
+        then:
+        if (mode.equals(FileLastWrittenMode.PRESERVE)) {
+            assert initialProps.getSmbProperties().getFileLastWriteTime()
+                == resultProps.getSmbProperties().getFileLastWriteTime()
+        } else {
+            assert initialProps.getSmbProperties().getFileLastWriteTime()
+                != resultProps.getSmbProperties().getFileLastWriteTime()
+        }
+
+        where:
+        mode                         | _
+        FileLastWrittenMode.NOW      | _
+        FileLastWrittenMode.PRESERVE | _
     }
 
     @Unroll
@@ -1518,9 +1577,9 @@ class FileAPITests extends APISpec {
         exception == !ignoreReadOnly
 
         where:
-        ignoreReadOnly  | _
-        true            | _
-        false           | _
+        ignoreReadOnly | _
+        true           | _
+        false          | _
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -1642,8 +1701,8 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
 
         where:
-         leaseID        | _
-         garbageLeaseID | _
+        leaseID        | _
+        garbageLeaseID | _
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
