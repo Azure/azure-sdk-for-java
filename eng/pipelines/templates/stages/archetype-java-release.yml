@@ -137,6 +137,7 @@ stages:
             #       also worth mentioning that because uberJar is on the Where-Object it also needs to be one of the
             #       objects selected in Select-Object
             - task: PowerShell@2
+              displayName: Verify Release Set
               inputs:
                 pwsh: true
                 filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
