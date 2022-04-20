@@ -21,7 +21,7 @@ public interface SpringConfigurationService
     /** @return cpu for the Configuration Service */
     String cpu();
 
-    /** @return memory for the Configuration Service */
+    /** @return memory for the Configuration Service, 1 GB can be represented by 1Gi or 1024Mi */
     String memory();
 
     /** @return default git URI in the Configuration Service */

@@ -145,6 +145,7 @@ public class SpringAppImpl
         }
     }
 
+    @Override
     public SpringAppImpl withDefaultPublicEndpoint() {
         ensureProperty();
         innerModel().properties().withPublicProperty(true);
