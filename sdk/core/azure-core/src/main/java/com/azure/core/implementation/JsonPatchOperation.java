@@ -5,11 +5,13 @@ package com.azure.core.implementation;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.DefaultJsonWriter;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -104,31 +106,11 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
 
     @Override
     public String toString() {
-        return toJson(new StringBuilder()).toString();
-    }
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        JsonWriter writer = DefaultJsonWriter.toStream(outputStream);
+        toJson(writer);
 
-    @Override
-    public StringBuilder toJson(StringBuilder stringBuilder) {
-        stringBuilder.append("{\"op\":\"")
-            .append(op.toString())
-            .append("\"");
-
-        if (from != null) {
-            stringBuilder.append(",\"from\":\"")
-                .append(from)
-                .append("\"");
-        }
-
-        stringBuilder.append(",\"path\":\"")
-            .append(path)
-            .append("\"");
-
-        if (value.isInitialized()) {
-            stringBuilder.append(",\"value\":")
-                .append(value.getValue());
-        }
-
-        return stringBuilder.append("}");
+        return outputStream.toString(StandardCharsets.UTF_8);
     }
 
     @Override
@@ -173,7 +155,7 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
      * {@link JsonToken#START_OBJECT}.
      */
     public static JsonPatchOperation fromJson(JsonReader jsonReader) {
-        return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
             JsonPatchOperationKind op = null;
             String from = null;
             String path = null;

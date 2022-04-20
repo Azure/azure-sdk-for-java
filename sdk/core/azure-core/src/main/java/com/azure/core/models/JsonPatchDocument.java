@@ -3,6 +3,7 @@
 
 package com.azure.core.models;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.JsonPatchDocumentHelper;
 import com.azure.core.implementation.JsonPatchOperation;
 import com.azure.core.implementation.JsonPatchOperationKind;
@@ -11,6 +12,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.DefaultJsonWriter;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -479,22 +481,11 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
      */
     @Override
     public String toString() {
-        return toJson(new StringBuilder()).toString();
-    }
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        JsonWriter writer = DefaultJsonWriter.toStream(outputStream);
+        toJson(writer);
 
-    @Override
-    public StringBuilder toJson(StringBuilder stringBuilder) {
-        stringBuilder.append("[");
-
-        for (int i = 0; i < operations.size(); i++) {
-            if (i > 0) {
-                stringBuilder.append(",");
-            }
-
-            operations.get(i).toJson(stringBuilder);
-        }
-
-        return stringBuilder.append("]");
+        return outputStream.toString(StandardCharsets.UTF_8);
     }
 
     @Override
@@ -521,7 +512,7 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
      * {@link JsonToken#START_ARRAY}.
      */
     public static JsonPatchDocument fromJson(JsonReader jsonReader) {
-        List<JsonPatchOperation> operations = JsonUtils.deserializeArray(jsonReader, (reader, token) -> {
+        List<JsonPatchOperation> operations = JsonUtils.readArray(jsonReader, (reader, token) -> {
             if (token == JsonToken.START_OBJECT) {
                 return JsonPatchOperation.fromJson(jsonReader);
             } else if (token == JsonToken.NULL) {

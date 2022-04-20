@@ -3,11 +3,14 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class ComposeTurtles {
+public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
     @JsonProperty(value = "description")
     private String description;
 
@@ -66,5 +69,32 @@ public class ComposeTurtles {
     public ComposeTurtles withTurtlesSet2(List<NonEmptyAnimalWithTypeIdContainingDot> turtles) {
         this.turtlesSet2 = turtles;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "description", description);
+
+        if (turtlesSet1Lead != null) {
+            jsonWriter.writeFieldName("turtlesSet1Lead");
+            turtlesSet1Lead.toJson(jsonWriter);
+        }
+
+        if (turtlesSet1 != null) {
+            JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, (writer, turtle) -> turtle.toJson(writer));
+        }
+
+        if (turtlesSet2Lead != null) {
+            jsonWriter.writeFieldName("turtlesSet2Lead");
+            turtlesSet2Lead.toJson(jsonWriter);
+        }
+
+        if (turtlesSet2 != null) {
+            JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, (writer, turtle) -> turtle.toJson(writer));
+        }
+
+        return jsonWriter.writeEndObject().flush();
     }
 }

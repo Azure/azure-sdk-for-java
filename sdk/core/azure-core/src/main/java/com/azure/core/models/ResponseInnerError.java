@@ -58,19 +58,6 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
     }
 
     @Override
-    public StringBuilder toJson(StringBuilder builder) {
-        builder.append("{\"code\":\"").append(code).append("\",\"innererror\":");
-
-        if (innerError != null) {
-            innerError.toJson(builder);
-        } else {
-            builder.append("null");
-        }
-
-        return builder.append("}");
-    }
-
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
 
@@ -98,7 +85,7 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
      * passed.
      */
     public static ResponseInnerError fromJson(JsonReader jsonReader) {
-        return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
             ResponseInnerError innerError = new ResponseInnerError();
 
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {

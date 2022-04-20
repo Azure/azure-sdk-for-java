@@ -302,6 +302,26 @@ public abstract class JsonWriterContractTests {
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString(null)), JsonWriteState.COMPLETED),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("\"\"")), JsonWriteState.COMPLETED),
 
+            // Writing a value into an array maintains ARRAY state.
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeBinary(null)),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeBoolean(true)),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeDouble(0.0D)),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeFloat(0.0F)),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeInt(0)),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeLong(0L)),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeNull()),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeString(null)),
+                JsonWriteState.ARRAY),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartArray().writeRawValue("\"\"")),
+                JsonWriteState.ARRAY),
+
             // Ending an object at ROOT enters COMPLETED state.
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeStartObject().writeEndObject()),
                 JsonWriteState.COMPLETED),

@@ -4,6 +4,8 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,7 +23,7 @@ import java.util.Map;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "foochild", value = FooChild.class)
 })
-public class Foo {
+public class Foo implements JsonCapable<Foo> {
     @JsonProperty(value = "properties.bar")
     private String bar;
     @JsonProperty(value = "properties.props.baz")
@@ -81,5 +83,10 @@ public class Foo {
 
     public void additionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        return null;
     }
 }

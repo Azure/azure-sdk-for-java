@@ -112,37 +112,6 @@ public final class ResponseError implements JsonCapable<ResponseError> {
     }
 
     @Override
-    public StringBuilder toJson(StringBuilder builder) {
-        builder.append("{\"code\":\"").append(code)
-            .append("\",\"message\":\"").append(message).append("\"");
-
-        if (target != null) {
-            builder.append(",\"target\":\"").append(target).append("\"");
-        }
-
-        if (innerError != null) {
-            builder.append(",\"innererror\":");
-            innerError.toJson(builder);
-        }
-
-        if (errorDetails != null) {
-            builder.append(",\"details\":[");
-
-            for (int i = 0; i < errorDetails.size(); i++) {
-                if (i > 0) {
-                    builder.append(",");
-                }
-
-                errorDetails.get(i).toJson(builder);
-            }
-
-            builder.append("]");
-        }
-
-        return builder.append("}");
-    }
-
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject()
             .writeStringField("code", code)
@@ -178,7 +147,7 @@ public final class ResponseError implements JsonCapable<ResponseError> {
      * passed.
      */
     public static ResponseError fromJson(JsonReader jsonReader) {
-        return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
             // required
             String code = null;
             String message = null;

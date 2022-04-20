@@ -28,12 +28,6 @@ public class JsonPatchDocumentTests {
 
     @ParameterizedTest
     @MethodSource("toJsonSupplier")
-    public void toJsonStringBuilder(JsonPatchDocument document, String expected) {
-        assertEquals(expected, document.toJson(new StringBuilder()).toString());
-    }
-
-    @ParameterizedTest
-    @MethodSource("toJsonSupplier")
     public void toJsonJsonWriter(JsonPatchDocument document, String expected) throws IOException {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         try (JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream)) {

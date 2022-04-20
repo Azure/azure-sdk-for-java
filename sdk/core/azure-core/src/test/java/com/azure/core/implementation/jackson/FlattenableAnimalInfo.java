@@ -5,6 +5,8 @@ package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,25 +36,10 @@ public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo>
     }
 
     @Override
-    public StringBuilder toJson(StringBuilder stringBuilder) {
-        stringBuilder.append("{");
-
-        JsonUtils.appendNullableField(stringBuilder, "home", home);
-
-        if (animal == null) {
-            stringBuilder.append(",\"animal\":null");
-        } else {
-            stringBuilder.append(",\"animal\":");
-            animal.toJson(stringBuilder);
-        }
-
-        return stringBuilder.append("}");
-    }
-
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject()
-            .writeStringField("home", home);
+        jsonWriter.writeStartObject();
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "home", home);
 
         if (animal == null) {
             jsonWriter.writeNullField("animal");
@@ -62,5 +49,43 @@ public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo>
         }
 
         return jsonWriter.writeEndObject().flush();
+    }
+
+    /**
+     * Creates an instance of {@link FlattenableAnimalInfo} by reading the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} that will be read.
+     * @return An instance of {@link FlattenableAnimalInfo} if the {@link JsonReader} is pointing to
+     * {@link FlattenableAnimalInfo} JSON content, or null if it is pointing to {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to the correct {@link JsonToken} when
+     * passed.
+     */
+    public static FlattenableAnimalInfo fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+            String home = null;
+            AnimalWithTypeIdContainingDot animal = null;
+
+            // Boolean tracking flag as 'animal' may be null.
+            boolean hasAnimal = false;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("home".equals(fieldName)) {
+                    home = reader.getStringValue();
+                } else if ("animal".equals(fieldName)) {
+                    hasAnimal = true;
+                    animal = AnimalWithTypeIdContainingDot.fromJsonBase(reader);
+                }
+            }
+
+            if (!hasAnimal) {
+                throw new IllegalStateException("'animal' is a required field. The JSON source for the JsonReader"
+                    + " didn't contain the expected 'animal' JSON property.");
+            }
+
+            return new FlattenableAnimalInfo().withAnimal(animal).withHome(home);
+        });
     }
 }
