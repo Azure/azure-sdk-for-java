@@ -9,12 +9,12 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 
 public class IdentityUtilTests {
 
+    @Test
     public void testMultiTenantAuthenticationEnabled() throws Exception {
         String currentTenant = "tenant";
         String newTenant = "tenant-new";
