@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * Configuration for setting up FeatureManager
  */
 @Configuration
-@EnableConfigurationProperties({FeatureManagementConfigProperties.class})
+@EnableConfigurationProperties({FeatureManagementConfigProperties.class, FeatureManagementProperties.class})
 public class FeatureManagementConfiguration {
 
     /**
@@ -21,6 +21,14 @@ public class FeatureManagementConfiguration {
     @Bean
     public FeatureManager featureManager(FeatureManagementConfigProperties properties) {
         return new FeatureManager(properties);
+    }
+    /**
+     * Creates Dynamic Feature Manager
+     * @return DynamicFeatureManager
+     */
+    @Bean
+    public DynamicFeatureManager dynamicFeatureManager() {
+        return new DynamicFeatureManager();
     }
 
 }

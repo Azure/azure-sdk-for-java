@@ -2,6 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager.feature.filters;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.azure.spring.cloud.feature.manager.FeatureFilter;
 import com.azure.spring.cloud.feature.manager.TargetingException;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
@@ -13,18 +26,7 @@ import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptio
 import com.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
  * `Microsoft.TargetingFilter` enables evaluating a user/group/overall rollout of a feature.
@@ -33,23 +35,44 @@ public class TargetingFilter implements FeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetingFilter.class);
 
-    private static final String USERS = "users";
+    /**
+     * users field in the filter
+     */
+    protected static final String USERS = "users";
 
-    private static final String GROUPS = "groups";
+    /**
+     * groups field in the filter
+     */
+    protected static final String GROUPS = "groups";
 
-    private static final String AUDIENCE = "Audience";
+    /**
+     * Audience in the filter
+     */
+    protected static final String AUDIENCE = "Audience";
 
     private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-    private final ITargetingContextAccessor contextAccessor;
-    private final TargetingEvaluationOptions options;
 
     /**
-     * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
-     * @param contextAccessor Context for evaluating the users/groups.
+     * Object Mapper for converting configurations to variants
+     */
+    protected static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+
+    /**
+     * Accessor for identifying the current user/group when evaluating
+     */
+    protected final ITargetingContextAccessor contextAccessor;
+
+    /**
+     * Options for evaluating the filter
+     */
+    protected final TargetingEvaluationOptions options;
+
+    /**
+     * Filter for targeting a user/group/percentage of users.
+     * @param contextAccessor Accessor for identifying the current user/group when evaluating
      */
     public TargetingFilter(ITargetingContextAccessor contextAccessor) {
         this.contextAccessor = contextAccessor;
@@ -96,22 +119,21 @@ public class TargetingFilter implements FeatureFilter {
             settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
         }
 
-        tryValidateSettings(settings);
+        validateSettings(settings);
 
         Audience audience = settings.getAudience();
 
         if (targetingContext.getUserId() != null
             && audience.getUsers() != null
             && audience.getUsers().stream()
-                .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))
-        ) {
+                .anyMatch(user -> compareStrings(targetingContext.getUserId(), user))) {
             return true;
         }
 
         if (targetingContext.getGroups() != null && audience.getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
                 Optional<GroupRollout> groupRollout = audience.getGroups().stream()
-                    .filter(g -> compairStrings(g.getName(), group)).findFirst();
+                    .filter(g -> compareStrings(g.getName(), group)).findFirst();
 
                 if (groupRollout.isPresent()) {
                     String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
@@ -128,7 +150,12 @@ public class TargetingFilter implements FeatureFilter {
         return isTargeted(defaultContextId, settings.getAudience().getDefaultRolloutPercentage());
     }
 
-    private boolean isTargeted(String contextId, double percentage) {
+    /**
+     * Computes the percentage that the contextId falls into.
+     * @param contextId Id of the context being targeted
+     * @return the bucket value of the context id
+     */
+    protected double isTargetedPercentage(String contextId) {
         byte[] hash = null;
 
         try {
@@ -145,11 +172,18 @@ public class TargetingFilter implements FeatureFilter {
         ByteBuffer wrapped = ByteBuffer.wrap(hash);
         int contextMarker = Math.abs(wrapped.getInt());
 
-        double contextPercentage = (contextMarker / (double) Integer.MAX_VALUE) * 100;
-        return contextPercentage < percentage;
+        return (contextMarker / (double) Integer.MAX_VALUE) * 100;
     }
 
-    private void tryValidateSettings(TargetingFilterSettings settings) {
+    private boolean isTargeted(String contextId, double percentage) {
+        return isTargetedPercentage(contextId) < percentage;
+    }
+
+    /**
+     * Validates the settings of a targeting filter.
+     * @param settings targeting filter settings
+     */
+    protected void validateSettings(TargetingFilterSettings settings) {
         String paramName = "";
         String reason = "";
 
@@ -183,18 +217,31 @@ public class TargetingFilter implements FeatureFilter {
         }
     }
 
-    private boolean compairStrings(String s1, String s2) {
+    /**
+     * Checks if two strings are equal, ignores case if configured to.
+     * @param s1 string to compare
+     * @param s2 string to compare
+     * @return true if the strings are equal
+     */
+    protected boolean compareStrings(String s1, String s2) {
         if (options.isIgnoreCase()) {
             return s1.equalsIgnoreCase(s2);
         }
         return s1.equals(s2);
     }
 
+    /**
+     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used for updating 
+     * fields in the targeting filter.
+     * @param <T> Type of object inside of parameters for the given key
+     * @param parameters map of generic objects
+     * @param key key of object int the parameters map
+     */
     @SuppressWarnings("unchecked")
-    private <T> void updateValueFromMapToList(LinkedHashMap<String, Object> parameters, String key) {
+    protected <T> void updateValueFromMapToList(LinkedHashMap<String, Object> parameters, String key) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {
-            List<T> toType = new ArrayList<>(((Map<String, T>) objectMap).values());
+            List<T> toType = ((Map<String, T>) objectMap).values().stream().collect(Collectors.toList());
             parameters.put(key, toType);
         }
     }

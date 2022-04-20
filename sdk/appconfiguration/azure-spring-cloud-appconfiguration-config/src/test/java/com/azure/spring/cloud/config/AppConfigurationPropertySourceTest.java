@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V2;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_BOOLEAN_VALUE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;
@@ -115,8 +117,6 @@ public class AppConfigurationPropertySourceTest {
         ".appconfig.featureflag/", "target",
         FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
-
     private static ObjectMapper mapper = new ObjectMapper();
 
     private List<ConfigurationSetting> testItems = new ArrayList<>();
@@ -227,7 +227,7 @@ public class AppConfigurationPropertySourceTest {
             .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
         String[] allExpectedKeyNames = new String[expectedKeyNames.length + 1];
 
-        String[] featureManagementKey = { FEATURE_MANAGEMENT_KEY };
+        String[] featureManagementKey = { FEATURE_MANAGEMENT_KEY_V2 };
 
         System.arraycopy(expectedKeyNames, 0, allExpectedKeyNames, 0, expectedKeyNames.length);
         System.arraycopy(featureManagementKey, 0, allExpectedKeyNames, expectedKeyNames.length, 1);
@@ -303,7 +303,7 @@ public class AppConfigurationPropertySourceTest {
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
 
-        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY_V2));
     }
 
     @Test
@@ -322,7 +322,7 @@ public class AppConfigurationPropertySourceTest {
         }
         propertySource.initFeatures(featureSet);
 
-        assertNull(propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertNull(propertySource.getProperty(FEATURE_MANAGEMENT_KEY_V2));
     }
 
     @Test
@@ -383,7 +383,7 @@ public class AppConfigurationPropertySourceTest {
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
 
-        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY_V2));
     }
 
     @Test
@@ -482,9 +482,8 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("target", feature);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
-        System.out.println(convertedValue.toString());
-        System.out.println(propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
+        
         assertEquals(convertedValue.toString().length(),
-            propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
+            propertySource.getProperty(FEATURE_MANAGEMENT_KEY_V2).toString().length());
     }
 }

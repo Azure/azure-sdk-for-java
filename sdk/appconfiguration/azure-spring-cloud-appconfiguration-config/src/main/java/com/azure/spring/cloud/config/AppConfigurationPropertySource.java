@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import static com.azure.spring.cloud.config.AppConfigurationConstants.DYNAMIC_FEATURE_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.DYNAMIC_FEATURE_KEY;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
-import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V1;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V2;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
@@ -34,6 +37,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.spring.cloud.config.feature.management.entity.DynamicFeature;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -51,7 +55,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
- * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p>
+ * <p>
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
+ * </p>
  */
 public final class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
@@ -74,10 +80,10 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     private static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     private static final ObjectMapper FEATURE_MAPPER = JsonMapper.builder()
-            .propertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE).build();
+        .propertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE).build();
 
     private final AppConfigurationStoreSelects selectedKeys;
 
@@ -102,9 +108,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     private final ConfigStore configStore;
 
     AppConfigurationPropertySource(ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
-            List<String> profiles, AppConfigurationProperties appConfigurationProperties, ClientStore clients,
-            AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
-            SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+        List<String> profiles, AppConfigurationProperties appConfigurationProperties, ClientStore clients,
+        AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
+        SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(
@@ -123,8 +129,8 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
         List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
-                new TypeReference<List<Object>>() {
-                });
+            new TypeReference<List<Object>>() {
+            });
         return listObjects == null ? emptyList() : listObjects;
     }
 
@@ -145,9 +151,8 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * </p>
      *
      * <p>
-     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache.
-     * Call {@code initFeatures} to update Feature Management, but make sure its
-     * done in the last {@code AppConfigurationPropertySource}
+     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call {@code initFeatures} to update
+     * Feature Management, but make sure its done in the last {@code AppConfigurationPropertySource}
      * AppConfigurationPropertySource}
      * </p>
      *
@@ -188,7 +193,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                         properties.put(key, entry);
                     }
                 } else if (StringUtils.hasText(setting.getContentType())
-                        && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                    && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                     HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                     for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
                         key = jsonSetting.getKey().trim().substring(selectedKeys.getKeyFilter().length());
@@ -225,7 +230,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             // one
             if (!keyVaultClients.containsKey(uri.getHost())) {
                 KeyVaultClient client = new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider,
-                        keyVaultClientProvider, keyVaultSecretProvider);
+                    keyVaultClientProvider, keyVaultSecretProvider);
                 keyVaultClients.put(uri.getHost(), client);
             }
             KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());
@@ -247,8 +252,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * @param featureSet Feature Flag info to be set to this property source.
      */
     void initFeatures(FeatureSet featureSet) {
-        properties.put(FEATURE_MANAGEMENT_KEY,
+        properties.put(getFeatureSchema(),
             FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
+
     }
 
     private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features)
@@ -259,11 +265,43 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         // Reading In Features
         for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting) {
-                Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
-                featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
+                FeatureFlagConfigurationSetting featureSetting = (FeatureFlagConfigurationSetting) setting;
+                Object feature = createFeature(featureSetting);
+                featureSet.addFeature(featureSetting.getFeatureId(), feature);
+            } else if (DYNAMIC_FEATURE_CONTENT_TYPE.equalsIgnoreCase(setting.getContentType()) && getFeatureSchemaVersion() >= 2) {
+                DynamicFeature dynamicFeature = CASE_INSENSITIVE_MAPPER.readValue(setting.getValue(),
+                    DynamicFeature.class);
+
+                properties.put(
+                    DYNAMIC_FEATURE_KEY + "." + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()),
+                    FEATURE_MAPPER.convertValue(dynamicFeature, LinkedHashMap.class));
             }
         }
         return featureSet;
+    }
+    
+    private Integer getFeatureSchemaVersion() {
+        String version = System
+            .getenv(AppConfigurationConstants.AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION);
+
+        switch (StringUtils.hasText(version) ? version : "") {
+            case "1":
+                return 1;
+            case "2":
+                return 2;
+            default:
+                return 1;
+        }
+    }
+
+    private String getFeatureSchema() {
+        Integer version = getFeatureSchemaVersion();
+        
+        if (version == 1) {
+            return FEATURE_MANAGEMENT_KEY_V1;
+        } else {
+            return FEATURE_MANAGEMENT_KEY_V2;
+        }
     }
 
     /**
@@ -274,7 +312,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      */
     @SuppressWarnings("unchecked")
     private Object createFeature(FeatureFlagConfigurationSetting item) {
-        String key = getFeatureSimpleName(item);
+        String key = item.getFeatureId();
         Feature feature = new Feature(key, item);
         Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
 
@@ -315,11 +353,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             feature.setEnabledFor(featureEnabledFor);
         }
         return feature;
-
-    }
-
-    private String getFeatureSimpleName(ConfigurationSetting setting) {
-        return setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
     }
 
     private Map<String, Object> mapValuesByIndex(List<Object> users) {

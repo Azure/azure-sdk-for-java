@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -13,15 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
 import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import reactor.core.publisher.Mono;
 
@@ -29,36 +24,25 @@ import reactor.core.publisher.Mono;
  * Holds information on Feature Management properties and can check if a given feature is enabled.
  */
 @Component("FeatureManagement")
-@ConfigurationProperties(prefix = "feature-management")
-public class FeatureManager extends HashMap<String, Object> {
+public class FeatureManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManager.class);
 
-    private static final long serialVersionUID = -5941681857165566018L;
-
     @Autowired
     private transient ApplicationContext context;
+    
+    @Autowired
+    private FeatureManagementProperties featureManagementConfigurations;
 
     private transient FeatureManagementConfigProperties properties;
 
-    private transient Map<String, Feature> featureManagement;
-
     /**
-     * Holds FeatureFlags that are either enabled or disabled.
-     */
-    private Map<String, Boolean> onOff;
-
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-        .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
-
-    /**
-     * Used to evaluate whether a feature is enabled or disabled.
-     * @param properties Configuration options for Feature Management
+     * Manages Feature Flags and Dynamic Features. Can be called to check if a feature is enabled or disabled. Can be
+     * called to get a Dynamic Feature.
+     * @param properties FeatureManagementConfigProperties
      */
     public FeatureManager(FeatureManagementConfigProperties properties) {
         this.properties = properties;
-        featureManagement = new HashMap<>();
-        onOff = new HashMap<>();
     }
 
     /**
@@ -75,18 +59,19 @@ public class FeatureManager extends HashMap<String, Object> {
     }
 
     private boolean checkFeatures(String feature) throws FilterNotFoundException {
-        if (featureManagement == null || onOff == null) {
+        if (featureManagementConfigurations.getFeatureManagement() == null
+            || featureManagementConfigurations.getOnOff() == null) {
             return false;
         }
 
-        Boolean boolFeature = onOff.get(feature);
+        Boolean boolFeature = featureManagementConfigurations.getOnOff().get(feature);
 
         if (boolFeature != null) {
             return boolFeature;
         }
 
-        Feature featureItem = featureManagement.get(feature);
-        if (featureItem == null || !featureItem.getEvaluate()) {
+        Feature featureItem = featureManagementConfigurations.getFeatureManagement().get(feature);
+        if (featureItem == null) {
             return false;
         }
 
@@ -112,59 +97,6 @@ public class FeatureManager extends HashMap<String, Object> {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    private void addToFeatures(Map<? extends String, ? extends Object> features, String key, String combined) {
-        Object featureKey = features.get(key);
-        if (!combined.isEmpty() && !combined.endsWith(".")) {
-            combined += ".";
-        }
-        if (featureKey instanceof Boolean) {
-            onOff.put(combined + key, (Boolean) featureKey);
-        } else {
-            Feature feature = null;
-            try {
-                feature = MAPPER.convertValue(featureKey, Feature.class);
-            } catch (IllegalArgumentException e) {
-                LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureKey.toString());
-            }
-
-            // When coming from a file "feature.flag" is not a possible flag name
-            if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
-                if (LinkedHashMap.class.isAssignableFrom(featureKey.getClass())) {
-                    features = (LinkedHashMap<String, Object>) featureKey;
-                    for (String fKey : features.keySet()) {
-                        addToFeatures(features, fKey, combined + key);
-                    }
-                }
-            } else {
-                if (feature != null) {
-                    feature.setKey(key);
-                    featureManagement.put(key, feature);
-                }
-            }
-        }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void putAll(Map<? extends String, ? extends Object> m) {
-        if (m == null) {
-            return;
-        }
-
-        // Need to reset or switch between on/off to conditional doesn't work
-        featureManagement = new HashMap<>();
-        onOff = new HashMap<>();
-
-        if (m.size() == 1 && m.containsKey("featureManagement")) {
-            m = (Map<? extends String, ? extends Object>) m.get("featureManagement");
-        }
-
-        for (String key : m.keySet()) {
-            addToFeatures(m, key, "");
-        }
-    }
-
     /**
      * Returns the names of all features flags
      *
@@ -173,8 +105,8 @@ public class FeatureManager extends HashMap<String, Object> {
     public Set<String> getAllFeatureNames() {
         Set<String> allFeatures = new HashSet<>();
 
-        allFeatures.addAll(onOff.keySet());
-        allFeatures.addAll(featureManagement.keySet());
+        allFeatures.addAll(featureManagementConfigurations.getOnOff().keySet());
+        allFeatures.addAll(featureManagementConfigurations.getFeatureManagement().keySet());
         return allFeatures;
     }
 
@@ -182,14 +114,14 @@ public class FeatureManager extends HashMap<String, Object> {
      * @return the featureManagement
      */
     Map<String, Feature> getFeatureManagement() {
-        return featureManagement;
+        return featureManagementConfigurations.getFeatureManagement();
     }
 
     /**
      * @return the onOff
      */
     Map<String, Boolean> getOnOff() {
-        return onOff;
+        return featureManagementConfigurations.getOnOff();
     }
 
 }
