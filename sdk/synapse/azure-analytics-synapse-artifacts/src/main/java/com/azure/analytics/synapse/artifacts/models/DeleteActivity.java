@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Delete activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -179,6 +180,48 @@ public class DeleteActivity extends ExecutionActivity {
      */
     public DeleteActivity setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

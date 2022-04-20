@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -145,13 +145,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.7.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.8.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.11.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.11.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -270,6 +270,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-metadata</artifactId>
+      <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

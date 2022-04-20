@@ -5,28 +5,17 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Deployment resource properties payload. */
 @Fluent
 public final class DeploymentResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentResourceProperties.class);
-
     /*
      * Uploaded source information of the deployment.
      */
     @JsonProperty(value = "source")
     private UserSourceInfo source;
-
-    /*
-     * App name of the deployment
-     */
-    @JsonProperty(value = "appName", access = JsonProperty.Access.WRITE_ONLY)
-    private String appName;
 
     /*
      * Deployment settings of the Deployment
@@ -49,14 +38,8 @@ public final class DeploymentResourceProperties {
     /*
      * Indicates whether the Deployment is active
      */
-    @JsonProperty(value = "active", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "active")
     private Boolean active;
-
-    /*
-     * Date time when the resource is created
-     */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
 
     /*
      * Collection of instances belong to the Deployment
@@ -82,15 +65,6 @@ public final class DeploymentResourceProperties {
     public DeploymentResourceProperties withSource(UserSourceInfo source) {
         this.source = source;
         return this;
-    }
-
-    /**
-     * Get the appName property: App name of the deployment.
-     *
-     * @return the appName value.
-     */
-    public String appName() {
-        return this.appName;
     }
 
     /**
@@ -141,12 +115,14 @@ public final class DeploymentResourceProperties {
     }
 
     /**
-     * Get the createdTime property: Date time when the resource is created.
+     * Set the active property: Indicates whether the Deployment is active.
      *
-     * @return the createdTime value.
+     * @param active the active value to set.
+     * @return the DeploymentResourceProperties object itself.
      */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
+    public DeploymentResourceProperties withActive(Boolean active) {
+        this.active = active;
+        return this;
     }
 
     /**

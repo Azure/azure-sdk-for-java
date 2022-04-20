@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for Cassandra data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -179,6 +181,34 @@ public class CassandraLinkedService extends LinkedService {
      */
     public CassandraLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

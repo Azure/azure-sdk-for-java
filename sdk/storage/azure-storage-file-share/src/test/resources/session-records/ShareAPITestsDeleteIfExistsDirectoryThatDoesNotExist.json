@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/a2d5e0e8a2d5e0e8ff0340334669f4cefd86483db5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "279f09ea-2b82-46ca-adce-fcf48f0029b8"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F7C594E5FB2",
+      "Last-Modified" : "Sat, 16 Apr 2022 07:40:16 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d3e345a1-001a-005a-6265-51741f000000",
+      "x-ms-client-request-id" : "279f09ea-2b82-46ca-adce-fcf48f0029b8",
+      "Date" : "Sat, 16 Apr 2022 07:40:15 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.file.core.windows.net/a2d5e0e8a2d5e0e8ff0340334669f4cefd86483db5/testCreateDirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f90d3a6-d722-4264-9f48-a908c0054328"
+    },
+    "Response" : {
+      "content-length" : "223",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "726c5e0f-301a-000c-1065-5185f0000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:726c5e0f-301a-000c-1065-5185f0000000\nTime:2022-04-16T07:40:16.2936451Z</Message></Error>",
+      "x-ms-client-request-id" : "6f90d3a6-d722-4264-9f48-a908c0054328",
+      "Date" : "Sat, 16 Apr 2022 07:40:15 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "a2d5e0e8a2d5e0e8ff0340334669f4cefd86483db5" ]
+}

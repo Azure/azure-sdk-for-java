@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Base class for all execution activities. */
 @JsonTypeInfo(
@@ -96,6 +97,34 @@ public class ExecutionActivity extends Activity {
      */
     public ExecutionActivity setPolicy(ActivityPolicy policy) {
         this.policy = policy;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutionActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutionActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutionActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutionActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }
