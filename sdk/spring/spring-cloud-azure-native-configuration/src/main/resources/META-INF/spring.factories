@@ -1,19 +1,18 @@
 org.springframework.nativex.type.NativeConfiguration=\
-  com.azure.core.AzureCoreHints,\
-  com.azure.keyvault.certificates.CertificateHints, \
-  com.azure.spring.cloud.autoconfigure.AutoconfigureHints,\
-  com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsHints,\
-  com.azure.spring.cloud.autoconfigure.keyvault.KeyVaultCommonHints,\
-  com.azure.spring.cloud.autoconfigure.keyvault.secrets.KeyVaultSecretsHints,\
-  com.azure.spring.cloud.autoconfigure.storage.StorageBlobHints,\
-  com.azure.spring.cloud.autoconfigure.storage.StorageCommonHints,\
-  com.azure.spring.cloud.core.CoreHints,\
-  com.azure.spring.cloud.resourcemanager.ResourceManagerHints,\
-  com.azure.spring.cloud.service.ServiceHints,\
-  com.azure.spring.cloud.stream.binder.eventhubs.EventHubsBinderHints,\
-  com.azure.spring.messaging.eventhubs.core.properties.MessageEventHubsHints,\
-  com.azure.spring.messaging.storage.queue.StorageQueueHints,\
-  org.springframework.beans.BeansHints,\
-  org.springframework.cloud.stream.binder.BinderHints,\
-  org.springframework.context.ContextHints,\
-  org.springframework.core.CoreHints
+  com.azure.spring.cloud.nativex.configuration.implementation.autoconfigure.AutoconfigureHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.autoconfigure.EventHubsHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.autoconfigure.KeyVaultCommonHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.autoconfigure.KeyVaultSecretsHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.autoconfigure.StorageBlobHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.autoconfigure.StorageCommonHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.core.CoreHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.messaging.MessageEventHubsHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.messaging.StorageQueueHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.resourcemanager.ResourceManagerHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.sdk.AzureCoreHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.sdk.CertificateHints, \
+  com.azure.spring.cloud.nativex.configuration.implementation.service.ServiceHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.springframework.BeansHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.springframework.BinderHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.springframework.ContextHints,\
+  com.azure.spring.cloud.nativex.configuration.implementation.springframework.CoreHints

@@ -12,26 +12,12 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-native-configuration</artifactId>
-  <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-native-configuration;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-native-configuration;current} -->
 
   <name>Spring Cloud Azure Native Configuration</name>
   <description>Spring Cloud Azure Native Configuration</description>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
-  <developers>
-    <developer>
-      <name>Spring Cloud Azure</name>
-      <email>SpringIntegSupport@microsoft.com</email>
-    </developer>
-  </developers>
-  <scm>
-    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
-  </scm>
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
-  </issueManagement>
+
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
@@ -46,13 +32,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-aot-graalvm-support</artifactId>
       <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
