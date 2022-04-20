@@ -44,3 +44,6 @@ extends:
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
+      - name: azure-resourcemanager-monitor-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermonitorgenerated
