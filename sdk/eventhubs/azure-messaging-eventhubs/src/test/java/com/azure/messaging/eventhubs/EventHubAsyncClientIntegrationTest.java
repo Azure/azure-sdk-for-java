@@ -151,10 +151,10 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendAndReceiveEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties();
-        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String fullyQualifiedNamespace = properties.getEndpoint().getHost();
         String sharedAccessKeyName = properties.getSharedAccessKeyName();
         String sharedAccessKey = properties.getSharedAccessKey();
-        String eventHubName = getEventHubName();
+        String eventHubName = properties.getEntityPath();
 
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
@@ -180,9 +180,9 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 "SAS was not set. Can't run test scenario.");
 
         ConnectionStringProperties properties = getConnectionStringProperties(true);
-        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String fullyQualifiedNamespace = properties.getEndpoint().getHost();
         String sharedAccessSignature = properties.getSharedAccessSignature();
-        String eventHubName = getEventHubName();
+        String eventHubName = properties.getEntityPath();
 
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
