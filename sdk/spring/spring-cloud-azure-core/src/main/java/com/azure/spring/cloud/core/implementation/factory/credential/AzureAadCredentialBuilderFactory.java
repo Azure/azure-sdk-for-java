@@ -21,7 +21,7 @@ public abstract class AzureAadCredentialBuilderFactory<T extends AadCredentialBu
      * Create a {@link AzureAadCredentialBuilderFactory} instance with {@link AzureProperties}.
      * @param azureProperties The Azure properties.
      */
-    public AzureAadCredentialBuilderFactory(AzureProperties azureProperties) {
+    protected AzureAadCredentialBuilderFactory(AzureProperties azureProperties) {
         super(azureProperties);
     }
 

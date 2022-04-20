@@ -844,7 +844,7 @@ public final class RntbdTransportClientTest {
                 expected.length, true, Arrays.asList(expected)
             );
 
-            RntbdRequestManager requestManager = new RntbdRequestManager(new RntbdClientChannelHealthChecker(config), 30);
+            RntbdRequestManager requestManager = new RntbdRequestManager(new RntbdClientChannelHealthChecker(config), 30, null);
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 

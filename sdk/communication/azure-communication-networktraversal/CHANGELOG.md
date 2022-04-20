@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.2 (2022-04-13)
+
+### Bugs Fixed
+
+- Set Ttl parameter in the Communication Relay Async client
+
+### Other Changes
+
+- Update of azure-core to 1.27.0
+- Update of azure-communication-common to 1.1.2
 
 ## 1.1.0-beta.1 (2022-03-15)
 

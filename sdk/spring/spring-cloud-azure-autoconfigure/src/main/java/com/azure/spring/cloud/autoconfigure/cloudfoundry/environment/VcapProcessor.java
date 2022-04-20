@@ -91,7 +91,7 @@ public class VcapProcessor implements EnvironmentPostProcessor {
             serviceConfig.setVolumeMounts(volumeMounts.toArray(new String[0]));
         }
 
-        serviceConfig.setCredentials((Map<String, String>) configMap.get("credentials"));
+        serviceConfig.setCredentials((Map<String, String>) configMap.get(CREDENTIALS));
 
         return serviceConfig;
     }

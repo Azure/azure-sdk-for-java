@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** presence. */
 @Fluent
 public final class MicrosoftGraphPresence extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPresence.class);
-
     /*
      * The supplemental information to a user's availability. Possible values
      * are Available, Away, BeRightBack,Busy, DoNotDisturb, InACall,

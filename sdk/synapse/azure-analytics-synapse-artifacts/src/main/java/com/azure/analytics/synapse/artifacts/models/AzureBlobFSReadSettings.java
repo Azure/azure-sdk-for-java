@@ -273,4 +273,11 @@ public final class AzureBlobFSReadSettings extends StoreReadSettings {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

@@ -174,7 +174,7 @@ public class AadB2cProperties implements InitializingBean {
         }
         try {
             new java.net.URL(uri);
-        } catch (MalformedURLException var) {
+        } catch (MalformedURLException ex) {
             return false;
         }
         return true;

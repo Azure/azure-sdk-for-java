@@ -13,10 +13,9 @@ import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterprisesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
 import com.azure.resourcemanager.redisenterprise.models.RedisEnterprises;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RedisEnterprisesImpl implements RedisEnterprises {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisEnterprisesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RedisEnterprisesImpl.class);
 
     private final RedisEnterprisesClient innerClient;
 
@@ -84,7 +83,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
     public Cluster getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +91,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
         }
         String clusterName = Utils.getValueFromIdByName(id, "redisEnterprise");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,7 +103,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
     public Response<Cluster> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
         }
         String clusterName = Utils.getValueFromIdByName(id, "redisEnterprise");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +131,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
         }
         String clusterName = Utils.getValueFromIdByName(id, "redisEnterprise");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,7 +143,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -152,7 +151,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
         }
         String clusterName = Utils.getValueFromIdByName(id, "redisEnterprise");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

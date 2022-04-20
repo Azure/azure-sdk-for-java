@@ -297,4 +297,11 @@ public final class HdfsReadSettings extends StoreReadSettings {
         this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

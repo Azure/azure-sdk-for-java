@@ -33,11 +33,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <properties>
-    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
-    <doclint>all,-missing</doclint>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

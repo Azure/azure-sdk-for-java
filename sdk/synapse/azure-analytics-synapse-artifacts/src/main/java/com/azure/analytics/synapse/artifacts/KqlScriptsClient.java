@@ -20,7 +20,7 @@ public final class KqlScriptsClient {
     @Generated private final KqlScriptsImpl serviceClient;
 
     /**
-     * Initializes an instance of KqlScripts client.
+     * Initializes an instance of KqlScriptsClient class.
      *
      * @param serviceClient the service client implementation.
      */
