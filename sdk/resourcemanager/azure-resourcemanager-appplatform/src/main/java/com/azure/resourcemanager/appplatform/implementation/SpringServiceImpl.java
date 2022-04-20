@@ -246,12 +246,7 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withoutGitConfig() {
-        if (isEnterpriseTier()) {
-            this.configurationServiceConfig.clearRepositories();
-            return this;
-        } else {
-            return withGitConfig((ConfigServerGitProperty) null);
-        }
+        return withGitConfig(null);
     }
 
     @Override
@@ -360,12 +355,12 @@ public class SpringServiceImpl
     }
 
     @Override
-    public SpringServiceImpl withGitConfig(String uri, String branch, List<String> filePatterns) {
-        return withGitConfigRepository(Constants.DEFAULT_TANZU_COMPONENT_NAME, uri, branch, filePatterns);
+    public SpringServiceImpl withDefaultGitRepository(String uri, String branch, List<String> filePatterns) {
+        return withGitRepository(Constants.DEFAULT_TANZU_COMPONENT_NAME, uri, branch, filePatterns);
     }
 
     @Override
-    public SpringServiceImpl withGitConfigRepository(String name, String uri, String branch, List<String> filePatterns) {
+    public SpringServiceImpl withGitRepository(String name, String uri, String branch, List<String> filePatterns) {
         if (CoreUtils.isNullOrEmpty(name)) {
             return this;
         }
@@ -379,7 +374,7 @@ public class SpringServiceImpl
     }
 
     @Override
-    public SpringServiceImpl withGitConfig(ConfigurationServiceGitProperty gitConfig) {
+    public SpringServiceImpl withGitRepositoryConfig(ConfigurationServiceGitProperty gitConfig) {
         this.configurationServiceConfig.clearRepositories();
         if (gitConfig != null && !CoreUtils.isNullOrEmpty(gitConfig.repositories())) {
             for (ConfigurationServiceGitRepository repository : gitConfig.repositories()) {
@@ -390,8 +385,14 @@ public class SpringServiceImpl
     }
 
     @Override
-    public SpringServiceImpl withoutGitConfig(String name) {
+    public SpringServiceImpl withoutGitRepository(String name) {
         this.configurationServiceConfig.removeRepository(name);
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withoutGitRepositories() {
+        this.configurationServiceConfig.clearRepositories();
         return this;
     }
 

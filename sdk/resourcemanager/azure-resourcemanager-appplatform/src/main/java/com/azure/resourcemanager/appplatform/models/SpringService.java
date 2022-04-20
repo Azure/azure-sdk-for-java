@@ -200,7 +200,7 @@ public interface SpringService
              * @param filePatterns patterns for configuration files to be selected from the git repository
              * @return the next stage of spring service definition
              */
-            WithEnterpriseTierCreate withGitConfig(String uri, String branch, List<String> filePatterns);
+            WithEnterpriseTierCreate withDefaultGitRepository(String uri, String branch, List<String> filePatterns);
 
             /**
              * Specifies additional git repository for the spring service.
@@ -211,15 +211,15 @@ public interface SpringService
              * @param filePatterns patterns for configuration files to be selected from the git repository
              * @return the next stage of spring service definition
              */
-            WithEnterpriseTierCreate withGitConfigRepository(String name, String uri, String branch, List<String> filePatterns);
+            WithEnterpriseTierCreate withGitRepository(String name, String uri, String branch, List<String> filePatterns);
 
             /**
-             * Specifies additional git repository for the spring service.
+             * Specifies complete git repository configuration for the spring service.
              * New repository configurations will override the old with the same name.
              * @param gitConfig git repository configuration
              * @return the next stage of spring service definition
              */
-            WithEnterpriseTierCreate withGitConfig(ConfigurationServiceGitProperty gitConfig);
+            WithEnterpriseTierCreate withGitRepositoryConfig(ConfigurationServiceGitProperty gitConfig);
         }
 
         /** The stage of a spring service definition allowing to specify the certificate. */
@@ -366,7 +366,7 @@ public interface SpringService
              * @param filePatterns patterns for configuration files to be selected from the git repository
              * @return the next stage of spring service update
              */
-            Update withGitConfig(String uri, String branch, List<String> filePatterns);
+            Update withDefaultGitRepository(String uri, String branch, List<String> filePatterns);
 
             /**
              * (Enterprise Tier Only)
@@ -378,16 +378,16 @@ public interface SpringService
              * @param filePatterns patterns for configuration files to be selected from the git repository
              * @return the next stage of spring service update
              */
-            Update withGitConfigRepository(String name, String uri, String branch, List<String> filePatterns);
+            Update withGitRepository(String name, String uri, String branch, List<String> filePatterns);
 
             /**
              * (Enterprise Tier Only)
-             * Specifies additional git repository for the spring service.
+             * Specifies complete git repository configuration for the spring service.
              * New repository configurations will override the old with the same name.
              * @param gitConfig git repository configuration
              * @return the next stage of spring service update
              */
-            Update withGitConfig(ConfigurationServiceGitProperty gitConfig);
+            Update withGitRepositoryConfig(ConfigurationServiceGitProperty gitConfig);
 
             /**
              * (Enterprise Tier Only)
@@ -395,7 +395,14 @@ public interface SpringService
              * @param name name of the git repository to remove
              * @return the next stage of spring service update
              */
-            Update withoutGitConfig(String name);
+            Update withoutGitRepository(String name);
+
+            /**
+             * (Enterprise Tier Only)
+             * Removes the git repository configuration.
+             * @return the next stage of spring service update
+             */
+            Update withoutGitRepositories();
         }
 
         /** The stage of a spring service update allowing to specify the certificate. */

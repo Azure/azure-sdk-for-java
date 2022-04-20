@@ -33,8 +33,8 @@ public class EnterpriseTierTest extends AppPlatformTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEnterpriseTierSku()
-            .withGitConfig(GIT_CONFIG_URI, "master", filePatterns)
-            .withGitConfigRepository("config1", GIT_CONFIG_URI, "master", filePatterns)
+            .withDefaultGitRepository(GIT_CONFIG_URI, "master", filePatterns)
+            .withGitRepository("config1", GIT_CONFIG_URI, "master", filePatterns)
             .create();
 
         // tanzu components
@@ -45,7 +45,7 @@ public class EnterpriseTierTest extends AppPlatformTest {
         Assertions.assertNotNull(buildServiceInner);
 
         springService.update()
-            .withoutGitConfig("config1")
+            .withoutGitRepository("config1")
             .apply();
 
         // default is not cleared
@@ -54,7 +54,7 @@ public class EnterpriseTierTest extends AppPlatformTest {
         Assertions.assertNull(springService.getDefaultConfigurationService().getGitRepository("config1"));
 
         springService.update()
-            .withGitConfig(new ConfigurationServiceGitProperty()
+            .withGitRepositoryConfig(new ConfigurationServiceGitProperty()
                 .withRepositories(Arrays.asList(new ConfigurationServiceGitRepository()
                     .withName("config2")
                     .withLabel("master")
@@ -68,7 +68,7 @@ public class EnterpriseTierTest extends AppPlatformTest {
         Assertions.assertNotNull(springService.getDefaultConfigurationService().getGitRepository("config2"));
 
         springService.update()
-            .withoutGitConfig()
+            .withoutGitRepositories()
             .apply();
 
         // config2 is cleared
@@ -87,7 +87,7 @@ public class EnterpriseTierTest extends AppPlatformTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEnterpriseTierSku()
-            .withGitConfig(GIT_CONFIG_URI, "master", filePatterns)
+            .withDefaultGitRepository(GIT_CONFIG_URI, "master", filePatterns)
             .create();
 
         String appName = generateRandomResourceName("springapp", 15);
