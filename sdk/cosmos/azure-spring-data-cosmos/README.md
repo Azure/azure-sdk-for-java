@@ -484,7 +484,7 @@ public class MyItem {
     String _etag;
 }
 ```
-- Read more about Optimistic Locking [here](https://docs.microsoft.com/en-us/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
+- Read more about Optimistic Locking [here](https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
 
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
