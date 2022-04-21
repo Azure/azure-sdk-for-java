@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
@@ -56,13 +55,6 @@ public final class ManagedClusterInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private ManagedClusterProperties innerProperties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /**
      * Get the sku property: The managed cluster SKU.
@@ -131,15 +123,6 @@ public final class ManagedClusterInner extends Resource {
      */
     private ManagedClusterProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /** {@inheritDoc} */
