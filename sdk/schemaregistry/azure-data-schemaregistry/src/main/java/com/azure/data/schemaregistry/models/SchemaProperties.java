@@ -18,17 +18,21 @@ public final class SchemaProperties {
 
     private final String id;
     private final SchemaFormat format;
+    private final String groupName;
     private final String name;
 
     /**
      * Initializes a new instance.
-     *  @param id The schema id.
+     *
+     * @param id The schema id.
      * @param format The type of schema, e.g. avro, json.
+     * @param groupName The schema group for this schema.
      * @param name The name of the schema.
      */
-    public SchemaProperties(String id, SchemaFormat format, String name) {
+    public SchemaProperties(String id, SchemaFormat format, String groupName, String name) {
         this.id = id;
         this.format = format;
+        this.groupName = groupName;
         this.name = name;
     }
 
@@ -47,6 +51,15 @@ public final class SchemaProperties {
      */
     public SchemaFormat getFormat() {
         return format;
+    }
+
+    /**
+     * Gets the schema group of this schema.
+     *
+     * @return The schema group of this schema.
+     */
+    public String getGroupName() {
+        return groupName;
     }
 
     /**

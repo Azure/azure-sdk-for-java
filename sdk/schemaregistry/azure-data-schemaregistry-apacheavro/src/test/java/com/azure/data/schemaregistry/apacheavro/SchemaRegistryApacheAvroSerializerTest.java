@@ -128,7 +128,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final Schema playingClassSchema = PlayingCard.getClassSchema();
         final String schemaName = playingClassSchema.getFullName();
-        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO, schemaName);
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO, MOCK_SCHEMA_GROUP, schemaName);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, false, MOCK_CACHE_SIZE);
 
         when(client.getSchemaProperties(MOCK_SCHEMA_GROUP, schemaName, playingClassSchema.toString(),
@@ -184,7 +184,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final String playingClassSchema = PlayingCard.getClassSchema().toString();
         final String schemaName = PlayingCard.getClassSchema().getFullName();
-        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO, schemaName);
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO, MOCK_SCHEMA_GROUP, schemaName);
         final SchemaRegistrySchema registrySchema = new SchemaRegistrySchema(registered, playingClassSchema);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
@@ -450,7 +450,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .setPlayingCardSuit(PlayingCardSuit.SPADES)
             .build();
         final SchemaProperties schemaProperties = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO,
-            PlayingCard.getClassSchema().getFullName());
+            MOCK_SCHEMA_GROUP, PlayingCard.getClassSchema().getFullName());
         final SchemaRegistrySchema schemaResponse = new SchemaRegistrySchema(schemaProperties,
             expected.getSchema().toString());
         final AvroSerializer avroSerializer = new AvroSerializer(true, ENCODER_FACTORY,

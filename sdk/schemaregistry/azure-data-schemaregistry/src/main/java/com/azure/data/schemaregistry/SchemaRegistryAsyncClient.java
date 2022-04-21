@@ -164,7 +164,7 @@ public final class SchemaRegistryAsyncClient {
             .map(response -> {
                 final SchemasRegisterHeaders deserializedHeaders = response.getDeserializedHeaders();
                 final SchemaProperties registered = new SchemaProperties(deserializedHeaders.getSchemaId(), format,
-                    deserializedHeaders.getSchemaName());
+                    deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName());
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -217,7 +217,7 @@ public final class SchemaRegistryAsyncClient {
 
                 final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
                 final SchemaProperties schemaObject = new SchemaProperties(schemaId, schemaFormat,
-                    headers.getSchemaName());
+                    headers.getSchemaGroupName(), headers.getSchemaName());
                 final String schema = new String(response.getValue(), StandardCharsets.UTF_8);
 
                 return new SimpleResponse<>(
@@ -314,7 +314,7 @@ public final class SchemaRegistryAsyncClient {
             .map(response -> {
                 final SchemasQueryIdByContentHeaders deserializedHeaders = response.getDeserializedHeaders();
                 final SchemaProperties properties = new SchemaProperties(deserializedHeaders.getSchemaId(), format,
-                    deserializedHeaders.getSchemaName());
+                    deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName());
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
