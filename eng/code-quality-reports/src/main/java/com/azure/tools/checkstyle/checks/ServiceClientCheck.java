@@ -14,7 +14,6 @@ import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
@@ -55,9 +54,7 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String PAGED_FLUX_BRACKET = "PagedFlux<";
     private static final String POLLER_FLUX_BRACKET = "PollerFlux<";
     private static final String SYNC_POLLER_BRACKET = "SyncPoller<";
-    private static final String PAGED_ITERABLE_BRACKET = "PagedIterable<";
-    private static final String FLUX_CLASS_NAME = "^.*Flux$";
-    private Pattern fluxNameFormat = Pattern.compile(FLUX_CLASS_NAME);
+    private static final String FLUX_CLASS_NAME = "Flux";
     private static final String WITH_RESPONSE = "WithResponse";
 
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
@@ -326,7 +323,7 @@ public class ServiceClientCheck extends AbstractCheck {
                 // If value of 'returns' is COLLECTION, and then log error if the return type of the method is not
                 // If value of 'returns' is COLLECTION, and then log error if the return type of the method is not
                 // start with {@code PagedFlux<T>} or *PagedFlux
-                if (!returnType.contains(PAGED_FLUX) || !isExtendedFromFlux(methodDefToken)) {
+                if (!returnType.contains(FLUX_CLASS_NAME)) {
                     log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous", COLLECTION_RETURN_TYPE,
                         PAGED_FLUX));
                 }
@@ -539,25 +536,5 @@ public class ServiceClientCheck extends AbstractCheck {
             }
         }
         return sb;
-    }
-
-    /**
-     * Checks if the class is extended from a 'Flux' class.
-     *
-     * @param token class definition node
-     * @return true if extended class name conforms to specified format
-     */
-    private boolean isExtendedFromFlux(DetailAST token) {
-        boolean result = false;
-        final DetailAST extendsClause = token.findFirstToken(TokenTypes.EXTENDS_CLAUSE);
-        if (extendsClause != null) {
-            DetailAST currentNode = extendsClause;
-            while (currentNode.getLastChild() != null) {
-                currentNode = currentNode.getLastChild();
-            }
-            final String extendedClassName = currentNode.getText();
-            result = fluxNameFormat.matcher(extendedClassName).matches();
-        }
-        return result;
     }
 }

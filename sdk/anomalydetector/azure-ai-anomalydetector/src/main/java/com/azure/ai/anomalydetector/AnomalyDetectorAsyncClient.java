@@ -352,7 +352,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> exportModel(UUID modelId) {
         return this.serviceClient.exportModelAsync(modelId);
     }

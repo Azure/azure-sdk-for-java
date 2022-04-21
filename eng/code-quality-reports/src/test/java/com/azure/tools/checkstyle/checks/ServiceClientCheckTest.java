@@ -48,9 +48,7 @@ public class ServiceClientCheckTest extends AbstractModuleTestSupport {
     @Test
     public void serviceClientCheckTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(9, 5, String.format(RETURN_TYPE_ERROR, "Asynchronous", SINGLE_RETURN_TYPE,
-                MONO)),
-            expectedErrorMessage(83, 5, String.format(ERROR_MSG, "pageRetrieverProvider",
+            expectedErrorMessage(93, 5, String.format(ERROR_MSG, "pageRetrieverProvider",
                 "ServiceClientCheckTestDataAsyncClient"))
         };
         verify(checker, getPath("ServiceClientCheckTestDataAsyncClient.java"), expected);

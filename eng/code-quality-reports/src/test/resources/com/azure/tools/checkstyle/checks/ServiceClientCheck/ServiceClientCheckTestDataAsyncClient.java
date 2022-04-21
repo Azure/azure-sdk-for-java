@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @ServiceClient(builder = ServiceClientCheckTestDataAsyncClient.class, isAsync = true)
@@ -20,6 +21,15 @@ public class ServiceClientCheckTestDataAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public FilePagedFlux returnTypeExtendsFlux() {
         return new FilePagedFlux(pageRetrieverProvider);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Integer> returnTypePagedFlux() {
+        Supplier<Mono<PagedResponse<Integer>>> firstPageRetriever = () -> getFirstPage();
+        Function<String, Mono<PagedResponse<Integer>>> nextPageRetriever =
+            continuationToken -> getNextPage(continuationToken);
+
+        return new PagedFlux<>(firstPageRetriever, nextPageRetriever);
     }
 
     class FileContinuationToken {
