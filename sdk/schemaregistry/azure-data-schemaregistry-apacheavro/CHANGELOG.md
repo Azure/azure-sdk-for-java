@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Renamed `autoRegisterSchema` to `autoRegisterSchemas` in `SchemaRegistryApacheAvroSerializerBuilder`.
+
 ### Bugs Fixed
 
 ### Other Changes
