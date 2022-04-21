@@ -116,7 +116,6 @@ public interface SpringAppDeployment
             //  * @param sourceCodeFolder the folder of the source code
             //  * @return the next stage of deployment definition
             //  */
-
             // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
@@ -331,7 +330,6 @@ public interface SpringAppDeployment
         interface WithSource {
             /**
              * Specifies the jar package for the deployment.
-             * If it's enterprise tier, consider using {@link WithSource#withJarFile(File, List)}.
              * @param jar the file of the jar
              * @return the next stage of deployment update
              */
@@ -354,18 +352,17 @@ public interface SpringAppDeployment
             //  * @param sourceCodeFolder the folder of the source code
             //  * @return the next stage of deployment update
             //  */
-
             // WithModule withSourceCodeFolder(File sourceCodeFolder);
 
             /**
              * Specifies the source code for the deployment.
-             * For enterprise tier service， consider using {@link WithSource#withSourceCodeTarGzFile(File, List)}.
              * @param sourceCodeTarGz a tar.gz file of the source code
              * @return the next stage of deployment update
              */
             WithModule withSourceCodeTarGzFile(File sourceCodeTarGz);
 
             /**
+             * (Enterprise Tier Only)
              * Specifies the source code for the deployment.
              * @param sourceCodeTarGz a tar.gz file of the source code
              * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.

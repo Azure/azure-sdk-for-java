@@ -5,7 +5,6 @@ package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -56,7 +55,6 @@ public class SpringAppDeploymentImpl
         SpringAppDeployment.Definition<SpringAppImpl, SpringAppDeploymentImpl>,
         SpringAppDeployment.Update {
 
-    private final ClientLogger logger = new ClientLogger(SpringAppDeploymentImpl.class);
     private BuildServiceTask buildServiceTask;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
