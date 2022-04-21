@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -39,22 +36,25 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     }
 
     /**
-     * <summary>
-     * <para>
-     * Gets value corresponding to <paramref name="key"/>.
-     * </para>
-     * <para>
+     *
+     * <p>
      * If another initialization function is already running, new initialization function will not be started.
      * The result will be result of currently running initialization function.
-     * </para>
-     * <para>
+     * </p>
+     *
+     * <p>
      * If previous initialization function is successfully completed it will return the value. It is possible this
      * value is stale and will only be updated after the force refresh task is complete.
-     * </para>
-     * <para>
+     * </p>
+     *
+     * <p>
      * If previous initialization function failed - new one will be launched.
-     * </para>
-     * </summary>
+     * </p>
+     *
+     * @param key Key for which to get a value.
+     * @param singleValueInitFunc Initialization function.
+     * @param forceRefresh Force refresh for refreshing the cache
+     * @return Cached value or value returned by initialization function.
      */
     public Mono<TValue> getAsync(
         TKey key,
