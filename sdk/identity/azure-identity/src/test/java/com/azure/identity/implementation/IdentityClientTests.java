@@ -510,7 +510,8 @@ public class IdentityClientTests {
     }
 
     private void mockForMSICodeFlow(String tokenJson, Runnable test) throws Exception {
-        try (MockedConstruction<URL> urlMock = mockConstruction(URL.class, (url, context) -> {
+        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+            URL url = mock(URL.class);
             HttpURLConnection huc = mock(HttpURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
             doNothing().when(huc).setRequestMethod(anyString());
@@ -518,14 +519,15 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
             when(huc.getInputStream()).thenReturn(inputStream);
-        })) {
+            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
             test.run();
-            Assert.assertNotNull(urlMock);
         }
     }
 
     private void mockForServiceFabricCodeFlow(String tokenJson, Runnable test) throws Exception {
-        try (MockedConstruction<URL> urlMock = mockConstruction(URL.class, (url, context) -> {
+
+        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+            URL url = mock(URL.class);
             HttpsURLConnection huc = mock(HttpsURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
             doNothing().when(huc).setRequestMethod(anyString());
@@ -534,14 +536,14 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
             when(huc.getInputStream()).thenReturn(inputStream);
-        })) {
+            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
             test.run();
-            Assert.assertNotNull(urlMock);
         }
     }
 
     private void mockForArcCodeFlow(int responseCode, Runnable test) throws Exception {
-        try (MockedConstruction<URL> urlMock = mockConstruction(URL.class, (url, context) -> {
+        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+            URL url = mock(URL.class);
             HttpURLConnection huc = mock(HttpURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
             doNothing().when(huc).setRequestProperty(anyString(), anyString());
@@ -549,14 +551,14 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             when(huc.getInputStream()).thenThrow(new IOException());
             when(huc.getResponseCode()).thenReturn(responseCode);
-        })) {
+            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
             test.run();
-            Assert.assertNotNull(urlMock);
         }
     }
 
     private void mockForIMDSCodeFlow(String endpoint, String tokenJson, Runnable test) throws Exception {
-        try (MockedConstruction<URL> urlMock = mockConstruction(URL.class, (url, context) -> {
+        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+            URL url = mock(URL.class);
             HttpURLConnection huc = mock(HttpURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
             doNothing().when(huc).setConnectTimeout(anyInt());
@@ -564,9 +566,8 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
             when(huc.getInputStream()).thenReturn(inputStream);
-        })) {
+            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
             test.run();
-            Assert.assertNotNull(urlMock);
         }
     }
 
