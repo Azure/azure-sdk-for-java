@@ -12,6 +12,13 @@ import java.util.Locale;
 public final class TestEnvironment {
     private static final ClientLogger LOGGER = new ClientLogger(TestEnvironment.class);
 
+    private static final String scheme;
+
+    static {
+        String envScheme = Configuration.getGlobalConfiguration().get("AZURE_TEST_SCHEME");
+        scheme = envScheme == null ? "https" : envScheme;
+    }
+
     private static final TestEnvironment INSTANCE = new TestEnvironment();
 
     private final TestHttpClientType httpClientType;
@@ -36,6 +43,7 @@ public final class TestEnvironment {
         this.testMode = readTestModeFromEnvironment();
         this.serviceVersion = readServiceVersionFromEnvironment();
         this.httpClientType = readHttpClientTypeFromEnvironment();
+
         System.out.printf("Tests will run with %s http client%n", this.httpClientType);
         this.resourceGroupName = Configuration.getGlobalConfiguration().get("STORAGE_RESOURCE_GROUP_NAME");
         this.subscriptionId = Configuration.getGlobalConfiguration().get("STORAGE_SUBSCRIPTION_ID");
@@ -88,22 +96,22 @@ public final class TestEnvironment {
     private static TestAccount readTestAccountFromEnvironment(String prefix, TestMode testMode) {
         String name = "azstoragesdkaccount";
         String key = "astorageaccountkey";
-        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;"
+        String connectionString = "DefaultEndpointsProtocol=" + scheme + ";AccountName=teststorage;"
             + "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
         if (testMode != TestMode.PLAYBACK) {
             name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
             key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
             connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
             if (connectionString == null || connectionString.trim().isEmpty()) {
-                connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;"
+                connectionString = String.format("DefaultEndpointsProtocol=" + scheme + ";AccountName=%s;"
                     + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
             }
         }
-        String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
-        String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net", name);
-        String dataLakeEndpoint = String.format("https://%s.dfs.core.windows.net", name);
-        String queueEndpoint = String.format("https://%s.queue.core.windows.net", name);
-        String fileEndpoint = String.format("https://%s.file.core.windows.net", name);
+        String blobEndpoint = String.format(scheme + "://%s.blob.core.windows.net", name);
+        String blobEndpointSecondary = String.format(scheme + "://%s-secondary.blob.core.windows.net", name);
+        String dataLakeEndpoint = String.format(scheme + "://%s.dfs.core.windows.net", name);
+        String queueEndpoint = String.format(scheme + "://%s.queue.core.windows.net", name);
+        String fileEndpoint = String.format(scheme + "://%s.file.core.windows.net", name);
 
         return new TestAccount(name, key, connectionString, blobEndpoint, blobEndpointSecondary,
             dataLakeEndpoint, queueEndpoint, fileEndpoint);
