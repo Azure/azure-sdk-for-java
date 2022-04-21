@@ -291,6 +291,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withSourceCodeTarGzFile(tarGzFile, customerServiceConfigFilePatterns)
             .withTargetModule(module)
             .attach()
+            .withConfigurationServiceBinding()
             .create();
 
         // no public endpoint
