@@ -191,13 +191,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val offsetJsonBase64 = SparkBridgeImplementationInternal
       .mergeChangeFeedContinuations(lastContinuationTokens.values().asScala)
 
-    if (isDebugLogEnabled) {
+    //if (isDebugLogEnabled) {
       val offsetJson = SparkBridgeImplementationInternal.changeFeedContinuationToJson(offsetJsonBase64)
       // scala style rule flaky - even complaining on partial log messages
       // scalastyle:off multiple.string.literals
-      logDebug(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
+      logInfo(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
       // scalastyle:on multiple.string.literals
-    }
+    //}
     offsetJsonBase64
   }
   // scalastyle:on method.length
