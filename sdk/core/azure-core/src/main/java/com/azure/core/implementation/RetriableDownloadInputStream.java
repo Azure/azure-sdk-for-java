@@ -63,8 +63,14 @@ public class RetriableDownloadInputStream extends InputStream {
 
         retryCount++;
         if (retryCount > maxRetries) {
-            // TODO (kasobol-msft) what's good exception?
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            if (e instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) e);
+            } else if (e instanceof IOException) {
+                throw LOGGER.logThrowableAsError((IOException) e);
+            } else {
+                // This should never happen.
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         currentResponse = onDownloadErrorResume.apply(e, position);
@@ -94,22 +100,4 @@ public class RetriableDownloadInputStream extends InputStream {
         currentStream.close();
         currentResponse.close();
     }
-
-    @Override
-    public void mark(int readlimit) {
-        currentStream.mark(readlimit);
-    }
-
-    @Override
-    public void reset() throws IOException {
-        currentStream.reset();
-    }
-
-    @Override
-    public boolean markSupported() {
-        // TODO (kasobol-msft) should we support this at all?
-        return currentStream.markSupported();
-    }
-
-
 }

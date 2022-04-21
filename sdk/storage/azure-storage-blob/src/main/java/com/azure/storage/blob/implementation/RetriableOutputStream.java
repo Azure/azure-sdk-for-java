@@ -51,8 +51,14 @@ public class RetriableOutputStream extends OutputStream {
 
         retryCount++;
         if (retryCount > maxRetries) {
-            // TODO (kasobol-msft) what's good exception?
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            if (e instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) e);
+            } else if (e instanceof IOException) {
+                throw LOGGER.logThrowableAsError((IOException) e);
+            } else {
+                // This should never happen.
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         currentResponse = onDownloadErrorResume.apply(e, position);
