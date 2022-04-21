@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.WorkspaceSqlAadAdminsClient;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInner;
 import com.azure.resourcemanager.synapse.models.WorkspaceAadAdminInfo;
 import com.azure.resourcemanager.synapse.models.WorkspaceSqlAadAdmins;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceSqlAadAdminsImpl implements WorkspaceSqlAadAdmins {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceSqlAadAdminsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceSqlAadAdminsImpl.class);
 
     private final WorkspaceSqlAadAdminsClient innerClient;
 

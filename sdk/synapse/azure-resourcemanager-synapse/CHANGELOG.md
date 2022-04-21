@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.1 (2022-04-21)
+
+- Azure Resource Manager Synapse client library for Java. This package contains Microsoft Azure SDK for Synapse Management SDK. Azure Synapse Analytics Management Client. Package tag package-composite-v2. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 

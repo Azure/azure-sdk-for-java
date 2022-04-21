@@ -6,16 +6,12 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DataMaskingState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DataMaskingPolicy model. */
 @Fluent
 public final class DataMaskingPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingPolicyInner.class);
-
     /*
      * The properties of the data masking policy.
      */

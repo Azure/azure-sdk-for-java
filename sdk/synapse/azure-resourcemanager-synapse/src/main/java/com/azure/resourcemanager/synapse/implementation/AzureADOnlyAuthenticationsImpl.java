@@ -14,10 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.AzureADOnlyAuthentication
 import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthentication;
 import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthenticationName;
 import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthentications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthentications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureADOnlyAuthenticationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureADOnlyAuthenticationsImpl.class);
 
     private final AzureADOnlyAuthenticationsClient innerClient;
 
@@ -76,7 +75,7 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
     public AzureADOnlyAuthentication getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,7 +83,7 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -92,7 +91,7 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName =
             AzureADOnlyAuthenticationName.fromString(Utils.getValueFromIdByName(id, "azureADOnlyAuthentications"));
         if (azureADOnlyAuthenticationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
     public Response<AzureADOnlyAuthentication> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +115,7 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -124,7 +123,7 @@ public final class AzureADOnlyAuthenticationsImpl implements AzureADOnlyAuthenti
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName =
             AzureADOnlyAuthenticationName.fromString(Utils.getValueFromIdByName(id, "azureADOnlyAuthentications"));
         if (azureADOnlyAuthenticationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

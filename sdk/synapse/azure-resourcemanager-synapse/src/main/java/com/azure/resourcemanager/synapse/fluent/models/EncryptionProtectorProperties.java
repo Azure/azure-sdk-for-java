@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for an encryption protector execution. */
 @Fluent
 public final class EncryptionProtectorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProtectorProperties.class);
-
     /*
      * Subregion of the encryption protector.
      */
@@ -119,10 +116,12 @@ public final class EncryptionProtectorProperties {
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serverKeyType in model EncryptionProtectorProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionProtectorProperties.class);
 }
