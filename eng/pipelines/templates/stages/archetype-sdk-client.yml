@@ -98,7 +98,14 @@ stages:
           - Build
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         SDKType: ${{ parameters.SDKType }}
-        Artifacts: ${{ parameters.Artifacts }}
+        # By default, the Artifacts list will contain everything as forRelease defaults to true which
+        # ensures everything is correctly processed for the nightly builds. For batch release, the user
+        # will use the checkboxes to say what will be released and that trimmed down list is what'll be
+        # passed to archetype-java-release.yml
+        Artifacts:
+        - ${{ each artifact in parameters.Artifacts }}:
+          - ${{ if ne(artifact.skipRelease, 'false') }}:
+            - ${{ artifact }}
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
           TestPipeline: true
         ArtifactName: packages
