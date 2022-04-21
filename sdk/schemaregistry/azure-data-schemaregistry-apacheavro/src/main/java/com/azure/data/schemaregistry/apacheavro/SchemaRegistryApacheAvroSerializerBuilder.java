@@ -58,7 +58,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
 
     /**
      * Specifies schema group for interacting with Azure Schema Registry service. This is optional unless {@link
-     * #autoRegisterSchema(boolean) autoRegisterSchema} is set to {@code true}.
+     * #autoRegisterSchemas(boolean) autoRegisterSchema} is set to {@code true}.
      *
      * If auto-registering schemas, schema will be stored under this group. If not auto-registering, serializer will
      * request schema ID for matching data schema under specified group.
@@ -85,7 +85,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      *
      * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance
      */
-    public SchemaRegistryApacheAvroSerializerBuilder autoRegisterSchema(boolean autoRegisterSchemas) {
+    public SchemaRegistryApacheAvroSerializerBuilder autoRegisterSchemas(boolean autoRegisterSchemas) {
         this.autoRegisterSchemas = autoRegisterSchemas;
         return this;
     }
@@ -123,7 +123,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      * @return A new instance of {@link SchemaRegistryApacheAvroSerializer}.
      *
      * @throws NullPointerException if {@link #schemaRegistryAsyncClient(SchemaRegistryAsyncClient)} is {@code null}
-     * @throws IllegalStateException if {@link #autoRegisterSchema(boolean)} is {@code true} but {@link
+     * @throws IllegalStateException if {@link #autoRegisterSchemas(boolean)} is {@code true} but {@link
      *         #schemaGroup(String) schemaGroup} is {@code null}.
      */
     public SchemaRegistryApacheAvroSerializer buildSerializer() {
