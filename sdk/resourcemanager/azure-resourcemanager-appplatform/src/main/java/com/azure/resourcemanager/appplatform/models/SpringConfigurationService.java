@@ -39,4 +39,7 @@ public interface SpringConfigurationService
      * @return git repository config
      */
     ConfigurationServiceGitRepository getGitRepository(String name);
+
+    /** @return apps that have bindings to this Configuration Service */
+    List<SpringApp> getAppBindings();
 }
