@@ -52,7 +52,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private static final String PIGGYMETRICS_CONFIG_URL = "https://github.com/Azure-Samples/piggymetrics-config";
     private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
     private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
-    private static final String PETCLINIC_CONFIG_URL = "https://github.com/Azure-Samples/spring-petclinic-microservices-config";
+    private static final String PETCLINIC_CONFIG_URL = "https://github.com/XiaofeiCao/spring-petclinic-microservices-config";
     private static final String PETCLINIC_GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/api-gateway.jar";
     private static final String PETCLINIC_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/petclinic.tar.gz";
 
