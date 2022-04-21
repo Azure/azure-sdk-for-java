@@ -72,12 +72,12 @@ function GetRemoteName() {
   $mainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
   foreach ($rem in git remote show) {
     $remoteUrl = git remote get-url $rem
-    if ($remoteUrl -eq $mainRemoteUrl) {
+    if ($mainRemoteUrl -contains $remoteUrl) {
       return $rem
     }
   }
-  LogError "Could not compute the remote name."
-  return $null
+  LogWarning "Could not compute the remote name. Returning 'origin'"
+  return 'origin'
 }
 
 function GetPipelineName([string]$ArtifactId, [string]$ArtifactDirPath) {

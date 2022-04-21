@@ -9,9 +9,12 @@ Write-Information "PS Script Root is: $PSScriptRoot"
 $RepoRoot = Resolve-Path "${PSScriptRoot}../../.."
 $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1"
 $BomHelpersFilePath = Join-Path $PSScriptRoot "bomhelpers.ps1"
+$PatchReportFile = Join-Path $PSScriptRoot "patchreport.html"
+$BomFilePath = Join-Path $RepoRoot "sdk" "boms" "azure-sdk-bom" "pom.xml"
+$NewBomFilePath = Join-Path $PSScriptRoot "bom.xml"
+$NewBomFileReport = Join-Path $PSScriptRoot "bompom.html" 
 . $CommonScriptFilePath
 . $BomHelpersFilePath
-
 
 class ArtifactInfo {
     [string]$GroupId = "com.azure"
@@ -221,10 +224,131 @@ function UpdateDependenciesInVersionClient([string]$ArtifactId, [hashtable]$Arti
         }
     }
 }
+
+function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
+    $xmlns = $Doc.Project.xmlns
+    $xsi = $Doc.Project.xsi
+
+    $dependency = $Doc.CreateElement("dependency", $xmlns);
+    $groupId = $Doc.CreateElement("groupId", $xmlns);
+    $groupId.InnerText = $Artifact.GroupId
+    $dependency.AppendChild($groupId);
+    $artifactId = $Doc.CreateElement("artifactId", $xmlns);
+    $artifactId.InnerText = $Artifact.ArtifactId
+    $dependency.AppendChild($artifactId);
+    $version = $Doc.CreateElement("version", $xmlns);
+    $version.InnerText = $Artifact.Version
+    $dependency.AppendChild($version);
+
+    $dependencies = $bomFileContent.GetElementsByTagName("dependencies")[0]
+    $dependencies.AppendChild($dependency)
+}
+
+function TopologicalSortUtil($ArtifactId, $ArtifactInfos, $ArtifactIds, $Visited, $Order) {
+    $Visited[$ArtifactId] = $true
+
+    # Find all dependencies that are also getting patched.
+    $adjDependencies = $ArtifactInfos[$ArtifactId].Dependencies.Keys | Where-Object { $ArtifactIds -Contains $_ }
+
+    foreach($arId in $adjDependencies) {
+        if(!$Visited.ContainsKey($arId)) {
+            TopologicalSortUtil -ArtifactId $arId -ArtifactInfos $ArtifactInfos -ArtifactIds $ArtifactIds -Visited $Visited -Order $Order
+        }
+    }
+
+    $cmdOutput = $Order.Add($ArtifactId)
+}
+
+function GetTopologicalSort($ArtifactIds, $ArtifactInfos) {
+    $order = [System.Collections.ArrayList]::new()
+    # $reverseOrder = @()
+    $visited = [System.Collections.Hashtable]::new()
+    foreach($artifactId in $ArtifactIds) {
+        if(!$visited.ContainsKey($artifactId)) {
+            TopologicalSortUtil -ArtifactId $artifactId -ArtifactInfos $ArtifactInfos -ArtifactIds $ArtifactIds -Visited $visited -Order $order
+        }
+    }
+    return $order
+}
+
 function UndoVersionClientFile() {
     $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
     $versionClientFile = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
     $cmdOutput = git checkout $versionClientFile
+}
+
+function GenerateBOMFile($ArtifactInfos, $ArtifactsToPatch) {
+    $gaArtifacts = @()
+    foreach($artifact in $ArtifactInfos.Values) {
+        if($null -eq $ArtifactsToPatch[$artifact.ArtifactId]) {
+            $gaArtifacts += @{
+                GroupId = $artifact.GroupId
+                ArtifactId = $artifact.ArtifactId
+                Version = $artifact.LatestGAOrPatchVersion
+            }
+        }
+    }
+
+    foreach($patchInfo in $ArtifactsToPatch.Values) {
+        $artifactInfo = $ArtifactInfos[$patchInfo]
+
+        $gaArtifacts += @{
+            GroupId = $artifactInfo.GroupId
+            ArtifactId = $artifactInfo.ArtifactId
+            Version = $artifactInfo.FutureReleasePatchVersion
+        }
+    }
+
+    $nonBomDependencies = @('azure-cosmos-cassandra-driver-3-extensions', 'azure-cosmos-cassandra-driver-4', 'azure-cosmos-cassandra-driver-4-extensions', 'azure-cosmos-cassandra-spring-data-extensions', 'azure-cosmos-cassandra-driver-3', 'azure-core-management')
+    $gaArtifacts += $patchArtifacts
+    $gaArtifacts = $gaArtifacts | Where-Object {$nonBomDependencies -notcontains $_.ArtifactId} | Sort-Object -Property ArtifactId
+
+    #Now we need to create the BOM file.
+    $bomFileContent = [xml](Get-Content -Path $BomFilePath)
+    $dependencyManagement = $bomFileContent.project.dependencyManagement
+    $dependencies = $dependencyManagement.dependencies
+    $cmdOutput = $dependencyManagement.RemoveChild($dependencies)
+    $dependencies = $bomFileContent.CreateElement("dependencies", $bomFileContent.Project.xmlns);
+    $cmdOutput = $dependencyManagement.AppendChild($dependencies);
+
+    foreach($dependency in $gaArtifacts) {
+        CreateDependencyXmlElement -Artifact $dependency -Doc $bomFileContent
+    }
+
+    $bomFileContent.Save($NewBomFilePath)
+    $bomContentAsString = Get-Content -Path $NewBomFilePath
+    $colCount = $bomContentAsString.Length
+    $body = $bomContentAsString -join "`r`n" | Out-String
+    $html = "<textarea rows='$colCount' cols='300' style='border:none'>" + $body + '</textarea>'
+    $html | Out-File -FilePath $NewBomFileReport 
+}
+
+function GenerateHtmlReportRow($Html, $ArtifactIds, $ReleaseBranch) {
+    $index = 0
+    $count = $ArtifactIds.Count
+    foreach($artifactId in $ArtifactIds) {
+        $cmdOutput = $Html.Add("<tr>")
+        if($index++ -eq 0) {
+            $cmdOutput = $Html.Add("<td  rowspan='$count'>$ReleaseBranch</td>")
+        }
+        $cmdOutput = $Html.Add("<td>$artifactId</td>")
+        $cmdOutput = $Html.Add("</tr>")
+    }
+}
+
+function GenerateHtmlReport($JsonReport) {
+    $html = [System.Collections.ArrayList]::new()
+    $cmdOutput = $html.add("<head><title>Patch Report</title></head><body><table border='1'>")
+    foreach($elem in $JsonReport) {
+        GenerateHtmlReportRow -Html $html -ArtifactIds $elem.Artifacts -ReleaseBranch $elem.Branch
+    }
+
+    $cmdOutput = $html.Add("</table>")
+    $cmdOutput = $html.Add("<tr><th>Release Branch</th><th>Artifact</th><tr>")
+    $currentDate = Get-Date -Format "dddd MM/dd/yyyy HH:mm K"
+
+    $cmdOutput = $html.Add("<p>Report generated on $currentDate </p>")
+    $html | Out-File -FilePath $PatchReportFile -Force
 }
 
 
@@ -251,12 +375,14 @@ $AzCoreArtifactId = "azure-core"
 $AzCoreVersion = $ArtifactInfos[$AzCoreArtifactId].LatestGAOrPatchVersion
 
 # For testing only.
-# $AzCoreVersion = "1.26.0"
-# $ArtifactInfos[$AzCoreArtifactId].FutureReleasePatchVersion = $AzCoreVersion
-# $AzCoreNettyArtifactId = "azure-core-http-netty"
-# $ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
+$AzCoreVersion = "1.28.0"
+$ArtifactInfos[$AzCoreArtifactId].FutureReleasePatchVersion = $AzCoreVersion
+$AzCoreNettyArtifactId = "azure-core-http-netty"
+$ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
 
 $ArtifactsToPatch = FindAllArtifactsToBePatched -DependencyId $AzCoreArtifactId -PatchVersion $AzCoreVersion -ArtifactInfos $ArtifactInfos
+GenerateBOMFile -ArtifactInfos $ArtifactInfos -ArtifactsToPatch $ArtifactsToPatch
+
 $ReleaseSets = GetPatchSets -ArtifactsToPatch $ArtifactsToPatch -ArtifactInfos $ArtifactInfos
 $RemoteName = GetRemoteName
 $CurrentBranchName = GetCurrentBranchName
@@ -266,9 +392,8 @@ if ($LASTEXITCODE -ne 0) {
 }
 # UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
-$fileContent = [System.Text.StringBuilder]::new()
-$fileContent.AppendLine("BranchName;ArtifactId");
 Write-Output "Preparing patch releases for BOM updates."
+$JsonReport = @()
 ## We now can run the generate_patch script for all those dependencies.
 foreach ($patchSet in $ReleaseSets) {
     try {
@@ -282,15 +407,20 @@ foreach ($patchSet in $ReleaseSets) {
         }
 
         $remoteBranchName = GetBranchName -ArtifactId "PatchSet"
-        GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
+        # GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
 
         $artifactIds = @()
         $patchInfos | ForEach-Object { $artifactIds += $_.ArtifactId }
-        $fileContent.AppendLine("$remoteBranchName;$($artifactIds);");
+        $sortedArtifactIds = GetTopologicalSort -ArtifactIds $artifactIds -ArtifactInfos $ArtifactInfos
+        $JsonReport += @{
+            Artifacts = $sortedArtifactIds
+            Branch = $remoteBranchName
+        }
+
     }
     finally {
         $cmdOutput = git checkout $CurrentBranchName
     }
 }
 
-New-Item -Path . -Name "ReleasePatchInfo.csv" -ItemType "file" -Value $fileContent.ToString() -Force
+GenerateHtmlReport -JsonReport $JsonReport
