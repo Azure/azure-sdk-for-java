@@ -33,7 +33,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response}.
      */
     Response<MsixPackage> getWithResponse(
         String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context);
@@ -60,7 +60,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context);
@@ -73,7 +73,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MsixPackage> list(String resourceGroupName, String hostPoolName);
 
@@ -86,7 +86,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MsixPackage> list(String resourceGroupName, String hostPoolName, Context context);
 
@@ -97,7 +97,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response}.
      */
     MsixPackage getById(String id);
 
@@ -109,7 +109,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response}.
      */
     Response<MsixPackage> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +131,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

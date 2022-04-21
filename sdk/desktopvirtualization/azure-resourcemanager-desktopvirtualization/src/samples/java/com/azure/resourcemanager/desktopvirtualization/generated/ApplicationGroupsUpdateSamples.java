@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for ApplicationGroups Update. */
 public final class ApplicationGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_Update.json
      */
     /**
      * Sample code: ApplicationGroups_Update.

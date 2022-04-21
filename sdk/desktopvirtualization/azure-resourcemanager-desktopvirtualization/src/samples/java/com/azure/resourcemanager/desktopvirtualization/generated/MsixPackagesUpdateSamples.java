@@ -10,7 +10,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.MsixPackage;
 /** Samples for MsixPackages Update. */
 public final class MsixPackagesUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_Update.json
      */
     /**
      * Sample code: MSIXPackage_Update.

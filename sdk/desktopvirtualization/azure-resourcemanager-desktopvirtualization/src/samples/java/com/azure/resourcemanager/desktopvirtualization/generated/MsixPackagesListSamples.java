@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for MsixPackages List. */
 public final class MsixPackagesListSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_List.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_List.json
      */
     /**
      * Sample code: MSIXPackage_List.

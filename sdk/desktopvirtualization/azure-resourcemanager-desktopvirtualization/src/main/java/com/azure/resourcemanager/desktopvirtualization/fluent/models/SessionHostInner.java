@@ -7,11 +7,9 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostHealthCheckReport;
 import com.azure.resourcemanager.desktopvirtualization.models.Status;
 import com.azure.resourcemanager.desktopvirtualization.models.UpdateState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.List;
 /** Represents a SessionHost definition. */
 @Fluent
 public final class SessionHostInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -190,6 +186,29 @@ public final class SessionHostInner extends ProxyResource {
             this.innerProperties = new SessionHostProperties();
         }
         this.innerProperties().withAssignedUser(assignedUser);
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of SessionHost.
+     *
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Set the friendlyName property: Friendly name of SessionHost.
+     *
+     * @param friendlyName the friendlyName value to set.
+     * @return the SessionHostInner object itself.
+     */
+    public SessionHostInner withFriendlyName(String friendlyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SessionHostProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
         return this;
     }
 

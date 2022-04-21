@@ -6,15 +6,11 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a StartMenuItem definition. */
 @Fluent
 public final class StartMenuItemInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StartMenuItemInner.class);
-
     /*
      * Detailed properties for StartMenuItem
      */

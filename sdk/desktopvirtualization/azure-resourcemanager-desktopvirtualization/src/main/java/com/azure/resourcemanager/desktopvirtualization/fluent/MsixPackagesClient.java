@@ -38,7 +38,7 @@ public interface MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MsixPackageInner> getWithResponse(
@@ -71,7 +71,7 @@ public interface MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MsixPackageInner> createOrUpdateWithResponse(
@@ -104,7 +104,7 @@ public interface MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -135,7 +135,7 @@ public interface MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MsixPackageInner> updateWithResponse(
@@ -153,7 +153,7 @@ public interface MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MsixPackageInner> list(String resourceGroupName, String hostPoolName);
@@ -167,7 +167,7 @@ public interface MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MsixPackageInner> list(String resourceGroupName, String hostPoolName, Context context);

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ScalingPlans ListByResourceGroup. */
 public final class ScalingPlansListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_ListByResourceGroup.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_ListByResourceGroup.json
      */
     /**
      * Sample code: ScalingPlans_ListByResourceGroup.

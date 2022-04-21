@@ -14,10 +14,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInne
 import com.azure.resourcemanager.desktopvirtualization.models.Desktop;
 import com.azure.resourcemanager.desktopvirtualization.models.DesktopPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.Desktops;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DesktopsImpl implements Desktops {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DesktopsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DesktopsImpl.class);
 
     private final DesktopsClient innerClient;
 

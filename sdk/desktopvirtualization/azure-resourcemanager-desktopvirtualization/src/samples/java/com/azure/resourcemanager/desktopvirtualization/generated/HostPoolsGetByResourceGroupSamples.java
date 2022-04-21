@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for HostPools GetByResourceGroup. */
 public final class HostPoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/HostPool_Get.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/HostPool_Get.json
      */
     /**
      * Sample code: HostPool_Get.

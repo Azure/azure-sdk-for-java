@@ -10,7 +10,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatch;
 /** Samples for SessionHosts Update. */
 public final class SessionHostsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/SessionHost_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/SessionHost_Update.json
      */
     /**
      * Sample code: SessionHost_Update.
@@ -26,7 +26,10 @@ public final class SessionHostsUpdateSamples {
                 "hostPool1",
                 "sessionHost1.microsoft.com",
                 true,
-                new SessionHostPatch().withAllowNewSession(true).withAssignedUser("user1@microsoft.com"),
+                new SessionHostPatch()
+                    .withAllowNewSession(true)
+                    .withAssignedUser("user1@microsoft.com")
+                    .withFriendlyName("friendly"),
                 Context.NONE);
     }
 }

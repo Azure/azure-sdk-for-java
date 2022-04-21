@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for UserSessions Disconnect. */
 public final class UserSessionsDisconnectSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_Disconnect_Post.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/UserSession_Disconnect_Post.json
      */
     /**
      * Sample code: UserSession_Disconnect_Post.

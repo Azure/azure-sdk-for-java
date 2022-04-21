@@ -5,21 +5,18 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdatePatchProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.HostpoolPublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfoPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of HostPool. */
 @Fluent
 public final class HostPoolPatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostPoolPatchProperties.class);
-
     /*
      * Friendly name of HostPool.
      */
@@ -123,7 +120,14 @@ public final class HostPoolPatchProperties {
      * Enabled to allow this resource to be access from the public network
      */
     @JsonProperty(value = "publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    private HostpoolPublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * The session host configuration for updating agent, monitoring agent, and
+     * stack component.
+     */
+    @JsonProperty(value = "agentUpdate")
+    private AgentUpdatePatchProperties agentUpdate;
 
     /**
      * Get the friendlyName property: Friendly name of HostPool.
@@ -455,7 +459,7 @@ public final class HostPoolPatchProperties {
      *
      * @return the publicNetworkAccess value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
+    public HostpoolPublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
 
@@ -465,8 +469,30 @@ public final class HostPoolPatchProperties {
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the HostPoolPatchProperties object itself.
      */
-    public HostPoolPatchProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+    public HostPoolPatchProperties withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
+     *
+     * @return the agentUpdate value.
+     */
+    public AgentUpdatePatchProperties agentUpdate() {
+        return this.agentUpdate;
+    }
+
+    /**
+     * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
+     *
+     * @param agentUpdate the agentUpdate value to set.
+     * @return the HostPoolPatchProperties object itself.
+     */
+    public HostPoolPatchProperties withAgentUpdate(AgentUpdatePatchProperties agentUpdate) {
+        this.agentUpdate = agentUpdate;
         return this;
     }
 
@@ -478,6 +504,9 @@ public final class HostPoolPatchProperties {
     public void validate() {
         if (registrationInfo() != null) {
             registrationInfo().validate();
+        }
+        if (agentUpdate() != null) {
+            agentUpdate().validate();
         }
     }
 }

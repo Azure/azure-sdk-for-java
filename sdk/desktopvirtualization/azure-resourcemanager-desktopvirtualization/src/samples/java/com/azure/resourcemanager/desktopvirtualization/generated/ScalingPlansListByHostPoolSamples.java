@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ScalingPlans ListByHostPool. */
 public final class ScalingPlansListByHostPoolSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_ListByHostPool.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_ListByHostPool.json
      */
     /**
      * Sample code: ScalingPlan_ListByHostPool.

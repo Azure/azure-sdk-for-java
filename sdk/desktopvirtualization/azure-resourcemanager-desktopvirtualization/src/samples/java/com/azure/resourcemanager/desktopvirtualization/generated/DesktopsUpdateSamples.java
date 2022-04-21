@@ -10,7 +10,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.DesktopPatch;
 /** Samples for Desktops Update. */
 public final class DesktopsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Desktop_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Desktop_Update.json
      */
     /**
      * Sample code: Desktop_Update.

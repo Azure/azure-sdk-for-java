@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MSIX Package properties that can be patched. */
 @Fluent
 public final class MsixPackagePatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsixPackagePatchProperties.class);
-
     /*
      * Set a version of the package to be active across hostpool.
      */

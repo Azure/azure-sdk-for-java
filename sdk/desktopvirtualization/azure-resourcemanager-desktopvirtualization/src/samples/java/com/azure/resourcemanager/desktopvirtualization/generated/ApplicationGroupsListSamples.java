@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGroups List. */
 public final class ApplicationGroupsListSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_ListBySubscription.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_ListBySubscription.json
      */
     /**
      * Sample code: ApplicationGroup_List.

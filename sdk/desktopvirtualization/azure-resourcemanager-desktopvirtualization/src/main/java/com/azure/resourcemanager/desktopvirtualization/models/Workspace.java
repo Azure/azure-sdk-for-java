@@ -148,6 +148,14 @@ public interface Workspace {
     PublicNetworkAccess publicNetworkAccess();
 
     /**
+     * Gets the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.

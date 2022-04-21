@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for UserSessions ListByHostPool. */
 public final class UserSessionsListByHostPoolSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_ListByHostPool.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/UserSession_ListByHostPool.json
      */
     /**
      * Sample code: UserSession_ListByHostPool.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections DeleteByHostPool. */
 public final class PrivateEndpointConnectionsDeleteByHostPoolSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_DeleteByHostPool.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_DeleteByHostPool.json
      */
     /**
      * Sample code: PrivateEndpointConnection_DeleteByHostPool.

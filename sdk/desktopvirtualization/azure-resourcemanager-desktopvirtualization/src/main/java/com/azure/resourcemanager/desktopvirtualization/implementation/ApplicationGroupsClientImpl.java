@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.ApplicationGroupsClient;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationGroupInner;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupList;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplicationGroupsClient. */
 public final class ApplicationGroupsClientImpl implements ApplicationGroupsClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApplicationGroupsService service;
 
@@ -182,7 +179,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application group.
+     * @return an application group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationGroupInner>> getByResourceGroupWithResponseAsync(
@@ -232,7 +229,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application group.
+     * @return an application group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationGroupInner>> getByResourceGroupWithResponseAsync(
@@ -278,7 +275,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application group.
+     * @return an application group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationGroupInner> getByResourceGroupAsync(String resourceGroupName, String applicationGroupName) {
@@ -317,7 +314,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application group.
+     * @return an application group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGroupInner> getByResourceGroupWithResponse(
@@ -334,7 +331,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationGroupInner>> createOrUpdateWithResponseAsync(
@@ -392,7 +390,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationGroupInner>> createOrUpdateWithResponseAsync(
@@ -449,7 +448,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationGroupInner> createOrUpdateAsync(
@@ -492,7 +491,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGroupInner> createOrUpdateWithResponse(
@@ -512,7 +511,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String applicationGroupName) {
@@ -561,7 +560,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -607,7 +606,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String applicationGroupName) {
@@ -638,7 +637,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String applicationGroupName, Context context) {
@@ -654,7 +653,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationGroupInner>> updateWithResponseAsync(
@@ -709,7 +709,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationGroupInner>> updateWithResponseAsync(
@@ -763,7 +764,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationGroupInner> updateAsync(
@@ -787,7 +788,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationGroupInner> updateAsync(String resourceGroupName, String applicationGroupName) {
@@ -829,7 +830,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
+     * @return represents a ApplicationGroup definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationGroupInner> updateWithResponse(
@@ -848,7 +849,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listByResourceGroupSinglePageAsync(
@@ -903,7 +904,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listByResourceGroupSinglePageAsync(
@@ -954,7 +955,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationGroupInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
@@ -970,7 +971,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationGroupInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -989,7 +990,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationGroupInner> listByResourceGroupAsync(
@@ -1006,7 +1007,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> listByResourceGroup(String resourceGroupName) {
@@ -1023,7 +1024,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> listByResourceGroup(
@@ -1038,7 +1039,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listSinglePageAsync(String filter) {
@@ -1086,7 +1087,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listSinglePageAsync(String filter, Context context) {
@@ -1130,7 +1131,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationGroupInner> listAsync(String filter) {
@@ -1143,7 +1144,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationGroupInner> listAsync() {
@@ -1160,7 +1161,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationGroupInner> listAsync(String filter, Context context) {
@@ -1174,7 +1175,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> list() {
@@ -1190,7 +1191,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> list(String filter, Context context) {
@@ -1204,7 +1205,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1241,7 +1242,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listByResourceGroupNextSinglePageAsync(
@@ -1277,7 +1278,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1314,7 +1315,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationGroupList.
+     * @return applicationGroupList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listBySubscriptionNextSinglePageAsync(

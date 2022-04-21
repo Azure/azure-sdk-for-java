@@ -7,12 +7,11 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.models.Application;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
-import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
 
 /** Samples for Applications Update. */
 public final class ApplicationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Application_Update.json
      */
     /**
      * Sample code: Application_Update.
@@ -36,7 +35,6 @@ public final class ApplicationsUpdateSamples {
             .withShowInPortal(true)
             .withIconPath("icon")
             .withIconIndex(1)
-            .withApplicationType(RemoteApplicationType.IN_BUILT)
             .apply();
     }
 }

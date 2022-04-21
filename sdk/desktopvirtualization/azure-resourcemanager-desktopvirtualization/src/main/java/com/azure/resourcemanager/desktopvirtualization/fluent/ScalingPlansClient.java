@@ -36,7 +36,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scaling plan.
+     * @return a scaling plan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScalingPlanInner> getByResourceGroupWithResponse(
@@ -66,7 +66,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlan.
+     * @return scalingPlan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScalingPlanInner> createWithResponse(
@@ -93,7 +93,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String scalingPlanName, Context context);
@@ -121,7 +121,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlan.
+     * @return scalingPlan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScalingPlanInner> updateWithResponse(
@@ -134,7 +134,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlanList.
+     * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScalingPlanInner> listByResourceGroup(String resourceGroupName);
@@ -147,7 +147,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlanList.
+     * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScalingPlanInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -157,7 +157,7 @@ public interface ScalingPlansClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlanList.
+     * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScalingPlanInner> list();
@@ -169,7 +169,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlanList.
+     * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScalingPlanInner> list(Context context);
@@ -182,7 +182,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlanList.
+     * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScalingPlanInner> listByHostPool(String resourceGroupName, String hostPoolName);
@@ -196,7 +196,7 @@ public interface ScalingPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return scalingPlanList.
+     * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScalingPlanInner> listByHostPool(String resourceGroupName, String hostPoolName, Context context);
