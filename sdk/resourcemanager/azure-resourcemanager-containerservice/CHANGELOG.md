@@ -2,13 +2,15 @@
 
 ## 2.15.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed unused class `AgentPoolsUpgradeNodeImageVersionResponse` and `AgentPoolsUpgradeNodeImageVersionHeaders`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
 
 ## 2.14.0 (2022-04-11)
 
