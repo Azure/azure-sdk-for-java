@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `SchemaProperties.getGroupName()`.
 - Added `SchemaProperties.getName()`.
 
 ### Breaking Changes
