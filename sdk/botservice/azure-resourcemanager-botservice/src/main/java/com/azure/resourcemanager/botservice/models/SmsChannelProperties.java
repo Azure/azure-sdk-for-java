@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Sms channel. */
 @Fluent
 public final class SmsChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SmsChannelProperties.class);
-
     /*
      * The Sms phone
      */
@@ -157,14 +154,16 @@ public final class SmsChannelProperties {
      */
     public void validate() {
         if (phone() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property phone in model SmsChannelProperties"));
         }
         if (accountSid() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property accountSid in model SmsChannelProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SmsChannelProperties.class);
 }
