@@ -415,8 +415,8 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    const op = $["/{shareName}/{directory}/{fileName}?comp=range"];
-    op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+    const op = $["/{shareName}/{fileName}?comp=range"];
+    op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
 ```
 
 ### Change PutRangeFromUrl response file-last-write-time to ISO8601
@@ -425,8 +425,8 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    const op = $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
-    op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+    const op = $["/{shareName}/{fileName}?comp=range&fromURL"];
+    op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
 ```
         
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)

@@ -858,7 +858,7 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), downloadFile.getName())
     }
 
-    //@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     @Unroll
     def "Upload range preserve file last written on"() {
         setup:
@@ -931,14 +931,25 @@ class FileAPITests extends APISpec {
     @Unroll
     def "Upload range from Url preserve file last written on"() {
         setup:
+        primaryFileClient.create(Constants.KB)
         def destinationClient = shareClient.getFileClient(generatePathName())
+        destinationClient.create(Constants.KB)
         def initialProps = destinationClient.getProperties()
 
         primaryFileClient.uploadRange(new ByteArrayInputStream(getRandomBuffer(Constants.KB)), Constants.KB)
 
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sasToken = new ShareServiceSasSignatureValues()
+            .setExpiryTime(namer.getUtcNow().plusDays(1))
+            .setPermissions(new ShareFileSasPermission().setReadPermission(true))
+            .setShareName(primaryFileClient.getShareName())
+            .setFilePath(primaryFileClient.getFilePath())
+            .generateSasQueryParameters(credential)
+            .encode()
+
         when:
         destinationClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(Constants.KB,
-            primaryFileClient.getFileUrl()).setLastWrittenMode(mode), null, null)
+            primaryFileClient.getFileUrl() + "?" + sasToken).setLastWrittenMode(mode), null, null)
         def resultProps = destinationClient.getProperties()
 
         then:

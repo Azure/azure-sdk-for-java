@@ -55,7 +55,7 @@ public final class FilesUploadRangeHeaders {
      * The x-ms-file-last-write-time property.
      */
     @JsonProperty(value = "x-ms-file-last-write-time")
-    private DateTimeRfc1123 xMsFileLastWriteTime;
+    private OffsetDateTime xMsFileLastWriteTime;
 
     /*
      * The Content-MD5 property.
@@ -203,10 +203,7 @@ public final class FilesUploadRangeHeaders {
      * @return the xMsFileLastWriteTime value.
      */
     public OffsetDateTime getXMsFileLastWriteTime() {
-        if (this.xMsFileLastWriteTime == null) {
-            return null;
-        }
-        return this.xMsFileLastWriteTime.getDateTime();
+        return this.xMsFileLastWriteTime;
     }
 
     /**
@@ -216,11 +213,7 @@ public final class FilesUploadRangeHeaders {
      * @return the FilesUploadRangeHeaders object itself.
      */
     public FilesUploadRangeHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
-        if (xMsFileLastWriteTime == null) {
-            this.xMsFileLastWriteTime = null;
-        } else {
-            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
-        }
+        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
     }
 
