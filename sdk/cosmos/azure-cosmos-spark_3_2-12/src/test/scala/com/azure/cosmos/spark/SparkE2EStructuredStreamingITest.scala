@@ -206,8 +206,8 @@ class SparkE2EStructuredStreamingITest
     microBatchQuery.lastProgress should not be null
     microBatchQuery.lastProgress.sources should not be null
     microBatchQuery.lastProgress.sources should not be null
-    microBatchQuery.lastProgress.sources(0).startOffset should not be null
-    getPartitionCountInOffset(microBatchQuery.lastProgress.sources(0).startOffset) >= 1 shouldEqual true
+    microBatchQuery.lastProgress.sources(0).endOffset should not be null
+    getPartitionCountInOffset(microBatchQuery.lastProgress.sources(0).endOffset) >= 1 shouldEqual true
 
     microBatchQuery.stop()
 
@@ -381,8 +381,8 @@ class SparkE2EStructuredStreamingITest
     microBatchQuery.lastProgress should not be null
     microBatchQuery.lastProgress.sources should not be null
     microBatchQuery.lastProgress.sources should not be null
-    microBatchQuery.lastProgress.sources(0).startOffset should not be null
-    getPartitionCountInOffset(microBatchQuery.lastProgress.sources(0).startOffset) shouldEqual 1
+    microBatchQuery.lastProgress.sources(0).endOffset should not be null
+    getPartitionCountInOffset(microBatchQuery.lastProgress.sources(0).endOffset) shouldEqual 1
     microBatchQuery.stop()
 
     logInfo(s"RecordCount in source container after first execution: $sourceCount")
