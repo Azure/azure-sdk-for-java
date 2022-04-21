@@ -14,10 +14,9 @@ import com.azure.resourcemanager.botservice.models.BotChannel;
 import com.azure.resourcemanager.botservice.models.DirectLines;
 import com.azure.resourcemanager.botservice.models.RegenerateKeysChannelName;
 import com.azure.resourcemanager.botservice.models.SiteInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DirectLinesImpl implements DirectLines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectLinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DirectLinesImpl.class);
 
     private final DirectLinesClient innerClient;
 
