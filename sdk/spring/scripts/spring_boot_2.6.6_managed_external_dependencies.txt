@@ -573,7 +573,7 @@ me.snowdrop:istio-client;1.7.7.1
 mysql:mysql-connector-java;8.0.28
 net.bytebuddy:byte-buddy;1.11.22
 net.bytebuddy:byte-buddy-agent;1.11.22
-net.minidev:json-smart;2.4.8
+net.minidev:json-smart;2.4.7
 net.sf.ehcache:ehcache;2.10.9.2
 net.sourceforge.htmlunit:htmlunit;2.54.0
 net.sourceforge.jtds:jtds;1.3.1
