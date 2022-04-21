@@ -22,7 +22,7 @@ abstract class Fetcher<T> {
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
     private final OperationContextAndListenerTuple operationContext;
-    protected Supplier<String> operationContextTextProvider;
+    private Supplier<String> operationContextTextProvider;
 
     private volatile boolean shouldFetchMore;
     private volatile int maxItemCount;

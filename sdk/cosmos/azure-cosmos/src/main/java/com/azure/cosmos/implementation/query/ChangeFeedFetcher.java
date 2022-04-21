@@ -82,7 +82,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 this.changeFeedState,
                 retryPolicyInstance,
                 requestOptionProperties,
-                retryPolicyInstance.getRetryContext());
+                retryPolicyInstance.getRetryContext(),
+                () -> this.getOperationContextText());
             this.createRequestFunc = () -> {
                 RxDocumentServiceRequest request = createRequestFunc.get();
                 this.feedRangeContinuationSplitRetryPolicy.onBeforeSendRequest(request);
@@ -179,20 +180,26 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         private final Map<String, Object> requestOptionProperties;
         private MetadataDiagnosticsContext diagnosticsContext;
         private final RetryContext retryContext;
+        private final Supplier<String> operationContextTextProvider;
 
         public FeedRangeContinuationSplitRetryPolicy(
             RxDocumentClientImpl client,
             ChangeFeedState state,
             DocumentClientRetryPolicy nextRetryPolicy,
             Map<String, Object> requestOptionProperties,
-            RetryContext retryContext) {
+            RetryContext retryContext,
+            Supplier<String> operationContextTextProvider) {
 
+            checkNotNull(
+                operationContextTextProvider,
+                "Argument 'operationContextTextProvider' must not be null.");
             this.client = client;
             this.state = state;
             this.nextRetryPolicy = nextRetryPolicy;
             this.requestOptionProperties = requestOptionProperties;
             this.diagnosticsContext = null;
             this.retryContext = retryContext;
+            this.operationContextTextProvider = operationContextTextProvider;
         }
 
         @Override
