@@ -177,12 +177,15 @@ public interface SpringApp
         interface WithConfigurationServiceBinding {
             /**
              * Specifies a binding to the default configuration service.
+             * To use the centralized configurations, you must bind the app to Application Configuration Service for Tanzu.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
              * @return the next stage of spring app definition
              */
             WithCreate withConfigurationServiceBinding();
 
             /**
              * Removes a binding to the default configuration service.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
              * @return the next stage of spring app definition
              */
             WithCreate withoutConfigurationServiceBinding();
@@ -318,12 +321,15 @@ public interface SpringApp
         interface WithConfigurationServiceBinding {
             /**
              * Specifies a binding to the default configuration service.
+             * To use the centralized configurations, you must bind the app to Application Configuration Service for Tanzu.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
              * @return the next stage of spring app update
              */
             Update withConfigurationServiceBinding();
 
             /**
              * Removes a binding to the default configuration service.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
              * @return the next stage of spring app update
              */
             Update withoutConfigurationServiceBinding();
