@@ -42,7 +42,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         // added to the instance. By default, this is false, so it will error if the schema is not found.
         SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
-            .autoRegisterSchema(true)
+            .autoRegisterSchemas(true)
             .schemaGroup("{schema-group}")
             .buildSerializer();
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation

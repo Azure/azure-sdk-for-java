@@ -41,7 +41,7 @@ public class SchemaRegistryApacheAvroDeserializationSample {
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
-            .autoRegisterSchema(true)
+            .autoRegisterSchemas(true)
             .buildSerializer();
 
         // Get serialized avro data to deserialize into strongly-typed object.
