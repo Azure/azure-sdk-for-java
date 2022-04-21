@@ -456,6 +456,7 @@ public class CosmosAsyncContainer {
      *
      * @return Mono of Void
      */
+    @Deprecated
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
         int retryCount = Configs.getOpenConnectionsRetriesCount();
@@ -484,6 +485,37 @@ public class CosmosAsyncContainer {
         } else {
             logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
             return Mono.empty();
+        }
+    }
+
+
+    /***
+     *  Initializes the container by warming up the caches and connections for the current read region.
+     *
+     *  <p>
+     *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     *  </p>
+     *
+     * @return A String representative of open connections result.
+     */
+    @Beta(value = Beta.SinceVersion.V4_29_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<String> openConnectionsAndInitializeCaches() {
+
+        if(isInitialized.compareAndSet(false, true)) {
+            return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
+                    .collectList()
+                    .flatMap(openConnectionResponses -> {
+                        // Generate a simple statistics string for open connections
+                        int total = openConnectionResponses.size();
+                        long connectionsEstablished = openConnectionResponses.stream().filter(response -> response.isConnected()).count();
+                        return Mono.just(String.format("Established: %s, Failed: %s", connectionsEstablished, total - connectionsEstablished));
+                    });
+
+        } else {
+            String message = String.format("openConnectionsAndInitializeCaches is already called once on Container %s, no operation will take place in this call", this.getId());
+            logger.warn(message);
+            return Mono.just(message);
         }
     }
 

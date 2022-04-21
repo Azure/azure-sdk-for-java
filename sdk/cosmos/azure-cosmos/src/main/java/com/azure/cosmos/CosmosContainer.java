@@ -805,14 +805,43 @@ public class CosmosContainer {
      * </p>
      *
      */
+    @Deprecated
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void openConnectionsAndInitCaches() {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }
 
+    /***
+     *  Initializes the container by warming up the caches and connections for the current read region.
+     *
+     *  <p>
+     *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     *  </p>
+     *
+     * @return A String representative of open connections result.
+     */
+    @Beta(value = Beta.SinceVersion.V4_29_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String openConnectionsAndInitializeCaches() {
+        return blockOpenConnectionResponse(this.asyncContainer.openConnectionsAndInitializeCaches());
+    }
+
     private void blockVoidResponse(Mono<Void> voidMono) {
         try {
             voidMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(ex);
+            }
+        }
+    }
+
+    private String blockOpenConnectionResponse(Mono<String> openConnectionMono) {
+        try {
+            return openConnectionMono.block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {

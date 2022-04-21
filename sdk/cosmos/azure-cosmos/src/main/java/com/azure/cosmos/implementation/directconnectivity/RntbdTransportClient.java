@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -334,6 +335,18 @@ public class RntbdTransportClient extends TransportClient {
                     }
                 });
         }).subscriberContext(reactorContext);
+    }
+
+    @Override
+    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
+
+        this.throwIfClosed();
+
+        final URI address = addressUri.getURI();
+
+        final RntbdEndpoint endpoint = this.endpointProvider.get(address);
+        return Mono.fromFuture(endpoint.openConnection(addressUri));
     }
 
     /**

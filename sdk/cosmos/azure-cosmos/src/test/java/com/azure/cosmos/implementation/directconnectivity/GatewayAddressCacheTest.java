@@ -105,6 +105,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 getHttpClient(configs),
                 false,
+                null,
                 null);
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
@@ -140,6 +141,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             getHttpClient(configs),
                                                             false,
+                                                            null,
                                                             null);
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
@@ -186,6 +188,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             getHttpClient(configs),
                                                             false,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -225,6 +228,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             null,
             httpClientWrapper.getSpyHttpClient(),
             true,
+            null,
             null);
 
         RxDocumentServiceRequest req =
@@ -292,6 +296,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             httpClientWrapper.getSpyHttpClient(),
                                                             false,
+                                                            null,
                                                             null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -299,7 +304,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openAsync(createdCollection, pkriList).block();
+        cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -350,6 +355,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             httpClientWrapper.getSpyHttpClient(),
                                                             false,
+                                                            null,
                                                             null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -357,7 +363,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openAsync(createdCollection, pkriList).block();
+        cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -411,14 +417,15 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 httpClientWrapper.getSpyHttpClient(),
                                                                 suboptimalRefreshTime,
                                                                 false,
-                                                                null);
+                                                                null,
+                null);
 
         String collectionRid = createdCollection.getResourceId();
 
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        origCache.openAsync(createdCollection, pkriList).block();
+        origCache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -518,6 +525,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             getHttpClient(configs),
                                                             false,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -567,7 +575,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             clientWrapper.getSpyHttpClient(),
                                                             suboptimalPartitionForceRefreshIntervalInSeconds,
                                                             false,
-                                                            null);
+                                                            null,
+                null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -615,6 +624,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             clientWrapper.getSpyHttpClient(),
                                                             false,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -670,7 +680,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 clientWrapper.getSpyHttpClient(),
                                                                 refreshPeriodInSeconds,
                                                                 false,
-                                                                ApiType.SQL);
+                                                                ApiType.SQL,
+                null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
@@ -765,7 +776,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 clientWrapper.getSpyHttpClient(),
                                                                 refreshPeriodInSeconds,
                                                                 false,
-                                                                null);
+                                                                null,
+                null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 

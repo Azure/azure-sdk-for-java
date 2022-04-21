@@ -20,6 +20,8 @@ import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -422,9 +424,13 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
 
         CosmosAsyncClient asyncClientResourceToken = null;
         try {
+
+            ManagedIdentityCredential  credential = new ManagedIdentityCredentialBuilder().clientId("fakeId").build();
+
             asyncClientResourceToken = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .gatewayMode()
+                    .credential(credential)
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .resourceToken(createdContainerPermissionWithPartitionKey.getToken())
                 .buildAsyncClient();
