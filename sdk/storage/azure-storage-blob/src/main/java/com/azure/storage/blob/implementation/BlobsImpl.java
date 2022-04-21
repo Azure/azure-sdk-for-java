@@ -20,7 +20,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.BinaryDataResponse;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.rest.SyncRestProxy;
@@ -98,7 +97,7 @@ public final class BlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        BinaryDataResponse downloadSync(
+        StreamResponse downloadSync(
             @HostParam("url") String url,
             @PathParam("containerName") String containerName,
             @PathParam("blob") String blob,
@@ -783,7 +782,7 @@ public final class BlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryDataResponse downloadWithResponseSync(
+    public StreamResponse downloadWithResponseSync(
         String containerName,
         String blob,
         String snapshot,

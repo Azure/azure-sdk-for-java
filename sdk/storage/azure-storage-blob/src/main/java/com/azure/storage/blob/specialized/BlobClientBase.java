@@ -7,10 +7,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.BinaryDataResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -880,7 +880,7 @@ public class BlobClientBase {
             requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        BinaryDataResponse initialResponse = client.downloadRangeSync(
+        StreamResponse initialResponse = client.downloadRangeSync(
             finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context);
         String eTag = ModelHelper.getETag(initialResponse.getHeaders());
         BlobsDownloadHeaders blobsDownloadHeaders =

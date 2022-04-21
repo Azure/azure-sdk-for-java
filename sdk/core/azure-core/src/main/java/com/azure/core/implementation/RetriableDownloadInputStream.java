@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation;
 
-import com.azure.core.http.rest.BinaryDataResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -14,18 +14,18 @@ public class RetriableDownloadInputStream extends InputStream {
     private static final ClientLogger LOGGER = new ClientLogger(RetriableDownloadInputStream.class);
 
     private final int maxRetries;
-    private final BiFunction<Throwable, Long, BinaryDataResponse> onDownloadErrorResume;
+    private final BiFunction<Throwable, Long, StreamResponse> onDownloadErrorResume;
     private long position;
     private int retryCount;
     private InputStream currentStream;
-    private BinaryDataResponse currentResponse;
+    private StreamResponse currentResponse;
 
-    public RetriableDownloadInputStream(BinaryDataResponse initialResponse,
-                                        BiFunction<Throwable, Long, BinaryDataResponse> onDownloadErrorResume,
+    public RetriableDownloadInputStream(StreamResponse initialResponse,
+                                        BiFunction<Throwable, Long, StreamResponse> onDownloadErrorResume,
                                         int maxRetries,
                                         long position) {
         this.currentResponse = initialResponse;
-        this.currentStream = initialResponse.getValue().toStream();
+        this.currentStream = initialResponse.getValueAsBinaryData().toStream();
         this.onDownloadErrorResume = onDownloadErrorResume;
         this.maxRetries = maxRetries;
         this.position = position;
@@ -68,14 +68,20 @@ public class RetriableDownloadInputStream extends InputStream {
         }
 
         currentResponse = onDownloadErrorResume.apply(e, position);
-        currentStream = currentResponse.getValue().toStream();
+        currentStream = currentResponse.getValueAsBinaryData().toStream();
     }
 
     @Override
     public long skip(long n) throws IOException {
-        long skipped = currentStream.skip(n);
-        position += skipped;
-        return skipped;
+        while (true) {
+            try {
+                long skipped = currentStream.skip(n);
+                position += skipped;
+                return skipped;
+            } catch (RuntimeException | IOException e) {
+                reacquireStream(e);
+            }
+        }
     }
 
     @Override

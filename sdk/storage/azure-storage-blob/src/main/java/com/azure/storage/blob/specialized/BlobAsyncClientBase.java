@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.BinaryDataResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
@@ -1329,7 +1328,7 @@ public class BlobAsyncClientBase {
             requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        BinaryDataResponse initialResponse =
+        StreamResponse initialResponse =
             downloadRangeSync(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context);
         String eTag = ModelHelper.getETag(initialResponse.getHeaders());
         BlobsDownloadHeaders blobsDownloadHeaders =
@@ -1397,8 +1396,9 @@ public class BlobAsyncClientBase {
             customerProvidedKey, context);
     }
 
-    BinaryDataResponse downloadRangeSync(BlobRange range, BlobRequestConditions requestConditions,
-                                                   String eTag, Boolean getMD5, Context context) {
+    StreamResponse downloadRangeSync(
+        BlobRange range, BlobRequestConditions requestConditions, String eTag,
+        Boolean getMD5, Context context) {
         return azureBlobStorage.getBlobs().downloadWithResponseSync(containerName, blobName, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), eTag,

@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.http.rest.BinaryDataResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -15,16 +15,16 @@ public class RetriableOutputStream extends OutputStream {
     private static final ClientLogger LOGGER = new ClientLogger(RetriableOutputStream.class);
 
     private final int maxRetries;
-    private final BiFunction<Throwable, Long, BinaryDataResponse> onDownloadErrorResume;
+    private final BiFunction<Throwable, Long, StreamResponse> onDownloadErrorResume;
     private final OutputStream target;
     private long position;
     private int retryCount;
-    private BinaryDataResponse currentResponse;
+    private StreamResponse currentResponse;
 
     public RetriableOutputStream(
         OutputStream target,
-        BinaryDataResponse initialResponse,
-        BiFunction<Throwable, Long, BinaryDataResponse> onDownloadErrorResume,
+        StreamResponse initialResponse,
+        BiFunction<Throwable, Long, StreamResponse> onDownloadErrorResume,
         int maxRetries,
         long position) {
         this.target = target;

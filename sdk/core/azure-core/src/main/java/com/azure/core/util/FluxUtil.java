@@ -4,9 +4,9 @@
 package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.BinaryDataResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
@@ -188,10 +188,11 @@ public final class FluxUtil {
      * @param position The initial offset for the download.
      * @return A {@link BinaryData} that downloads reliably.
      */
-    public static BinaryData createRetriableDownloadBinaryData(BinaryDataResponse initialResponse,
-        BiFunction<Throwable, Long, BinaryDataResponse> onDownloadErrorResume, int maxRetries, long position) {
+    public static BinaryData createRetriableDownloadBinaryData(
+        StreamResponse initialResponse, BiFunction<Throwable, Long, StreamResponse> onDownloadErrorResume,
+        int maxRetries, long position) {
 
-        BinaryData initialData = initialResponse.getValue();
+        BinaryData initialData = initialResponse.getValueAsBinaryData();
         if (initialData == null) {
             return null;
         }
@@ -203,7 +204,7 @@ public final class FluxUtil {
         } else if (content instanceof FluxByteBufferContent) {
             Flux<ByteBuffer> retriableDownloadFlux = createRetriableDownloadFlux(
                 content::toFluxByteBuffer,
-                (t, l) -> onDownloadErrorResume.apply(t, l).getValue().toFluxByteBuffer(),
+                (t, l) -> onDownloadErrorResume.apply(t, l).getValueAsBinaryData().toFluxByteBuffer(),
                 maxRetries, position);
             return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(retriableDownloadFlux));
         } else {

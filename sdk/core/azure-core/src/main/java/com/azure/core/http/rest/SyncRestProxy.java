@@ -457,8 +457,11 @@ public final class SyncRestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser,
         final Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
-            final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
+            if (entityType.equals(StreamResponse.class)) {
+                return createResponseSync(response, entityType, null);
+            }
 
+            final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 response.getSourceResponse().close();
                 return createResponseSync(response, entityType, null);
@@ -510,8 +513,8 @@ public final class SyncRestProxy implements InvocationHandler {
                 return (cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
                     decodedHeaders)));
             }
-        } else if (cls.equals(BinaryDataResponse.class)) {
-            return new BinaryDataResponse(request, httpResponse);
+        } else if (cls.equals(StreamResponse.class)) {
+            return new StreamResponse(request, httpResponse);
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response sub-type.
@@ -554,14 +557,7 @@ public final class SyncRestProxy implements InvocationHandler {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            if (methodParser.getReturnType().equals(BinaryDataResponse.class)) {
-                // TODO (kasobol-msft) this is a hack.
-                // We don't need entity in that case but we can't change the else case yet
-                // it somehow relies on eager consumption and tests hang otherwise.
-                result = null;
-            } else {
-                result = response.getSourceResponse().getBodyAsBinaryData();
-            }
+            result = response.getSourceResponse().getBodyAsBinaryData();
         } else {
             // Object or Page<T>
             result = response.getDecodedBodySync((byte[]) null);
