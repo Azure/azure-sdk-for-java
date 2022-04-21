@@ -347,7 +347,7 @@ class Transforms {
             parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
             path.getPermissions(), fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
-            fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
+            path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {

@@ -47,6 +47,8 @@ public class PathItem {
      * @param name The name of the path.
      * @param owner The owner the path belongs to.
      * @param permissions The permissions set on the path.
+     * @param creationTime The creation time of the path item.
+     * @param expiryTime The expiry time of the path item.
      */
     public PathItem(String eTag, OffsetDateTime lastModified, long contentLength, String group, boolean isDirectory,
         String name, String owner, String permissions, OffsetDateTime creationTime, OffsetDateTime expiryTime) {
