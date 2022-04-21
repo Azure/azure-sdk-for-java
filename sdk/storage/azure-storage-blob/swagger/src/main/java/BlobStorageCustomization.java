@@ -24,8 +24,6 @@ public class BlobStorageCustomization extends Customization {
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
 
         models.getClass("BlobCopySourceTags").rename("BlobCopySourceTagsMode");
-        models.getClass("BlobErrorCode").getProperty("SNAPHOT_OPERATION_RATE_EXCEEDED")
-            .addAnnotation("Deprecated");
 
 
         ClassCustomization blobHttpHeaders = models.getClass("BlobHttpHeaders");
