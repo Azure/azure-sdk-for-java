@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.DesktopsClient;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInner;
 import com.azure.resourcemanager.desktopvirtualization.models.DesktopList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DesktopsClient. */
 public final class DesktopsClientImpl implements DesktopsClient {
-    private final ClientLogger logger = new ClientLogger(DesktopsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DesktopsService service;
 
@@ -129,7 +126,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
+     * @return a desktop along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DesktopInner>> getWithResponseAsync(
@@ -184,7 +181,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
+     * @return a desktop along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DesktopInner>> getWithResponseAsync(
@@ -235,7 +232,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
+     * @return a desktop on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DesktopInner> getAsync(String resourceGroupName, String applicationGroupName, String desktopName) {
@@ -276,7 +273,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
+     * @return a desktop along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DesktopInner> getWithResponse(
@@ -294,7 +291,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
+     * @return schema for Desktop properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DesktopInner>> updateWithResponseAsync(
@@ -354,7 +351,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
+     * @return schema for Desktop properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DesktopInner>> updateWithResponseAsync(
@@ -414,7 +411,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
+     * @return schema for Desktop properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DesktopInner> updateAsync(
@@ -439,7 +436,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
+     * @return schema for Desktop properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DesktopInner> updateAsync(String resourceGroupName, String applicationGroupName, String desktopName) {
@@ -483,7 +480,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
+     * @return schema for Desktop properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DesktopInner> updateWithResponse(
@@ -503,7 +500,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DesktopInner>> listSinglePageAsync(
@@ -562,7 +559,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DesktopInner>> listSinglePageAsync(
@@ -617,7 +614,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DesktopInner> listAsync(String resourceGroupName, String applicationGroupName) {
@@ -635,7 +632,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DesktopInner> listAsync(String resourceGroupName, String applicationGroupName, Context context) {
@@ -652,7 +649,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DesktopInner> list(String resourceGroupName, String applicationGroupName) {
@@ -668,7 +665,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DesktopInner> list(String resourceGroupName, String applicationGroupName, Context context) {
@@ -682,7 +679,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DesktopInner>> listNextSinglePageAsync(String nextLink) {
@@ -718,7 +715,7 @@ public final class DesktopsClientImpl implements DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DesktopInner>> listNextSinglePageAsync(String nextLink, Context context) {

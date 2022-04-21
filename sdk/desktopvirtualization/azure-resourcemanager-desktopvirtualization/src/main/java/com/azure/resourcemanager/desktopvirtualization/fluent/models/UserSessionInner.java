@@ -7,18 +7,14 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationType;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents a UserSession definition. */
 @Fluent
 public final class UserSessionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSessionInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */

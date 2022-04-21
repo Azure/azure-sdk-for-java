@@ -259,13 +259,8 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public ApplicationImpl withApplicationType(RemoteApplicationType applicationType) {
-        if (isInCreateMode()) {
-            this.innerModel().withApplicationType(applicationType);
-            return this;
-        } else {
-            this.updateApplication.withApplicationType(applicationType);
-            return this;
-        }
+        this.innerModel().withApplicationType(applicationType);
+        return this;
     }
 
     public ApplicationImpl withCommandLineArguments(String commandLineArguments) {

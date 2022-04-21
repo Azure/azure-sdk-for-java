@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for UserSessions List. */
 public final class UserSessionsListSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_List.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/UserSession_List.json
      */
     /**
      * Sample code: UserSession_List.

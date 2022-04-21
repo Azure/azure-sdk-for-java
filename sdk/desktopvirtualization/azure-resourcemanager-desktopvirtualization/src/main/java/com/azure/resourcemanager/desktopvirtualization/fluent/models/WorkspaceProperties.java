@@ -5,17 +5,14 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Schema for Workspace properties. */
 @Fluent
 public final class WorkspaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceProperties.class);
-
     /*
      * ObjectId of Workspace. (internal use)
      */
@@ -53,6 +50,13 @@ public final class WorkspaceProperties {
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * List of private endpoint connection associated with the specified
+     * resource
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /**
      * Get the objectId property: ObjectId of Workspace. (internal use).
@@ -155,10 +159,23 @@ public final class WorkspaceProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 }

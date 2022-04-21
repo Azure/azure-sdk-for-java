@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Desktop properties that can be patched. */
 @Fluent
 public final class DesktopPatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DesktopPatchProperties.class);
-
     /*
      * Description of Desktop.
      */

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources ListByWorkspace. */
 public final class PrivateLinkResourcesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateLinkResources_ListByWorkspace.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateLinkResources_ListByWorkspace.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByWorkspace.

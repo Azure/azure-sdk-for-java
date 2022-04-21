@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
 import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for ApplicationGroup properties. */
 @Fluent
 public final class ApplicationGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGroupProperties.class);
-
     /*
      * ObjectId of ApplicationGroup. (internal use)
      */
@@ -198,13 +195,13 @@ public final class ApplicationGroupProperties {
      */
     public void validate() {
         if (hostPoolArmPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property hostPoolArmPath in model ApplicationGroupProperties"));
         }
         if (applicationGroupType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property applicationGroupType in model ApplicationGroupProperties"));
@@ -213,4 +210,6 @@ public final class ApplicationGroupProperties {
             migrationRequest().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGroupProperties.class);
 }

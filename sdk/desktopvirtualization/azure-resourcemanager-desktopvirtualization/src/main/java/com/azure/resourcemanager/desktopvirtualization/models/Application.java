@@ -335,8 +335,7 @@ public interface Application {
             UpdateStages.WithIconPath,
             UpdateStages.WithIconIndex,
             UpdateStages.WithMsixPackageFamilyName,
-            UpdateStages.WithMsixPackageApplicationId,
-            UpdateStages.WithApplicationType {
+            UpdateStages.WithMsixPackageApplicationId {
         /**
          * Executes the update request.
          *
@@ -469,16 +468,6 @@ public interface Application {
              * @return the next definition stage.
              */
             Update withMsixPackageApplicationId(String msixPackageApplicationId);
-        }
-        /** The stage of the Application update allowing to specify applicationType. */
-        interface WithApplicationType {
-            /**
-             * Specifies the applicationType property: Resource Type of Application..
-             *
-             * @param applicationType Resource Type of Application.
-             * @return the next definition stage.
-             */
-            Update withApplicationType(RemoteApplicationType applicationType);
         }
     }
     /**

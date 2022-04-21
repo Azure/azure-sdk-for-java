@@ -31,7 +31,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host pool.
+     * @return a host pool along with {@link Response}.
      */
     Response<HostPool> getByResourceGroupWithResponse(String resourceGroupName, String hostPoolName, Context context);
 
@@ -56,7 +56,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String hostPoolName, Boolean force, Context context);
 
@@ -67,7 +67,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hostPoolList.
+     * @return hostPoolList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HostPool> listByResourceGroup(String resourceGroupName);
 
@@ -79,7 +79,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hostPoolList.
+     * @return hostPoolList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HostPool> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -88,7 +88,7 @@ public interface HostPools {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hostPoolList.
+     * @return hostPoolList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HostPool> list();
 
@@ -99,7 +99,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hostPoolList.
+     * @return hostPoolList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HostPool> list(Context context);
 
@@ -124,7 +124,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a RegistrationInfo definition.
+     * @return represents a RegistrationInfo definition along with {@link Response}.
      */
     Response<RegistrationInfo> retrieveRegistrationTokenWithResponse(
         String resourceGroupName, String hostPoolName, Context context);
@@ -136,7 +136,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host pool.
+     * @return a host pool along with {@link Response}.
      */
     HostPool getById(String id);
 
@@ -148,7 +148,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host pool.
+     * @return a host pool along with {@link Response}.
      */
     Response<HostPool> getByIdWithResponse(String id, Context context);
 
@@ -171,7 +171,7 @@ public interface HostPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Boolean force, Context context);
 

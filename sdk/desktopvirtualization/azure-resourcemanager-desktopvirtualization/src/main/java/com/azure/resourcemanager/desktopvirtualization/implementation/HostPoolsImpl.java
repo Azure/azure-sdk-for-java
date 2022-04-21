@@ -15,10 +15,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.Registratio
 import com.azure.resourcemanager.desktopvirtualization.models.HostPool;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPools;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class HostPoolsImpl implements HostPools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HostPoolsImpl.class);
 
     private final HostPoolsClient innerClient;
 
@@ -111,7 +110,7 @@ public final class HostPoolsImpl implements HostPools {
     public HostPool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
@@ -130,7 +129,7 @@ public final class HostPoolsImpl implements HostPools {
     public Response<HostPool> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
@@ -149,7 +148,7 @@ public final class HostPoolsImpl implements HostPools {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
@@ -169,7 +168,7 @@ public final class HostPoolsImpl implements HostPools {
     public Response<Void> deleteByIdWithResponse(String id, Boolean force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +176,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));

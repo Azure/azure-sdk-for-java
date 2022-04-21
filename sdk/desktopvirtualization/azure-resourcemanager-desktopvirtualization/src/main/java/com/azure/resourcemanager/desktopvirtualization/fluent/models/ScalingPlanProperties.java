@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Scaling plan properties. */
 @Fluent
 public final class ScalingPlanProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScalingPlanProperties.class);
-
     /*
      * ObjectId of scaling plan. (internal use)
      */

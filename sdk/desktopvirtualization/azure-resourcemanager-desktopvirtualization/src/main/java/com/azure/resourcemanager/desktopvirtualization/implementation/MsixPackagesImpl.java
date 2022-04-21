@@ -13,10 +13,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.MsixPackagesClient
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackageInner;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackage;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MsixPackagesImpl implements MsixPackages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsixPackagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MsixPackagesImpl.class);
 
     private final MsixPackagesClient innerClient;
 
@@ -75,7 +74,7 @@ public final class MsixPackagesImpl implements MsixPackages {
     public MsixPackage getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -83,14 +82,14 @@ public final class MsixPackagesImpl implements MsixPackages {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
         }
         String msixPackageFullName = Utils.getValueFromIdByName(id, "msixPackages");
         if (msixPackageFullName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'msixPackages'.", id)));
@@ -101,7 +100,7 @@ public final class MsixPackagesImpl implements MsixPackages {
     public Response<MsixPackage> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,14 +108,14 @@ public final class MsixPackagesImpl implements MsixPackages {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
         }
         String msixPackageFullName = Utils.getValueFromIdByName(id, "msixPackages");
         if (msixPackageFullName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'msixPackages'.", id)));
@@ -127,7 +126,7 @@ public final class MsixPackagesImpl implements MsixPackages {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,14 +134,14 @@ public final class MsixPackagesImpl implements MsixPackages {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
         }
         String msixPackageFullName = Utils.getValueFromIdByName(id, "msixPackages");
         if (msixPackageFullName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'msixPackages'.", id)));
@@ -153,7 +152,7 @@ public final class MsixPackagesImpl implements MsixPackages {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,14 +160,14 @@ public final class MsixPackagesImpl implements MsixPackages {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
         }
         String msixPackageFullName = Utils.getValueFromIdByName(id, "msixPackages");
         if (msixPackageFullName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'msixPackages'.", id)));

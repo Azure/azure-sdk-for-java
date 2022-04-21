@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.MsixPackagesClient;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackageInner;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageList;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MsixPackagesClient. */
 public final class MsixPackagesClientImpl implements MsixPackagesClient {
-    private final ClientLogger logger = new ClientLogger(MsixPackagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final MsixPackagesService service;
 
@@ -165,7 +162,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MsixPackageInner>> getWithResponseAsync(
@@ -220,7 +217,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MsixPackageInner>> getWithResponseAsync(
@@ -271,7 +268,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MsixPackageInner> getAsync(String resourceGroupName, String hostPoolName, String msixPackageFullName) {
@@ -312,7 +309,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MsixPackageInner> getWithResponse(
@@ -330,7 +327,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(
@@ -392,7 +389,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(
@@ -454,7 +451,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MsixPackageInner> createOrUpdateAsync(
@@ -499,7 +496,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MsixPackageInner> createOrUpdateWithResponse(
@@ -522,7 +519,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -577,7 +574,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -628,7 +625,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hostPoolName, String msixPackageFullName) {
@@ -661,7 +658,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -679,7 +676,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MsixPackageInner>> updateWithResponseAsync(
@@ -739,7 +736,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MsixPackageInner>> updateWithResponseAsync(
@@ -799,7 +796,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MsixPackageInner> updateAsync(
@@ -824,7 +821,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MsixPackageInner> updateAsync(
@@ -869,7 +866,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for MSIX Package properties.
+     * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MsixPackageInner> updateWithResponse(
@@ -890,7 +887,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MsixPackageInner>> listSinglePageAsync(String resourceGroupName, String hostPoolName) {
@@ -947,7 +944,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MsixPackageInner>> listSinglePageAsync(
@@ -1001,7 +998,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MsixPackageInner> listAsync(String resourceGroupName, String hostPoolName) {
@@ -1018,7 +1015,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MsixPackageInner> listAsync(String resourceGroupName, String hostPoolName, Context context) {
@@ -1035,7 +1032,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MsixPackageInner> list(String resourceGroupName, String hostPoolName) {
@@ -1051,7 +1048,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MsixPackageInner> list(String resourceGroupName, String hostPoolName, Context context) {
@@ -1065,7 +1062,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MsixPackageInner>> listNextSinglePageAsync(String nextLink) {
@@ -1101,7 +1098,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MsixPackageInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for ApplicationGroups CreateOrUpdate. */
 public final class ApplicationGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Create.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_Create.json
      */
     /**
      * Sample code: ApplicationGroup_Create.

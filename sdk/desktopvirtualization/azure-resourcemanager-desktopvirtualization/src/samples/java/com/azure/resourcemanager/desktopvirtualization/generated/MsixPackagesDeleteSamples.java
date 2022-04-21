@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for MsixPackages Delete. */
 public final class MsixPackagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Delete.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_Delete.json
      */
     /**
      * Sample code: MSIXPackage_Delete.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGroups Delete. */
 public final class ApplicationGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Delete.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_Delete.json
      */
     /**
      * Sample code: ApplicationGroup_Delete.
