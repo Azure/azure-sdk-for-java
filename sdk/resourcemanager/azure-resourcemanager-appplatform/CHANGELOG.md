@@ -7,6 +7,7 @@
 - Supported Enterprise Tier `Configuration Service`.
 - Supported Enterprise Tier `Build Service`.
 - Supported Enterprise Tier binding `Spring App` to `Configuration Service`.
+- Supported Enterprise Tier `Spring App Deployment` with `Jar` and `Source Code`.
 
 ### Breaking Changes
 
