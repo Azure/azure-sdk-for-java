@@ -160,7 +160,7 @@ public class IdentityClientTests {
     public void testValidDeviceCodeFlow() throws Exception {
         // setup
         String accessToken = "token";
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://managedment.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
