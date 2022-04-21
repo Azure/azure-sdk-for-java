@@ -6,7 +6,6 @@ package com.azure.core.perf;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.CorePerfStressOptions.BackendType;
 import com.azure.core.perf.core.CorePerfStressOptions.BinaryDataSource;
-import com.azure.core.perf.core.CorePerfStressOptions.HttpClientType;
 import com.azure.perf.test.core.PerfStressTest;
 import com.beust.jcommander.JCommander;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

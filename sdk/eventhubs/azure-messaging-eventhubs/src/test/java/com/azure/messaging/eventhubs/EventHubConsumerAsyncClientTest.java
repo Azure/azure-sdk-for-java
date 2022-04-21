@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -492,13 +493,15 @@ class EventHubConsumerAsyncClientTest {
     @Test
     void setsCorrectProperties() {
         // Act
+        String endpointSuffix = Configuration.getGlobalConfiguration()
+            .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=fakekey;EntityPath=dummy-event-hub")
+            .connectionString(String.format("Endpoint=sb://doesnotexist%s/;SharedAccessKeyName=doesnotexist;SharedAccessKey=fakekey;EntityPath=dummy-event-hub", endpointSuffix))
             .consumerGroup(CONSUMER_GROUP)
             .buildAsyncConsumerClient();
 
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
-        Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+        Assertions.assertEquals(String.format("doesnotexist%s", endpointSuffix), consumer.getFullyQualifiedNamespace());
         Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
     }
 

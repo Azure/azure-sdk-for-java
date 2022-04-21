@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** channel. */
 @Fluent
 public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphChannel.class);
-
     /*
      * Optional textual description for the channel.
      */
@@ -46,7 +43,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     private Boolean isFavoriteByDefault;
 
     /*
-     * The membershipType property.
+     * channelMembershipType
      */
     @JsonProperty(value = "membershipType")
     private MicrosoftGraphChannelMembershipType membershipType;
@@ -173,7 +170,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the membershipType property: The membershipType property.
+     * Get the membershipType property: channelMembershipType.
      *
      * @return the membershipType value.
      */
@@ -182,7 +179,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the membershipType property: The membershipType property.
+     * Set the membershipType property: channelMembershipType.
      *
      * @param membershipType the membershipType value to set.
      * @return the MicrosoftGraphChannel object itself.

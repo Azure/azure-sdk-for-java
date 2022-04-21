@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/17bc235417bc2354819345970f35bee357ec4a82b5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5ef5b26c-d912-42da-8dcc-bccd22ea9b23"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1C5B4B4F0823",
+      "Last-Modified" : "Tue, 12 Apr 2022 08:06:05 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fad908e1-001a-0075-6a44-4e79d4000000",
+      "x-ms-client-request-id" : "5ef5b26c-d912-42da-8dcc-bccd22ea9b23",
+      "Date" : "Tue, 12 Apr 2022 08:06:05 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/17bc235417bc2354819345970f35bee357ec4a82b5/17bc235417bc2354819476109693ce2b75a24930a3?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "13339ade-074f-4570-b24c-63883e904fcd"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-file-permission-key" : "13206157815093487607*16113479809698295934",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2022-04-12T08:06:06.0591202Z",
+      "Last-Modified" : "Tue, 12 Apr 2022 08:06:06 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 12 Apr 2022 08:06:05 GMT",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2022-04-12T08:06:06.0591202Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8DA1C5B4B7F7062",
+      "x-ms-request-id" : "fad908e5-001a-0075-6b44-4e79d4000000",
+      "x-ms-client-request-id" : "13339ade-074f-4570-b24c-63883e904fcd",
+      "x-ms-file-last-write-time" : "2022-04-12T08:06:06.0591202Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/17bc235417bc2354819345970f35bee357ec4a82b5/17bc235417bc2354819476109693ce2b75a24930a3%2Ftest%2Fsubdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5c434c14-8c99-403b-89ca-d99245527b5e"
+    },
+    "Response" : {
+      "content-length" : "224",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "578f55d1-901a-0083-3044-4e0c9a000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:578f55d1-901a-0083-3044-4e0c9a000000\nTime:2022-04-12T08:06:06.1732203Z</Message></Error>",
+      "x-ms-client-request-id" : "5c434c14-8c99-403b-89ca-d99245527b5e",
+      "Date" : "Tue, 12 Apr 2022 08:06:05 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "17bc235417bc2354819345970f35bee357ec4a82b5", "17bc235417bc2354819476109693ce2b75a24930a3" ]
+}

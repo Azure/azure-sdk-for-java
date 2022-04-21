@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** scheduleItem. */
 @Fluent
 public final class MicrosoftGraphScheduleItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphScheduleItem.class);
-
     /*
      * dateTimeTimeZone
      */
@@ -45,7 +42,7 @@ public final class MicrosoftGraphScheduleItem {
     private MicrosoftGraphDateTimeZone start;
 
     /*
-     * The status property.
+     * freeBusyStatus
      */
     @JsonProperty(value = "status")
     private MicrosoftGraphFreeBusyStatus status;
@@ -144,7 +141,7 @@ public final class MicrosoftGraphScheduleItem {
     }
 
     /**
-     * Get the status property: The status property.
+     * Get the status property: freeBusyStatus.
      *
      * @return the status value.
      */
@@ -153,7 +150,7 @@ public final class MicrosoftGraphScheduleItem {
     }
 
     /**
-     * Set the status property: The status property.
+     * Set the status property: freeBusyStatus.
      *
      * @param status the status value to set.
      * @return the MicrosoftGraphScheduleItem object itself.
