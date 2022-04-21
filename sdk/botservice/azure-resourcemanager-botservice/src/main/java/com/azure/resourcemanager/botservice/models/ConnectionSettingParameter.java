@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Extra Parameter in a Connection Setting Properties to indicate service provider specific properties. */
 @Fluent
 public final class ConnectionSettingParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionSettingParameter.class);
-
     /*
      * Key for the Connection Setting Parameter.
      */
