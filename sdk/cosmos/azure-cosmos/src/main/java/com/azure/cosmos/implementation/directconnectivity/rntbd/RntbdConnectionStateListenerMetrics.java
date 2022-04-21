@@ -46,9 +46,10 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
         public void serialize(RntbdConnectionStateListenerMetrics metrics, JsonGenerator writer, SerializerProvider serializers) throws IOException {
             writer.writeStartObject();
 
-            writer.writeStringField(
-                "lastCallTimestamp",
-                metrics.lastCallTimestamp.get() == null ? "N/A" : metrics.lastCallTimestamp.toString());
+            if (metrics.lastCallTimestamp.get() != null) {
+                writer.writeStringField(
+                        "lastCallTimestamp", metrics.lastCallTimestamp.toString());
+            }
 
             if (metrics.lastActionableContext.get() != null) {
                 writer.writeStringField("lastActionableContext", metrics.lastActionableContext.get().toString());

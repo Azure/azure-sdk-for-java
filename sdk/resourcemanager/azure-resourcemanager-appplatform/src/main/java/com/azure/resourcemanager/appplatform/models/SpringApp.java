@@ -146,20 +146,20 @@ public interface SpringApp
             WithCreate withPersistentDisk(int sizeInGB, String mountPath);
         }
 
-        /** The stage of a spring app update allowing to specify the service binding. */
+        /** The stage of a spring app definition allowing to specify the service binding. */
         interface WithServiceBinding {
             /**
              * Specifies a service binding for the spring app.
              * @param name the service binding name
              * @param bindingProperties the property for the service binding
-             * @return the next stage of spring app update
+             * @return the next stage of spring app definition
              */
             WithCreate withServiceBinding(String name, BindingResourceProperties bindingProperties);
 
             /**
              * Removes a service binding for the spring app.
              * @param name the service binding name
-             * @return the next stage of spring app update
+             * @return the next stage of spring app definition
              */
             WithCreate withoutServiceBinding(String name);
         }
