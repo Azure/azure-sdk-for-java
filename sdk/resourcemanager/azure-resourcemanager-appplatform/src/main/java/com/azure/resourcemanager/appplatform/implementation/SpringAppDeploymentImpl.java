@@ -43,6 +43,8 @@ import com.azure.storage.file.share.ShareFileClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +150,23 @@ public class SpringAppDeploymentImpl
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
         )
             .map(LogFileUrlResponseInner::url);
+    }
+
+    @Override
+    public List<String> configFilePatterns() {
+        Map<String, Map<String, Object>> addonConfigs = this.innerModel().properties().deploymentSettings().addonConfigs();
+        if (addonConfigs == null) {
+            return Collections.emptyList();
+        }
+        Map<String, Object> configurationConfigs = addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
+        if (configurationConfigs == null) {
+            return Collections.emptyList();
+        }
+        String patterns = (String) configurationConfigs.get(Constants.CONFIG_FILE_PATTERNS_KEY);
+        if (CoreUtils.isNullOrEmpty(patterns)) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(patterns.split(","));
     }
 
     private void ensureDeploySettings() {
@@ -390,8 +409,11 @@ public class SpringAppDeploymentImpl
             withEnvironment("JAVA_OPTS", jvmOptions);
         } else {
             ensureSource(UserSourceType.JAR);
-            JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) innerModel().properties().source();
-            uploadedUserSourceInfo.withJvmOptions(jvmOptions);
+            UserSourceInfo userSourceInfo = innerModel().properties().source();
+            if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+                JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
+                uploadedUserSourceInfo.withJvmOptions(jvmOptions);
+            }
         }
         return this;
     }
@@ -437,6 +459,20 @@ public class SpringAppDeploymentImpl
             context -> parent().update().withActiveDeployment(name()).applyAsync()
                 .map(Function.identity())
         );
+        return this;
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withConfigFilePatterns(List<String> configFilePatterns) {
+        ensureAddonConfigs();
+        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
+        addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, s -> {
+            Map<String, Object> config = new HashMap<>();
+            config.put(
+                Constants.CONFIG_FILE_PATTERNS_KEY,
+                CoreUtils.isNullOrEmpty(configFilePatterns) ? "" : String.join(",", configFilePatterns));
+            return config;
+        });
         return this;
     }
 
@@ -521,11 +557,11 @@ public class SpringAppDeploymentImpl
         private final List<String> configFilePatterns;
         private String module;
 
-        public BuildServiceTask(File file, List<String> configFilePatterns) {
+        BuildServiceTask(File file, List<String> configFilePatterns) {
             this(file, configFilePatterns, false);
         }
 
-        public BuildServiceTask(File file, List<String> configFilePatterns, boolean sourceCodeTarGz) {
+        BuildServiceTask(File file, List<String> configFilePatterns, boolean sourceCodeTarGz) {
             this.file = file;
             this.configFilePatterns = configFilePatterns;
             this.sourceCodeTarGz = sourceCodeTarGz;
@@ -539,16 +575,7 @@ public class SpringAppDeploymentImpl
                         .flatMap(buildId -> {
                             BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
                             userSourceInfo.withBuildResultId(buildId);
-                            // set config file patterns
-                            ensureAddonConfigs();
-                            Map<String, Map<String, Object>> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
-                            addonConfigs.computeIfAbsent("applicationConfigurationService", s -> {
-                                Map<String, Object> config = new HashMap<>();
-                                config.put(
-                                    "configFilePatterns",
-                                    CoreUtils.isNullOrEmpty(configFilePatterns) ? "" : String.join(",", configFilePatterns));
-                                return config;
-                            });
+                            withConfigFilePatterns(this.configFilePatterns);
                             return Mono.empty();
                         }).then(context.voidMono()));
         }
@@ -602,8 +629,8 @@ public class SpringAppDeploymentImpl
 
         private Mono<PollResult<BuildInner>> enqueueBuild(ResourceUploadDefinition option, PollingContext<PollResult<BuildInner>> context) {
             BuildProperties buildProperties = new BuildProperties()
-                .withBuilder(String.format("%s/buildservices/default/builders/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME))
-                .withAgentPool(String.format("%s/buildservices/default/agentPools/default", service().id()))
+                .withBuilder(String.format("%s/buildservices/%s/builders/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
+                .withAgentPool(String.format("%s/buildservices/%s/agentPools/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
                 .withRelativePath(option.relativePath());
             // source code
             if (this.sourceCodeTarGz) {

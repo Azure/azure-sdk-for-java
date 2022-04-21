@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appplatform;
 
 import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
@@ -259,13 +260,24 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String appName = "api-gateway";
         SpringApp app = service.apps().define(appName)
             .defineActiveDeployment(deploymentName)
-            .withJarFile(jarFile, apiGatewayConfigFilePatterns)
+            .withJarFile(jarFile)
             .withInstance(2)
             .withCpu(2)
             .withMemory(4)
             .attach()
             .withDefaultPublicEndpoint()
+            .withConfigurationServiceBinding()
             .create();
+
+        SpringAppDeployment deployment = app.deployments().getByName(deploymentName);
+        Assertions.assertTrue(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
+
+        deployment.update()
+            .withConfigFilePatterns(apiGatewayConfigFilePatterns)
+            .apply();
+
+        deployment.refresh();
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
 
         Assertions.assertNotNull(app.url());
         Assertions.assertNotNull(app.activeDeploymentName());
@@ -283,6 +295,9 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         // no public endpoint
         Assertions.assertNull(app2.url());
+
+        SpringAppDeployment customersDeployment = app2.deployments().getByName(deploymentName);
+        Assertions.assertEquals(customerServiceConfigFilePatterns, customersDeployment.configFilePatterns());
     }
 
     private File downloadFile(String remoteFileUrl) throws Exception {

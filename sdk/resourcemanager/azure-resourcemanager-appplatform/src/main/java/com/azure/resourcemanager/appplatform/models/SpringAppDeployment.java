@@ -70,6 +70,9 @@ public interface SpringAppDeployment
     /** @return the log file url of the deployment */
     Mono<String> getLogFileUrlAsync();
 
+    /** @return (Enterprise Tier Only) config file patterns */
+    List<String> configFilePatterns();
+
     /**
      * Container interface for all the definitions that need to be implemented.
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
@@ -215,6 +218,14 @@ public interface SpringAppDeployment
              * @return the next stage of deployment definition
              */
             T withActivation();
+
+            /**
+             * Specifies the config file patterns for the deployment.
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             * @return the next stage of deployment definition
+             */
+            T withConfigFilePatterns(List<String> configFilePatterns);
         }
 
         /**
@@ -306,6 +317,14 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             Update withActivation();
+
+            /**
+             * Specifies the config file patterns for the deployment.
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             * @return the next stage of deployment update
+             */
+            Update withConfigFilePatterns(List<String> configFilePatterns);
         }
 
         /** The stage of a deployment update allowing to specify the source code or package. */
