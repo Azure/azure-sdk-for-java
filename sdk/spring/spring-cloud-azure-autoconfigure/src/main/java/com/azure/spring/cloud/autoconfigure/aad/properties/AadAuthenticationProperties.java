@@ -37,6 +37,10 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
 
+    private static final String UNMATCHING_OAUTH_GRANT_TYPE_FROMAT = "When 'spring.cloud.azure.active-directory"
+        + ".application-type=%s', 'spring.cloud.azure.active-directory.authorization-clients.%s"
+        + ".authorization-grant-type' can not be '%s'.";
+
     /**
      * Profile of Azure cloud environment.
      */
@@ -107,8 +111,8 @@ public class AadAuthenticationProperties implements InitializingBean {
     private String postLogoutRedirectUri;
 
     /**
-     * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The
-     * default is false which activates AADAuthenticationFilter.
+     * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The default is false which
+     * activates AADAuthenticationFilter.
      */
     private Boolean sessionStateless = false;
 
@@ -123,7 +127,6 @@ public class AadAuthenticationProperties implements InitializingBean {
     private AadApplicationType applicationType;
 
     /**
-     *
      * @return The AADProfileProperties.
      */
     public AadProfileProperties getProfile() {
@@ -131,7 +134,6 @@ public class AadAuthenticationProperties implements InitializingBean {
     }
 
     /**
-     *
      * @return The AADCredentialProperties.
      */
     public AadCredentialProperties getCredential() {
@@ -446,14 +448,13 @@ public class AadAuthenticationProperties implements InitializingBean {
     }
 
     /**
-     *
      * @return Graph membership uri.
      */
     public String getGraphMembershipUri() {
         return getProfile().getEnvironment().getMicrosoftGraphEndpoint()
             + (getUserGroup().isUseTransitiveMembers()
-                ? "v1.0/me/transitiveMemberOf"
-                : "v1.0/me/memberOf");
+            ? "v1.0/me/transitiveMemberOf"
+            : "v1.0/me/memberOf");
     }
 
     /**
@@ -589,29 +590,24 @@ public class AadAuthenticationProperties implements InitializingBean {
             switch (applicationType) {
                 case WEB_APPLICATION:
                     if (ON_BEHALF_OF.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=web_application',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'on_behalf_of'.");
+                        throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
+                            "web_application", registrationId, "on_behalf_of"));
                     }
                     break;
                 case RESOURCE_SERVER:
                     if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'authorization_code'.");
+                        throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
+                            "resource_server", registrationId, "authorization_code"));
                     }
                     if (ON_BEHALF_OF.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'on_behalf_of'.");
+                        throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
+                            "resource_server", registrationId, "on_behalf_of"));
                     }
                     break;
                 case RESOURCE_SERVER_WITH_OBO:
                     if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory"
-                            + ".application-type=resource_server_with_obo',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'authorization_code'.");
+                        throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
+                            "resource_server_with_obo", registrationId, "authorization_code"));
                     }
                     break;
                 case WEB_APPLICATION_AND_RESOURCE_SERVER:
@@ -632,7 +628,8 @@ public class AadAuthenticationProperties implements InitializingBean {
         List<String> scopes = properties.getScopes();
         if (scopes == null || scopes.isEmpty()) {
             throw new IllegalStateException(
-                "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be configured");
+                "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be "
+                    + "configured");
         }
         // Add necessary scopes for authorization_code clients.
         // https://docs.microsoft.com/graph/permissions-reference#remarks-17
