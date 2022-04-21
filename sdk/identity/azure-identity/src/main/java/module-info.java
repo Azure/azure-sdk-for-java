@@ -10,7 +10,6 @@ module com.azure.identity {
     requires com.sun.jna.platform;
     requires org.reactivestreams;
     requires java.xml;
-    requires java.sql;
 
     exports com.azure.identity;
 
