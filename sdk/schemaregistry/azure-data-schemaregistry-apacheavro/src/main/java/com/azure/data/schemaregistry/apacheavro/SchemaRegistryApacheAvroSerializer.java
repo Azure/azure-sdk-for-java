@@ -281,7 +281,9 @@ public final class SchemaRegistryApacheAvroSerializer {
         final String schemaString = schema.toString();
         final String schemaGroup = serializerOptions.getSchemaGroup();
 
-        if (CoreUtils.isNullOrEmpty(serializerOptions.getSchemaGroup())) {
+        // It is possible to create the serializer without setting the schema group. This is the case when
+        // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
+        if (CoreUtils.isNullOrEmpty(schemaGroup)) {
             return monoError(logger, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
                 + "set in SchemaRegistryApacheAvroSerializer.schemaGroup when creating serializer."));
         }

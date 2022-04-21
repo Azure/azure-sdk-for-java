@@ -418,6 +418,27 @@ public class SchemaRegistryApacheAvroSerializerTest {
     }
 
     /**
+     * Verifies that we get an {@link IllegalStateException} if no schemaGroup was set.
+     */
+    @Test
+    public void throwsWhenNoSchemaGroupSet() {
+        // Arrange
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
+        final SerializerOptions serializerOptions = new SerializerOptions(null, true,
+            MOCK_CACHE_SIZE);
+        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializer(
+            client, avroSerializer, serializerOptions);
+
+        final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
+        final TypeReference<MessageContent> typeReference = TypeReference.createInstance(MessageContent.class);
+
+        // Act & Assert
+        StepVerifier.create(serializer.serializeMessageDataAsync(playingCard, typeReference))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
+
+    /**
      * Test that the original preamble payload can be deserialized.
      */
     @Test
