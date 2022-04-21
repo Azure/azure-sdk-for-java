@@ -15,6 +15,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
@@ -162,7 +163,8 @@ public final class SchemaRegistryAsyncClient {
         return restService.getSchemas().registerWithResponseAsync(groupName, name, schemaDefinition, contentType, context)
             .map(response -> {
                 final SchemasRegisterHeaders deserializedHeaders = response.getDeserializedHeaders();
-                final SchemaProperties registered = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
+                final SchemaProperties registered = new SchemaProperties(deserializedHeaders.getSchemaId(), format,
+                    deserializedHeaders.getSchemaName());
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -212,7 +214,10 @@ public final class SchemaRegistryAsyncClient {
             .map(response -> {
                 //TODO (conniey): Will this change in the future if they support additional formats?
                 final SchemaFormat schemaFormat = SchemaFormat.AVRO;
-                final SchemaProperties schemaObject = new SchemaProperties(schemaId, schemaFormat);
+
+                final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
+                final SchemaProperties schemaObject = new SchemaProperties(schemaId, schemaFormat,
+                    headers.getSchemaName());
                 final String schema = new String(response.getValue(), StandardCharsets.UTF_8);
 
                 return new SimpleResponse<>(
@@ -308,7 +313,8 @@ public final class SchemaRegistryAsyncClient {
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
                 final SchemasQueryIdByContentHeaders deserializedHeaders = response.getDeserializedHeaders();
-                final SchemaProperties properties = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
+                final SchemaProperties properties = new SchemaProperties(deserializedHeaders.getSchemaId(), format,
+                    deserializedHeaders.getSchemaName());
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),

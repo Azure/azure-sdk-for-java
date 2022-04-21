@@ -18,16 +18,18 @@ public final class SchemaProperties {
 
     private final String id;
     private final SchemaFormat format;
+    private final String name;
 
     /**
      * Initializes a new instance.
-     *
-     * @param id The schema id.
+     *  @param id The schema id.
      * @param format The type of schema, e.g. avro, json.
+     * @param name The name of the schema.
      */
-    public SchemaProperties(String id, SchemaFormat format) {
+    public SchemaProperties(String id, SchemaFormat format, String name) {
         this.id = id;
         this.format = format;
+        this.name = name;
     }
 
     /**
@@ -45,5 +47,14 @@ public final class SchemaProperties {
      */
     public SchemaFormat getFormat() {
         return format;
+    }
+
+    /**
+     * Gets the name of the schema.
+     *
+     * @return The name of the schema.
+     */
+    public String getName() {
+        return name;
     }
 }

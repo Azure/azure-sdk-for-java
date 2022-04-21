@@ -127,11 +127,12 @@ public class SchemaRegistryApacheAvroSerializerTest {
             ENCODER_FACTORY, DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final Schema playingClassSchema = PlayingCard.getClassSchema();
-        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO);
+        final String schemaName = playingClassSchema.getFullName();
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO, schemaName);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, false, MOCK_CACHE_SIZE);
 
-        when(client.getSchemaProperties(MOCK_SCHEMA_GROUP, playingClassSchema.getFullName(),
-            playingClassSchema.toString(), SchemaFormat.AVRO)).thenReturn(Mono.just(registered));
+        when(client.getSchemaProperties(MOCK_SCHEMA_GROUP, schemaName, playingClassSchema.toString(),
+            SchemaFormat.AVRO)).thenReturn(Mono.just(registered));
 
         final String expectedContentType = AVRO_MIME_TYPE + "+" + MOCK_GUID;
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializer(client,
@@ -182,7 +183,8 @@ public class SchemaRegistryApacheAvroSerializerTest {
             DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final String playingClassSchema = PlayingCard.getClassSchema().toString();
-        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO);
+        final String schemaName = PlayingCard.getClassSchema().getFullName();
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO, schemaName);
         final SchemaRegistrySchema registrySchema = new SchemaRegistrySchema(registered, playingClassSchema);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
@@ -214,12 +216,12 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
         // Deserializing the same message again should work.
         StepVerifier.create(serializer.deserializeMessageDataAsync(message, TypeReference.createInstance(PlayingCard.class)))
-                .assertNext(actual -> {
-                    assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
-                    assertEquals(playingCard.getCardValue(), actual.getCardValue());
-                    assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
-                })
-                .verifyComplete();
+            .assertNext(actual -> {
+                assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
+                assertEquals(playingCard.getCardValue(), actual.getCardValue());
+                assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
+            })
+            .verifyComplete();
     }
 
     public static Stream<Arguments> testEmptyPayload() {
@@ -426,8 +428,10 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .setCardValue(15)
             .setPlayingCardSuit(PlayingCardSuit.SPADES)
             .build();
-        final SchemaRegistrySchema schemaResponse = new SchemaRegistrySchema(
-            new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO), expected.getSchema().toString());
+        final SchemaProperties schemaProperties = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO,
+            PlayingCard.getClassSchema().getFullName());
+        final SchemaRegistrySchema schemaResponse = new SchemaRegistrySchema(schemaProperties,
+            expected.getSchema().toString());
         final AvroSerializer avroSerializer = new AvroSerializer(true, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
@@ -505,8 +509,8 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class)))
-                    .thenAnswer(invocationOnMock -> Mono.fromCallable(() ->
-                            new AccessToken("foo", OffsetDateTime.now().plusMinutes(20))));
+                .thenAnswer(invocationOnMock -> Mono.fromCallable(() ->
+                    new AccessToken("foo", OffsetDateTime.now().plusMinutes(20))));
 
             endpoint = PLAYBACK_ENDPOINT;
         } else {

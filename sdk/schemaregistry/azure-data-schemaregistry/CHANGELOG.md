@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `SchemaProperties.getName()`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
