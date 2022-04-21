@@ -1761,6 +1761,22 @@ class FileAPITests extends APISpec {
         garbageLeaseID | _
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Rename content type"() {
+        setup:
+        primaryFileClient.create(512)
+
+        when:
+        def resp = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setHeaders(new ShareFileHttpHeaders().setContentType("mytype")), null, null)
+
+        def renamedClient = resp.getValue()
+        def props = renamedClient.getProperties()
+
+        then:
+        props.getContentType() == "mytype"
+    }
+
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
