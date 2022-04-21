@@ -318,19 +318,23 @@ stages:
                       - download: current
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
-                      # Pull and build the docker image.
-                      - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-                        parameters:
-                          PackageInfoLocations:
+                  - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+                    parameters:
+                      PackageInfoLocations:
+                        - ${{ each artifact in parameters.Artifacts }}:
+                          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                             - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
-                          WorkingDirectory: $(System.DefaultWorkingDirectory)
-                          TargetDocRepoOwner: 'Azure'
-                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          Language: 'java'
-                          SparseCheckoutPaths:
-                            - docs-ref-services/
-                            - metadata/
-                          DocValidationImageId: "$(DocValidationImageId)"
+                      WorkingDirectory: $(System.DefaultWorkingDirectory)
+                      TargetDocRepoOwner: 'Azure'
+                      TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                      Language: 'java'
+                      SparseCheckoutPaths:
+                        - docs-ref-services/
+                        - metadata/
+                      DocValidationImageId: "$(DocValidationImageId)"
+
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                       - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                         parameters:
                           JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
@@ -470,22 +474,24 @@ stages:
             displayName: 'Configure mvn'
             workingDirectory: $(Build.SourcesDirectory)
 
+          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+            parameters:
+              PackageInfoLocations:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+              WorkingDirectory: $(System.DefaultWorkingDirectory)
+              TargetDocRepoOwner: "azure-sdk"
+              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+              Language: 'java'
+              DailyDocsBuild: true
+              SparseCheckoutPaths:
+                - docs-ref-services/
+                - metadata/
+              DocValidationImageId: "$(DocValidationImageId)"
+
           - ${{ each artifact in parameters.Artifacts }}:
             - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-                parameters:
-                  PackageInfoLocations:
-                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
-                  WorkingDirectory: $(System.DefaultWorkingDirectory)
-                  TargetDocRepoOwner: "azure-sdk"
-                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                  Language: 'java'
-                  DailyDocsBuild: true
-                  SparseCheckoutPaths:
-                    - docs-ref-services/
-                    - metadata/
-                  DocValidationImageId: "$(DocValidationImageId)"
-
               - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                 parameters:
                   JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
