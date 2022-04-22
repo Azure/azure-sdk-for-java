@@ -18,13 +18,13 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
-import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -178,6 +178,7 @@ public final class PageBlobClient extends BlobClientBase {
         return createWithResponse(size, null, null, null, blobRequestConditions, null, Context.NONE).getValue();
     }
 
+
     /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
@@ -260,68 +261,6 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageBlobItem> createWithResponse(PageBlobCreateOptions options, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Creates a page blob of the specified length if it does not exist.
-     * Call PutPage to upload data to a page blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.PageBlobClient.createIfNotExists#long -->
-     * <pre>
-     * PageBlobItem pageBlob = client.createIfNotExists&#40;size&#41;;
-     * System.out.printf&#40;&quot;Created page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.PageBlobClient.createIfNotExists#long -->
-     *
-     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
-     * 512-byte boundary.
-     * @return {@link PageBlobItem} containing information of the created page blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageBlobItem createIfNotExists(long size) {
-        return createIfNotExistsWithResponse(new PageBlobCreateOptions(size), null, null).getValue();
-    }
-
-    /**
-     * Creates a page blob of the specified length if it does not exist. Call PutPage to upload data to a page blob.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context -->
-     * <pre>
-     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;;
-     * Context context = new Context&#40;key, value&#41;;
-     *
-     * Response&lt;PageBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;
-     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
-     *
-     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
-     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
-     * &#125; else &#123;
-     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context -->
-     *
-     * @param options {@link PageBlobCreateOptions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
-     * {@link PageBlobItem} containing information about the page blob. If {@link Response}'s status code is 201, a new
-     * page blob was successfully created. If status code is 409, a page blob already existed at this location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options, Duration timeout,
-        Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient.
-            createIfNotExistsWithResponse(options, context), timeout);
     }
 
     /**

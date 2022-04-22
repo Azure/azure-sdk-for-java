@@ -478,30 +478,4 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions
     }
 
-    /**
-     * Code snippets for {@link PageBlobAsyncClient#createIfNotExists(long)} and
-     * {@link PageBlobAsyncClient#createIfNotExistsWithResponse(PageBlobCreateOptions)}
-     */
-    public void createIfNotExistsCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
-        client.createIfNotExists(size).subscribe(response ->
-            System.out.printf("Created page blob with sequence number %s%n", response.getBlobSequenceNumber()));
-        // END: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
-
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions
-        BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-
-        client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-            .setHeaders(headers).setMetadata(metadata).setTags(tags)).subscribe(response -> {
-                if (response.getStatusCode() == 409) {
-                    System.out.println("Already exists.");
-                } else {
-                    System.out.println("successfully created.");
-                }
-            });
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions
-    }
-
 }

@@ -4,7 +4,6 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -500,33 +499,6 @@ public class PageBlobClientJavaDocCodeSnippets {
                 break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link PageBlobClient#createIfNotExists(long)} and
-     * {@link PageBlobClient#createIfNotExistsWithResponse(PageBlobCreateOptions, Duration, Context)}
-     */
-    public void createIfNotExistsCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.PageBlobClient.createIfNotExists#long
-        PageBlobItem pageBlob = client.createIfNotExists(size);
-        System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.PageBlobClient.createIfNotExists#long
-
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context
-        BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        Context context = new Context(key, value);
-
-        Response<PageBlobItem> response = client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size)
-            .setHeaders(headers).setMetadata(metadata).setTags(tags), timeout, context);
-
-        if (response.getStatusCode() == 409) {
-            System.out.println("Already existed.");
-        } else {
-            System.out.printf("Create completed with status %d%n", response.getStatusCode());
-        }
-        // END: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context
     }
 
 }

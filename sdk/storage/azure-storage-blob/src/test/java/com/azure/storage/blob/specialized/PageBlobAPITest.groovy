@@ -21,7 +21,6 @@ import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
-import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
@@ -215,147 +214,6 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
-    }
-
-    def "Create if not exists all null"() {
-        setup:
-        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
-
-        when:
-        def response = bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES), null, null)
-
-        then:
-        response.getStatusCode() == 201
-        validateBasicHeaders(response.getHeaders())
-        response.getValue().getContentMd5() == null
-        response.getValue().isServerEncrypted()
-    }
-
-    def "Create if not exists blob that already exists"() {
-        setup:
-        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
-        bc = cc.getBlobClient(blobName).getPageBlobClient()
-        def options = new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES)
-        def initialResponse = bc.createIfNotExistsWithResponse(options, null, null)
-
-        when:
-        def secondResponse = bc.createIfNotExistsWithResponse(options, null, null)
-
-        then:
-        initialResponse.getStatusCode() == 201
-        secondResponse.getStatusCode() == 409
-    }
-
-    def "Create if not exists min"() {
-        setup:
-        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
-        bc = cc.getBlobClient(blobName).getPageBlobClient()
-
-        expect:
-        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES), null, null).getStatusCode() == 201
-    }
-
-    def "Create if not exists sequence number"() {
-        setup:
-        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
-        bc = cc.getBlobClient(blobName).getPageBlobClient()
-
-        when:
-        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2), null, null)
-
-        then:
-        bc.getProperties().getBlobSequenceNumber() == 2
-    }
-
-    @Unroll
-    def "Create if not exists headers"() {
-        setup:
-        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
-        bc = cc.getBlobClient(blobName).getPageBlobClient()
-
-        def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
-            .setContentDisposition(contentDisposition)
-            .setContentEncoding(contentEncoding)
-            .setContentLanguage(contentLanguage)
-            .setContentMd5(contentMD5)
-            .setContentType(contentType)
-
-        when:
-        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setHeaders(headers), null, null)
-
-        def response = bc.getPropertiesWithResponse(null, null, null)
-
-        // If the value isn't set the service will automatically set it
-        contentType = (contentType == null) ? "application/octet-stream" : contentType
-
-        then:
-        validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
-
-        where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
-        null         | null               | null            | null            | null                                                                                          | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
-    }
-
-    @Unroll
-    def "Create if not exists metadata"() {
-        setup:
-        setup:
-        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
-        bc = cc.getBlobClient(blobName).getPageBlobClient()
-
-        def metadata = new HashMap<String, String>()
-        if (key1 != null) {
-            metadata.put(key1, value1)
-        }
-        if (key2 != null) {
-            metadata.put(key2, value2)
-        }
-
-        when:
-        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setMetadata(metadata), null, null)
-
-        def response = bc.getPropertiesWithResponse(null, null, null)
-
-        then:
-        response.getStatusCode() == 200
-        response.getValue().getMetadata() == metadata
-
-        where:
-        key1  | value1 | key2   | value2
-        null  | null   | null   | null
-        "foo" | "bar"  | "fizz" | "buzz"
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Unroll
-    def "Create if not exists tags"() {
-        setup:
-        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
-        bc = cc.getBlobClient(blobName).getPageBlobClient()
-
-        def tags = new HashMap<String, String>()
-        if (key1 != null) {
-            tags.put(key1, value1)
-        }
-        if (key2 != null) {
-            tags.put(key2, value2)
-        }
-
-        when:
-        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags), null, null)
-
-        def response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
-
-        then:
-        response.getStatusCode() == 200
-        response.getValue() == tags
-
-        where:
-        key1                | value1     | key2   | value2
-        null                | null       | null   | null
-        "foo"               | "bar"      | "fizz" | "buzz"
-        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
     def "Upload page"() {
@@ -1514,5 +1372,4 @@ class PageBlobAPITest extends APISpec {
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
-
 }

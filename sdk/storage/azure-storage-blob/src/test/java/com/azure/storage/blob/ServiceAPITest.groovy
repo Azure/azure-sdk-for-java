@@ -1104,65 +1104,6 @@ class ServiceAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
-    def "Create blob service"() {
-        when:
-        def containerName = generateContainerName()
-        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
-        def response2 = premiumBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
-
-        then:
-        response.getStatusCode() == 201
-        response2.getStatusCode() == 409
-    }
-
-    def "Delete if exists blob service"() {
-        setup:
-        def containerName = generateContainerName()
-        primaryBlobServiceClient.createBlobContainer(containerName)
-
-        when:
-        def response = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
-
-        then:
-        response.getStatusCode() == 202
-    }
-
-    def "Delete if exists blob service min"() {
-        setup:
-        def containerName = generateContainerName()
-        primaryBlobServiceClient.createBlobContainer(containerName)
-
-        when:
-        def response = premiumBlobServiceClient.deleteBlobContainerIfExists(containerName)
-
-        then:
-        response
-    }
-
-    def "Delete if exists blob service that does not exist"() {
-        when:
-        def response = premiumBlobServiceClient.deleteBlobContainerIfExists(generateContainerName())
-
-        then:
-        !response
-    }
-
-    def "Delete if exists blob service that was already deleted"() {
-        setup:
-        def containerName = generateContainerName()
-        primaryBlobServiceClient.createBlobContainer(containerName)
-
-        when:
-        def response = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
-        def response2 = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
-
-        then:
-        response.getStatusCode() == 202
-        // Confirming the behavior of the api when the container is in the deleting state.
-        // After delete has been called once but before it has been garbage collected
-        response2.getStatusCode() == 202
-    }
-
 //    def "Rename blob container"() {
 //        setup:
 //        def oldName = generateContainerName()
