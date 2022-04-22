@@ -1,0 +1,69 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/e14f609c0e14f609c98610632be2a5d75c0fb44df870?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c529232e-8ee9-4a7c-95ea-2f934e122b3c"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA23C2743C9723",
+      "Last-Modified" : "Thu, 21 Apr 2022 18:12:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "49bd0d15-401e-0038-0bab-55e960000000",
+      "x-ms-client-request-id" : "c529232e-8ee9-4a7c-95ea-2f934e122b3c",
+      "Date" : "Thu, 21 Apr 2022 18:12:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/e14f609c0e14f609c98610632be2a5d75c0fb44df870/e14f609c1e14f609c98637519f8363f6fdf324dc8882?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "60fca9c0-5da4-4f0d-8b5f-59be2e56336e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA23C27472909A",
+      "Last-Modified" : "Thu, 21 Apr 2022 18:12:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "a1807d87-e01f-0098-0cab-556dc1000000",
+      "x-ms-client-request-id" : "60fca9c0-5da4-4f0d-8b5f-59be2e56336e",
+      "Date" : "Thu, 21 Apr 2022 18:12:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/e14f609c0e14f609c98610632be2a5d75c0fb44df870/e14f609c2e14f609c98626262de37438208c04b23ba3?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "860d58f2-42fd-4416-beb9-a57ced8a2203"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA23C27489B67C",
+      "Last-Modified" : "Thu, 21 Apr 2022 18:12:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "a1807d88-e01f-0098-0dab-556dc1000000",
+      "x-ms-client-request-id" : "860d58f2-42fd-4416-beb9-a57ced8a2203",
+      "Date" : "Thu, 21 Apr 2022 18:12:11 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e14f609c0e14f609c98610632be2a5d75c0fb44df870", "e14f609c1e14f609c98637519f8363f6fdf324dc8882", "e14f609c2e14f609c98626262de37438208c04b23ba3" ]
+}

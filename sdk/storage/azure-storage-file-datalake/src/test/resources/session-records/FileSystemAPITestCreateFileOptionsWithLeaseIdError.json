@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/36666a62036666a621d42828741c4376487b54242955?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d04a41df-f337-4feb-baf6-16fa6498fc8c"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA2417C24EF015",
+      "Last-Modified" : "Fri, 22 Apr 2022 04:22:48 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fb8bc71c-701e-000c-4000-56daa8000000",
+      "x-ms-client-request-id" : "d04a41df-f337-4feb-baf6-16fa6498fc8c",
+      "Date" : "Fri, 22 Apr 2022 04:22:48 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/36666a62036666a621d42828741c4376487b54242955/36666a62136666a621d483244746aab9d444349e8a70?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b3cb7e66-bb5f-4f9d-a3f5-528a6caac567"
+    },
+    "Response" : {
+      "content-length" : "250",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "MissingRequiredHeader",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "99dadb92-b01f-0095-6d00-56a515000000",
+      "Body" : "{\"error\":{\"code\":\"MissingRequiredHeader\",\"message\":\"An HTTP header that's mandatory for this request is not specified.\\nRequestId:99dadb92-b01f-0095-6d00-56a515000000\\nTime:2022-04-22T04:22:49.8086958Z\",\"detail\":{\"HeaderName\":\"x-ms-lease-duration\"}}}",
+      "x-ms-client-request-id" : "b3cb7e66-bb5f-4f9d-a3f5-528a6caac567",
+      "Date" : "Fri, 22 Apr 2022 04:22:49 GMT",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "36666a62036666a621d42828741c4376487b54242955", "36666a62136666a621d483244746aab9d444349e8a70" ]
+}

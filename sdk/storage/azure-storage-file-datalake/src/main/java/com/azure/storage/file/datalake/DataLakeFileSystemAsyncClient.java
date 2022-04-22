@@ -902,14 +902,7 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions) {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
             .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
-        DataLakeFileAsyncClient dataLakeFileAsyncClient;
-        try {
-            dataLakeFileAsyncClient = getFileAsyncClient(fileName);
-            return dataLakeFileAsyncClient.createWithResponse(options).map(response ->
-                new SimpleResponse<>(response, dataLakeFileAsyncClient));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return createFileWithResponse(fileName, options);
     }
 
     /**
@@ -919,19 +912,27 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions -->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * Mono&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt; newFileClient = client.createFileWithResponse&#40;fileName, permissions,
-     *     umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions&#41;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Long duration = 15L;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     *
+     * Mono&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt; newFileClient = client.createFileWithResponse&#40;fileName, options&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -1257,20 +1258,28 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-DataLakePathCreateOptions -->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Long duration = 15L;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     *
      * Mono&lt;Response&lt;DataLakeDirectoryAsyncClient&gt;&gt; newDirectoryClient = client.createDirectoryWithResponse&#40;
-     *     directoryName, permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
-     *     requestConditions&#41;;
+     *     directoryName, options&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-DataLakePathCreateOptions -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.

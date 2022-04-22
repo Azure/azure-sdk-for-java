@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Consumer
 import java.util.stream.Collectors
@@ -338,6 +339,74 @@ class DirectoryAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz" || 201
     }
 
+    def "Create options with permissions and umask"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        dc.createWithResponse(options, null, null)
+
+        when:
+        def acl = dc.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+
+    }
+
+    def "Create options with lease id"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        def response = dc.createWithResponse(options, null, null)
+
+        then:
+        // assert lease id not supported for directory
+        thrown(IllegalArgumentException)
+    }
+
+    def "Create options with lease duration"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
+        def response = dc.createWithResponse(options, null, null)
+
+        then:
+        // assert lease duration not supported for directory
+        thrown(IllegalArgumentException)
+    }
+
+    def "Create options with time expires on"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setExpiresOn(OffsetDateTime.now())
+            .setProposedLeaseId(leaseId).setExpiryOptions(PathExpiryOptions.ABSOLUTE)
+        dc.createWithResponse(options, null, null)
+
+        then:
+        // assert expires on not supported for directory
+        thrown(IllegalArgumentException)
+
+    }
+
+    def "Create options with time to expire"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
+            .setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW).setTimeToExpire(Duration.ofDays(6))
+        dc.createWithResponse(options, null, null)
+
+        then:
+        // assert time to expire not supported for directory
+        thrown(IllegalArgumentException)
+
+    }
+
     def "Create if not exists min"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
@@ -437,64 +506,6 @@ class DirectoryAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz" || 201
     }
 
-    def "Create options with permissions and umask"() {
-        setup:
-        dc = fsc.getDirectoryClient(generatePathName())
-        def permissions = "0777"
-        def umask = "0057"
-        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-        dc.createWithResponse(options, null, null)
-
-        when:
-        def acl = dc.getAccessControlWithResponse(true, null, null, null).getValue()
-
-        then:
-        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
-
-    }
-
-    def "Create options lease id"() {
-        when:
-        dc = fsc.getDirectoryClient(generatePathName())
-        def options = new DataLakePathCreateOptions().setLeaseId(receivedLeaseID)
-        def response = dc.createWithResponse(options, null, null)
-
-        then:
-        response.getStatusCode() == 201
-    }
-
-    def "Create options lease duration"() {
-        when:
-        dc = fsc.getDirectoryClient(generatePathName())
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        def response = dc.createWithResponse(options, null, null)
-
-        then:
-        response.getStatusCode() == 201
-    }
-
-    def "Create options time expires on"() {
-        when:
-        dc = fsc.getDirectoryClient(generatePathName())
-        def leaseId = UUID.randomUUID().toString()
-        def expiryTime = OffsetDateTime.now()
-        def options = new DataLakePathCreateOptions().setExpiresOn(expiryTime.toString())
-            .setProposedLeaseId(leaseId).setExpiryOptions(expiryOptions)
-        dc.createWithResponse(options, null, null)
-
-        then:
-        // assert ExpiryNotSupportedForDirectory
-        thrown(DataLakeStorageException)
-
-        where:
-        expiryOptions               | _
-        PathExpiryOptions.RELATIVE_TO_NOW     | _
-        PathExpiryOptions.ABSOLUTE    | _
-        PathExpiryOptions.RELATIVE_TO_CREATION | _
-        PathExpiryOptions.NEVER_EXPIRE | _
-    }
-
     def "Create if not exists permissions and umask"() {
         setup:
         def client = fsc.getDirectoryClient(generatePathName())
@@ -504,6 +515,153 @@ class DirectoryAPITest extends APISpec {
 
         expect:
         client.createIfNotExistsWithResponse(options, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Create if not exists options with ACL"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = dc.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    def "Create if not exists options with owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == ownerName
+        dc.getAccessControl().getGroup() == groupName
+    }
+
+    def "Create if not exists options with null owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setOwner(owner).setGroup(group)
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == "\$superuser"
+        dc.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create if not exists options with path http headers"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        expect:
+        validatePathProperties(
+            dc.getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create if not exists options with metadata"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+
+        expect:
+        dc.createIfNotExistsWithResponse(options, null, null).getStatusCode() == statusCode
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            dc.getProperties().getMetadata().containsKey(k)
+            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create if not exists options with permissions and umask"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        when:
+        def acl = dc.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+
+    }
+
+    def "Create if not exists options with lease id"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        // lease id not supported for directories
+        thrown(IllegalArgumentException)
+    }
+
+    def "Create if not exists options with time expires on"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setExpiresOn(OffsetDateTime.now())
+            .setProposedLeaseId(leaseId).setExpiryOptions(PathExpiryOptions.ABSOLUTE)
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        // assert expires on not supported for directory
+        thrown(IllegalArgumentException)
+
+    }
+
+    def "Create if not exists options with time to expire"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
+            .setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW).setTimeToExpire(Duration.ofDays(6))
+        dc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        // assert time to expire not supported for directory
+        thrown(IllegalArgumentException)
+
     }
 
     def "Delete min"() {
@@ -2854,6 +3012,164 @@ class DirectoryAPITest extends APISpec {
         dc.createFileWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create file options with ACL"() {
+        when:
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        def client = dc.createFileWithResponse(generatePathName(), options, null, null).getValue()
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = client.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    def "Create file options with owner and group"() {
+        when:
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        def result = dc.createFileWithResponse(generatePathName(), options, null, null).getValue()
+
+        then:
+        notThrown(DataLakeStorageException)
+        result.getAccessControl().getOwner() == ownerName
+        result.getAccessControl().getGroup() == groupName
+    }
+
+    def "Create file options with null owner and group"() {
+        when:
+        def options = new DataLakePathCreateOptions().setOwner(null).setGroup(null)
+        def result = dc.createFileWithResponse(generatePathName(), options, null, null).getValue()
+
+        then:
+        notThrown(DataLakeStorageException)
+        result.getAccessControl().getOwner() == "\$superuser"
+        result.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create file options with path http headers"() {
+        setup:
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        def result = dc.createFileWithResponse(generatePathName(), options, null, null).getValue()
+
+        expect:
+        validatePathProperties(
+            result.getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create file options with metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+        def result = dc.createFileWithResponse(generatePathName(), options, null, null)
+
+        expect:
+        result.getStatusCode() == statusCode
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            fsc.getProperties().getMetadata().containsKey(k)
+            fsc.getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create file options with permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        def result = dc.createFileWithResponse(generatePathName(), options, null, null).getValue()
+
+        when:
+        def acl = result.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+    }
+
+    def "Create file options with lease id"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        def response = dc.createFileWithResponse(generatePathName(), options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create file options with lease id error"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
+        dc.createFileWithResponse(generatePathName(), options, null, null)
+
+        then:
+        // lease duration must also be set, or else exception is thrown
+        thrown(DataLakeStorageException)
+    }
+
+    def "Create file options with lease duration"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
+        def response = dc.createFileWithResponse(generatePathName(), options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create file options with time expires on"() {
+        when:
+        def options = new DataLakePathCreateOptions().setExpiryOptions(expiryOptions).setExpiresOn(expiryTime)
+        def response = dc.createFileWithResponse(generatePathName(), options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+
+        where:
+        expiryOptions                           | expiryTime
+        PathExpiryOptions.ABSOLUTE              | OffsetDateTime.now().plusDays(1)
+        PathExpiryOptions.NEVER_EXPIRE          | null
+
+    }
+
+    def "Create file options with time to expire relative to now"() {
+        when:
+        def options = new DataLakePathCreateOptions().setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW)
+            .setTimeToExpire(Duration.ofDays(6))
+        def response = dc.createFileWithResponse(generatePathName(), options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
     def "Create if not exists file min"() {
         when:
         def result = dc.createFileIfNotExists(generatePathName())
@@ -2948,6 +3264,150 @@ class DirectoryAPITest extends APISpec {
 
         expect:
         client.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Create if not exists file options with ACL"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = response.getValue().getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    def "Create if not exists file options with owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getValue().getAccessControl().getOwner() == ownerName
+        response.getValue().getAccessControl().getGroup() == groupName
+    }
+
+    def "Create if not exists file options with null owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setOwner(owner).setGroup(group)
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getValue().getAccessControl().getOwner() == "\$superuser"
+        response.getValue().getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create if not exists file options with path http headers"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        expect:
+        validatePathProperties(
+            response.getValue().getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create if not exists file options with metadata"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        expect:
+        response.getStatusCode() == statusCode
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            response.getValue().getProperties().getMetadata().containsKey(k)
+            response.getValue().getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create if not exists file options with permissions and umask"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        when:
+        def acl = response.getValue().getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+
+    }
+
+    def "Create if not exists file options with lease id"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create if not exists file options with time expires on"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setExpiresOn(OffsetDateTime.now().plusDays(1))
+            .setProposedLeaseId(leaseId).setLeaseDuration(15).setExpiryOptions(PathExpiryOptions.ABSOLUTE)
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+
+    }
+
+    def "Create if not exists file options with time to expire"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+            .setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW).setTimeToExpire(Duration.ofDays(6))
+        def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        response.getStatusCode() == 201
     }
 
     def "Delete file min"() {
@@ -3295,6 +3755,150 @@ class DirectoryAPITest extends APISpec {
         dc.createSubdirectoryWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create sub dir options with ACL"() {
+        when:
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        def client = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null).getValue()
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = client.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    def "Create sub dir options with owner and group"() {
+        when:
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        def result = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null).getValue()
+
+        then:
+        notThrown(DataLakeStorageException)
+        result.getAccessControl().getOwner() == ownerName
+        result.getAccessControl().getGroup() == groupName
+    }
+
+    def "Create sub dir options with null owner and group"() {
+        when:
+        def options = new DataLakePathCreateOptions().setOwner(null).setGroup(null)
+        def result = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null).getValue()
+
+        then:
+        notThrown(DataLakeStorageException)
+        result.getAccessControl().getOwner() == "\$superuser"
+        result.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create sub dir options with path http headers"() {
+        setup:
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        def result = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null).getValue()
+
+        expect:
+        validatePathProperties(
+            result.getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create sub dir options with metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+        def result = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null)
+
+        expect:
+        result.getStatusCode() == statusCode
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            fsc.getProperties().getMetadata().containsKey(k)
+            fsc.getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create sub dir options with permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        def result = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null).getValue()
+
+        when:
+        def acl = result.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+    }
+
+    def "Create sub dir options with lease id"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        def response = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Create sub dir options with lease duration"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
+         dc.createSubdirectoryWithResponse(generatePathName(), options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Create sub dir options with time expires on absolute error"() {
+        when:
+        def options = new DataLakePathCreateOptions().setExpiryOptions(PathExpiryOptions.ABSOLUTE)
+            .setExpiresOn(OffsetDateTime.now().plusDays(1))
+        dc.createSubdirectoryWithResponse(generatePathName(), options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+    }
+
+        def "Create sub dir options with time to expire relative to now error"() {
+        when:
+        def options = new DataLakePathCreateOptions().setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW)
+            .setTimeToExpire(Duration.ofDays(6))
+        dc.createSubdirectoryWithResponse(generatePathName(), options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+
     def "Create if not exists sub dir min"() {
         when:
         def client = dc.createSubdirectoryIfNotExists(generatePathName())
@@ -3408,6 +4012,150 @@ class DirectoryAPITest extends APISpec {
 
         expect:
         client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Create if not exists sub dir options with ACL"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        def response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = response.getValue().getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    def "Create if not exists sub dir options with owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        def response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getValue().getAccessControl().getOwner() == ownerName
+        response.getValue().getAccessControl().getGroup() == groupName
+    }
+
+    def "Create if not exists sub dir options with null owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setOwner(owner).setGroup(group)
+        def response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getValue().getAccessControl().getOwner() == "\$superuser"
+        response.getValue().getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create if not exists sub dir options with path http headers"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        def response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        expect:
+        validatePathProperties(
+            response.getValue().getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create if not exists sub dir options with metadata"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+        def response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        expect:
+        response.getStatusCode() == statusCode
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            response.getValue().getProperties().getMetadata().containsKey(k)
+            response.getValue().getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create if not exists sub dir options with permissions and umask"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        def response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        when:
+        def acl = response.getValue().getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+
+    }
+
+    def "Create if not exists sub dir options with lease id"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Create if not exists sub dir options with time expires on"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setExpiresOn(OffsetDateTime.now().plusDays(1))
+            .setProposedLeaseId(leaseId).setLeaseDuration(15).setExpiryOptions(PathExpiryOptions.ABSOLUTE)
+        dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+    }
+
+    def "Create if not exists sub dir options with time to expire"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+            .setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW).setTimeToExpire(Duration.ofDays(6))
+        dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
     def "Delete sub dir min"() {

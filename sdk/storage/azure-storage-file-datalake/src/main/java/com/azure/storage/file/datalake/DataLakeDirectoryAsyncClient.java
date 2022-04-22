@@ -373,17 +373,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeFileAsyncClient dataLakeFileAsyncClient;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
         try {
-            dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+            return createFileWithResponse(fileName, options);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
-
-        return dataLakeFileAsyncClient.createWithResponse(options)
-            .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
     }
 
     /**
@@ -394,20 +390,27 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions -->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakeFileAsyncClient newFileClient = client.createFileWithResponse&#40;fileName,
-     *     permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions
-     * &#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Long duration = 15L;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     *
+     * DataLakeFileAsyncClient newFileClient = client.createFileWithResponse&#40;fileName, options&#41;.block&#40;&#41;.getValue&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions -->
      *
      * @param fileName Name of the file to create.
      * @param options {@link DataLakePathCreateOptions}
@@ -415,8 +418,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName,
-        DataLakePathCreateOptions options) {
+    public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, DataLakePathCreateOptions options) {
         DataLakeFileAsyncClient dataLakeFileAsyncClient;
         try {
             dataLakeFileAsyncClient = getFileAsyncClient(fileName);
@@ -749,17 +751,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
             .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
         try {
-            dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
+            return createSubdirectoryWithResponse(subdirectoryName, options);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-
-        return dataLakeDirectoryAsyncClient.createWithResponse(options)
-            .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
     }
 
     /**
@@ -769,21 +767,28 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions -->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryWithResponse&#40;
-     *     directoryName, permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
-     *     requestConditions
-     * &#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Long duration = 15L;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     *
+     * DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryWithResponse&#40;directoryName, options&#41;
+     *     .block&#40;&#41;.getValue&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions -->
      *
      * @param subdirectoryName Name of the sub-directory to create.
      * @param options {@link DataLakePathCreateOptions}
@@ -796,12 +801,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
         try {
             dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
+            return dataLakeDirectoryAsyncClient.createWithResponse(options)
+                .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-
-        return dataLakeDirectoryAsyncClient.createWithResponse(options)
-            .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
     }
 
     /**

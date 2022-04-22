@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/05d12bb1005d12bb1279430768f722c5f9aa746f9837?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9e1f339b-b8fb-4f02-b4de-eb281d97800b"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA2418F6A67734",
+      "Last-Modified" : "Fri, 22 Apr 2022 04:31:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "2f62e38a-c01e-0009-6b01-560873000000",
+      "x-ms-client-request-id" : "9e1f339b-b8fb-4f02-b4de-eb281d97800b",
+      "Date" : "Fri, 22 Apr 2022 04:31:25 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "05d12bb1005d12bb1279430768f722c5f9aa746f9837", "05d12bb1105d12bb1279657649d2c487269ed4cc89b5" ]
+}

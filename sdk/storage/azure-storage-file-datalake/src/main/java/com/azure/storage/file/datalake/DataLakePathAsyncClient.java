@@ -14,6 +14,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -369,21 +370,28 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions -->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Long duration = 15L;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
      *
-     * client.createWithResponse&#40;permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
-     *     requestConditions&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * client.createWithResponse&#40;options&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
@@ -396,8 +404,7 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options) {
         if (options == null) {
-            options = new DataLakePathCreateOptions()
-                .setRequestConditions(new DataLakeRequestConditions()).setPathHttpHeaders(new PathHttpHeaders());
+            options = new DataLakePathCreateOptions();
         }
         try {
             DataLakePathCreateOptions finalOptions = options;
@@ -419,17 +426,46 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(options.getRequestConditions().getIfModifiedSince())
             .setIfUnmodifiedSince(options.getRequestConditions().getIfUnmodifiedSince());
 
-        String acl = options.getAccessControlList() != null ? PathAccessControlEntry.serializeList(options.getAccessControlList()) : null;
+        String acl = options.getAccessControlList() != null ? PathAccessControlEntry
+            .serializeList(options.getAccessControlList()) : null;
+        String expiresOnString = setFieldsIfNull(options);
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType,
                 options.getContinuation(), null, null, options.getSourceLeaseId(),
                 buildMetadataString(options.getMetadata()), options.getPermissions(), options.getUmask(),
                 options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(), options.getLeaseDuration(),
-                options.getExpiryOptions(), options.getExpiresOn(), options.getPathHttpHeaders(), lac, mac, null,
-                options.getCpkInfo(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(), lac, mac, null,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
+    }
+
+    String setFieldsIfNull(DataLakePathCreateOptions options) {
+        if (pathResourceType == PathResourceType.DIRECTORY) {
+            if (options.getProposedLeaseId() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
+            }
+            if (options.getLeaseDuration() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
+            }
+            if (options.getTimeToExpire() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
+            }
+            if (options.getExpiresOn() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
+            }
+        }
+        if (options.getTimeToExpire() != null && options.getExpiresOn() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
+        }
+        String expiresOn = null;
+        if (options.getTimeToExpire() != null) {
+            expiresOn = Long.toString(options.getTimeToExpire().toMillis());
+        } else if (options.getExpiresOn() != null) {
+            expiresOn = DateTimeRfc1123.toRfc1123String(options.getExpiresOn());
+        }
+        return expiresOn;
     }
 
     /**
