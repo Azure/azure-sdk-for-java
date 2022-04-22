@@ -5,28 +5,28 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
-/** Defines values for SelectionMarkState. */
+/**
+ * Defines values for SelectionMarkState. i.e., Selected or Unselected.
+ */
 public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
-    /** Static value selected for SelectionMarkState. */
+    /**
+     * Static value SELECTED for SelectionMarkState.
+     */
     public static final SelectionMarkState SELECTED = fromString("selected");
 
-    /** Static value unselected for SelectionMarkState. */
+    /**
+     * Static value UNSELECTED for SelectionMarkState.
+     */
     public static final SelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
      * Creates or finds a SelectionMarkState from its string representation.
      *
-     * @param name a name to look for.
+     * @param value a value to look for.
+     *
      * @return the corresponding SelectionMarkState.
      */
-    public static SelectionMarkState fromString(String name) {
-        return fromString(name, SelectionMarkState.class);
-    }
-
-    /** @return known SelectionMarkState values. */
-    public static Collection<SelectionMarkState> values() {
-        return values(SelectionMarkState.class);
+    public static SelectionMarkState fromString(String value) {
+        return fromString(value, SelectionMarkState.class);
     }
 }
