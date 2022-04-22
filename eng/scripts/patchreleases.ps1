@@ -290,7 +290,7 @@ function GenerateHtmlReport($Artifacts, $PatchBranchName, $BomFileBranchName) {
     foreach ($artifact in $Artifacts) {
         $artifactId = $artifact.ArtifactId
         $pipelineName = $artifact.PipelineName
-        $arWithSamePipeline = $Artifacts | Where-Object { $_.PipelineName -eq $pipelineName }
+        $arWithSamePipeline = $Artifacts | Where-Object { $_.PipelineName -eq $pipelineName } | Select-Object -Property 'ArtifactId'
         $pipelineNameCount = $arWithSamePipeline.Count
 
         $html += "<tr>"
@@ -308,7 +308,7 @@ function GenerateHtmlReport($Artifacts, $PatchBranchName, $BomFileBranchName) {
         }
     }
     
-    $html += "<tr><td>$BomFileBranchName</td><td>azure-sdk-bom</td></tr>"
+    $html += "<tr><td>azure-sdk-bom</td><td>java-boms</td><td>$BomFileBranchName</td></tr>"
     $html += "</table>"
     $currentDate = Get-Date -Format "dddd MM/dd/yyyy HH:mm K"
 
@@ -359,25 +359,25 @@ if ($LASTEXITCODE -ne 0) {
 UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
 $bomPatchVersion = GetNextBomVersion
-$bomBranchName = "bom_$bomPatchVersion_1"
+$bomBranchName = "bom1_$bomPatchVersion"
 Write-Output "Preparing patch releases for BOM updates."
-try {
-    $patchBranchName = "PatchSet_$bomPatchVersion_1"
-    git checkout -b $patchBranchName #$RemoteName/main
-    UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
+# try {
+#     $patchBranchName = "PatchSet1_$bomPatchVersion_1"
+#     git checkout -b $patchBranchName #$RemoteName/main
+#     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
-    foreach ($artifactId in $ArtifactsToPatch.Keys) {
-        $arInfo = $ArtifactInfos[$artifactId]
-        $patchInfo = [ArtifactPatchInfo]::new()
-        $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
-        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
-    }
-}
-finally {
-    $cmdOutput = git checkout $CurrentBranchName
-}
+#     foreach ($artifactId in $ArtifactsToPatch.Keys) {
+#         $arInfo = $ArtifactInfos[$artifactId]
+#         $patchInfo = [ArtifactPatchInfo]::new()
+#         $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
+#         GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
+#     }
+# }
+# finally {
+#     $cmdOutput = git checkout $CurrentBranchName
+# }
 
-GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
+# GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
 
 $orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
