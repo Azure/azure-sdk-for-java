@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93688b2a-16f1-4f22-8628-fbba02a2f13d",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "334",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "request-id" : "93688b2a-16f1-4f22-8628-fbba02a2f13d",
       "StatusCode" : "400",
-      "Date" : "Tue, 13 Jul 2021 19:22:19 GMT",
+      "Date" : "Thu, 27 May 2021 21:14:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "client-request-id" : "93688b2a-16f1-4f22-8628-fbba02a2f13d",
       "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.tokenizers[0].flags : Values of property \\\"flags\\\" must belong to the set of allowed values (case-sensitive) or be in the pipe form of them (e.g. value1|value2|...): CANON_EQ, CASE_INSENSITIVE, COMMENTS, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNIX_LINES.\\r\\n\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "x-ms-client-request-id" : "93688b2a-16f1-4f22-8628-fbba02a2f13d",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsemptyflagstokenizerb3e188281e7327", "azsmnet42437c66f90" ]
+  "variables" : [ "hotelscanuseallregexflagsemptyflagstokenizerd0789894b9c1d0", "azsmnet7010955ea90" ]
 }
