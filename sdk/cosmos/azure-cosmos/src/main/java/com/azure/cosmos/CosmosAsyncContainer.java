@@ -503,20 +503,26 @@ public class CosmosAsyncContainer {
     public Mono<String> openConnectionsAndInitializeCaches() {
 
         if(isInitialized.compareAndSet(false, true)) {
-            return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
-                    .collectList()
-                    .flatMap(openConnectionResponses -> {
-                        // Generate a simple statistics string for open connections
-                        int total = openConnectionResponses.size();
-                        long connectionsEstablished = openConnectionResponses.stream().filter(response -> response.isConnected()).count();
-                        return Mono.just(String.format("Established: %s, Failed: %s", connectionsEstablished, total - connectionsEstablished));
-                    });
-
+            return withContext(context -> openConnectionsAndInitCachesInternal());
         } else {
-            String message = String.format("openConnectionsAndInitializeCaches is already called once on Container %s, no operation will take place in this call", this.getId());
+            String message =
+                    String.format(
+                            "openConnectionsAndInitializeCaches is already called once on Container %s, no operation will take place in this call",
+                            this.getId());
             logger.warn(message);
             return Mono.just(message);
         }
+    }
+
+    private Mono<String> openConnectionsAndInitCachesInternal() {
+        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
+                .collectList()
+                .flatMap(openConnectionResponses -> {
+                    // Generate a simple statistics string for open connections
+                    int total = openConnectionResponses.size();
+                    long connectionsEstablished = openConnectionResponses.stream().filter(response -> response.isConnected()).count();
+                    return Mono.just(String.format("Established: %s, Failed: %s", connectionsEstablished, total - connectionsEstablished));
+                });
     }
 
     /**

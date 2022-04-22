@@ -864,14 +864,14 @@ public class GatewayAddressCache implements IAddressCache {
 
             tasks.add(
                     this.getServerAddressesViaGatewayAsync(
-                    request,
-                    collection.getResourceId(),
-                    partitionKeyRangeIdentities
-                            .subList(i, endIndex)
-                            .stream()
-                            .map(PartitionKeyRangeIdentity::getPartitionKeyRangeId)
-                            .collect(Collectors.toList()),
-                    false).flux());
+                        request,
+                        collection.getResourceId(),
+                        partitionKeyRangeIdentities
+                                .subList(i, endIndex)
+                                .stream()
+                                .map(PartitionKeyRangeIdentity::getPartitionKeyRangeId)
+                                .collect(Collectors.toList()),
+                        false).flux());
         }
 
         return Flux.concat(tasks)
@@ -885,12 +885,17 @@ public class GatewayAddressCache implements IAddressCache {
                     return Flux.fromIterable(addressInfos)
                             .flatMap(addressInfo -> {
                                 this.serverPartitionAddressCache.set(
-                                        new PartitionKeyRangeIdentity(collection.getResourceId(), addressInfo.getLeft().getPartitionKeyRangeId()),
+                                        new PartitionKeyRangeIdentity(
+                                                collection.getResourceId(),
+                                                addressInfo.getLeft().getPartitionKeyRangeId()),
                                         addressInfo.getRight());
 
                                 if (this.openConnectionsHandler != null) {
                                     return this.openConnectionsHandler.openConnections(
-                                            Arrays.stream(addressInfo.getRight()).map(addressInformation -> addressInformation.getPhysicalUri()).collect(Collectors.toList()));
+                                            Arrays
+                                                    .stream(addressInfo.getRight())
+                                                    .map(addressInformation -> addressInformation.getPhysicalUri())
+                                                    .collect(Collectors.toList()));
                                 }
 
                                 logger.info("OpenConnectionHandler is null, can not open connections");

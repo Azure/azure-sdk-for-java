@@ -4126,7 +4126,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
 
-        return this.storeModel.openConnectionsAndInitCaches(containerLink);
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return ObservableHelper.fluxInlineIfPossibleAsObs(
+                () -> this.storeModel.openConnectionsAndInitCaches(containerLink),
+                retryPolicyInstance);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
