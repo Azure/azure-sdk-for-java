@@ -138,14 +138,29 @@ function GetDependencyToVersion($PomFilePath) {
   return $dependencyNameToVersion
 }
 
-function GetChangeLogContent($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
+function GetChangeLogContentFromMessage($ContentMessage) {
   $content = @()
   $content += ""
   $content += "### Other Changes"
   $content += ""
   $content += "#### Dependency Updates"
   $content += ""
-    
+  
+  $content += $ContentMessage
+  $content += ""
+  
+  return $content
+}
+
+function GetChangeLogEntryForPatch($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
+  $content = GetDependencyUpgradeChangeLogMessage -NewDependencyNameToVersion $NewDependencyNameToVersion -OldDependencyNameToVersion $OldDependencyNameToVersion
+
+  $content = GetChangeLogContentFromMessage($content)
+  return $content
+}
+
+function GetDependencyUpgradeChangeLogMessage($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
+  $content = @() 
   foreach ($key in $OldDependencyNameToVersion.Keys) {
     $oldVersion = $($OldDependencyNameToVersion[$key]).Trim()
     $newVersion = $($NewDependencyNameToVersion[$key]).Trim()
@@ -155,8 +170,27 @@ function GetChangeLogContent($NewDependencyNameToVersion, $OldDependencyNameToVe
   }
     
   $content += ""
-  
   return $content
+}
+
+function UpdateChangeLogEntry($ChangeLogPath, $PatchVersion, $ArtifactId, $Content) {
+  $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
+  $releaseStatus = "($releaseStatus)"
+  $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $ChangeLogPath
+  $newChangeLogEntry = New-ChangeLogEntry -Version $PatchVersion -Status $releaseStatus -Content $Content
+  if ($newChangeLogEntry) {
+    $changeLogEntries.Insert(0, $PatchVersion, $newChangeLogEntry)
+  }
+  else {
+    LogError "Failed to create new changelog entry for $ArtifactId"
+    exit 1
+  }
+    
+  $cmdOutput = Set-ChangeLogContent -ChangeLogLocation $ChangeLogPath -ChangeLogEntries $changeLogEntries
+  if ($LASTEXITCODE -ne 0) {
+    LogError "Could not update the changelog at $ChangeLogPath). Exiting..."
+    exit $LASTEXITCODE
+  }
 }
   
 function GitCommit($Message) {
@@ -288,23 +322,9 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
   $releaseStatus = "($releaseStatus)"
   $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $changelogPath
-    
-  $Content = GetChangeLogContent -NewDependencyNameToVersion $newDependenciesToVersion -OldDependencyNameToVersion $oldDependencyNameToVersion
-  $newChangeLogEntry = New-ChangeLogEntry -Version $patchVersion -Status $releaseStatus -Content $Content
-  if ($newChangeLogEntry) {
-    $changeLogEntries.Insert(0, $patchVersion, $newChangeLogEntry)
-  }
-  else {
-    LogError "Failed to create new changelog entry for $artifactId"
-    exit 1
-  }
-    
-  $cmdOutput = Set-ChangeLogContent -ChangeLogLocation $changelogPath -ChangeLogEntries $changeLogEntries
-  if ($LASTEXITCODE -ne 0) {
-    LogError "Could not update the changelog at $changelogPath). Exiting..."
-    exit $LASTEXITCODE
-  }
-    
+
+  $content = GetChangeLogEntryForPatch -NewDependencyNameToVersion $newDependenciesToVersion -OldDependencyNameToVersion $oldDependencyNameToVersion
+  UpdateChangeLogEntry -ChangeLogPath $changelogPath -PatchVersion $patchVersion -ArtifactId $artifactId -Content $content    
   GitCommit -Message "Prepare $artifactId for $patchVersion patch release."
   Write-Output "Pushing changes to the upstream branch: $RemoteName/$BranchName"
   $cmdOutput = git push $RemoteName $BranchName

@@ -6,7 +6,7 @@ pr:
       - main
   paths:
     include:
-      - eng/scripts/bompreperation.yml
+      - eng/pipelines/bompreparation.yml
 
 stages:
   - stage: AnalyzeAndGeneratePatches

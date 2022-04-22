@@ -11,6 +11,7 @@ $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1
 $BomHelpersFilePath = Join-Path $PSScriptRoot "bomhelpers.ps1"
 $PatchReportFile = Join-Path $PSScriptRoot "patchreport.html"
 $BomFilePath = Join-Path $RepoRoot "sdk" "boms" "azure-sdk-bom" "pom.xml"
+$BomChangeLogPath = Join-Path $RepoRoot "sdk" "boms" "azure-sdk-bom" "changelog.md"
 $NewBomFilePath = Join-Path $PSScriptRoot "bom.xml"
 $NewBomFileReport = Join-Path $PSScriptRoot "bompom.html" 
 . $CommonScriptFilePath
@@ -232,16 +233,16 @@ function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
     $dependency = $Doc.CreateElement("dependency", $xmlns);
     $groupId = $Doc.CreateElement("groupId", $xmlns);
     $groupId.InnerText = $Artifact.GroupId
-    $dependency.AppendChild($groupId);
+    $cmdOutput = $dependency.AppendChild($groupId);
     $artifactId = $Doc.CreateElement("artifactId", $xmlns);
     $artifactId.InnerText = $Artifact.ArtifactId
-    $dependency.AppendChild($artifactId);
+    $cmdOutput = $dependency.AppendChild($artifactId);
     $version = $Doc.CreateElement("version", $xmlns);
     $version.InnerText = $Artifact.Version
-    $dependency.AppendChild($version);
+    $cmdOutput = $dependency.AppendChild($version);
 
     $dependencies = $bomFileContent.GetElementsByTagName("dependencies")[0]
-    $dependencies.AppendChild($dependency)
+    $cmdOutput = $dependencies.AppendChild($dependency)
 }
 
 function TopologicalSortUtil($ArtifactId, $ArtifactInfos, $ArtifactIds, $Visited, $Order) {
@@ -271,13 +272,13 @@ function GetTopologicalSort($ArtifactIds, $ArtifactInfos) {
     return $order
 }
 
-function UndoVersionClientFile() {
-    $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
-    $versionClientFile = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
-    $cmdOutput = git checkout $versionClientFile
-}
+# function UndoVersionClientFile() {
+#     $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+#     $versionClientFile = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+#     $cmdOutput = git checkout $versionClientFile
+# }
 
-function GenerateBOMFile($ArtifactInfos, $ArtifactsToPatch) {
+function GenerateBOMFile($ArtifactInfos, $ArtifactsToPatch, $BomFileBranchName) {
     $gaArtifacts = @()
     foreach($artifact in $ArtifactInfos.Values) {
         if($null -eq $ArtifactsToPatch[$artifact.ArtifactId]) {
@@ -321,6 +322,26 @@ function GenerateBOMFile($ArtifactInfos, $ArtifactsToPatch) {
     $body = $bomContentAsString -join "`r`n" | Out-String
     $html = "<textarea rows='$colCount' cols='300' style='border:none'>" + $body + '</textarea>'
     $html | Out-File -FilePath $NewBomFileReport 
+
+    $currentBranchName = GetCurrentBranchName
+    try {
+        $releaseVersion = $bomFileContent.project.version
+        $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
+        $remoteName = GetRemoteName
+        $branchName = "bot/bom_$patchVersion"
+        $cmdOutput = git checkout -b $branchName $remoteName/main 
+        $bomFileContent.Save($BomFilePath)
+        git add $BomFilePath
+        $content = 'Updated the dependencies of the GA libraries'
+        UpdateChangeLogEntry -ChangeLogPath $BomChangeLogPath -PatchVersion $patchVersion -ArtifactId "azure-sdk-bom" -Content $content    
+        git add $BomChangeLogPath
+        git commit -m "Prepare BOM for release version $releaseVersion"
+        git push -f $remoteName $branchName
+        $BomFileBranchName = $branchName
+    }
+    finally {
+        git checkout $currentBranchName
+    }
 }
 
 function GenerateHtmlReportRow($Html, $ArtifactIds, $ReleaseBranch) {
@@ -336,15 +357,15 @@ function GenerateHtmlReportRow($Html, $ArtifactIds, $ReleaseBranch) {
     }
 }
 
-function GenerateHtmlReport($JsonReport) {
+function GenerateHtmlReport($JsonReport, $BomFileBranchName) {
     $html = [System.Collections.ArrayList]::new()
-    $cmdOutput = $html.add("<head><title>Patch Report</title></head><body><table border='1'>")
+    $cmdOutput = $html.add("<head><title>Patch Report</title></head><body><table border='1'><tr><th>Release Branch</th><th>Artifact</th><tr>")
     foreach($elem in $JsonReport) {
         GenerateHtmlReportRow -Html $html -ArtifactIds $elem.Artifacts -ReleaseBranch $elem.Branch
     }
 
+    $cmdOutput = $html.add("<tr><td>$BomFileBranchName</td><td>azure-sdk-bom</td></tr>");
     $cmdOutput = $html.Add("</table>")
-    $cmdOutput = $html.Add("<tr><th>Release Branch</th><th>Artifact</th><tr>")
     $currentDate = Get-Date -Format "dddd MM/dd/yyyy HH:mm K"
 
     $cmdOutput = $html.Add("<p>Report generated on $currentDate </p>")
@@ -381,7 +402,6 @@ $AzCoreNettyArtifactId = "azure-core-http-netty"
 $ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
 
 $ArtifactsToPatch = FindAllArtifactsToBePatched -DependencyId $AzCoreArtifactId -PatchVersion $AzCoreVersion -ArtifactInfos $ArtifactInfos
-GenerateBOMFile -ArtifactInfos $ArtifactInfos -ArtifactsToPatch $ArtifactsToPatch
 
 $ReleaseSets = GetPatchSets -ArtifactsToPatch $ArtifactsToPatch -ArtifactInfos $ArtifactInfos
 $RemoteName = GetRemoteName
@@ -423,4 +443,5 @@ foreach ($patchSet in $ReleaseSets) {
     }
 }
 
-GenerateHtmlReport -JsonReport $JsonReport
+GenerateBOMFile -ArtifactInfos $ArtifactInfos -ArtifactsToPatch $ArtifactsToPatch -BomFileBranchName $BomFileBranchName
+GenerateHtmlReport -JsonReport $JsonReport -BomFileBranchName $BomFileBranchName
