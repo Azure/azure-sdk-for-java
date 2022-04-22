@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DicomServices Update. */
 public final class DicomServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/dicomservices/DicomServices_Patch.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/dicomservices/DicomServices_Patch.json
      */
     /**
      * Sample code: Update a dicomservice.

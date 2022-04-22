@@ -149,6 +149,13 @@ public interface FhirService {
     ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration();
 
     /**
+     * Gets the importConfiguration property: Fhir Service import configuration.
+     *
+     * @return the importConfiguration value.
+     */
+    FhirServiceImportConfiguration importConfiguration();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -205,7 +212,8 @@ public interface FhirService {
                 DefinitionStages.WithCorsConfiguration,
                 DefinitionStages.WithExportConfiguration,
                 DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithResourceVersionPolicyConfiguration {
+                DefinitionStages.WithResourceVersionPolicyConfiguration,
+                DefinitionStages.WithImportConfiguration {
             /**
              * Executes the create request.
              *
@@ -354,6 +362,16 @@ public interface FhirService {
              */
             WithCreate withResourceVersionPolicyConfiguration(
                 ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration);
+        }
+        /** The stage of the FhirService definition allowing to specify importConfiguration. */
+        interface WithImportConfiguration {
+            /**
+             * Specifies the importConfiguration property: Fhir Service import configuration..
+             *
+             * @param importConfiguration Fhir Service import configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withImportConfiguration(FhirServiceImportConfiguration importConfiguration);
         }
     }
     /**

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkspacePrivateEndpointConnections ListByWorkspace. */
 public final class WorkspacePrivateEndpointConnectionsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/WorkspaceListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/privatelink/WorkspaceListPrivateEndpointConnections.json
      */
     /**
      * Sample code: WorkspacePrivateEndpointConnection_List.

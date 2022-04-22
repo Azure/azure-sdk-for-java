@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkspacePrivateEndpointConnections Delete. */
 public final class WorkspacePrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/WorkspaceDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/privatelink/WorkspaceDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: WorkspacePrivateEndpointConnections_Delete.

@@ -119,9 +119,6 @@ public final class HealthcareApisManagementClientBuilder {
      * @return an instance of HealthcareApisManagementClientImpl.
      */
     public HealthcareApisManagementClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }

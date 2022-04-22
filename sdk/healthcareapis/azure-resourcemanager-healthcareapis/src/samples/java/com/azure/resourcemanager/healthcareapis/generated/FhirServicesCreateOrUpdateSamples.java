@@ -9,6 +9,7 @@ import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfigurati
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceCorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceExportConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.FhirServiceImportConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceKind;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityType;
@@ -19,7 +20,7 @@ import java.util.Map;
 /** Samples for FhirServices CreateOrUpdate. */
 public final class FhirServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_Create.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/fhirservices/FhirServices_Create.json
      */
     /**
      * Sample code: Create or update a Fhir Service.
@@ -56,6 +57,11 @@ public final class FhirServicesCreateOrUpdateSamples {
                     .withAllowCredentials(false))
             .withExportConfiguration(
                 new FhirServiceExportConfiguration().withStorageAccountName("existingStorageAccount"))
+            .withImportConfiguration(
+                new FhirServiceImportConfiguration()
+                    .withIntegrationDataStore("existingStorageAccount")
+                    .withInitialImportMode(false)
+                    .withEnabled(false))
             .create();
     }
 

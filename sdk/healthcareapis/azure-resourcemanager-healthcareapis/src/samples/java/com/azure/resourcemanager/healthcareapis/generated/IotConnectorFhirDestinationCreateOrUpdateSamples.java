@@ -13,7 +13,7 @@ import java.io.IOException;
 /** Samples for IotConnectorFhirDestination CreateOrUpdate. */
 public final class IotConnectorFhirDestinationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/iotconnectors/iotconnector_fhirdestination_Create.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/iotconnectors/iotconnector_fhirdestination_Create.json
      */
     /**
      * Sample code: Create or update an Iot Connector FHIR destination.

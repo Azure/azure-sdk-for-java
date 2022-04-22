@@ -10,7 +10,7 @@ import com.azure.resourcemanager.healthcareapis.models.CheckNameAvailabilityPara
 /** Samples for Services CheckNameAvailability. */
 public final class ServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/CheckNameAvailabilityPost.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/CheckNameAvailabilityPost.json
      */
     /**
      * Sample code: Check name availability.
