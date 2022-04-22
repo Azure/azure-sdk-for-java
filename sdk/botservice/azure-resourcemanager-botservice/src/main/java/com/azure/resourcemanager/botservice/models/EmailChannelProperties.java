@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Email channel. */
 @Fluent
 public final class EmailChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailChannelProperties.class);
-
     /*
      * The email address
      */
@@ -102,10 +99,12 @@ public final class EmailChannelProperties {
      */
     public void validate() {
         if (emailAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property emailAddress in model EmailChannelProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EmailChannelProperties.class);
 }
