@@ -39,6 +39,15 @@
       <artifactId>spring-cloud-stream</artifactId>
       <version>3.2.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
+
+    <!--To fix https://github.com/Azure/azure-sdk-for-java/issues/28179
+    Add this dependency temporary before spring-cloud upgrade to 2021.0.2-->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-function-context</artifactId>
+      <version>3.2.3</version>
+    </dependency>
+
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-servicebus</artifactId>
