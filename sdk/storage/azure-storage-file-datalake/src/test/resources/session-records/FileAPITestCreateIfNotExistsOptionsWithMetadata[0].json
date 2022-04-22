@@ -1,69 +1,69 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.blob.core.windows.net/51e40ea8051e40ea8ac90889450b67ff40b984370908?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/51e40ea8051e40ea8d6591296b9dddb5492194798a16?restype=container",
     "Headers" : {
       "x-ms-version" : "2021-06-08",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3db25d2f-dba0-467f-959e-c85bc082b02f"
+      "x-ms-client-request-id" : "81f24429-ca17-4d84-b53c-9cd05fa78080"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-06-08",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA23C27442460E",
-      "Last-Modified" : "Thu, 21 Apr 2022 18:12:10 GMT",
+      "eTag" : "0x8DA243EB6167A4B",
+      "Last-Modified" : "Fri, 22 Apr 2022 09:01:38 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "5cb5f6fa-f01e-0060-6eab-55313f000000",
-      "x-ms-client-request-id" : "3db25d2f-dba0-467f-959e-c85bc082b02f",
-      "Date" : "Thu, 21 Apr 2022 18:12:10 GMT"
+      "x-ms-request-id" : "545c956c-a01e-0099-0527-56321d000000",
+      "x-ms-client-request-id" : "81f24429-ca17-4d84-b53c-9cd05fa78080",
+      "Date" : "Fri, 22 Apr 2022 09:01:38 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.dfs.core.windows.net/51e40ea8051e40ea8ac90889450b67ff40b984370908/51e40ea8151e40ea8ac936802b87bddda9cea464a9f2?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/51e40ea8051e40ea8d6591296b9dddb5492194798a16/51e40ea8151e40ea8d6587028d094a3cc8c024287b3c?resource=file",
     "Headers" : {
       "x-ms-version" : "2021-06-08",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1d1f57ba-ed49-42d2-98c6-c4eff0ff3e91"
+      "x-ms-client-request-id" : "4062c263-ebfe-4c56-931f-5dfa60965f1a"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-06-08",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA23C274745437",
-      "Last-Modified" : "Thu, 21 Apr 2022 18:12:11 GMT",
+      "eTag" : "0x8DA243EB6A1389E",
+      "Last-Modified" : "Fri, 22 Apr 2022 09:01:39 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "de77808b-601f-004d-6cab-55824c000000",
-      "x-ms-client-request-id" : "1d1f57ba-ed49-42d2-98c6-c4eff0ff3e91",
-      "Date" : "Thu, 21 Apr 2022 18:12:10 GMT"
+      "x-ms-request-id" : "ab483570-101f-0057-1527-56e393000000",
+      "x-ms-client-request-id" : "4062c263-ebfe-4c56-931f-5dfa60965f1a",
+      "Date" : "Fri, 22 Apr 2022 09:01:39 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.dfs.core.windows.net/51e40ea8051e40ea8ac90889450b67ff40b984370908/51e40ea8251e40ea8ac9524679744563609e24a77935?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/51e40ea8051e40ea8d6591296b9dddb5492194798a16/51e40ea8251e40ea8d650051399f40df8b5fb4288936?resource=file",
     "Headers" : {
       "x-ms-version" : "2021-06-08",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9c619073-10f7-498e-8f9e-7bb5adecdaf1"
+      "x-ms-client-request-id" : "94b68802-6915-4a5d-b076-bce25940650d"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-06-08",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA23C2748AE4AB",
-      "Last-Modified" : "Thu, 21 Apr 2022 18:12:11 GMT",
+      "eTag" : "0x8DA243EB6B6934F",
+      "Last-Modified" : "Fri, 22 Apr 2022 09:01:39 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "x-ms-request-id" : "361c3e5b-101f-0047-42ab-5526fb000000",
-      "x-ms-client-request-id" : "9c619073-10f7-498e-8f9e-7bb5adecdaf1",
-      "Date" : "Thu, 21 Apr 2022 18:12:10 GMT"
+      "x-ms-request-id" : "0ccab9ab-e01f-006c-5627-56a637000000",
+      "x-ms-client-request-id" : "94b68802-6915-4a5d-b076-bce25940650d",
+      "Date" : "Fri, 22 Apr 2022 09:01:39 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "51e40ea8051e40ea8ac90889450b67ff40b984370908", "51e40ea8151e40ea8ac936802b87bddda9cea464a9f2", "51e40ea8251e40ea8ac9524679744563609e24a77935" ]
+  "variables" : [ "51e40ea8051e40ea8d6591296b9dddb5492194798a16", "51e40ea8151e40ea8d6587028d094a3cc8c024287b3c", "51e40ea8251e40ea8d650051399f40df8b5fb4288936" ]
 }
