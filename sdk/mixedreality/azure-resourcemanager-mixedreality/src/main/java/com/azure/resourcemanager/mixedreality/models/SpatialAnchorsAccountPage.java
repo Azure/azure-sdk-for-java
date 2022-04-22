@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mixedreality.fluent.models.SpatialAnchorsAccountInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class SpatialAnchorsAccountPage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SpatialAnchorsAccountPage.class);
-
     /*
      * List of resources supported by the Resource Provider.
      */

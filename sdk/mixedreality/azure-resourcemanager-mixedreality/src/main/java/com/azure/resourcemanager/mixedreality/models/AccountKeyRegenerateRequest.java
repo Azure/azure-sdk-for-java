@@ -5,23 +5,19 @@
 package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request for account key regeneration. */
 @Fluent
 public final class AccountKeyRegenerateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountKeyRegenerateRequest.class);
-
     /*
-     * serial of key to be regenerated
+     * Serial of key to be regenerated
      */
     @JsonProperty(value = "serial")
     private Serial serial;
 
     /**
-     * Get the serial property: serial of key to be regenerated.
+     * Get the serial property: Serial of key to be regenerated.
      *
      * @return the serial value.
      */
@@ -30,7 +26,7 @@ public final class AccountKeyRegenerateRequest {
     }
 
     /**
-     * Set the serial property: serial of key to be regenerated.
+     * Set the serial property: Serial of key to be regenerated.
      *
      * @param serial the serial value to set.
      * @return the AccountKeyRegenerateRequest object itself.

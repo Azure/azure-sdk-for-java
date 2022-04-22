@@ -15,7 +15,7 @@ public interface RemoteRenderingAccounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> list();
 
@@ -26,7 +26,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> list(Context context);
 
@@ -37,7 +37,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -73,7 +73,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
 
@@ -98,7 +98,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response}.
      */
     Response<RemoteRenderingAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -124,7 +124,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
     Response<AccountKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
 
@@ -151,7 +151,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
     Response<AccountKeys> regenerateKeysWithResponse(
         String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context);
@@ -163,7 +163,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response}.
      */
     RemoteRenderingAccount getById(String id);
 
@@ -175,7 +175,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response}.
      */
     Response<RemoteRenderingAccount> getByIdWithResponse(String id, Context context);
 
@@ -197,7 +197,7 @@ public interface RemoteRenderingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mixedreality.fluent.models.CheckNameAvailabilit
 import com.azure.resourcemanager.mixedreality.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.mixedreality.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.mixedreality.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 

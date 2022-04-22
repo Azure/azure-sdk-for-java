@@ -378,7 +378,7 @@ public interface RemoteRenderingAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
     Response<AccountKeys> listKeysWithResponse(Context context);
 
@@ -401,7 +401,7 @@ public interface RemoteRenderingAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
     Response<AccountKeys> regenerateKeysWithResponse(AccountKeyRegenerateRequest regenerate, Context context);
 }

@@ -71,4 +71,11 @@ public interface MixedRealityClient {
      * @return the RemoteRenderingAccountsClient object.
      */
     RemoteRenderingAccountsClient getRemoteRenderingAccounts();
+
+    /**
+     * Gets the ObjectAnchorsAccountsClient object to access its operations.
+     *
+     * @return the ObjectAnchorsAccountsClient object.
+     */
+    ObjectAnchorsAccountsClient getObjectAnchorsAccounts();
 }

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.mixedreality.models.AccountKeyRegenerateRequest
 import com.azure.resourcemanager.mixedreality.models.AccountKeys;
 import com.azure.resourcemanager.mixedreality.models.SpatialAnchorsAccount;
 import com.azure.resourcemanager.mixedreality.models.SpatialAnchorsAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SpatialAnchorsAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SpatialAnchorsAccountsImpl.class);
 
     private final SpatialAnchorsAccountsClient innerClient;
 
@@ -136,7 +135,7 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
     public SpatialAnchorsAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,7 +143,7 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
         }
         String accountName = Utils.getValueFromIdByName(id, "spatialAnchorsAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +157,7 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
     public Response<SpatialAnchorsAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
         }
         String accountName = Utils.getValueFromIdByName(id, "spatialAnchorsAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,7 +187,7 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
         }
         String accountName = Utils.getValueFromIdByName(id, "spatialAnchorsAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,13 +195,13 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
                                 "The resource ID '%s' is not valid. Missing path segment 'spatialAnchorsAccounts'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -210,7 +209,7 @@ public final class SpatialAnchorsAccountsImpl implements SpatialAnchorsAccounts 
         }
         String accountName = Utils.getValueFromIdByName(id, "spatialAnchorsAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

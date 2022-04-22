@@ -22,6 +22,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mixedreality.fluent.MixedRealityClient;
+import com.azure.resourcemanager.mixedreality.fluent.ObjectAnchorsAccountsClient;
 import com.azure.resourcemanager.mixedreality.fluent.OperationsClient;
 import com.azure.resourcemanager.mixedreality.fluent.RemoteRenderingAccountsClient;
 import com.azure.resourcemanager.mixedreality.fluent.ResourceProvidersClient;
@@ -39,8 +40,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the MixedRealityClientImpl type. */
 @ServiceClient(builder = MixedRealityClientBuilder.class)
 public final class MixedRealityClientImpl implements MixedRealityClient {
-    private final ClientLogger logger = new ClientLogger(MixedRealityClientImpl.class);
-
     /** The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
     private final String subscriptionId;
 
@@ -161,6 +160,18 @@ public final class MixedRealityClientImpl implements MixedRealityClient {
         return this.remoteRenderingAccounts;
     }
 
+    /** The ObjectAnchorsAccountsClient object to access its operations. */
+    private final ObjectAnchorsAccountsClient objectAnchorsAccounts;
+
+    /**
+     * Gets the ObjectAnchorsAccountsClient object to access its operations.
+     *
+     * @return the ObjectAnchorsAccountsClient object.
+     */
+    public ObjectAnchorsAccountsClient getObjectAnchorsAccounts() {
+        return this.objectAnchorsAccounts;
+    }
+
     /**
      * Initializes an instance of MixedRealityClient client.
      *
@@ -184,11 +195,12 @@ public final class MixedRealityClientImpl implements MixedRealityClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2021-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.spatialAnchorsAccounts = new SpatialAnchorsAccountsClientImpl(this);
         this.remoteRenderingAccounts = new RemoteRenderingAccountsClientImpl(this);
+        this.objectAnchorsAccounts = new ObjectAnchorsAccountsClientImpl(this);
     }
 
     /**
@@ -274,7 +286,7 @@ public final class MixedRealityClientImpl implements MixedRealityClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -333,4 +345,6 @@ public final class MixedRealityClientImpl implements MixedRealityClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MixedRealityClientImpl.class);
 }

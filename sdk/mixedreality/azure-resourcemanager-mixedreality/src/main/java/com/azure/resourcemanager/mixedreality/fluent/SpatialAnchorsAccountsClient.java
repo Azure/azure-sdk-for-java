@@ -20,7 +20,7 @@ public interface SpatialAnchorsAccountsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> list();
@@ -32,7 +32,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> list(Context context);
@@ -44,7 +44,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> listByResourceGroup(String resourceGroupName);
@@ -57,7 +57,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -83,7 +83,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
@@ -110,7 +110,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SpatialAnchorsAccountInner> getByResourceGroupWithResponse(
@@ -141,7 +141,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SpatialAnchorsAccountInner> updateWithResponse(
@@ -175,7 +175,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SpatialAnchorsAccountInner> createWithResponse(
@@ -206,7 +206,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AccountKeysInner> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
@@ -236,7 +236,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AccountKeysInner> regenerateKeysWithResponse(
