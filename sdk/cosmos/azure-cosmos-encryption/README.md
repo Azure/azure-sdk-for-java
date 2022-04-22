@@ -208,11 +208,11 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 
 <!-- LINKS -->
 [encryption_source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-encryption/src
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
+[cosmos_introduction]: /azure/cosmos-db/
 [api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
 [encryption_api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos-encryption/latest/index.html
-[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[cosmos_docs]: /azure/cosmos-db/introduction
+[jdk]: /java/azure/jdk/
 [maven]: https://maven.apache.org/
 [cosmos_encryption_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos-encryption
 [cla]: https://cla.microsoft.com
@@ -220,10 +220,10 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
-[troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
-[perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[troubleshooting]: /azure/cosmos-db/troubleshoot-java-sdk-v4-sql
+[perf_guide]: /azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
+[sql_api_query]: /azure/cosmos-db/sql-api-sql-query
 [getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos/encryption/
-[quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
+[quickstart]:/azure/cosmos-db/create-sql-api-java?tabs=sync
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-encryption%2FREADME.png)
