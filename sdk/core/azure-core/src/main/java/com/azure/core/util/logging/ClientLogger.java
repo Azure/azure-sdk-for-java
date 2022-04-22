@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -426,6 +427,22 @@ public class ClientLogger {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
         return logThrowableAsError(runtimeException);
+    }
+
+    /**
+     * Logs the {@link IOException} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a IO exception type needs to be thrown and logged. If a {@link Throwable} is
+     * being logged use {@link #logThrowableAsError(Throwable)} instead.
+     *
+     * @param ioException RuntimeException to be logged and returned.
+     * @return The passed {@code IOException}.
+     * @throws NullPointerException If {@code ioException} is {@code null}.
+     */
+    public IOException logIOExceptionAsError(IOException ioException) {
+        Objects.requireNonNull(ioException, "'ioException' cannot be null.");
+
+        return logThrowableAsError(ioException);
     }
 
     /**

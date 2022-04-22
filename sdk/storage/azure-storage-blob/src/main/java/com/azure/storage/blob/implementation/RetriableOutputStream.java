@@ -54,7 +54,7 @@ public class RetriableOutputStream extends OutputStream {
             if (e instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) e);
             } else if (e instanceof IOException) {
-                throw (IOException) LOGGER.logThrowableAsError(e);
+                throw LOGGER.logIOExceptionAsError((IOException) e);
             } else {
                 // This should never happen.
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
