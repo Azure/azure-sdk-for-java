@@ -49,11 +49,11 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                     try {
                         if (this.openConnectionsSemaphore.tryAcquire(DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES, TimeUnit.MINUTES)) {
                             return this.transportClient.openConnection(addressUri)
-                                    .doOnNext(response -> {
-                                        logger.info("{} for address {}", response.isConnected(), response.getUri());
-                                    })
+                                    .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
+                                    .doOnNext(response -> logger.info("{} for address {}", response.isConnected(), response.getUri()))
                                     .doOnTerminate(() -> this.openConnectionsSemaphore.release());
                         }
+
                     } catch (InterruptedException e) {
                         logger.warn("Acquire connection semaphore failed", e);
                     }

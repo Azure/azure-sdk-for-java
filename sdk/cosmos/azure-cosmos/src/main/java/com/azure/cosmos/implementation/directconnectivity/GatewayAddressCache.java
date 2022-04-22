@@ -893,7 +893,7 @@ public class GatewayAddressCache implements IAddressCache {
                                             Arrays.stream(addressInfo.getRight()).map(addressInformation -> addressInformation.getPhysicalUri()).collect(Collectors.toList()));
                                 }
 
-                                logger.warn("OpenConnectionHandler is null, can not open connections");
+                                logger.info("OpenConnectionHandler is null, can not open connections");
                                 return Flux.empty();
                             });
                 });

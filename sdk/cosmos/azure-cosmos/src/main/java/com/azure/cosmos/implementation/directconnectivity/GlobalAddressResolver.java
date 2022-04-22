@@ -134,7 +134,9 @@ public class GlobalAddressResolver implements IAddressResolver {
                             .map(valueHolder -> {
 
                                 if(valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
-                                    logger.warn("There is no pkRanges found for collection {}, no connections will be opened", collection.getResourceId());
+                                    logger.warn(
+                                            "There is no pkRanges found for collection {}, no connections will be opened",
+                                            collection.getResourceId());
                                     return new ArrayList<PartitionKeyRangeIdentity>();
                                 }
 
