@@ -67,6 +67,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
+        <artifactId>azure-communication-networktraversal</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
         <artifactId>azure-communication-phonenumbers</artifactId>
         <version>1.0.10</version>
       </dependency>
@@ -99,11 +104,6 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-core-http-okhttp</artifactId>
         <version>1.8.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-management</artifactId>
-        <version>1.5.4</version>
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
