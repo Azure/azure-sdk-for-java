@@ -5,9 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.policy.ExponentialBackoffOptions;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
@@ -81,18 +78,5 @@ public class TextAnalyticsClientBuilderUnitTest {
             final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
             builder.endpoint(VALID_HTTPS_LOCALHOST).credential(tokenCredential);
         });
-    }
-
-    /**
-     * Thest for the case where both retryOptions and retryPolicy are set.
-     */
-    @Test
-    public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new TextAnalyticsClientBuilder()
-            .endpoint(VALID_HTTPS_LOCALHOST)
-            .credential(new AzureKeyCredential("foo"))
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
     }
 }

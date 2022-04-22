@@ -1,16 +1,5 @@
 # Release History
 
-## 5.2.0-beta.3 (Unreleased)
-
-### Features Added
-- Added interfaces from `com.azure.core.client.traits` to `TextAnalyticsClientBuilder`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 5.1.8 (2022-04-07)
 ### Other Changes
 
@@ -46,22 +35,6 @@
 - Updated `azure-core` from `1.21.0` to `1.22.0`.
 - Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
 
-## 5.2.0-beta.2 (2021-11-02)
-### Feature Added
-- We are now targeting the service's v3.2-preview.2 API as the default instead of v3.2-preview.1.
-- Multiple of the same action type is now supported with `beginAnalyzeActions` method, and the action name for each 
-  action can be set now.
-- Added support for `Custom Entity Recognition` actions through the `RecognizeCustomEntitiesAction` type.
-  This action can be used to get a custom entity recognition for an input document or batch of documents.
-- Added support for `Custom Single Classification` actions through the `SingleCategoryClassifyAction` type.
-  This action can be used to get a custom classification for an input document or batch of documents.
-- Added support for `Custom Multiple Classification` actions through the `MultiCategoryClassifyAction` type.
-  This action can be used to get multiple custom classifications for an input document or batch of documents.
-
-### Breaking Changes
-- Renamed methods `setSentencesOrderBy()` to `setOrderBy()` and `getSentencesOrderBy()` to `getOrderBy()`, in the
-  option bag, `ExtractSummaryAction`.
-
 ## 5.1.3 (2021-10-05)
 ### Other Changes
 
@@ -76,23 +49,18 @@
 - Updated `azure-core` from `1.19.0` to `1.20.0`.
 - Updated `azure-core-http-netty` from `1.10.2` to `1.11.0`.
 
-## 5.2.0-beta.1 (2021-08-11)
-### Feature Added
-- We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.
-- Added support for Extractive Summarization actions through the `ExtractSummaryAction` type.
-
 ## 5.1.1 (2021-08-11)
 ### Dependency Updates
 - Updated `azure-core` from `1.18.0` to `1.19.0`.
 - Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
 
 ### Bugs Fixed
-- Fixed the bug to support the default value `disableServiceLogs = true`, in the option bags, `AnalyzeHealthcareEntitiesOptions`,
-  `RecognizePiiEntitiesOptions` and `RecognizePiiEntitiesAction`,
+- Fixed the bug to support the default value `disableServiceLogs = true`, in the option bags, `AnalyzeHealthcareEntitiesOptions`, 
+  `RecognizePiiEntitiesOptions` and `RecognizePiiEntitiesAction`, 
 - Using UTF-16 code unit as the default encoding in the `Sentiment Analysis` and `Linked Entities Recognition` actions.
 
 ## 5.1.0 (2021-07-08)
-### Feature Added
+#### Feature Added
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
 - Added the new types, `ExtractKeyPhrasesAction`, `RecognizeEntitiesAction`, `RecognizePiiEntitiesAction`,

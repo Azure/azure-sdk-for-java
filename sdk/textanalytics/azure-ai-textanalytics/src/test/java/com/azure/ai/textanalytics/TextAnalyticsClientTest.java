@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
@@ -22,11 +21,9 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -55,7 +52,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
@@ -63,12 +59,11 @@ import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
 import static com.azure.ai.textanalytics.TestUtils.getAnalyzeSentimentResultCollectionForActions;
+import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeActionsResultListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeBatchActionsResult;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeSentimentActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
@@ -80,13 +75,12 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultCollection;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultSortByOffset;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeLinkedEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizePiiEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExtractKeyPhrasesResultCollection;
-import static com.azure.ai.textanalytics.TestUtils.getExtractSummaryActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1ForDomainFilter;
@@ -282,7 +276,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeCategorizedEntitiesForSingleTextInputRunner(input -> {
             final List<CategorizedEntity> entities = client.recognizeEntities(input).stream().collect(Collectors.toList());
-            validateCategorizedEntities(entities);
+            validateCategorizedEntities(getCategorizedEntitiesList1(), entities);
         });
     }
 
@@ -2175,12 +2169,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.cancelOperation();
-            LongRunningOperationStatus operationStatus = syncPoller.poll().getStatus();
-            while (!LongRunningOperationStatus.USER_CANCELLED.equals(operationStatus)) {
-                operationStatus = syncPoller.poll().getStatus();
-            }
             syncPoller.waitForCompletion();
-            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, operationStatus);
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
         });
     }
 
@@ -2200,69 +2190,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
+                    IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
                         TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
+                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
-                    IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
+                    IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
                         TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
+                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
-                        TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
+                        TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null)))
                 )),
                 result.stream().collect(Collectors.toList()));
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeActionsWithMultiSameKindActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeActionsWithMultiSameKindActionsRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, null, null);
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-            actionsResults.forEach(actionsResult -> {
-                assertEquals(2, actionsResult.getRecognizeEntitiesResults().stream().count());
-                assertEquals(2, actionsResult.getRecognizePiiEntitiesResults().stream().count());
-                assertEquals(2, actionsResult.getRecognizeLinkedEntitiesResults().stream().count());
-                assertEquals(2, actionsResult.getAnalyzeSentimentResults().stream().count());
-                assertEquals(2, actionsResult.getExtractKeyPhrasesResults().stream().count());
-                assertEquals(2, actionsResult.getExtractSummaryResults().stream().count());
-            });
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeActionsWithActionNames(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeActionsWithActionNamesRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, null, Context.NONE);
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-            actionsResults.forEach(actionsResult -> {
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizeEntitiesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizePiiEntitiesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizeLinkedEntitiesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getAnalyzeSentimentResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getExtractKeyPhrasesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getExtractSummaryResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-            });
         });
     }
 
@@ -2312,9 +2251,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
+                        IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
                             TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
@@ -2342,9 +2280,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
                             TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
-                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()))),
                     result.stream().collect(Collectors.toList()));
@@ -2372,9 +2309,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
                             TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
-                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()))),
                     result.stream().collect(Collectors.toList()));
@@ -2398,9 +2334,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
+                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()))),
@@ -2425,9 +2360,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
+                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()))),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2451,213 +2385,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
-                        TIME_NOW, getExpectedBatchTextSentiment(), null))),
-                    IterableStream.of(Collections.emptyList()))),
+                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
+                        TIME_NOW, getExpectedBatchTextSentiment(), null))))),
                 result.stream().collect(Collectors.toList()));
-        });
-    }
-
-    @Disabled("Service returned response has unstable value. https://github.com/Azure/azure-sdk-for-java/issues/23428")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeExtractSummaryRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-            // We are expecting the top 3 highest rank score ann these score are sorted by offset by default
-            validateAnalyzeBatchActionsResultList(false, false,
-                asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExtractSummaryActionResult(false, null,
-                        TIME_NOW,
-                        getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
-                        null))))),
-                result.stream().collect(Collectors.toList()));
-        }, null, null);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeExtractSummaryRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertTrue(isAscendingOrderByOffSet(
-                            documentResult.getSentences().stream().collect(Collectors.toList()))))));
-        }, 4, SummarySentencesOrder.OFFSET);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeExtractSummaryRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertTrue(isDescendingOrderByRankScore(
-                            documentResult.getSentences().stream().collect(Collectors.toList()))))));
-        }, 4, SummarySentencesOrder.RANK);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeExtractSummaryRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            result.stream().collect(Collectors.toList()).forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertTrue(
-                            documentResult.getSentences().stream().collect(Collectors.toList()).size() < 20))));
-        }, 20, null);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeExtractSummaryRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertEquals(
-                            documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5))));
-        }, 5, null);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        // The range of max sentences count is at between 1 and 20.
-        int[] invalidMaxSentenceCounts = {0, 21};
-
-        for (int invalidCount: invalidMaxSentenceCounts) {
-            analyzeExtractSummaryRunner(
-                (documents, tasks) -> {
-                    HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
-                        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                            client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
-                        syncPoller = setPollInterval(syncPoller);
-                        syncPoller.waitForCompletion();
-                        AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-                    });
-                    assertEquals(
-                        TextAnalyticsErrorCode.INVALID_PARAMETER_VALUE,
-                        ((TextAnalyticsError) exception.getValue()).getErrorCode());
-                }, invalidCount, null);
-        }
-    }
-
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/25079")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeCustomEntitiesAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizeCustomEntitiesActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", null);
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getRecognizeCustomEntitiesResults().forEach(
-                    customEntitiesActionResult -> customEntitiesActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCategorizedEntities(
-                            documentResult.getEntities().stream().collect(Collectors.toList())))));
-        });
-    }
-
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/25079")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void singleCategoryClassifyAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", null);
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getSingleCategoryClassifyResults().forEach(
-                    customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomSingleCategory(documentResult))));
-        });
-    }
-
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/25079")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void multiCategoryClassifyAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        classifyCustomMultiCategoryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", null);
-            syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
-            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
-
-            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
-
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
-                    customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomMultiCategory(documentResult))));
         });
     }
 }

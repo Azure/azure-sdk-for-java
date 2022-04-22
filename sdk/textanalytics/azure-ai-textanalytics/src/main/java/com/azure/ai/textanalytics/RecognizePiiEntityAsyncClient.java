@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -17,6 +18,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -40,7 +42,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilt
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -168,7 +169,12 @@ class RecognizePiiEntityAsyncClient {
                     .collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
-                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+                warning -> {
+                    final WarningCodeValue warningCodeValue = warning.getCode();
+                    return new TextAnalyticsWarning(
+                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                        warning.getMessage());
+                }).collect(Collectors.toList());
 
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentEntities.getId(),

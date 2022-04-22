@@ -7,44 +7,27 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -69,9 +52,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TextAnalyticsClientBuilderTest extends TestBase {
     private static final String INVALID_KEY = "invalid key";
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
 
     /**
      * Test client builder with valid API key
@@ -198,10 +178,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) -> {
-            validateKeyPhrases(output,
-                clientBuilder.buildClient().extractKeyPhrases(input).stream().collect(Collectors.toList()));
-        });
+        clientBuilderWithDefaultLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
+            assertEquals(output, clientBuilder.buildClient().extractKeyPhrases(input).iterator().next()));
     }
 
     /**
@@ -210,9 +188,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
-            assertEquals(output,
-                clientBuilder.buildClient().extractKeyPhrases(input, "EN").stream().collect(Collectors.toList())));
+        clientBuilderWithNewLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
+            assertEquals(output, clientBuilder.buildClient().extractKeyPhrases(input, "EN").iterator().next()));
     }
 
     /**
@@ -241,7 +218,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewLanguageForBatchOperation(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultLanguageForBatchOperationRunner(httpClient, serviceVersion, clientBuilder -> (input,
+        clientBuilderWithNewLanguageForBatchOperationRunner(httpClient, serviceVersion, clientBuilder -> (input,
             output) -> {
             final List<ExtractKeyPhraseResult> result =
                 clientBuilder.buildClient().extractKeyPhrasesBatch(input, "EN", null).stream()
@@ -250,13 +227,6 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
                 validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));
             }
         });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void clientBuilderWithAAD(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithAadRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
-            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input)));
     }
 
     @Test
@@ -393,11 +363,19 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     }
 
     void clientBuilderWithDefaultLanguageRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
-        Function<TextAnalyticsClientBuilder, BiConsumer<String, List<String>>> testRunner) {
+        Function<TextAnalyticsClientBuilder, BiConsumer<String, String>> testRunner) {
         testRunner.apply(
             createClientBuilder(httpClient, serviceVersion,
                 getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
-            .accept(KEY_PHRASE_FRENCH_INPUTS.get(0), Arrays.asList("Bonjour", "monde"));
+            .accept(KEY_PHRASE_FRENCH_INPUTS.get(0), "monde");
+    }
+
+    void clientBuilderWithNewLanguageRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
+        Function<TextAnalyticsClientBuilder, BiConsumer<String, String>> testRunner) {
+        testRunner.apply(
+            createClientBuilder(httpClient, serviceVersion,
+                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
+            .accept(KEY_PHRASE_FRENCH_INPUTS.get(0), "monde");
     }
 
     void clientBuilderWithDefaultLanguageForBatchOperationRunner(HttpClient httpClient,
@@ -408,69 +386,18 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion,
                 getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
             .accept(KEY_PHRASE_FRENCH_INPUTS,
-                Arrays.asList(Arrays.asList("Bonjour", "monde"), Collections.singletonList("Mondly")));
+                Arrays.asList(Collections.singletonList("monde"), Collections.emptyList()));
     }
 
-    void clientBuilderWithAadRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
-        Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
-
-        final TextAnalyticsClientBuilder clientBuilder =
-            new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint())
-                .pipeline(getHttpPipeline(httpClient))
-                .serviceVersion(serviceVersion);
-
-        if (!interceptorManager.isPlaybackMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), DETECTED_LANGUAGE_ENGLISH);
-    }
-
-    HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        TokenCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-            credential = new ClientSecretCredentialBuilder()
-                             .clientSecret(clientKey)
-                             .clientId(clientId)
-                             .tenantId(tenantId)
-                             .build();
-        }
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new AddHeadersPolicy(new HttpHeaders()));
-        policies.add(new AddHeadersFromContextPolicy());
-        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone()));
-        policies.add(new RequestIdPolicy());
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RetryPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
-        }
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (getTestMode() == TestMode.RECORD) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-                                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                                    .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-                                    .build();
-
-        return pipeline;
+    void clientBuilderWithNewLanguageForBatchOperationRunner(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion,
+        Function<TextAnalyticsClientBuilder,
+        BiConsumer<List<String>, List<List<String>>>> testRunner) {
+        testRunner.apply(
+            createClientBuilder(httpClient, serviceVersion,
+                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("EN"))
+            .accept(KEY_PHRASE_FRENCH_INPUTS,
+                Arrays.asList(Collections.singletonList("monde"), Collections.emptyList()));
     }
 
     String getEndpoint() {
