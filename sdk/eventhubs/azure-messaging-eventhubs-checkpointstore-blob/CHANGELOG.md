@@ -3,6 +3,7 @@
 ## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
+- Update return error when claim ownership occur an error.
 
 ### Breaking Changes
 

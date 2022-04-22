@@ -193,7 +193,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                             logger.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
                                 .log(Messages.CLAIM_ERROR, error);
-                            return Mono.empty();
+                            return Mono.error(error);
                         }, Mono::empty);
                 } else {
                     // update existing blob
@@ -203,14 +203,14 @@ public class BlobCheckpointStore implements CheckpointStore {
                             logger.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
                                 .log(Messages.CLAIM_ERROR, error);
-                            return Mono.empty();
+                            return Mono.error(error);
                         }, Mono::empty);
                 }
             } catch (Exception ex) {
                 logger.atWarning()
                     .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
                     .log(Messages.CLAIM_ERROR, ex);
-                return Mono.empty();
+                return Mono.error(ex);
             }
         });
     }

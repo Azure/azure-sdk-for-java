@@ -11,6 +11,7 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -220,8 +221,7 @@ final class PartitionBasedLoadBalancer {
                  * running or all Event Processors are down for this Event Hub, consumer group combination. All
                  * partitions in this Event Hub are available to claim. Choose a random partition to claim ownership.
                  */
-                claimOwnership(partitionOwnershipMap, ownerPartitionMap,
-                    partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
+                claimOwnership(partitionOwnershipMap, partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
                 return;
             }
 
@@ -286,8 +286,94 @@ final class PartitionBasedLoadBalancer {
                     return findPartitionToSteal(ownerPartitionMap);
                 });
 
-            claimOwnership(partitionOwnershipMap, ownerPartitionMap, partitionToClaim);
+            claimOwnership(partitionOwnershipMap, partitionToClaim);
         });
+    }
+
+
+    Mono<Void> checkBlobStatus() {
+        /*
+         * If partition cache is not null, that means the processor has started successfully. And we don't need to check
+         * the checkpoint store blob.
+         */
+        if (!CoreUtils.isNullOrEmpty(partitionsCache.get())) {
+            return Mono.empty();
+        }
+
+        /*
+         * Retrieve current partition ownership details from the datastore.
+         */
+        final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = checkpointStore
+            .listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroupName)
+            .timeout(Duration.ofMinutes(1))
+            .collectMap(PartitionOwnership::getPartitionId, Function.identity());
+
+        Mono<List<String>> partitionsMono = eventHubAsyncClient
+            .getPartitionIds()
+            .timeout(Duration.ofMinutes(1))
+            .collectList();
+
+        return Mono.zip(partitionOwnershipMono, partitionsMono)
+            .flatMap((Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) -> {
+                Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
+
+                List<String> partitionIds = tuple.getT2();
+
+                if (CoreUtils.isNullOrEmpty(partitionIds)) {
+                    // This may be due to an error when getting Event Hub metadata.
+                    throw logger.logExceptionAsError(Exceptions.propagate(
+                        new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
+                }
+                partitionsCache.set(partitionIds);
+
+                if (!isValid(partitionOwnershipMap)) {
+                    // User data is corrupt.
+                    throw logger.logExceptionAsError(Exceptions.propagate(
+                        new IllegalStateException("Invalid partitionOwnership data from CheckpointStore")));
+                }
+
+                /*
+                 * Remove all partitions' ownership that have not been modified for a configuration period of time. This
+                 * means that the previous EventProcessor that owned the partition is probably down and the partition is now
+                 * eligible to be claimed by other EventProcessors.
+                 */
+                Map<String, PartitionOwnership> activePartitionOwnershipMap = removeInactivePartitionOwnerships(
+                    partitionOwnershipMap);
+
+                /*
+                 * If there are active partition ownership, this means the checkpoint store claimed partition successfully,
+                 * we don't need to check it.
+                 */
+                if (!CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
+                    return Mono.empty();
+                }
+
+                /*
+                 * If there is no active partition ownership, claim a random partition and the other partitions will be
+                 * claimed in load balance.
+                 */
+                PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
+                    partitionIds.get(RANDOM.nextInt(partitionIds.size())));
+                List<PartitionOwnership> partitionToClaim = Collections.singletonList(ownershipRequest);
+                return this.checkpointStore.claimOwnership(partitionToClaim)
+                    .collectList()
+                    .zipWhen(ownershipList -> checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName,
+                            consumerGroupName)
+                        .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
+                    .flatMap(ownedPartitionCheckpointsTuple -> {
+                        ownedPartitionCheckpointsTuple.getT1()
+                            .stream()
+                            .forEach(po -> partitionPumpManager.startPartitionPump(po,
+                                ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
+                        return Mono.empty();
+                    })
+                    .then();
+            });
+
+    }
+
+    void clearPartitionCache() {
+        partitionsCache.set(null);
     }
 
     /*
@@ -430,8 +516,7 @@ final class PartitionBasedLoadBalancer {
             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
-    private void claimOwnership(final Map<String, PartitionOwnership> partitionOwnershipMap, Map<String,
-        List<PartitionOwnership>> ownerPartitionsMap, final String partitionIdToClaim) {
+    private void claimOwnership(final Map<String, PartitionOwnership> partitionOwnershipMap, final String partitionIdToClaim) {
         logger.atInfo()
             .addKeyValue(PARTITION_ID_KEY, partitionIdToClaim)
             .log("Attempting to claim ownership of partition.");

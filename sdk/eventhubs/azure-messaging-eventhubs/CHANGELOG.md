@@ -3,6 +3,7 @@
 ## 5.12.0-beta.1 (Unreleased)
 
 ### Features Added
+- Update checking checkpoint store available before starting processor client.
 
 ### Breaking Changes
 

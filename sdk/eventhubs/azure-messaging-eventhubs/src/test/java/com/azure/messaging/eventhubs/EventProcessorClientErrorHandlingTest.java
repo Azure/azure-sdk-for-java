@@ -78,13 +78,7 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
         }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         client.start();
-        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
-        try {
-            client.stop();
-        } catch (IllegalStateException ex) {
-            // do nothing, expected as the checkpointstores are expected to throw errors
-        }
-        Assertions.assertTrue(completed);
+        Assertions.assertFalse(client.isRunning());
     }
 
     @Test

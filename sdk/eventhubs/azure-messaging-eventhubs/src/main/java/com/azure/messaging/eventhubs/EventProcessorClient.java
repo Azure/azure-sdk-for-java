@@ -144,6 +144,14 @@ public class EventProcessorClient {
             return;
         }
         logger.info("Starting a new event processor instance.");
+        try {
+            partitionBasedLoadBalancer.checkBlobStatus().block();
+        } catch (RuntimeException ex) {
+            logger.error("Start event processor error", ex);
+            partitionBasedLoadBalancer.clearPartitionCache();
+            isRunning.compareAndSet(true, false);
+            return;
+        }
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         scheduler.set(executor);
