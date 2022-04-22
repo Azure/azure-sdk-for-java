@@ -12,7 +12,6 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,8 +22,6 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -204,7 +201,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         receiverThreads.forEach(t -> {
             try {
-                t.join(TIMEOUT.toMillis());
+                t.join();
             } catch (InterruptedException e) {
                 fail("Error in receiving messages: " + e.getMessage());
             }
@@ -318,10 +315,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             case DEFERRED:
                 receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction));
                 break;
-            case RELEASED:
-                break;
             default:
-                throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                throw logger.logExceptionAsError(new IllegalArgumentException(
                     "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
@@ -441,56 +436,36 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
         final byte[] payload = "peek-message".getBytes(Charset.defaultCharset());
         final AtomicInteger messageId = new AtomicInteger();
         final AtomicLong actualCount = new AtomicLong();
-        final int maxMessages = 2;
 
-        List<String> messageIds = Collections.synchronizedList(new ArrayList<String>());
+        final int maxMessages = 2;
         for (int i = 0; i < maxMessages; ++i) {
             ServiceBusMessage message = getMessage("" + i, isSessionEnabled, AmqpMessageBody.fromData(payload));
-            messageIds.add(message.getMessageId());
             sendMessage(message);
         }
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
 
         // Act
 
-        // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
+        // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
-        AtomicInteger triesNumber = new AtomicInteger(0);
-        List<String> receivedMessages = Collections.synchronizedList(new ArrayList<String>());
-        Thread throwable = new Thread(() -> {
-            while (actualCount.get() < maxMessages) {
-                triesNumber.incrementAndGet();
-                receiver.peekMessages(maxMessages).stream()
-                    .filter(receivedMessage -> messageIds.contains(receivedMessage.getMessageId())
-                        && receivedMessages.parallelStream().noneMatch(mid ->
-                            mid.equals(receivedMessage.getMessageId())))
-                    .sorted(Comparator.comparing(ServiceBusReceivedMessage::getMessageId))
-                    .forEach(receivedMessage -> {
-                        receivedMessages.add(receivedMessage.getMessageId());
-                        actualCount.incrementAndGet();
-                        assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
-                            String.format("Message id did not match. Payload: [%s], try [%s].",
-                                receivedMessage.getBody().toString(), triesNumber.get()));
-                    });
-            }
-        });
-
-        // Assert
-        throwable.start();
-        try {
-            throwable.join(TIMEOUT.toMillis());
-        } catch (InterruptedException e) {
-            Assertions.fail("Error in receiving messages: " + e.getMessage());
+        for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
+            int finalI = i;
+            receiver.peekMessages(maxMessages).stream().forEach(receivedMessage -> {
+                actualCount.addAndGet(1);
+                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
+                    String.format("Message id did not match. Payload: [%s], try [%s].",
+                        receivedMessage.getBody().toString(), finalI));
+            });
         }
 
+        // Assert
         assertEquals(maxMessages, actualCount.get());
-
     }
 
     /**
@@ -857,7 +832,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.sessionReceiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
-            this.receiver = this.sessionReceiver.acceptSession(sessionId);
+            this.receiver =  this.sessionReceiver.acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();

@@ -86,7 +86,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
     }
 
     private void copyBytesBetweenClientAndService(ReadWriteState readWriteState) {
-        logger.info("Copying bytes. State: {}", readWriteState);
+        logger.verbose("Copying bytes. State: {}", readWriteState);
 
         final ByteBuffer buffer = readWriteState.getBuffer();
         final Target writeTarget = readWriteState.getWriteTarget();

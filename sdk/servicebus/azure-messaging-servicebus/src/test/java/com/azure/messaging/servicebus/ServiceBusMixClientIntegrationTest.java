@@ -119,7 +119,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 senderSyncB.commitTransaction(transactionId);
                 transactionComplete.set(true);
                 countdownLatch.countDown();
-                logger.info("Transaction committed.");
+                logger.verbose("Transaction committed.");
             }
         };
 
@@ -224,7 +224,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 senderSyncB.commitTransaction(transactionId);
                 transactionComplete.set(true);
                 countdownLatch.countDown();
-                logger.info("Transaction committed.");
+                logger.verbose("Transaction committed.");
             }
         };
 
@@ -326,20 +326,18 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
         }
 
-        receiverA.receiveMessages()
-            .filter(receiveMessage -> messageId.equals(receiveMessage.getMessageId()))
-            .flatMap(receivedMessage -> {
-                //Start a transaction
-                logger.info("Received message sequence number {}. Creating transaction", receivedMessage.getSequenceNumber());
-                ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
-                receiverA.complete(receivedMessage, new CompleteOptions().setTransactionContext(transactionId)).block();
-                senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
-                senderSyncB.commitTransaction(transactionId);
-                transactionComplete.set(true);
-                countdownLatch.countDown();
-                logger.info("Transaction committed.");
-                return Mono.just(receivedMessage);
-            }).subscribe();
+        receiverA.receiveMessages().flatMap(receivedMessage -> {
+            //Start a transaction
+            logger.verbose("Received message sequence number {}. Creating transaction", receivedMessage.getSequenceNumber());
+            ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
+            receiverA.complete(receivedMessage, new CompleteOptions().setTransactionContext(transactionId)).block();
+            senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
+            senderSyncB.commitTransaction(transactionId);
+            transactionComplete.set(true);
+            countdownLatch.countDown();
+            logger.verbose("Transaction committed.");
+            return Mono.just(receivedMessage);
+        }).subscribe();
 
         // Act
         System.out.println("Listening for 10 seconds...");
@@ -355,8 +353,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Verify that message is received by entity B
         if (!isSessionEnabled) {
             setSenderAndReceiver(entityType, sendQueueBIndex, false);
-            StepVerifier.create(receiver.receiveMessages()
-                    .filter(receiveMessage -> messageId.equals(receiveMessage.getMessageId())).take(1))
+            StepVerifier.create(receiver.receiveMessages().take(1))
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
@@ -412,14 +409,14 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
 
         receiverA.receiveMessages().flatMap(receivedMessage -> {
             //Start a transaction
-            logger.info("Received message sequence number {}. Creating transaction", receivedMessage.getSequenceNumber());
+            logger.verbose("Received message sequence number {}. Creating transaction", receivedMessage.getSequenceNumber());
             ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
             receiverA.complete(receivedMessage, new CompleteOptions().setTransactionContext(transactionId)).block();
             senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
             senderSyncB.commitTransaction(transactionId);
             transactionComplete.set(true);
             countdownLatch.countDown();
-            logger.info("Transaction committed.");
+            logger.verbose("Transaction committed.");
             return Mono.just(receivedMessage);
         }).subscribe();
 

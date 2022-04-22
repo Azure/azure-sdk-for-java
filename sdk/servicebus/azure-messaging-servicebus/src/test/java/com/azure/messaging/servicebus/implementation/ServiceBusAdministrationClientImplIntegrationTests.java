@@ -234,7 +234,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
 
     private ServiceBusManagementClientImpl createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=sb://foo" + TestUtils.getEndpoint() + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString(false);
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final ServiceBusSharedKeyCredential credential = new ServiceBusSharedKeyCredential(

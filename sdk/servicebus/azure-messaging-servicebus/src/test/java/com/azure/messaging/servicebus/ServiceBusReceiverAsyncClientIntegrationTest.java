@@ -33,17 +33,14 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -196,9 +193,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     case DEFERRED:
                         operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
                         break;
-                    case RELEASED:
-                        operation = receiver.release(receivedMessage);
-                        break;
                     default:
                         throw logger.logExceptionAsError(new IllegalArgumentException(
                             "Disposition status not recognized for this test case: " + dispositionStatus));
@@ -274,7 +268,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        Mono.when(sendMessage(message), sendMessage(message)).block();
+        Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
 
         // Now create receiver
         if (isSessionEnabled) {
@@ -288,10 +282,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         // Assert & Act
-        StepVerifier.create(receiver.receiveMessages()
-                .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId())))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+        StepVerifier.create(receiver.receiveMessages())
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            })
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            })
             .thenAwait(shortWait) // Give time for autoComplete to finish
             .thenCancel()
             .verify();
@@ -314,7 +311,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message).block();
+        sendMessage(message).block(TIMEOUT);
 
         // Now create receiver
         if (isSessionEnabled) {
@@ -329,7 +326,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         StepVerifier.create(receiver.receiveMessages())
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            })
             .thenAwait(shortWait) // Give time for autoComplete to finish
             .thenCancel()
             .verify();
@@ -352,7 +351,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message).block();
+        sendMessage(message).block(TIMEOUT);
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
@@ -397,7 +396,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(2);
 
-        sender.scheduleMessage(message, scheduledEnqueueTime).block();
+        sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
@@ -425,7 +424,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Duration delayDuration = Duration.ofSeconds(3);
 
         final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
-        logger.info("Scheduled the message, sequence number {}.", sequenceNumber);
+        logger.verbose("Scheduled the message, sequence number {}.", sequenceNumber);
 
         assertNotNull(sequenceNumber);
 
@@ -434,7 +433,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .block(TIMEOUT);
 
         messagesPending.decrementAndGet();
-        logger.info("Cancelled the scheduled message, sequence number {}.", sequenceNumber);
+        logger.verbose("Cancelled the scheduled message, sequence number {}.", sequenceNumber);
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         // Assert & Act
@@ -456,22 +455,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSender(entityType, entityIndex, isSessionEnabled);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        sendMessage(message).block();
+        sendMessage(message).block(TIMEOUT);
 
         setReceiver(entityType, entityIndex, isSessionEnabled);
 
-        // Message are not always guaranteed, so try many times
-        final ServiceBusReceivedMessage peekMessage = receiver.peekMessage()
-            .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId()))
-            .map(receivedMessage -> {
-                countDownLatch.countDown();
-                return receivedMessage;
-            })
-            .repeat(() -> countDownLatch.getCount() > 0)
-            .next()
-            .block(OPERATION_TIMEOUT);
+        final ServiceBusReceivedMessage peekMessage = receiver.peekMessage().block(TIMEOUT);
         assertNotNull(peekMessage);
         final long sequenceNumber = peekMessage.getSequenceNumber();
 
@@ -499,7 +488,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
@@ -512,11 +501,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertEquals(index, position);
         };
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = getServiceBusMessages(10, messageId, CONTENTS_BYTES);
-        final List<Integer> receivedPositions = Collections.synchronizedList(new ArrayList<Integer>());
-        final AtomicInteger messageCount = new AtomicInteger();
-        final List<ServiceBusReceivedMessage> receivedMessages = Collections.synchronizedList(new ArrayList<ServiceBusReceivedMessage>());
-
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId, CONTENTS_BYTES);
         if (isSessionEnabled) {
             messages.forEach(m -> m.setSessionId(sessionId));
         }
@@ -526,109 +511,40 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 int number = messagesPending.addAndGet(messages.size());
                 logger.info("Number of messages sent: {}", number);
             })
-            .block();
+            .block(TIMEOUT);
 
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         // Assert & Act
         try {
-            // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try many times.
-            List<Thread> threadList = new ArrayList<Thread>();
-            threadList.add(new Thread(() -> {
-                final AtomicLong actualCount = new AtomicLong();
-                List<ServiceBusReceivedMessage> peekedMessages
-                    = receiver.peekMessages(3)
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId())
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) >= 0
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) <= 2
-                        && receivedPositions.stream().noneMatch(position ->
-                            Objects.equals(position, receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID))))
-                    .map(receivedMessage -> {
-                        receivedPositions.add((Integer) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
-                        actualCount.incrementAndGet();
-                        return receivedMessage;
-                    })
-                    .repeat(() -> actualCount.get() < 3)
-                    .collectList().block();
-                if (Objects.nonNull(peekedMessages) && !peekedMessages.isEmpty()) {
-                    receivedMessages.addAll(peekedMessages);
-                }
-            }));
+            StepVerifier.create(receiver.peekMessages(3))
+                .assertNext(message -> checkCorrectMessage.accept(message, 0))
+                .assertNext(message -> checkCorrectMessage.accept(message, 1))
+                .assertNext(message -> checkCorrectMessage.accept(message, 2))
+                .verifyComplete();
 
-            // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try many times.
-            threadList.add(new Thread(() -> {
-                final AtomicLong actualCount = new AtomicLong();
-                List<ServiceBusReceivedMessage> peekedMessages
-                    = receiver.peekMessages(4)
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId())
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) >= 3
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) <= 6
-                        && receivedPositions.stream().noneMatch(position ->
-                            Objects.equals(position, receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID))))
-                    .map(receivedMessage -> {
-                        receivedPositions.add((Integer) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
-                        actualCount.incrementAndGet();
-                        return receivedMessage;
-                    })
-                    .repeat(() -> actualCount.get() < 4)
-                    .collectList().block();
-                if (Objects.nonNull(peekedMessages) && !peekedMessages.isEmpty()) {
-                    receivedMessages.addAll(peekedMessages);
-                }
-            }));
+            StepVerifier.create(receiver.peekMessages(4))
+                .assertNext(message -> checkCorrectMessage.accept(message, 3))
+                .assertNext(message -> checkCorrectMessage.accept(message, 4))
+                .assertNext(message -> checkCorrectMessage.accept(message, 5))
+                .assertNext(message -> checkCorrectMessage.accept(message, 6))
+                .verifyComplete();
 
-            // Reads the next active message is not always guaranteed, so we will try many times.
-            threadList.add(new Thread(() -> {
-                final AtomicLong actualCount = new AtomicLong();
-                List<ServiceBusReceivedMessage> peekedMessages
-                    = receiver.peekMessage()
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId())
-                        && Objects.equals(7, receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID)))
-                    .map(receivedMessage -> {
-                        actualCount.incrementAndGet();
-                        return receivedMessage;
-                    })
-                    .repeat(() -> actualCount.get() < 1)
-                    .collectList().block();
-                if (Objects.nonNull(peekedMessages) && !peekedMessages.isEmpty()) {
-                    receivedMessages.addAll(peekedMessages);
-                }
-            }));
-
-            threadList.forEach(Thread::start);
-            threadList.forEach(t -> {
-                try {
-                    t.join(TIMEOUT.toMillis());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            receivedMessages.stream()
-                .sorted((o1, o2) -> {
-                    int position1 = (int) o1.getApplicationProperties().get(MESSAGE_POSITION_ID);
-                    int position2 = (int) o2.getApplicationProperties().get(MESSAGE_POSITION_ID);
-                    return position1 - position2;
-                })
-                .forEach(actualMessage -> {
-                    logger.info("The position id of received message : {}", actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
-                    checkCorrectMessage.accept(actualMessage, messageCount.getAndIncrement());
-                });
-
+            StepVerifier.create(receiver.peekMessage())
+                .assertNext(message -> checkCorrectMessage.accept(message, 7))
+                .verifyComplete();
         } finally {
-            Thread finallyThread = new Thread(() -> {
-                receiver.receiveMessages()
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId()))
-                    .subscribe(serviceBusReceivedMessage ->
-                        receiver.complete(serviceBusReceivedMessage)
-                            .thenReturn(serviceBusReceivedMessage)
-                            .block()
-                    );
-                messagesPending.addAndGet(-messages.size());
-                receivedPositions.clear();
-            });
-            finallyThread.start();
-            finallyThread.join(TIMEOUT.toMillis());
+            AtomicInteger completed = new AtomicInteger();
+            StepVerifier.create(receiver.receiveMessages().take(messages.size()))
+                .thenConsumeWhile(receivedMessage -> {
+                    completed.incrementAndGet();
+                    receiver.complete(receivedMessage).block(OPERATION_TIMEOUT);
+                    return completed.get() <= messages.size();
+                })
+                .thenCancel()
+                .verify();
+
+            messagesPending.addAndGet(-messages.size());
         }
     }
 
@@ -637,55 +553,47 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void peekMessagesFromSequence(MessagingEntityType entityType) throws InterruptedException {
+    void peekMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
         final AtomicInteger messageId = new AtomicInteger();
+        final AtomicLong actualCount = new AtomicLong();
         final int maxMessages = 2;
         final AtomicLong fromSequenceNumber = new AtomicLong();
-        final CountDownLatch countdownLatch = new CountDownLatch(maxMessages);
         fromSequenceNumber.set(1);
 
         final byte[] content = "peek-message-from-sequence".getBytes(Charset.defaultCharset());
-        List<String> messageIds = Collections.synchronizedList(new ArrayList<String>());
         for (int i = 0; i < maxMessages; ++i) {
             ServiceBusMessage message = getMessage(String.valueOf(i), isSessionEnabled, AmqpMessageBody.fromData(content));
-            messageIds.add(String.valueOf(i));
-            Mono.when(sendMessage(message)).block();
+            Mono.when(sendMessage(message)).block(TIMEOUT);
         }
 
         // Assert & Act
 
-        // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
+        // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
-        List<String> receivedMessages = Collections.synchronizedList(new ArrayList<String>());
-        receiver.peekMessages(maxMessages, fromSequenceNumber.get())
-            .filter(receivedMessage -> messageIds.contains(receivedMessage.getMessageId())
-                && receivedMessages.parallelStream().noneMatch(mid ->
-                    mid.equals(receivedMessage.getMessageId())))
-            .sort(Comparator.comparing(ServiceBusReceivedMessage::getMessageId))
-            .flatMap(receivedMessage -> {
+        for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
+            receiver.peekMessages(maxMessages, fromSequenceNumber.get()).toStream().forEach(receivedMessage -> {
                 Long previousSequenceNumber = fromSequenceNumber.get();
                 fromSequenceNumber.set(receivedMessage.getSequenceNumber() + 1);
-                countdownLatch.countDown();
-                receivedMessages.add(receivedMessage.getMessageId());
+                actualCount.addAndGet(1);
                 assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
                     String.format("Message id did not match. Message payload: [%s], peek from Sequence Number [%s], "
-                            + " received message Sequence Number [%s]", receivedMessage.getBody(),
+                        + " received message Sequence Number [%s]", receivedMessage.getBody().toString(),
                         previousSequenceNumber, receivedMessage.getSequenceNumber()));
-                return Mono.just(receivedMessage);
-            })
-            .repeat(() -> countdownLatch.getCount() > 0)
-            .subscribe();
-
-        if (!countdownLatch.await(20, TimeUnit.SECONDS)) {
-            Assertions.fail("Failed peek messages from sequence.");
+            });
         }
 
+        assertEquals(maxMessages, actualCount.get());
+
         StepVerifier.create(receiver.receiveMessages().take(maxMessages))
-            .assertNext(receivedMessage -> receiver.complete(receivedMessage).block(Duration.ofSeconds(15)))
-            .assertNext(receivedMessage -> receiver.complete(receivedMessage).block(Duration.ofSeconds(15)))
+            .assertNext(receivedMessage -> {
+                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
+            })
+            .assertNext(receivedMessage -> {
+                receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
+            })
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -720,13 +628,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message).block();
+        sendMessage(message).block(TIMEOUT);
 
         setReceiver(entityType, entityIndex, isSessionEnabled);
 
         // Assert & Act
         StepVerifier.create(receiver.receiveMessages()
-            .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId()))
             .flatMap(receivedMessage -> receiver.deadLetter(receivedMessage).thenReturn(receivedMessage)).take(1))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -860,9 +767,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         try {
             StepVerifier.create(Mono.delay(Duration.ofSeconds(7))
                 .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage))))
-                .assertNext(lockedUntil -> assertTrue(lockedUntil.isAfter(initialLock),
-                    String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
-                        lockedUntil, initialLock)))
+                .assertNext(lockedUntil -> {
+                    assertTrue(lockedUntil.isAfter(initialLock),
+                        String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
+                            lockedUntil, initialLock));
+
+                })
                 .verifyComplete();
         } finally {
             logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
@@ -923,14 +833,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         if (isSessionEnabled) {
             messages.forEach(m -> m.setSessionId(sessionId));
         }
-        sender.sendMessages(messages).block();
+        sender.sendMessages(messages).block(TIMEOUT);
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled, clientCreationOptions);
 
         // Assert & Act
-        StepVerifier.create(receiver.receiveMessages()
-                .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId()))
-                .map(receivedMessage -> Mono.delay(lockRenewTimeout.plusSeconds(2))
+        StepVerifier.create(receiver.receiveMessages().map(receivedMessage -> Mono.delay(lockRenewTimeout.plusSeconds(2))
             .then(receiver.complete(receivedMessage)).thenReturn(receivedMessage).block()).take(totalMessages))
             .expectNextCount(totalMessages)
             .verifyComplete();
@@ -953,7 +861,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         // Send the message to verify.
-        sendMessage(message).block();
+        sendMessage(message).block(TIMEOUT);
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
@@ -1013,7 +921,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message).block(TIMEOUT);
 
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_RECEIVE_AND_DEFER, isSessionEnabled);
-        AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<ServiceBusReceivedMessage>();
+        AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages()
@@ -1179,27 +1087,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Duration shortWait = Duration.ofSeconds(2);
         final int entityIndex = 0;
 
-        if (isSessionEnabled && sessionId == null) {
-            sessionId = UUID.randomUUID().toString();
-        }
-
         setSender(entityType, entityIndex, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
-        sendMessage(message).block();
+        sendMessage(message).block(TIMEOUT);
 
         setReceiver(entityType, entityIndex, isSessionEnabled);
 
-        receiver.receiveMessages()
-            .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId()))
-            .map(receivedMessage -> {
+        StepVerifier.create(receiver.receiveMessages().flatMap(receivedMessage -> receiver.deadLetter(receivedMessage).thenReturn(receivedMessage)).take(1))
+            .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
-                receiver.deadLetter(receivedMessage).block();
-                return receivedMessage;
-            }).next().block(OPERATION_TIMEOUT);
+            }).verifyComplete();
 
         final ServiceBusReceiverAsyncClient deadLetterReceiver;
         switch (entityType) {
@@ -1230,14 +1132,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         try {
-            deadLetterReceiver.receiveMessages()
-                .filter(serviceBusReceivedMessage -> messageId.equals(serviceBusReceivedMessage.getMessageId()))
-                .map(serviceBusReceivedMessage -> {
+            StepVerifier.create(deadLetterReceiver.receiveMessages())
+                .assertNext(serviceBusReceivedMessage -> {
+                    receivedMessages.add(serviceBusReceivedMessage);
                     assertMessageEquals(serviceBusReceivedMessage, messageId, isSessionEnabled);
-                    return serviceBusReceivedMessage;
                 })
-                .next()
-                .block(OPERATION_TIMEOUT);
+                .thenAwait(shortWait) // Give  some time auto complete to finish.
+                .thenCancel()
+                .verify();
         } finally {
             // close dead letter receiver.
             deadLetterReceiver.close();
@@ -1256,11 +1158,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Duration sleepDuration = maximumDuration.plusMillis(500);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        final AtomicInteger numberCompleted = new AtomicInteger(0);
 
         final ServiceBusReceivedMessage receivedMessage = sendMessage(message)
             .then(receiver.receiveMessages().next())
-            .block();
+            .block(TIMEOUT);
         assertNotNull(receivedMessage);
 
         final OffsetDateTime lockedUntil = receivedMessage.getLockedUntil();
@@ -1269,14 +1170,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maximumDuration))
             .thenAwait(sleepDuration)
-            .then(() -> receiver.receiveMessages()
-                .filter(m -> messageId.equals(m.getMessageId()))
-                .flatMap(m -> {
-                    logger.info("Completing message.");
-                    numberCompleted.addAndGet(completeMessages(receiver, Collections.singletonList(m)));
-                    messagesPending.addAndGet(-numberCompleted.get());
-                    return Mono.just(m);
-                }).subscribe())
+            .then(() -> {
+                logger.info("Completing message.");
+                int numberCompleted = completeMessages(receiver, Collections.singletonList(receivedMessage));
+
+                messagesPending.addAndGet(-numberCompleted);
+            })
             .expectComplete()
             .verify(Duration.ofMinutes(3));
     }
@@ -1529,9 +1428,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     private int completeMessages(ServiceBusReceiverAsyncClient client, List<ServiceBusReceivedMessage> messages) {
-        Mono.when(messages.stream().map(client::complete)
+        Mono.when(messages.stream().map(e -> client.complete(e))
             .collect(Collectors.toList()))
-            .block();
+            .block(TIMEOUT);
 
         return messages.size();
     }
