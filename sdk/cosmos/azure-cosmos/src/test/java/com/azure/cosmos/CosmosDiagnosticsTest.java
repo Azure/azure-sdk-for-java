@@ -168,14 +168,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
-    @DataProvider(name = "connectionStateListenerArgProvider")
-    public Object[][] connectionStateListenerArgProvider() {
-        return new Object[][]{
-            {true},
-            {false}
-        };
-    }
-
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() throws Exception {
         CosmosClient testGatewayClient = null;
@@ -832,22 +824,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         validate(deleteItemResponse.getDiagnostics(), 0, 0);
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionStateListenerArgProvider", timeOut = TIMEOUT)
-    public void rntbdStatistics(boolean connectionStateListenerEnabled) throws Exception {
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void rntbdStatistics() throws Exception {
         Instant beforeClientInitialization = Instant.now();
 
         CosmosClient client1 = null;
         try {
 
-            DirectConnectionConfig connectionConfig = DirectConnectionConfig.getDefaultConfig();
-            if (connectionStateListenerEnabled) {
-                connectionConfig.setConnectionEndpointRediscoveryEnabled(true);
-            }
-
             client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
-                .directMode(connectionConfig)
+                .directMode()
                 .buildClient();
 
             TestItem testItem = new TestItem();
@@ -882,8 +869,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 beforeOperation2,
                 afterOperation2,
                 beforeOperation3,
-                afterOperation3,
-                connectionStateListenerEnabled);
+                afterOperation3);
 
             // read
             CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
@@ -906,8 +892,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                                          Instant beforeOperation2,
                                          Instant afterOperation2,
                                          Instant beforeOperation3,
-                                         Instant afterOperation3,
-                                         boolean connectionStateListenerEnabled) throws Exception {
+                                         Instant afterOperation3) throws Exception {
         ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
         JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
         assertThat(responseStatisticsList.isArray()).isTrue();
@@ -929,16 +914,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(serviceEndpointStatistics.get("inflightRequests").asInt(-1)).isEqualTo(1);
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
-
-        JsonNode connectionStateListenerMetrics = serviceEndpointStatistics.get("cerMetrics");
-        if (connectionStateListenerEnabled) {
-
-            assertThat(connectionStateListenerMetrics).isNotNull();
-            assertThat(connectionStateListenerMetrics.get("lastCallTimestamp")).isNull();
-            assertThat(connectionStateListenerMetrics.get("lastActionableContext")).isNull();
-        } else {
-            assertThat(connectionStateListenerMetrics).isNull();
-        }
 
         // first request initialized the rntbd service endpoint
         Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(1);

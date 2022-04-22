@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
@@ -111,23 +110,23 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public int updateAddresses(final URI serverKey) {
+    public void updateAddresses(final RxDocumentServiceRequest request, final URI serverKey) {
 
+        Objects.requireNonNull(request, "expected non-null request");
         Objects.requireNonNull(serverKey, "expected non-null serverKey");
 
-        AtomicInteger updatedCount = new AtomicInteger(0);
-
         if (this.tcpConnectionEndpointRediscoveryEnabled) {
-            for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
-                final GatewayAddressCache addressCache = endpointCache.addressCache;
+            URI serviceEndpoint = this.endpointManager.resolveServiceEndpoint(request);
+            this.addressCacheByEndpoint.computeIfPresent(serviceEndpoint, (ignored, endpointCache) -> {
 
-                updatedCount.accumulateAndGet(addressCache.updateAddresses(serverKey), (oldValue, newValue) -> oldValue + newValue);
-            }
+                final GatewayAddressCache addressCache = endpointCache.addressCache;
+                addressCache.updateAddresses(serverKey);
+
+                return endpointCache;
+            });
         } else {
             logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
         }
-
-        return updatedCount.get();
     }
 
     @Override

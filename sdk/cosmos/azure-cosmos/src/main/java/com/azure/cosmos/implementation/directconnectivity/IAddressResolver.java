@@ -14,5 +14,5 @@ public interface IAddressResolver {
             RxDocumentServiceRequest request,
             boolean forceRefreshPartitionAddresses);
 
-    int updateAddresses(URI serverKey);
+    void updateAddresses(RxDocumentServiceRequest request, URI serverKey);
 }

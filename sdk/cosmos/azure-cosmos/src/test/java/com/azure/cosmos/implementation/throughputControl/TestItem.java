@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation.throughputControl;
 
-import java.util.UUID;
-
 public class TestItem {
     private String id;
     private String mypk;
@@ -17,10 +15,6 @@ public class TestItem {
         this.id = id;
         this.mypk = mypk;
         this.prop = prop;
-    }
-
-    public static TestItem createNewItem() {
-        return new TestItem(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
     public String getId() {

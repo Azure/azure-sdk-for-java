@@ -42,13 +42,11 @@ public class ConnectionStateListenerTest {
     @DataProvider(name = "connectionStateListenerConfigProvider")
     public Object[][] connectionStateListenerConfigProvider() {
         return new Object[][]{
-            // isTcpConnectionEndpointRediscoveryEnabled, serverResponseType, updateAddresses() called times on request, updateAddresses() called times when server shutdown
-            {true, RequestResponseType.CHANNEL_FIN, 1, 0},
-            {false, RequestResponseType.CHANNEL_FIN, 0, 0},
-            {true, RequestResponseType.CHANNEL_RST, 0, 0},
-            {false, RequestResponseType.CHANNEL_RST, 0, 0},
-            {true, RequestResponseType.NONE, 0, 1}, // the request will be timed out, but the connection will be active. When tcp server shutdown, the connection will be closed gracefully
-            {false, RequestResponseType.NONE, 0, 0},
+            // isTcpConnectionEndpointRediscoveryEnabled, serverResponseType, GlobalAddressResolver.updateAddresses() called times
+            {true, RequestResponseType.CHANNEL_FIN, 1},
+            {false, RequestResponseType.CHANNEL_FIN, 0},
+            {true, RequestResponseType.CHANNEL_RST, 0},
+            {false, RequestResponseType.CHANNEL_RST, 0},
         };
     }
 
@@ -56,8 +54,7 @@ public class ConnectionStateListenerTest {
     public void connectionStateListener_OnConnectionEvent(
         boolean isTcpConnectionEndpointRediscoveryEnabled,
         RequestResponseType responseType,
-        int timesOnRequest,
-        int timesOnServerShutdown) throws ExecutionException, InterruptedException {
+        int times) throws ExecutionException, InterruptedException {
 
         // using a random generated server port
         int serverPort = port + randomPort.getAndIncrement();
@@ -94,13 +91,11 @@ public class ConnectionStateListenerTest {
         } catch (Exception e) {
             logger.info("expected failed request with reason {}", e);
         }
+        finally {
+            TcpServerFactory.shutdownRntbdServer(server);
+        }
 
-        Mockito.verify(addressResolver, Mockito.times(timesOnRequest)).updateAddresses(Mockito.any());
-
-        Mockito.clearInvocations(addressResolver);
-
-        TcpServerFactory.shutdownRntbdServer(server);
-        Mockito.verify(addressResolver, Mockito.times(timesOnServerShutdown)).updateAddresses(Mockito.any());
+        Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());
     }
 
     private Document getDocumentDefinition() {

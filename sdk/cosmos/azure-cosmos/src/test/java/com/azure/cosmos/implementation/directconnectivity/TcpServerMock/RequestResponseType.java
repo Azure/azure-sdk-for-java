@@ -8,6 +8,5 @@ package com.azure.cosmos.implementation.directconnectivity.TcpServerMock;
  */
 public enum RequestResponseType {
     CHANNEL_FIN,
-    CHANNEL_RST,
-    NONE
+    CHANNEL_RST
 }

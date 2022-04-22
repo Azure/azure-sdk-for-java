@@ -28,18 +28,12 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelHandler.class);
     private final ChannelHealthChecker healthChecker;
     private final Config config;
-    private final RntbdConnectionStateListener connectionStateListener;
 
-    RntbdClientChannelHandler(
-        final Config config,
-        final ChannelHealthChecker healthChecker,
-        final RntbdConnectionStateListener connectionStateListener) {
+    RntbdClientChannelHandler(final Config config, final ChannelHealthChecker healthChecker) {
         checkNotNull(healthChecker, "expected non-null healthChecker");
         checkNotNull(config, "expected non-null config");
-
         this.healthChecker = healthChecker;
         this.config = config;
-        this.connectionStateListener = connectionStateListener;
     }
 
     /**
@@ -104,9 +98,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,
-            this.config.maxRequestsPerChannel(),
-            this.connectionStateListener);
-
+            this.config.maxRequestsPerChannel());
         final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 

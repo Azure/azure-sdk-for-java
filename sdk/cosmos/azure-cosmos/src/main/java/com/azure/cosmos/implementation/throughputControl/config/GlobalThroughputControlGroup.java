@@ -22,12 +22,11 @@ public class GlobalThroughputControlGroup extends ThroughputControlGroupInternal
         Integer targetThroughput,
         Double targetThroughputThreshold,
         boolean isDefault,
-        boolean continueOnInitError,
         CosmosAsyncContainer globalControlContainer,
         Duration controlItemRenewInterval,
         Duration controlItemExpireInterval) {
 
-        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault, continueOnInitError);
+        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault);
 
         checkNotNull(globalControlContainer, "Global control container can not be null");
 
