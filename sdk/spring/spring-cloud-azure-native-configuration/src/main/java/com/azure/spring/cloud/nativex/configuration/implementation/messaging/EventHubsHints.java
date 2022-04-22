@@ -27,5 +27,5 @@ import org.springframework.nativex.type.NativeConfiguration;
         access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
     )
 )
-public class MessageEventHubsHints implements NativeConfiguration {
+public class EventHubsHints implements NativeConfiguration {
 }
