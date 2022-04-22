@@ -1,5 +1,15 @@
 # Release History
 
+## 12.15.2 (2022-04-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-storage-blob` from `12.16.0` to version `12.16.1`.
+
+
 ## 12.15.1 (2022-04-07)
 
 ### Other Changes
