@@ -49,7 +49,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = ShareLeaseClientBuilder.class, isAsync = true)
 public final class ShareLeaseAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(ShareLeaseAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(ShareLeaseAsyncClient.class);
 
     private final String shareName;
     private final String shareSnapshot;
@@ -126,7 +126,11 @@ public final class ShareLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> acquireLease() {
-        return acquireLeaseWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return acquireLeaseWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -145,7 +149,11 @@ public final class ShareLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse() {
-        return acquireLeaseWithResponse(new ShareAcquireLeaseOptions());
+        try {
+            return acquireLeaseWithResponse(new ShareAcquireLeaseOptions());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -168,7 +176,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(context -> acquireLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -208,7 +216,11 @@ public final class ShareLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releaseLease() {
-        return releaseLeaseWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return releaseLeaseWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -230,7 +242,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(this::releaseLeaseWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -263,7 +275,11 @@ public final class ShareLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> breakLease() {
-        return breakLeaseWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return breakLeaseWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -284,7 +300,11 @@ public final class ShareLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseWithResponse() {
-        return breakLeaseWithResponse(new ShareBreakLeaseOptions());
+        try {
+            return breakLeaseWithResponse(new ShareBreakLeaseOptions());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -309,7 +329,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(context -> breakLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -346,7 +366,11 @@ public final class ShareLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> changeLease(String proposedId) {
-        return changeLeaseWithResponse(proposedId).flatMap(FluxUtil::toMono);
+        try {
+            return changeLeaseWithResponse(proposedId).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -369,7 +393,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(context -> changeLeaseWithResponse(proposedId, context));
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -406,7 +430,11 @@ public final class ShareLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> renewLease() {
-        return renewLeaseWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return renewLeaseWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -428,7 +456,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(this::renewLeaseWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -437,7 +465,7 @@ public final class ShareLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isShareFile) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "Cannot renew a lease on a share file."));
         } else {
             response = this.client.getShares().renewLeaseWithResponseAsync(shareName, this.leaseId, null,

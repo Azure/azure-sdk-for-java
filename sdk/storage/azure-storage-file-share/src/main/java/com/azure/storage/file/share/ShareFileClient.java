@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -72,6 +73,8 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = ShareFileClientBuilder.class)
 public class ShareFileClient {
+    private final ClientLogger logger = new ClientLogger(ShareFileClient.class);
+
     private final ShareFileAsyncClient shareFileAsyncClient;
 
     /**
@@ -410,8 +413,8 @@ public class ShareFileClient {
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param filePermissionCopyMode Mode of file permission acquisition.
-     * @param ignoreReadOnly Whether to copy despite target being read only. (default is false)
-     * @param setArchiveAttribute Whether the archive attribute is to be set on the target. (default is true)
+     * @param ignoreReadOnly Whether or not to copy despite target being read only. (default is false)
+     * @param setArchiveAttribute Whether or not the archive attribute is to be set on the target. (default is true)
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
@@ -884,100 +887,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Deletes the file associate with the client if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the file</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
-     * <pre>
-     * boolean result = fileClient.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;File deleted: &quot; + result&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
-     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
-        return response.getStatusCode() == 202;
-    }
-
-    /**
-     * Deletes the file associate with the client if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the file</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = fileClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     * &#125; else &#123;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
-     *
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
-     * was successfully deleted. If status code is 404, the file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
-        return this.deleteIfExistsWithResponse(null, timeout, context);
-    }
-
-    /**
-     * Deletes the file associate with the client if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the file</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
-     * <pre>
-     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * Response&lt;Void&gt; res = fileClient.deleteIfExistsWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     * &#125; else &#123;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
-     *
-     * @param requestConditions {@link ShareRequestConditions}
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
-     * was successfully deleted. If status code is 404, the file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Duration timeout,
-        Context context) {
-        Mono<Response<Void>> response = shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1002,7 +912,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1033,7 +943,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1651,7 +1561,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrl#long-long-long-String -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1659,6 +1569,7 @@ public class ShareFileClient {
      * @param sourceUrl Specifies the URL of the source file.
      * @return The {@link ShareFileUploadRangeFromUrlInfo file upload range from url info}
      */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileUploadRangeFromUrlInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
                                                               String sourceUrl) {
@@ -1682,7 +1593,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1695,6 +1606,7 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, Duration timeout, Context context) {
@@ -1719,7 +1631,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1733,6 +1645,7 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, ShareRequestConditions requestConditions, Duration timeout,
@@ -1759,7 +1672,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param options argument collection
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -1769,6 +1682,7 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(
         ShareFileUploadRangeFromUrlOptions options, Duration timeout, Context context) {

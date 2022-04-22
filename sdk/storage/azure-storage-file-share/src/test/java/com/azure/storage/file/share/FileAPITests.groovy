@@ -26,7 +26,6 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
-import com.azure.storage.file.share.options.ShareFileCreateOptions
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
@@ -991,46 +990,6 @@ class FileAPITests extends APISpec {
         assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    def "Delete if exists file"() {
-        given:
-        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
-
-        expect:
-        assertResponseStatusCode(primaryFileClient.deleteIfExistsWithResponse(null, null), 202)
-    }
-
-    def "Delete if exists file min"() {
-        given:
-        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
-
-        expect:
-        primaryFileClient.deleteIfExists()
-    }
-
-    def "Delete if exists file that does not exist"() {
-        def client = shareClient.getFileClient(generateShareName())
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null)
-
-        then:
-        response.getStatusCode() == 404
-        !client.exists()
-    }
-
-    def "Delete if exists file that was already deleted"() {
-        setup:
-        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
-
-        when:
-        def result1 = primaryFileClient.deleteIfExists()
-        def result2 = primaryFileClient.deleteIfExists()
-
-        then:
-        result1
-        !result2
-    }
-
     def "Get properties"() {
         given:
         primaryFileClient.create(1024)
@@ -1728,5 +1687,4 @@ class FileAPITests extends APISpec {
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
-
 }
