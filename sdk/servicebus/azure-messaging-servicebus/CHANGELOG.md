@@ -1,5 +1,15 @@
 # Release History
 
+## 7.8.1 (2022-04-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.4.2` to version `2.4.3`.
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+
+
 ## 7.8.0 (2022-04-11)
 
 ### Features Added
