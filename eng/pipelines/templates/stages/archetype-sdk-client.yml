@@ -53,6 +53,9 @@ parameters:
 - name: AdditionalStagesAfterBuild
   type: object
   default: []
+- name: EnableBatchRelease
+  type: boolean
+  default: false
 
 stages:
   - stage: Build
@@ -92,22 +95,42 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-java-release.yml
-      parameters:
-        DependsOn:
-          - Build
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        SDKType: ${{ parameters.SDKType }}
-        # By default, the Artifacts list will contain everything as forRelease defaults to true which
-        # ensures everything is correctly processed for the nightly builds. For batch release, the user
-        # will use the checkboxes to say what will be released and that trimmed down list is what'll be
-        # passed to archetype-java-release.yml
-        Artifacts:
-        - ${{ each artifact in parameters.Artifacts }}:
-          - ${{ if ne(artifact.skipRelease, 'false') }}:
-            - ${{ artifact }}
-        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-          TestPipeline: true
-        ArtifactName: packages
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
+      - template: archetype-java-release-batch.yml
+        parameters:
+          DependsOn:
+            - Build
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          # By default, the Artifacts list will contain everything as forRelease defaults to true which
+          # ensures everything is correctly processed for the nightly builds. For batch release, the user
+          # will use the checkboxes to say what will be released and that trimmed down list is what'll be
+          # passed to archetype-java-release.yml
+          Artifacts:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.skipRelease, 'false') }}:
+              - ${{ artifact }}
+          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+            TestPipeline: true
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    - ${{ else }}:
+      - template: archetype-java-release.yml
+        parameters:
+          DependsOn:
+            - Build
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          # By default, the Artifacts list will contain everything as forRelease defaults to true which
+          # ensures everything is correctly processed for the nightly builds. For batch release, the user
+          # will use the checkboxes to say what will be released and that trimmed down list is what'll be
+          # passed to archetype-java-release.yml
+          Artifacts:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.skipRelease, 'false') }}:
+              - ${{ artifact }}
+          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+            TestPipeline: true
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 
