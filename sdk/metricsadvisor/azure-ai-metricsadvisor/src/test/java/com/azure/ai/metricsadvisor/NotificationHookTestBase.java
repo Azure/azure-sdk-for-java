@@ -104,11 +104,11 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
 
     protected static class ListHookInput {
         static final ListHookInput INSTANCE = new ListHookInput();
-        EmailNotificationHook emailHook = new EmailNotificationHook("java_test_" + UUID.randomUUID())
+        EmailNotificationHook emailHook = new EmailNotificationHook("java_test_" + UUID.randomUUID().toString())
             .setEmailsToAlert(new ArrayList<String>() {{
                     add("simpleuser0@hotmail.com");
                 }});
-        WebNotificationHook webHook = new WebNotificationHook("java_test_" + UUID.randomUUID(),
+        WebNotificationHook webHook = new WebNotificationHook("java_test_" + UUID.randomUUID().toString(),
             "https://httpbin.org/post");
         int pageSize = 1;
     }

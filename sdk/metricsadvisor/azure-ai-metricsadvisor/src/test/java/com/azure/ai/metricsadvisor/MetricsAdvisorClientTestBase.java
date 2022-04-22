@@ -22,12 +22,6 @@ public abstract class MetricsAdvisorClientTestBase extends TestBase {
 
     MetricsAdvisorClientBuilder getMetricsAdvisorBuilder(HttpClient httpClient,
                                                          MetricsAdvisorServiceVersion serviceVersion) {
-        return getMetricsAdvisorBuilder(httpClient, serviceVersion, true);
-    }
-
-    MetricsAdvisorClientBuilder getMetricsAdvisorBuilder(HttpClient httpClient,
-                                                         MetricsAdvisorServiceVersion serviceVersion,
-                                                         boolean useKeyCredential) {
         MetricsAdvisorClientBuilder builder = new MetricsAdvisorClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -38,13 +32,7 @@ public abstract class MetricsAdvisorClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
         } else {
-            if (useKeyCredential) {
-                builder.credential(new MetricsAdvisorKeyCredential(
-                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")));
-            } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
-            }
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }
