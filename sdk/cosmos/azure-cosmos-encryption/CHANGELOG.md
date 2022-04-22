@@ -1,18 +1,16 @@
 ## Release History
 
-### 1.1.0-beta.1 (Unreleased)
+## 1.0.1 (2022-04-14)
 
-#### Features Added
+### Other Changes
 
-#### Breaking Changes
+#### Dependency Updates
 
-#### Bugs Fixed
-
-#### Other Changes
+- Upgraded `azure-cosmos` from `4.28.0` to version `4.28.1`.
 
 ### 1.0.0 (2022-03-18)
 #### Features Added
-* Released GA version 1.0.0 of `azure-cosmos-encryption`.
+* Released GA version 1.0.0 of 'azure-cosmos-encryption'.
 
 ### 1.0.0-beta.10 (2022-03-10)
 #### New Features
@@ -22,7 +20,7 @@
 * Renamed source package to `com.azure.cosmos.encryption` inline with artifact id.
 * Updated `azure-cosmos` to version `4.27.0`.
 
-#### Bugs Fixed
+#### Key Bug Fixes
 * Fixed issue with collection/pkrange cache on collection recreate scenario for gateway mode - See [PR 25811](https://github.com/Azure/azure-sdk-for-java/pull/25811)
 
 ### 1.0.0-beta.9 (2021-10-14)
@@ -31,7 +29,7 @@
 * Added support for aggregate query.
 * Updated `azure-cosmos` to version `4.20.0`.
 
-#### Bugs Fixed
+#### Key Bug Fixes
 * Fixed Json property name of ClientEncryptionKeyProperties.
 
 ### 1.0.0-beta.8 (2021-09-09)
@@ -42,7 +40,7 @@
 #### New Features
 * Redesigned Database and Container encryption cache for staleness when recreating database and containers in encryption.
 
-#### Bugs Fixed
+#### Key Bug Fixes
 * Fixed encryption create with contentResponseOnWriteEnabled false
 
 ### 1.0.0-beta.6 (2021-06-11)
@@ -67,7 +65,7 @@
 * Converted MicrosoftDataEncryptionException to CosmosException on ClientEncryptionKey fetch.
 
 ### 1.0.0-beta.2 (2021-04-07)
-#### Bugs Fixed
+#### Key Bug Fixes
 * Fixed after burner exception on encryption.
 
 ### 1.0.0-beta.1 (2021-04-06)
