@@ -12,7 +12,7 @@ import com.azure.cosmos.models.PartitionKey;
 /**
  * This is a sample test case, not to be executed
  */
-public class ClientTelemetryTest {
+public class ClientTelemetrySampleTest {
 
     /**
      * Enable Client Telemetry: 2 steps are required

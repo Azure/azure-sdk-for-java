@@ -551,6 +551,31 @@ public class CosmosException extends AzureException {
                 public CosmosException createCosmosException(int statusCode, Exception innerException) {
                     return new CosmosException(statusCode, innerException);
                 }
+
+                @Override
+                public CosmosException createSerializableCosmosException(CosmosException cosmosException) {
+                    if (cosmosException == null) {
+                        return null;
+                    }
+                    CosmosException exception = new CosmosException(cosmosException.statusCode,
+                        cosmosException.cosmosError, cosmosException.getResponseHeaders());
+                    exception.requestTimeline = cosmosException.requestTimeline;
+                    exception.channelAcquisitionTimeline = cosmosException.channelAcquisitionTimeline;
+                    exception.rntbdChannelTaskQueueSize = cosmosException.rntbdChannelTaskQueueSize;
+                    exception.rntbdEndpointStatistics = cosmosException.rntbdEndpointStatistics;
+                    exception.lsn = cosmosException.lsn;
+                    exception.partitionKeyRangeId = cosmosException.partitionKeyRangeId;
+                    exception.requestUri = cosmosException.requestUri;
+                    exception.resourceAddress = cosmosException.resourceAddress;
+                    exception.requestPayloadLength = cosmosException.requestPayloadLength;
+                    exception.rntbdPendingRequestQueueSize = cosmosException.rntbdPendingRequestQueueSize;
+                    exception.rntbdRequestLength = cosmosException.rntbdRequestLength;
+                    exception.rntbdResponseLength = cosmosException.rntbdResponseLength;
+                    exception.sendingRequestHasStarted = cosmosException.sendingRequestHasStarted;
+                    exception.requestHeaders = null;
+                    exception.cosmosDiagnostics = null;
+                    return exception;
+                }
             });
     }
 }
