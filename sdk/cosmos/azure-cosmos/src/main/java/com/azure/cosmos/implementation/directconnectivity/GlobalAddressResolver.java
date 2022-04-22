@@ -156,10 +156,9 @@ public class GlobalAddressResolver implements IAddressResolver {
                 .flatMap(readEndpointOptional -> {
                     if (readEndpointOptional.isPresent()) {
                         if (this.addressCacheByEndpoint.containsKey(readEndpointOptional.get())) {
-                            return this.addressCacheByEndpoint
-                                    .get(readEndpointOptional)
-                                    .addressCache
-                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                            return this.addressCacheByEndpoint.get(readEndpointOptional.get())
+                                        .addressCache
+                                        .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
                         }
                     }
 

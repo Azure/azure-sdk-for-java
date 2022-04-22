@@ -16,12 +16,13 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
-
+    private static int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 10;
     private final TransportClient transportClient;
     private final Semaphore openConnectionsSemaphore;
 
@@ -45,9 +46,16 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
 
         return Flux.fromIterable(addresses)
                 .flatMap(addressUri -> {
-                    if (this.openConnectionsSemaphore.tryAcquire()) {
-                        return this.transportClient.openConnection(addressUri)
-                                .doOnTerminate(() -> this.openConnectionsSemaphore.release());
+                    try {
+                        if (this.openConnectionsSemaphore.tryAcquire(DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES, TimeUnit.MINUTES)) {
+                            return this.transportClient.openConnection(addressUri)
+                                    .doOnNext(response -> {
+                                        logger.info("{} for address {}", response.isConnected(), response.getUri());
+                                    })
+                                    .doOnTerminate(() -> this.openConnectionsSemaphore.release());
+                        }
+                    } catch (InterruptedException e) {
+                        logger.warn("Acquire connection semaphore failed", e);
                     }
 
                     return Mono.just(new OpenConnectionResponse(addressUri, false, new IllegalStateException("Unable to acquire semaphore")));

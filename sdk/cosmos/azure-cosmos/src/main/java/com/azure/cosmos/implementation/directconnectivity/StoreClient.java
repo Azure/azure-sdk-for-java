@@ -51,6 +51,7 @@ public class StoreClient implements IStoreClient {
 
     private final SessionContainer sessionContainer;
     private final ReplicatedResourceClient replicatedResourceClient;
+    private final TransportClient transportClient;
     private final String ZERO_PARTITION_KEY_RANGE = "0";
 
     public StoreClient(
@@ -62,6 +63,7 @@ public class StoreClient implements IStoreClient {
             TransportClient transportClient,
             boolean useMultipleWriteLocations) {
         this.diagnosticsClientContext = diagnosticsClientContext;
+        this.transportClient = transportClient;
         this.sessionContainer = sessionContainer;
         this.serviceConfigurationReader = serviceConfigurationReader;
         this.replicatedResourceClient = new ReplicatedResourceClient(
@@ -69,7 +71,7 @@ public class StoreClient implements IStoreClient {
             configs,
             new AddressSelector(addressResolver, configs.getProtocol()),
             sessionContainer,
-            transportClient,
+            this.transportClient,
             serviceConfigurationReader,
             userTokenProvider,
             false,

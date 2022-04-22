@@ -56,7 +56,6 @@ public interface RxStoreModel {
      * Open connections and init caches.
      *
      * @param containerLink the container link.
-     *
      * @return a flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
