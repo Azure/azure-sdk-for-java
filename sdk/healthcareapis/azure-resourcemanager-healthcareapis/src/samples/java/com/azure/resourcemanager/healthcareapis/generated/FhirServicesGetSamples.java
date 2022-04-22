@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FhirServices Get. */
 public final class FhirServicesGetSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_Get.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/fhirservices/FhirServices_Get.json
      */
     /**
      * Sample code: Get a Fhir Service.

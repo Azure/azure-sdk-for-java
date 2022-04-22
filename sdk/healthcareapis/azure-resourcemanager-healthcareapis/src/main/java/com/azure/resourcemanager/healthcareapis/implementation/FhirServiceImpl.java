@@ -14,6 +14,7 @@ import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfigurati
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceCorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceExportConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.FhirServiceImportConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceKind;
 import com.azure.resourcemanager.healthcareapis.models.FhirServicePatchResource;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
@@ -120,6 +121,10 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
 
     public ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration() {
         return this.innerModel().resourceVersionPolicyConfiguration();
+    }
+
+    public FhirServiceImportConfiguration importConfiguration() {
+        return this.innerModel().importConfiguration();
     }
 
     public Region region() {
@@ -303,6 +308,11 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
     public FhirServiceImpl withResourceVersionPolicyConfiguration(
         ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration) {
         this.innerModel().withResourceVersionPolicyConfiguration(resourceVersionPolicyConfiguration);
+        return this;
+    }
+
+    public FhirServiceImpl withImportConfiguration(FhirServiceImportConfiguration importConfiguration) {
+        this.innerModel().withImportConfiguration(importConfiguration);
         return this;
     }
 

@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for HealthcareApis Management</name>
-  <description>This package contains Microsoft Azure SDK for HealthcareApis Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Healthcare APIs Client. Package tag package-2021-11.</description>
+  <description>This package contains Microsoft Azure SDK for HealthcareApis Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Healthcare APIs Client. Package tag package-preview-2022-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

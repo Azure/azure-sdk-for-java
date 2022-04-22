@@ -11,6 +11,7 @@ import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfigurati
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceCorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceExportConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.FhirServiceImportConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceKind;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
@@ -320,6 +321,29 @@ public final class FhirServiceInner extends TaggedResource {
             this.innerProperties = new FhirServiceProperties();
         }
         this.innerProperties().withResourceVersionPolicyConfiguration(resourceVersionPolicyConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the importConfiguration property: Fhir Service import configuration.
+     *
+     * @return the importConfiguration value.
+     */
+    public FhirServiceImportConfiguration importConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().importConfiguration();
+    }
+
+    /**
+     * Set the importConfiguration property: Fhir Service import configuration.
+     *
+     * @param importConfiguration the importConfiguration value to set.
+     * @return the FhirServiceInner object itself.
+     */
+    public FhirServiceInner withImportConfiguration(FhirServiceImportConfiguration importConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FhirServiceProperties();
+        }
+        this.innerProperties().withImportConfiguration(importConfiguration);
         return this;
     }
 
