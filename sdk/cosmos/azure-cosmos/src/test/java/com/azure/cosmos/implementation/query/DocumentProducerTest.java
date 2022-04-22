@@ -182,7 +182,8 @@ public class DocumentProducerTest {
                     initialPageSize,
                     initialContinuationToken,
                     top,
-                    range1);
+                    range1,
+                    () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -286,7 +287,7 @@ public class DocumentProducerTest {
                                                   queryCl, collectionRid, null, requestCreator, requestExecutor,
                                                   parentPartitionKeyRange, range1, collectionLink, null, Document.class,
                                                   null, initialPageSize, initialContinuationToken, top,
-                                                  new HashMap<>());
+                                                  new HashMap<>(), () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -348,7 +349,7 @@ public class DocumentProducerTest {
                                                                                  null,
                                                                                  initialPageSize,
                                                                                  initialContinuationToken,
-                                                                                 top, range1);
+                                                                                 top, range1, () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -422,7 +423,7 @@ public class DocumentProducerTest {
                                                                                  null,
                                                                                  initialPageSize,
                                                                                  initialContinuationToken,
-                                                                                 top, feedRangeEpk);
+                                                                                 top, feedRangeEpk, () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -502,7 +503,9 @@ public class DocumentProducerTest {
                                                                                          null,
                                                                                          initialPageSize,
                                                                                          initialContinuationToken,
-                                                                                         top, feedRangeEpk);
+                                                                                         top,
+                                                                                         feedRangeEpk,
+                                                                                         () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
