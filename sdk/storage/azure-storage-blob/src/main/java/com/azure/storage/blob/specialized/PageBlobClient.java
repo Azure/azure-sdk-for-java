@@ -698,18 +698,17 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange -->
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.listPageRanges#BlobRange -->
      * <pre>
      * BlobRange blobRange = new BlobRange&#40;offset&#41;;
-     *
-     * client.getPageRanges&#40;blobRange&#41;.subscribe&#40;response -&gt; &#123;
-     *     System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *     for &#40;PageRange pageRange : response.getPageRange&#40;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     * String prevSnapshot = &quot;previous snapshot&quot;;
+     * PagedIterable<PageRangeItem> iterable = client.listPageRanges&#40;blobRange&#41;;
+     * for &#40;PageRangeItem item : iterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.listPageRanges#BlobRange -->
      *
      * @param blobRange {@link BlobRange}
      *
@@ -726,22 +725,24 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions -->
-     * <pre>
-     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
-     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     *
-     * client.getPageRangesWithResponse&#40;blobRange, blobRequestConditions&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *         for &#40;PageRange pageRange : response.getValue&#40;&#41;.getPageRange&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;;
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#ListPageRangesOptions-Duration-Context -->
+     * ListPageRangesOptions options = new ListPageRangesOptions&40;new BlobRange&40;offset&41;&41;
+     *     .setRequestConditions&40;new BlobRequestConditions&40;&41;.setLeaseId&40;leaseId&41;&41;
+     *     .setMaxResultsPerPage&40;1000&41;;
+     * Context context = new Context&40;key, value&41;;
+     * PagedIterable&lt;PageRangeItem&gt; iter = client
+     *     .listPageRanges&40;options, timeout, context&41;;
+     * System.out.println&40;&quot;Valid Page Ranges are:&quot;&41;;
+     * for &40;PageRangeItem item : iter&41; &#123;
+     *     System.out.printf&40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&40;&41;.getOffset&40;&41;,
+     *         item.getRange&40;&41;.getLength&40;&41;, item.isClear&40;&41;&41;;
+     *  &#125;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#ListPageRangesOptions-Duration-Context -->
      *
      * @param options {@link ListPageRangesOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A reactive response emitting all the page ranges.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -840,19 +841,18 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String -->
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.listPageRangesDiff#BlobRange-String -->
      * <pre>
      * BlobRange blobRange = new BlobRange&#40;offset&#41;;
-     * final String prevSnapshot = &quot;previous snapshot&quot;;
+     * String prevSnapshot = &quot;previous snapshot&quot;;
+     * PagedIterable&lt;PageRangeItem&gt; iterable = client.listPageRangesDiff&#40;blobRange, prevSnapshot&#41;;
      *
-     * client.getPageRangesDiff&#40;blobRange, prevSnapshot&#41;.subscribe&#40;response -&gt; &#123;
-     *     System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *     for &#40;PageRange pageRange : response.getPageRange&#40;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     * for &#40;PageRangeItem item : iterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.listPageRangesDiff#BlobRange-String -->
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -873,23 +873,28 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions -->
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#ListPageRangesDiffOptions-Duration-Context -->
      * <pre>
-     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
-     * final String prevSnapshot = &quot;previous snapshot&quot;;
-     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * ListPageRangesDiffOptions options = new ListPageRangesDiffOptions&#40;new BlobRange&#40;offset&#41;, &quot;previous snapshot&quot;&#41;
+     *     .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setMaxResultsPerPage&#40;1000&#41;;
      *
-     * client.getPageRangesDiffWithResponse&#40;blobRange, prevSnapshot, blobRequestConditions&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *         for &#40;PageRange pageRange : response.getValue&#40;&#41;.getPageRange&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PagedIterable&lt;PageRangeItem&lg; iter = client
+     *     .listPageRangesDiff&#40;options, timeout, context&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRangeItem item : iter&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#ListPageRangesDiffOptions-Duration-Context -->
      *
      * @param options {@link ListPageRangesDiffOptions}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A reactive response emitting all the different page ranges.
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}

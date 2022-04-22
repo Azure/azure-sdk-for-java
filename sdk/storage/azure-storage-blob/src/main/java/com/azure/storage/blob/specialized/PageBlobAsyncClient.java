@@ -912,18 +912,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange -->
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#BlobRange -->
      * <pre>
      * BlobRange blobRange = new BlobRange&#40;offset&#41;;
      *
-     * client.getPageRanges&#40;blobRange&#41;.subscribe&#40;response -&gt; &#123;
-     *     System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *     for &#40;PageRange pageRange : response.getPageRange&#40;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * client.listPageRanges&#40;blobRange&#41;.subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s%n&quot;,
+     * rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#BlobRange -->
      *
      * @param blobRange {@link BlobRange}
      *
@@ -940,20 +937,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions -->
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions -->
      * <pre>
-     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
-     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * ListPageRangesOptions options = new ListPageRangesOptions&#40;new BlobRange&#40;offset&#41;&#41;
+     * 	  .setMaxResultsPerPage&#40;1000&#41;.setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
      *
-     * client.getPageRangesWithResponse&#40;blobRange, blobRequestConditions&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *         for &#40;PageRange pageRange : response.getValue&#40;&#41;.getPageRange&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;;
+     * client.listPageRanges&#40;options&#41;
+     * 	  .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s%n&quot;, rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;,
+     * 		  rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions -->
      *
      * @param options {@link ListPageRangesOptions}
      * @return A reactive response emitting all the page ranges.
@@ -1121,19 +1114,17 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String -->
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String -->
      * <pre>
      * BlobRange blobRange = new BlobRange&#40;offset&#41;;
-     * final String prevSnapshot = &quot;previous snapshot&quot;;
+     * String prevSnapshot = &quot;previous snapshot&quot;;
      *
-     * client.getPageRangesDiff&#40;blobRange, prevSnapshot&#41;.subscribe&#40;response -&gt; &#123;
-     *     System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *     for &#40;PageRange pageRange : response.getPageRange&#40;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * client.listPageRangesDiff&#40;blobRange, prevSnapshot&#41;.subscribe&#40;rangeItem -&gt;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;,
+     *     rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String -->
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -1154,21 +1145,17 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions -->
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions -->
      * <pre>
-     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
-     * final String prevSnapshot = &quot;previous snapshot&quot;;
-     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * ListPageRangesDiffOptions options = new ListPageRangesDiffOptions&#40;new BlobRange&#40;offset&#41;, &quot;previous snapshot&quot;&#41;
+     * 	   .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     * 	   .setMaxResultsPerPage&#40;1000&#41;;
      *
-     * client.getPageRangesDiffWithResponse&#40;blobRange, prevSnapshot, blobRequestConditions&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
-     *         for &#40;PageRange pageRange : response.getValue&#40;&#41;.getPageRange&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Start: %s, End: %s%n&quot;, pageRange.getStart&#40;&#41;, pageRange.getEnd&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;;
+     * client.listPageRangesDiff&#40;options&#41;
+     * 	   .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;,
+     * 	       rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions -->
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions -->
      *
      * @param options {@link ListPageRangesDiffOptions}.
      * @return A reactive response emitting all the different page ranges.
