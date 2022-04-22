@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -34,7 +33,6 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
@@ -43,7 +41,6 @@ import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
-import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
@@ -208,82 +205,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
 
-    /**
-     * Deletes a file if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExists -->
-     * <pre>
-     * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *     if &#40;deleted&#41; &#123;
-     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExists -->
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a></p>
-     *
-     * @return a reactive response signaling completion. {@code true} indicates that the file was successfully
-     * deleted, {@code false} indicates that the file did not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> response.getStatusCode() != 404);
-    }
-
-    /**
-     * Deletes a file if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a></p>
-     *
-     * @param options {@link DataLakePathDeleteOptions}
-     *
-     * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the file was
-     * successfully deleted. If status code is 404, the file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
-        try {
-            options = options == null ? new DataLakePathDeleteOptions() : options;
-            return deleteWithResponse(options.getRequestConditions()).onErrorResume(t -> t
-                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
     }
 
     /**

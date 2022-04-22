@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -28,11 +27,8 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
-import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
-import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -180,84 +176,6 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Deletes a directory if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExists -->
-     * <pre>
-     * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *     if &#40;deleted&#41; &#123;
-     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExists -->
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a></p>
-     *
-     * @return a reactive response signaling completion. {@code true} indicates that the directory was successfully
-     * deleted, {@code true} indicates that the directory did not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
-    }
-
-    /**
-     * Deletes a directory if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * boolean recursive = false; &#47;&#47; Default value
-     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;recursive&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a></p>
-     *
-     * @param options {@link DataLakePathDeleteOptions}
-     *
-     * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the directory was
-     * successfully deleted. If status code is 404, the directory does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
-        try {
-            options = options == null ? new DataLakePathDeleteOptions() : options;
-            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions()).onErrorResume(t -> t
-                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
      * Creates a new DataLakeFileAsyncClient object by concatenating fileName to the end of
      * DataLakeDirectoryAsyncClient's URL. The new DataLakeFileAsyncClient uses the same request policy pipeline as the
      * DataLakeDirectoryAsyncClient.
@@ -385,75 +303,6 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Creates a new file within a directory if it does not exist. By default this method will not overwrite an existing
-     * file. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExists#String -->
-     * <pre>
-     * DataLakeFileAsyncClient fileClient = client.createFileIfNotExists&#40;fileName&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExists#String -->
-     *
-     * @param fileName Name of the file to create.
-     * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataLakeFileAsyncClient> createFileIfNotExists(String fileName) {
-        return createFileIfNotExistsWithResponse(fileName, new DataLakePathCreateOptions()).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a new file within a directory if it does not exist. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-->
-     * <pre>
-     * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;;
-     * String permissions = &quot;permissions&quot;;
-     * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
-     *
-     * client.createFileIfNotExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
-     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
-     *
-     * @param fileName Name of the file to create.
-     * @param options {@link DataLakePathCreateOptions}
-     * metadata key or value, it must be removed or encoded.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link DataLakeFileAsyncClient} used to interact with the file created. If {@link Response}'s status code is 201,
-     * a new file was successfully created. If status code is 409, a file with the same name already existed
-     * at this location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName,
-        DataLakePathCreateOptions options) {
-        DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
-        try {
-            return dataLakeFileAsyncClient.createIfNotExistsWithResponse(options)
-                .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
      * Deletes the specified file in the file system. If the file doesn't exist the operation fails.
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
@@ -506,82 +355,6 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
 
         return dataLakeFileAsyncClient.deleteWithResponse(requestConditions);
-    }
-
-    /**
-     * Deletes the specified file in the file system if it exists.
-     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExists#String -->
-     * <pre>
-     * client.deleteFileIfExists&#40;fileName&#41;.subscribe&#40;deleted -&gt; &#123;
-     *     if &#40;deleted&#41; &#123;
-     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExists#String -->
-     *
-     * @param fileName Name of the file to delete.
-     * @return a reactive response signaling completion. {@code true} indicates that the specified file was successfully
-     * deleted, {@code false} indicates that the specified file did not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
-    }
-
-    /**
-     * Deletes the specified file in the directory if it exists.
-     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * client.deleteFileIfExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions -->
-     *
-     * @param fileName Name of the file to delete.
-     * @param options {@link DataLakePathDeleteOptions}
-     * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the specified file was
-     * successfully deleted. If status code is 404, the specified file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
-        try {
-            return withContext(context -> this.deleteFileIfExistsWithResponse(fileName, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
-        Context context) {
-        try {
-            return getFileAsyncClient(fileName).deleteIfExistsWithResponse(options, context);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
     }
 
     /**
@@ -716,82 +489,6 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Creates a new subdirectory within a directory if it does not exist. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExists#String -->
-     * <pre>
-     * DataLakeDirectoryAsyncClient subdirectoryClient = client.createSubdirectoryIfNotExists&#40;directoryName&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExists#String -->
-     *
-     * @param subdirectoryName Name of the sub-directory to create.
-     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the subdirectory
-     * created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataLakeDirectoryAsyncClient> createSubdirectoryIfNotExists(String subdirectoryName) {
-        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new DataLakePathCreateOptions())
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a new sub-directory within a directory if it does not exist. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
-     * <pre>
-     * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;;
-     * String permissions = &quot;permissions&quot;;
-     * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
-     *
-     * client.createSubdirectoryIfNotExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
-     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
-     *
-     * @param subdirectoryName Name of the subdirectory to create.
-     * @param options {@link DataLakePathCreateOptions}
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link DataLakeDirectoryAsyncClient} used to interact with the subdirectory created. If {@link Response}'s status
-     * code is 201, a new subdirectory was successfully created. If status code is 409, a subdirectory with the same
-     * name already existed at this location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(
-        String subdirectoryName, DataLakePathCreateOptions options) {
-        options = options == null ? new DataLakePathCreateOptions() : options;
-        options.setRequestConditions(new DataLakeRequestConditions()
-            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-        try {
-            return createSubdirectoryWithResponse(subdirectoryName, options.getPermissions(), options.getUmask(),
-                options.getPathHttpHeaders(), options.getMetadata(), options.getRequestConditions())
-                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
-                    .getStatusCode() == 409,
-                    t -> {
-                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), getSubdirectoryAsyncClient(subdirectoryName)));
-                    });
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
      * Deletes the specified sub-directory in the directory. If the sub-directory doesn't exist or is not empty the
      * operation fails.
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
@@ -849,84 +546,6 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
 
         return dataLakeDirectoryAsyncClient.deleteWithResponse(recursive, requestConditions);
-    }
-
-    /**
-     * Deletes the specified subdirectory in the directory if it exists.
-     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExists#String -->
-     * <pre>
-     * client.deleteSubdirectoryIfExists&#40;directoryName&#41;.subscribe&#40;deleted -&gt; &#123;
-     *     if &#40;deleted&#41; &#123;
-     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExists#String -->
-     *
-     * @param subdirectoryName Name of the subdirectory to delete.
-     * @return A reactive response signaling completion. {@code true} indicates that the subdirectory was deleted.
-     * {@code false} indicates the specified subdirectory does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
-        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
-    }
-
-    /**
-     * Deletes the specified subdirectory in the directory if it exists.
-     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * boolean recursive = false; &#47;&#47; Default value
-     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;recursive&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * client.deleteSubdirectoryIfExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions -->
-     *
-     * @param directoryName Name of the subdirectory to delete.
-     * @param options {@link DataLakePathDeleteOptions}
-     * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the specified subdirectory
-     * was successfully deleted. If status code is 404, the specified subdirectory does not exist.
-     *
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String directoryName,
-        DataLakePathDeleteOptions options) {
-        try {
-            return deleteSubdirectoryWithResponse(directoryName, options.getIsRecursive(),
-                options.getRequestConditions())
-                .onErrorResume(t -> t instanceof DataLakeStorageException
-                    && ((DataLakeStorageException) t).getStatusCode() == 404,
-                    t -> {
-                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
-                    });
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
     }
 
     /**
