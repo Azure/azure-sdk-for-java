@@ -246,7 +246,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         Region region = Region.US_EAST;
 
-        List<String> configFilePatterns = Arrays.asList("api-gateway", "customer-service");
+        List<String> configFilePatterns = Arrays.asList("api-gateway", "customers-service");
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -262,8 +262,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .defineActiveDeployment(deploymentName)
             .withJarFile(jarFile)
             .withInstance(2)
-            .withCpu(2)
-            .withMemory(4)
+            .withCpu("500m")
+            .withMemory("512Mi")
             .attach()
             .withDefaultPublicEndpoint()
             .withConfigurationServiceBinding()

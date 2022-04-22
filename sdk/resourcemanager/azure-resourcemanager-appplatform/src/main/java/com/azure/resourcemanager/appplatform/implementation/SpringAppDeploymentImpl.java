@@ -373,8 +373,13 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withCpu(int cpuCount) {
+        return withCpu(String.valueOf(cpuCount));
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withCpu(String cpuCount) {
         ensureDeploySettings();
-        innerModel().properties().deploymentSettings().resourceRequests().withCpu(String.valueOf(cpuCount));
+        innerModel().properties().deploymentSettings().resourceRequests().withCpu(cpuCount);
         return this;
     }
 
@@ -382,6 +387,13 @@ public class SpringAppDeploymentImpl
     public SpringAppDeploymentImpl withMemory(int sizeInGB) {
         ensureDeploySettings();
         innerModel().properties().deploymentSettings().resourceRequests().withMemory(String.format("%dGi", sizeInGB));
+        return this;
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withMemory(String size) {
+        ensureDeploySettings();
+        innerModel().properties().deploymentSettings().resourceRequests().withMemory(size);
         return this;
     }
 

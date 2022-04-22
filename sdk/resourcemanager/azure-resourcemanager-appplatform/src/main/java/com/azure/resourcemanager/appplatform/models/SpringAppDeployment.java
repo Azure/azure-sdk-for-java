@@ -177,11 +177,25 @@ public interface SpringAppDeployment
             T withCpu(int cpuCount);
 
             /**
+             * Specifies the cpu number of the deployment.
+             * @param cpuCount the number of the cpu, 1 core can be represented by 1 or 1000m
+             * @return the next stage of deployment definition
+             */
+            T withCpu(String cpuCount);
+
+            /**
              * Specifies the memory of the deployment.
              * @param sizeInGB the size of the memory in GB
              * @return the next stage of deployment definition
              */
             T withMemory(int sizeInGB);
+
+            /**
+             * Specifies the memory of the deployment.
+             * @param size the size of the memory, 1 GB can be represented by 1Gi or 1024Mi
+             * @return the next stage of deployment definition
+             */
+            T withMemory(String size);
 
             /**
              * Specifies the runtime version of the deployment.
@@ -269,11 +283,25 @@ public interface SpringAppDeployment
             Update withCpu(int cpuCount);
 
             /**
+             * Specifies the cpu number of the deployment.
+             * @param cpuCount the number of the cpu, 1 core can be represented by 1 or 1000m
+             * @return the next stage of deployment update
+             */
+            Update withCpu(String cpuCount);
+
+            /**
              * Specifies the memory of the deployment.
              * @param sizeInGB the size of the memory in GB
              * @return the next stage of deployment update
              */
             Update withMemory(int sizeInGB);
+
+            /**
+             * Specifies the memory of the deployment.
+             * @param size the size of the memory, 1 GB can be represented by 1Gi or 1024Mi
+             * @return the next stage of deployment update
+             */
+            Update withMemory(String size);
 
             /**
              * Specifies the runtime version of the deployment.
