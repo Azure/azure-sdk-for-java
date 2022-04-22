@@ -159,4 +159,25 @@ public final class AmazonRdsForOracleSource extends CopySource {
         this.additionalColumns = additionalColumns;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRdsForOracleSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRdsForOracleSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRdsForOracleSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

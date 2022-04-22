@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Object used to describe a Service Provider supported by Bot Service. */
 @Fluent
 public final class ServiceProviderProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceProviderProperties.class);
-
     /*
      * Id for Service Provider
      */

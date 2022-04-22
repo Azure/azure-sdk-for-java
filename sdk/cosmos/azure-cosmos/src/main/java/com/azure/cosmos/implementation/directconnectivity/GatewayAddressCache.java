@@ -59,6 +59,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class GatewayAddressCache implements IAddressCache {
@@ -167,9 +168,11 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     @Override
-    public void updateAddresses(final URI serverKey) {
+    public int updateAddresses(final URI serverKey) {
 
         Objects.requireNonNull(serverKey, "expected non-null serverKey");
+
+        AtomicInteger updatedCacheEntryCount = new AtomicInteger(0);
 
         if (this.tcpConnectionEndpointRediscoveryEnabled) {
             this.serverPartitionAddressToPkRangeIdMap.computeIfPresent(serverKey, (uri, partitionKeyRangeIdentitySet) -> {
@@ -180,6 +183,8 @@ public class GatewayAddressCache implements IAddressCache {
                     } else {
                         this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
                     }
+
+                    updatedCacheEntryCount.incrementAndGet();
                 }
 
                 return null;
@@ -188,6 +193,7 @@ public class GatewayAddressCache implements IAddressCache {
             logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
         }
 
+        return updatedCacheEntryCount.get();
     }
 
     @Override

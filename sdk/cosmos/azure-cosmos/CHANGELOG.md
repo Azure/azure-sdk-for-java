@@ -6,10 +6,10 @@
 AsyncCacheNonBlocking - Improve availability
 
 #### Breaking Changes
+* Added Beta API `continueOnInitError` in `ThroughputControlGroupConfigBuilder` - See [PR 27702](https://github.com/Azure/azure-sdk-for-java/pull/27702)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Added improvement for handling idle connection close event when `connectionEndpointRediscoveryEnabled` is enabled - See [PR 27242](https://github.com/Azure/azure-sdk-for-java/pull/27242)
 
 ### 4.28.1 (2022-04-08)
 #### Other Changes

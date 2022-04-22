@@ -6,21 +6,24 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Binding resource payload. */
 @Fluent
 public final class BindingResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BindingResourceInner.class);
-
     /*
      * Properties of the Binding resource
      */
     @JsonProperty(value = "properties")
     private BindingResourceProperties properties;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the properties property: Properties of the Binding resource.
@@ -40,6 +43,15 @@ public final class BindingResourceInner extends ProxyResource {
     public BindingResourceInner withProperties(BindingResourceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

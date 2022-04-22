@@ -42,4 +42,39 @@ public final class ConcurSource extends TabularSource {
         this.query = query;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConcurSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConcurSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConcurSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConcurSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConcurSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

@@ -37,7 +37,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
+    private static final String DEFAULT_DOMAIN_NAME = TestUtils.getEndpoint().substring(1) + "/";
     private static final String ENDPOINT_FORMAT = "sb://%s.%s";
     private static final String QUEUE_NAME = "test-queue-name";
     private static final String VIA_QUEUE_NAME = "test-via-queue-name";
@@ -48,6 +48,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
     private static final String DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$deadletterqueue";
     private static final String TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$Transfer/$deadletterqueue";
+    private static final String JAVA_NET_USER_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
@@ -221,8 +222,10 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
     public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
+        Configuration configuration = TestUtils.getGlobalConfiguration().clone();
+        configuration
+            .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
+            .put(JAVA_NET_USER_SYSTEM_PROXIES, "true");
         boolean clientCreated = false;
         try {
             ServiceBusReceiverClient syncClient = new ServiceBusClientBuilder()
@@ -242,7 +245,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     @Test
     public void testConnectionStringWithSas() {
-        String connectionStringWithEntityPath = "Endpoint=sb://sb-name.servicebus.windows.net/;"
+        String connectionStringWithEntityPath = "Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;"
             + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name";
         assertNotNull(new ServiceBusClientBuilder()
             .connectionString(connectionStringWithEntityPath));
@@ -253,7 +256,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
         assertThrows(IllegalArgumentException.class,
             () -> new ServiceBusClientBuilder()
-                .connectionString("Endpoint=sb://sb-name.servicebus.windows.net/;EntityPath=sb-name"));
+                .connectionString("Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;EntityPath=sb-name"));
     }
 
     @Test
@@ -313,7 +316,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     @Test
     public void testConnectionWithAzureNameKeyCredential() {
-        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String fullyQualifiedNamespace = "sb-name" + TestUtils.getEndpoint();
         String sharedAccessKeyName = "SharedAccessKeyName test-value";
         String sharedAccessKey = "SharedAccessKey test-value";
 
@@ -325,9 +328,21 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .credential("",
                 new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
 
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(null, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(sharedAccessKeyName, null)));
+
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+                new AzureNamedKeyCredential("", sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(sharedAccessKeyName, "")));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, (AzureNamedKeyCredential) null));
@@ -336,7 +351,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     @Test
     public void testConnectionWithAzureSasCredential() {
-        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String fullyQualifiedNamespace = "sb-name" + TestUtils.getEndpoint();
         String sharedAccessSignature = "SharedAccessSignature test-value";
 
         assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
@@ -345,8 +360,11 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
             .credential("", new AzureSasCredential(sharedAccessSignature)));
 
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new AzureSasCredential(null)));
+
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, new AzureSasCredential(sharedAccessSignature)));
+            .credential(fullyQualifiedNamespace, new AzureSasCredential("")));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, (AzureSasCredential) null));
@@ -377,4 +395,5 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
                 "Invalid namespace name: %s", namespace), exception);
         }
     }
+
 }

@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue preventing the `cosmos.oltp.changeFeed` DataSource to honor the `spark.cosmos.partitioning.feedRangeFilter` config parameter. - See [PR 28258](https://github.com/Azure/azure-sdk-for-java/pull/28258)
 
 #### Other Changes
 
