@@ -80,6 +80,24 @@ function UpdateDependencies($ArtifactInfos) {
     return
 }
 
+function UpdateCIInformation($ArtifactInfos) {
+    foreach ($artifactId in $ArtifactInfos.Keys) {
+        $arInfo = [ArtifactInfo]$ArtifactInfos[$artifactId]
+        $serviceDirectory = $arInfo.ServiceDirectoryName
+
+        if (!$serviceDirectory) {
+            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectory)
+            $arInfo.ServiceDirectoryName = $pkgProperties.ServiceDirectory
+            $arInfo.ArtifactDirPath = $pkgProperties.DirectoryPath
+            $arInfo.CurrentPomFileVersion = $pkgProperties.Version
+            $arInfo.ChangeLogPath = $pkgProperties.ChangeLogPath
+            $arInfo.ReadMePath = $pkgProperties.ReadMePath
+        }
+
+        $arInfo.PipelineName = GetPipelineName -ArtifactId $arInfo.ArtifactId -ArtifactDirPath $arInfo.ArtifactDirPath
+    }
+}
+
 function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersion, [hashtable]$ArtifactInfos) {
     $artifactsToPatch = @{}
 
@@ -119,11 +137,11 @@ function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos, [string]$G
             $newDependencyVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
         }
 
+        $currentFileVersion = $ArtifactInfos[$artifactId].CurrentPomFileVersion
+
         if ($newDependencyVersion) {
-            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId)
-            $currentSourceVersion = $pkgProperties.Version
             $cmdOutput = SetDependencyVersion -GroupId $GroupId -ArtifactId $artifactId -Version $newDependencyVersion
-            $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -Version $currentSourceVersion
+            $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -Version $currentFileVersion
         }
     }
 }
@@ -160,7 +178,36 @@ function GetTopologicalSort($ArtifactIds, $ArtifactInfos) {
             TopologicalSortUtil -ArtifactId $artifactId -ArtifactInfos $ArtifactInfos -ArtifactIds $ArtifactIds -Visited $visited -Order $order
         }
     }
-    return $order
+
+    $pipelineOrdered = @()
+    $visited = @{}
+
+    for($i=0; $i -lt $order.Count; $i++) {
+        $arId = $order[$i]
+        if($null -ne $visited[$arId]) {
+            continue;
+        }
+        
+        $visited[$arId] = $true
+        $pipelineName = $ArtifactInfos[$arId].PipelineName
+        $pipelineOrdered += @{
+            ArtifactId = $arId
+            PipelineName = $pipelineName
+        }
+
+        for($j=$i; $j -lt $order.Count; $j++) {
+            $curArId = $order[$j]
+            if($null -eq $visited[$curArId] -and $pipelineName -eq $ArtifactInfos[$curArId].PipelineName) {
+                $pipelineOrdered += @{
+                    ArtifactId = $curArId
+                    PipelineName = $pipelineName
+                }
+                $visited[$curArId] = $true
+            }
+        }
+    }
+
+    return $pipelineOrdered
 }
 
 function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
@@ -234,17 +281,21 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
     }
 }
 
-function GenerateHtmlReport($ArtifactIds, $PatchBranchName, $BomFileBranchName) {
+function GenerateHtmlReport($Artifacts, $PatchBranchName, $BomFileBranchName) {
     $count = $ArtifactsToPatch.Count
     $index = 0
     $html = @()
-    $html += "<head><title>Patch Report</title></head><body><table border='1'><tr><th>Release Branch</th><th>Artifact</th><tr>"
-    foreach ($artifactId in $ArtifactIds) {
+    $html += "<head><title>Patch Report</title></head><body><table border='1'><tr><th>Release Branch</th><th>PipelineName</th><th>Artifact</th><tr>"
+    foreach ($artifact in $Artifacts) {
+        $artifactId = $artifact.ArtifactId
+        $pipelineName = $artifact.PipelineName
+        $pipelineNameCount = $Artifacts | Where-Object $_.PipelineName -eq $pipelineName
+
         $html += "<tr>"
         if ($index++ -eq 0) {
             $html += "<td  rowspan='$count'>$PatchBranchName</td>"
         }
-
+        $html += "<td rowspan='$pipelineNameCount'>$pipelineName</td>"
         $html += "<td>$artifactId</td>"
         $html += "</tr>"
     }
@@ -297,6 +348,7 @@ if ($LASTEXITCODE -ne 0) {
     LogError "Could not correctly get the current branch name."
     exit 1
 }
+UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
 $bomPatchVersion = GetNextBomVersion
 $bomBranchName = "bom_$bomPatchVersion"
@@ -307,12 +359,10 @@ try {
     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
     foreach ($artifactId in $ArtifactsToPatch.Keys) {
-        $patchInfo = [ArtifactPatchInfo[]]@()
         $arInfo = $ArtifactInfos[$artifactId]
         $patchInfo = [ArtifactPatchInfo]::new()
         $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
-        $patchInfos += $patchInfo
-        GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
+        # GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 }
 finally {
@@ -322,4 +372,4 @@ finally {
 GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $
 
 $orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
-GenerateHtmlReport -ArtifactIds $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
+GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
