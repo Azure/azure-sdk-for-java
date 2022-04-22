@@ -2999,10 +2999,12 @@ public class ShareFileAsyncClient {
             String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
             String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
             String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+            String fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
             smbInfo = new CopyFileSmbInfo()
                 .setFileAttributes(fileAttributes)
                 .setFileCreationTime(fileCreationTime)
                 .setFileLastWriteTime(fileLastWriteTime)
+                .setFileChangeTime(fileChangeTime)
                 .setIgnoreReadOnly(options.isIgnoreReadOnly());
         }
 

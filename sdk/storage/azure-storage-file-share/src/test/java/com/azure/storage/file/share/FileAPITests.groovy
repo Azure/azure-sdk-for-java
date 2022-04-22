@@ -200,6 +200,19 @@ class FileAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Create change time"() {
+        setup:
+        def changeTime = namer.getUtcNow()
+
+        when:
+        primaryFileClient.createWithResponse(512, null, new FileSmbProperties().setFileChangeTime(changeTime),
+            null, null, null, null, null)
+
+        then:
+        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+    }
+
     def "Create file with args error"() {
         when:
         primaryFileClient.createWithResponse(-1, null, null, null, testMetadata, null, null)
@@ -1179,6 +1192,19 @@ class FileAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Set httpHeaders change time"() {
+        setup:
+        primaryFileClient.create(512)
+        def changeTime = namer.getUtcNow()
+
+        when:
+        primaryFileClient.setProperties(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null)
+
+        then:
+        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+    }
+
     def "Set httpHeaders error"() {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
@@ -1622,7 +1648,7 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException) // permission and key cannot both be set
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Rename file smbProperties"() {
         setup:
         primaryFileClient.create(512)
@@ -1630,11 +1656,13 @@ class FileAPITests extends APISpec {
         def permissionKey = shareClient.createPermission(filePermission)
         def fileCreationTime = namer.getUtcNow().minusDays(5)
         def fileLastWriteTime = namer.getUtcNow().minusYears(2)
+        def fileChangeTime = namer.getUtcNow()
         def smbProperties = new FileSmbProperties()
             .setFilePermissionKey(permissionKey)
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(fileCreationTime)
             .setFileLastWriteTime(fileLastWriteTime)
+            .setFileChangeTime(fileChangeTime)
 
         when:
         def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
@@ -1645,6 +1673,7 @@ class FileAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
+        destProperties.getSmbProperties().getFileChangeTime() == fileChangeTime
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
