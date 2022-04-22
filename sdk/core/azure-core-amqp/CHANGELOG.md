@@ -1,5 +1,14 @@
 # Release History
 
+## 2.4.3 (2022-04-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0-beta.1`.
+
+
 ## 2.4.2 (2022-04-01)
 
 ### Bugs Fixed
