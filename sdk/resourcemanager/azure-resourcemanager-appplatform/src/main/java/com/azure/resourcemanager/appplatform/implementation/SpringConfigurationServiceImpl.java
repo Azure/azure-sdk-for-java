@@ -7,6 +7,7 @@ import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.ConfigurationServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitRepository;
+import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringConfigurationService;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SpringConfigurationServiceImpl
     extends ExternalChildResourceImpl<SpringConfigurationService, ConfigurationServiceResourceInner, SpringServiceImpl, SpringService>
@@ -60,6 +62,11 @@ public class SpringConfigurationServiceImpl
 
     private Optional<ConfigurationServiceGitRepository> findDefaultRepository() {
         return findRepository(Constants.DEFAULT_TANZU_COMPONENT_NAME);
+    }
+
+    @Override
+    public List<SpringApp> getAppBindings() {
+        return parent().apps().list().stream().filter(SpringApp::hasConfigurationServiceBinding).collect(Collectors.toList());
     }
 
     private Optional<ConfigurationServiceGitRepository> findRepository(String name) {

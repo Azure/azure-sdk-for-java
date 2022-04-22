@@ -21,6 +21,7 @@ import java.util
 import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap}
 import java.util.concurrent.atomic.AtomicLong
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -67,7 +68,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     val planningInfo = this.getPartitionPlanningInfo(partitionMetadata, readLimit)
 
-    cosmosPartitioningConfig.partitioningStrategy match {
+    val inputPartitions = cosmosPartitioningConfig.partitioningStrategy match {
       case PartitioningStrategies.Restrictive =>
         applyRestrictiveStrategy(planningInfo)
       case PartitioningStrategies.Custom =>
@@ -89,6 +90,46 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
           5 / defaultMaxPartitionSizeInMB.toDouble,
           defaultMinimalPartitionCount
         )
+    }
+
+    cosmosPartitioningConfig.feedRangeFiler match {
+      case Some(epkRangesInScope) => {
+        val overlappingPartitions = inputPartitions
+          .filter(inputPartition => {
+            epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+              epk,
+              inputPartition.feedRange))
+          })
+
+        val returnValue = new ArrayBuffer[CosmosInputPartition]()
+
+        overlappingPartitions.foreach(inputPartition => {
+          val overlappingEpkRanges = epkRangesInScope.filter(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+            epk,
+            inputPartition.feedRange))
+
+          overlappingEpkRanges.foreach(overlappingRange => {
+            val finalRange = new NormalizedRange(
+              if (overlappingRange.min.compareTo(inputPartition.feedRange.min) > 0) {
+                overlappingRange.min
+              } else {
+                inputPartition.feedRange.min
+              },
+              if (overlappingRange.max.compareTo(inputPartition.feedRange.max) < 0) {
+                overlappingRange.max
+              } else {
+                inputPartition.feedRange.max
+              }
+            )
+
+            returnValue += new CosmosInputPartition(
+              finalRange, inputPartition.endLsn, inputPartition.continuationState)
+          })
+        })
+
+        returnValue.toArray
+      }
+      case None => inputPartitions
     }
   }
 
@@ -191,13 +232,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val offsetJsonBase64 = SparkBridgeImplementationInternal
       .mergeChangeFeedContinuations(lastContinuationTokens.values().asScala)
 
-    if (isDebugLogEnabled) {
+    //if (isDebugLogEnabled) {
       val offsetJson = SparkBridgeImplementationInternal.changeFeedContinuationToJson(offsetJsonBase64)
       // scala style rule flaky - even complaining on partial log messages
       // scalastyle:off multiple.string.literals
-      logDebug(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
+      logInfo(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
       // scalastyle:on multiple.string.literals
-    }
+    //}
     offsetJsonBase64
   }
   // scalastyle:on method.length
