@@ -30,6 +30,18 @@ public final class FilterBlobItem {
     @JsonProperty(value = "Tags")
     private BlobTags tags;
 
+    /*
+     * The VersionId property.
+     */
+    @JsonProperty(value = "VersionId")
+    private String versionId;
+
+    /*
+     * The IsCurrentVersion property.
+     */
+    @JsonProperty(value = "IsCurrentVersion")
+    private Boolean isCurrentVersion;
+
     /**
      * Get the name property: The Name property.
      *
@@ -87,6 +99,46 @@ public final class FilterBlobItem {
      */
     public FilterBlobItem setTags(BlobTags tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the versionId property: The VersionId property.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: The VersionId property.
+     *
+     * @param versionId the versionId value to set.
+     * @return the FilterBlobItem object itself.
+     */
+    public FilterBlobItem setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The IsCurrentVersion property.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     * Set the isCurrentVersion property: The IsCurrentVersion property.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the FilterBlobItem object itself.
+     */
+    public FilterBlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
         return this;
     }
 }

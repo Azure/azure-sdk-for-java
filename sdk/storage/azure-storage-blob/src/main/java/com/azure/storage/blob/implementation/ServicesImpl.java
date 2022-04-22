@@ -25,6 +25,7 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.storage.blob.implementation.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
@@ -176,6 +177,7 @@ public final class ServicesImpl {
                 @QueryParam("where") String where,
                 @QueryParam("marker") String marker,
                 @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("include") String include,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -205,7 +207,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithResponseAsync(
@@ -239,7 +241,7 @@ public final class ServicesImpl {
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
+     *     (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -264,7 +266,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service.
+     * @return stats for the storage service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithResponseAsync(
@@ -301,7 +303,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of containers.
+     * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegmentSinglePageAsync(
@@ -354,7 +356,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user delegation key.
+     * @return a user delegation key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithResponseAsync(
@@ -381,7 +383,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithResponseAsync(Context context) {
@@ -407,7 +409,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> submitBatchWithResponseAsync(
@@ -453,17 +455,26 @@ public final class ServicesImpl {
      *     listing operation crosses a partition boundary, then the service will return a continuation token for
      *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
      *     results than specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a Filter Blobs API call.
+     * @return the result of a Filter Blobs API call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesFilterBlobsResponse> filterBlobsWithResponseAsync(
-            Integer timeout, String requestId, String where, String marker, Integer maxresults, Context context) {
+            Integer timeout,
+            String requestId,
+            String where,
+            String marker,
+            Integer maxresults,
+            List<FilterBlobsIncludeItem> include,
+            Context context) {
         final String comp = "blobs";
         final String accept = "application/xml";
+        String includeConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.filterBlobs(
                 this.client.getUrl(),
                 comp,
@@ -473,6 +484,7 @@ public final class ServicesImpl {
                 where,
                 marker,
                 maxresults,
+                includeConverted,
                 accept,
                 context);
     }
@@ -487,7 +499,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of containers.
+     * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegmentNextSinglePageAsync(
