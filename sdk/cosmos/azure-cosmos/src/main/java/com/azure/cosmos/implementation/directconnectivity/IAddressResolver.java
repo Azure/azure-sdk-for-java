@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import reactor.core.publisher.Mono;
 
@@ -16,6 +15,4 @@ public interface IAddressResolver {
             boolean forceRefreshPartitionAddresses);
 
     int updateAddresses(URI serverKey);
-
-    GlobalEndpointManager getGlobalEndpointManager();
 }

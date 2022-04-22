@@ -117,7 +117,8 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            if (locationEndPoint != null) {
+            //  TODO (kuthapar): globalEndpointManager != null check is just for safety for hotfix. Remove it after further investigation
+            if (locationEndPoint != null && globalEndpointManager != null) {
                 this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
@@ -147,7 +148,8 @@ public class ClientSideRequestStatistics {
             }
             this.recordRetryContextEndTime();
 
-            if (locationEndPoint != null) {
+            //  TODO (kuthapar): globalEndpointManager != null check is just for safety for hotfix. Remove it after further investigation
+            if (locationEndPoint != null && globalEndpointManager != null) {
                 this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }

@@ -159,7 +159,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.tcpConnectionEndpointRediscoveryEnabled,
                 this.apiType,
                 this.endpointManager);
-            AddressResolver addressResolver = new AddressResolver(this.endpointManager);
+            AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();
             cache.addressCache = gatewayAddressCache;
@@ -189,10 +189,5 @@ public class GlobalAddressResolver implements IAddressResolver {
     static class EndpointCache {
         GatewayAddressCache addressCache;
         AddressResolver addressResolver;
-    }
-
-    @Override
-    public GlobalEndpointManager getGlobalEndpointManager() {
-        return this.endpointManager;
     }
 }

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -39,13 +40,15 @@ public class SharedTransportClient extends TransportClient {
         UserAgentContainer userAgent,
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         IAddressResolver addressResolver,
-        ClientTelemetry clientTelemetry) {
+        ClientTelemetry clientTelemetry,
+        GlobalEndpointManager globalEndpointManager) {
 
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
-                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent, addressResolver, clientTelemetry);
+                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy,
+                    userAgent, addressResolver, clientTelemetry, globalEndpointManager);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -67,15 +70,17 @@ public class SharedTransportClient extends TransportClient {
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
         IAddressResolver addressResolver,
-        ClientTelemetry clientTelemetry) {
+        ClientTelemetry clientTelemetry,
+        GlobalEndpointManager globalEndpointManager) {
         if (protocol == Protocol.TCP) {
             this.rntbdOptions =
                 new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-            this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver, clientTelemetry);
+            this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver,
+                clientTelemetry, globalEndpointManager);
 
         } else if (protocol == Protocol.HTTPS){
             this.rntbdOptions = null;
-            this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
+            this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
         } else {
             throw new IllegalArgumentException(String.format("protocol: %s", protocol));
         }
@@ -101,5 +106,10 @@ public class SharedTransportClient extends TransportClient {
                 sharedTransportClient = null;
             }
         }
+    }
+
+    @Override
+    protected GlobalEndpointManager getGlobalEndpointManager() {
+        return this.transportClient.getGlobalEndpointManager();
     }
 }

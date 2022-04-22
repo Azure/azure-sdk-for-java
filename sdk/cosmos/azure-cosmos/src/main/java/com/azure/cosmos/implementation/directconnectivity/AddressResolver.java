@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -52,13 +51,8 @@ public class AddressResolver implements IAddressResolver {
     private RxCollectionCache collectionCache;
     private ICollectionRoutingMapCache collectionRoutingMapCache;
     private IAddressCache addressCache;
-    private GlobalEndpointManager globalEndpointManager;
 
     public AddressResolver() {
-    }
-
-    public AddressResolver(GlobalEndpointManager globalEndpointManager) {
-        this.globalEndpointManager = globalEndpointManager;
     }
 
     public void initializeCaches(
@@ -93,11 +87,6 @@ public class AddressResolver implements IAddressResolver {
     @Override
     public int updateAddresses(URI serverKey) {
         throw new NotImplementedException("updateAddresses() is not supported in AddressResolver");
-    }
-
-    @Override
-    public GlobalEndpointManager getGlobalEndpointManager() {
-        return this.globalEndpointManager;
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {

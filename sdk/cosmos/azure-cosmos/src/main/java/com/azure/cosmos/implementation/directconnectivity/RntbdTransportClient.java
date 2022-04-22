@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -90,6 +91,7 @@ public class RntbdTransportClient extends TransportClient {
     private final long id;
     private final Tag tag;
     private boolean channelAcquisitionContextEnabled;
+    private final GlobalEndpointManager globalEndpointManager;
 
     // endregion
 
@@ -109,26 +111,31 @@ public class RntbdTransportClient extends TransportClient {
         final ConnectionPolicy connectionPolicy,
         final UserAgentContainer userAgent,
         final IAddressResolver addressResolver,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final GlobalEndpointManager globalEndpointManager) {
 
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
-            clientTelemetry);
+            clientTelemetry, globalEndpointManager);
     }
 
+    //  TODO (kuthapar): This constructor sets the globalEndpointmManager to null, which is not ideal.
+    //  Figure out why we need this constructor, and if it can be avoided or can be fixed.
     RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
         this.endpointProvider = endpointProvider;
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
+        this.globalEndpointManager = null;
     }
 
     RntbdTransportClient(
         final Options options,
         final SslContext sslContext,
         final IAddressResolver addressResolver,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final GlobalEndpointManager globalEndpointManager) {
 
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
             this,
@@ -140,6 +147,7 @@ public class RntbdTransportClient extends TransportClient {
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     // endregion
@@ -168,6 +176,11 @@ public class RntbdTransportClient extends TransportClient {
         }
 
         logger.debug("already closed {}", this);
+    }
+
+    @Override
+    protected GlobalEndpointManager getGlobalEndpointManager() {
+        return this.globalEndpointManager;
     }
 
     /**

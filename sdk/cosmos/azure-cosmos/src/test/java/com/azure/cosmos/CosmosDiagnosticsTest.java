@@ -954,11 +954,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
         Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
     }
 
     private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {

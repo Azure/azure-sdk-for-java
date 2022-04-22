@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CilentConfigDiagnosticsTest {
+public class ClientConfigDiagnosticsTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test(groups = { "unit" })

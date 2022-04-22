@@ -505,7 +505,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // this.maxConcurrentConnectionOpenRequests,
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled,
-            this.clientTelemetry
+            this.clientTelemetry,
+            this.globalEndpointManager
         );
 
         this.createStoreModel(true);

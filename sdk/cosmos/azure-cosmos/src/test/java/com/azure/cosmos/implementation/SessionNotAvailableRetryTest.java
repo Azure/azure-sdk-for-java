@@ -510,6 +510,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         @Override
         public void close() {
         }
+
+        @Override
+        protected GlobalEndpointManager getGlobalEndpointManager() {
+            return null;
+        }
     }
 
     private class TestItem {
