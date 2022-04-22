@@ -1,5 +1,14 @@
 ## Release History
 
+## 4.28.2 (2022-04-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+
+
 ### 4.28.1 (2022-04-08)
 #### Other Changes
 * Updated `jackson` dependency to 2.13.2 and `jackson-databind` dependency to 2.13.2.1 - CVE-2020-36518. - See [PR 27847](https://github.com/Azure/azure-sdk-for-java/pull/27847)
