@@ -160,11 +160,12 @@ public class SpringAppDeploymentImpl
         if (configurationConfigs == null) {
             return Collections.emptyList();
         }
-        String patterns = (String) configurationConfigs.get(Constants.CONFIG_FILE_PATTERNS_KEY);
-        if (CoreUtils.isNullOrEmpty(patterns)) {
+        if (configurationConfigs.get(Constants.CONFIG_FILE_PATTERNS_KEY) instanceof String) {
+            String patterns = (String) configurationConfigs.get(Constants.CONFIG_FILE_PATTERNS_KEY);
+            return Collections.unmodifiableList(Arrays.asList(patterns.split(",")));
+        } else {
             return Collections.emptyList();
         }
-        return Arrays.asList(patterns.split(","));
     }
 
     private void ensureDeploySettings() {
@@ -238,7 +239,7 @@ public class SpringAppDeploymentImpl
                     .flatMap(option -> {
                         UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
                         uploadedUserSourceInfo.withRelativePath(option.relativePath());
-                        return uploadToStorage(jar, option)
+                        return uploadToStorageAsync(jar, option)
                             .then(context.voidMono());
                     })
             );
@@ -253,7 +254,7 @@ public class SpringAppDeploymentImpl
             .buildFileAsyncClient();
     }
 
-    private Mono<Void> uploadToStorage(File source, ResourceUploadDefinition option) {
+    private Mono<Void> uploadToStorageAsync(File source, ResourceUploadDefinition option) {
         try {
             ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
             return shareFileAsyncClient.create(source.length())
@@ -330,7 +331,7 @@ public class SpringAppDeploymentImpl
                     .flatMap(option -> {
                         UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
                         uploadedUserSourceInfo.withRelativePath(option.relativePath());
-                        return uploadToStorage(sourceCodeTarGz, option)
+                        return uploadToStorageAsync(sourceCodeTarGz, option)
                             .then(context.voidMono());
                     })
             );
@@ -581,7 +582,7 @@ public class SpringAppDeploymentImpl
         public Mono<Indexable> apply(Context context) {
             return app().getResourceUploadUrlAsync()
                 .flatMap(option ->
-                    uploadAndBuild(file, option)
+                    uploadAndBuildAsync(file, option)
                         .flatMap(buildId -> {
                             BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
                             userSourceInfo.withBuildResultId(buildId);
@@ -590,9 +591,9 @@ public class SpringAppDeploymentImpl
                         }).then(context.voidMono()));
         }
 
-        private Mono<String> uploadAndBuild(File source, ResourceUploadDefinition option) {
+        private Mono<String> uploadAndBuildAsync(File source, ResourceUploadDefinition option) {
             AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
-            return uploadToStorage(source, option)
+            return uploadToStorageAsync(source, option)
                 .then(
                     new PollerFlux<>(
                         manager().serviceClient().getDefaultPollInterval(),

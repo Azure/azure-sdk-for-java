@@ -104,8 +104,10 @@ public interface SpringAppDeployment
              * (Enterprise Tier Only)
              * Specifies the jar package for the deployment.
              * @param jar the file of the jar
-             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
-             *                           Use null or empty list to clear existing configurations.
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                           {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding}),
+             *                           use null or empty list to clear existing configurations
              * @return the next stage of deployment definition
              */
             T withJarFile(File jar, List<String> configFilePatterns);
@@ -129,8 +131,10 @@ public interface SpringAppDeployment
              * (Enterprise Tier Only)
              * Specifies the source code for the deployment.
              * @param sourceCodeTarGz a tar.gz file of the source code
-             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
-             *                           Use null or empty list to clear existing configurations.
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                           {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding}),
+             *                           use null or empty list to clear existing configurations.
              * @return the next stage of deployment definition
              */
             WithModule<T> withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns);
@@ -367,10 +371,10 @@ public interface SpringAppDeployment
              * (Enterprise Tier Only)
              * Specifies the jar package for the deployment.
              * @param jar the file of the jar
-             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
-             *                           Use null or empty list to clear existing configurations.
-             *                           If the app has a binding to Configuration Service, similar as Config Server in standard tier,
-             *                           this is a required parameter.
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                            {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding})
+             *                           use null or empty list to clear existing configurations
              * @return the next stage of deployment update
              */
             Update withJarFile(File jar, List<String> configFilePatterns);
@@ -393,8 +397,10 @@ public interface SpringAppDeployment
              * (Enterprise Tier Only)
              * Specifies the source code for the deployment.
              * @param sourceCodeTarGz a tar.gz file of the source code
-             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
-             *                           Use null or empty list to clear existing configurations.
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                            {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding})
+             *                           use null or empty list to clear existing configurations.
              * @return the next stage of deployment update
              */
             WithModule withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns);
