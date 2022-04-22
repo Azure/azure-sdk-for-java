@@ -285,19 +285,27 @@ function GenerateHtmlReport($Artifacts, $PatchBranchName, $BomFileBranchName) {
     $count = $ArtifactsToPatch.Count
     $index = 0
     $html = @()
-    $html += "<head><title>Patch Report</title></head><body><table border='1'><tr><th>Release Branch</th><th>PipelineName</th><th>Artifact</th><tr>"
+    $html += "<head><title>Patch Report</title></head><body><table border='1'><tr><th>Artifact</th><th>PipelineName</th><th>Release Branch</th><tr>"
+    $pipelineCountIndex = 0
     foreach ($artifact in $Artifacts) {
         $artifactId = $artifact.ArtifactId
         $pipelineName = $artifact.PipelineName
-        $pipelineNameCount = $Artifacts | Where-Object $_.PipelineName -eq $pipelineName
+        $arWithSamePipeline = $Artifacts | Where-Object { $_.PipelineName -eq $pipelineName }
+        $pipelineNameCount = $arWithSamePipeline.Count
 
         $html += "<tr>"
+        $html += "<td>$artifactId</td>"
+        if($pipelineCountIndex++ -eq 0) {
+          $html += "<td rowspan='$pipelineNameCount'>$pipelineName</td>"
+        }
         if ($index++ -eq 0) {
             $html += "<td  rowspan='$count'>$PatchBranchName</td>"
         }
-        $html += "<td rowspan='$pipelineNameCount'>$pipelineName</td>"
-        $html += "<td>$artifactId</td>"
         $html += "</tr>"
+
+        if($pipelineCountIndex -eq $pipelineNameCount) {
+            $pipelineCountIndex = 0
+        }
     }
     
     $html += "<tr><td>$BomFileBranchName</td><td>azure-sdk-bom</td></tr>"
@@ -351,10 +359,10 @@ if ($LASTEXITCODE -ne 0) {
 UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
 $bomPatchVersion = GetNextBomVersion
-$bomBranchName = "bom_$bomPatchVersion"
+$bomBranchName = "bom_$bomPatchVersion_1"
 Write-Output "Preparing patch releases for BOM updates."
 try {
-    $patchBranchName = "PatchSet_$bomPatchVersion"
+    $patchBranchName = "PatchSet_$bomPatchVersion_1"
     git checkout -b $patchBranchName #$RemoteName/main
     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
@@ -362,14 +370,14 @@ try {
         $arInfo = $ArtifactInfos[$artifactId]
         $patchInfo = [ArtifactPatchInfo]::new()
         $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
-        # GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
+        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 }
 finally {
     $cmdOutput = git checkout $CurrentBranchName
 }
 
-GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $
+GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
 
 $orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
