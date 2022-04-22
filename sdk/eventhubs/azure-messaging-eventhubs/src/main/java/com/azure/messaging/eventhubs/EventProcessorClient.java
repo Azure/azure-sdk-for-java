@@ -148,7 +148,7 @@ public class EventProcessorClient {
             partitionBasedLoadBalancer.checkBlobStatus().block();
         } catch (RuntimeException ex) {
             logger.error("Start event processor error", ex);
-            partitionBasedLoadBalancer.clearPartitionCache();
+            partitionBasedLoadBalancer.removePartitionCache();
             isRunning.compareAndSet(true, false);
             return;
         }

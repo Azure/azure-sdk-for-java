@@ -290,7 +290,9 @@ final class PartitionBasedLoadBalancer {
         });
     }
 
-
+    /**
+     * This method make sure that checkpoint store works well and start processing messages of one partition.
+     */
     Mono<Void> checkBlobStatus() {
         /*
          * If partition cache is not null, that means the processor has started successfully. And we don't need to check
@@ -372,7 +374,10 @@ final class PartitionBasedLoadBalancer {
 
     }
 
-    void clearPartitionCache() {
+    /*
+     * Remove partition cache.
+     */
+    void removePartitionCache() {
         partitionsCache.set(null);
     }
 
