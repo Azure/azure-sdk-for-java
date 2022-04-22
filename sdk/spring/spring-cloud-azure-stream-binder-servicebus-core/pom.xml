@@ -119,7 +119,7 @@
               <includes>
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.6]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-stream:[3.2.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-function-context:[3.2.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-function-context:[3.2.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-function-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
