@@ -12,7 +12,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 public final class GetRelayConfigurationOptions {
     private CommunicationUserIdentifier communicationUser;
     private RouteType routeType;
-    private Integer ttl;
 
     /**
      * Get the communicationUser property: The CommunicationUserIdentifier for whom to issue a token.
@@ -51,26 +50,6 @@ public final class GetRelayConfigurationOptions {
      */
     public GetRelayConfigurationOptions setRouteType(RouteType routeType) {
         this.routeType = routeType;
-        return this;
-    }
-
-    /**
-     * Get the ttl property: The specified time to live for the relay credential in seconds
-     *
-     * @return the time to live value.
-    */
-    public Integer getTtl() {
-        return this.ttl;
-    }
-
-    /**
-     * Set the ttl property: The specified time to live for the relay credential in seconds
-     *
-     * @param ttl the time to live value to set.
-     * @return the GetRelayConfigurationOptions object itself.
-     */
-    public GetRelayConfigurationOptions setTtl(Integer ttl) {
-        this.ttl = ttl;
         return this;
     }
 }
