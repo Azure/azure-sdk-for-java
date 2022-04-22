@@ -239,7 +239,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             }
             secretValue = secret.getValue();
         } catch (RuntimeException | IOException e) {
-            LOGGER.error("Error Retreiving Key Vault Entry");
+            LOGGER.error("Error Retrieving Key Vault Entry");
             ReflectionUtils.rethrowRuntimeException(e);
         }
         return secretValue;
@@ -279,7 +279,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         }
         return featureSet;
     }
-    
+
     private Integer getFeatureSchemaVersion() {
         String version = System
             .getenv(AppConfigurationConstants.AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION);
@@ -296,7 +296,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private String getFeatureSchema() {
         Integer version = getFeatureSchemaVersion();
-        
+
         if (version == 1) {
             return FEATURE_MANAGEMENT_KEY_V1;
         } else {

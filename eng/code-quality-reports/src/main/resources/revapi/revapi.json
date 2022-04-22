@@ -90,6 +90,7 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.State",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationConstants",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
@@ -241,6 +242,12 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
+        },
+        {
+          "regex": true,
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY",
+          "justification": "Not a part of the Public API."
         }
       ]
     }

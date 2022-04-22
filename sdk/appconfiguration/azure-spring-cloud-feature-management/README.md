@@ -266,12 +266,89 @@ Options are available to customize how targeting evaluation is performed across 
     }
 ```
 
-## Getting started
-## Key concepts
-## Examples
-## Troubleshooting
-## Next steps
-## Contributing
+### Dynamic Features
+
+When new features are being added to an application there may come a time when a feature has multiple different proposed design options. A common pattern when this happens is to do some form of A/B testing. That is, provide a different version of the feature to different segments of the user base, and judge off user interaction which is better. The dynamic feature functionality contained in this library aims to proivde a simplistic, standardized method for developers to perform this form of A/B testing.
+
+In the scenario above, the different proposals for the design of a feature are referred to as variants of the feature. The feature itself is referred to as a dynamic feature. The variants of a dynamic feature can have types ranging from object, to string, to integer and so on. There is no limit to the amount of variants a dynamic feature may have. A developer is free to choose what type should be returned when a variant of a dynamic feature is requested. They are also free to choose how many variants are available to select from.
+
+Each variant of a dynamic feature is associated with a different configuration of the feature. Additionally, each variant of a dynamic feature contains information describing under what circumstances the variant should be used.
+
+#### Consumption
+
+Dynamic Features are accessible through `DynamicFeatureManager`.
+
+The dynamic feature manager performs a resolution process that takes the name of a feature and returns a strongly typed value to represent the variant's value.
+
+The following steps are performed during the retrieval of a dynamic feature's variant
+
+1. Lookup the configuration of the specified dynamic feature to find the registered variants
+1. Assign one of the registered variants to be used.
+1. Resolve typed value based off of the assigned variant.
+
+The Dynamic Feature Manager is made available by using `@Autwired` on `DynamicFeatureManager` and calling it's `getVariantAsync` method. In addition any required feature variant assigners need to be generated as `@Component`, such as the `TargetingEvaluator`.
+
+**NOTE:** `TargetingEvaluator` extends `TargetingFilter` so it can be used for both at the same time.
+
+#### Usage Example
+
+One possible example of when variants may be used is in a web application when there is a desire to test different visuals. In the following examples a mock of how one might assign different variants of a web page background to their users is shown.
+
+```java
+@Autowired
+private DynamicFeatureManager dynamicFeatureManager;
+
+...
+
+//
+// Modify view based off multiple possible variants
+model.setBackgroundUrl(dynamicFeatureManager.GetVariantAsync("HomeBackground", String.class).block());
+```
+
+#### Dynamic Feature Declaration
+
+Dynamic features can be configured in a configuration file similarly to feature flags. Instead of being defined in the `FeatureManagement.FeatureFlags` section, they are defined in the `FeatureManagement.DynamicFeatures` section. Additionally, dynamic features have the following properties.
+
+* Assigner: The assigner that should be used to select which variant should be used any time this feature is accessed.
+* Variants: The different variants of the dynamic feature.
+  * Name: The name of the variant.
+  * Default: Whether the variant should be used if no variant could be explicitly assigned. One and only one default variant is required.
+  * ConfigurationReference: A reference to the configuration of the variant to be used as typed options in the application.
+  * AssignmentParameters: The parameters used in the assignment process to determine if this variant should be used.
+
+An example of a dynamic feature named "ShoppingCart" is shown below.
+
+```yml
+feature-management:
+  dynamic-features:
+    ShoppingCart:
+      assigner: Targeting
+      variants:
+      - default: true
+        name: Big
+        configuration-reference: ShoppingCart.Big
+        assignment-parameters:
+          audience:
+            users:
+            - Alec
+            groups: []
+      - name: Small
+        configuration-reference: ShoppingCart.Small
+        assignment-parameters:
+          audience:
+            users: []
+            groups:
+            - name: Ring1
+              rollout-percentage: 50
+            default-rollout-percentage: 30
+ShoppingCart:
+  Big:
+    Size: 400
+    Color: green
+  Small:
+    Size: 150
+    Color: gray
+```
 
 <!-- Links -->
 [example_project]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/appconfiguration/feature-management-web-sample

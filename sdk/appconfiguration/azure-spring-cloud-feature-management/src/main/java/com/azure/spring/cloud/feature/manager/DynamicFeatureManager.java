@@ -42,7 +42,7 @@ public class DynamicFeatureManager {
 
     /**
      * Returns a feature variant of the type given.
-     * 
+     *
      * @param <T> Type of the feature that will be returned.
      * @param featureName name of the feature being checked.
      * @param returnClass Type of the feature being checked.
@@ -104,7 +104,7 @@ public class DynamicFeatureManager {
 
         if (!variantProperties.isPresent()) {
             String message = "Failed to load " + methodName + ". No ConfigurationProperties where found containing it."
-                + ". Make sure it exists and is publicly accessable.";
+                + ". Make sure it exists and is publicly accessible.";
             throw new DynamicFeatureException(message);
         }
 
@@ -113,7 +113,7 @@ public class DynamicFeatureManager {
             method = variantProperties.get().getClass().getMethod(methodName);
         } catch (NoSuchMethodException | SecurityException e) {
             String message = "Failed to load " + methodName + " in " + variantProperties.getClass()
-                + ". Make sure it exists and is publicly accessable.";
+                + ". Make sure it exists and is publicly accessible.";
             throw new DynamicFeatureException(message, e);
         }
         // Calls method to get back an Object, this object contains multiple variants
@@ -122,7 +122,7 @@ public class DynamicFeatureManager {
             variantMap = (Map<String, T>) method.invoke(variantProperties.get());
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             String message = "Failed invoking " + methodName + " in " + variantProperties.getClass()
-                + ". Make sure it exists and is publicly accessable.";
+                + ". Make sure it exists and is publicly accessible.";
             throw new DynamicFeatureException(message, e);
         }
 
