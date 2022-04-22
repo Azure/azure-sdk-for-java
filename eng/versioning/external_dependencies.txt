@@ -168,6 +168,7 @@ org.springframework.cloud:spring-cloud-starter-sleuth;3.1.1
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.2.2
 org.springframework.cloud:spring-cloud-stream-binder-test;3.2.2
 org.springframework.cloud:spring-cloud-stream;3.2.2
+org.springframework.cloud:spring-cloud-function-context;3.2.3
 
 pl.pragmatists:JUnitParams;1.1.1
 
