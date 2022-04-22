@@ -1,18 +1,5 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
-
-### Features Added
-- The `OkHttpAsyncClientProvider.createInstance()` now has the option to share a single shared `HttpClient`.
-  Set the environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` to `true` before starting the process to use
-  the shared `HttpClient`.
-  
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.8.0 (2022-04-01)
 
 ### Features Added

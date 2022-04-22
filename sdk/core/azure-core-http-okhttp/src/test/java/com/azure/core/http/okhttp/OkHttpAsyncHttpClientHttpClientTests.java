@@ -33,6 +33,6 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return new OkHttpAsyncClientProvider().createInstance();
+        return new OkHttpAsyncHttpClientBuilder().build();
     }
 }
