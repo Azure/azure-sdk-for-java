@@ -6,6 +6,7 @@ import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
@@ -224,6 +225,52 @@ class SparkE2EChangeFeedITest
 
     validationDF
       .show(truncate = false)
+  }
+
+  "spark change feed query (incremental)" can "filter feed ranges" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    var lastId: String = ""
+    for (i <- 0 to 100) {
+      lastId = UUID.randomUUID().toString
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("index", i.toString)
+      objectNode.put("id", lastId)
+      container.createItem(objectNode).block()
+    }
+
+    spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValue(), StringType)
+    val pkDefinition = "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$lastId')")
+
+    val feedRange = dummyDf
+      .collect()(0)
+      .getAs[String](0)
+
+    logInfo(s"FeedRange from UDF: $feedRange")
+
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.maxItemCount" -> "2",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.partitioning.feedRangeFilter" -> feedRange
+    )
+
+    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+    df.rdd.getNumPartitions shouldEqual 1
+    val rowsArray = df.collect()
+    rowsArray should have size 1
+    df.schema.equals(
+      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
