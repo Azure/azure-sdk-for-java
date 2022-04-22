@@ -14,12 +14,12 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.RetriableOutputStreamTransfer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.RetriableOutputStream;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -899,7 +899,24 @@ public class BlobClientBase {
             finalCount = finalRange.getCount();
         }
 
-        try (RetriableOutputStream retriableOutputStream = new RetriableOutputStream(
+        // TODO (kasobol-msft) is this ok?
+        /*
+                         It is possible that the network stream will throw an error after emitting all data but before
+                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
+                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
+                         of the stream.
+                         */
+        /*
+                TODO (kasobol-msft) is this possible in sync?
+                if (newCount == 0) {
+                    LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                        + "but before stream signaled completion. Returning success as all data was downloaded. "
+                        + "Exception message: " + throwable.getMessage());
+                    return Flux.empty();
+                }
+                */
+
+        try (RetriableOutputStreamTransfer retriableTransfer = new RetriableOutputStreamTransfer(
             stream,
             initialResponse,
             (throwable, offset) -> {
@@ -933,7 +950,7 @@ public class BlobClientBase {
             finalOptions.getMaxRetryRequests(),
             finalRange.getOffset())) {
             // TODO (kasobol-msft) what about timeout?
-            retriableOutputStream.transfer();
+            retriableTransfer.execute();
             return new BlobDownloadResponse(
                 initialResponse.getRequest(),
                 initialResponse.getStatusCode(),
