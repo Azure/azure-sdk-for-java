@@ -219,7 +219,7 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
-        $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main 
+        $cmdOutput = git checkout -b $BomFileBranchName #$remoteName/main 
         $bomFileContent.Save($BomFilePath)
         git add $BomFilePath
         $content = GetChangeLogContentFromMessage -ContentMessage '- Updated Azure SDK dependency versions to the latest releases.'
@@ -303,7 +303,7 @@ $bomBranchName = "bom_$bomPatchVersion"
 Write-Output "Preparing patch releases for BOM updates."
 try {
     $patchBranchName = "PatchSet_$bomPatchVersion"
-    git checkout -b $patchBranchName $RemoteName/main
+    git checkout -b $patchBranchName #$RemoteName/main
     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
     foreach ($artifactId in $ArtifactsToPatch.Keys) {

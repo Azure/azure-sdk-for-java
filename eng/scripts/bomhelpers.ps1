@@ -240,7 +240,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $currentBranchName = GetCurrentBranchName
   
   if ($currentBranchName -ne $BranchName) {
-    $cmdOutput = git checkout -b $BranchName $RemoteName/main 
+    $cmdOutput = git checkout -b $BranchName # $RemoteName/main 
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
       exit $LASTEXITCODE
