@@ -204,7 +204,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
         String alias = Collections.list(store.aliases()).get(0);
         String thumbprint = printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
-//
+
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
