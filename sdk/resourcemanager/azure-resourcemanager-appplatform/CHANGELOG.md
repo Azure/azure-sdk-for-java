@@ -2,6 +2,12 @@
 
 ## 2.15.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported Enterprise Tier `Configuration Service`.
+- Supported Enterprise Tier `Build Service`.
+- Supported Enterprise Tier binding `Spring App` to `Configuration Service`.
+
 ### Breaking Changes
 
 - Removed `createdTime` from `AppResourceProperties` and `DeploymentResourceProperties`.

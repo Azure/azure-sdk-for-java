@@ -10,7 +10,6 @@ import java.util.Set;
 import static com.azure.aot.graalvm.support.implementation.GraalVMFeatureUtils.interfaces;
 import static com.azure.aot.graalvm.support.implementation.GraalVMFeatureUtils.setsOf;
 
-
 @AutomaticFeature
 public class AppConfigFeature implements GraalVMFeature {
 

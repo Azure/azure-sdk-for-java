@@ -32,9 +32,9 @@
 
 
 # PRLabel: %Attestation
-/sdk/attestation/                                   @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/                                   @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous

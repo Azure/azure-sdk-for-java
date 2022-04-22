@@ -80,6 +80,7 @@ public class ConnectionStateListenerTest {
             connectionPolicy,
             new UserAgentContainer(),
             addressResolver,
+            null,
             null);
 
         RxDocumentServiceRequest req =
