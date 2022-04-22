@@ -80,73 +80,6 @@ function UpdateDependencies($ArtifactInfos) {
     return
 }
 
-function ParseCIYamlFile([string]$FileName) {
-    $artifactIdToPipelineName = @{}
-
-    $templateRegex = "\s*template:(.*)";
-    $artifactsRegex = "\s+Artifacts:\s*" 
-    $artifactsRegex = "\s+Artifacts:\s*"
-    $artifactIdRegex = ".*name:(.*)"
-    $safeNameRegex = ".*safeName:(.*)"
-    $fileContent = Get-Content -Path $FileName
-    $index = 0
-
-    while ($index -lt $fileContent.Length -and ($fileContent[$index] -notmatch $templateRegex)) {
-        $index += 1
-    }
-
-    if ($index -eq $fileContent.Length) {
-        return
-    }
-
-    do {
-
-        while ($index -lt $fileContent.Length -and $fileContent[$index] -notmatch $artifactsRegex ) {
-            $index += 1
-        }
-
-        while ($index -lt $fileContent.Length -and $fileContent[$index] -notmatch $artifactIdRegex) {
-            $index += 1
-        }
-
-        if ($index -eq $fileContent.Length) {
-            return $artifactIdToPipelineName
-        }
-
-        $artifactId = $Matches[1]
-
-        while ($index -lt $fileContent.Length -and $fileContent[$index] -notmatch $safeNameRegex) {
-            $index += 1
-        }
-
-        if ($index -eq $fileContent.Length) {
-            return $artifactIdToPipelineName
-        }
-
-        $artifactIdToPipelineName[$artifactId] = $Matches[1]
-    } while ($index -lt $fileContent.Length)
-
-    return $artifactIdToPipelineName
-}
-
-function UpdateCIInformation($ArtifactsToPatch, $ArtifactInfos) {
-    foreach ($artifactId in $ArtifactsToPatch) {
-        $arInfo = [ArtifactInfo]$ArtifactInfos[$artifactId]
-        $serviceDirectory = $arInfo.ServiceDirectoryName
-
-        if (!$serviceDirectory) {
-            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectory)
-            $arInfo.ServiceDirectoryName = $pkgProperties.ServiceDirectory
-            $arInfo.ArtifactDirPath = $pkgProperties.DirectoryPath
-            $arInfo.CurrentPomFileVersion = $pkgProperties.Version
-            $arInfo.ChangeLogPath = $pkgProperties.ChangeLogPath
-            $arInfo.ReadMePath = $pkgProperties.ReadMePath
-        }
-
-        $arInfo.PipelineName = GetPipelineName -ArtifactId $arInfo.ArtifactId -ArtifactDirPath $arInfo.ArtifactDirPath
-    }
-}
-
 function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersion, [hashtable]$ArtifactInfos) {
     $artifactsToPatch = @{}
 
@@ -177,53 +110,57 @@ function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersio
     return $artifactsToPatch
 }
 
-function GetPatchSets($artifactsToPatch, [hashtable]$ArtifactInfos) {
-    $patchSets = @()
-
-    foreach ($artifactToPatch in $artifactsToPatch.Keys) {
-        $patchDependencies = @{}
-        $dependencies = $artifactInfos[$artifactToPatch].Dependencies
-        $dependencies.Keys | Where-Object { $null -ne $artifactsToPatch[$_] } | ForEach-Object { $patchDependencies[$_] = $_ }
-        $patchDependencies[$artifactToPatch] = $artifactToPatch
-
-        $unionSet = @{}
-        $patchDependencies.Keys | ForEach-Object { $unionSet[$_] = $_ }
-
-        $reducedPatchSets = @()
-        # Add this set to the exiting sets and reduce duplicates.
-        foreach ($patchSet in $patchSets) {
-            $matches = $patchDependencies.Keys | Where-Object { $patchSet[$_] } | Select-Object $_ -First 1
-
-            if ($matches) {
-                $patchSet.Keys | ForEach-Object { $unionSet[$_] = $_ }
-            }
-            else {
-                $reducedPatchSets += $patchSet
-            }
-        }
-
-        $patchSets = $reducedPatchSets
-        $patchSets += $unionSet
-    }
-
-    return $patchSets
-}
-function UpdateDependenciesInVersionClient([string]$ArtifactId, [hashtable]$ArtifactInfos, [string]$GroupId = "com.azure") {
+function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos, [string]$GroupId = "com.azure") {
     ## We need to update the version_client.txt to have the correct versions in place.
-    $arInfo = $ArtifactInfos[$ArtifactId]
-    $dependencies = $arInfo.Dependencies
-    foreach ($depId in $dependencies.Keys) {
-        $depArtifactInfo = $ArtifactInfos[$depId]
-        $newDependencyVersion = $depArtifactInfo.FutureReleasePatchVersion
+    foreach ($artifactId in $ArtifactInfos.Keys) {
+        $newDependencyVersion = $ArtifactInfos[$artifactId].FutureReleasePatchVersion
 
         if (!$newDependencyVersion) {
-            $newDependencyVersion = $depArtifactInfo.LatestGAOrPatchVersion
+            $newDependencyVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
         }
 
         if ($newDependencyVersion) {
-            $cmdOutput = SetDependencyVersion -GroupId $GroupId -ArtifactId $depId -Version $newDependencyVersion
+            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId)
+            $currentSourceVersion = $pkgProperties.Version
+            $cmdOutput = SetDependencyVersion -GroupId $GroupId -ArtifactId $artifactId -Version $newDependencyVersion
+            $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -Version $currentSourceVersion
         }
     }
+}
+
+function GetNextBomVersion() {
+    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName "azure-sdk-bom")
+    $currentVersion = $pkgProperties.Version
+
+    $patchVersion = GetPatchVersion -ReleaseVersion $currentVersion
+    return $patchVersion
+}
+
+function TopologicalSortUtil($ArtifactId, $ArtifactInfos, $ArtifactIds, $Visited, $Order) {
+    $Visited[$ArtifactId] = $true
+
+    # Find all dependencies that are also getting patched.
+    $adjDependencies = $ArtifactInfos[$ArtifactId].Dependencies.Keys | Where-Object { $ArtifactIds -Contains $_ }
+
+    foreach ($arId in $adjDependencies) {
+        if (!$Visited.ContainsKey($arId)) {
+            TopologicalSortUtil -ArtifactId $arId -ArtifactInfos $ArtifactInfos -ArtifactIds $ArtifactIds -Visited $Visited -Order $Order
+        }
+    }
+
+    $cmdOutput = $Order.Add($ArtifactId)
+}
+
+function GetTopologicalSort($ArtifactIds, $ArtifactInfos) {
+    $order = [System.Collections.ArrayList]::new()
+    # $reverseOrder = @()
+    $visited = [System.Collections.Hashtable]::new()
+    foreach ($artifactId in $ArtifactIds) {
+        if (!$visited.ContainsKey($artifactId)) {
+            TopologicalSortUtil -ArtifactId $artifactId -ArtifactInfos $ArtifactInfos -ArtifactIds $ArtifactIds -Visited $visited -Order $order
+        }
+    }
+    return $order
 }
 
 function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
@@ -245,64 +182,24 @@ function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
     $cmdOutput = $dependencies.AppendChild($dependency)
 }
 
-function TopologicalSortUtil($ArtifactId, $ArtifactInfos, $ArtifactIds, $Visited, $Order) {
-    $Visited[$ArtifactId] = $true
-
-    # Find all dependencies that are also getting patched.
-    $adjDependencies = $ArtifactInfos[$ArtifactId].Dependencies.Keys | Where-Object { $ArtifactIds -Contains $_ }
-
-    foreach($arId in $adjDependencies) {
-        if(!$Visited.ContainsKey($arId)) {
-            TopologicalSortUtil -ArtifactId $arId -ArtifactInfos $ArtifactInfos -ArtifactIds $ArtifactIds -Visited $Visited -Order $Order
-        }
-    }
-
-    $cmdOutput = $Order.Add($ArtifactId)
-}
-
-function GetTopologicalSort($ArtifactIds, $ArtifactInfos) {
-    $order = [System.Collections.ArrayList]::new()
-    # $reverseOrder = @()
-    $visited = [System.Collections.Hashtable]::new()
-    foreach($artifactId in $ArtifactIds) {
-        if(!$visited.ContainsKey($artifactId)) {
-            TopologicalSortUtil -ArtifactId $artifactId -ArtifactInfos $ArtifactInfos -ArtifactIds $ArtifactIds -Visited $visited -Order $order
-        }
-    }
-    return $order
-}
-
-# function UndoVersionClientFile() {
-#     $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
-#     $versionClientFile = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
-#     $cmdOutput = git checkout $versionClientFile
-# }
-
-function GenerateBOMFile($ArtifactInfos, $ArtifactsToPatch, $BomFileBranchName) {
+function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
     $gaArtifacts = @()
-    foreach($artifact in $ArtifactInfos.Values) {
-        if($null -eq $ArtifactsToPatch[$artifact.ArtifactId]) {
-            $gaArtifacts += @{
-                GroupId = $artifact.GroupId
-                ArtifactId = $artifact.ArtifactId
-                Version = $artifact.LatestGAOrPatchVersion
-            }
-        }
-    }
 
-    foreach($patchInfo in $ArtifactsToPatch.Values) {
-        $artifactInfo = $ArtifactInfos[$patchInfo]
+    foreach ($artifact in $ArtifactInfos.Values) {
+        $version = $artifact.LatestGAOrPatchVersion
+
+        if ($null -eq $version) {
+            $version = $artifact.FutureReleasePatchVersion
+        }
 
         $gaArtifacts += @{
-            GroupId = $artifactInfo.GroupId
-            ArtifactId = $artifactInfo.ArtifactId
-            Version = $artifactInfo.FutureReleasePatchVersion
+            GroupId    = $artifact.GroupId
+            ArtifactId = $artifact.ArtifactId
+            Version    = $version
         }
     }
 
-    $nonBomDependencies = @('azure-cosmos-cassandra-driver-3-extensions', 'azure-cosmos-cassandra-driver-4', 'azure-cosmos-cassandra-driver-4-extensions', 'azure-cosmos-cassandra-spring-data-extensions', 'azure-cosmos-cassandra-driver-3', 'azure-core-management')
-    $gaArtifacts += $patchArtifacts
-    $gaArtifacts = $gaArtifacts | Where-Object {$nonBomDependencies -notcontains $_.ArtifactId} | Sort-Object -Property ArtifactId
+    $gaArtifacts = $gaArtifacts | Sort-Object -Property ArtifactId
 
     #Now we need to create the BOM file.
     $bomFileContent = [xml](Get-Content -Path $BomFilePath)
@@ -312,70 +209,58 @@ function GenerateBOMFile($ArtifactInfos, $ArtifactsToPatch, $BomFileBranchName) 
     $dependencies = $bomFileContent.CreateElement("dependencies", $bomFileContent.Project.xmlns);
     $cmdOutput = $dependencyManagement.AppendChild($dependencies);
 
-    foreach($dependency in $gaArtifacts) {
+    foreach ($dependency in $gaArtifacts) {
         CreateDependencyXmlElement -Artifact $dependency -Doc $bomFileContent
     }
 
-    $bomFileContent.Save($NewBomFilePath)
-    $bomContentAsString = Get-Content -Path $NewBomFilePath
-    $colCount = $bomContentAsString.Length
-    $body = $bomContentAsString -join "`r`n" | Out-String
-    $html = "<textarea rows='$colCount' cols='300' style='border:none'>" + $body + '</textarea>'
-    $html | Out-File -FilePath $NewBomFileReport 
-
     $currentBranchName = GetCurrentBranchName
     try {
+        UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
-        $branchName = "bot/bom_$patchVersion"
-        $cmdOutput = git checkout -b $branchName $remoteName/main 
+        $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main 
         $bomFileContent.Save($BomFilePath)
         git add $BomFilePath
-        $content = 'Updated the dependencies of the GA libraries'
+        $content = GetChangeLogContentFromMessage -ContentMessage '- Updated Azure SDK dependency versions to the latest releases.'
         UpdateChangeLogEntry -ChangeLogPath $BomChangeLogPath -PatchVersion $patchVersion -ArtifactId "azure-sdk-bom" -Content $content    
+        git add *
         git add $BomChangeLogPath
         git commit -m "Prepare BOM for release version $releaseVersion"
-        git push -f $remoteName $branchName
-        $BomFileBranchName = $branchName
+        git push -f $remoteName $BomFileBranchName
     }
     finally {
         git checkout $currentBranchName
     }
 }
 
-function GenerateHtmlReportRow($Html, $ArtifactIds, $ReleaseBranch) {
+function GenerateHtmlReport($ArtifactIds, $PatchBranchName, $BomFileBranchName) {
+    $count = $ArtifactsToPatch.Count
     $index = 0
-    $count = $ArtifactIds.Count
-    foreach($artifactId in $ArtifactIds) {
-        $cmdOutput = $Html.Add("<tr>")
-        if($index++ -eq 0) {
-            $cmdOutput = $Html.Add("<td  rowspan='$count'>$ReleaseBranch</td>")
+    $html = @()
+    $html += "<head><title>Patch Report</title></head><body><table border='1'><tr><th>Release Branch</th><th>Artifact</th><tr>"
+    foreach ($artifactId in $ArtifactIds) {
+        $html += "<tr>"
+        if ($index++ -eq 0) {
+            $html += "<td  rowspan='$count'>$PatchBranchName</td>"
         }
-        $cmdOutput = $Html.Add("<td>$artifactId</td>")
-        $cmdOutput = $Html.Add("</tr>")
-    }
-}
 
-function GenerateHtmlReport($JsonReport, $BomFileBranchName) {
-    $html = [System.Collections.ArrayList]::new()
-    $cmdOutput = $html.add("<head><title>Patch Report</title></head><body><table border='1'><tr><th>Release Branch</th><th>Artifact</th><tr>")
-    foreach($elem in $JsonReport) {
-        GenerateHtmlReportRow -Html $html -ArtifactIds $elem.Artifacts -ReleaseBranch $elem.Branch
+        $html += "<td>$artifactId</td>"
+        $html += "</tr>"
     }
-
-    $cmdOutput = $html.add("<tr><td>$BomFileBranchName</td><td>azure-sdk-bom</td></tr>");
-    $cmdOutput = $html.Add("</table>")
+    
+    $html += "<tr><td>$BomFileBranchName</td><td>azure-sdk-bom</td></tr>"
+    $html += "</table>"
     $currentDate = Get-Date -Format "dddd MM/dd/yyyy HH:mm K"
 
-    $cmdOutput = $html.Add("<p>Report generated on $currentDate </p>")
+    $html += "<p>Report generated on $currentDate </p>"
     $html | Out-File -FilePath $PatchReportFile -Force
 }
-
 
 $ArtifactInfos = GetVersionInfoForAllMavenArtifacts -GroupId $GroupId
 $IgnoreList = @(
     'azure-client-sdk-parent',
+    'azure-core-management',
     'azure-core-parent',
     'azure-core-test',
     'azure-sdk-all',
@@ -385,7 +270,11 @@ $IgnoreList = @(
     'azure-sdk-template-bom',
     'azure-data-sdk-parent',
     'azure-spring-data-cosmos',
-    'azure-core-management'
+    'azure-cosmos-cassandra-driver-3',
+    'azure-cosmos-cassandra-driver-4',
+    'azure-cosmos-cassandra-driver-3-extensions',
+    'azure-cosmos-cassandra-driver-4-extensions',
+    'azure-cosmos-cassandra-spring-data-extensions'
 )
 
 $inEligibleKeys = $ArtifactInfos.Keys | Where-Object { !$ArtifactInfos[$_].LatestGAOrPatchVersion -or $IgnoreList -contains $_ }
@@ -402,46 +291,33 @@ $AzCoreNettyArtifactId = "azure-core-http-netty"
 $ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
 
 $ArtifactsToPatch = FindAllArtifactsToBePatched -DependencyId $AzCoreArtifactId -PatchVersion $AzCoreVersion -ArtifactInfos $ArtifactInfos
-
-$ReleaseSets = GetPatchSets -ArtifactsToPatch $ArtifactsToPatch -ArtifactInfos $ArtifactInfos
 $RemoteName = GetRemoteName
 $CurrentBranchName = GetCurrentBranchName
 if ($LASTEXITCODE -ne 0) {
     LogError "Could not correctly get the current branch name."
     exit 1
 }
-# UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
+$bomPatchVersion = GetNextBomVersion
+$bomBranchName = "bom_$bomPatchVersion"
 Write-Output "Preparing patch releases for BOM updates."
-$JsonReport = @()
-## We now can run the generate_patch script for all those dependencies.
-foreach ($patchSet in $ReleaseSets) {
-    try {
-        $patchInfos = [ArtifactPatchInfo[]]@()
-        foreach ($artifactId in $patchSet.Keys) {
-            $arInfo = $ArtifactInfos[$artifactId]
-            $patchInfo = [ArtifactPatchInfo]::new()
-            $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
-            $patchInfos += $patchInfo
-            UpdateDependenciesInVersionClient -ArtifactId $artifactId -ArtifactInfos $ArtifactInfos
-        }
+try {
+    $patchBranchName = "PatchSet_$bomPatchVersion"
+    git checkout -b $patchBranchName $RemoteName/main
+    UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
-        $remoteBranchName = GetBranchName -ArtifactId "PatchSet"
-        # GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
-
-        $artifactIds = @()
-        $patchInfos | ForEach-Object { $artifactIds += $_.ArtifactId }
-        $sortedArtifactIds = GetTopologicalSort -ArtifactIds $artifactIds -ArtifactInfos $ArtifactInfos
-        $JsonReport += @{
-            Artifacts = $sortedArtifactIds
-            Branch = $remoteBranchName
-        }
-
-    }
-    finally {
-        $cmdOutput = git checkout $CurrentBranchName
+    foreach ($artifactId in $ArtifactsToPatch.Keys) {
+        $patchInfo = [ArtifactPatchInfo[]]@()
+        $arInfo = $ArtifactInfos[$artifactId]
+        $patchInfo = [ArtifactPatchInfo]::new()
+        $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
+        $patchInfos += $patchInfo
+        GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 }
+finally {
+    $cmdOutput = git checkout $CurrentBranchName
+}
 
-GenerateBOMFile -ArtifactInfos $ArtifactInfos -ArtifactsToPatch $ArtifactsToPatch -BomFileBranchName $BomFileBranchName
-GenerateHtmlReport -JsonReport $JsonReport -BomFileBranchName $BomFileBranchName
+GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
+GenerateHtmlReport -ArtifactIds $ArtifactsToPatch.Keys -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
