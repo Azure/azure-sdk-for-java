@@ -319,5 +319,7 @@ finally {
     $cmdOutput = git checkout $CurrentBranchName
 }
 
-GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
-GenerateHtmlReport -ArtifactIds $ArtifactsToPatch.Keys -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
+GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $
+
+$orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
+GenerateHtmlReport -ArtifactIds $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
