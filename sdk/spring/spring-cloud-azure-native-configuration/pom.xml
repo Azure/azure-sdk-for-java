@@ -150,21 +150,6 @@
       <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
-      <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
-      <scope>provided</scope>
-    </dependency>
-    <!-- Added this dependency to include necessary annotations used by reactor core.
-        Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
-        which is used in @Nullable annotation in reactor core classes -->
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>
