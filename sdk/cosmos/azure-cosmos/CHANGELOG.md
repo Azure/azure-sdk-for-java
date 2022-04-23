@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.29.0-beta.1 (Unreleased)
+### 4.29.0 (2022-04-22)
 #### Features Added
 * Added Beta API `continueOnInitError` in `ThroughputControlGroupConfigBuilder` - See [PR 27702](https://github.com/Azure/azure-sdk-for-java/pull/27702)
 
