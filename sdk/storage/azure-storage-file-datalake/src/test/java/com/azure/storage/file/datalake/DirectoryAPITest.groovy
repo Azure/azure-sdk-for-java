@@ -82,10 +82,9 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
         def options = new DataLakePathCreateOptions()
         def metadata = new HashMap<String, String>()
-        def permissions = "0777"
         metadata.put("foo", "bar")
         options.setMetadata(metadata).setRequestConditions(new DataLakeRequestConditions()).setPathHttpHeaders(new PathHttpHeaders())
-            .setAccessControlList(pathAccessControlEntries).setPermissions(permissions)
+            .setAccessControlList(pathAccessControlEntries)
 
         when:
         def createResponse = dc.createWithResponse(options, null, null)
@@ -483,6 +482,7 @@ class DirectoryAPITest extends APISpec {
     @Unroll
     def "Create if not exists metadata"() {
         setup:
+        dc = fsc.getDirectoryClient(generatePathName())
         def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -493,7 +493,7 @@ class DirectoryAPITest extends APISpec {
         def options = new DataLakePathCreateOptions().setMetadata(metadata)
 
         expect:
-        dc.createWithResponse(options, null, null).getStatusCode() == statusCode
+        dc.createIfNotExistsWithResponse(options, null, null).getStatusCode() == statusCode
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
             dc.getProperties().getMetadata().containsKey(k)
