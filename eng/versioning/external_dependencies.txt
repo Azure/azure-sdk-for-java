@@ -244,7 +244,7 @@ com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.6
 com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
-com.nimbusds:nimbus-jose-jwt;9.10.1
+com.nimbusds:nimbus-jose-jwt;9.22
 com.puppycrawl.tools:checkstyle;9.2
 commons-io:commons-io;2.7
 commons-validator:commons-validator;1.6
