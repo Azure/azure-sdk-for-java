@@ -4,11 +4,15 @@
 
 package com.azure.resourcemanager.relay.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.models.AuthorizationRuleInner;
+import com.azure.resourcemanager.relay.models.AccessKeys;
 import com.azure.resourcemanager.relay.models.AccessRights;
 import com.azure.resourcemanager.relay.models.AuthorizationRule;
+import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +20,7 @@ public final class AuthorizationRuleImpl
     implements AuthorizationRule, AuthorizationRule.Definition, AuthorizationRule.Update {
     private AuthorizationRuleInner innerObject;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -30,6 +34,14 @@ public final class AuthorizationRuleImpl
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public List<AccessRights> rights() {
         List<AccessRights> inner = this.innerModel().rights();
         if (inner != null) {
@@ -39,11 +51,19 @@ public final class AuthorizationRuleImpl
         }
     }
 
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
     public AuthorizationRuleInner innerModel() {
         return this.innerObject;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 
@@ -81,7 +101,7 @@ public final class AuthorizationRuleImpl
         return this;
     }
 
-    AuthorizationRuleImpl(String name, RelayManager serviceManager) {
+    AuthorizationRuleImpl(String name, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = new AuthorizationRuleInner();
         this.serviceManager = serviceManager;
         this.authorizationRuleName = name;
@@ -113,7 +133,8 @@ public final class AuthorizationRuleImpl
         return this;
     }
 
-    AuthorizationRuleImpl(AuthorizationRuleInner innerObject, RelayManager serviceManager) {
+    AuthorizationRuleImpl(
+        AuthorizationRuleInner innerObject, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -139,6 +160,28 @@ public final class AuthorizationRuleImpl
                 .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, context)
                 .getValue();
         return this;
+    }
+
+    public AccessKeys listKeys() {
+        return serviceManager.namespaces().listKeys(resourceGroupName, namespaceName, authorizationRuleName);
+    }
+
+    public Response<AccessKeys> listKeysWithResponse(Context context) {
+        return serviceManager
+            .namespaces()
+            .listKeysWithResponse(resourceGroupName, namespaceName, authorizationRuleName, context);
+    }
+
+    public AccessKeys regenerateKeys(RegenerateAccessKeyParameters parameters) {
+        return serviceManager
+            .namespaces()
+            .regenerateKeys(resourceGroupName, namespaceName, authorizationRuleName, parameters);
+    }
+
+    public Response<AccessKeys> regenerateKeysWithResponse(RegenerateAccessKeyParameters parameters, Context context) {
+        return serviceManager
+            .namespaces()
+            .regenerateKeysWithResponse(resourceGroupName, namespaceName, authorizationRuleName, parameters, context);
     }
 
     public AuthorizationRuleImpl withRights(List<AccessRights> rights) {

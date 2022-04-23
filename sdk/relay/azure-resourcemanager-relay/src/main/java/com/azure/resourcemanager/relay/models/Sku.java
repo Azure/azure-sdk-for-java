@@ -6,19 +6,16 @@ package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of the namespace. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * Name of this SKU.
      */
     @JsonProperty(value = "name", required = true)
-    private String name;
+    private SkuName name;
 
     /*
      * The tier of this SKU.
@@ -26,17 +23,12 @@ public final class Sku {
     @JsonProperty(value = "tier")
     private SkuTier tier;
 
-    /** Creates an instance of Sku class. */
-    public Sku() {
-        name = "Standard";
-    }
-
     /**
      * Get the name property: Name of this SKU.
      *
      * @return the name value.
      */
-    public String name() {
+    public SkuName name() {
         return this.name;
     }
 
@@ -46,7 +38,7 @@ public final class Sku {
      * @param name the name value to set.
      * @return the Sku object itself.
      */
-    public Sku withName(String name) {
+    public Sku withName(SkuName name) {
         this.name = name;
         return this;
     }
@@ -77,5 +69,11 @@ public final class Sku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (name() == null) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relay.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,10 +15,9 @@ import java.util.List;
  */
 @Immutable
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * List of Relay operations supported by resource provider.
+     * List of Relay operations supported by the Microsoft.EventHub resource
+     * provider.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationInner> value;
@@ -32,7 +29,7 @@ public final class OperationListResult {
     private String nextLink;
 
     /**
-     * Get the value property: List of Relay operations supported by resource provider.
+     * Get the value property: List of Relay operations supported by the Microsoft.EventHub resource provider.
      *
      * @return the value value.
      */

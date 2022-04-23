@@ -17,130 +17,6 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
 /** An instance of this class provides access to all the operations defined in HybridConnectionsClient. */
 public interface HybridConnectionsClient {
     /**
-     * Lists the hybrid connection within the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list hybrid connection operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HybridConnectionInner> listByNamespace(String resourceGroupName, String namespaceName);
-
-    /**
-     * Lists the hybrid connection within the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list hybrid connection operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HybridConnectionInner> listByNamespace(
-        String resourceGroupName, String namespaceName, Context context);
-
-    /**
-     * Creates or updates a service hybrid connection. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param parameters Parameters supplied to create a hybrid connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridConnectionInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, HybridConnectionInner parameters);
-
-    /**
-     * Creates or updates a service hybrid connection. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param parameters Parameters supplied to create a hybrid connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridConnectionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String hybridConnectionName,
-        HybridConnectionInner parameters,
-        Context context);
-
-    /**
-     * Deletes a hybrid connection.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String namespaceName, String hybridConnectionName);
-
-    /**
-     * Deletes a hybrid connection.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, Context context);
-
-    /**
-     * Returns the description for the specified hybrid connection.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridConnectionInner get(String resourceGroupName, String namespaceName, String hybridConnectionName);
-
-    /**
-     * Returns the description for the specified hybrid connection.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param hybridConnectionName The hybrid connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of hybrid connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridConnectionInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String hybridConnectionName, Context context);
-
-    /**
      * Authorization rules for a hybrid connection.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
@@ -149,7 +25,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the list namespace operation.
+     * @return the response from the list namespace operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AuthorizationRuleInner> listAuthorizationRules(
@@ -165,7 +41,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the list namespace operation.
+     * @return the response from the list namespace operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AuthorizationRuleInner> listAuthorizationRules(
@@ -182,7 +58,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return single item in a List or Get AuthorizationRule operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AuthorizationRuleInner createOrUpdateAuthorizationRule(
@@ -204,7 +80,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return single item in a List or Get AuthorizationRule operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(
@@ -241,7 +117,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteAuthorizationRuleWithResponse(
@@ -261,7 +137,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return single item in a List or Get AuthorizationRule operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AuthorizationRuleInner getAuthorizationRule(
@@ -278,7 +154,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return single item in a List or Get AuthorizationRule operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AuthorizationRuleInner> getAuthorizationRuleWithResponse(
@@ -315,7 +191,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
+     * @return namespace/Relay Connection String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AccessKeysInner> listKeysWithResponse(
@@ -358,7 +234,7 @@ public interface HybridConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
+     * @return namespace/Relay Connection String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AccessKeysInner> regenerateKeysWithResponse(
@@ -368,4 +244,128 @@ public interface HybridConnectionsClient {
         String authorizationRuleName,
         RegenerateAccessKeyParameters parameters,
         Context context);
+
+    /**
+     * Lists the hybrid connection within the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the list hybrid connection operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<HybridConnectionInner> listByNamespace(String resourceGroupName, String namespaceName);
+
+    /**
+     * Lists the hybrid connection within the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the list hybrid connection operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<HybridConnectionInner> listByNamespace(
+        String resourceGroupName, String namespaceName, Context context);
+
+    /**
+     * Creates or updates a service hybrid connection. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param hybridConnectionName The hybrid connection name.
+     * @param parameters Parameters supplied to create a hybrid connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of hybrid connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HybridConnectionInner createOrUpdate(
+        String resourceGroupName, String namespaceName, String hybridConnectionName, HybridConnectionInner parameters);
+
+    /**
+     * Creates or updates a service hybrid connection. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param hybridConnectionName The hybrid connection name.
+     * @param parameters Parameters supplied to create a hybrid connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of hybrid connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HybridConnectionInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String namespaceName,
+        String hybridConnectionName,
+        HybridConnectionInner parameters,
+        Context context);
+
+    /**
+     * Deletes a hybrid connection.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param hybridConnectionName The hybrid connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String namespaceName, String hybridConnectionName);
+
+    /**
+     * Deletes a hybrid connection.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param hybridConnectionName The hybrid connection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String namespaceName, String hybridConnectionName, Context context);
+
+    /**
+     * Returns the description for the specified hybrid connection.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param hybridConnectionName The hybrid connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of hybrid connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HybridConnectionInner get(String resourceGroupName, String namespaceName, String hybridConnectionName);
+
+    /**
+     * Returns the description for the specified hybrid connection.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param hybridConnectionName The hybrid connection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of hybrid connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HybridConnectionInner> getWithResponse(
+        String resourceGroupName, String namespaceName, String hybridConnectionName, Context context);
 }

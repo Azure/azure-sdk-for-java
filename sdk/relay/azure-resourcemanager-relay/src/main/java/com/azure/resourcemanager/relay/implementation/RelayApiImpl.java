@@ -24,6 +24,8 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.relay.fluent.HybridConnectionsClient;
 import com.azure.resourcemanager.relay.fluent.NamespacesClient;
 import com.azure.resourcemanager.relay.fluent.OperationsClient;
+import com.azure.resourcemanager.relay.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.relay.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.relay.fluent.RelayApi;
 import com.azure.resourcemanager.relay.fluent.WcfRelaysClient;
 import java.io.IOException;
@@ -39,8 +41,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the RelayApiImpl type. */
 @ServiceClient(builder = RelayApiBuilder.class)
 public final class RelayApiImpl implements RelayApi {
-    private final ClientLogger logger = new ClientLogger(RelayApiImpl.class);
-
     /**
      * Subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part
      * of the URI for every service call.
@@ -117,18 +117,6 @@ public final class RelayApiImpl implements RelayApi {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
     /** The NamespacesClient object to access its operations. */
     private final NamespacesClient namespaces;
 
@@ -165,6 +153,42 @@ public final class RelayApiImpl implements RelayApi {
         return this.wcfRelays;
     }
 
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
     /**
      * Initializes an instance of RelayApi client.
      *
@@ -188,11 +212,13 @@ public final class RelayApiImpl implements RelayApi {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-04-01";
-        this.operations = new OperationsClientImpl(this);
+        this.apiVersion = "2021-11-01";
         this.namespaces = new NamespacesClientImpl(this);
         this.hybridConnections = new HybridConnectionsClientImpl(this);
         this.wcfRelays = new WcfRelaysClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**
@@ -277,8 +303,8 @@ public final class RelayApiImpl implements RelayApi {
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                    } catch (IOException | RuntimeException ioe) {
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -306,7 +332,7 @@ public final class RelayApiImpl implements RelayApi {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {
@@ -337,4 +363,6 @@ public final class RelayApiImpl implements RelayApi {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RelayApiImpl.class);
 }

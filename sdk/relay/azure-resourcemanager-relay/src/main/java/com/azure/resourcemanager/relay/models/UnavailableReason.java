@@ -4,56 +4,44 @@
 
 package com.azure.resourcemanager.relay.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for UnavailableReason. */
-public enum UnavailableReason {
-    /** Enum value None. */
-    NONE("None"),
+public final class UnavailableReason extends ExpandableStringEnum<UnavailableReason> {
+    /** Static value None for UnavailableReason. */
+    public static final UnavailableReason NONE = fromString("None");
 
-    /** Enum value InvalidName. */
-    INVALID_NAME("InvalidName"),
+    /** Static value InvalidName for UnavailableReason. */
+    public static final UnavailableReason INVALID_NAME = fromString("InvalidName");
 
-    /** Enum value SubscriptionIsDisabled. */
-    SUBSCRIPTION_IS_DISABLED("SubscriptionIsDisabled"),
+    /** Static value SubscriptionIsDisabled for UnavailableReason. */
+    public static final UnavailableReason SUBSCRIPTION_IS_DISABLED = fromString("SubscriptionIsDisabled");
 
-    /** Enum value NameInUse. */
-    NAME_IN_USE("NameInUse"),
+    /** Static value NameInUse for UnavailableReason. */
+    public static final UnavailableReason NAME_IN_USE = fromString("NameInUse");
 
-    /** Enum value NameInLockdown. */
-    NAME_IN_LOCKDOWN("NameInLockdown"),
+    /** Static value NameInLockdown for UnavailableReason. */
+    public static final UnavailableReason NAME_IN_LOCKDOWN = fromString("NameInLockdown");
 
-    /** Enum value TooManyNamespaceInCurrentSubscription. */
-    TOO_MANY_NAMESPACE_IN_CURRENT_SUBSCRIPTION("TooManyNamespaceInCurrentSubscription");
-
-    /** The actual serialized value for a UnavailableReason instance. */
-    private final String value;
-
-    UnavailableReason(String value) {
-        this.value = value;
-    }
+    /** Static value TooManyNamespaceInCurrentSubscription for UnavailableReason. */
+    public static final UnavailableReason TOO_MANY_NAMESPACE_IN_CURRENT_SUBSCRIPTION =
+        fromString("TooManyNamespaceInCurrentSubscription");
 
     /**
-     * Parses a serialized value to a UnavailableReason instance.
+     * Creates or finds a UnavailableReason from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed UnavailableReason object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding UnavailableReason.
      */
     @JsonCreator
-    public static UnavailableReason fromString(String value) {
-        UnavailableReason[] items = UnavailableReason.values();
-        for (UnavailableReason item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static UnavailableReason fromString(String name) {
+        return fromString(name, UnavailableReason.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known UnavailableReason values. */
+    public static Collection<UnavailableReason> values() {
+        return values(UnavailableReason.class);
     }
 }

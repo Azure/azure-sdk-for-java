@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.relay.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.relay.fluent.models.RelayNamespaceInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of RelayNamespace. */
@@ -55,11 +58,25 @@ public interface RelayNamespace {
     Sku sku();
 
     /**
-     * Gets the provisioningState property: The provisioningState property.
+     * Gets the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the Namespace.
      *
      * @return the provisioningState value.
      */
-    ProvisioningStateEnum provisioningState();
+    String provisioningState();
+
+    /**
+     * Gets the status property: Status of the Namespace.
+     *
+     * @return the status value.
+     */
+    String status();
 
     /**
      * Gets the createdAt property: The time the namespace was created.
@@ -88,6 +105,21 @@ public interface RelayNamespace {
      * @return the metricId value.
      */
     String metricId();
+
+    /**
+     * Gets the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * Gets the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
 
     /**
      * Gets the region of the resource.
@@ -154,7 +186,11 @@ public interface RelayNamespace {
          * The stage of the RelayNamespace definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku {
+        interface WithCreate
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
+                DefinitionStages.WithPrivateEndpointConnections,
+                DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
              *
@@ -190,6 +226,28 @@ public interface RelayNamespace {
              */
             WithCreate withSku(Sku sku);
         }
+        /** The stage of the RelayNamespace definition allowing to specify privateEndpointConnections. */
+        interface WithPrivateEndpointConnections {
+            /**
+             * Specifies the privateEndpointConnections property: List of private endpoint connections..
+             *
+             * @param privateEndpointConnections List of private endpoint connections.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
+        }
+        /** The stage of the RelayNamespace definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
+             * default it is enabled..
+             *
+             * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
+             *     enabled.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
     /**
      * Begins update for the RelayNamespace resource.
@@ -199,7 +257,11 @@ public interface RelayNamespace {
     RelayNamespace.Update update();
 
     /** The template for RelayNamespace update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithSku,
+            UpdateStages.WithPrivateEndpointConnections,
+            UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -236,6 +298,28 @@ public interface RelayNamespace {
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
+        }
+        /** The stage of the RelayNamespace update allowing to specify privateEndpointConnections. */
+        interface WithPrivateEndpointConnections {
+            /**
+             * Specifies the privateEndpointConnections property: List of private endpoint connections..
+             *
+             * @param privateEndpointConnections List of private endpoint connections.
+             * @return the next definition stage.
+             */
+            Update withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
+        }
+        /** The stage of the RelayNamespace update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
+             * default it is enabled..
+             *
+             * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
+             *     enabled.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
     /**

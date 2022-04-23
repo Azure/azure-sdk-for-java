@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.relay.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.relay.RelayManager;
+import com.azure.resourcemanager.relay.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.relay.fluent.models.RelayNamespaceInner;
-import com.azure.resourcemanager.relay.models.ProvisioningStateEnum;
+import com.azure.resourcemanager.relay.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.relay.models.PublicNetworkAccess;
 import com.azure.resourcemanager.relay.models.RelayNamespace;
 import com.azure.resourcemanager.relay.models.RelayUpdateParameters;
 import com.azure.resourcemanager.relay.models.Sku;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.Definition, RelayNamespace.Update {
     private RelayNamespaceInner innerObject;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -50,8 +54,16 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this.innerModel().sku();
     }
 
-    public ProvisioningStateEnum provisioningState() {
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public String status() {
+        return this.innerModel().status();
     }
 
     public OffsetDateTime createdAt() {
@@ -70,6 +82,24 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this.innerModel().metricId();
     }
 
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -82,7 +112,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this.innerObject;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 
@@ -115,7 +145,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this;
     }
 
-    RelayNamespaceImpl(String name, RelayManager serviceManager) {
+    RelayNamespaceImpl(String name, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = new RelayNamespaceInner();
         this.serviceManager = serviceManager;
         this.namespaceName = name;
@@ -146,7 +176,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this;
     }
 
-    RelayNamespaceImpl(RelayNamespaceInner innerObject, RelayManager serviceManager) {
+    RelayNamespaceImpl(RelayNamespaceInner innerObject, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -199,6 +229,27 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
             return this;
         } else {
             this.updateParameters.withSku(sku);
+            return this;
+        }
+    }
+
+    public RelayNamespaceImpl withPrivateEndpointConnections(
+        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        if (isInCreateMode()) {
+            this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
+            return this;
+        } else {
+            this.updateParameters.withPrivateEndpointConnections(privateEndpointConnections);
+            return this;
+        }
+    }
+
+    public RelayNamespaceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
             return this;
         }
     }

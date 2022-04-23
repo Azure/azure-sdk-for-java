@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.relay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.relay.models.ProvisioningStateEnum;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.relay.models.PublicNetworkAccess;
 import com.azure.resourcemanager.relay.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Description of a namespace resource. */
-@JsonFlatten
 @Fluent
-public class RelayNamespaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelayNamespaceInner.class);
-
+public final class RelayNamespaceInner extends Resource {
     /*
      * SKU of the namespace.
      */
@@ -28,34 +24,16 @@ public class RelayNamespaceInner extends Resource {
     private Sku sku;
 
     /*
-     * The provisioningState property.
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStateEnum provisioningState;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * The time the namespace was created.
+     * Description of Relay namespace
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
-
-    /*
-     * The time the namespace was updated.
-     */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Endpoint you can use to perform Service Bus operations.
-     */
-    @JsonProperty(value = "properties.serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceBusEndpoint;
-
-    /*
-     * Identifier for Azure Insights metrics.
-     */
-    @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricId;
+    @JsonProperty(value = "properties")
+    private RelayNamespaceProperties innerProperties;
 
     /**
      * Get the sku property: SKU of the namespace.
@@ -78,48 +56,21 @@ public class RelayNamespaceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the systemData property: The system meta data relating to this resource.
      *
-     * @return the provisioningState value.
+     * @return the systemData value.
      */
-    public ProvisioningStateEnum provisioningState() {
-        return this.provisioningState;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the createdAt property: The time the namespace was created.
+     * Get the innerProperties property: Description of Relay namespace.
      *
-     * @return the createdAt value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime createdAt() {
-        return this.createdAt;
-    }
-
-    /**
-     * Get the updatedAt property: The time the namespace was updated.
-     *
-     * @return the updatedAt value.
-     */
-    public OffsetDateTime updatedAt() {
-        return this.updatedAt;
-    }
-
-    /**
-     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
-     * @return the serviceBusEndpoint value.
-     */
-    public String serviceBusEndpoint() {
-        return this.serviceBusEndpoint;
-    }
-
-    /**
-     * Get the metricId property: Identifier for Azure Insights metrics.
-     *
-     * @return the metricId value.
-     */
-    public String metricId() {
-        return this.metricId;
+    private RelayNamespaceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -137,6 +88,109 @@ public class RelayNamespaceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the Namespace.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the status property: Status of the Namespace.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the createdAt property: The time the namespace was created.
+     *
+     * @return the createdAt value.
+     */
+    public OffsetDateTime createdAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
+    }
+
+    /**
+     * Get the updatedAt property: The time the namespace was updated.
+     *
+     * @return the updatedAt value.
+     */
+    public OffsetDateTime updatedAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
+    }
+
+    /**
+     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
+     *
+     * @return the serviceBusEndpoint value.
+     */
+    public String serviceBusEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusEndpoint();
+    }
+
+    /**
+     * Get the metricId property: Identifier for Azure Insights metrics.
+     *
+     * @return the metricId value.
+     */
+    public String metricId() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricId();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the RelayNamespaceInner object itself.
+     */
+    public RelayNamespaceInner withPrivateEndpointConnections(
+        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayNamespaceProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the RelayNamespaceInner object itself.
+     */
+    public RelayNamespaceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayNamespaceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -144,6 +198,9 @@ public class RelayNamespaceInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

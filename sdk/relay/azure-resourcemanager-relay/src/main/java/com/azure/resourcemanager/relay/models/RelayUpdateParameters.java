@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.relay.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.relay.fluent.models.RelayNamespaceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Description of a namespace resource. */
-@JsonFlatten
 @Fluent
-public class RelayUpdateParameters extends ResourceNamespacePatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelayUpdateParameters.class);
-
+public final class RelayUpdateParameters extends ResourceNamespacePatch {
     /*
      * SKU of the namespace.
      */
@@ -25,34 +22,10 @@ public class RelayUpdateParameters extends ResourceNamespacePatch {
     private Sku sku;
 
     /*
-     * The provisioningState property.
+     * Description of Relay namespace.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStateEnum provisioningState;
-
-    /*
-     * The time the namespace was created.
-     */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
-
-    /*
-     * The time the namespace was updated.
-     */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Endpoint you can use to perform Service Bus operations.
-     */
-    @JsonProperty(value = "properties.serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceBusEndpoint;
-
-    /*
-     * Identifier for Azure Insights metrics.
-     */
-    @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricId;
+    @JsonProperty(value = "properties")
+    private RelayNamespaceProperties innerProperties;
 
     /**
      * Get the sku property: SKU of the namespace.
@@ -75,12 +48,37 @@ public class RelayUpdateParameters extends ResourceNamespacePatch {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the innerProperties property: Description of Relay namespace.
+     *
+     * @return the innerProperties value.
+     */
+    private RelayNamespaceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RelayUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Namespace.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningStateEnum provisioningState() {
-        return this.provisioningState;
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the status property: Status of the Namespace.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -89,7 +87,7 @@ public class RelayUpdateParameters extends ResourceNamespacePatch {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -98,7 +96,7 @@ public class RelayUpdateParameters extends ResourceNamespacePatch {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -107,7 +105,7 @@ public class RelayUpdateParameters extends ResourceNamespacePatch {
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
-        return this.serviceBusEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusEndpoint();
     }
 
     /**
@@ -116,13 +114,55 @@ public class RelayUpdateParameters extends ResourceNamespacePatch {
      * @return the metricId value.
      */
     public String metricId() {
-        return this.metricId;
+        return this.innerProperties() == null ? null : this.innerProperties().metricId();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public RelayUpdateParameters withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the RelayUpdateParameters object itself.
+     */
+    public RelayUpdateParameters withPrivateEndpointConnections(
+        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayNamespaceProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the RelayUpdateParameters object itself.
+     */
+    public RelayUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelayNamespaceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -136,6 +176,9 @@ public class RelayUpdateParameters extends ResourceNamespacePatch {
         super.validate();
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

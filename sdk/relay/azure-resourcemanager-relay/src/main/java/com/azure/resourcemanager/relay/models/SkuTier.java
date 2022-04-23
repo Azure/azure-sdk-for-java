@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.relay.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for SkuTier. */
-public enum SkuTier {
-    /** Enum value Standard. */
-    STANDARD("Standard");
-
-    /** The actual serialized value for a SkuTier instance. */
-    private final String value;
-
-    SkuTier(String value) {
-        this.value = value;
-    }
+public final class SkuTier extends ExpandableStringEnum<SkuTier> {
+    /** Static value Standard for SkuTier. */
+    public static final SkuTier STANDARD = fromString("Standard");
 
     /**
-     * Parses a serialized value to a SkuTier instance.
+     * Creates or finds a SkuTier from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed SkuTier object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding SkuTier.
      */
     @JsonCreator
-    public static SkuTier fromString(String value) {
-        SkuTier[] items = SkuTier.values();
-        for (SkuTier item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static SkuTier fromString(String name) {
+        return fromString(name, SkuTier.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known SkuTier values. */
+    public static Collection<SkuTier> values() {
+        return values(SkuTier.class);
     }
 }

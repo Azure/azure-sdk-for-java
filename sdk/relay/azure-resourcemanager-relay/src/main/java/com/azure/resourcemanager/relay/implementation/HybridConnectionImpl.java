@@ -4,8 +4,9 @@
 
 package com.azure.resourcemanager.relay.implementation;
 
+import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.models.HybridConnectionInner;
 import com.azure.resourcemanager.relay.models.HybridConnection;
 import java.time.OffsetDateTime;
@@ -14,7 +15,7 @@ public final class HybridConnectionImpl
     implements HybridConnection, HybridConnection.Definition, HybridConnection.Update {
     private HybridConnectionInner innerObject;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -26,6 +27,14 @@ public final class HybridConnectionImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String location() {
+        return this.innerModel().location();
     }
 
     public OffsetDateTime createdAt() {
@@ -48,11 +57,19 @@ public final class HybridConnectionImpl
         return this.innerModel().userMetadata();
     }
 
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
     public HybridConnectionInner innerModel() {
         return this.innerObject;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 
@@ -90,7 +107,7 @@ public final class HybridConnectionImpl
         return this;
     }
 
-    HybridConnectionImpl(String name, RelayManager serviceManager) {
+    HybridConnectionImpl(String name, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = new HybridConnectionInner();
         this.serviceManager = serviceManager;
         this.hybridConnectionName = name;
@@ -122,7 +139,8 @@ public final class HybridConnectionImpl
         return this;
     }
 
-    HybridConnectionImpl(HybridConnectionInner innerObject, RelayManager serviceManager) {
+    HybridConnectionImpl(
+        HybridConnectionInner innerObject, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

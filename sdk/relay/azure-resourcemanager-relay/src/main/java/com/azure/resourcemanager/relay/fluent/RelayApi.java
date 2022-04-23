@@ -46,13 +46,6 @@ public interface RelayApi {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
      * Gets the NamespacesClient object to access its operations.
      *
      * @return the NamespacesClient object.
@@ -72,4 +65,25 @@ public interface RelayApi {
      * @return the WcfRelaysClient object.
      */
     WcfRelaysClient getWcfRelays();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
 }

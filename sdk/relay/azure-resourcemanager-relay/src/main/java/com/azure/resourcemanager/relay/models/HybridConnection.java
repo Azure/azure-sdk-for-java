@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.relay.models;
 
+import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.relay.fluent.models.HybridConnectionInner;
 import java.time.OffsetDateTime;
@@ -30,6 +32,20 @@ public interface HybridConnection {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    String location();
 
     /**
      * Gets the createdAt property: The time the hybrid connection was created.
@@ -69,6 +85,20 @@ public interface HybridConnection {
      * @return the userMetadata value.
      */
     String userMetadata();
+
+    /**
+     * Gets the region of the resource.
+     *
+     * @return the region of the resource.
+     */
+    Region region();
+
+    /**
+     * Gets the name of the resource region.
+     *
+     * @return the name of the resource region.
+     */
+    String regionName();
 
     /**
      * Gets the inner com.azure.resourcemanager.relay.fluent.models.HybridConnectionInner object.
