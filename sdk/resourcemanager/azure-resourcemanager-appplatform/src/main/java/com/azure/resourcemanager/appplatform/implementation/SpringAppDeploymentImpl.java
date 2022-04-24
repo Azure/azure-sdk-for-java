@@ -3,15 +3,9 @@
 
 package com.azure.resourcemanager.appplatform.implementation;
 
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingContext;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildInner;
-import com.azure.resourcemanager.appplatform.fluent.models.BuildResultInner;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
 import com.azure.resourcemanager.appplatform.models.BuildProperties;
@@ -37,6 +31,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClientBuilder;
 import reactor.core.publisher.Mono;
@@ -592,53 +587,32 @@ public class SpringAppDeploymentImpl
         }
 
         private Mono<String> uploadAndBuildAsync(File source, ResourceUploadDefinition option) {
-            AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
             return uploadToStorageAsync(source, option)
-                .then(
-                    new PollerFlux<>(
-                        manager().serviceClient().getDefaultPollInterval(),
-                        context -> enqueueBuild(option, context),
-                        this::waitForBuild,
-                        (pollResultPollingContext, pollResultPollResponse) -> Mono.error(new RuntimeException("build canceled")), // throw if build canceled
-                        this::getBuildResult)
-                        .last()
-                        .flatMap(client::getLroFinalResultOrError)
-                        .flatMap((Function<Object, Mono<String>>) o -> {
-                            BuildResultInner result = (BuildResultInner) o;
-                            return Mono.just(result.id());
-                        })
-                );
+                .then(enqueueBuildAsync(option))
+                .flatMap(buildId ->
+                    manager().serviceClient().getBuildServices()
+                        .getBuildResultAsync(
+                            service().resourceGroupName(),
+                            service().name(),
+                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                            parent().name(),
+                            ResourceUtils.nameFromResourceId(buildId))
+                        .flatMap(buildResultInner -> {
+                            BuildResultProvisioningState state = buildResultInner.properties().provisioningState();
+                            if (state == BuildResultProvisioningState.SUCCEEDED) {
+                                return Mono.just(buildId);
+                            } else if (state == BuildResultProvisioningState.QUEUING || state == BuildResultProvisioningState.BUILDING) {
+                                return Mono.empty();
+                            } else return Mono.error(new RuntimeException("build failed"));
+                        }).repeatWhenEmpty(
+                            longFlux ->
+                                longFlux
+                                    .flatMap(
+                                        index -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
+                                            manager().serviceClient().getDefaultPollInterval())))));
         }
 
-        private Mono<BuildResultInner> getBuildResult(PollingContext<PollResult<BuildInner>> context) {
-            return manager().serviceClient().getBuildServices()
-                .getBuildResultAsync(
-                    service().resourceGroupName(),
-                    service().name(),
-                    Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                    parent().name(),
-                    // get "buildId" from context set in "enqueueBuild" step
-                    ResourceUtils.nameFromResourceId(context.getData("buildId")));
-        }
-
-        private Mono<PollResponse<PollResult<BuildInner>>> waitForBuild(PollingContext<PollResult<BuildInner>> context) {
-            return getBuildResult(context)
-                .flatMap((Function<BuildResultInner, Mono<PollResponse<PollResult<BuildInner>>>>) buildResultInner -> {
-                    BuildResultProvisioningState state = buildResultInner.properties().provisioningState();
-                    // construct empty result, "buildId" from context is the real result
-                    PollResult<BuildInner> emptyResult = new PollResult<>(new BuildInner().withProperties(new BuildProperties()));
-                    if (state == BuildResultProvisioningState.SUCCEEDED) {
-                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, emptyResult));
-                    } else if (state == BuildResultProvisioningState.FAILED || state == BuildResultProvisioningState.DELETING) {
-                        return Mono.error(new RuntimeException("build failed"));
-                    } else if (state == BuildResultProvisioningState.QUEUING) {
-                        return Mono.just(new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, emptyResult));
-                    }
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, emptyResult));
-                });
-        }
-
-        private Mono<PollResult<BuildInner>> enqueueBuild(ResourceUploadDefinition option, PollingContext<PollResult<BuildInner>> context) {
+        private Mono<String> enqueueBuildAsync(ResourceUploadDefinition option) {
             BuildProperties buildProperties = new BuildProperties()
                 .withBuilder(String.format("%s/buildservices/%s/builders/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
                 .withAgentPool(String.format("%s/buildservices/%s/agentPools/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
@@ -661,11 +635,7 @@ public class SpringAppDeploymentImpl
                     Constants.DEFAULT_TANZU_COMPONENT_NAME,
                     app().name(),
                     new BuildInner().withProperties(buildProperties))
-                .map(inner -> {
-                    // set "buildId" for reference afterwards
-                    context.setData("buildId", inner.properties().triggeredBuildResult().id());
-                    return new PollResult<>(inner);
-                });
+                .map(inner -> inner.properties().triggeredBuildResult().id());
         }
     }
 }
