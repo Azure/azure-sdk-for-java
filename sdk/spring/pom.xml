@@ -195,6 +195,8 @@
     <profile>
       <id>dev</id>
       <modules>
+        <module>../aot/azure-aot-graalvm-support</module>
+        <module>../aot/azure-aot-graalvm-support-netty</module>
         <module>../../eng/code-quality-reports</module>
         <module>../boms/spring-cloud-azure-dependencies</module>
         <module>spring-messaging-azure</module>
