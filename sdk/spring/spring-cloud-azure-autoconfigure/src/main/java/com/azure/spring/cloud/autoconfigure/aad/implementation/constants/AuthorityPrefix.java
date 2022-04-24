@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.constants;
 /**
  * Authority prefix
  */
-public class AuthorityPrefix {
+public final class AuthorityPrefix {
 
     private AuthorityPrefix() {
     }

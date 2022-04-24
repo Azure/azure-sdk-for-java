@@ -65,6 +65,8 @@ public class MethodServiceBusListenerEndpoint extends AbstractAzureListenerEndpo
             "Could not create message listener - MessageHandlerMethodFactory not set");
         MessagingMessageListenerAdapter messageListener = createMessageListenerInstance(messageConverter);
 
+        Object bean = getBean();
+        Method method = getMethod();
         Assert.state(bean != null && method != null, "No bean+method set on endpoint");
 
         InvocableHandlerMethod invocableHandlerMethod = this.messageHandlerMethodFactory.createInvocableHandlerMethod(

@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.condition;
+package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
 import org.springframework.util.StringUtils;
 
 /**
  * Utility class for property conditions.
  */
-public class PropertyConditionUtil {
+public final class PropertyConditionUtil {
 
     private PropertyConditionUtil() {
     }
@@ -18,7 +18,7 @@ public class PropertyConditionUtil {
      * @param prefixAttr the input prefix value
      * @return the result valid prefix
      */
-    static String getValidPrefix(String prefixAttr) {
+    public static String getValidPrefix(String prefixAttr) {
         prefixAttr = prefixAttr.trim();
         if (StringUtils.hasText(prefixAttr) && !prefixAttr.endsWith(".")) {
             return prefixAttr + ".";

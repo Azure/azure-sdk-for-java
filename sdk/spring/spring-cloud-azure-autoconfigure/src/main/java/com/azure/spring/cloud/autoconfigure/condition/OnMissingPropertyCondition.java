@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.condition;
 
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.PropertyConditionUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.core.annotation.AnnotationAttributes;

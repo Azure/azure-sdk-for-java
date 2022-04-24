@@ -57,7 +57,9 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
 
     @Override
     protected void doStop() {
-        this.delegate.stop();
+        if (this.delegate != null) {
+            this.delegate.stop();
+        }
     }
 
     @Override

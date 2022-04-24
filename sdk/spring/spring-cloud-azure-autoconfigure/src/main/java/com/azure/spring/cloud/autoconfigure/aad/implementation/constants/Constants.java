@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Constants used for AAD related logic.
  */
-public class Constants {
+public final class Constants {
 
     private Constants() {
     }

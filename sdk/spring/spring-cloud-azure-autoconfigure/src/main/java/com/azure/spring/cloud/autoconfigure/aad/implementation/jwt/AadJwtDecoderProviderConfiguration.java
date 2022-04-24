@@ -20,7 +20,7 @@ import java.util.Map;
  * <a href="https://tools.ietf.org/html/rfc8414#section-3.1">Authorization Server Metadata Request</a> based on
  * provided issuer and method invoked.
  */
-public class AadJwtDecoderProviderConfiguration {
+public final class AadJwtDecoderProviderConfiguration {
 
     private AadJwtDecoderProviderConfiguration() {
     }
