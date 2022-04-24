@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error response containing message and code. */
 @Fluent
-public final class ErrorMesssage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorMesssage.class);
-
+public final class ErrorMessage {
     /*
      * standard error code
      */
@@ -45,9 +41,9 @@ public final class ErrorMesssage {
      * Set the code property: standard error code.
      *
      * @param code the code value to set.
-     * @return the ErrorMesssage object itself.
+     * @return the ErrorMessage object itself.
      */
-    public ErrorMesssage withCode(String code) {
+    public ErrorMessage withCode(String code) {
         this.code = code;
         return this;
     }
@@ -65,9 +61,9 @@ public final class ErrorMesssage {
      * Set the message property: standard error description.
      *
      * @param message the message value to set.
-     * @return the ErrorMesssage object itself.
+     * @return the ErrorMessage object itself.
      */
-    public ErrorMesssage withMessage(String message) {
+    public ErrorMessage withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -85,9 +81,9 @@ public final class ErrorMesssage {
      * Set the details property: detailed summary of error.
      *
      * @param details the details value to set.
-     * @return the ErrorMesssage object itself.
+     * @return the ErrorMessage object itself.
      */
-    public ErrorMesssage withDetails(String details) {
+    public ErrorMessage withDetails(String details) {
         this.details = details;
         return this;
     }

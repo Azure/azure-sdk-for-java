@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,8 +16,6 @@ import java.util.List;
  */
 @Fluent
 public final class IotDpsPropertiesDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotDpsPropertiesDescription.class);
-
     /*
      * Current state of the provisioning service.
      */

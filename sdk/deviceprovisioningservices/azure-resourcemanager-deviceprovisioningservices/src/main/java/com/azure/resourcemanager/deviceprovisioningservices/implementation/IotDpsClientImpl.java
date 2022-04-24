@@ -38,8 +38,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the IotDpsClientImpl type. */
 @ServiceClient(builder = IotDpsClientBuilder.class)
 public final class IotDpsClientImpl implements IotDpsClient {
-    private final ClientLogger logger = new ClientLogger(IotDpsClientImpl.class);
-
     /** The subscription identifier. */
     private final String subscriptionId;
 
@@ -170,7 +168,7 @@ public final class IotDpsClientImpl implements IotDpsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-15";
+        this.apiVersion = "2022-02-05";
         this.operations = new OperationsClientImpl(this);
         this.dpsCertificates = new DpsCertificatesClientImpl(this);
         this.iotDpsResources = new IotDpsResourcesClientImpl(this);
@@ -259,7 +257,7 @@ public final class IotDpsClientImpl implements IotDpsClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -318,4 +316,6 @@ public final class IotDpsClientImpl implements IotDpsClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IotDpsClientImpl.class);
 }

@@ -8,9 +8,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInputs;
 
 /** Samples for IotDpsResource CheckProvisioningServiceNameAvailability. */
-public final class DpsCheckNameAvailabilitySamples {
+public final class IotDpsResourceCheckProvisioningServiceNameAvailabilit {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSCheckNameAvailability.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCheckNameAvailability.json
      */
     /**
      * Sample code: DPSCheckName.

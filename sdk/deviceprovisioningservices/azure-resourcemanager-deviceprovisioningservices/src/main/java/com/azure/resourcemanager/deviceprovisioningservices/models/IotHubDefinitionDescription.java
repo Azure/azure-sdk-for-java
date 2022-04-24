@@ -6,14 +6,11 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of the IoT hub. */
 @Fluent
 public final class IotHubDefinitionDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubDefinitionDescription.class);
-
     /*
      * flag for applying allocationPolicy or not for a given iot hub.
      */
@@ -140,16 +137,18 @@ public final class IotHubDefinitionDescription {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model IotHubDefinitionDescription"));
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model IotHubDefinitionDescription"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IotHubDefinitionDescription.class);
 }

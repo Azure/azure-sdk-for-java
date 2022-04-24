@@ -10,15 +10,12 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSkuInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The description of the provisioning service. */
 @Fluent
 public final class ProvisioningServiceDescriptionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProvisioningServiceDescriptionInner.class);
-
     /*
      * The Etag field is *not* required. If it is provided in the response
      * body, it must also be provided as a header per the normal ETag
@@ -137,7 +134,7 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model ProvisioningServiceDescriptionInner"));
@@ -145,7 +142,7 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
             properties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sku in model ProvisioningServiceDescriptionInner"));
@@ -153,4 +150,6 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProvisioningServiceDescriptionInner.class);
 }

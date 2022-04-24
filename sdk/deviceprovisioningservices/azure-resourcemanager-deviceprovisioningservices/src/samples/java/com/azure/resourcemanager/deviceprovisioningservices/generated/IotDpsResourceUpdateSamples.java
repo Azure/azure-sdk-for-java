@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for IotDpsResource Update. */
 public final class IotDpsResourceUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSPatch.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSPatch.json
      */
     /**
      * Sample code: DPSPatch.

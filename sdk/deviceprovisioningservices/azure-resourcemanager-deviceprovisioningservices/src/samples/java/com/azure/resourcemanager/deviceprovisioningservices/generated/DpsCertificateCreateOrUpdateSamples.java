@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
+import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateProperties;
+
 /** Samples for DpsCertificate CreateOrUpdate. */
 public final class DpsCertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSCertificateCreateOrUpdate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCertificateCreateOrUpdate.json
      */
     /**
      * Sample code: DPSCreateOrUpdateCertificate.
@@ -20,7 +22,8 @@ public final class DpsCertificateCreateOrUpdateSamples {
             .dpsCertificates()
             .define("cert")
             .withExistingProvisioningService("myResourceGroup", "myFirstProvisioningService")
-            .withCertificate("############################################")
+            .withProperties(
+                new CertificateProperties().withCertificate("############################################".getBytes()))
             .create();
     }
 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.deviceprovisioningservices.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
-import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateBodyDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateProperties;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateResponse;
 
@@ -57,11 +56,7 @@ public final class CertificateResponseImpl
 
     private String createIfMatch;
 
-    private CertificateBodyDescription createCertificateDescription;
-
     private String updateIfMatch;
-
-    private CertificateBodyDescription updateCertificateDescription;
 
     public CertificateResponseImpl withExistingProvisioningService(
         String resourceGroupName, String provisioningServiceName) {
@@ -79,7 +74,7 @@ public final class CertificateResponseImpl
                     resourceGroupName,
                     provisioningServiceName,
                     certificateName,
-                    createCertificateDescription,
+                    this.innerModel(),
                     createIfMatch,
                     Context.NONE)
                 .getValue();
@@ -95,7 +90,7 @@ public final class CertificateResponseImpl
                     resourceGroupName,
                     provisioningServiceName,
                     certificateName,
-                    createCertificateDescription,
+                    this.innerModel(),
                     createIfMatch,
                     context)
                 .getValue();
@@ -108,12 +103,10 @@ public final class CertificateResponseImpl
         this.serviceManager = serviceManager;
         this.certificateName = name;
         this.createIfMatch = null;
-        this.createCertificateDescription = new CertificateBodyDescription();
     }
 
     public CertificateResponseImpl update() {
         this.updateIfMatch = null;
-        this.updateCertificateDescription = new CertificateBodyDescription();
         return this;
     }
 
@@ -126,7 +119,7 @@ public final class CertificateResponseImpl
                     resourceGroupName,
                     provisioningServiceName,
                     certificateName,
-                    updateCertificateDescription,
+                    this.innerModel(),
                     updateIfMatch,
                     Context.NONE)
                 .getValue();
@@ -142,7 +135,7 @@ public final class CertificateResponseImpl
                     resourceGroupName,
                     provisioningServiceName,
                     certificateName,
-                    updateCertificateDescription,
+                    this.innerModel(),
                     updateIfMatch,
                     context)
                 .getValue();
@@ -182,24 +175,9 @@ public final class CertificateResponseImpl
         return this;
     }
 
-    public CertificateResponseImpl withCertificate(String certificate) {
-        if (isInCreateMode()) {
-            this.createCertificateDescription.withCertificate(certificate);
-            return this;
-        } else {
-            this.updateCertificateDescription.withCertificate(certificate);
-            return this;
-        }
-    }
-
-    public CertificateResponseImpl withIsVerified(Boolean isVerified) {
-        if (isInCreateMode()) {
-            this.createCertificateDescription.withIsVerified(isVerified);
-            return this;
-        } else {
-            this.updateCertificateDescription.withIsVerified(isVerified);
-            return this;
-        }
+    public CertificateResponseImpl withProperties(CertificateProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 
     public CertificateResponseImpl withIfMatch(String ifMatch) {

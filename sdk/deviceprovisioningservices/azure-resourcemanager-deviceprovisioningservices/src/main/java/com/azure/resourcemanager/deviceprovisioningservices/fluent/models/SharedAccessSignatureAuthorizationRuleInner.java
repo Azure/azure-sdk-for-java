@@ -7,14 +7,11 @@ package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.AccessRightsDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of the shared access key. */
 @Fluent
 public final class SharedAccessSignatureAuthorizationRuleInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessSignatureAuthorizationRuleInner.class);
-
     /*
      * Name of the key.
      */
@@ -126,16 +123,18 @@ public final class SharedAccessSignatureAuthorizationRuleInner {
      */
     public void validate() {
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyName in model SharedAccessSignatureAuthorizationRuleInner"));
         }
         if (rights() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rights in model SharedAccessSignatureAuthorizationRuleInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharedAccessSignatureAuthorizationRuleInner.class);
 }
