@@ -22,6 +22,9 @@ import java.util.Map;
  */
 public class AadJwtDecoderProviderConfiguration {
 
+    private AadJwtDecoderProviderConfiguration() {
+    }
+
     private static final String OIDC_METADATA_PATH = "/.well-known/openid-configuration";
     private static final RestTemplate REST = new RestTemplate();
     private static final ParameterizedTypeReference<Map<String, Object>> TYPE_REFERENCE =

@@ -12,6 +12,9 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.constants;
  */
 public class AadJwtClaimNames {
 
+    private AadJwtClaimNames() {
+    }
+
     public static final String AUD = "aud";
     public static final String ISS = "iss";
     public static final String NAME = "name";

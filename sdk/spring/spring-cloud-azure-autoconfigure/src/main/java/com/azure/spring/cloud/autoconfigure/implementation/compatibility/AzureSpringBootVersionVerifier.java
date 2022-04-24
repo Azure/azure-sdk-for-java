@@ -99,7 +99,10 @@ public class AzureSpringBootVersionVerifier {
                 String fullyQualifiedClassName = this.supportedVersions.get(versionString);
 
                 if (classNameResolver.resolve(fullyQualifiedClassName)) {
-                    LOGGER.debug("Predicate for Spring Boot Version of [" + versionString + "] was matched");
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Predicate for Spring Boot Version of [{}] was matched", versionString);
+                    }
+
                     return true;
                 }
             }

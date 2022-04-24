@@ -13,6 +13,10 @@ import java.util.Set;
  * Constants used for AAD related logic.
  */
 public class Constants {
+
+    private Constants() {
+    }
+
     /**
      * Bearer prefix
      */
