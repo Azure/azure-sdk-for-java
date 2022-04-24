@@ -3,7 +3,13 @@
 
 package com.azure.resourcemanager.appplatform.implementation;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildInner;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
@@ -34,14 +40,20 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClientBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 public class SpringAppDeploymentImpl
@@ -49,7 +61,7 @@ public class SpringAppDeploymentImpl
     implements SpringAppDeployment,
         SpringAppDeployment.Definition<SpringAppImpl, SpringAppDeploymentImpl>,
         SpringAppDeployment.Update {
-
+    private static final Duration MAX_BUILD_TIMEOUT = Duration.ofHours(1);
     private BuildServiceTask buildServiceTask;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
@@ -587,29 +599,41 @@ public class SpringAppDeploymentImpl
         }
 
         private Mono<String> uploadAndBuildAsync(File source, ResourceUploadDefinition option) {
+            AtomicLong pollCount = new AtomicLong();
+            Duration pollDuration = manager().serviceClient().getDefaultPollInterval();
             return uploadToStorageAsync(source, option)
                 .then(enqueueBuildAsync(option))
                 .flatMap(buildId ->
                     manager().serviceClient().getBuildServices()
-                        .getBuildResultAsync(
+                        .getBuildResultWithResponseAsync(
                             service().resourceGroupName(),
                             service().name(),
                             Constants.DEFAULT_TANZU_COMPONENT_NAME,
                             parent().name(),
                             ResourceUtils.nameFromResourceId(buildId))
-                        .flatMap(buildResultInner -> {
-                            BuildResultProvisioningState state = buildResultInner.properties().provisioningState();
-                            if (state == BuildResultProvisioningState.SUCCEEDED) {
-                                return Mono.just(buildId);
-                            } else if (state == BuildResultProvisioningState.QUEUING || state == BuildResultProvisioningState.BUILDING) {
-                                return Mono.empty();
-                            } else return Mono.error(new RuntimeException("build failed"));
+                        .flatMap(response -> {
+                            if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_BUILD_TIMEOUT) < 0) {
+                                BuildResultProvisioningState state = response.getValue().properties().provisioningState();
+                                if (state == BuildResultProvisioningState.SUCCEEDED) {
+                                    return Mono.just(buildId);
+                                } else if (state == BuildResultProvisioningState.QUEUING || state == BuildResultProvisioningState.BUILDING) {
+                                    return Mono.empty();
+                                } else {
+                                    AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
+                                    return Mono.error(new ManagementException("build failed",
+                                        new HttpResponseImpl<>(response, client.getSerializerAdapter())));
+                                }
+                            } else {
+                                return Mono.error(new ManagementException("build timeout", null));
+                            }
                         }).repeatWhenEmpty(
                             longFlux ->
                                 longFlux
                                     .flatMap(
-                                        index -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
-                                            manager().serviceClient().getDefaultPollInterval())))));
+                                        index -> {
+                                            pollCount.set(index);
+                                            return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
+                                        })));
         }
 
         private Mono<String> enqueueBuildAsync(ResourceUploadDefinition option) {
@@ -636,6 +660,61 @@ public class SpringAppDeploymentImpl
                     app().name(),
                     new BuildInner().withProperties(buildProperties))
                 .map(inner -> inner.properties().triggeredBuildResult().id());
+        }
+
+        @SuppressWarnings("BlockingMethodInNonBlockingContext")
+        private class HttpResponseImpl<T> extends HttpResponse {
+            private final Response<T> response;
+            private final SerializerAdapter serializerAdapter;
+
+            protected HttpResponseImpl(Response<T> response, SerializerAdapter serializerAdapter) {
+                super(response.getRequest());
+                this.response = response;
+                this.serializerAdapter = serializerAdapter;
+            }
+
+            @Override
+            public int getStatusCode() {
+                return response.getStatusCode();
+            }
+
+            @Override
+            public String getHeaderValue(String header) {
+                return response.getHeaders().getValue(header);
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return response.getHeaders();
+            }
+
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                try {
+                    return Flux.just(ByteBuffer.wrap(serializerAdapter.serializeToBytes(response.getValue(), SerializerEncoding.JSON)));
+                } catch (IOException e) {
+                    return Flux.empty();
+                }
+            }
+
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                try {
+                    return Mono.just(serializerAdapter.serializeToBytes(response.getValue(), SerializerEncoding.JSON));
+                } catch (IOException e) {
+                    return Mono.empty();
+                }
+            }
+
+            @Override
+            public Mono<String> getBodyAsString() {
+                return Mono.just(serializerAdapter.serializeRaw(response.getValue()));
+            }
+
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return getBodyAsString();
+            }
         }
     }
 }
