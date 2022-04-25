@@ -19,10 +19,9 @@ import com.azure.resourcemanager.synapse.models.DataConnection;
 import com.azure.resourcemanager.synapse.models.DataConnectionCheckNameRequest;
 import com.azure.resourcemanager.synapse.models.DataConnectionValidationListResult;
 import com.azure.resourcemanager.synapse.models.KustoPoolDataConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolDataConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolDataConnectionsImpl.class);
 
     private final KustoPoolDataConnectionsClient innerClient;
 

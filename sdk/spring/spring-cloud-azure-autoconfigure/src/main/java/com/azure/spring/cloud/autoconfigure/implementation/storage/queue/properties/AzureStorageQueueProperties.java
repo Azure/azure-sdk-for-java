@@ -29,6 +29,7 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
      */
     private String queueName;
 
+    @Override
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }

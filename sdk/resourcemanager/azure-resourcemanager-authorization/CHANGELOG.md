@@ -1,6 +1,18 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.15.0-beta.1 (Unreleased)
+
+### Breaking Changes
+
+- Removed `DenyAssignmentsClient` as it is preview feature.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of authentication to `2020-10-01`.
+
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 

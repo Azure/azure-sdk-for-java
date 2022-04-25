@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Mono;
 
@@ -18,16 +19,16 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
     private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
     private volatile String continuationToken;
 
-    public ServerSideOnlyContinuationFetcherImpl(BiFunction<String, Integer,
-        RxDocumentServiceRequest> createRequestFunc,
+    public ServerSideOnlyContinuationFetcherImpl(BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
                                                  Function<RxDocumentServiceRequest,
-                                                     Mono<FeedResponse<T>>> executeFunc,
+                                                 Mono<FeedResponse<T>>> executeFunc,
                                                  String continuationToken,
                                                  boolean isChangeFeed,
                                                  int top,
-                                                 int maxItemCount) {
+                                                 int maxItemCount,
+                                                 OperationContextAndListenerTuple operationContext) {
 
-        super(executeFunc, isChangeFeed, top, maxItemCount);
+        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext);
 
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
         this.createRequestFunc = createRequestFunc;

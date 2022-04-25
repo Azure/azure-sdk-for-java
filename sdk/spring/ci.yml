@@ -10,48 +10,6 @@ trigger:
   paths:
     include:
       - sdk/spring/
-    exclude:
-      - sdk/spring/pom.xml
-      - sdk/spring/spring-messaging-azure/pom.xml
-      - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
-      - sdk/spring/spring-messaging-azure-servicebus/pom.xml
-      - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-      - sdk/spring/spring-integration-azure-core/pom.xml
-      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
-      - sdk/spring/spring-integration-azure-servicebus/pom.xml
-      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-core/pom.xml
-      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-test-eventhubs-binder/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-active-directory/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-active-directory-b2c/pom.xml
-
 pr:
   branches:
     include:
@@ -62,47 +20,6 @@ pr:
   paths:
     include:
       - sdk/spring/
-    exclude:
-      - sdk/spring/pom.xml
-      - sdk/spring/spring-messaging-azure/pom.xml
-      - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
-      - sdk/spring/spring-messaging-azure-servicebus/pom.xml
-      - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-      - sdk/spring/spring-integration-azure-core/pom.xml
-      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
-      - sdk/spring/spring-integration-azure-servicebus/pom.xml
-      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-core/pom.xml
-      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-starter/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-test-eventhubs-binder/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-active-directory/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-active-directory-b2c/pom.xml
 
 parameters:
   - name: Artifacts
@@ -335,12 +252,12 @@ extends:
           - template: ../../../../sdk/spring/spring-sdk-client-test.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
-              SpringBootVersion: 2.6.5
+              SpringBootVersion: 2.6.6
               SpringCloudVersion: 2021.0.1
       - stage: TestCompatibleVersion
         jobs:
           - template: ../../../../sdk/spring/spring-sdk-client-test.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
-              SpringBootVersion: 2.5.11
+              SpringBootVersion: 2.5.12
               SpringCloudVersion: 2020.0.5

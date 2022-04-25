@@ -97,8 +97,7 @@ public class AadAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
             // Invalid JWT. Either expired or not yet valid.
             httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
         } catch (ParseException | BadJOSEException | JOSEException ex) {
-            LOGGER.error("Failed to initialize UserPrincipal.", ex);
-            throw new ServletException(ex);
+            throw new ServletException("Failed to initialize UserPrincipal.", ex);
         }
     }
 

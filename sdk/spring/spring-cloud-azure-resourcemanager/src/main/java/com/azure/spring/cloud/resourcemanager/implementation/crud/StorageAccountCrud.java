@@ -40,7 +40,7 @@ public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, Str
             return this.resourceManager.storageAccounts().getByResourceGroup(this.resourceMetadata.getResourceGroup(),
                                                                              key);
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

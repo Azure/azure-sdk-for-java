@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** Properties of managed integration runtime operation result. */
 @Fluent
 public final class ManagedIntegrationRuntimeOperationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeOperationResult.class);
-
     /*
      * The operation type. Could be start or stop.
      */

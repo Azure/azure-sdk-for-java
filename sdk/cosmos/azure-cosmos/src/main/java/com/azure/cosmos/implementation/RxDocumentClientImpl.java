@@ -388,7 +388,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public CosmosDiagnostics createDiagnostics() {
-       return BridgeInternal.createCosmosDiagnostics(this, this.globalEndpointManager);
+       return BridgeInternal.createCosmosDiagnostics(this);
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -505,7 +505,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // this.maxConcurrentConnectionOpenRequests,
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled,
-            this.clientTelemetry
+            this.clientTelemetry,
+            this.globalEndpointManager
         );
 
         this.createStoreModel(true);
@@ -560,7 +561,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
         } else {
-            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig);
+            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig.toDiagnosticsString());
             return HttpClient.createFixed(httpClientConfig);
         }
     }

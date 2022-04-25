@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information for the output stream from container attach. */
 @Fluent
 public final class ContainerAttachResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerAttachResponseInner.class);
-
     /*
      * The uri for the output stream from the attach.
      */

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeStatusOperatio
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusResponseInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatusOperations;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatusResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeStatusOperationsImpl implements IntegrationRuntimeStatusOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeStatusOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeStatusOperationsImpl.class);
 
     private final IntegrationRuntimeStatusOperationsClient innerClient;
 

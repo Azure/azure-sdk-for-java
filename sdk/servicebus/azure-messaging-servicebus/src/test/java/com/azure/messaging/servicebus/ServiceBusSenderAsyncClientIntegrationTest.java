@@ -113,10 +113,14 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
-        StepVerifier.create(sender.sendMessages(messages).doOnSuccess(aVoid -> {
-            messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet());
-        }))
-            .verifyComplete();
+        StepVerifier.create(
+            sender.sendMessages(messages)
+                .doOnSuccess(aVoid ->
+                    messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet())
+                )
+            )
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**

@@ -16,6 +16,12 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     /** Static value Updating for ProvisioningState. */
     public static final ProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Starting for ProvisioningState. */
+    public static final ProvisioningState STARTING = fromString("Starting");
+
+    /** Static value Stopping for ProvisioningState. */
+    public static final ProvisioningState STOPPING = fromString("Stopping");
+
     /** Static value Deleting for ProvisioningState. */
     public static final ProvisioningState DELETING = fromString("Deleting");
 

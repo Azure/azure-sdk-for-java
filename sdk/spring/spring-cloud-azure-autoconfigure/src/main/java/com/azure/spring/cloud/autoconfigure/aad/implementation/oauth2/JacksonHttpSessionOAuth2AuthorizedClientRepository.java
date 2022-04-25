@@ -30,13 +30,15 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
     private static final String AUTHORIZED_CLIENTS_ATTR_NAME =
         JacksonHttpSessionOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
 
+    private static final String MSG_REQUEST_CANNOT_BE_NULL = "request cannot be null";
+
     @SuppressWarnings("unchecked")
     @Override
     public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId,
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
         Assert.hasText(clientRegistrationId, "clientRegistrationId cannot be empty");
-        Assert.notNull(request, "request cannot be null");
+        Assert.notNull(request, MSG_REQUEST_CANNOT_BE_NULL);
         return (T) this.getAuthorizedClients(request).get(clientRegistrationId);
     }
 
@@ -44,7 +46,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
     public void saveAuthorizedClient(OAuth2AuthorizedClient authorizedClient, Authentication principal,
                                      HttpServletRequest request, HttpServletResponse response) {
         Assert.notNull(authorizedClient, "authorizedClient cannot be null");
-        Assert.notNull(request, "request cannot be null");
+        Assert.notNull(request, MSG_REQUEST_CANNOT_BE_NULL);
         Assert.notNull(response, "response cannot be null");
         Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
@@ -56,18 +58,17 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
     public void removeAuthorizedClient(String clientRegistrationId, Authentication principal,
                                        HttpServletRequest request, HttpServletResponse response) {
         Assert.hasText(clientRegistrationId, "clientRegistrationId cannot be empty");
-        Assert.notNull(request, "request cannot be null");
+        Assert.notNull(request, MSG_REQUEST_CANNOT_BE_NULL);
         Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
-        if (!authorizedClients.isEmpty()) {
-            if (authorizedClients.remove(clientRegistrationId) != null) {
-                if (!authorizedClients.isEmpty()) {
-                    request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-                        serializeOAuth2AuthorizedClientMap(authorizedClients));
-                } else {
-                    request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
-                }
+        if (authorizedClients.remove(clientRegistrationId) != null) {
+            if (authorizedClients.isEmpty()) {
+                request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
+            } else {
+                request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
+                    serializeOAuth2AuthorizedClientMap(authorizedClients));
             }
         }
+
     }
 
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
