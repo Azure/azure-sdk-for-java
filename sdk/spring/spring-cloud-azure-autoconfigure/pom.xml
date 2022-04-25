@@ -105,7 +105,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.19.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+      <version>3.20.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.3.17</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.3.18</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.28.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.29.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -194,7 +194,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>5.3.17</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <version>5.3.18</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -337,12 +337,12 @@
                 <include>org.springframework.data:spring-data-mongodb:[3.4.0-M4]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
                 <include>org.springframework.data:spring-data-redis:[2.7.0-M4]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[2.8.4]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
-                <include>org.springframework:spring-context-support:[5.3.17]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework:spring-context-support:[5.3.18]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-client:[5.7.0-M3]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[5.7.0-M3]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.7.0-M3]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[5.7.0-M3]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework:spring-jms:[5.3.17]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-jms:[5.3.18]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

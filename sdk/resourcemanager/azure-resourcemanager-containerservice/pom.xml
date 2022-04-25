@@ -40,6 +40,7 @@
       --add-opens com.azure.resourcemanager.containerservice/com.azure.resourcemanager.containerservice=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.containerservice/com.azure.resourcemanager.containerservice.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

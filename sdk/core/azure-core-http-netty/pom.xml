@@ -115,7 +115,7 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.50.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+      <version>2.0.51.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
       <classifier>${boring-ssl-classifier}</classifier>
     </dependency>
 
@@ -196,7 +196,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.50.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+                <include>io.netty:netty-tcnative-boringssl-static:[2.0.51.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty-http:[1.0.17]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.75.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.75.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
