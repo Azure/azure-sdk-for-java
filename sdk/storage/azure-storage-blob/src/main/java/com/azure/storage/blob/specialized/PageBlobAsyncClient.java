@@ -926,7 +926,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response containing the information of the cleared pages.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PageRangeItem> listPageRanges(BlobRange blobRange) {
         return listPageRanges(new ListPageRangesOptions(blobRange));
     }
@@ -951,7 +951,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link ListPageRangesOptions}
      * @return A reactive response emitting all the page ranges.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PageRangeItem> listPageRanges(ListPageRangesOptions options) {
         return new PagedFlux<>(
             pageSize -> withContext(context ->
@@ -1133,7 +1133,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return A reactive response emitting all the different page ranges.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PageRangeItem> listPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return listPageRangesDiff(new ListPageRangesDiffOptions(blobRange, prevSnapshot));
     }
@@ -1162,7 +1162,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PageRangeItem> listPageRangesDiff(ListPageRangesDiffOptions options) {
         return new PagedFlux<>(
             pageSize -> withContext(context ->

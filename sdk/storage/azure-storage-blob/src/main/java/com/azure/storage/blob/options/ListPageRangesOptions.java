@@ -5,7 +5,6 @@ package com.azure.storage.blob.options;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /**
