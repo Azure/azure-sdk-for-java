@@ -11,8 +11,9 @@ import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.manager.entities.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.entities.Feature;
+import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * Text
@@ -22,8 +23,9 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManagementProperties.class);
 
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    
+    
 
     private static final long serialVersionUID = -1642032123104805346L;
 
@@ -38,6 +40,12 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     private Map<String, Boolean> onOff;
 
     private transient Map<String, DynamicFeature> dynamicFeatures;
+    
+    public FeatureManagementProperties() {
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(FeatureVariant.class, new DynamicFeatureDeserializer());
+        //MAPPER.registerModule(module);
+    }
 
     @Override
     public void putAll(Map<? extends String, ? extends Object> m) {

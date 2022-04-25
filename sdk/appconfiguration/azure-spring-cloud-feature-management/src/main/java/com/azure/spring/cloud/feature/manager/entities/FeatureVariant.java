@@ -25,13 +25,11 @@ public class FeatureVariant {
 
     @NotNull
     @JsonProperty("default")
-    private Boolean isDefault;
+    private Boolean isDefault = false;
 
     @NotBlank
-    @JsonProperty("configuration-reference")
     private String configurationReference;
 
-    @JsonProperty("assignment-parameters")
     private LinkedHashMap<String, Object> assignmentParameters;
 
     /**

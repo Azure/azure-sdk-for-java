@@ -152,7 +152,7 @@ public class DynamicFeatureManager {
 
             if (!StringUtils.hasText(v.getConfigurationReference())) {
                 throw new FeatureManagementException("The variant " + v.getName() + " for the feature " + featureName
-                    + "does not have a configuration reference.");
+                    + " does not have a configuration reference.");
             }
         }
 
