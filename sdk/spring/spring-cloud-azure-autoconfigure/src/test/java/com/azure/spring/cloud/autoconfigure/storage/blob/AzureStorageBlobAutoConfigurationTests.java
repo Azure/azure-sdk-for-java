@@ -7,7 +7,9 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
+import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.spring.cloud.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
@@ -21,6 +23,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AzureStorageBlobAutoConfigurationTests {
 
@@ -148,6 +151,30 @@ class AzureStorageBlobAutoConfigurationTests {
                 assertEquals(BlobServiceVersion.V2020_08_04, properties.getServiceVersion());
                 assertEquals("test-container", properties.getContainerName());
                 assertEquals("test-blob", properties.getBlobName());
+            });
+    }
+
+    @Test
+    void blobConfigShouldWorkWithFileShareConfig() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        this.contextRunner
+            .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.storage.blob.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.blob.account-name=test-account-name",
+                "spring.cloud.azure.storage.fileshare.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.fileshare.account-name=test-account-name"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertNotNull(context.getBean("staticStorageBlobConnectionStringProvider"));
+                assertNotNull(context.getBean("staticStorageFileShareConnectionStringProvider"));
+
+                assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(ShareServiceClientBuilderFactory.class);
+
+                assertThat(context).hasSingleBean(BlobServiceClient.class);
             });
     }
 
