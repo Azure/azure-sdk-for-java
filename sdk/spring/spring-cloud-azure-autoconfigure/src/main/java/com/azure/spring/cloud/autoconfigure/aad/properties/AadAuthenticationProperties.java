@@ -612,8 +612,7 @@ public class AadAuthenticationProperties implements InitializingBean {
                     break;
                 case WEB_APPLICATION_AND_RESOURCE_SERVER:
                 default:
-                    LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                        + ".authorization-grant-type' is valid.");
+                    LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients.{}.authorization-grant-type' is valid.", registrationId);
             }
 
             if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)

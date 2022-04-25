@@ -4,6 +4,9 @@ package com.azure.spring.cloud.service.implementation.core;
 
 public final class PropertiesValidator {
 
+    private PropertiesValidator() {
+    }
+
     public static final String LENGTH_ERROR = "The namespace must be between 6 and 50 characters long.";
     public static final String ILLEGAL_SYMBOL_ERROR = "The namespace can contain only letters, numbers, and hyphens.";
     public static final String START_SYMBOL_ERROR = "The namespace must start with a letter.";
