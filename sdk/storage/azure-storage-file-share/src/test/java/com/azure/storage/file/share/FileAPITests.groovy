@@ -1728,5 +1728,4 @@ class FileAPITests extends APISpec {
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
-
 }
