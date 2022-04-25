@@ -41,15 +41,6 @@ public class AadAuthenticationProperties implements InitializingBean {
         + ".application-type=%s', 'spring.cloud.azure.active-directory.authorization-clients.%s"
         + ".authorization-grant-type' can not be '%s'.";
 
-    private static final String MATCHING_OAUTH_GRANT_TYPE_FROMAT = "'spring.cloud.azure.active-directory"
-        + ".authorization-clients.%s.authorization-grant-type' is valid.";
-
-    private static final String NO_OAUTH_GRANT_TYPE_FROMAT = "spring.cloud.azure.active-directory"
-        + ".authorization-clients.%s.authorization-grant-type must be configured to 'authorization_code'.";
-
-    private static final String NO_OAUTH_SCOPES_FORMAT = "'spring.cloud.azure.active-directory.authorization-clients"
-        + ".%s.scopes' must be configured";
-
     /**
      * Profile of Azure cloud environment.
      */
@@ -621,20 +612,23 @@ public class AadAuthenticationProperties implements InitializingBean {
                     break;
                 case WEB_APPLICATION_AND_RESOURCE_SERVER:
                 default:
-                    LOGGER.debug(String.format(MATCHING_OAUTH_GRANT_TYPE_FROMAT, registrationId));
+                    LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients.{}.authorization-grant-type' is valid.", registrationId);
             }
 
             if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
                 && AUTHORIZATION_CODE != properties.getAuthorizationGrantType()) {
-                throw new IllegalStateException(String.format(NO_OAUTH_GRANT_TYPE_FROMAT,
-                    AZURE_CLIENT_REGISTRATION_ID));
+                throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
+                    + AZURE_CLIENT_REGISTRATION_ID
+                    + ".authorization-grant-type must be configured to 'authorization_code'.");
             }
         }
 
         // Validate scopes.
         List<String> scopes = properties.getScopes();
         if (scopes == null || scopes.isEmpty()) {
-            throw new IllegalStateException(String.format(NO_OAUTH_SCOPES_FORMAT, registrationId));
+            throw new IllegalStateException(
+                "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be "
+                    + "configured");
         }
         // Add necessary scopes for authorization_code clients.
         // https://docs.microsoft.com/graph/permissions-reference#remarks-17

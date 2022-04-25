@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.condition;
 
-import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.PropertyConditionUtil;
+import com.azure.spring.cloud.core.implementation.util.AzureStringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -60,7 +60,7 @@ class OnAnyPropertyCondition extends PropertyCondition {
 
         Spec(AnnotationAttributes annotationAttributes) {
             String prefixAttr = annotationAttributes.getString("prefix");
-            prefix = PropertyConditionUtil.getValidPrefix(prefixAttr);
+            prefix = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
             this.havingValue = annotationAttributes.getString("havingValue");
             this.names = getNames(annotationAttributes);
             this.matchIfMissing = annotationAttributes.getBoolean("matchIfMissing");

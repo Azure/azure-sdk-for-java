@@ -193,16 +193,13 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
 
             if (annotatedMethods.isEmpty()) {
                 this.nonAnnotatedClasses.add(targetClass);
-                if (LOGGER.isTraceEnabled()) {
-                    LOGGER.trace("No @AzureMessageListener annotations found on bean type: {}", targetClass);
-                }
+                LOGGER.trace("No @AzureMessageListener annotations found on bean type: {}", targetClass);
             } else {
                 // Non-empty set of methods
                 annotatedMethods.forEach((method, listeners) -> listeners
                     .forEach(listener -> processAzureListener(listener, method, bean)));
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("{} @AzureMessageListener methods processed on bean '{}': {}", annotatedMethods.size(), beanName, annotatedMethods);
-                }
+                LOGGER.debug("{} @AzureMessageListener methods processed on bean '{}': {}", annotatedMethods.size(),
+                    beanName, annotatedMethods);
             }
         }
         return bean;
