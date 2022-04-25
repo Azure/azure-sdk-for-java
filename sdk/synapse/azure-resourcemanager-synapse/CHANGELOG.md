@@ -1,14 +1,27 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2022-04-25)
+
+- Azure Resource Manager Synapse client library for Java. This package contains Microsoft Azure SDK for Synapse Management SDK. Azure Synapse Analytics Management Client. Package tag package-composite-v2. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings` was added
 
-### Bugs Fixed
+* `models.DedicatedSQLminimalTlsSettingsListResult` was added
 
-### Other Changes
+* `models.DedicatedSqlMinimalTlsSettingsName` was added
+
+* `models.DedicatedSQLminimalTlsSettings` was added
+
+#### `SynapseManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `SynapseManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+* `workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()` was added
 
 ## 1.0.0-beta.5 (2022-01-24)
 
