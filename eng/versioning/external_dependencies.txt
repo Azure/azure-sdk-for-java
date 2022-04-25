@@ -134,6 +134,7 @@ org.springframework.boot:spring-boot;2.6.6
 org.springframework.data:spring-data-commons;2.6.3
 org.springframework.data:spring-data-mongodb;3.3.3
 org.springframework.data:spring-data-redis;2.6.3
+org.springframework.experimental:spring-aot;0.11.4
 org.springframework.integration:spring-integration-core;5.5.10
 org.springframework.kafka:spring-kafka;2.8.4
 org.springframework.security:spring-security-config;5.6.2
@@ -168,6 +169,7 @@ org.springframework.cloud:spring-cloud-starter-sleuth;3.1.1
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.2.2
 org.springframework.cloud:spring-cloud-stream-binder-test;3.2.2
 org.springframework.cloud:spring-cloud-stream;3.2.2
+org.springframework.cloud:spring-cloud-function-context;3.2.3
 
 pl.pragmatists:JUnitParams;1.1.1
 
