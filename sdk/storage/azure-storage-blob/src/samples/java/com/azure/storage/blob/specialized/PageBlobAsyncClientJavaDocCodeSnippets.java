@@ -339,7 +339,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             rangeItem.getRange().getOffset(), rangeItem.getRange().getLength(), rangeItem.isClear()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String
 
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String-BlobRequestConditions
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions
         ListPageRangesDiffOptions options = new ListPageRangesDiffOptions(new BlobRange(offset), "previous snapshot")
             .setRequestConditions(new BlobRequestConditions().setLeaseId(leaseId))
             .setMaxResultsPerPage(1000);
@@ -347,7 +347,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         client.listPageRangesDiff(options)
             .subscribe(rangeItem -> System.out.printf("Offset: %s, Length: %s, isClear: %s%n",
                 rangeItem.getRange().getOffset(), rangeItem.getRange().getLength(), rangeItem.isClear()));
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String-BlobRequestConditions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions
     }
 
     /**
