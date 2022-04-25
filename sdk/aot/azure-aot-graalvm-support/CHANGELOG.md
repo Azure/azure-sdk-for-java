@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2022-04-25)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for Storage File Share and Storage Queues
 
 ## 1.0.0-beta.1 (2022-04-08)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure GraalVM Support that is
