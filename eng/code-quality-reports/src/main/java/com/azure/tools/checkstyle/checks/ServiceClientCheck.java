@@ -54,7 +54,7 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String PAGED_FLUX_BRACKET = "PagedFlux<";
     private static final String POLLER_FLUX_BRACKET = "PollerFlux<";
     private static final String SYNC_POLLER_BRACKET = "SyncPoller<";
-    private static final String FLUX_CLASS_NAME = "Flux";
+    private static final String FLUX_BRACKET = "Flux<";
     private static final String WITH_RESPONSE = "WithResponse";
 
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
@@ -63,6 +63,7 @@ public class ServiceClientCheck extends AbstractCheck {
 
     private static final String PAGED_FLUX = "PagedFlux";
     private static final String POLLER_FLUX = "PollerFlux";
+    private static final String FLUX = "Flux";
     private static final String SYNC_POLLER = "SyncPoller";
     private static final String MONO = "Mono";
     private static final String RESPONSE = "Response";
@@ -71,10 +72,10 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String RETURN_TYPE_WITH_RESPONSE_ERROR =
         "Return type is ''%s'', the method name %s end with ''%s''.";
     private static final String RETURN_TYPE_ERROR =
-        "''%s'' service client with ''%s'' should use type ''%s'' as the return type.";
+        "''%s'' service client with ''%s'' should use type of ''%s'' as the return type.";
     private static final String RESPONSE_METHOD_NAME_ERROR =
         "''%s'' service client with ''%s'', should always use return type ''%s'' if method name ends with ''%s'' or "
-            + "should always named method name ends with ''%s'' if the return type is ''%s''.";
+            + "should always have method name to end with ''%s'' if the return type is ''%s''.";
     private static final String ASYNC_CONTEXT_ERROR =
         "Asynchronous method with annotation @ServiceMethod must not has ''%s'' as a method parameter.";
     private static final String SYNC_CONTEXT_ERROR =
@@ -320,26 +321,26 @@ public class ServiceClientCheck extends AbstractCheck {
                         MONO));
                 }
             } else if (COLLECTION_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
-                // If value of 'returns' is COLLECTION, and then log error if the return type of the method is not
-                // If value of 'returns' is COLLECTION, and then log error if the return type of the method is not
-                // start with {@code PagedFlux<T>} or *PagedFlux
-                if (!returnType.contains(FLUX_CLASS_NAME)) {
+                // If value of 'returns' is COLLECTION, and then log error if the return type of the method does not
+                // start with {@code Flux<T>} or contains *PagedFlux
+                if (!returnType.startsWith(FLUX_BRACKET) && !returnType.contains(PAGED_FLUX)) {
                     log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous", COLLECTION_RETURN_TYPE,
-                        PAGED_FLUX));
+                        FLUX));
                 }
             } else if (LONG_RUNNING_OPERATION_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                 if (!returnType.contains(POLLER_FLUX_BRACKET)) {
                     log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous",
-                        LONG_RUNNING_OPERATION_RETURN_TYPE,
-                        POLLER_FLUX));
+                        LONG_RUNNING_OPERATION_RETURN_TYPE, POLLER_FLUX));
                 }
             }
         } else {
             if (SINGLE_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
-                // If value of 'returns' is SINGLE, and then log error if the return type of the method is not start
-                // with {@code Response<T>} when the method name ends with 'WithResponse'.
-                if ((returnType.startsWith(RESPONSE_BRACKET) && !methodName.endsWith(WITH_RESPONSE))
-                    || (!returnType.startsWith(RESPONSE_BRACKET) && methodName.endsWith(WITH_RESPONSE))) {
+                // If value of 'returns' is SINGLE, and then log error if the return type of the method does not start
+                // with {@code Response<T>} or ends with 'Response' type when the method name ends with 'WithResponse'.
+                if (((returnType.startsWith(RESPONSE_BRACKET) || returnType.endsWith(RESPONSE))
+                    && !methodName.endsWith(WITH_RESPONSE))
+                    || (methodName.endsWith(WITH_RESPONSE)
+                    && (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.endsWith(RESPONSE)))) {
                     log(methodDefToken, String.format(RESPONSE_METHOD_NAME_ERROR, "Synchronous", SINGLE_RETURN_TYPE,
                         RESPONSE, WITH_RESPONSE, WITH_RESPONSE, RESPONSE));
                 }
@@ -364,10 +365,10 @@ public class ServiceClientCheck extends AbstractCheck {
      * Given the method is already annotated @ServiceMethod. Checks if the return type is {@code Response<T>} or
      * {@code Mono<Response<T>>},
      * Sync:
-     *  If the return type is {@code Response<T>}, the method name must end with WithResponse.
+     *  If the return type is {@code *Response<T>}, the method name must end with WithResponse.
      *  If the return type is T, the method name must NOT end with WithResponse.
      * Async:
-     *  If the return type is {@code Mono<Response<T>}, the method name must end with WithResponse.
+     *  If the return type is {@code Mono<*Response<T>}, the method name must end with WithResponse.
      *  If the return type is {@code Mono<T>}, the method name must NOT end with WithResponse.
      *
      * @param methodDefToken METHOD_DEF AST node
@@ -378,12 +379,12 @@ public class ServiceClientCheck extends AbstractCheck {
         final String returnType = getReturnType(typeToken, new StringBuilder()).toString();
 
         if (methodName.endsWith(WITH_RESPONSE)) {
-            if (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.startsWith(MONO_RESPONSE_BRACKET)) {
+            if (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.startsWith(MONO_RESPONSE_BRACKET) && !returnType.contains(RESPONSE)) {
                 log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must not",
                     WITH_RESPONSE));
             }
         } else {
-            if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(MONO_RESPONSE_BRACKET)) {
+            if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(MONO_RESPONSE_BRACKET) || returnType.contains(RESPONSE)) {
                 log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must", WITH_RESPONSE));
             }
         }

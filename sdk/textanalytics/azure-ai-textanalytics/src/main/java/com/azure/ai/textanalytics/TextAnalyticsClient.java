@@ -1538,7 +1538,7 @@ public final class TextAnalyticsClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
             AnalyzeHealthcareEntitiesOptions options) {
@@ -1646,7 +1646,7 @@ public final class TextAnalyticsClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
@@ -1725,7 +1725,7 @@ public final class TextAnalyticsClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
         Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeActionsOptions options) {
         return client.analyzeActionsAsyncClient.beginAnalyzeActionsIterable(
@@ -1804,7 +1804,7 @@ public final class TextAnalyticsClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {

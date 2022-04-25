@@ -32,6 +32,16 @@ public class ServiceClientCheckTestDataAsyncClient {
         return new PagedFlux<>(firstPageRetriever, nextPageRetriever);
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Integer> errorCollectionReturnType() {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrainMultivariateModelResponse> returnTypeExtendsResponseBaseWithResponse() {
+        return null;
+    }
+
     class FileContinuationToken {
         private final int nextLinkId;
 

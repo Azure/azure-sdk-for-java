@@ -1642,7 +1642,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
             AnalyzeHealthcareEntitiesOptions options) {
@@ -1750,7 +1750,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options) {
@@ -1825,7 +1825,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
         Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeActionsOptions options) {
         return beginAnalyzeActions(
@@ -1901,7 +1901,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options) {
         return analyzeActionsAsyncClient.beginAnalyzeActions(documents, actions, options, Context.NONE);

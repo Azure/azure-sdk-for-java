@@ -13,19 +13,10 @@ import org.junit.Test;
  * Tests for annotation @ServiceClientCheck.
  */
 public class ServiceClientCheckTest extends AbstractModuleTestSupport {
-    private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
-    private static final String SINGLE_RETURN_TYPE = "ReturnType.SINGLE";
-    private static final String LONG_RUNNING_OPERATION_RETURN_TYPE = "ReturnType.LONG_RUNNING_OPERATION";
     private static final String RETURN_TYPE_ERROR =
-        "'%s' service client with '%s' should use type '%s' as the return type.";
+        "'%s' service client with '%s' should use type of '%s' as the return type.";
     private static final String ERROR_MSG = "The variable field '%s' of class '%s' should be final. Classes "
         + "annotated with @ServiceClient are supposed to be immutable.";
-    private static final String PAGED_FLUX = "PagedFlux";
-    private static final String POLLER_FLUX = "PollerFlux";
-    private static final String SYNC_POLLER = "SyncPoller";
-    private static final String MONO = "Mono";
-    private static final String RESPONSE = "Response";
-    private static final String PAGED_ITERABLE = "PagedIterable";
 
     private Checker checker;
 
@@ -48,7 +39,9 @@ public class ServiceClientCheckTest extends AbstractModuleTestSupport {
     @Test
     public void serviceClientCheckTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(93, 5, String.format(ERROR_MSG, "pageRetrieverProvider",
+            expectedErrorMessage(35, 5, String.format(RETURN_TYPE_ERROR, "Asynchronous",
+                "ReturnType.COLLECTION", "Flux")),
+            expectedErrorMessage(103, 5, String.format(ERROR_MSG, "pageRetrieverProvider",
                 "ServiceClientCheckTestDataAsyncClient"))
         };
         verify(checker, getPath("ServiceClientCheckTestDataAsyncClient.java"), expected);

@@ -109,15 +109,11 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="ServiceBusClientBuilder.java"/>
 
   <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
-
-  <!-- Suppress method name "acceptNextSession" and "acceptSession" for ServiceBusSessionReceiverAsyncClient and ServiceBusSessionReceiverClient-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="CryptographyAsyncClient.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="ServiceBusMessageBatch.java"/>
 
-  <!-- Suppress warning for ServiceClients to have Client in its name as Azure Container Registry has Clientlets which do not follow the same convention. -->
+  <!-- Suppress warning for ServiceClients to have <ServiceName>Client naming as Azure Container Registry has Clientlets which do not follow the same convention. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ContainerRepository.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ContainerRepositoryAsync.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="RegistryArtifact.java"/>
@@ -210,12 +206,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag"
             files="com.azure.core.util.serializer.SerializerAdapter"/>
 
-  <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
-  <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
-            files="com.azure.core.http.HttpResponse.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
-            files="com.azure.security.keyvault.keys.(KeyClient|KeyAsyncClient).java"/>
-
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="(ClientLogger|DefaultLogger|LoggingEventBuilder).java"/>
 
@@ -240,9 +230,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
 
   <!-- TODO: Synapse access control API does not support PagedResponse and Response. -->
-  <!-- Checkstyle suppressions for naming issues reported in the Synapse artifacts related clients-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]synapse[/\\].*"/>
   <!-- Suppress the check on synapse code-gen classes -->
+  <!-- Checkstyle suppression's for return type not including 'Response' or method name not ending with 'WithResponse' -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]synapse[/\\].*"/>
   <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
   <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
   <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
@@ -354,7 +344,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="ConstantName" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
 
   <!-- Checkstyle suppressions for resource manager package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy.java"/>
 
   <!-- Checkstyle suppression for Event Hubs client APIs that use Flux instead of PagedFlux for methods that return a collection -->
@@ -413,10 +402,6 @@ the main ServiceBusClientBuilder. -->
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
 
-  <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
-  <!-- Suppress DigitalTwins for now -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\](DigitalTwinsClient|DigitalTwinsAsyncClient).java"/>
-
   <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.core.implementation.Option.java"/>
@@ -430,6 +415,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
             lines="481,515,529"/>
+  <!-- Suppress for <ServiceName>Client naming -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
@@ -457,8 +443,7 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.data.tables.implementation.CosmosPatchTransformPolicy"/>
 
   <!-- Suppress checks on AutoRest generated Text Analytics service code -->
-  <suppress checks="WhitespaceAround"
-            files="com.azure.ai.textanalytics.implementation.models.TasksStateTasksDetails"/>
+  <suppress checks="WhitespaceAround" files="com.azure.ai.textanalytics.implementation.models.TasksStateTasksDetails"/>
 
   <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Text Analytics -->
   <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
