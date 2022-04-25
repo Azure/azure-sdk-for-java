@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cmdkey command custom setup type properties. */
 @Fluent
 public final class CmdkeySetupTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CmdkeySetupTypeProperties.class);
-
     /*
      * The server name of data source access.
      */
@@ -100,19 +97,19 @@ public final class CmdkeySetupTypeProperties {
      */
     public void validate() {
         if (targetName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetName in model CmdkeySetupTypeProperties"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model CmdkeySetupTypeProperties"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property password in model CmdkeySetupTypeProperties"));
@@ -120,4 +117,6 @@ public final class CmdkeySetupTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CmdkeySetupTypeProperties.class);
 }
