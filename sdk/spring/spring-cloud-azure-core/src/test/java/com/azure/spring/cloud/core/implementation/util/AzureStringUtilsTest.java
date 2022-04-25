@@ -14,28 +14,28 @@ public class AzureStringUtilsTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "", " " })
-    public void testGetValidPrefixCase1(String prefixAttr) {
+    public void testEnsureEndsWithSuffixCase1(String prefixAttr) {
         String actual = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
         assertEquals(actual, "");
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "test", " test", " test ", "test  " })
-    public void testGetValidPrefixCase2(String prefixAttr) {
+    public void testEnsureEndsWithSuffixCase2(String prefixAttr) {
         String actual = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
         assertEquals(actual, "test.");
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "test.", " test." })
-    public void testGetValidPrefixCase3(String prefixAttr) {
+    public void testEnsureEndsWithSuffixCase3(String prefixAttr) {
         String actual = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
         assertEquals(actual, "test.");
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "testa.testb", " testa.testb", " testa.testb " })
-    public void testGetValidPrefixCase4(String prefixAttr) {
+    public void testEnsureEndsWithSuffixCase4(String prefixAttr) {
         String actual = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
         assertEquals(actual, "testa.testb.");
     }
