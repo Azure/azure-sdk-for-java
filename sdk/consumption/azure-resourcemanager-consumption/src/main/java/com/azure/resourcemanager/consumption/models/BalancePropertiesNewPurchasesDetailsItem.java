@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 /** The BalancePropertiesNewPurchasesDetailsItem model. */
 @Immutable
 public final class BalancePropertiesNewPurchasesDetailsItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BalancePropertiesNewPurchasesDetailsItem.class);
-
     /*
      * the name of new purchase.
      */

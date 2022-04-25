@@ -6,15 +6,12 @@ package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The comparison expression to be used in the budgets. */
 @Fluent
 public final class BudgetComparisonExpression {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetComparisonExpression.class);
-
     /*
      * The name of the column to use in comparison.
      */
@@ -100,21 +97,23 @@ public final class BudgetComparisonExpression {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model BudgetComparisonExpression"));
         }
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model BudgetComparisonExpression"));
         }
         if (values() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property values in model BudgetComparisonExpression"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BudgetComparisonExpression.class);
 }

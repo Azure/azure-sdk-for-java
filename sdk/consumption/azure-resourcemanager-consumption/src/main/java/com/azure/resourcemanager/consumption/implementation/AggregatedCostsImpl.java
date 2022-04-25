@@ -12,10 +12,9 @@ import com.azure.resourcemanager.consumption.fluent.AggregatedCostsClient;
 import com.azure.resourcemanager.consumption.fluent.models.ManagementGroupAggregatedCostResultInner;
 import com.azure.resourcemanager.consumption.models.AggregatedCosts;
 import com.azure.resourcemanager.consumption.models.ManagementGroupAggregatedCostResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AggregatedCostsImpl implements AggregatedCosts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AggregatedCostsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AggregatedCostsImpl.class);
 
     private final AggregatedCostsClient innerClient;
 

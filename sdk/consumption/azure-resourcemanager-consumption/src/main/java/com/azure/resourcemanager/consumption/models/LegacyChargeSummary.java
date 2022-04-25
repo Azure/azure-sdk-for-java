@@ -7,7 +7,6 @@ package com.azure.resourcemanager.consumption.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.models.LegacyChargeSummaryProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.math.BigDecimal;
 @JsonTypeName("legacy")
 @Fluent
 public final class LegacyChargeSummary extends ChargeSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyChargeSummary.class);
-
     /*
      * Properties for legacy charge summary
      */
@@ -114,7 +111,7 @@ public final class LegacyChargeSummary extends ChargeSummary {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model LegacyChargeSummary"));
@@ -122,4 +119,6 @@ public final class LegacyChargeSummary extends ChargeSummary {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LegacyChargeSummary.class);
 }

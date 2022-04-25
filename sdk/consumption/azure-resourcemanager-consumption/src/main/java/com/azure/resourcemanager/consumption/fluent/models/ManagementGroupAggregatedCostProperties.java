@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -15,8 +13,6 @@ import java.util.List;
 /** The properties of the Management Group Aggregated Cost. */
 @Fluent
 public final class ManagementGroupAggregatedCostProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementGroupAggregatedCostProperties.class);
-
     /*
      * The id of the billing period resource that the aggregated cost belongs
      * to.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 /** The forecasted cost which is being tracked for a budget. */
 @Immutable
 public final class ForecastSpend {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForecastSpend.class);
-
     /*
      * The forecasted cost for the total time period which is being tracked by
      * the budget. This value is only provided if the budget contains a

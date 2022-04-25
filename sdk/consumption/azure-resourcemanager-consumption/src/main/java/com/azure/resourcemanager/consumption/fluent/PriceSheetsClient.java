@@ -35,7 +35,7 @@ public interface PriceSheetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a subscription.
+     * @return the price sheet for a subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PriceSheetResultInner> getWithResponse(String expand, String skiptoken, Integer top, Context context);
@@ -68,7 +68,7 @@ public interface PriceSheetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the price sheet for a scope by subscriptionId and billing period.
+     * @return the price sheet for a scope by subscriptionId and billing period along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PriceSheetResultInner> getByBillingPeriodWithResponse(

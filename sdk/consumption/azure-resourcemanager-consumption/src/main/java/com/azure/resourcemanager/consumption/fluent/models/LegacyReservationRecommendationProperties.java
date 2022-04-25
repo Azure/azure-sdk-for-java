@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.LegacySharedScopeReservationRecommendationProperties;
 import com.azure.resourcemanager.consumption.models.LegacySingleScopeReservationRecommendationProperties;
 import com.azure.resourcemanager.consumption.models.SkuProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -32,8 +30,6 @@ import java.util.UUID;
 })
 @Immutable
 public class LegacyReservationRecommendationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyReservationRecommendationProperties.class);
-
     /*
      * The number of days of usage to look back for recommendation.
      */

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.models.ModernReservationRecommendationProperties;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationRecommendationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,8 +21,6 @@ import java.util.UUID;
 @JsonTypeName("modern")
 @Fluent
 public final class ModernReservationRecommendation extends ReservationRecommendationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernReservationRecommendation.class);
-
     /*
      * Properties for modern reservation recommendation
      */
@@ -192,7 +189,7 @@ public final class ModernReservationRecommendation extends ReservationRecommenda
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ModernReservationRecommendation"));
@@ -200,4 +197,6 @@ public final class ModernReservationRecommendation extends ReservationRecommenda
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ModernReservationRecommendation.class);
 }

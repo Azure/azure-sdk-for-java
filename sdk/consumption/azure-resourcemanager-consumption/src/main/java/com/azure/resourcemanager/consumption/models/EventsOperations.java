@@ -20,7 +20,7 @@ public interface EventsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary.
+     * @return result of listing event summary as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSummary> listByBillingProfile(
         String billingAccountId, String billingProfileId, String startDate, String endDate);
@@ -37,7 +37,7 @@ public interface EventsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary.
+     * @return result of listing event summary as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSummary> listByBillingProfile(
         String billingAccountId, String billingProfileId, String startDate, String endDate, Context context);
@@ -50,7 +50,7 @@ public interface EventsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary.
+     * @return result of listing event summary as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSummary> listByBillingAccount(String billingAccountId);
 
@@ -66,7 +66,7 @@ public interface EventsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing event summary.
+     * @return result of listing event summary as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSummary> listByBillingAccount(String billingAccountId, String filter, Context context);
 }

@@ -52,8 +52,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the ConsumptionManagementClientImpl type. */
 @ServiceClient(builder = ConsumptionManagementClientBuilder.class)
 public final class ConsumptionManagementClientImpl implements ConsumptionManagementClient {
-    private final ClientLogger logger = new ClientLogger(ConsumptionManagementClientImpl.class);
-
     /** Azure Subscription ID. */
     private final String subscriptionId;
 
@@ -455,7 +453,7 @@ public final class ConsumptionManagementClientImpl implements ConsumptionManagem
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -514,4 +512,6 @@ public final class ConsumptionManagementClientImpl implements ConsumptionManagem
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConsumptionManagementClientImpl.class);
 }

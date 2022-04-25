@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.models.BudgetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of listing budgets. It contains a list of available budgets in the scope provided. */
 @Immutable
 public final class BudgetsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetsListResult.class);
-
     /*
      * The list of budgets.
      */

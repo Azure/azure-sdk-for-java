@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationTransactionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of listing reservation recommendations. */
 @Immutable
 public final class ReservationTransactionsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationTransactionsListResult.class);
-
     /*
      * The list of reservation recommendations.
      */

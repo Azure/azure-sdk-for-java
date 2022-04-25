@@ -6,8 +6,6 @@ package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class ChargeSummary extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChargeSummary.class);
-
     /*
      * eTag of the resource. To handle concurrent update scenario, this field
      * will be used to determine whether the user is updating the latest

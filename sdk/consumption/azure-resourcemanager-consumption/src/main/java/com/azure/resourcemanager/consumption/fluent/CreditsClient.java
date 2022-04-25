@@ -34,7 +34,7 @@ public interface CreditsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credit summary resource.
+     * @return a credit summary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CreditSummaryInner> getWithResponse(String billingAccountId, String billingProfileId, Context context);

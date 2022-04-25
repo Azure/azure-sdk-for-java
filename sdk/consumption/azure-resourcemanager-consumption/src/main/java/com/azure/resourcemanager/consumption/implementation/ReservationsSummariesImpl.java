@@ -12,10 +12,9 @@ import com.azure.resourcemanager.consumption.fluent.models.ReservationSummaryInn
 import com.azure.resourcemanager.consumption.models.Datagrain;
 import com.azure.resourcemanager.consumption.models.ReservationSummary;
 import com.azure.resourcemanager.consumption.models.ReservationsSummaries;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReservationsSummariesImpl implements ReservationsSummaries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationsSummariesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReservationsSummariesImpl.class);
 
     private final ReservationsSummariesClient innerClient;
 

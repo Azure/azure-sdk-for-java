@@ -18,7 +18,7 @@ public interface ReservationsDetails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationDetail> listByReservationOrder(String reservationOrderId, String filter);
 
@@ -32,7 +32,7 @@ public interface ReservationsDetails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationDetail> listByReservationOrder(String reservationOrderId, String filter, Context context);
 
@@ -46,7 +46,7 @@ public interface ReservationsDetails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationDetail> listByReservationOrderAndReservation(
         String reservationOrderId, String reservationId, String filter);
@@ -62,7 +62,7 @@ public interface ReservationsDetails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationDetail> listByReservationOrderAndReservation(
         String reservationOrderId, String reservationId, String filter, Context context);
@@ -77,7 +77,7 @@ public interface ReservationsDetails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationDetail> list(String scope);
 
@@ -100,7 +100,7 @@ public interface ReservationsDetails {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationDetail> list(
         String scope,

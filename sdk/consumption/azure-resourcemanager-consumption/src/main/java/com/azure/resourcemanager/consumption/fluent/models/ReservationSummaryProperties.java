@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -14,8 +12,6 @@ import java.time.OffsetDateTime;
 /** The properties of the reservation summary. */
 @Immutable
 public final class ReservationSummaryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationSummaryProperties.class);
-
     /*
      * The reservation order ID is the identifier for a reservation purchase.
      * Each reservation order ID represents a single purchase transaction. A

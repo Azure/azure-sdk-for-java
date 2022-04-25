@@ -31,7 +31,7 @@ public interface AggregatedCosts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management group aggregated cost resource.
+     * @return a management group aggregated cost resource along with {@link Response}.
      */
     Response<ManagementGroupAggregatedCostResult> getByManagementGroupWithResponse(
         String managementGroupId, String filter, Context context);
@@ -58,7 +58,7 @@ public interface AggregatedCosts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management group aggregated cost resource.
+     * @return a management group aggregated cost resource along with {@link Response}.
      */
     Response<ManagementGroupAggregatedCostResult> getForBillingPeriodByManagementGroupWithResponse(
         String managementGroupId, String billingPeriodName, Context context);

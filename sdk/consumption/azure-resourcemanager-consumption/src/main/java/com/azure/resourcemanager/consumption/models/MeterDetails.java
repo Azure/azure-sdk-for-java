@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 /** The properties of the meter detail. */
 @Immutable
 public final class MeterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MeterDetails.class);
-
     /*
      * The name of the meter, within the given meter category
      */

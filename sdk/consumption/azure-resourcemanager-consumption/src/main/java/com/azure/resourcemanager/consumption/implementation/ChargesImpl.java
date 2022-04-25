@@ -12,10 +12,9 @@ import com.azure.resourcemanager.consumption.fluent.ChargesClient;
 import com.azure.resourcemanager.consumption.fluent.models.ChargesListResultInner;
 import com.azure.resourcemanager.consumption.models.Charges;
 import com.azure.resourcemanager.consumption.models.ChargesListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ChargesImpl implements Charges {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChargesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChargesImpl.class);
 
     private final ChargesClient innerClient;
 

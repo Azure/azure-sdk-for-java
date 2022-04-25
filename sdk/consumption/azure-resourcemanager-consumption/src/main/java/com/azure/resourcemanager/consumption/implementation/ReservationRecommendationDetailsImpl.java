@@ -14,10 +14,9 @@ import com.azure.resourcemanager.consumption.models.LookBackPeriod;
 import com.azure.resourcemanager.consumption.models.ReservationRecommendationDetails;
 import com.azure.resourcemanager.consumption.models.ReservationRecommendationDetailsModel;
 import com.azure.resourcemanager.consumption.models.Term;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReservationRecommendationDetailsImpl implements ReservationRecommendationDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationRecommendationDetailsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReservationRecommendationDetailsImpl.class);
 
     private final ReservationRecommendationDetailsClient innerClient;
 

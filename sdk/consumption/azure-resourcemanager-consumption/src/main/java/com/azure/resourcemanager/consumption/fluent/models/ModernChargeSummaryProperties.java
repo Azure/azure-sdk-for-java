@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.Amount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of modern charge summary. */
 @Immutable
 public final class ModernChargeSummaryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernChargeSummaryProperties.class);
-
     /*
      * The id of the billing period resource that the charge belongs to.
      */

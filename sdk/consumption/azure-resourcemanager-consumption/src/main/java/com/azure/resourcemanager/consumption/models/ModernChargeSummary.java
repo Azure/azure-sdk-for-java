@@ -7,7 +7,6 @@ package com.azure.resourcemanager.consumption.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.models.ModernChargeSummaryProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("modern")
 @Fluent
 public final class ModernChargeSummary extends ChargeSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernChargeSummary.class);
-
     /*
      * Properties for modern charge summary
      */
@@ -149,7 +146,7 @@ public final class ModernChargeSummary extends ChargeSummary {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ModernChargeSummary"));
@@ -157,4 +154,6 @@ public final class ModernChargeSummary extends ChargeSummary {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ModernChargeSummary.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Sku property. */
 @Immutable
 public final class SkuProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuProperty.class);
-
     /*
      * The name of sku property.
      */

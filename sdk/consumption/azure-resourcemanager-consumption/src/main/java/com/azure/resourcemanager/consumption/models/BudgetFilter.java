@@ -5,27 +5,17 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** May be used to filter budgets by resource group, resource, or meter. */
 @Fluent
 public final class BudgetFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetFilter.class);
-
     /*
      * The logical "AND" expression. Must have at least 2 items.
      */
     @JsonProperty(value = "and")
     private List<BudgetFilterProperties> and;
-
-    /*
-     * The logical "NOT" expression.
-     */
-    @JsonProperty(value = "not")
-    private BudgetFilterProperties not;
 
     /*
      * Has comparison expression for a dimension
@@ -56,26 +46,6 @@ public final class BudgetFilter {
      */
     public BudgetFilter withAnd(List<BudgetFilterProperties> and) {
         this.and = and;
-        return this;
-    }
-
-    /**
-     * Get the not property: The logical "NOT" expression.
-     *
-     * @return the not value.
-     */
-    public BudgetFilterProperties not() {
-        return this.not;
-    }
-
-    /**
-     * Set the not property: The logical "NOT" expression.
-     *
-     * @param not the not value to set.
-     * @return the BudgetFilter object itself.
-     */
-    public BudgetFilter withNot(BudgetFilterProperties not) {
-        this.not = not;
         return this;
     }
 
@@ -127,9 +97,6 @@ public final class BudgetFilter {
     public void validate() {
         if (and() != null) {
             and().forEach(e -> e.validate());
-        }
-        if (not() != null) {
-            not().validate();
         }
         if (dimensions() != null) {
             dimensions().validate();

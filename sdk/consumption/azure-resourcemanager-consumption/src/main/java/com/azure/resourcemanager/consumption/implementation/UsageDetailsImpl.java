@@ -12,10 +12,9 @@ import com.azure.resourcemanager.consumption.fluent.models.UsageDetailInner;
 import com.azure.resourcemanager.consumption.models.Metrictype;
 import com.azure.resourcemanager.consumption.models.UsageDetail;
 import com.azure.resourcemanager.consumption.models.UsageDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UsageDetailsImpl implements UsageDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageDetailsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UsageDetailsImpl.class);
 
     private final UsageDetailsClient innerClient;
 

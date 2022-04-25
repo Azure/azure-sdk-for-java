@@ -13,7 +13,6 @@ import com.azure.resourcemanager.consumption.models.CurrentSpend;
 import com.azure.resourcemanager.consumption.models.ForecastSpend;
 import com.azure.resourcemanager.consumption.models.Notification;
 import com.azure.resourcemanager.consumption.models.TimeGrainType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
@@ -22,8 +21,6 @@ import java.util.Map;
 /** The properties of the budget. */
 @Fluent
 public final class BudgetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetProperties.class);
-
     /*
      * The category of the budget, whether the budget tracks cost or usage.
      */
@@ -235,22 +232,22 @@ public final class BudgetProperties {
      */
     public void validate() {
         if (category() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property category in model BudgetProperties"));
         }
         if (amount() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property amount in model BudgetProperties"));
         }
         if (timeGrain() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timeGrain in model BudgetProperties"));
         }
         if (timePeriod() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timePeriod in model BudgetProperties"));
         } else {
@@ -276,4 +273,6 @@ public final class BudgetProperties {
             forecastSpend().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BudgetProperties.class);
 }

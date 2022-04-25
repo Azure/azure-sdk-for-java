@@ -12,10 +12,9 @@ import com.azure.resourcemanager.consumption.fluent.CreditsClient;
 import com.azure.resourcemanager.consumption.fluent.models.CreditSummaryInner;
 import com.azure.resourcemanager.consumption.models.CreditSummary;
 import com.azure.resourcemanager.consumption.models.Credits;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CreditsImpl implements Credits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreditsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CreditsImpl.class);
 
     private final CreditsClient innerClient;
 

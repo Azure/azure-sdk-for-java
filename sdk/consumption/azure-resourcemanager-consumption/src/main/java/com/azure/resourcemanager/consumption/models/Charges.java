@@ -66,7 +66,7 @@ public interface Charges {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing charge summary.
+     * @return result of listing charge summary along with {@link Response}.
      */
     Response<ChargesListResult> listWithResponse(
         String scope, String startDate, String endDate, String filter, String apply, Context context);

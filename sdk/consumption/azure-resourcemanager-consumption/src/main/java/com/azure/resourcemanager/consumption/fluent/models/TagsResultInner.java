@@ -6,17 +6,13 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.Tag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A resource listing all tags. */
 @Fluent
 public final class TagsResultInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResultInner.class);
-
     /*
      * The properties of the tag.
      */

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** The notification associated with a budget. */
 @Fluent
 public final class Notification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Notification.class);
-
     /*
      * The notification is enabled or not.
      */
@@ -247,19 +244,21 @@ public final class Notification {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model Notification"));
         }
         if (threshold() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property threshold in model Notification"));
         }
         if (contactEmails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactEmails in model Notification"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Notification.class);
 }

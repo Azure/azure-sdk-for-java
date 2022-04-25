@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 /** The current amount of cost which is being tracked for a budget. */
 @Immutable
 public final class CurrentSpend {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CurrentSpend.class);
-
     /*
      * The total amount of cost which is being tracked by the budget.
      */

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.models.ModernUsageDetailProperties;
 import com.azure.resourcemanager.consumption.fluent.models.UsageDetailInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,8 +20,6 @@ import java.util.UUID;
 @JsonTypeName("modern")
 @Fluent
 public final class ModernUsageDetail extends UsageDetailInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernUsageDetail.class);
-
     /*
      * Properties for modern usage details
      */
@@ -731,7 +728,7 @@ public final class ModernUsageDetail extends UsageDetailInner {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ModernUsageDetail"));
@@ -739,4 +736,6 @@ public final class ModernUsageDetail extends UsageDetailInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ModernUsageDetail.class);
 }

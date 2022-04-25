@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesAdjustmentDetailsItem;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesNewPurchasesDetailsItem;
 import com.azure.resourcemanager.consumption.models.BillingFrequency;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** The properties of the balance. */
 @Fluent
 public final class BalanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BalanceProperties.class);
-
     /*
      * The ISO currency in which the meter is charged, for example, USD.
      */

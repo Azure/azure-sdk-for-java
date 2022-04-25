@@ -13,10 +13,9 @@ import com.azure.resourcemanager.consumption.fluent.BudgetsClient;
 import com.azure.resourcemanager.consumption.fluent.models.BudgetInner;
 import com.azure.resourcemanager.consumption.models.Budget;
 import com.azure.resourcemanager.consumption.models.Budgets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BudgetsImpl implements Budgets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BudgetsImpl.class);
 
     private final BudgetsClient innerClient;
 
@@ -74,7 +73,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -84,7 +83,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "budgetName");
         if (budgetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'budgets'.", id)));
@@ -98,7 +97,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -108,7 +107,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "budgetName");
         if (budgetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'budgets'.", id)));
@@ -122,7 +121,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -132,7 +131,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "budgetName");
         if (budgetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'budgets'.", id)));
@@ -146,7 +145,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -156,7 +155,7 @@ public final class BudgetsImpl implements Budgets {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}", "budgetName");
         if (budgetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'budgets'.", id)));

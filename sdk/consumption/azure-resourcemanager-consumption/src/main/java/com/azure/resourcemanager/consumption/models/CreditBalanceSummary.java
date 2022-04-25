@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Summary of credit balances. */
 @Immutable
 public final class CreditBalanceSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreditBalanceSummary.class);
-
     /*
      * Estimated balance.
      */

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.ReservationRecommendationsClient;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationRecommendationInner;
 import com.azure.resourcemanager.consumption.models.ReservationRecommendationsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReservationRecommendationsClient. */
 public final class ReservationRecommendationsClientImpl implements ReservationRecommendationsClient {
-    private final ClientLogger logger = new ClientLogger(ReservationRecommendationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReservationRecommendationsService service;
 
@@ -102,7 +99,8 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationRecommendationInner>> listSinglePageAsync(String scope, String filter) {
@@ -152,7 +150,8 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationRecommendationInner>> listSinglePageAsync(
@@ -199,7 +198,7 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationRecommendationInner> listAsync(String scope, String filter) {
@@ -218,7 +217,7 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationRecommendationInner> listAsync(String scope) {
@@ -245,7 +244,7 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationRecommendationInner> listAsync(String scope, String filter, Context context) {
@@ -265,7 +264,7 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationRecommendationInner> list(String scope) {
@@ -292,7 +291,7 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationRecommendationInner> list(String scope, String filter, Context context) {
@@ -306,7 +305,8 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationRecommendationInner>> listNextSinglePageAsync(String nextLink) {
@@ -342,7 +342,8 @@ public final class ReservationRecommendationsClientImpl implements ReservationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation recommendations.
+     * @return result of listing reservation recommendations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationRecommendationInner>> listNextSinglePageAsync(

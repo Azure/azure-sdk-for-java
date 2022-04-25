@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.Tag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of the tag. */
 @Fluent
 public final class TagProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagProperties.class);
-
     /*
      * A list of Tag.
      */

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationSummaryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of listing reservation summaries. */
 @Immutable
 public final class ReservationSummariesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationSummariesListResult.class);
-
     /*
      * The list of reservation summaries.
      */

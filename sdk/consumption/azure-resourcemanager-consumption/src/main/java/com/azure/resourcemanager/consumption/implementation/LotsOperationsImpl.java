@@ -11,10 +11,9 @@ import com.azure.resourcemanager.consumption.fluent.LotsOperationsClient;
 import com.azure.resourcemanager.consumption.fluent.models.LotSummaryInner;
 import com.azure.resourcemanager.consumption.models.LotSummary;
 import com.azure.resourcemanager.consumption.models.LotsOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LotsOperationsImpl implements LotsOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LotsOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LotsOperationsImpl.class);
 
     private final LotsOperationsClient innerClient;
 
@@ -47,6 +46,18 @@ public final class LotsOperationsImpl implements LotsOperations {
     public PagedIterable<LotSummary> listByBillingAccount(String billingAccountId, String filter, Context context) {
         PagedIterable<LotSummaryInner> inner =
             this.serviceClient().listByBillingAccount(billingAccountId, filter, context);
+        return Utils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LotSummary> listByCustomer(String billingAccountId, String customerId) {
+        PagedIterable<LotSummaryInner> inner = this.serviceClient().listByCustomer(billingAccountId, customerId);
+        return Utils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LotSummary> listByCustomer(
+        String billingAccountId, String customerId, String filter, Context context) {
+        PagedIterable<LotSummaryInner> inner =
+            this.serviceClient().listByCustomer(billingAccountId, customerId, filter, context);
         return Utils.mapPage(inner, inner1 -> new LotSummaryImpl(inner1, this.manager()));
     }
 

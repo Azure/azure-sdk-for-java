@@ -6,11 +6,9 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesAdjustmentDetailsItem;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesNewPurchasesDetailsItem;
 import com.azure.resourcemanager.consumption.models.BillingFrequency;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** A balance resource. */
 @Fluent
 public final class BalanceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BalanceInner.class);
-
     /*
      * The properties of the balance.
      */

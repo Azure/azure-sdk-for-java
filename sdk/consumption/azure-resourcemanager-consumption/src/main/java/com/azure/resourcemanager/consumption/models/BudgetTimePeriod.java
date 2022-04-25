@@ -6,15 +6,12 @@ package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The start and end date for a budget. */
 @Fluent
 public final class BudgetTimePeriod {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetTimePeriod.class);
-
     /*
      * The start date for the budget.
      */
@@ -77,9 +74,11 @@ public final class BudgetTimePeriod {
      */
     public void validate() {
         if (startDate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property startDate in model BudgetTimePeriod"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BudgetTimePeriod.class);
 }

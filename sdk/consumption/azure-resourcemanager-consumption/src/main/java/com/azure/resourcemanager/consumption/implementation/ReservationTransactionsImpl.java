@@ -13,10 +13,9 @@ import com.azure.resourcemanager.consumption.fluent.models.ReservationTransactio
 import com.azure.resourcemanager.consumption.models.ModernReservationTransaction;
 import com.azure.resourcemanager.consumption.models.ReservationTransaction;
 import com.azure.resourcemanager.consumption.models.ReservationTransactions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReservationTransactionsImpl implements ReservationTransactions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationTransactionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReservationTransactionsImpl.class);
 
     private final ReservationTransactionsClient innerClient;
 

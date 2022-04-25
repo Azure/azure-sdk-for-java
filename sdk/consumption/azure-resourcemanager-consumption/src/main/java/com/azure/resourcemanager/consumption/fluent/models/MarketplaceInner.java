@@ -6,8 +6,6 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
@@ -18,8 +16,6 @@ import java.util.UUID;
 /** A marketplace resource. */
 @Fluent
 public final class MarketplaceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MarketplaceInner.class);
-
     /*
      * The properties of the marketplace usage detail.
      */

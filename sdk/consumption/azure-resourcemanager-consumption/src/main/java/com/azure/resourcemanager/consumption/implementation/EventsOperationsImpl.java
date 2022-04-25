@@ -11,10 +11,9 @@ import com.azure.resourcemanager.consumption.fluent.EventsOperationsClient;
 import com.azure.resourcemanager.consumption.fluent.models.EventSummaryInner;
 import com.azure.resourcemanager.consumption.models.EventSummary;
 import com.azure.resourcemanager.consumption.models.EventsOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EventsOperationsImpl implements EventsOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventsOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventsOperationsImpl.class);
 
     private final EventsOperationsClient innerClient;
 

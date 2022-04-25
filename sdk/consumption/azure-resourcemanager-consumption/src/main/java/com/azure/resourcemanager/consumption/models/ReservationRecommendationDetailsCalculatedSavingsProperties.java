@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of estimated savings. */
 @Fluent
 public final class ReservationRecommendationDetailsCalculatedSavingsProperties {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ReservationRecommendationDetailsCalculatedSavingsProperties.class);
-
     /*
      * The cost without reservation.
      */

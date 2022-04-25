@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.TagsClient;
 import com.azure.resourcemanager.consumption.fluent.models.TagsResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TagsClient. */
 public final class TagsClientImpl implements TagsClient {
-    private final ClientLogger logger = new ClientLogger(TagsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TagsService service;
 
@@ -79,7 +76,8 @@ public final class TagsClientImpl implements TagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available tag keys for the defined scope.
+     * @return all available tag keys for the defined scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TagsResultInner>> getWithResponseAsync(String scope) {
@@ -114,7 +112,8 @@ public final class TagsClientImpl implements TagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available tag keys for the defined scope.
+     * @return all available tag keys for the defined scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TagsResultInner>> getWithResponseAsync(String scope, Context context) {
@@ -146,7 +145,7 @@ public final class TagsClientImpl implements TagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available tag keys for the defined scope.
+     * @return all available tag keys for the defined scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TagsResultInner> getAsync(String scope) {
@@ -197,7 +196,7 @@ public final class TagsClientImpl implements TagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available tag keys for the defined scope.
+     * @return all available tag keys for the defined scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TagsResultInner> getWithResponse(String scope, Context context) {

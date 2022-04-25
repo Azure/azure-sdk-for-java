@@ -17,7 +17,7 @@ public interface ReservationsSummaries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries.
+     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationSummary> listByReservationOrder(String reservationOrderId, Datagrain grain);
 
@@ -32,7 +32,7 @@ public interface ReservationsSummaries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries.
+     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationSummary> listByReservationOrder(
         String reservationOrderId, Datagrain grain, String filter, Context context);
@@ -46,7 +46,7 @@ public interface ReservationsSummaries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries.
+     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationSummary> listByReservationOrderAndReservation(
         String reservationOrderId, String reservationId, Datagrain grain);
@@ -63,7 +63,7 @@ public interface ReservationsSummaries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries.
+     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationSummary> listByReservationOrderAndReservation(
         String reservationOrderId, String reservationId, Datagrain grain, String filter, Context context);
@@ -79,7 +79,7 @@ public interface ReservationsSummaries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries.
+     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationSummary> list(String scope, Datagrain grain);
 
@@ -103,7 +103,7 @@ public interface ReservationsSummaries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation summaries.
+     * @return result of listing reservation summaries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReservationSummary> list(
         String scope,

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.BudgetFilter;
 import com.azure.resourcemanager.consumption.models.BudgetTimePeriod;
 import com.azure.resourcemanager.consumption.models.CategoryType;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.consumption.models.CurrentSpend;
 import com.azure.resourcemanager.consumption.models.ForecastSpend;
 import com.azure.resourcemanager.consumption.models.Notification;
 import com.azure.resourcemanager.consumption.models.TimeGrainType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -22,8 +20,6 @@ import java.util.Map;
 /** A budget resource. */
 @Fluent
 public final class BudgetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetInner.class);
-
     /*
      * The properties of the budget.
      */

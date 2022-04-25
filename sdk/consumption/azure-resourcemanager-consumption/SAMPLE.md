@@ -35,10 +35,15 @@
 
 - [ListByBillingAccount](#lotsoperation_listbybillingaccount)
 - [ListByBillingProfile](#lotsoperation_listbybillingprofile)
+- [ListByCustomer](#lotsoperation_listbycustomer)
 
 ## Marketplaces
 
 - [List](#marketplaces_list)
+
+## Operations
+
+- [List](#operations_list)
 
 ## PriceSheet
 
@@ -768,6 +773,42 @@ public final class LotsOperationListByBillingProfileSamples {
 }
 ```
 
+### LotsOperation_ListByCustomer
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for LotsOperation ListByCustomer. */
+public final class LotsOperationListByCustomerSamples {
+    /*
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/LotsListByCustomer.json
+     */
+    /**
+     * Sample code: LotsListByCustomer.
+     *
+     * @param manager Entry point to ConsumptionManager.
+     */
+    public static void lotsListByCustomer(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager.lotsOperations().listByCustomer("1234:5678", "1234:5678", null, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/LotsListByCustomerWithFilters.json
+     */
+    /**
+     * Sample code: LotsListByCustomerWithFilter.
+     *
+     * @param manager Entry point to ConsumptionManager.
+     */
+    public static void lotsListByCustomerWithFilter(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager
+            .lotsOperations()
+            .listByCustomer(
+                "1234:5678", "1234:5678", "status eq 'active' AND source eq 'consumptioncommitment'", Context.NONE);
+    }
+}
+```
+
 ### Marketplaces_List
 
 ```java
@@ -917,6 +958,27 @@ public final class MarketplacesListSamples {
         manager
             .marketplaces()
             .list("providers/Microsoft.Billing/billingAccounts/123456", null, null, null, Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for Operations List. */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/OperationList.json
+     */
+    /**
+     * Sample code: PriceSheetForBillingPeriod.
+     *
+     * @param manager Entry point to ConsumptionManager.
+     */
+    public static void priceSheetForBillingPeriod(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager.operations().list(Context.NONE);
     }
 }
 ```

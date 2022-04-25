@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.MeterDetails;
 import com.azure.resourcemanager.consumption.models.PriceSheetProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** price sheet result. It contains the pricesheet associated with billing period. */
 @Immutable
 public final class PriceSheetModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PriceSheetModel.class);
-
     /*
      * Price sheet
      */
