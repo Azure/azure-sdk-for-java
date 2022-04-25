@@ -885,11 +885,11 @@ class FileAPITests extends APISpec {
 
         then:
         if (mode.equals(FileLastWrittenMode.PRESERVE)) {
-            assert initialProps.getSmbProperties().getFileLastWriteTime()
-                == resultProps.getSmbProperties().getFileLastWriteTime()
+            assert initialProps.getSmbProperties().getFileLastWriteTime() == resultProps.getSmbProperties()
+                .getFileLastWriteTime()
         } else {
-            assert initialProps.getSmbProperties().getFileLastWriteTime()
-                != resultProps.getSmbProperties().getFileLastWriteTime()
+            assert initialProps.getSmbProperties().getFileLastWriteTime() != resultProps.getSmbProperties()
+                .getFileLastWriteTime()
         }
 
         where:
@@ -967,11 +967,11 @@ class FileAPITests extends APISpec {
 
         then:
         if (mode.equals(FileLastWrittenMode.PRESERVE)) {
-            assert initialProps.getSmbProperties().getFileLastWriteTime()
-                == resultProps.getSmbProperties().getFileLastWriteTime()
+            assert initialProps.getSmbProperties().getFileLastWriteTime() == resultProps.getSmbProperties()
+                .getFileLastWriteTime()
         } else {
-            assert initialProps.getSmbProperties().getFileLastWriteTime()
-                != resultProps.getSmbProperties().getFileLastWriteTime()
+            assert initialProps.getSmbProperties().getFileLastWriteTime() != resultProps.getSmbProperties()
+                .getFileLastWriteTime()
         }
 
         where:
