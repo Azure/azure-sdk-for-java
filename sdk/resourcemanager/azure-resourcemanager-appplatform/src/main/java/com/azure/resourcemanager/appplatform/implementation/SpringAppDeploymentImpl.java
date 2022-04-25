@@ -620,11 +620,13 @@ public class SpringAppDeploymentImpl
                                     return Mono.empty();
                                 } else {
                                     AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
-                                    return Mono.error(new ManagementException("build failed",
+                                    return Mono.error(new ManagementException(String.format("Build failed for file: %s, buildId: %s",
+                                        file.getName(), buildId),
                                         new HttpResponseImpl<>(response, client.getSerializerAdapter())));
                                 }
                             } else {
-                                return Mono.error(new ManagementException("build timeout", null));
+                                return Mono.error(new ManagementException(String.format("Build timeout for file: %s, buildId: %s",
+                                    file.getName(), buildId), null));
                             }
                         }).repeatWhenEmpty(
                             longFlux ->
