@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define destination of connection. */
 @Fluent
 public final class ConnectivityDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityDestination.class);
-
     /*
      * The ID of the resource to which a connection attempt will be made.
      */

@@ -23,7 +23,6 @@ import org.apache.avro.util.ByteBufferInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -134,6 +133,7 @@ class AvroSerializer {
      * Returns A byte[] containing Avro encoding of object parameter.
      *
      * @param object Object to be encoded into byte stream
+     * @param schemaId Identifier of the schema trying to be encoded.
      *
      * @return A set of bytes that represent the object.
      *
@@ -141,7 +141,7 @@ class AvroSerializer {
      * @throws IllegalStateException if the object could not be serialized to an object stream or there was a
      *     runtime exception during serialization.
      */
-    <T> byte[] encode(T object) {
+    <T> byte[] serialize(T object, String schemaId) {
         final Schema schema = getSchema(object);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -162,7 +162,8 @@ class AvroSerializer {
             return outputStream.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
-            throw logger.logExceptionAsError(new IllegalStateException("Error serializing Avro message", e));
+            throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
+                "An error occurred while attempting to serialize to Avro.", e, schemaId));
         }
     }
 
@@ -172,7 +173,7 @@ class AvroSerializer {
      *
      * @return deserialized object
      */
-    <T> T decode(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
+    <T> T deserialize(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
         Objects.requireNonNull(contents, "'bytes' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
@@ -185,7 +186,7 @@ class AvroSerializer {
             try {
                 return messageDecoder.decode(contents);
             } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
                     "Unable to deserialize Avro schema object using binary message decoder.", e));
             }
         } else {
@@ -196,7 +197,8 @@ class AvroSerializer {
                     return reader.read(null, decoderFactory.binaryDecoder(input, null));
                 }
             } catch (IOException | RuntimeException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
+                    "Error deserializing raw Avro message.", e));
             }
         }
     }

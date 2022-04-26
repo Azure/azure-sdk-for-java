@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ServiceTagInformationPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The service tag information. */
 @Immutable
 public final class ServiceTagInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagInformationInner.class);
-
     /*
      * Properties of the service tag information.
      */

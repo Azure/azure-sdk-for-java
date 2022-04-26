@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.12.0-beta.1 (17.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4925a352-5ce3-40e1-ab8b-bcce45b20383",
@@ -51,12 +51,12 @@
       "Body" : "",
       "x-ms-client-request-id" : "4925a352-5ce3-40e1-ab8b-bcce45b20383",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/56884534-bf37-49be-93b5-12b3cdd35dc1?monitor=true&api-version=2021-08-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/56884534-bf37-49be-93b5-12b3cdd35dc1?monitor=true&api-version=2021-09-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/56884534-bf37-49be-93b5-12b3cdd35dc1?monitor=true&api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/56884534-bf37-49be-93b5-12b3cdd35dc1?monitor=true&api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.12.0-beta.1 (17.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "21fb3acc-3ab0-42a4-b2a4-8fd9ca269dc5"
@@ -83,7 +83,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.12.0-beta.1 (17.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "61ba7486-88b5-4c32-8ab6-7f619c56fe13",
@@ -111,7 +111,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285/blobServices/default/containers/blob-test?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285/blobServices/default/containers/blob-test?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.12.0-beta.1 (17.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9c2b78dc-32ce-457d-8137-3ef2d94129aa",
@@ -140,7 +140,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285/blobServices/default/containers/blob-test?api-version=2021-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79010/providers/Microsoft.Storage/storageAccounts/javacmsa792285/blobServices/default/containers/blob-test?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.12.0-beta.1 (17.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3af3d555-5650-4f65-9b0b-4a6f24a8817c",

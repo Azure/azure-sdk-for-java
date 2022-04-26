@@ -101,7 +101,7 @@ public final class ContainerRepositoryAsync {
             this.registryLoginServer = endpointUrl.getHost();
         } catch (MalformedURLException ex) {
             // This will not happen.
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
     }
 

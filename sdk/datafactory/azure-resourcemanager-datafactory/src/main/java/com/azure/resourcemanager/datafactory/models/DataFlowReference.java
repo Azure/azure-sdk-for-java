@@ -17,13 +17,11 @@ import java.util.Map;
 /** Data flow reference type. */
 @Fluent
 public final class DataFlowReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowReference.class);
-
     /*
      * Data flow reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type = "DataFlowReference";
+    private DataFlowReferenceType type;
 
     /*
      * Reference data flow name.
@@ -49,17 +47,12 @@ public final class DataFlowReference {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DataFlowReference class. */
-    public DataFlowReference() {
-        type = "DataFlowReference";
-    }
-
     /**
      * Get the type property: Data flow reference type.
      *
      * @return the type value.
      */
-    public String type() {
+    public DataFlowReferenceType type() {
         return this.type;
     }
 
@@ -69,7 +62,7 @@ public final class DataFlowReference {
      * @param type the type value to set.
      * @return the DataFlowReference object itself.
      */
-    public DataFlowReference withType(String type) {
+    public DataFlowReference withType(DataFlowReferenceType type) {
         this.type = type;
         return this;
     }
@@ -169,10 +162,17 @@ public final class DataFlowReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model DataFlowReference"));
+        }
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property referenceName in model DataFlowReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowReference.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the encryption associated with the workspace. */
 @Fluent
 public final class EncryptionDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionDetails.class);
-
     /*
      * Double Encryption enabled
      */

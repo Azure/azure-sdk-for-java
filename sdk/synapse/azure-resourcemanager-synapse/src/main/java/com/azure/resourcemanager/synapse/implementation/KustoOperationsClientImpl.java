@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.KustoOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.OperationInner;
 import com.azure.resourcemanager.synapse.models.OperationListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in KustoOperationsClient. */
 public final class KustoOperationsClientImpl implements KustoOperationsClient {
-    private final ClientLogger logger = new ClientLogger(KustoOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final KustoOperationsService service;
 
@@ -151,7 +148,7 @@ public final class KustoOperationsClientImpl implements KustoOperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listAsync() {
@@ -165,7 +162,7 @@ public final class KustoOperationsClientImpl implements KustoOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listAsync(Context context) {
@@ -178,7 +175,7 @@ public final class KustoOperationsClientImpl implements KustoOperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list() {
@@ -192,7 +189,7 @@ public final class KustoOperationsClientImpl implements KustoOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list(Context context) {

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageAccounts AbortHierarchicalNamespaceMigration. */
 public final class StorageAccountsAbortHierarchicalNamespaceMigrationSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountAbortHierarchicalNamespaceMigration.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountAbortHierarchicalNamespaceMigration.json
      */
     /**
      * Sample code: StorageAccountAbortHierarchicalNamespaceMigration.

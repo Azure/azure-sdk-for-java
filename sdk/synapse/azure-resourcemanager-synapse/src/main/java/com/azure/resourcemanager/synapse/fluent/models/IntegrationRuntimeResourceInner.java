@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.EntityResource;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Integration runtime resource type. */
 @Fluent
 public final class IntegrationRuntimeResourceInner extends EntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeResourceInner.class);
-
     /*
      * Integration runtime properties.
      */
@@ -51,7 +48,7 @@ public final class IntegrationRuntimeResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model IntegrationRuntimeResourceInner"));
@@ -59,4 +56,6 @@ public final class IntegrationRuntimeResourceInner extends EntityResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeResourceInner.class);
 }

@@ -22,7 +22,7 @@ public interface ProductApisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api list representation.
+     * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApiContractInner> listByProduct(String resourceGroupName, String serviceName, String productId);
@@ -46,7 +46,7 @@ public interface ProductApisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api list representation.
+     * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApiContractInner> listByProduct(
@@ -85,7 +85,7 @@ public interface ProductApisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> checkEntityExistsWithResponse(
@@ -102,7 +102,7 @@ public interface ProductApisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api details.
+     * @return aPI details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApiContractInner createOrUpdate(String resourceGroupName, String serviceName, String productId, String apiId);
@@ -119,7 +119,7 @@ public interface ProductApisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api details.
+     * @return aPI details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApiContractInner> createOrUpdateWithResponse(
@@ -152,7 +152,7 @@ public interface ProductApisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

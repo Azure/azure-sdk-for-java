@@ -19,7 +19,7 @@
 # PRLabel: %bom
 /sdk/boms/azure-sdk-bom/                            @pallavit @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
-/sdk/boms/azure-spring-boot-bom/                    @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo
+/sdk/boms/spring-cloud-azure-dependencies/                    @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 ####
 # Service teams
@@ -27,23 +27,44 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo
-/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo
+/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 
 # PRLabel: %Attestation
-/sdk/attestation/                                   @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/                                   @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
+# PRLabel: %Communication - Calling Server
+/sdk/communication/sdk/communication/azure-communication-callingserver/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Communication - Chat
+/sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Communication - Identity
+/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @martinbarnas-ms
+
+# PRLabel: %Communication - Common
+/sdk/communication/azure-communication-common/      @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @martinbarnas-ms
+
+# PRLabel: %Communication - Network Traversal
+/sdk/communication/sdk/communication/azure-communication-networktraversal/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Communication - Phone Numbers
+/sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @lucasrsant @RoyHerrod @danielav7
+
+# PRLabel: %Communication - SMS
+/sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
+
+# PRLabel: %Communication - Resource Manager
+/sdk/communication/sdk/communication/azure-resourcemanager-communication/
+
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
-/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk
-/sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @lucasrsant @RoyHerrod @danielav7
-/sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                             @pallavit @alzimmermsft
@@ -60,15 +81,15 @@
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @xinlian12
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @xinlian12
 
 # ServiceLabel: %Device Update for IoT Hub %Service Attention
 /sdk/deviceupdate/                                  @dpokluda
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai
+/sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack @sjiherzig @Satya-Kolluri
 
 # PRLabel: %Models Repository
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms @brycewang-microsoft
@@ -103,7 +124,7 @@
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @vcolin7 @g2vinay @samvaity
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca           @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo
+/sdk/keyvault/azure-security-keyvault-jca           @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
@@ -144,7 +165,7 @@
 /sdk/textanalytics/                                 @samvaity @mssfang
 
 # PRLabel: %azure-spring
-/sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo
+/sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -716,7 +737,7 @@
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
 /eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp
 /eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
-/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo
+/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 /eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar @jonathangiles
 /parent/                                            @alzimmermsft
 

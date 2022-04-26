@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The connection state of a managed private endpoint. */
 @Immutable
 public final class ConnectionStateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionStateProperties.class);
-
     /*
      * The actions required on the managed private endpoint
      */

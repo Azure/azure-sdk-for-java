@@ -1,17 +1,43 @@
 # Release History
 
-## 1.27.0-beta.1 (Unreleased)
+## 1.28.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Add `com.azure.core.models.MessageContent`.
+- Added support for custom configuration sources and rich configuration properties:
+  - `ConfigurationSource` supplies properties from the give source
+  - `ConfigurationBuilder` allows to build immutable `Configuration` per-client instances with shared properties sections.
+  - `ConfigurationProperty<T>` describes how configuration property is retrieved. `ConfigurationPropertyBuilder` allows
+    to conveniently build properties.
+  - `Configuration.get(ConfigurationProperty<T>)` allows to retrieve new properties and 
+    `Configuration.contains(ConfigurationProperty<T>)` checks if 
+
+### Breaking Changes
+
+- Deprecated `Configuration.put`, `Configuration.remove`, `Configuration.clone`, and default `Configuration` constructor.
+  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`. 
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.27.0 (2022-04-01)
 
 ### Features Added
 
 - Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
   at once during construction.
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcPollingStrategy` and `LocationPollingStrategy`.  
 
 ### Other Changes
+
+- Reduced usage of reflection when sending requests and receiving responses in `RestProxy`.
+- Improved handling for catching and rethrowing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.2` to `2.13.2.1`.
 
 ## 1.26.0 (2022-03-04)
 

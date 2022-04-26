@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specify the name and value of custom metadata item. */
 @Fluent
 public final class MetadataItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataItem.class);
-
     /*
      * Metadata item key name. Type: string (or Expression with resultType
      * string).

@@ -5,9 +5,12 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.resources.fluent.ChangesManagementClient;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.implementation.ChangesManagementClientBuilder;
 import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
 import com.azure.resourcemanager.resources.implementation.ManagementLockClientBuilder;
@@ -41,7 +44,6 @@ import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
@@ -56,6 +58,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private final SubscriptionClient subscriptionClient;
     private final PolicyClient policyClient;
     private final ManagementLockClient managementLockClient;
+    private final ChangesManagementClient resourceChangeClient;
     // The collections
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
@@ -79,17 +82,21 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @return the ResourceManager instance
      */
     public static ResourceManager.Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile used in resource management
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
-    private static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 
@@ -242,6 +249,12 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
 
+        this.resourceChangeClient = new ChangesManagementClientBuilder()
+            .pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
         for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
             if (httpPipeline.getPolicy(i) instanceof ProviderRegistrationPolicy) {
                 ProviderRegistrationPolicy policy = (ProviderRegistrationPolicy) httpPipeline.getPolicy(i);
@@ -282,6 +295,14 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      */
     public ManagementLockClient managementLockClient() {
         return managementLockClient;
+    }
+
+    /**
+     * @return wrapped inner resource change client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public ChangesManagementClient resourceChangeClient() {
+        return resourceChangeClient;
     }
 
     /**

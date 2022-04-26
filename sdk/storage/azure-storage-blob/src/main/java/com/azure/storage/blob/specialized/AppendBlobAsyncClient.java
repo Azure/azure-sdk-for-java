@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -21,21 +22,21 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
-import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -284,6 +285,82 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
+     *
+     * @return A reactive response {@link Mono} signaling completion. {@link AppendBlobItem} contains the information of
+     * the created appended blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppendBlobItem> createIfNotExists() {
+        return this.createIfNotExistsWithResponse(new AppendBlobCreateOptions()).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;
+     *     .setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;.subscribe&#40;response -&gt; &#123;
+     *         if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *             System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
+     *
+     * @param options {@link AppendBlobCreateOptions}
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status code
+     * is 201, a new page blob was successfully created. If status code is 409, an append blob already existed at this
+     * location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
+        try {
+            return withContext(context -> createIfNotExistsWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
+        try {
+            options = options == null ? new AppendBlobCreateOptions() : options;
+            options.setRequestConditions(new AppendBlobRequestConditions()
+                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
+                && ((BlobStorageException) t).getStatusCode() == 409,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Commits a new block of data to the end of the existing append blob.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
@@ -485,7 +562,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
         String sourceAuth = options.getSourceAuthorization() == null

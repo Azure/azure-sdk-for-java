@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
 import com.azure.resourcemanager.datafactory.models.LogStorageSettings;
 import com.azure.resourcemanager.datafactory.models.StoreReadSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Delete activity properties. */
 @Fluent
 public final class DeleteActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteActivityTypeProperties.class);
-
     /*
      * If true, files or sub-folders under current folder path will be deleted
      * recursively. Default is false. Type: boolean (or Expression with
@@ -193,7 +190,7 @@ public final class DeleteActivityTypeProperties {
             logStorageSettings().validate();
         }
         if (dataset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataset in model DeleteActivityTypeProperties"));
@@ -204,4 +201,6 @@ public final class DeleteActivityTypeProperties {
             storeSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeleteActivityTypeProperties.class);
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagementLocks DeleteAtResourceLevel. */
 public final class ManagementLocksDeleteAtResourceLevelSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2016-09-01/examples/ManagementLocks_DeleteAtResourceLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_DeleteAtResourceLevel.json
      */
     /**
      * Sample code: Delete management lock at resource level.

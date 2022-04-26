@@ -22,7 +22,6 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -212,9 +211,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
     }
 
     @Test
-    @Disabled(
-        "Service consistently fail with error 'Replication job not completed at region:XXXXX', reported to service"
-            + " team, ")
     public void canCreateUpdateGetDeleteGalleryImageVersion() {
         //
         // Create {
@@ -377,7 +373,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

@@ -1,16 +1,58 @@
 # Release History
 
-## 4.4.0-beta.8 (Unreleased)
+## 4.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-- Changed `getRandomBytes` operations in `KeyClient` and `KeyAsyncClient` to return `byte[]` instead of `RandomBytes`.
-- Removed the `RandomBytes` class.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.4.1 (2022-04-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.27.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.11.9`.
+
+## 4.4.0 (2022-03-31)
+
+### Features Added
+- Added support for service version `7.3`.
+- Added the following APIs to `KeyClient` and `KeyAsyncClient`:
+  - `getRandomBytes` and `getRandomBytesWithResponse` which, when connected to a managed HSM, can be used to generate a byte array of a given length with random values.
+  - `releaseKey` and `releaseKeyWithResponse` which support securely releasing a key from a Managed HSM.
+  - `rotateKey` and `rotateKeyWithResponse` which allow to rotate a key on-demand in Azure Key Vault and Managed HSM.
+  - `getKeyRotationPolicy` and `getKeyRotationPolicyWithResponse` which allow to retrieve a key's automated rotation policy.
+  - `updateKeyRotationPolicy` and `updateKeyRotationPolicyWithResponse` which allow to update a key's automated rotation policy.
+  - `getCryptographyClient` and `getCryptographyAsyncClient` which provide a simple way to create a `CryptographyClient` and `CryptographyAsyncClient` respectively for a key given its name and optionally a version.
+- Additionally added the following classes to support the aforementioned APIs:
+  - `KeyRotationPolicy` which represents a key's automated rotation policy.
+      - `KeyRotationLifetimeAction` which represents an action that will be performed by Key Vault over the lifetime of a key.
+        - `KeyRotationPolicyAction`, an enum for the types of key rotation policy actions that can be executed relative to a key.
+  - `KeyReleasePolicy` which represents the policy rules under which the key can be exported.
+  - `ReleaseKeyOptions` which represents the configurable options to release a key.
+    - `KeyExportEncryptionAlgorithm`, an enum for specifying an encryption algorithm to be used during key release.
+  - `ReleaseKeyResult` which contains the value of a released key.
+- `exportable` and `releasePolicy` were added to the following classes as well:
+    - `KeyProperties`
+    - `CreateKeyOptions`
+    - `CreateEcKeyOptions`
+    - `CreateOctKeyOptions`
+    - `CreateRsaKeyOptions`
+
+  in order to specify whether the key is exportable and to associate a release policy to a given key
+- `CryptographyClientBuilder` does not require `keyIdentifier` to a include a key version. If no version is provided, cryptographic operations will be made using the latest version of the key.
+- Implemented new traits (micro-interfaces) in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+
+### Breaking Changes
+> These changes do not impact the API of stable versions such as `4.3.0`.
+> Only code written against beta version `4.4.0-beta.7` may be affected.
+- Changed `getRandomBytes` operations in `KeyClient` and `KeyAsyncClient` to return `byte[]` instead of `RandomBytes`.
+- Removed the `RandomBytes` class.
 
 ## 4.3.8 (2022-03-17)
 

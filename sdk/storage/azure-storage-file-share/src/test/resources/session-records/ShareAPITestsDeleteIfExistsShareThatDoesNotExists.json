@@ -1,0 +1,49 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.file.core.windows.net/25e0ce40025e0ce4048d14770f4fbd02acd7b4326bf4?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7adb4a43-dd70-40ab-8ab2-013ea4c0db37"
+    },
+    "Response" : {
+      "content-length" : "217",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "55360f68-c01a-007a-3964-510fb8000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:55360f68-c01a-007a-3964-510fb8000000\nTime:2022-04-16T07:35:50.9919306Z</Message></Error>",
+      "x-ms-client-request-id" : "7adb4a43-dd70-40ab-8ab2-013ea4c0db37",
+      "Date" : "Sat, 16 Apr 2022 07:35:50 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://REDACTED.file.core.windows.net/25e0ce40025e0ce4048d14770f4fbd02acd7b4326bf4?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "25e8e29f-d012-44e9-9770-ce0356b37c6c"
+    },
+    "Response" : {
+      "content-length" : "217",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "b5ba655f-001a-0007-5764-517e9b000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:b5ba655f-001a-0007-5764-517e9b000000\nTime:2022-04-16T07:35:51.1818788Z</Message></Error>",
+      "x-ms-client-request-id" : "25e8e29f-d012-44e9-9770-ce0356b37c6c",
+      "Date" : "Sat, 16 Apr 2022 07:35:50 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "25e0ce4025e0ce4048d31656b707e35cbb6b40bb80", "25e0ce40025e0ce4048d14770f4fbd02acd7b4326bf4" ]
+}

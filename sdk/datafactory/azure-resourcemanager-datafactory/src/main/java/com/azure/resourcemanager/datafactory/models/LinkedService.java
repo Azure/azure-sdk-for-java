@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -84,6 +83,10 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "Quickbase", value = QuickbaseLinkedService.class),
     @JsonSubTypes.Type(name = "Smartsheet", value = SmartsheetLinkedService.class),
     @JsonSubTypes.Type(name = "Zendesk", value = ZendeskLinkedService.class),
+    @JsonSubTypes.Type(name = "Dataworld", value = DataworldLinkedService.class),
+    @JsonSubTypes.Type(name = "AppFigures", value = AppFiguresLinkedService.class),
+    @JsonSubTypes.Type(name = "Asana", value = AsanaLinkedService.class),
+    @JsonSubTypes.Type(name = "Twilio", value = TwilioLinkedService.class),
     @JsonSubTypes.Type(name = "AmazonRedshift", value = AmazonRedshiftLinkedService.class),
     @JsonSubTypes.Type(name = "CustomDataSource", value = CustomDataSourceLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSearch", value = AzureSearchLinkedService.class),
@@ -138,8 +141,6 @@ import java.util.Map;
 })
 @Fluent
 public class LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedService.class);
-
     /*
      * The integration runtime reference.
      */

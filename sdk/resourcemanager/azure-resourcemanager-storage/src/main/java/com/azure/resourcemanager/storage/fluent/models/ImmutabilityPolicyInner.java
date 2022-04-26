@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag. */
 @Fluent
 public final class ImmutabilityPolicyInner extends AzureEntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImmutabilityPolicyInner.class);
-
     /*
      * The properties of an ImmutabilityPolicy of a blob container.
      */
@@ -136,7 +133,7 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ImmutabilityPolicyInner"));
@@ -144,4 +141,6 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImmutabilityPolicyInner.class);
 }

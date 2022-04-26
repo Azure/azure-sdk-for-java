@@ -3,13 +3,12 @@
 
 package com.azure.core.implementation.serializer;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Decode {@link HttpResponse} to {@link HttpDecodedResponse}.
@@ -41,26 +40,25 @@ public final class HttpResponseDecoder {
     /**
      * A decorated HTTP response which has subscribable body and headers that supports lazy decoding.
      *
-     * Subscribing to body kickoff http content reading, it's decoding then emission of decoded object.
-     * Subscribing to header kickoff header decoding and emission of decoded object.
+     * Subscribing to body kickoff http content reading, it's decoding then emission of decoded object. Subscribing to
+     * header kickoff header decoding and emission of decoded object.
      */
     public static final class HttpDecodedResponse implements Closeable {
         private final HttpResponse response;
         private final SerializerAdapter serializer;
         private final HttpResponseDecodeData decodeData;
-        private Mono<Object> bodyCached;
+        private Object bodyCached;
         private Object headersCached;
 
         /**
-         * Creates HttpDecodedResponse.
-         * Package private Ctr.
+         * Creates HttpDecodedResponse. Package private Ctr.
          *
          * @param response the publisher that emits the raw response upon subscription which needs to be decoded
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
         HttpDecodedResponse(final HttpResponse response, SerializerAdapter serializer,
-                            HttpResponseDecodeData decodeData) {
+            HttpResponseDecodeData decodeData) {
             this.response = response;
             this.serializer = serializer;
             this.decodeData = decodeData;
@@ -74,58 +72,30 @@ public final class HttpResponseDecoder {
         }
 
         /**
-         * Gets the publisher when subscribed the http content gets read, decoded
-         * and emitted. {@code Mono.empty()} gets emitted if the content is not
-         * decodable.
+         * Decodes either the retrieved {@code body} or the bytes returned by the {@link HttpResponse}.
          *
-         * @param body the response body to decode, null for this parameter
-         *             indicate read body from source response and decode it.
-         *
-         * @return publisher that emits decoded http content
+         * @param body The retrieve body.
+         * @return The decoded body.
          */
-        public Mono<Object> getDecodedBody(String body) {
-            return getDecodedBody(body.getBytes(StandardCharsets.UTF_8));
-        }
-
-        // TODO (jogiles) JavaDoc
-        public Mono<Object> getDecodedBody(byte[] body) {
+        public Object getDecodedBody(byte[] body) {
             if (this.bodyCached == null) {
-                this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body,
-                    this.response,
-                    this.serializer,
-                    this.decodeData).cache();
+                this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData);
             }
             return this.bodyCached;
         }
 
         /**
-         * Gets the publisher when subscribed the http header gets decoded and emitted.
-         * {@code Mono.empty()} gets emitted if the headers are not decodable.
+         * Gets the decoded {@link HttpHeaders} object.
+         * <p>
+         * Null is returned if the headers aren't able to be decoded or if there is no decoded headers type.
          *
-         * @return publisher that emits entity instance representing decoded http headers
+         * @return The decoded headers object, or null if they aren't able to be decoded.
          */
         public Object getDecodedHeaders() {
-            if (this.headersCached == null) {
-                this.headersCached = HttpResponseHeaderDecoder.decode(this.response,
-                    this.serializer,
-                    this.decodeData);
+            if (headersCached == null) {
+                headersCached = HttpResponseHeaderDecoder.decode(response, serializer, decodeData.getHeadersType());
             }
             return this.headersCached;
-        }
-
-        /**
-         * @return the {@code java.lang.reflect.Type} used to decode the response body,
-         *     null if the body is not decodable
-         */
-        public Type getDecodedType() {
-            return HttpResponseBodyDecoder.decodedType(this.response, this.decodeData);
-        }
-
-        /**
-         * @return true if the response status code is considered as error, false otherwise
-         */
-        public boolean isErrorStatus() {
-            return HttpResponseBodyDecoder.isErrorStatus(this.response, this.decodeData);
         }
 
         @Override

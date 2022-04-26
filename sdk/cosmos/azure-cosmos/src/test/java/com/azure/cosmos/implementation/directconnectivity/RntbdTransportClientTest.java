@@ -619,7 +619,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -844,7 +844,7 @@ public final class RntbdTransportClientTest {
                 expected.length, true, Arrays.asList(expected)
             );
 
-            RntbdRequestManager requestManager = new RntbdRequestManager(new RntbdClientChannelHealthChecker(config), 30);
+            RntbdRequestManager requestManager = new RntbdRequestManager(new RntbdClientChannelHealthChecker(config), 30, null);
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 

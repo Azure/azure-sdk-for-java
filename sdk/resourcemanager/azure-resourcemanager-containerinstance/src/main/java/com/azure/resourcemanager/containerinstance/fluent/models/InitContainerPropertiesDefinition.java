@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.InitContainerPropertiesDefinitionInstanceView;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The init container definition properties. */
 @Fluent
 public final class InitContainerPropertiesDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InitContainerPropertiesDefinition.class);
-
     /*
      * The image of the init container.
      */
