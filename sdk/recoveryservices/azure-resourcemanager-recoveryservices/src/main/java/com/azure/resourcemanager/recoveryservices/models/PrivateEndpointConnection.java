@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private Endpoint Connection Response Properties. */
 @Immutable
 public final class PrivateEndpointConnection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnection.class);
-
     /*
      * Gets or sets provisioning state of the private endpoint connection.
      */

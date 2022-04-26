@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultCertificatesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultCertificateResponseInner;
 import com.azure.resourcemanager.recoveryservices.models.CertificateRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VaultCertificatesClient. */
 public final class VaultCertificatesClientImpl implements VaultCertificatesClient {
-    private final ClientLogger logger = new ClientLogger(VaultCertificatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VaultCertificatesService service;
 
@@ -84,7 +81,8 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultCertificateResponseInner>> createWithResponseAsync(
@@ -133,7 +131,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
                             certificateRequest,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -147,7 +145,8 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultCertificateResponseInner>> createWithResponseAsync(
@@ -210,7 +209,8 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultCertificateResponseInner> createAsync(
@@ -255,7 +255,8 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultCertificateResponseInner> createWithResponse(

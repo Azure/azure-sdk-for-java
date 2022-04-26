@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource Name availability input parameters - Resource type and resource name. */
 @Fluent
 public final class CheckNameAvailabilityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityParameters.class);
-
     /*
      * Describes the Resource type: Microsoft.RecoveryServices/Vaults
      */

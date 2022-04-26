@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Summary of the replication job data for this vault. */
 @Fluent
 public final class JobsSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsSummary.class);
-
     /*
      * Count of failed jobs.
      */

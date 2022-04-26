@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import java.util.Map;
@@ -66,6 +67,13 @@ public interface Vault {
      * @return the sku value.
      */
     Sku sku();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the region of the resource.

@@ -27,6 +27,7 @@ import com.azure.resourcemanager.recoveryservices.fluent.RecoveryServicesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.RecoveryServicesManagementClient;
 import com.azure.resourcemanager.recoveryservices.fluent.RegisteredIdentitiesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.ReplicationUsagesClient;
+import com.azure.resourcemanager.recoveryservices.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.recoveryservices.fluent.UsagesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultCertificatesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultExtendedInfoesClient;
@@ -44,8 +45,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the RecoveryServicesManagementClientImpl type. */
 @ServiceClient(builder = RecoveryServicesManagementClientBuilder.class)
 public final class RecoveryServicesManagementClientImpl implements RecoveryServicesManagementClient {
-    private final ClientLogger logger = new ClientLogger(RecoveryServicesManagementClientImpl.class);
-
     /** The subscription Id. */
     private final String subscriptionId;
 
@@ -214,6 +213,18 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
         return this.vaultExtendedInfoes;
     }
 
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
     /** The UsagesClient object to access its operations. */
     private final UsagesClient usages;
 
@@ -248,7 +259,7 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2016-06-01";
+        this.apiVersion = "2022-02-01";
         this.vaultCertificates = new VaultCertificatesClientImpl(this);
         this.registeredIdentities = new RegisteredIdentitiesClientImpl(this);
         this.replicationUsages = new ReplicationUsagesClientImpl(this);
@@ -257,6 +268,7 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
         this.vaults = new VaultsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.vaultExtendedInfoes = new VaultExtendedInfoesClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.usages = new UsagesClientImpl(this);
     }
 
@@ -342,8 +354,8 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                    } catch (IOException | RuntimeException ioe) {
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -371,7 +383,7 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {
@@ -402,4 +414,6 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryServicesManagementClientImpl.class);
 }
