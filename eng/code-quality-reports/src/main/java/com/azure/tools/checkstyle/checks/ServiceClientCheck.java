@@ -340,7 +340,7 @@ public class ServiceClientCheck extends AbstractCheck {
                 if (((returnType.startsWith(RESPONSE_BRACKET) || returnType.endsWith(RESPONSE))
                     && !methodName.endsWith(WITH_RESPONSE))
                     || (methodName.endsWith(WITH_RESPONSE)
-                    && (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.endsWith(RESPONSE)))) {
+                    && (!returnType.startsWith(RESPONSE_BRACKET) || !returnType.contains(RESPONSE)))) {
                     log(methodDefToken, String.format(RESPONSE_METHOD_NAME_ERROR, "Synchronous", SINGLE_RETURN_TYPE,
                         RESPONSE, WITH_RESPONSE, WITH_RESPONSE, RESPONSE));
                 }
@@ -379,12 +379,12 @@ public class ServiceClientCheck extends AbstractCheck {
         final String returnType = getReturnType(typeToken, new StringBuilder()).toString();
 
         if (methodName.endsWith(WITH_RESPONSE)) {
-            if (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.startsWith(MONO_RESPONSE_BRACKET) && !returnType.contains(RESPONSE)) {
+            if (!returnType.contains(RESPONSE_BRACKET) && !returnType.contains(RESPONSE)) {
                 log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must not",
                     WITH_RESPONSE));
             }
         } else {
-            if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(MONO_RESPONSE_BRACKET) || returnType.contains(RESPONSE)) {
+            if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(MONO_RESPONSE_BRACKET)) {
                 log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must", WITH_RESPONSE));
             }
         }

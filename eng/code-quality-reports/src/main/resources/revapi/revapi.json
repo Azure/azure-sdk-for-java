@@ -341,6 +341,66 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method reactor.core.publisher.Mono<java.lang.Iterable<com.azure.digitaltwins.core.models.DigitalTwinsModelData>> com.azure.digitaltwins.core.DigitalTwinsAsyncClient::createModels(java.lang.Iterable<java.lang.String>)",
+          "justification": "The annotation for Mono return type is expected to be ReturnType.SINGLE."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method reactor.core.publisher.Mono<com.azure.core.http.rest.Response<java.lang.Iterable<com.azure.digitaltwins.core.models.DigitalTwinsModelData>>> com.azure.digitaltwins.core.DigitalTwinsAsyncClient::createModelsWithResponse(java.lang.Iterable<java.lang.String>)",
+          "justification": "The annotation for Mono return type is expected to be ReturnType.SINGLE."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.PollerFlux<com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail, com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux> com.azure.ai.textanalytics.TextAnalyticsAsyncClient::beginAnalyzeActions(java.lang.Iterable<com.azure.ai.textanalytics.models.TextDocumentInput>, com.azure.ai.textanalytics.models.TextAnalyticsActions, com.azure.ai.textanalytics.models.AnalyzeActionsOptions)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.PollerFlux<com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail, com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux> com.azure.ai.textanalytics.TextAnalyticsAsyncClient::beginAnalyzeActions(java.lang.Iterable<java.lang.String>, com.azure.ai.textanalytics.models.TextAnalyticsActions, java.lang.String, com.azure.ai.textanalytics.models.AnalyzeActionsOptions)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.PollerFlux<com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail, com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux> com.azure.ai.textanalytics.TextAnalyticsAsyncClient::beginAnalyzeHealthcareEntities(java.lang.Iterable<com.azure.ai.textanalytics.models.TextDocumentInput>, com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.PollerFlux<com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail, com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux> com.azure.ai.textanalytics.TextAnalyticsAsyncClient::beginAnalyzeHealthcareEntities(java.lang.Iterable<java.lang.String>, java.lang.String, com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.SyncPoller<com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail, com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable> com.azure.ai.textanalytics.TextAnalyticsClient::beginAnalyzeActions(java.lang.Iterable<com.azure.ai.textanalytics.models.TextDocumentInput>, com.azure.ai.textanalytics.models.TextAnalyticsActions, com.azure.ai.textanalytics.models.AnalyzeActionsOptions, com.azure.core.util.Context)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.SyncPoller<com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail, com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable> com.azure.ai.textanalytics.TextAnalyticsClient::beginAnalyzeActions(java.lang.Iterable<java.lang.String>, com.azure.ai.textanalytics.models.TextAnalyticsActions, java.lang.String, com.azure.ai.textanalytics.models.AnalyzeActionsOptions)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.SyncPoller<com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail, com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable> com.azure.ai.textanalytics.TextAnalyticsClient::beginAnalyzeHealthcareEntities(java.lang.Iterable<com.azure.ai.textanalytics.models.TextDocumentInput>, com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions, com.azure.core.util.Context)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "method com.azure.core.util.polling.SyncPoller<com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail, com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable> com.azure.ai.textanalytics.TextAnalyticsClient::beginAnalyzeHealthcareEntities(java.lang.Iterable<java.lang.String>, java.lang.String, com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions)",
+          "justification": "The expected annotation for return type Poller is expected to be ReturnType.LONG_RUNNING_OPERATION."
         }
       ]
     }

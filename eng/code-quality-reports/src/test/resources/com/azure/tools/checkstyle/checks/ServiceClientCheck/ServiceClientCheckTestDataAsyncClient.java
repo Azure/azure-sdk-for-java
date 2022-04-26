@@ -42,6 +42,11 @@ public class ServiceClientCheckTestDataAsyncClient {
         return null;
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestData<T>> errorResponseTypeWithResponse() {
+        return T;
+    }
+
     class FileContinuationToken {
         private final int nextLinkId;
 

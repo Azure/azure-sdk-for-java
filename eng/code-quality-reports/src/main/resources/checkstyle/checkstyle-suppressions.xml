@@ -243,8 +243,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="WhitespaceAround" files=".*[/\\]synapse[/\\]azure-analytics-synapse-artifacts[/\\].*"/>
   <!-- Suppress the long package name in Synapse managed private endpoints -->
   <suppress checks="PackageName" files="com.azure.analytics.synapse.managedprivateendpoints.*" />
-  <!-- Suppress the long line in endpoint path -->
-  <suppress checks="LineLength" files="com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl.java"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/>
@@ -303,19 +301,10 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
 
   <!-- Suppress the check on code-gen classes -->
-  <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>
+<!--  <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>-->
   <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>
-
-  <!-- empty class Pattern in Synapse artifacts -->
-  <suppress checks="WhitespaceAround" files=".*[/\\]synapse[/\\]azure-analytics-synapse-artifacts[/\\].*"/>
-
-  <!-- Suppress the long package name in Synapse managed private endpoints -->
-  <suppress checks="PackageName" files="com.azure.analytics.synapse.managedprivateendpoints.*" />
-
-  <!-- Suppress the long line in endpoint path -->
-  <suppress checks="LineLength" files="com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl.java"/>
 
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
@@ -401,6 +390,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
+
+  <!-- Suppress DigitalTwins for now -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="com.azure.digitaltwins.core.DigitalTwinsClient.java"/>
 
   <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"

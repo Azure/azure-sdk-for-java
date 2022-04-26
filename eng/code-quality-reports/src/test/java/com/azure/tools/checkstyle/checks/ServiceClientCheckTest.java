@@ -17,7 +17,8 @@ public class ServiceClientCheckTest extends AbstractModuleTestSupport {
         "'%s' service client with '%s' should use type of '%s' as the return type.";
     private static final String ERROR_MSG = "The variable field '%s' of class '%s' should be final. Classes "
         + "annotated with @ServiceClient are supposed to be immutable.";
-
+    private static final String RETURN_TYPE_WITH_RESPONSE_ERROR =
+        "Return type is '%s', the method name %s end with '%s'.";
     private Checker checker;
 
     @Before
@@ -41,7 +42,9 @@ public class ServiceClientCheckTest extends AbstractModuleTestSupport {
         String[] expected = {
             expectedErrorMessage(35, 5, String.format(RETURN_TYPE_ERROR, "Asynchronous",
                 "ReturnType.COLLECTION", "Flux")),
-            expectedErrorMessage(103, 5, String.format(ERROR_MSG, "pageRetrieverProvider",
+            expectedErrorMessage(45, 5, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR,
+                "Mono<TestData<T>>", "must not", "WithResponse")),
+            expectedErrorMessage(108, 5, String.format(ERROR_MSG, "pageRetrieverProvider",
                 "ServiceClientCheckTestDataAsyncClient"))
         };
         verify(checker, getPath("ServiceClientCheckTestDataAsyncClient.java"), expected);
