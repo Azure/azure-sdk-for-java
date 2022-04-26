@@ -31,7 +31,7 @@ To update generated files for Rooms service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-rooms-2021-04-07
+tag: package-rooms-2022-02-01-preview
 input-file:
     -  $(this-folder)/rooms.json
 add-context-parameter: true
@@ -50,5 +50,6 @@ namespace: com.azure.communication.rooms
 generate-client-as-impl: true
 custom-types-subpackage: models
 sync-methods: all
+add-context-parameter: true
 context-client-method-parameter: true
 ```

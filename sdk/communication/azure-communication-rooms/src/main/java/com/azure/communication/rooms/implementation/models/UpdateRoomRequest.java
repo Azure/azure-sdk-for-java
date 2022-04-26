@@ -5,26 +5,23 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The UpdateRoomRequest model. */
+/** Request payload for updating a room. */
 @Fluent
 public final class UpdateRoomRequest {
     /*
-     * The timestamp from when the room is open for joining. The timestamp is
-     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * (Optional) The timestamp from when the room is open for joining. The
+     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "validFrom")
     private OffsetDateTime validFrom;
 
     /*
-     * The timestamp from when the room can no longer be joined. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * (Optional) The timestamp from when the room can no longer be joined. The
+     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "validUntil")
     private OffsetDateTime validUntil;
@@ -33,12 +30,11 @@ public final class UpdateRoomRequest {
      * (Optional) Collection of identities invited to the room.
      */
     @JsonProperty(value = "participants")
-    @JsonInclude(Include.ALWAYS)
-    private Map<String, Object> participants;
+    private Map<String, RoomParticipantInternal> participants;
 
     /**
-     * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
-     * format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Get the validFrom property: (Optional) The timestamp from when the room is open for joining. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the validFrom value.
      */
@@ -47,8 +43,8 @@ public final class UpdateRoomRequest {
     }
 
     /**
-     * Set the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
-     * format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Set the validFrom property: (Optional) The timestamp from when the room is open for joining. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param validFrom the validFrom value to set.
      * @return the UpdateRoomRequest object itself.
@@ -59,8 +55,8 @@ public final class UpdateRoomRequest {
     }
 
     /**
-     * Get the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Get the validUntil property: (Optional) The timestamp from when the room can no longer be joined. The timestamp
+     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the validUntil value.
      */
@@ -69,8 +65,8 @@ public final class UpdateRoomRequest {
     }
 
     /**
-     * Set the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Set the validUntil property: (Optional) The timestamp from when the room can no longer be joined. The timestamp
+     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param validUntil the validUntil value to set.
      * @return the UpdateRoomRequest object itself.
@@ -85,7 +81,7 @@ public final class UpdateRoomRequest {
      *
      * @return the participants value.
      */
-    public Map<String, Object> getParticipants() {
+    public Map<String, RoomParticipantInternal> getParticipants() {
         return this.participants;
     }
 
@@ -95,7 +91,7 @@ public final class UpdateRoomRequest {
      * @param participants the participants value to set.
      * @return the UpdateRoomRequest object itself.
      */
-    public UpdateRoomRequest setParticipants(Map<String, Object> participants) {
+    public UpdateRoomRequest setParticipants(Map<String, RoomParticipantInternal> participants) {
         this.participants = participants;
         return this;
     }

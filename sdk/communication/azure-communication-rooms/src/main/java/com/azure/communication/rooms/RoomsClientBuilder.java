@@ -52,6 +52,7 @@ public final class RoomsClientBuilder {
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
+    private RoomsServiceVersion serviceVersion;
 
     /**
      * Set endpoint of the service
@@ -163,6 +164,7 @@ public final class RoomsClientBuilder {
      * @return the updated RoomsClientBuilder object
      */
     public RoomsClientBuilder serviceVersion(RoomsServiceVersion version) {
+        this.serviceVersion = version;
         return this;
     }
 
@@ -221,8 +223,11 @@ public final class RoomsClientBuilder {
             builderPipeline = createHttpPipeline(httpClient);
         }
 
+        RoomsServiceVersion apiVersion = serviceVersion != null ? serviceVersion : RoomsServiceVersion.getLatest();
+
         AzureCommunicationRoomServiceImplBuilder clientBuilder = new AzureCommunicationRoomServiceImplBuilder();
         clientBuilder.endpoint(endpoint)
+            .apiVersion(apiVersion.getVersion())
             .pipeline(builderPipeline);
 
         return clientBuilder.buildClient();

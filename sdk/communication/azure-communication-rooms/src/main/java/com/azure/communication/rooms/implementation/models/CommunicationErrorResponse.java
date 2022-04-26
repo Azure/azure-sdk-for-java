@@ -7,32 +7,32 @@ package com.azure.communication.rooms.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CommunicationErrorResponse model. */
+/** The Communication Services error. */
 @Fluent
 public final class CommunicationErrorResponse {
     /*
      * The Communication Services error.
      */
-    @JsonProperty(value = "error", required = true)
-    private CommunicationError error;
+    @JsonProperty(value = "communicationError", required = true)
+    private CommunicationError communicationError;
 
     /**
-     * Get the error property: The Communication Services error.
+     * Get the communicationError property: The Communication Services error.
      *
-     * @return the error value.
+     * @return the communicationError value.
      */
-    public CommunicationError getError() {
-        return this.error;
+    public CommunicationError getCommunicationError() {
+        return this.communicationError;
     }
 
     /**
-     * Set the error property: The Communication Services error.
+     * Set the communicationError property: The Communication Services error.
      *
-     * @param error the error value to set.
+     * @param communicationError the communicationError value to set.
      * @return the CommunicationErrorResponse object itself.
      */
-    public CommunicationErrorResponse setError(CommunicationError error) {
-        this.error = error;
+    public CommunicationErrorResponse setCommunicationError(CommunicationError communicationError) {
+        this.communicationError = communicationError;
         return this;
     }
 }

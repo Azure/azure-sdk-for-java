@@ -14,6 +14,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -44,7 +45,7 @@ public final class RoomsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoomsImpl(AzureCommunicationRoomServiceImpl client) {
-        this.service = RestProxy.create(RoomsService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(RoomsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,6 +63,7 @@ public final class RoomsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateRoomRequest createRoomRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/rooms/{roomId}")
@@ -71,6 +73,7 @@ public final class RoomsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/rooms/{roomId}")
@@ -80,7 +83,8 @@ public final class RoomsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") UpdateRoomRequest updateRoomRequest,
+                @BodyParam("application/merge-patch+json") UpdateRoomRequest patchRoomRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/rooms/{roomId}")
@@ -90,13 +94,14 @@ public final class RoomsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
      * Creates a new room.
      *
-     * @param createRoomRequest Request payload for creating new room.
+     * @param createRoomRequest The create room request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -104,16 +109,21 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateRoomResponse>> createRoomWithResponseAsync(CreateRoomRequest createRoomRequest) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
                 context ->
                         service.createRoom(
-                                this.client.getEndpoint(), this.client.getApiVersion(), createRoomRequest, context));
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                createRoomRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Creates a new room.
      *
-     * @param createRoomRequest Request payload for creating new room.
+     * @param createRoomRequest The create room request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -123,13 +133,15 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateRoomResponse>> createRoomWithResponseAsync(
             CreateRoomRequest createRoomRequest, Context context) {
-        return service.createRoom(this.client.getEndpoint(), this.client.getApiVersion(), createRoomRequest, context);
+        final String accept = "application/json, text/json";
+        return service.createRoom(
+                this.client.getEndpoint(), this.client.getApiVersion(), createRoomRequest, accept, context);
     }
 
     /**
      * Creates a new room.
      *
-     * @param createRoomRequest Request payload for creating new room.
+     * @param createRoomRequest The create room request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -151,7 +163,7 @@ public final class RoomsImpl {
     /**
      * Creates a new room.
      *
-     * @param createRoomRequest Request payload for creating new room.
+     * @param createRoomRequest The create room request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -174,7 +186,7 @@ public final class RoomsImpl {
     /**
      * Creates a new room.
      *
-     * @param createRoomRequest Request payload for creating new room.
+     * @param createRoomRequest The create room request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,7 +200,7 @@ public final class RoomsImpl {
     /**
      * Creates a new room.
      *
-     * @param createRoomRequest Request payload for creating new room.
+     * @param createRoomRequest The create room request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -196,8 +208,8 @@ public final class RoomsImpl {
      * @return response payload for create room operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateRoomResponse createRoom(CreateRoomRequest createRoomRequest, Context context) {
-        return createRoomAsync(createRoomRequest, context).block();
+    public Response<CreateRoomResponse> createRoomWithResponse(CreateRoomRequest createRoomRequest, Context context) {
+        return createRoomWithResponseAsync(createRoomRequest, context).block();
     }
 
     /**
@@ -211,8 +223,11 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoomModel>> getRoomWithResponseAsync(String roomId) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
-                context -> service.getRoom(this.client.getEndpoint(), roomId, this.client.getApiVersion(), context));
+                context ->
+                        service.getRoom(
+                                this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -227,7 +242,8 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoomModel>> getRoomWithResponseAsync(String roomId, Context context) {
-        return service.getRoom(this.client.getEndpoint(), roomId, this.client.getApiVersion(), context);
+        final String accept = "application/json, text/json";
+        return service.getRoom(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -300,15 +316,15 @@ public final class RoomsImpl {
      * @return the meeting room.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoomModel getRoom(String roomId, Context context) {
-        return getRoomAsync(roomId, context).block();
+    public Response<RoomModel> getRoomWithResponse(String roomId, Context context) {
+        return getRoomWithResponseAsync(roomId, context).block();
     }
 
     /**
      * Update a room with given changes.
      *
      * @param roomId The id of the room requested.
-     * @param updateRoomRequest Request payload for updating a room.
+     * @param patchRoomRequest Request payload for updating a room.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,14 +332,16 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpdateRoomResponse>> updateRoomWithResponseAsync(
-            String roomId, UpdateRoomRequest updateRoomRequest) {
+            String roomId, UpdateRoomRequest patchRoomRequest) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateRoom(
                                 this.client.getEndpoint(),
                                 roomId,
                                 this.client.getApiVersion(),
-                                updateRoomRequest,
+                                patchRoomRequest,
+                                accept,
                                 context));
     }
 
@@ -331,7 +349,7 @@ public final class RoomsImpl {
      * Update a room with given changes.
      *
      * @param roomId The id of the room requested.
-     * @param updateRoomRequest Request payload for updating a room.
+     * @param patchRoomRequest Request payload for updating a room.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -340,24 +358,25 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpdateRoomResponse>> updateRoomWithResponseAsync(
-            String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
+            String roomId, UpdateRoomRequest patchRoomRequest, Context context) {
+        final String accept = "application/json, text/json";
         return service.updateRoom(
-                this.client.getEndpoint(), roomId, this.client.getApiVersion(), updateRoomRequest, context);
+                this.client.getEndpoint(), roomId, this.client.getApiVersion(), patchRoomRequest, accept, context);
     }
 
     /**
      * Update a room with given changes.
      *
      * @param roomId The id of the room requested.
-     * @param updateRoomRequest Request payload for updating a room.
+     * @param patchRoomRequest Request payload for updating a room.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response payload for update room operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdateRoomResponse> updateRoomAsync(String roomId, UpdateRoomRequest updateRoomRequest) {
-        return updateRoomWithResponseAsync(roomId, updateRoomRequest)
+    public Mono<UpdateRoomResponse> updateRoomAsync(String roomId, UpdateRoomRequest patchRoomRequest) {
+        return updateRoomWithResponseAsync(roomId, patchRoomRequest)
                 .flatMap(
                         (Response<UpdateRoomResponse> res) -> {
                             if (res.getValue() != null) {
@@ -372,7 +391,7 @@ public final class RoomsImpl {
      * Update a room with given changes.
      *
      * @param roomId The id of the room requested.
-     * @param updateRoomRequest Request payload for updating a room.
+     * @param patchRoomRequest Request payload for updating a room.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -381,8 +400,8 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpdateRoomResponse> updateRoomAsync(
-            String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
-        return updateRoomWithResponseAsync(roomId, updateRoomRequest, context)
+            String roomId, UpdateRoomRequest patchRoomRequest, Context context) {
+        return updateRoomWithResponseAsync(roomId, patchRoomRequest, context)
                 .flatMap(
                         (Response<UpdateRoomResponse> res) -> {
                             if (res.getValue() != null) {
@@ -397,22 +416,22 @@ public final class RoomsImpl {
      * Update a room with given changes.
      *
      * @param roomId The id of the room requested.
-     * @param updateRoomRequest Request payload for updating a room.
+     * @param patchRoomRequest Request payload for updating a room.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response payload for update room operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UpdateRoomResponse updateRoom(String roomId, UpdateRoomRequest updateRoomRequest) {
-        return updateRoomAsync(roomId, updateRoomRequest).block();
+    public UpdateRoomResponse updateRoom(String roomId, UpdateRoomRequest patchRoomRequest) {
+        return updateRoomAsync(roomId, patchRoomRequest).block();
     }
 
     /**
      * Update a room with given changes.
      *
      * @param roomId The id of the room requested.
-     * @param updateRoomRequest Request payload for updating a room.
+     * @param patchRoomRequest Request payload for updating a room.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -420,8 +439,9 @@ public final class RoomsImpl {
      * @return response payload for update room operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UpdateRoomResponse updateRoom(String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
-        return updateRoomAsync(roomId, updateRoomRequest, context).block();
+    public Response<UpdateRoomResponse> updateRoomWithResponse(
+            String roomId, UpdateRoomRequest patchRoomRequest, Context context) {
+        return updateRoomWithResponseAsync(roomId, patchRoomRequest, context).block();
     }
 
     /**
@@ -435,8 +455,11 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRoomWithResponseAsync(String roomId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteRoom(this.client.getEndpoint(), roomId, this.client.getApiVersion(), context));
+                context ->
+                        service.deleteRoom(
+                                this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -451,7 +474,8 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRoomWithResponseAsync(String roomId, Context context) {
-        return service.deleteRoom(this.client.getEndpoint(), roomId, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deleteRoom(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -504,9 +528,10 @@ public final class RoomsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteRoom(String roomId, Context context) {
-        deleteRoomAsync(roomId, context).block();
+    public Response<Void> deleteRoomWithResponse(String roomId, Context context) {
+        return deleteRoomWithResponseAsync(roomId, context).block();
     }
 }

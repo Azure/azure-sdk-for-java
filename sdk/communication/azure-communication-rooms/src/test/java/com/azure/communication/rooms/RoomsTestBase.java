@@ -3,7 +3,11 @@
 
 package com.azure.communication.rooms;
 
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.identity.CommunicationIdentityClient;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
+import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.core.credential.AccessToken;
@@ -19,10 +23,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -41,34 +44,34 @@ public class RoomsTestBase extends TestBase {
             "COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
 
-    protected static final OffsetDateTime VALID_FROM = OffsetDateTime.of(2021, 12, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-    protected static final OffsetDateTime VALID_UNTIL = OffsetDateTime.of(2022, 1, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-    protected static final String USER1 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000000e-3240-55cf-9806-113a0d001dd9";
-    protected static final String USER2 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000001e-322a-f9f7-740a-113a0d00ee19";
-    protected static final String USER3 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000002e-5609-f66d-defd-8b3a0d002749";
-    protected static final Map<String, Object> PARTICIPANTS1 = new HashMap<String, Object>() {{
-            put(USER1, new RoomParticipant());
-            put(USER2, new RoomParticipant());        
-            put(USER3, new RoomParticipant());      
-        }
-    };
+    protected static final OffsetDateTime VALID_FROM = OffsetDateTime.of(2022, 5, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+    protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
 
-    protected static final Map<String, Object> PARTICIPANTS2 = new HashMap<String, Object>() {{
-            put(USER1, null);
-            put(USER2, null);
-        }
-    };
+    protected List<RoomParticipant> participants1;
+    protected List<RoomParticipant> participants2;
+    protected List<RoomParticipant> participants3;
+    protected List<RoomParticipant> participants4;
+    protected List<RoomParticipant> participants5;
+    protected List<RoomParticipant> participants6;
+    protected List<RoomParticipant> participants7;
+    protected List<RoomParticipant> badParticipant;
+    protected List<RoomParticipant> participantsWithRoleUpdates;
 
-    protected static final Map<String, Object> PARTICIPANTS3 = new HashMap<String, Object>() {{
-            put(USER2, null);
-        }
-    };
+    private CommunicationIdentityClient communicationClient;
 
-    protected static final Map<String, Object> PARTICIPANTS4 = new HashMap<String, Object>() {{
-            put(USER2, new RoomParticipant());
-            put(USER1, new RoomParticipant());
-        }
-    };
+    protected CommunicationUserIdentifier firstParticipantId;
+    protected CommunicationUserIdentifier secondParticipantId;
+    protected CommunicationUserIdentifier thirdParticipantId;
+
+    protected RoomParticipant firstParticipant;
+    protected RoomParticipant secondParticipant;
+    protected RoomParticipant thirdParticipant;
+    protected RoomParticipant firstChangeParticipant;
+    protected RoomParticipant secondChangeParticipant;
+    protected RoomParticipant validateParticipant1;
+    protected RoomParticipant validateParticipant2;
+    protected RoomParticipant validateParticipant3;
+
 
     protected static final String NONEXIST_ROOM_ID = "NotExistingRoomID";
 
@@ -110,10 +113,30 @@ public class RoomsTestBase extends TestBase {
         return builder;
     }
 
-    protected RoomsClientBuilder getRoomsClientWithConnectionString(HttpClient httpClient) {
+    protected RoomsClientBuilder getRoomsClientWithConnectionString(HttpClient httpClient, RoomsServiceVersion version) {
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.connectionString(CONNECTION_STRING)
+                .serviceVersion(version)
                 .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
+
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(CONNECTION_STRING);
+        String endpoint = connectionStringObject.getEndpoint();
+        String accessKey = connectionStringObject.getAccessKey();
+        builder.endpoint(endpoint)
+            .credential(new AzureKeyCredential(accessKey))
+            .serviceVersion(CommunicationIdentityServiceVersion.V2021_03_07)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -138,6 +161,39 @@ public class RoomsTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
+    }
+
+    protected void createUsers(HttpClient httpClient) {
+        communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
+        firstParticipantId = communicationClient.createUser();
+        secondParticipantId = communicationClient.createUser();
+        thirdParticipantId = communicationClient.createUser();
+
+        firstParticipant = new RoomParticipant(firstParticipantId.getId(), "Presenter");
+        secondParticipant = new RoomParticipant(secondParticipantId.getId(), "Attendee");
+        thirdParticipant = new RoomParticipant(thirdParticipantId.getId(), "Consumer");
+
+        firstChangeParticipant = new RoomParticipant(firstParticipantId.getId(), "Consumer");
+        secondChangeParticipant = new RoomParticipant(firstParticipantId.getId(), "Consumer");
+
+        validateParticipant1 = new RoomParticipant(firstParticipant.getIdentifier(), null);
+        validateParticipant2 = new RoomParticipant(secondParticipant.getIdentifier(), null);
+        validateParticipant3 = new RoomParticipant(thirdParticipant.getIdentifier(), null);
+
+        participants1 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
+        participants2 = Arrays.asList(firstParticipant, secondParticipant);
+        participants3 = Arrays.asList(secondParticipant);
+        participants4 = Arrays.asList(firstParticipant, secondParticipant);
+        participants5 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
+        participants6 = Arrays.asList(secondParticipant, thirdParticipant);
+        participants7 = Arrays.asList();
+        badParticipant = Arrays.asList(new RoomParticipant("Dummy_Mri", "Consumer"));
+        participantsWithRoleUpdates = Arrays.asList(firstChangeParticipant, secondChangeParticipant);
+    }
+    protected void cleanUpUsers() {
+        communicationClient.deleteUser(firstParticipantId);
+        communicationClient.deleteUser(secondParticipantId);
+        communicationClient.deleteUser(thirdParticipantId);
     }
 
     protected RoomsClientBuilder addLoggingPolicy(RoomsClientBuilder builder, String testName) {

@@ -9,7 +9,15 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Communication Rooms Service supported by this client library.
  */
 public enum RoomsServiceVersion implements ServiceVersion {
-    V2021_04_07("2021-04-07");
+    /**
+     * Service version {@code 2021-04-07}
+     */
+    V2021_04_07_Preview("2021-04-07"),
+
+    /**
+     * Service version {@code 2022-02-01}
+     */
+    V2022_02_01_Preview("2022-02-01");
 
     private final String version;
 
@@ -31,6 +39,6 @@ public enum RoomsServiceVersion implements ServiceVersion {
      * @return the latest {@link RoomsServiceVersion}
      */
     public static RoomsServiceVersion getLatest() {
-        return V2021_04_07;
+        return V2022_02_01_Preview;
     }
 }

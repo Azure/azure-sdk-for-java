@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CommunicationError model. */
+/** The Communication Services error. */
 @Fluent
 public final class CommunicationError {
     /*
@@ -24,21 +24,21 @@ public final class CommunicationError {
     private String message;
 
     /*
-     * The error target.
+     * If applicable, would be used to indicate the property causing the error.
      */
-    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "target")
     private String target;
 
     /*
      * Further details about specific errors that led to this error.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "details")
     private List<CommunicationError> details;
 
     /*
-     * The inner error if any.
+     * The Communication Services error.
      */
-    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "innerError")
     private CommunicationError innerError;
 
     /**
@@ -82,12 +82,23 @@ public final class CommunicationError {
     }
 
     /**
-     * Get the target property: The error target.
+     * Get the target property: If applicable, would be used to indicate the property causing the error.
      *
      * @return the target value.
      */
     public String getTarget() {
         return this.target;
+    }
+
+    /**
+     * Set the target property: If applicable, would be used to indicate the property causing the error.
+     *
+     * @param target the target value to set.
+     * @return the CommunicationError object itself.
+     */
+    public CommunicationError setTarget(String target) {
+        this.target = target;
+        return this;
     }
 
     /**
@@ -100,11 +111,33 @@ public final class CommunicationError {
     }
 
     /**
-     * Get the innerError property: The inner error if any.
+     * Set the details property: Further details about specific errors that led to this error.
+     *
+     * @param details the details value to set.
+     * @return the CommunicationError object itself.
+     */
+    public CommunicationError setDetails(List<CommunicationError> details) {
+        this.details = details;
+        return this;
+    }
+
+    /**
+     * Get the innerError property: The Communication Services error.
      *
      * @return the innerError value.
      */
     public CommunicationError getInnerError() {
         return this.innerError;
+    }
+
+    /**
+     * Set the innerError property: The Communication Services error.
+     *
+     * @param innerError the innerError value to set.
+     * @return the CommunicationError object itself.
+     */
+    public CommunicationError setInnerError(CommunicationError innerError) {
+        this.innerError = innerError;
+        return this;
     }
 }

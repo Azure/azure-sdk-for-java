@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The RoomModel model. */
+/** The meeting room. */
 @Fluent
 public final class RoomModel {
     /*
@@ -43,7 +43,7 @@ public final class RoomModel {
      * Collection of identities invited to the room.
      */
     @JsonProperty(value = "participants")
-    private Map<String, Object> participants;
+    private Map<String, RoomParticipantInternal> participants;
 
     /**
      * Get the id property: Unique identifier of a room. This id is server generated.
@@ -136,7 +136,7 @@ public final class RoomModel {
      *
      * @return the participants value.
      */
-    public Map<String, Object> getParticipants() {
+    public Map<String, RoomParticipantInternal> getParticipants() {
         return this.participants;
     }
 
@@ -146,7 +146,7 @@ public final class RoomModel {
      * @param participants the participants value to set.
      * @return the RoomModel object itself.
      */
-    public RoomModel setParticipants(Map<String, Object> participants) {
+    public RoomModel setParticipants(Map<String, RoomParticipantInternal> participants) {
         this.participants = participants;
         return this;
     }

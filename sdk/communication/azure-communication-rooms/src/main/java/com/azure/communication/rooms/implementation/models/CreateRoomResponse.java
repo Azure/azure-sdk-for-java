@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The CreateRoomResponse model. */
+/** Response payload for create room operation. */
 @Fluent
 public final class CreateRoomResponse {
     /*
@@ -21,7 +21,7 @@ public final class CreateRoomResponse {
      * Collection of participants failed to be added to the room
      */
     @JsonProperty(value = "invalidParticipants")
-    private Map<String, Object> invalidParticipants;
+    private Map<String, RoomParticipantInternal> invalidParticipants;
 
     /**
      * Get the room property: The meeting room.
@@ -48,7 +48,7 @@ public final class CreateRoomResponse {
      *
      * @return the invalidParticipants value.
      */
-    public Map<String, Object> getInvalidParticipants() {
+    public Map<String, RoomParticipantInternal> getInvalidParticipants() {
         return this.invalidParticipants;
     }
 
@@ -58,7 +58,7 @@ public final class CreateRoomResponse {
      * @param invalidParticipants the invalidParticipants value to set.
      * @return the CreateRoomResponse object itself.
      */
-    public CreateRoomResponse setInvalidParticipants(Map<String, Object> invalidParticipants) {
+    public CreateRoomResponse setInvalidParticipants(Map<String, RoomParticipantInternal> invalidParticipants) {
         this.invalidParticipants = invalidParticipants;
         return this;
     }

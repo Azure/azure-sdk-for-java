@@ -5,8 +5,9 @@ package com.azure.communication.rooms;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.RoomParticipant;
@@ -75,10 +76,10 @@ public class ReadmeSamples {
     public void createRoomWithValidInput() {
         OffsetDateTime validFrom = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
         OffsetDateTime validUntil = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-        Map<String, Object> participants = new HashMap<>();
+        List<RoomParticipant> participants = new ArrayList<>();
         // Add two participants
-        participants.put("<ACS User MRI identity 1>", new RoomParticipant());
-        participants.put("<ACS User MRI identity 2>", new RoomParticipant());
+        participants.add(new RoomParticipant("<ACS User MRI identity 1>", "Prebuilt Role Name"));
+        participants.add(new RoomParticipant("<ACS User MRI identity 2>", "Prebuilt Role Name"));
 
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
         CommunicationRoom roomResult = roomsClient.createRoom(validFrom, validUntil, participants);
@@ -88,20 +89,20 @@ public class ReadmeSamples {
     public void updateRoomWithRoomId() {
         OffsetDateTime validFrom = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
         OffsetDateTime validUntil = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-        Map<String, Object> participants = new HashMap<>();
-        participants.put("<ACS User MRI identity 1>", new RoomParticipant());
+        List<RoomParticipant> participants = new ArrayList<>();
+        participants.add(new RoomParticipant("<ACS User MRI identity 1>", "Prebuilt Role Name"));
         // Delete one participant
-        participants.put("<ACS User MRI identity 2>", null);
+        participants.add(new RoomParticipant("<ACS User MRI identity 2>", "Prebuilt Role Name"));
+
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
         try {
-            CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id in String>", validFrom, validUntil, participants);
+            CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id in String>", validFrom, validUntil);
             System.out.println("Room Id: " + roomResult.getRoomId());
 
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
-
     }
 
     public void getRoomWithRoomId() {
@@ -124,14 +125,55 @@ public class ReadmeSamples {
         }
     }
 
-    public void createRoomTroubleShooting() {
+    public void addRoomParticipantsWithRoomId() {
+        RoomParticipant user1 = new RoomParticipant("8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000000e-3240-55cf-9806-113a0d001dd9", "Presenter");
+        RoomParticipant user2 = new RoomParticipant("8:acs:b6372803-0c35-4ec0-833b-c19b798cef2d_0000000e-3240-55cf-9806-113a0d001dd9", "Attendee");
+        RoomParticipant user3 = new RoomParticipant("8:acs:b6372803-0c35-4ec0-833b-c19b798cef3d_0000000e-3240-55cf-9806-113a0d001dd9", "Organizer");
+
+        List<RoomParticipant> participants = new ArrayList<RoomParticipant>(Arrays.asList(user1, user2, user3));
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
         try {
+            CommunicationRoom addedParticipantRoom =  roomsClient.addParticipants("<Room Id>", participants);
+            System.out.println("Room Id: " + addedParticipantRoom.getRoomId());
 
+        } catch (RuntimeException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void removeRoomParticipantsWithRoomId() {
+        RoomParticipant user1 = new RoomParticipant("8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000000e-3240-55cf-9806-113a0d001dd9", "Presenter");
+        RoomParticipant user2 = new RoomParticipant("8:acs:b6372803-0c35-4ec0-833b-c19b798cef2d_0000000e-3240-55cf-9806-113a0d001dd9", "Attendee");
+
+        List<RoomParticipant> participants = new ArrayList<RoomParticipant>(Arrays.asList(user1, user2));
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        try {
+            CommunicationRoom removedParticipantRoom =  roomsClient.removeParticipants("<Room Id>", participants);
+            System.out.println("Room Id: " + removedParticipantRoom.getRoomId());
+
+        } catch (RuntimeException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void deleteAllParticipantsWithEmptyPayload() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+        try {
+            CommunicationRoom deleteAllParticipantsRoom =  roomsClient.removeAllParticipants("<Room Id>");
+            System.out.println("Room Id: " + deleteAllParticipantsRoom.getRoomId());
+        } catch (RuntimeException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void createRoomTroubleShooting() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+        try {
             OffsetDateTime validFrom = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
             OffsetDateTime validUntil = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-            Map<String, Object> participants = new HashMap<>();
+            List<RoomParticipant> participants = new ArrayList<RoomParticipant>();
 
             Response<CommunicationRoom> roomResult = roomsClient.createRoomWithResponse(validFrom, validUntil, participants, null);
 

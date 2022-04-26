@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the AzureCommunicationRoomService type. */
 public final class AzureCommunicationRoomServiceImpl {
@@ -48,6 +50,18 @@ public final class AzureCommunicationRoomServiceImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** The RoomsImpl object to access its operations. */
     private final RoomsImpl rooms;
 
@@ -60,24 +74,47 @@ public final class AzureCommunicationRoomServiceImpl {
         return this.rooms;
     }
 
-    /** Initializes an instance of AzureCommunicationRoomService client. */
-    AzureCommunicationRoomServiceImpl(String endpoint) {
+    /**
+     * Initializes an instance of AzureCommunicationRoomService client.
+     *
+     * @param endpoint The endpoint of the Azure Communication resource.
+     * @param apiVersion Api Version.
+     */
+    AzureCommunicationRoomServiceImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                endpoint);
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint,
+                apiVersion);
     }
 
     /**
      * Initializes an instance of AzureCommunicationRoomService client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The endpoint of the Azure Communication resource.
+     * @param apiVersion Api Version.
      */
-    AzureCommunicationRoomServiceImpl(HttpPipeline httpPipeline, String endpoint) {
+    AzureCommunicationRoomServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    }
+
+    /**
+     * Initializes an instance of AzureCommunicationRoomService client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The endpoint of the Azure Communication resource.
+     * @param apiVersion Api Version.
+     */
+    AzureCommunicationRoomServiceImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-07";
+        this.apiVersion = apiVersion;
         this.rooms = new RoomsImpl(this);
     }
 }
