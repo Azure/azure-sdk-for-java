@@ -24,7 +24,7 @@ import java.util.Objects;
 /**
  * {@link HttpClient} implementation for the Vert.x {@link WebClient}.
  */
-public class VertxAsyncHttpClient implements HttpClient {
+public final class VertxAsyncHttpClient implements HttpClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClient.class);
     final WebClient client;
