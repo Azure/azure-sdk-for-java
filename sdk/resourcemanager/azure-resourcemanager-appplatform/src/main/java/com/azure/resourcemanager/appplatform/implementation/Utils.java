@@ -100,7 +100,7 @@ class Utils {
             this.fractionMatcher = fractionMatcher;
         }
 
-        public static CpuMatcher create(String cpu) {
+        static CpuMatcher create(String cpu) {
             Matcher integerMatcher = CPU_INTEGER.matcher(cpu);
             Matcher fractionMatcher = CPU_FRACTION.matcher(cpu);
             return new CpuMatcher(
@@ -113,11 +113,11 @@ class Utils {
             return integerMatcher == null && fractionMatcher == null;
         }
 
-        public boolean matchFraction() {
+        boolean matchFraction() {
             return this.fractionMatcher != null;
         }
 
-        public String getFraction() {
+        String getFraction() {
             return this.fractionMatcher.group(1);
         }
     }
@@ -133,7 +133,7 @@ class Utils {
             this.mbMatcher = mbMatcher;
         }
 
-        public static MemoryMatcher create(String memory) {
+        static MemoryMatcher create(String memory) {
             Matcher gbMatcher = MEMORY_GB.matcher(memory);
             Matcher mbMatcher = MEMORY_MB.matcher(memory);
             return new MemoryMatcher(
@@ -146,15 +146,15 @@ class Utils {
             return gbMatcher == null && mbMatcher == null;
         }
 
-        public boolean matchGB() {
+        boolean matchGB() {
             return this.gbMatcher != null;
         }
 
-        public String getGBString() {
+        String getGBString() {
             return gbMatcher.group(1);
         }
 
-        public String getMBString() {
+        String getMBString() {
             return mbMatcher.group(1);
         }
     }
