@@ -62,6 +62,7 @@ local.properties
 target
 .idea
 *.iml
+.gradle
 
 # Mac OS #
 .DS_Store
