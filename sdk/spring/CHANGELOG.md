@@ -1,6 +1,7 @@
 # Release History
 
 ## 4.1.0-beta.1 (Unreleased)
+- This beta now is compatible with Spring Boot 2.5.0-2.5.13, 2.6.0-2.6.7. 
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-keyvault-certificates`. This starter supports the auto-configuration of Azure Key Vault `CertificateClient` and `CertificateAsyncClient`. 
