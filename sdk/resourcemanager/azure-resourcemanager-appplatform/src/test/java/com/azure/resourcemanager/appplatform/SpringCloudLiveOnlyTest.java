@@ -83,7 +83,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withCpu(2)
             .withMemory(4)
             .withRuntime(RuntimeVersion.JAVA_11)
-            .withJvmOptions("Xms512m")
+            .withJvmOptions("-Xms512m")
             .attach()
             .withDefaultPublicEndpoint()
             .create();
@@ -94,7 +94,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         SpringAppDeployment deployment = app.getActiveDeployment();
         Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.runtimeVersion());
-        Assertions.assertEquals("Xms512m", deployment.jvmOptions());
+        Assertions.assertEquals("-Xms512m", deployment.jvmOptions());
 
         Assertions.assertTrue(requestSuccess(app.url()));
 
@@ -267,7 +267,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withInstance(2)
             .withCpu(0.5)
             .withMemory(0.5)
-            .withJvmOptions("Xms256m")
+            .withJvmOptions("-DskipTests=true")
             .attach()
             .withDefaultPublicEndpoint()
             .withConfigurationServiceBinding()
@@ -276,7 +276,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         SpringAppDeployment deployment = app.deployments().getByName(deploymentName);
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
         String jvmOptions = deployment.jvmOptions();
-        Assertions.assertEquals(jvmOptions, "Xms256m");
+        Assertions.assertEquals(jvmOptions, "-DskipTests=true");
 
         deployment.update()
             .withConfigFilePatterns(apiGatewayConfigFilePatterns)
