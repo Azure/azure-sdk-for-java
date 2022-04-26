@@ -1806,6 +1806,39 @@ class FileAPITests extends APISpec {
         props.getContentType() == "mytype"
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Rename headers illegal"() {
+        when:
+        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setCacheControl("foo"))
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentEncoding("foo"))
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentDisposition("foo"))
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentLanguage("foo"))
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentMd5("foo".getBytes()))
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,

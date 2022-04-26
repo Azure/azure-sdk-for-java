@@ -1,0 +1,64 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/d98fb423d98fb4238035430848e787e46baa4dbd89?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "888cd959-8c82-4e80-b3c4-789bef723fe0"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
+      "ErrorMessage" : "Connection refused: no further information: localhost/127.0.0.1:8888"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/d98fb423d98fb4238035430848e787e46baa4dbd89?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "888cd959-8c82-4e80-b3c4-789bef723fe0"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
+      "ErrorMessage" : "Connection refused: no further information: localhost/127.0.0.1:8888"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/d98fb423d98fb4238035430848e787e46baa4dbd89?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "888cd959-8c82-4e80-b3c4-789bef723fe0"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "io.netty.channel.AbstractChannel$AnnotatedConnectException",
+      "ErrorMessage" : "Connection refused: no further information: localhost/127.0.0.1:8888"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/d98fb423d98fb4238035430848e787e46baa4dbd89?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "888cd959-8c82-4e80-b3c4-789bef723fe0"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA27D242E77CFB",
+      "Last-Modified" : "Tue, 26 Apr 2022 22:15:24 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "97b0c33f-d01a-0055-27bb-59ca49000000",
+      "x-ms-client-request-id" : "888cd959-8c82-4e80-b3c4-789bef723fe0",
+      "Date" : "Tue, 26 Apr 2022 22:15:24 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "d98fb423d98fb4238035430848e787e46baa4dbd89", "d98fb423d98fb423803292849aacbe9268eb421f9a" ]
+}
