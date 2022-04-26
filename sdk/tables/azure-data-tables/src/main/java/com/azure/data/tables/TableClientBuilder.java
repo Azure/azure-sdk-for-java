@@ -104,6 +104,7 @@ public final class TableClientBuilder implements
     private TableServiceVersion version;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
+    private boolean enableTenantDiscovery = false;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableClient} and
@@ -197,7 +198,7 @@ public final class TableClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
             tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
-            perCallPolicies, perRetryPolicies, configuration, logger);
+            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
 
         return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
             TRANSACTIONAL_BATCH_SERIALIZER);
@@ -570,6 +571,20 @@ public final class TableClientBuilder implements
         }
 
         this.tableName = tableName;
+
+        return this;
+    }
+
+    /**
+     * Sets a flag indicating if tenant discovery should be enabled when authenticating with the Storage Table Service.
+     * This is set to {@code false} by default.
+     *
+     * @param enabled Value indicating whether tenant discovery is enabled or not.
+     *
+     * @return The updated {@link TableClientBuilder}.
+     */
+    public TableClientBuilder enableTenantDiscovery(boolean enabled) {
+        this.enableTenantDiscovery = enabled;
 
         return this;
     }
