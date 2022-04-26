@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RestoreTargetInfo")
 @Fluent
 public final class RestoreTargetInfo extends RestoreTargetInfoBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreTargetInfo.class);
-
     /*
      * Datasource Information of target DS
      */
@@ -119,7 +116,7 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
     public void validate() {
         super.validate();
         if (datasourceInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property datasourceInfo in model RestoreTargetInfo"));
@@ -133,4 +130,6 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
             datasourceAuthCredentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestoreTargetInfo.class);
 }

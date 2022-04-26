@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** TriggerBackupRequest Trigger backup request. */
 @Fluent
 public final class TriggerBackupRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerBackupRequest.class);
-
     /*
      * AdHocBackupRuleOptions Name for the Rule of the Policy which needs to be
      * applied for this backup
@@ -50,7 +47,7 @@ public final class TriggerBackupRequest {
      */
     public void validate() {
         if (backupRuleOptions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property backupRuleOptions in model TriggerBackupRequest"));
@@ -58,4 +55,6 @@ public final class TriggerBackupRequest {
             backupRuleOptions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerBackupRequest.class);
 }

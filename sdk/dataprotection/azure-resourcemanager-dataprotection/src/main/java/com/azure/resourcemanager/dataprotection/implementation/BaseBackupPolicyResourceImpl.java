@@ -44,15 +44,15 @@ public final class BaseBackupPolicyResourceImpl
         return this.serviceManager;
     }
 
-    private String vaultName;
-
     private String resourceGroupName;
+
+    private String vaultName;
 
     private String backupPolicyName;
 
-    public BaseBackupPolicyResourceImpl withExistingBackupVault(String vaultName, String resourceGroupName) {
-        this.vaultName = vaultName;
+    public BaseBackupPolicyResourceImpl withExistingBackupVault(String resourceGroupName, String vaultName) {
         this.resourceGroupName = resourceGroupName;
+        this.vaultName = vaultName;
         return this;
     }
 
@@ -62,7 +62,7 @@ public final class BaseBackupPolicyResourceImpl
                 .serviceClient()
                 .getBackupPolicies()
                 .createOrUpdateWithResponse(
-                    vaultName, resourceGroupName, backupPolicyName, this.innerModel(), Context.NONE)
+                    resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -72,7 +72,7 @@ public final class BaseBackupPolicyResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupPolicies()
-                .createOrUpdateWithResponse(vaultName, resourceGroupName, backupPolicyName, this.innerModel(), context)
+                .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -94,7 +94,7 @@ public final class BaseBackupPolicyResourceImpl
                 .serviceClient()
                 .getBackupPolicies()
                 .createOrUpdateWithResponse(
-                    vaultName, resourceGroupName, backupPolicyName, this.innerModel(), Context.NONE)
+                    resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -104,7 +104,7 @@ public final class BaseBackupPolicyResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupPolicies()
-                .createOrUpdateWithResponse(vaultName, resourceGroupName, backupPolicyName, this.innerModel(), context)
+                .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -114,8 +114,8 @@ public final class BaseBackupPolicyResourceImpl
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
         this.backupPolicyName = Utils.getValueFromIdByName(innerObject.id(), "backupPolicies");
     }
 
@@ -124,7 +124,7 @@ public final class BaseBackupPolicyResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupPolicies()
-                .getWithResponse(vaultName, resourceGroupName, backupPolicyName, Context.NONE)
+                .getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -134,7 +134,7 @@ public final class BaseBackupPolicyResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupPolicies()
-                .getWithResponse(vaultName, resourceGroupName, backupPolicyName, context)
+                .getWithResponse(resourceGroupName, vaultName, backupPolicyName, context)
                 .getValue();
         return this;
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupPolicies Get. */
 public final class BackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/GetBackupPolicy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/PolicyCRUD/GetBackupPolicy.json
      */
     /**
      * Sample code: Get BackupPolicy.
@@ -17,6 +17,6 @@ public final class BackupPoliciesGetSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupPolicies().getWithResponse("PrivatePreviewVault", "000pikumar", "OSSDBPolicy", Context.NONE);
+        manager.backupPolicies().getWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy", Context.NONE);
     }
 }

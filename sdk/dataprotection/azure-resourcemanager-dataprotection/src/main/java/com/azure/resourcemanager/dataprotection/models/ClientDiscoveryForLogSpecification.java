@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ClientDiscoveryForLogSpecification Class to represent shoebox log specification in json client discovery. */
 @Fluent
 public final class ClientDiscoveryForLogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryForLogSpecification.class);
-
     /*
      * blob duration of shoebox log specification
      */

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.dataprotection.models.RehydrationPriority;
 /** Samples for BackupInstances TriggerRehydrate. */
 public final class BackupInstancesTriggerRehydrateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerRehydrate.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/TriggerRehydrate.json
      */
     /**
      * Sample code: Trigger Rehydrate.

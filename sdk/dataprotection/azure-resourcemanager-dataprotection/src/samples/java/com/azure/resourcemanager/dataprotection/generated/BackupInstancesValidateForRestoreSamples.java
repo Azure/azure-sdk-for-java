@@ -19,7 +19,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObj
 /** Samples for BackupInstances ValidateForRestore. */
 public final class BackupInstancesValidateForRestoreSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/ValidateRestore.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/ValidateRestore.json
      */
     /**
      * Sample code: Validate Restore.
@@ -30,8 +30,8 @@ public final class BackupInstancesValidateForRestoreSamples {
         manager
             .backupInstances()
             .validateForRestore(
-                "PratikPrivatePreviewVault1",
                 "000pikumar",
+                "PratikPrivatePreviewVault1",
                 "testInstance1",
                 new ValidateRestoreRequestObject()
                     .withRestoreRequestObject(
@@ -42,17 +42,17 @@ public final class BackupInstancesValidateForRestoreSamples {
                                     .withRestoreLocation("southeastasia")
                                     .withDatasourceInfo(
                                         new Datasource()
-                                            .withDatasourceType("OssDB")
+                                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
                                             .withObjectType("Datasource")
                                             .withResourceId(
-                                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
+                                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb")
                                             .withResourceLocation("")
-                                            .withResourceName("testdb")
+                                            .withResourceName("targetdb")
                                             .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
                                             .withResourceUri(""))
                                     .withDatasourceSetInfo(
                                         new DatasourceSet()
-                                            .withDatasourceType("OssDB")
+                                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
                                             .withObjectType("DatasourceSet")
                                             .withResourceId(
                                                 "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
@@ -67,6 +67,8 @@ public final class BackupInstancesValidateForRestoreSamples {
                                                     .withUri("https://samplevault.vault.azure.net/secrets/credentials")
                                                     .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))))
                             .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                            .withSourceResourceId(
+                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
                             .withRecoveryPointId("hardcodedRP")),
                 Context.NONE);
     }

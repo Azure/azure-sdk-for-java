@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DppIdentityDetails Identity details. */
 @Fluent
 public final class DppIdentityDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppIdentityDetails.class);
-
     /*
      * The object ID of the service principal object for the managed identity
      * that is used to grant role-based access to an Azure resource.

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AzureBackupDiscreteRecoveryPoint")
 @Fluent
 public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupDiscreteRecoveryPoint.class);
-
     /*
      * The friendlyName property.
      */
@@ -267,10 +264,12 @@ public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryP
             recoveryPointDataStoresDetails().forEach(e -> e.validate());
         }
         if (recoveryPointTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property recoveryPointTime in model AzureBackupDiscreteRecoveryPoint"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupDiscreteRecoveryPoint.class);
 }

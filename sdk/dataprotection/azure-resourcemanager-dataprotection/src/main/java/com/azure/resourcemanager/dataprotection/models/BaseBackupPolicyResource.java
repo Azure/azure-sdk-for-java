@@ -64,13 +64,13 @@ public interface BaseBackupPolicyResource {
         /** The stage of the BaseBackupPolicyResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
-             * Specifies vaultName, resourceGroupName.
+             * Specifies resourceGroupName, vaultName.
              *
-             * @param vaultName The name of the backup vault.
              * @param resourceGroupName The name of the resource group where the backup vault is present.
+             * @param vaultName The name of the backup vault.
              * @return the next definition stage.
              */
-            WithCreate withExistingBackupVault(String vaultName, String resourceGroupName);
+            WithCreate withExistingBackupVault(String resourceGroupName, String vaultName);
         }
         /**
          * The stage of the BaseBackupPolicyResource definition which contains all the minimum required properties for

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RestorableTimeRange model. */
 @Fluent
 public final class RestorableTimeRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableTimeRange.class);
-
     /*
      * Start time for the available restore range
      */
@@ -99,14 +96,16 @@ public final class RestorableTimeRange {
      */
     public void validate() {
         if (startTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property startTime in model RestorableTimeRange"));
         }
         if (endTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property endTime in model RestorableTimeRange"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestorableTimeRange.class);
 }

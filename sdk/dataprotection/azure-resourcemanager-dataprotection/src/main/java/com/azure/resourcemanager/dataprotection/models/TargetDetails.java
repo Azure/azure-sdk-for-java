@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class encapsulating target details, used where the destination is not a datasource. */
 @Fluent
 public final class TargetDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetDetails.class);
-
     /*
      * Restore operation may create multiple files inside location pointed by
      * Url
@@ -108,20 +105,22 @@ public final class TargetDetails {
      */
     public void validate() {
         if (filePrefix() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filePrefix in model TargetDetails"));
         }
         if (restoreTargetLocationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreTargetLocationType in model TargetDetails"));
         }
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property url in model TargetDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetDetails.class);
 }

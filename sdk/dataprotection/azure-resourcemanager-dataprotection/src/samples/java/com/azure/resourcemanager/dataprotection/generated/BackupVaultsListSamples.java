@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupVaults List. */
 public final class BackupVaultsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/GetBackupVaultsInSubscription.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/VaultCRUD/GetBackupVaultsInSubscription.json
      */
     /**
      * Sample code: Get BackupVaults in Subscription.

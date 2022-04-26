@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesResponse;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** List Restore Ranges Response. */
 @Fluent
 public final class AzureBackupFindRestorableTimeRangesResponseResourceInner extends DppResource {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(AzureBackupFindRestorableTimeRangesResponseResourceInner.class);
-
     /*
      * AzureBackupFindRestorableTimeRangesResponseResource properties
      */

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a secret store resource. */
 @Fluent
 public final class SecretStoreResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretStoreResource.class);
-
     /*
      * Uri to get to the resource
      */
@@ -25,6 +22,12 @@ public final class SecretStoreResource {
      */
     @JsonProperty(value = "secretStoreType", required = true)
     private SecretStoreType secretStoreType;
+
+    /*
+     * Gets or sets value stored in secret store resource
+     */
+    @JsonProperty(value = "value")
+    private String value;
 
     /**
      * Get the uri property: Uri to get to the resource.
@@ -67,16 +70,38 @@ public final class SecretStoreResource {
     }
 
     /**
+     * Get the value property: Gets or sets value stored in secret store resource.
+     *
+     * @return the value value.
+     */
+    public String value() {
+        return this.value;
+    }
+
+    /**
+     * Set the value property: Gets or sets value stored in secret store resource.
+     *
+     * @param value the value value to set.
+     * @return the SecretStoreResource object itself.
+     */
+    public SecretStoreResource withValue(String value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (secretStoreType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretStoreType in model SecretStoreResource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecretStoreResource.class);
 }

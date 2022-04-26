@@ -20,7 +20,7 @@ public interface ResourceGuardsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceGuardResourceInner> list();
@@ -32,7 +32,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceGuardResourceInner> list(Context context);
@@ -44,7 +44,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName);
@@ -57,7 +57,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -87,7 +87,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceGuardResourceInner> putWithResponse(
@@ -115,7 +115,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceGuardResourceInner> getByResourceGroupWithResponse(
@@ -142,7 +142,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceGuardsName, Context context);
@@ -172,7 +172,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceGuardResourceInner> patchWithResponse(
@@ -187,7 +187,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(
@@ -203,7 +203,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(
@@ -218,7 +218,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(
@@ -234,7 +234,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(
@@ -249,7 +249,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(
@@ -265,7 +265,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(
@@ -280,7 +280,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(
@@ -296,7 +296,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(
@@ -311,7 +311,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(
@@ -327,7 +327,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(
@@ -342,7 +342,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(
@@ -358,7 +358,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(
@@ -391,7 +391,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DppBaseResourceInner> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
@@ -424,7 +424,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DppBaseResourceInner> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
@@ -457,7 +457,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DppBaseResourceInner> getDefaultBackupSecurityPinRequestsObjectWithResponse(
@@ -490,7 +490,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DppBaseResourceInner> getDefaultDeleteProtectedItemRequestsObjectWithResponse(
@@ -523,7 +523,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DppBaseResourceInner> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
@@ -556,7 +556,7 @@ public interface ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DppBaseResourceInner> getDefaultUpdateProtectedItemRequestsObjectWithResponse(

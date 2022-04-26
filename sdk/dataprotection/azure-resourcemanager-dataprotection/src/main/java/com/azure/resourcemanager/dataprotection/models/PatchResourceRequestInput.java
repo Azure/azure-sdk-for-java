@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,13 +12,17 @@ import java.util.Map;
 /** PatchResourceRequestInput Patch Request content for Microsoft.DataProtection resources. */
 @Fluent
 public final class PatchResourceRequestInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchResourceRequestInput.class);
-
     /*
      * DppIdentityDetails Input Managed Identity Details
      */
     @JsonProperty(value = "identity")
     private DppIdentityDetails identity;
+
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private PatchBackupVaultInput properties;
 
     /*
      * Resource tags.
@@ -46,6 +48,26 @@ public final class PatchResourceRequestInput {
      */
     public PatchResourceRequestInput withIdentity(DppIdentityDetails identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the properties property: Resource properties.
+     *
+     * @return the properties value.
+     */
+    public PatchBackupVaultInput properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Resource properties.
+     *
+     * @param properties the properties value to set.
+     * @return the PatchResourceRequestInput object itself.
+     */
+    public PatchResourceRequestInput withProperties(PatchBackupVaultInput properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -77,6 +99,9 @@ public final class PatchResourceRequestInput {
     public void validate() {
         if (identity() != null) {
             identity().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

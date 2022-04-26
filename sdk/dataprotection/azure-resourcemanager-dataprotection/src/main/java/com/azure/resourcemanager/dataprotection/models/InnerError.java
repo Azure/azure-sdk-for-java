@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** InnerError Inner Error. */
 @Fluent
 public final class InnerError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InnerError.class);
-
     /*
      * Any Key value pairs that can be provided to the client for additional
      * verbose information.

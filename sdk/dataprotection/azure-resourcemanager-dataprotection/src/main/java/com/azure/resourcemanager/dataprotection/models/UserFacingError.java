@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Error object used by layers that have access to localized content, and propagate that to user. */
 @Fluent
 public final class UserFacingError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserFacingError.class);
-
     /*
      * Unique code for this error
      */

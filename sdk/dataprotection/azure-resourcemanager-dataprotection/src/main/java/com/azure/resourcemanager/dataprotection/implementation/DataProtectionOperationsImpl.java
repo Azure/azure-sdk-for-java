@@ -11,10 +11,9 @@ import com.azure.resourcemanager.dataprotection.fluent.DataProtectionOperationsC
 import com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryValueForSingleApiInner;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryValueForSingleApi;
 import com.azure.resourcemanager.dataprotection.models.DataProtectionOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataProtectionOperationsImpl implements DataProtectionOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataProtectionOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataProtectionOperationsImpl.class);
 
     private final DataProtectionOperationsClient innerClient;
 

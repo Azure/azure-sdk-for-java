@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** TargetCopySetting Target copy settings. */
 @Fluent
 public final class TargetCopySetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetCopySetting.class);
-
     /*
      * CopyOption It can be CustomCopyOption or ImmediateCopyOption.
      */
@@ -73,18 +70,20 @@ public final class TargetCopySetting {
      */
     public void validate() {
         if (copyAfter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property copyAfter in model TargetCopySetting"));
         } else {
             copyAfter().validate();
         }
         if (dataStore() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataStore in model TargetCopySetting"));
         } else {
             dataStore().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetCopySetting.class);
 }

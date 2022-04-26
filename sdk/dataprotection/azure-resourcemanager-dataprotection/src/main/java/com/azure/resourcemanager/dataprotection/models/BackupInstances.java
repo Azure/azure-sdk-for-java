@@ -13,86 +13,86 @@ public interface BackupInstances {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instances belonging to a backup vault.
+     * @return a backup instances belonging to a backup vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BackupInstanceResource> list(String vaultName, String resourceGroupName);
+    PagedIterable<BackupInstanceResource> list(String resourceGroupName, String vaultName);
 
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instances belonging to a backup vault.
+     * @return a backup instances belonging to a backup vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BackupInstanceResource> list(String vaultName, String resourceGroupName, Context context);
+    PagedIterable<BackupInstanceResource> list(String resourceGroupName, String vaultName, Context context);
 
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup instance with name in a backup vault.
      */
-    BackupInstanceResource get(String vaultName, String resourceGroupName, String backupInstanceName);
+    BackupInstanceResource get(String resourceGroupName, String vaultName, String backupInstanceName);
 
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instance with name in a backup vault.
+     * @return a backup instance with name in a backup vault along with {@link Response}.
      */
     Response<BackupInstanceResource> getWithResponse(
-        String vaultName, String resourceGroupName, String backupInstanceName, Context context);
+        String resourceGroupName, String vaultName, String backupInstanceName, Context context);
 
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String vaultName, String resourceGroupName, String backupInstanceName);
+    void delete(String resourceGroupName, String vaultName, String backupInstanceName);
 
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String vaultName, String resourceGroupName, String backupInstanceName, Context context);
+    void delete(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
 
     /**
      * Trigger adhoc backup.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,13 +101,13 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo adhocBackup(
-        String vaultName, String resourceGroupName, String backupInstanceName, TriggerBackupRequest parameters);
+        String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters);
 
     /**
      * Trigger adhoc backup.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -117,8 +117,8 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo adhocBackup(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         TriggerBackupRequest parameters,
         Context context);
@@ -126,8 +126,8 @@ public interface BackupInstances {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -135,13 +135,13 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo validateForBackup(
-        String vaultName, String resourceGroupName, ValidateForBackupRequest parameters);
+        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters);
 
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,7 +150,38 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo validateForBackup(
-        String vaultName, String resourceGroupName, ValidateForBackupRequest parameters, Context context);
+        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters, Context context);
+
+    /**
+     * Get result of backup instance creation operation.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param operationId The operationId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of backup instance creation operation.
+     */
+    BackupInstanceResource getBackupInstanceOperationResult(
+        String resourceGroupName, String vaultName, String backupInstanceName, String operationId);
+
+    /**
+     * Get result of backup instance creation operation.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param operationId The operationId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of backup instance creation operation along with {@link Response}.
+     */
+    Response<BackupInstanceResource> getBackupInstanceOperationResultWithResponse(
+        String resourceGroupName, String vaultName, String backupInstanceName, String operationId, Context context);
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
@@ -191,8 +222,8 @@ public interface BackupInstances {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,13 +232,13 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo triggerRestore(
-        String vaultName, String resourceGroupName, String backupInstanceName, AzureBackupRestoreRequest parameters);
+        String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters);
 
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -217,17 +248,152 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo triggerRestore(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         AzureBackupRestoreRequest parameters,
         Context context);
 
     /**
+     * This operation will resume backups for backup instance.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeBackups(String resourceGroupName, String vaultName, String backupInstanceName);
+
+    /**
+     * This operation will resume backups for backup instance.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+
+    /**
+     * This operation will resume protection for a stopped backup instance.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName);
+
+    /**
+     * This operation will resume protection for a stopped backup instance.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+
+    /**
+     * This operation will stop protection of a backup instance and data will be held forever.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName);
+
+    /**
+     * This operation will stop protection of a backup instance and data will be held forever.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+
+    /**
+     * This operation will stop backups for backup instance.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName);
+
+    /**
+     * This operation will stop backups for backup instance.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+
+    /**
+     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
+     * instance to valid state.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void syncBackupInstance(
+        String resourceGroupName, String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters);
+
+    /**
+     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
+     * instance to valid state.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The backupInstanceName parameter.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void syncBackupInstance(
+        String resourceGroupName,
+        String vaultName,
+        String backupInstanceName,
+        SyncBackupInstanceRequest parameters,
+        Context context);
+
+    /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,13 +402,13 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo validateForRestore(
-        String vaultName, String resourceGroupName, String backupInstanceName, ValidateRestoreRequestObject parameters);
+        String resourceGroupName, String vaultName, String backupInstanceName, ValidateRestoreRequestObject parameters);
 
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -252,8 +418,8 @@ public interface BackupInstances {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo validateForRestore(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupInstanceName,
         ValidateRestoreRequestObject parameters,
         Context context);
@@ -265,7 +431,7 @@ public interface BackupInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instance with name in a backup vault.
+     * @return a backup instance with name in a backup vault along with {@link Response}.
      */
     BackupInstanceResource getById(String id);
 
@@ -277,7 +443,7 @@ public interface BackupInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup instance with name in a backup vault.
+     * @return a backup instance with name in a backup vault along with {@link Response}.
      */
     Response<BackupInstanceResource> getByIdWithResponse(String id, Context context);
 

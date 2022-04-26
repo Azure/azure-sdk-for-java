@@ -12,10 +12,9 @@ import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResult
 import com.azure.resourcemanager.dataprotection.fluent.models.ExportJobsResultInner;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExportJobsOperationResultsImpl implements ExportJobsOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExportJobsOperationResultsImpl.class);
 
     private final ExportJobsOperationResultsClient innerClient;
 

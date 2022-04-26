@@ -15,10 +15,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResou
 import com.azure.resourcemanager.dataprotection.models.DppBaseResource;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuards;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceGuardsImpl implements ResourceGuards {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGuardsImpl.class);
 
     private final ResourceGuardsClient innerClient;
 
@@ -362,7 +361,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public ResourceGuardResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -370,7 +369,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -382,7 +381,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public Response<ResourceGuardResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -390,7 +389,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -402,7 +401,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -410,7 +409,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -422,7 +421,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -430,7 +429,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

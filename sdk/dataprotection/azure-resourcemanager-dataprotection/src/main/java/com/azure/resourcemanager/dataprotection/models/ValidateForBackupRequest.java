@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ValidateForBackupRequest Validate for backup request. */
 @Fluent
 public final class ValidateForBackupRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateForBackupRequest.class);
-
     /*
      * Backup Instance
      */
@@ -47,7 +44,7 @@ public final class ValidateForBackupRequest {
      */
     public void validate() {
         if (backupInstance() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property backupInstance in model ValidateForBackupRequest"));
@@ -55,4 +52,6 @@ public final class ValidateForBackupRequest {
             backupInstance().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateForBackupRequest.class);
 }

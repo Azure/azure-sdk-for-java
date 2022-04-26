@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureBackupRestoreWithRehydrationRequest")
 @Fluent
 public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupRecoveryPointBasedRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRestoreWithRehydrationRequest.class);
-
     /*
      * Priority to be used for rehydration. Values High or Standard
      */
@@ -92,6 +89,13 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupRestoreWithRehydrationRequest withSourceResourceId(String sourceResourceId) {
+        super.withSourceResourceId(sourceResourceId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -101,18 +105,20 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
     public void validate() {
         super.validate();
         if (rehydrationPriority() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rehydrationPriority in model"
                             + " AzureBackupRestoreWithRehydrationRequest"));
         }
         if (rehydrationRetentionDuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rehydrationRetentionDuration in model"
                             + " AzureBackupRestoreWithRehydrationRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRestoreWithRehydrationRequest.class);
 }

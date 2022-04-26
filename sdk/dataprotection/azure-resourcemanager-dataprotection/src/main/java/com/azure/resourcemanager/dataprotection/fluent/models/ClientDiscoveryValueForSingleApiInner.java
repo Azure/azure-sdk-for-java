@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryDisplay;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryForProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ClientDiscoveryValueForSingleApi Available operation details. */
 @Fluent
 public final class ClientDiscoveryValueForSingleApiInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryValueForSingleApiInner.class);
-
     /*
      * ClientDiscoveryDisplay Contains the localized display information for
      * this particular operation

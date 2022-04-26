@@ -15,7 +15,7 @@ public interface BackupVaults {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> list();
 
@@ -26,7 +26,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> list(Context context);
 
@@ -37,7 +37,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -74,7 +74,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response}.
      */
     Response<BackupVaultResource> getByResourceGroupWithResponse(
         String resourceGroupName, String vaultName, Context context);
@@ -99,7 +99,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context);
 
@@ -127,7 +127,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return checkNameAvailabilityResult.
+     * @return checkNameAvailabilityResult along with {@link Response}.
      */
     Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
         String resourceGroupName, String location, CheckNameAvailabilityRequest parameters, Context context);
@@ -139,7 +139,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response}.
      */
     BackupVaultResource getById(String id);
 
@@ -151,7 +151,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response}.
      */
     Response<BackupVaultResource> getByIdWithResponse(String id, Context context);
 
@@ -173,7 +173,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

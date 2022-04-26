@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupInstances Get. */
 public final class BackupInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/GetBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/GetBackupInstance.json
      */
     /**
      * Sample code: Get BackupInstance.
@@ -19,6 +19,6 @@ public final class BackupInstancesGetSamples {
     public static void getBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager
             .backupInstances()
-            .getWithResponse("PratikPrivatePreviewVault1", "000pikumar", "testInstance1", Context.NONE);
+            .getWithResponse("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", Context.NONE);
     }
 }

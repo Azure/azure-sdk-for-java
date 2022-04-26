@@ -12,7 +12,7 @@ import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 /** Samples for BackupInstances AdhocBackup. */
 public final class BackupInstancesAdhocBackupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerBackup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/TriggerBackup.json
      */
     /**
      * Sample code: Trigger Adhoc Backup.
@@ -23,8 +23,8 @@ public final class BackupInstancesAdhocBackupSamples {
         manager
             .backupInstances()
             .adhocBackup(
-                "PratikPrivatePreviewVault1",
                 "000pikumar",
+                "PratikPrivatePreviewVault1",
                 "testInstance1",
                 new TriggerBackupRequest()
                     .withBackupRuleOptions(

@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.ResourceGuardsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInner;
 import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResourceInner;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceGuardsClient. */
 public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
-    private final ClientLogger logger = new ClientLogger(ResourceGuardsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceGuardsService service;
 
@@ -425,7 +422,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> listSinglePageAsync() {
@@ -471,7 +469,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> listSinglePageAsync(Context context) {
@@ -512,7 +511,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardResourceInner> listAsync() {
@@ -527,7 +526,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardResourceInner> listAsync(Context context) {
@@ -541,7 +540,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list() {
@@ -555,7 +554,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list(Context context) {
@@ -569,7 +568,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> listByResourceGroupSinglePageAsync(
@@ -622,7 +622,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> listByResourceGroupSinglePageAsync(
@@ -671,7 +672,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -688,7 +689,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -704,7 +705,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -719,7 +720,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -735,7 +736,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardResourceInner>> putWithResponseAsync(
@@ -792,7 +793,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardResourceInner>> putWithResponseAsync(
@@ -845,7 +846,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceGuardResourceInner> putAsync(
@@ -888,7 +889,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> putWithResponse(
@@ -904,7 +905,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardResourceInner>> getByResourceGroupWithResponseAsync(
@@ -954,7 +955,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardResourceInner>> getByResourceGroupWithResponseAsync(
@@ -1000,7 +1001,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceGuardResourceInner> getByResourceGroupAsync(
@@ -1040,7 +1041,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> getByResourceGroupWithResponse(
@@ -1056,7 +1057,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceGuardsName) {
@@ -1105,7 +1106,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1151,7 +1152,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceGuardsName) {
@@ -1182,7 +1183,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceGuardsName, Context context) {
@@ -1198,7 +1199,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardResourceInner>> patchWithResponseAsync(
@@ -1255,7 +1256,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardResourceInner>> patchWithResponseAsync(
@@ -1308,7 +1309,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceGuardResourceInner> patchAsync(
@@ -1351,7 +1352,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardResourceInner> patchWithResponse(
@@ -1368,7 +1369,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDisableSoftDeleteRequestsObjectsSinglePageAsync(
@@ -1428,7 +1430,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDisableSoftDeleteRequestsObjectsSinglePageAsync(
@@ -1484,7 +1487,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsAsync(
@@ -1504,7 +1507,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getDisableSoftDeleteRequestsObjectsAsync(
@@ -1523,7 +1526,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(
@@ -1541,7 +1544,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDisableSoftDeleteRequestsObjects(
@@ -1559,7 +1562,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteResourceGuardProxyRequestsObjectsSinglePageAsync(
@@ -1619,7 +1623,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteResourceGuardProxyRequestsObjectsSinglePageAsync(
@@ -1675,7 +1680,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjectsAsync(
@@ -1695,7 +1700,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjectsAsync(
@@ -1716,7 +1721,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(
@@ -1735,7 +1740,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteResourceGuardProxyRequestsObjects(
@@ -1753,7 +1758,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getBackupSecurityPinRequestsObjectsSinglePageAsync(
@@ -1813,7 +1819,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getBackupSecurityPinRequestsObjectsSinglePageAsync(
@@ -1869,7 +1876,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsAsync(
@@ -1889,7 +1896,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getBackupSecurityPinRequestsObjectsAsync(
@@ -1908,7 +1915,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(
@@ -1926,7 +1933,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getBackupSecurityPinRequestsObjects(
@@ -1944,7 +1951,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteProtectedItemRequestsObjectsSinglePageAsync(
@@ -2004,7 +2012,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteProtectedItemRequestsObjectsSinglePageAsync(
@@ -2060,7 +2069,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getDeleteProtectedItemRequestsObjectsAsync(
@@ -2080,7 +2089,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getDeleteProtectedItemRequestsObjectsAsync(
@@ -2099,7 +2108,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(
@@ -2117,7 +2126,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getDeleteProtectedItemRequestsObjects(
@@ -2135,7 +2144,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectionPolicyRequestsObjectsSinglePageAsync(
@@ -2195,7 +2205,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectionPolicyRequestsObjectsSinglePageAsync(
@@ -2251,7 +2262,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjectsAsync(
@@ -2271,7 +2282,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjectsAsync(
@@ -2291,7 +2302,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(
@@ -2310,7 +2321,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectionPolicyRequestsObjects(
@@ -2328,7 +2339,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectedItemRequestsObjectsSinglePageAsync(
@@ -2388,7 +2400,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectedItemRequestsObjectsSinglePageAsync(
@@ -2444,7 +2457,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getUpdateProtectedItemRequestsObjectsAsync(
@@ -2464,7 +2477,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DppBaseResourceInner> getUpdateProtectedItemRequestsObjectsAsync(
@@ -2483,7 +2496,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(
@@ -2501,7 +2514,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DppBaseResourceInner> getUpdateProtectedItemRequestsObjects(
@@ -2520,7 +2533,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultDisableSoftDeleteRequestsObjectWithResponseAsync(
@@ -2576,7 +2590,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultDisableSoftDeleteRequestsObjectWithResponseAsync(
@@ -2628,7 +2643,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DppBaseResourceInner> getDefaultDisableSoftDeleteRequestsObjectAsync(
@@ -2675,7 +2690,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
@@ -2695,7 +2710,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponseAsync(
@@ -2751,7 +2767,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponseAsync(
@@ -2803,7 +2820,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DppBaseResourceInner> getDefaultDeleteResourceGuardProxyRequestsObjectAsync(
@@ -2850,7 +2867,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
@@ -2870,7 +2887,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultBackupSecurityPinRequestsObjectWithResponseAsync(
@@ -2926,7 +2944,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultBackupSecurityPinRequestsObjectWithResponseAsync(
@@ -2978,7 +2997,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DppBaseResourceInner> getDefaultBackupSecurityPinRequestsObjectAsync(
@@ -3025,7 +3044,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultBackupSecurityPinRequestsObjectWithResponse(
@@ -3045,7 +3064,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultDeleteProtectedItemRequestsObjectWithResponseAsync(
@@ -3101,7 +3121,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultDeleteProtectedItemRequestsObjectWithResponseAsync(
@@ -3153,7 +3174,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DppBaseResourceInner> getDefaultDeleteProtectedItemRequestsObjectAsync(
@@ -3200,7 +3221,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultDeleteProtectedItemRequestsObjectWithResponse(
@@ -3220,7 +3241,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultUpdateProtectionPolicyRequestsObjectWithResponseAsync(
@@ -3276,7 +3298,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultUpdateProtectionPolicyRequestsObjectWithResponseAsync(
@@ -3328,7 +3351,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DppBaseResourceInner> getDefaultUpdateProtectionPolicyRequestsObjectAsync(
@@ -3375,7 +3398,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
@@ -3395,7 +3418,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultUpdateProtectedItemRequestsObjectWithResponseAsync(
@@ -3451,7 +3475,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DppBaseResourceInner>> getDefaultUpdateProtectedItemRequestsObjectWithResponseAsync(
@@ -3503,7 +3528,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DppBaseResourceInner> getDefaultUpdateProtectedItemRequestsObjectAsync(
@@ -3550,7 +3575,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DppBaseResourceInner> getDefaultUpdateProtectedItemRequestsObjectWithResponse(
@@ -3567,7 +3592,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> getResourcesInSubscriptionNextSinglePageAsync(
@@ -3605,7 +3631,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> getResourcesInSubscriptionNextSinglePageAsync(
@@ -3641,7 +3668,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> getResourcesInResourceGroupNextSinglePageAsync(
@@ -3680,7 +3708,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardResourceInner>> getResourcesInResourceGroupNextSinglePageAsync(
@@ -3716,7 +3745,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDisableSoftDeleteRequestsObjectsNextSinglePageAsync(
@@ -3756,7 +3786,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDisableSoftDeleteRequestsObjectsNextSinglePageAsync(
@@ -3792,7 +3823,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteResourceGuardProxyRequestsObjectsNextSinglePageAsync(
@@ -3833,7 +3865,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteResourceGuardProxyRequestsObjectsNextSinglePageAsync(
@@ -3869,7 +3902,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getBackupSecurityPinRequestsObjectsNextSinglePageAsync(
@@ -3909,7 +3943,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getBackupSecurityPinRequestsObjectsNextSinglePageAsync(
@@ -3945,7 +3980,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteProtectedItemRequestsObjectsNextSinglePageAsync(
@@ -3986,7 +4022,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getDeleteProtectedItemRequestsObjectsNextSinglePageAsync(
@@ -4022,7 +4059,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectionPolicyRequestsObjectsNextSinglePageAsync(
@@ -4063,7 +4101,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectionPolicyRequestsObjectsNextSinglePageAsync(
@@ -4099,7 +4138,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectedItemRequestsObjectsNextSinglePageAsync(
@@ -4140,7 +4180,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DppBaseResourceInner>> getUpdateProtectedItemRequestsObjectsNextSinglePageAsync(

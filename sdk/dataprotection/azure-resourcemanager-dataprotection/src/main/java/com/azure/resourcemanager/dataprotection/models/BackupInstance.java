@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Backup Instance. */
 @Fluent
 public final class BackupInstance {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInstance.class);
-
     /*
      * Gets or sets the Backup Instance friendly name.
      */
@@ -68,6 +65,13 @@ public final class BackupInstance {
      */
     @JsonProperty(value = "datasourceAuthCredentials")
     private AuthCredentials datasourceAuthCredentials;
+
+    /*
+     * Specifies the type of validation. In case of DeepValidation, all
+     * validations from /validateForBackup API will run again.
+     */
+    @JsonProperty(value = "validationType")
+    private ValidationType validationType;
 
     /*
      * The objectType property.
@@ -213,6 +217,28 @@ public final class BackupInstance {
     }
 
     /**
+     * Get the validationType property: Specifies the type of validation. In case of DeepValidation, all validations
+     * from /validateForBackup API will run again.
+     *
+     * @return the validationType value.
+     */
+    public ValidationType validationType() {
+        return this.validationType;
+    }
+
+    /**
+     * Set the validationType property: Specifies the type of validation. In case of DeepValidation, all validations
+     * from /validateForBackup API will run again.
+     *
+     * @param validationType the validationType value to set.
+     * @return the BackupInstance object itself.
+     */
+    public BackupInstance withValidationType(ValidationType validationType) {
+        this.validationType = validationType;
+        return this;
+    }
+
+    /**
      * Get the objectType property: The objectType property.
      *
      * @return the objectType value.
@@ -239,7 +265,7 @@ public final class BackupInstance {
      */
     public void validate() {
         if (dataSourceInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataSourceInfo in model BackupInstance"));
         } else {
@@ -249,7 +275,7 @@ public final class BackupInstance {
             dataSourceSetInfo().validate();
         }
         if (policyInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property policyInfo in model BackupInstance"));
         } else {
@@ -265,9 +291,11 @@ public final class BackupInstance {
             datasourceAuthCredentials().validate();
         }
         if (objectType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property objectType in model BackupInstance"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupInstance.class);
 }

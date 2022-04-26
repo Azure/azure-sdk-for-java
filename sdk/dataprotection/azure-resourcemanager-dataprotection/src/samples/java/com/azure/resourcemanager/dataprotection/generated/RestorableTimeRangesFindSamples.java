@@ -11,7 +11,7 @@ import com.azure.resourcemanager.dataprotection.models.RestoreSourceDataStoreTyp
 /** Samples for RestorableTimeRanges Find. */
 public final class RestorableTimeRangesFindSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/FindRestorableTimeRanges.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/FindRestorableTimeRanges.json
      */
     /**
      * Sample code: Find Restorable Time Ranges.
@@ -23,8 +23,8 @@ public final class RestorableTimeRangesFindSamples {
         manager
             .restorableTimeRanges()
             .findWithResponse(
-                "ZBlobBackupVaultBVTD3",
                 "Blob-Backup",
+                "ZBlobBackupVaultBVTD3",
                 "zblobbackuptestsa58",
                 new AzureBackupFindRestorableTimeRangesRequest()
                     .withSourceDataStoreType(RestoreSourceDataStoreType.OPERATIONAL_STORE)

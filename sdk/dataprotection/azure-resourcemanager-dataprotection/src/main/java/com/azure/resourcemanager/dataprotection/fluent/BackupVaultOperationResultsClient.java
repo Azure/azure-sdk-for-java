@@ -13,8 +13,8 @@ import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResul
 /** An instance of this class provides access to all the operations defined in BackupVaultOperationResultsClient. */
 public interface BackupVaultOperationResultsClient {
     /**
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,11 +22,11 @@ public interface BackupVaultOperationResultsClient {
      * @return backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupVaultResourceInner get(String vaultName, String resourceGroupName, String operationId);
+    BackupVaultResourceInner get(String resourceGroupName, String vaultName, String operationId);
 
     /**
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,5 +36,5 @@ public interface BackupVaultOperationResultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupVaultOperationResultsGetResponse getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+        String resourceGroupName, String vaultName, String operationId, Context context);
 }

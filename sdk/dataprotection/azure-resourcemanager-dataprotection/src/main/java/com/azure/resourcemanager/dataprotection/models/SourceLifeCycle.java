@@ -6,15 +6,12 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SourceLifeCycle Source LifeCycle. */
 @Fluent
 public final class SourceLifeCycle {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceLifeCycle.class);
-
     /*
      * DeleteOption Delete Option
      */
@@ -100,14 +97,14 @@ public final class SourceLifeCycle {
      */
     public void validate() {
         if (deleteAfter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property deleteAfter in model SourceLifeCycle"));
         } else {
             deleteAfter().validate();
         }
         if (sourceDataStore() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sourceDataStore in model SourceLifeCycle"));
         } else {
@@ -117,4 +114,6 @@ public final class SourceLifeCycle {
             targetDataStoreCopySettings().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SourceLifeCycle.class);
 }

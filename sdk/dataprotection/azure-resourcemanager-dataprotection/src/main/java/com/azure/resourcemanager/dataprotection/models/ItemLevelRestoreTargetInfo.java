@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("ItemLevelRestoreTargetInfo")
 @Fluent
 public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ItemLevelRestoreTargetInfo.class);
-
     /*
      * Restore Criteria
      */
@@ -146,7 +143,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     public void validate() {
         super.validate();
         if (restoreCriteria() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreCriteria in model ItemLevelRestoreTargetInfo"));
@@ -154,7 +151,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
             restoreCriteria().forEach(e -> e.validate());
         }
         if (datasourceInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property datasourceInfo in model ItemLevelRestoreTargetInfo"));
@@ -168,4 +165,6 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
             datasourceAuthCredentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ItemLevelRestoreTargetInfo.class);
 }

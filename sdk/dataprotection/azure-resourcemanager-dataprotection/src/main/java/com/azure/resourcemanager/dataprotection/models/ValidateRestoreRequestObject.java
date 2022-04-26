@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ValidateRestoreRequestObject Validate restore request object. */
 @Fluent
 public final class ValidateRestoreRequestObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateRestoreRequestObject.class);
-
     /*
      * AzureBackupRestoreRequest Gets or sets the restore request object.
      */
@@ -47,7 +44,7 @@ public final class ValidateRestoreRequestObject {
      */
     public void validate() {
         if (restoreRequestObject() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreRequestObject in model ValidateRestoreRequestObject"));
@@ -55,4 +52,6 @@ public final class ValidateRestoreRequestObject {
             restoreRequestObject().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateRestoreRequestObject.class);
 }
