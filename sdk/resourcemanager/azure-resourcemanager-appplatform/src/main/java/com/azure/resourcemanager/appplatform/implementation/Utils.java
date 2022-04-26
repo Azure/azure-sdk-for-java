@@ -10,10 +10,6 @@ import java.util.regex.Pattern;
 
 /** (Internal Use Only) */
 class Utils {
-    private static final Pattern CPU_INTEGER = Pattern.compile("^[0-9]+$");     // 1, 2, 3
-    private static final Pattern CPU_DOUBLE = Pattern.compile("^([0-9]+)m$");   // 500m, 1000m
-    private static final Pattern MEMORY_GB = Pattern.compile("^([0-9]+)Gi");    // 1Gi, 2Gi
-    private static final Pattern MEMORY_MB = Pattern.compile("^([0-9]+)Mi");    // 512Mi, 1024Mi
     private static final BigDecimal D_1000 = BigDecimal.valueOf(1000);
     private static final BigDecimal D_1024 = BigDecimal.valueOf(1024);
 
@@ -26,16 +22,16 @@ class Utils {
         if (cpu == null) {
             return null;
         }
-        CpuMatcher matcher = checkCpu(cpu);
+        CpuMatcher matcher = CpuMatcher.create(cpu);
         if (matcher.noMatch()) {
             throw new IllegalArgumentException(String.format("Illegal cpu format : %s", cpu));
         }
-        if (matcher.integerMatcher != null) {
-            return Double.valueOf(cpu);
-        } else {
-            return BigDecimal.valueOf(Long.parseLong(matcher.doubleMatcher.group(1)))
+        if (matcher.matchFraction()) {
+            return BigDecimal.valueOf(Long.parseLong(matcher.getFraction()))
                 .divide(D_1000, 1, RoundingMode.CEILING)
                 .doubleValue();
+        } else {
+            return Double.valueOf(cpu);
         }
     }
 
@@ -48,14 +44,14 @@ class Utils {
         if (memory == null) {
             return null;
         }
-        MemoryMatcher matcher = checkMemory(memory);
+        MemoryMatcher matcher = MemoryMatcher.create(memory);
         if (matcher.noMatch()) {
             throw new IllegalArgumentException(String.format("Illegal memory format : %s", memory));
         }
-        if (matcher.gbMatcher != null) {
-            return Double.valueOf(matcher.gbMatcher.group(1));
+        if (matcher.matchGB()) {
+            return Double.valueOf(matcher.getGBString());
         } else { // Mb
-            return BigDecimal.valueOf(Long.parseLong(matcher.mbMatcher.group(1)))
+            return BigDecimal.valueOf(Long.parseLong(matcher.getMBString()))
                 .divide(D_1024, 1, RoundingMode.CEILING)
                 .doubleValue();
         }
@@ -93,39 +89,42 @@ class Utils {
         return (sizeInGB % 1) == 0;
     }
 
-    private static CpuMatcher checkCpu(String cpu) {
-        Matcher integerMatcher = CPU_INTEGER.matcher(cpu);
-        Matcher doubleMatcher = CPU_DOUBLE.matcher(cpu);
-        return new CpuMatcher(
-            integerMatcher.matches() ? integerMatcher : null,
-            doubleMatcher.matches() ? doubleMatcher : null
-        );
-    }
-
-    private static MemoryMatcher checkMemory(String memory) {
-        Matcher gbMatcher = MEMORY_GB.matcher(memory);
-        Matcher mbMatcher = MEMORY_MB.matcher(memory);
-        return new MemoryMatcher(
-            gbMatcher.matches() ? gbMatcher : null,
-            mbMatcher.matches() ? mbMatcher : null
-        );
-    }
-
     private static class CpuMatcher {
+        static final Pattern CPU_INTEGER = Pattern.compile("^[0-9]+$");     // 1, 2, 3
+        static final Pattern CPU_FRACTION = Pattern.compile("^([0-9]+)m$"); // 500m, 1000m
         Matcher integerMatcher;
-        Matcher doubleMatcher;
+        Matcher fractionMatcher;
 
-        CpuMatcher(Matcher integerMatcher, Matcher doubleMatcher) {
+        CpuMatcher(Matcher integerMatcher, Matcher fractionMatcher) {
             this.integerMatcher = integerMatcher;
-            this.doubleMatcher = doubleMatcher;
+            this.fractionMatcher = fractionMatcher;
+        }
+
+        public static CpuMatcher create(String cpu) {
+            Matcher integerMatcher = CPU_INTEGER.matcher(cpu);
+            Matcher fractionMatcher = CPU_FRACTION.matcher(cpu);
+            return new CpuMatcher(
+                integerMatcher.matches() ? integerMatcher : null,
+                fractionMatcher.matches() ? fractionMatcher : null
+            );
         }
 
         boolean noMatch() {
-            return integerMatcher == null && doubleMatcher == null;
+            return integerMatcher == null && fractionMatcher == null;
+        }
+
+        public boolean matchFraction() {
+            return this.fractionMatcher != null;
+        }
+
+        public String getFraction() {
+            return this.fractionMatcher.group(1);
         }
     }
 
     private static class MemoryMatcher {
+        static final Pattern MEMORY_GB = Pattern.compile("^([0-9]+)Gi"); // 1Gi, 2Gi
+        static final Pattern MEMORY_MB = Pattern.compile("^([0-9]+)Mi"); // 512Mi, 1024Mi
         Matcher gbMatcher;
         Matcher mbMatcher;
 
@@ -134,8 +133,29 @@ class Utils {
             this.mbMatcher = mbMatcher;
         }
 
+        public static MemoryMatcher create(String memory) {
+            Matcher gbMatcher = MEMORY_GB.matcher(memory);
+            Matcher mbMatcher = MEMORY_MB.matcher(memory);
+            return new MemoryMatcher(
+                gbMatcher.matches() ? gbMatcher : null,
+                mbMatcher.matches() ? mbMatcher : null
+            );
+        }
+
         boolean noMatch() {
             return gbMatcher == null && mbMatcher == null;
+        }
+
+        public boolean matchGB() {
+            return this.gbMatcher != null;
+        }
+
+        public String getGBString() {
+            return gbMatcher.group(1);
+        }
+
+        public String getMBString() {
+            return mbMatcher.group(1);
         }
     }
 }
