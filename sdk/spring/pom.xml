@@ -195,8 +195,6 @@
     <profile>
       <id>dev</id>
       <modules>
-        <module>../aot/azure-aot-graalvm-support</module>
-        <module>../aot/azure-aot-graalvm-support-netty</module>
         <module>../../eng/code-quality-reports</module>
         <module>../boms/spring-cloud-azure-dependencies</module>
         <module>spring-messaging-azure</module>
@@ -213,7 +211,7 @@
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
-        <module>spring-cloud-azure-native-configuration</module>
+        <module>spring-cloud-azure-native-configuration</module> <!-- This module needs to be compiled under Java 11 -->
         <module>spring-cloud-azure-starter-active-directory</module>
         <module>spring-cloud-azure-starter-active-directory-b2c</module>
         <module>spring-cloud-azure-starter-actuator</module>
@@ -241,6 +239,5 @@
         <module>spring-cloud-azure-trace-sleuth</module>
       </modules>
     </profile>
-
   </profiles>
 </project>
