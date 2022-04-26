@@ -424,7 +424,7 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
         packageGroupId = $_.Group;
         packageArtifactId = $_.Name;
         packageVersion = $_.Version;
-        packageDownloadUrl = 'https://repo1.maven.org/maven2'
+        packageDownloadUrl = $packageDownloadUrl;
       } });
   }
 
@@ -441,7 +441,7 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
     # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
     # If the docker validation failed because of docker itself instead of the application, or if we don't know which
     # package failed, fall back to mvn validation
-    if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127 -Or $packageInfos.Length -gt 1) { 
+    if ($LASTEXITCODE -in 125..127 -Or $packageInfos.Length -gt 1) { 
       return FallbackValidation -packageInfos $packageInfos -workingDirectory $workingDirectory
     }
   
