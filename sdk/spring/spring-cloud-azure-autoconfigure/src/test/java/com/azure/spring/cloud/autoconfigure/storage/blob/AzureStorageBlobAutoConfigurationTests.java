@@ -151,7 +151,6 @@ class AzureStorageBlobAutoConfigurationTests {
             });
     }
 
-
     private static class BlobServiceClientBuilderCustomizer extends TestBuilderCustomizer<BlobServiceClientBuilder> {
 
     }
