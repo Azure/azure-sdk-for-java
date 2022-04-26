@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureBackupParams")
 @Fluent
 public final class AzureBackupParams extends BackupParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupParams.class);
-
     /*
      * BackupType ; Full/Incremental etc
      */
@@ -53,9 +50,11 @@ public final class AzureBackupParams extends BackupParameters {
     public void validate() {
         super.validate();
         if (backupType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property backupType in model AzureBackupParams"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupParams.class);
 }

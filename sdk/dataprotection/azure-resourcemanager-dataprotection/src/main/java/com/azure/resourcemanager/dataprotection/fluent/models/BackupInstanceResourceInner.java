@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BackupInstanceResource BackupInstance Resource. */
 @Fluent
 public final class BackupInstanceResourceInner extends DppResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInstanceResourceInner.class);
-
     /*
      * BackupInstanceResource properties
      */

@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -22,6 +24,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionClient;
+import com.azure.resourcemanager.dataprotection.implementation.BackupInstancesExtensionRoutingsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupInstancesImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupVaultOperationResultsImpl;
@@ -33,11 +36,14 @@ import com.azure.resourcemanager.dataprotection.implementation.ExportJobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ExportJobsOperationResultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.JobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationResultsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.OperationStatusBackupVaultContextsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationStatusImpl;
+import com.azure.resourcemanager.dataprotection.implementation.OperationStatusResourceGroupContextsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.RecoveryPointsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ResourceGuardsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.RestorableTimeRangesImpl;
 import com.azure.resourcemanager.dataprotection.models.BackupInstances;
+import com.azure.resourcemanager.dataprotection.models.BackupInstancesExtensionRoutings;
 import com.azure.resourcemanager.dataprotection.models.BackupPolicies;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResults;
 import com.azure.resourcemanager.dataprotection.models.BackupVaults;
@@ -48,6 +54,8 @@ import com.azure.resourcemanager.dataprotection.models.ExportJobsOperationResult
 import com.azure.resourcemanager.dataprotection.models.Jobs;
 import com.azure.resourcemanager.dataprotection.models.OperationResults;
 import com.azure.resourcemanager.dataprotection.models.OperationStatus;
+import com.azure.resourcemanager.dataprotection.models.OperationStatusBackupVaultContexts;
+import com.azure.resourcemanager.dataprotection.models.OperationStatusResourceGroupContexts;
 import com.azure.resourcemanager.dataprotection.models.RecoveryPoints;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuards;
 import com.azure.resourcemanager.dataprotection.models.RestorableTimeRanges;
@@ -66,6 +74,10 @@ public final class DataProtectionManager {
 
     private OperationStatus operationStatus;
 
+    private OperationStatusBackupVaultContexts operationStatusBackupVaultContexts;
+
+    private OperationStatusResourceGroupContexts operationStatusResourceGroupContexts;
+
     private BackupVaultOperationResults backupVaultOperationResults;
 
     private DataProtections dataProtections;
@@ -75,6 +87,8 @@ public final class DataProtectionManager {
     private BackupPolicies backupPolicies;
 
     private BackupInstances backupInstances;
+
+    private BackupInstancesExtensionRoutings backupInstancesExtensionRoutings;
 
     private RecoveryPoints recoveryPoints;
 
@@ -116,6 +130,19 @@ public final class DataProtectionManager {
     }
 
     /**
+     * Creates an instance of DataProtection service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the DataProtection service API instance.
+     */
+    public static DataProtectionManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new DataProtectionManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create DataProtectionManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -126,13 +153,14 @@ public final class DataProtectionManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -194,15 +222,30 @@ public final class DataProtectionManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -242,10 +285,15 @@ public final class DataProtectionManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -300,6 +348,25 @@ public final class DataProtectionManager {
         return operationStatus;
     }
 
+    /** @return Resource collection API of OperationStatusBackupVaultContexts. */
+    public OperationStatusBackupVaultContexts operationStatusBackupVaultContexts() {
+        if (this.operationStatusBackupVaultContexts == null) {
+            this.operationStatusBackupVaultContexts =
+                new OperationStatusBackupVaultContextsImpl(clientObject.getOperationStatusBackupVaultContexts(), this);
+        }
+        return operationStatusBackupVaultContexts;
+    }
+
+    /** @return Resource collection API of OperationStatusResourceGroupContexts. */
+    public OperationStatusResourceGroupContexts operationStatusResourceGroupContexts() {
+        if (this.operationStatusResourceGroupContexts == null) {
+            this.operationStatusResourceGroupContexts =
+                new OperationStatusResourceGroupContextsImpl(
+                    clientObject.getOperationStatusResourceGroupContexts(), this);
+        }
+        return operationStatusResourceGroupContexts;
+    }
+
     /** @return Resource collection API of BackupVaultOperationResults. */
     public BackupVaultOperationResults backupVaultOperationResults() {
         if (this.backupVaultOperationResults == null) {
@@ -340,6 +407,15 @@ public final class DataProtectionManager {
             this.backupInstances = new BackupInstancesImpl(clientObject.getBackupInstances(), this);
         }
         return backupInstances;
+    }
+
+    /** @return Resource collection API of BackupInstancesExtensionRoutings. */
+    public BackupInstancesExtensionRoutings backupInstancesExtensionRoutings() {
+        if (this.backupInstancesExtensionRoutings == null) {
+            this.backupInstancesExtensionRoutings =
+                new BackupInstancesExtensionRoutingsImpl(clientObject.getBackupInstancesExtensionRoutings(), this);
+        }
+        return backupInstancesExtensionRoutings;
     }
 
     /** @return Resource collection API of RecoveryPoints. */

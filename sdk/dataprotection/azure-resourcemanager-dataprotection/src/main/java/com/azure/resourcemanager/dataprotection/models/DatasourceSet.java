@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DatasourceSet DatasourceSet details of datasource to be backed up. */
 @Fluent
 public final class DatasourceSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasourceSet.class);
-
     /*
      * DatasourceType of the resource.
      */
@@ -207,9 +204,11 @@ public final class DatasourceSet {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property resourceId in model DatasourceSet"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatasourceSet.class);
 }

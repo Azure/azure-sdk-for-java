@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupVaultOperationResults Get. */
 public final class BackupVaultOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/GetOperationResultPatch.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/VaultCRUD/GetOperationResultPatch.json
      */
     /**
      * Sample code: GetOperationResult Patch.
@@ -20,8 +20,8 @@ public final class BackupVaultOperationResultsGetSamples {
         manager
             .backupVaultOperationResults()
             .getWithResponse(
-                "swaggerExample",
                 "SampleResourceGroup",
+                "swaggerExample",
                 "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
                 Context.NONE);
     }

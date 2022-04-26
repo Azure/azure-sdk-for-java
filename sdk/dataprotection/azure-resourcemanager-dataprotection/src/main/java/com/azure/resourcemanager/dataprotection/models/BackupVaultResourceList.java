@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** BackupVaultResourceList List of BackupVault resources. */
 @Fluent
 public final class BackupVaultResourceList extends DppResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVaultResourceList.class);
-
     /*
      * List of resources.
      */

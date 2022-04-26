@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("ScheduleBasedTriggerContext")
 @Fluent
 public final class ScheduleBasedTriggerContext extends TriggerContext {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleBasedTriggerContext.class);
-
     /*
      * BackupSchedule Schedule for this backup
      */
@@ -80,7 +77,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
     public void validate() {
         super.validate();
         if (schedule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schedule in model ScheduleBasedTriggerContext"));
@@ -88,7 +85,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
             schedule().validate();
         }
         if (taggingCriteria() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property taggingCriteria in model ScheduleBasedTriggerContext"));
@@ -96,4 +93,6 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
             taggingCriteria().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduleBasedTriggerContext.class);
 }

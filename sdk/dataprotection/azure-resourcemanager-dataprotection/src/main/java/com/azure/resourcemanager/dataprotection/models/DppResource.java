@@ -7,15 +7,11 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DppResource Resource class. */
 @Immutable
 public class DppResource extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppResource.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */

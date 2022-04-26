@@ -64,13 +64,13 @@ public interface BackupInstanceResource {
         /** The stage of the BackupInstanceResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
-             * Specifies vaultName, resourceGroupName.
+             * Specifies resourceGroupName, vaultName.
              *
-             * @param vaultName The name of the backup vault.
              * @param resourceGroupName The name of the resource group where the backup vault is present.
+             * @param vaultName The name of the backup vault.
              * @return the next definition stage.
              */
-            WithCreate withExistingBackupVault(String vaultName, String resourceGroupName);
+            WithCreate withExistingBackupVault(String resourceGroupName, String vaultName);
         }
         /**
          * The stage of the BackupInstanceResource definition which contains all the minimum required properties for the
@@ -221,6 +221,101 @@ public interface BackupInstanceResource {
      * @return operationJobExtendedInfo.
      */
     OperationJobExtendedInfo triggerRestore(AzureBackupRestoreRequest parameters, Context context);
+
+    /**
+     * This operation will resume backups for backup instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeBackups();
+
+    /**
+     * This operation will resume backups for backup instance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeBackups(Context context);
+
+    /**
+     * This operation will resume protection for a stopped backup instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeProtection();
+
+    /**
+     * This operation will resume protection for a stopped backup instance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumeProtection(Context context);
+
+    /**
+     * This operation will stop protection of a backup instance and data will be held forever.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopProtection();
+
+    /**
+     * This operation will stop protection of a backup instance and data will be held forever.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopProtection(Context context);
+
+    /**
+     * This operation will stop backups for backup instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void suspendBackups();
+
+    /**
+     * This operation will stop backups for backup instance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void suspendBackups(Context context);
+
+    /**
+     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
+     * instance to valid state.
+     *
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void syncBackupInstance(SyncBackupInstanceRequest parameters);
+
+    /**
+     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
+     * instance to valid state.
+     *
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void syncBackupInstance(SyncBackupInstanceRequest parameters, Context context);
 
     /**
      * Validates if Restore can be triggered for a DataSource.

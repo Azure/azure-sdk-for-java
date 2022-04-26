@@ -17,7 +17,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
 /** Samples for BackupInstances ValidateForBackup. */
 public final class BackupInstancesValidateForBackupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/ValidateForBackup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/ValidateForBackup.json
      */
     /**
      * Sample code: Validate For Backup.
@@ -28,8 +28,8 @@ public final class BackupInstancesValidateForBackupSamples {
         manager
             .backupInstances()
             .validateForBackup(
-                "PratikPrivatePreviewVault1",
                 "000pikumar",
+                "PratikPrivatePreviewVault1",
                 new ValidateForBackupRequest()
                     .withBackupInstance(
                         new BackupInstance()

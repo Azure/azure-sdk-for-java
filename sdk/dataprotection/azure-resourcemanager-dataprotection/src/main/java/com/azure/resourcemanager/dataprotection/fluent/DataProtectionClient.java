@@ -66,6 +66,20 @@ public interface DataProtectionClient {
     OperationStatusClient getOperationStatus();
 
     /**
+     * Gets the OperationStatusBackupVaultContextsClient object to access its operations.
+     *
+     * @return the OperationStatusBackupVaultContextsClient object.
+     */
+    OperationStatusBackupVaultContextsClient getOperationStatusBackupVaultContexts();
+
+    /**
+     * Gets the OperationStatusResourceGroupContextsClient object to access its operations.
+     *
+     * @return the OperationStatusResourceGroupContextsClient object.
+     */
+    OperationStatusResourceGroupContextsClient getOperationStatusResourceGroupContexts();
+
+    /**
      * Gets the BackupVaultOperationResultsClient object to access its operations.
      *
      * @return the BackupVaultOperationResultsClient object.
@@ -99,6 +113,13 @@ public interface DataProtectionClient {
      * @return the BackupInstancesClient object.
      */
     BackupInstancesClient getBackupInstances();
+
+    /**
+     * Gets the BackupInstancesExtensionRoutingsClient object to access its operations.
+     *
+     * @return the BackupInstancesExtensionRoutingsClient object.
+     */
+    BackupInstancesExtensionRoutingsClient getBackupInstancesExtensionRoutings();
 
     /**
      * Gets the RecoveryPointsClient object to access its operations.

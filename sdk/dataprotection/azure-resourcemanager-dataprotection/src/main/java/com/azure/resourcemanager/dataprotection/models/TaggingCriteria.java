@@ -6,15 +6,12 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** TaggingCriteria Tagging criteria. */
 @Fluent
 public final class TaggingCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaggingCriteria.class);
-
     /*
      * Criteria which decides whether the tag can be applied to a triggered
      * backup.
@@ -130,11 +127,13 @@ public final class TaggingCriteria {
             criteria().forEach(e -> e.validate());
         }
         if (tagInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property tagInfo in model TaggingCriteria"));
         } else {
             tagInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TaggingCriteria.class);
 }

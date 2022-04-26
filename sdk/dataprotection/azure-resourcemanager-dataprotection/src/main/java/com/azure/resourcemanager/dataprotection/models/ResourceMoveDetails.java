@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ResourceMoveDetails will be returned in response to GetResource call from ARM. */
 @Fluent
 public final class ResourceMoveDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMoveDetails.class);
-
     /*
      * CorrelationId of latest ResourceMove operation attempted
      */

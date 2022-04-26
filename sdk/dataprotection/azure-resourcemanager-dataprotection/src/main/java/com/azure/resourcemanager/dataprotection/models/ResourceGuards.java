@@ -15,7 +15,7 @@ public interface ResourceGuards {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceGuardResource> list();
 
@@ -26,7 +26,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceGuardResource> list(Context context);
 
@@ -37,7 +37,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceGuardResource> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuard resources.
+     * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceGuardResource> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -74,7 +74,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<ResourceGuardResource> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceGuardsName, Context context);
@@ -99,7 +99,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceGuardsName, Context context);
 
@@ -112,7 +112,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(
         String resourceGroupName, String resourceGuardsName);
@@ -127,7 +127,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(
         String resourceGroupName, String resourceGuardsName, Context context);
@@ -141,7 +141,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(
         String resourceGroupName, String resourceGuardsName);
@@ -156,7 +156,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(
         String resourceGroupName, String resourceGuardsName, Context context);
@@ -170,7 +170,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(
         String resourceGroupName, String resourceGuardsName);
@@ -185,7 +185,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(
         String resourceGroupName, String resourceGuardsName, Context context);
@@ -199,7 +199,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(
         String resourceGroupName, String resourceGuardsName);
@@ -214,7 +214,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(
         String resourceGroupName, String resourceGuardsName, Context context);
@@ -228,7 +228,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(
         String resourceGroupName, String resourceGuardsName);
@@ -243,7 +243,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(
         String resourceGroupName, String resourceGuardsName, Context context);
@@ -257,7 +257,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(
         String resourceGroupName, String resourceGuardsName);
@@ -272,7 +272,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(
         String resourceGroupName, String resourceGuardsName, Context context);
@@ -303,7 +303,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     Response<DppBaseResource> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context);
@@ -334,7 +334,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     Response<DppBaseResource> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context);
@@ -365,7 +365,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     Response<DppBaseResource> getDefaultBackupSecurityPinRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context);
@@ -396,7 +396,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     Response<DppBaseResource> getDefaultDeleteProtectedItemRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context);
@@ -427,7 +427,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     Response<DppBaseResource> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context);
@@ -458,7 +458,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base resource under Microsoft.DataProtection provider namespace.
+     * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
     Response<DppBaseResource> getDefaultUpdateProtectedItemRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context);
@@ -470,7 +470,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     ResourceGuardResource getById(String id);
 
@@ -482,7 +482,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<ResourceGuardResource> getByIdWithResponse(String id, Context context);
 
@@ -504,7 +504,7 @@ public interface ResourceGuards {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

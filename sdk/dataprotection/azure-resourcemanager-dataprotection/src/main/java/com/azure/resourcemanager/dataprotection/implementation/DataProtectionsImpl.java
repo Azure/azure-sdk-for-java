@@ -13,10 +13,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationR
 import com.azure.resourcemanager.dataprotection.models.DataProtections;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequestBase;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationResponseBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataProtectionsImpl implements DataProtections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataProtectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataProtectionsImpl.class);
 
     private final DataProtectionsClient innerClient;
 

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtendedInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "OperationJobExtendedInfo", value = OperationJobExtendedInfoInner.class)})
 @Immutable
 public class OperationExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationExtendedInfo.class);
-
     /**
      * Validates the instance.
      *

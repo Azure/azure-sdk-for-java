@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RestoreFilesTargetInfo")
 @Fluent
 public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreFilesTargetInfo.class);
-
     /*
      * Destination of RestoreAsFiles operation, when destination is not a
      * datasource
@@ -68,7 +65,7 @@ public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
     public void validate() {
         super.validate();
         if (targetDetails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetDetails in model RestoreFilesTargetInfo"));
@@ -76,4 +73,6 @@ public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
             targetDetails().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestoreFilesTargetInfo.class);
 }

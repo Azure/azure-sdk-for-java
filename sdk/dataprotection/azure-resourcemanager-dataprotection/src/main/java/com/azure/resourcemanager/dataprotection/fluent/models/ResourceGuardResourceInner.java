@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.DppTrackedResource;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ResourceGuardResource model. */
 @Fluent
 public final class ResourceGuardResourceInner extends DppTrackedResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardResourceInner.class);
-
     /*
      * ResourceGuardResource properties
      */

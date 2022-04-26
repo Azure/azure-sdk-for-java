@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.DppTrackedResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** BackupVault Resource Backup Vault Resource. */
 @Fluent
 public final class BackupVaultResourceInner extends DppTrackedResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVaultResourceInner.class);
-
     /*
      * BackupVault BackupVaultResource properties
      */
@@ -81,7 +78,7 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model BackupVaultResourceInner"));
@@ -89,4 +86,6 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupVaultResourceInner.class);
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AzureBackupRehydrationRequest Azure Backup Rehydrate Request. */
 @Fluent
 public final class AzureBackupRehydrationRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRehydrationRequest.class);
-
     /*
      * Id of the recovery point to be recovered
      */
@@ -99,17 +96,19 @@ public final class AzureBackupRehydrationRequest {
      */
     public void validate() {
         if (recoveryPointId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property recoveryPointId in model AzureBackupRehydrationRequest"));
         }
         if (rehydrationRetentionDuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rehydrationRetentionDuration in model"
                             + " AzureBackupRehydrationRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRehydrationRequest.class);
 }

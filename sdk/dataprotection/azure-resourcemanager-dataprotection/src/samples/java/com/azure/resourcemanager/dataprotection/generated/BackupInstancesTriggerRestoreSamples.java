@@ -6,10 +6,11 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPointBasedRestoreRequest;
-import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
+import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreWithRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
 import com.azure.resourcemanager.dataprotection.models.RecoveryOption;
+import com.azure.resourcemanager.dataprotection.models.RehydrationPriority;
 import com.azure.resourcemanager.dataprotection.models.RestoreFilesTargetInfo;
 import com.azure.resourcemanager.dataprotection.models.RestoreTargetInfo;
 import com.azure.resourcemanager.dataprotection.models.RestoreTargetLocationType;
@@ -22,7 +23,7 @@ import com.azure.resourcemanager.dataprotection.models.TargetDetails;
 /** Samples for BackupInstances TriggerRestore. */
 public final class BackupInstancesTriggerRestoreSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerRestoreAsFiles.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/TriggerRestoreAsFiles.json
      */
     /**
      * Sample code: Trigger Restore As Files.
@@ -33,8 +34,8 @@ public final class BackupInstancesTriggerRestoreSamples {
         manager
             .backupInstances()
             .triggerRestore(
-                "PrivatePreviewVault1",
                 "000pikumar",
+                "PrivatePreviewVault1",
                 "testInstance1",
                 new AzureBackupRecoveryPointBasedRestoreRequest()
                     .withRestoreTargetInfo(
@@ -47,12 +48,14 @@ public final class BackupInstancesTriggerRestoreSamples {
                                     .withRestoreTargetLocationType(RestoreTargetLocationType.AZURE_BLOBS)
                                     .withUrl("https://teststorage.blob.core.windows.net/restoretest")))
                     .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                    .withSourceResourceId(
+                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
                     .withRecoveryPointId("hardcodedRP"),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/TriggerRestoreWithRehydration.json
      */
     /**
      * Sample code: Trigger Restore With Rehydration.
@@ -64,10 +67,10 @@ public final class BackupInstancesTriggerRestoreSamples {
         manager
             .backupInstances()
             .triggerRestore(
-                "PratikPrivatePreviewVault1",
                 "000pikumar",
+                "PratikPrivatePreviewVault1",
                 "testInstance1",
-                new AzureBackupRestoreRequest()
+                new AzureBackupRestoreWithRehydrationRequest()
                     .withRestoreTargetInfo(
                         new RestoreTargetInfo()
                             .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
@@ -92,12 +95,17 @@ public final class BackupInstancesTriggerRestoreSamples {
                                     .withResourceName("viveksipgtest")
                                     .withResourceType("Microsoft.DBforPostgreSQL/servers")
                                     .withResourceUri("")))
-                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE),
+                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                    .withSourceResourceId(
+                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
+                    .withRecoveryPointId("hardcodedRP")
+                    .withRehydrationPriority(RehydrationPriority.HIGH)
+                    .withRehydrationRetentionDuration("7D"),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/TriggerRestore.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-03-31-preview/examples/BackupInstanceOperations/TriggerRestore.json
      */
     /**
      * Sample code: Trigger Restore.
@@ -108,8 +116,8 @@ public final class BackupInstancesTriggerRestoreSamples {
         manager
             .backupInstances()
             .triggerRestore(
-                "PratikPrivatePreviewVault1",
                 "000pikumar",
+                "PratikPrivatePreviewVault1",
                 "testInstance1",
                 new AzureBackupRecoveryPointBasedRestoreRequest()
                     .withRestoreTargetInfo(
@@ -118,17 +126,17 @@ public final class BackupInstancesTriggerRestoreSamples {
                             .withRestoreLocation("southeastasia")
                             .withDatasourceInfo(
                                 new Datasource()
-                                    .withDatasourceType("OssDB")
+                                    .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
                                     .withObjectType("Datasource")
                                     .withResourceId(
-                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
+                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb")
                                     .withResourceLocation("")
-                                    .withResourceName("testdb")
+                                    .withResourceName("targetdb")
                                     .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
                                     .withResourceUri(""))
                             .withDatasourceSetInfo(
                                 new DatasourceSet()
-                                    .withDatasourceType("OssDB")
+                                    .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
                                     .withObjectType("DatasourceSet")
                                     .withResourceId(
                                         "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
@@ -143,6 +151,8 @@ public final class BackupInstancesTriggerRestoreSamples {
                                             .withUri("https://samplevault.vault.azure.net/secrets/credentials")
                                             .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))))
                     .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                    .withSourceResourceId(
+                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
                     .withRecoveryPointId("hardcodedRP"),
                 Context.NONE);
     }

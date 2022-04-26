@@ -12,10 +12,9 @@ import com.azure.resourcemanager.dataprotection.fluent.OperationStatusClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceInner;
 import com.azure.resourcemanager.dataprotection.models.OperationResource;
 import com.azure.resourcemanager.dataprotection.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationStatusImpl implements OperationStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationStatusImpl.class);
 
     private final OperationStatusClient innerClient;
 

@@ -30,7 +30,7 @@ public interface OperationStatus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a resource.
+     * @return the operation status for a resource along with {@link Response}.
      */
     Response<OperationResource> getWithResponse(String location, String operationId, Context context);
 }

@@ -23,7 +23,7 @@ public interface BackupVaultsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupVaultResourceInner> list();
@@ -35,7 +35,7 @@ public interface BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupVaultResourceInner> list(Context context);
@@ -47,7 +47,7 @@ public interface BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupVaultResourceInner> listByResourceGroup(String resourceGroupName);
@@ -60,7 +60,7 @@ public interface BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupVaultResourceInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -87,7 +87,7 @@ public interface BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupVaultResourceInner> getByResourceGroupWithResponse(
@@ -96,39 +96,39 @@ public interface BackupVaultsClient {
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters);
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters);
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters, Context context);
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context);
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,13 +137,13 @@ public interface BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupVaultResourceInner createOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters);
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters);
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public interface BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupVaultResourceInner createOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters, Context context);
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context);
 
     /**
      * Deletes a BackupVault resource from the resource group.
@@ -176,7 +176,7 @@ public interface BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context);
@@ -184,39 +184,39 @@ public interface BackupVaultsClient {
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters);
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters);
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters, Context context);
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context);
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -224,13 +224,13 @@ public interface BackupVaultsClient {
      * @return backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupVaultResourceInner update(String vaultName, String resourceGroupName, PatchResourceRequestInput parameters);
+    BackupVaultResourceInner update(String resourceGroupName, String vaultName, PatchResourceRequestInput parameters);
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,7 +240,7 @@ public interface BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupVaultResourceInner update(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters, Context context);
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context);
 
     /**
      * API to check for resource name availability.
@@ -267,7 +267,7 @@ public interface BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return checkNameAvailabilityResult.
+     * @return checkNameAvailabilityResult along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(

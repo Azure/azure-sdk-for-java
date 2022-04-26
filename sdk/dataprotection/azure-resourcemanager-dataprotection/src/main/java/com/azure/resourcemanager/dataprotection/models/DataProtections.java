@@ -30,7 +30,7 @@ public interface DataProtections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support along with {@link Response}.
      */
     Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(
         String location, FeatureValidationRequestBase parameters, Context context);

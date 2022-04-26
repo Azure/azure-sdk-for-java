@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AdhocBasedTriggerContext")
 @Fluent
 public final class AdhocBasedTriggerContext extends TriggerContext {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdhocBasedTriggerContext.class);
-
     /*
      * AdhocBasedTaggingCriteria Tagging Criteria containing retention tag for
      * adhoc backup.
@@ -56,7 +53,7 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
     public void validate() {
         super.validate();
         if (taggingCriteria() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property taggingCriteria in model AdhocBasedTriggerContext"));
@@ -64,4 +61,6 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
             taggingCriteria().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdhocBasedTriggerContext.class);
 }

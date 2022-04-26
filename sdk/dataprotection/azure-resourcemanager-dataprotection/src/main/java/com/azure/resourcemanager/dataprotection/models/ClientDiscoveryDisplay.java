@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ClientDiscoveryDisplay Localized display information of an operation. */
 @Fluent
 public final class ClientDiscoveryDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryDisplay.class);
-
     /*
      * Description of the operation having details of what operation is about.
      */

@@ -22,6 +22,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesClient;
+import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesExtensionRoutingsClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultsClient;
@@ -32,7 +33,9 @@ import com.azure.resourcemanager.dataprotection.fluent.ExportJobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationResultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.OperationStatusBackupVaultContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusClient;
+import com.azure.resourcemanager.dataprotection.fluent.OperationStatusResourceGroupContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.RecoveryPointsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ResourceGuardsClient;
 import com.azure.resourcemanager.dataprotection.fluent.RestorableTimeRangesClient;
@@ -49,8 +52,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the DataProtectionClientImpl type. */
 @ServiceClient(builder = DataProtectionClientBuilder.class)
 public final class DataProtectionClientImpl implements DataProtectionClient {
-    private final ClientLogger logger = new ClientLogger(DataProtectionClientImpl.class);
-
     /** The subscription Id. */
     private final String subscriptionId;
 
@@ -159,6 +160,30 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         return this.operationStatus;
     }
 
+    /** The OperationStatusBackupVaultContextsClient object to access its operations. */
+    private final OperationStatusBackupVaultContextsClient operationStatusBackupVaultContexts;
+
+    /**
+     * Gets the OperationStatusBackupVaultContextsClient object to access its operations.
+     *
+     * @return the OperationStatusBackupVaultContextsClient object.
+     */
+    public OperationStatusBackupVaultContextsClient getOperationStatusBackupVaultContexts() {
+        return this.operationStatusBackupVaultContexts;
+    }
+
+    /** The OperationStatusResourceGroupContextsClient object to access its operations. */
+    private final OperationStatusResourceGroupContextsClient operationStatusResourceGroupContexts;
+
+    /**
+     * Gets the OperationStatusResourceGroupContextsClient object to access its operations.
+     *
+     * @return the OperationStatusResourceGroupContextsClient object.
+     */
+    public OperationStatusResourceGroupContextsClient getOperationStatusResourceGroupContexts() {
+        return this.operationStatusResourceGroupContexts;
+    }
+
     /** The BackupVaultOperationResultsClient object to access its operations. */
     private final BackupVaultOperationResultsClient backupVaultOperationResults;
 
@@ -217,6 +242,18 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
      */
     public BackupInstancesClient getBackupInstances() {
         return this.backupInstances;
+    }
+
+    /** The BackupInstancesExtensionRoutingsClient object to access its operations. */
+    private final BackupInstancesExtensionRoutingsClient backupInstancesExtensionRoutings;
+
+    /**
+     * Gets the BackupInstancesExtensionRoutingsClient object to access its operations.
+     *
+     * @return the BackupInstancesExtensionRoutingsClient object.
+     */
+    public BackupInstancesExtensionRoutingsClient getBackupInstancesExtensionRoutings() {
+        return this.backupInstancesExtensionRoutings;
     }
 
     /** The RecoveryPointsClient object to access its operations. */
@@ -313,15 +350,18 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-07-01";
+        this.apiVersion = "2022-03-31-preview";
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.operationResults = new OperationResultsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
+        this.operationStatusBackupVaultContexts = new OperationStatusBackupVaultContextsClientImpl(this);
+        this.operationStatusResourceGroupContexts = new OperationStatusResourceGroupContextsClientImpl(this);
         this.backupVaultOperationResults = new BackupVaultOperationResultsClientImpl(this);
         this.dataProtections = new DataProtectionsClientImpl(this);
         this.dataProtectionOperations = new DataProtectionOperationsClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.backupInstances = new BackupInstancesClientImpl(this);
+        this.backupInstancesExtensionRoutings = new BackupInstancesExtensionRoutingsClientImpl(this);
         this.recoveryPoints = new RecoveryPointsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.restorableTimeRanges = new RestorableTimeRangesClientImpl(this);
@@ -413,7 +453,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -472,4 +512,6 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataProtectionClientImpl.class);
 }

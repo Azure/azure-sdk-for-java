@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceGuard model. */
 @Immutable
 public final class ResourceGuard {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuard.class);
-
     /*
      * Provisioning state of the BackupVault resource
      */

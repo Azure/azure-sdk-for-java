@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRecoveryPointBasedRestoreRequest.class);
-
     /*
      * The recoveryPointId property.
      */
@@ -69,6 +66,13 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupRecoveryPointBasedRestoreRequest withSourceResourceId(String sourceResourceId) {
+        super.withSourceResourceId(sourceResourceId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -78,11 +82,13 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
     public void validate() {
         super.validate();
         if (recoveryPointId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property recoveryPointId in model"
                             + " AzureBackupRecoveryPointBasedRestoreRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRecoveryPointBasedRestoreRequest.class);
 }

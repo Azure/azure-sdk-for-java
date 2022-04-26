@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureBackupRule")
 @Fluent
 public final class AzureBackupRule extends BasePolicyRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRule.class);
-
     /*
      * BackupParameters BackupParameters base
      */
@@ -115,18 +112,20 @@ public final class AzureBackupRule extends BasePolicyRule {
             backupParameters().validate();
         }
         if (dataStore() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataStore in model AzureBackupRule"));
         } else {
             dataStore().validate();
         }
         if (trigger() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property trigger in model AzureBackupRule"));
         } else {
             trigger().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRule.class);
 }
