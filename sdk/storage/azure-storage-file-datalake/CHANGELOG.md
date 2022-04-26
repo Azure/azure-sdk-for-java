@@ -4,7 +4,8 @@
 
 ### Features Added
 - Added support for 2021-06-08 service version.
-- Added support for CPK. 
+- Added support for CPK.
+- Added creationTime and expiryTime fields to `PathItem`.
 
 ### Breaking Changes
 

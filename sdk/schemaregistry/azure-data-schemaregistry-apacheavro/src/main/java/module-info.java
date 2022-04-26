@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 module com.azure.data.schemaregistry.apacheavro {
+    requires transitive com.azure.core;
     requires transitive com.azure.data.schemaregistry;
-    requires transitive com.azure.core.experimental;
 
     requires org.apache.avro;
 

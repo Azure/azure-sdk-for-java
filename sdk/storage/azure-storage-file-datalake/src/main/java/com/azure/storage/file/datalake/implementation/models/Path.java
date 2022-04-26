@@ -61,6 +61,18 @@ public final class Path {
     private String encryptionScope;
 
     /*
+     * The creationTime property.
+     */
+    @JsonProperty(value = "creationTime")
+    private String creationTime;
+
+    /*
+     * The expiryTime property.
+     */
+    @JsonProperty(value = "expiryTime")
+    private String expiryTime;
+
+    /*
      * The etag property.
      */
     @JsonProperty(value = "etag")
@@ -223,6 +235,46 @@ public final class Path {
      */
     public Path setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: The creationTime property.
+     *
+     * @return the creationTime value.
+     */
+    public String getCreationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Set the creationTime property: The creationTime property.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the Path object itself.
+     */
+    public Path setCreationTime(String creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
+     * Get the expiryTime property: The expiryTime property.
+     *
+     * @return the expiryTime value.
+     */
+    public String getExpiryTime() {
+        return this.expiryTime;
+    }
+
+    /**
+     * Set the expiryTime property: The expiryTime property.
+     *
+     * @param expiryTime the expiryTime value to set.
+     * @return the Path object itself.
+     */
+    public Path setExpiryTime(String expiryTime) {
+        this.expiryTime = expiryTime;
         return this;
     }
 

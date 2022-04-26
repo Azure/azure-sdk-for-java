@@ -26,7 +26,7 @@ public class RntbdServiceEndpointTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
-        RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null);
+        RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null);
         URI uri = new URI(TestConfigurations.HOST);
         List<Uri> uriList = new ArrayList<>();
 

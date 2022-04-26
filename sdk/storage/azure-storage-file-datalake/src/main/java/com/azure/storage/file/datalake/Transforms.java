@@ -92,9 +92,13 @@ import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -105,6 +109,22 @@ class Transforms {
             + "%s.", FileQueryJsonSerialization.class.getSimpleName(),
         FileQueryDelimitedSerialization.class.getSimpleName(), FileQueryArrowSerialization.class.getSimpleName(),
         FileQueryParquetSerialization.class.getSimpleName());
+
+    private static final long EPOCH_CONVERSION;
+
+    static {
+        // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
+        GregorianCalendar unixEpoch = new GregorianCalendar();
+        unixEpoch.clear();
+        unixEpoch.set(1970, Calendar.JANUARY, 1, 0, 0, 0);
+
+        // https://docs.microsoft.com/en-us/dotnet/api/system.datetimeoffset.fromfiletime?view=net-6.0#remarks
+        GregorianCalendar windowsEpoch = new GregorianCalendar();
+        windowsEpoch.clear();
+        windowsEpoch.set(1601, Calendar.JANUARY, 1, 0, 0, 0);
+
+        EPOCH_CONVERSION = unixEpoch.getTimeInMillis() - windowsEpoch.getTimeInMillis();
+    }
 
     static com.azure.storage.blob.models.PublicAccessType toBlobPublicAccessType(PublicAccessType
         fileSystemPublicAccessType) {
@@ -325,11 +345,26 @@ class Transforms {
             return null;
         }
         return new PathItem(path.getETag(),
-            path.getLastModified() == null ? null : OffsetDateTime.parse(path.getLastModified(),
-                DateTimeFormatter.RFC_1123_DATE_TIME), path.getContentLength() == null ? 0 : path.getContentLength(),
+            parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
-            path.getPermissions());
+            path.getPermissions(), fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
+            path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
     }
+
+    private static OffsetDateTime parseDateOrNull(String date) {
+        return date == null ? null : OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
+    }
+
+    private static OffsetDateTime fromWindowsFileTimeOrNull(long fileTime) {
+        if (fileTime == 0) {
+            return null;
+        }
+        long fileTimeMs = fileTime / 10000; // fileTime is given in 100ns intervals. Convert to ms
+        long fileTimeUnixEpoch = fileTimeMs - EPOCH_CONVERSION; // Remove difference between Unix and Windows FileTime epochs
+
+        return Instant.ofEpochMilli(fileTimeUnixEpoch).atOffset(ZoneOffset.UTC);
+    }
+
 
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
         if (requestConditions == null) {

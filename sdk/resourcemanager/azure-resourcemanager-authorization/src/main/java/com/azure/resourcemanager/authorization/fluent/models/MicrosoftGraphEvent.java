@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** event. */
 @Fluent
 public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphEvent.class);
-
     /*
      * True if the meeting organizer allows invitees to propose a new time when
      * responding, false otherwise. Optional. Default is true.
@@ -72,7 +69,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private String iCalUId;
 
     /*
-     * The importance property.
+     * importance
      */
     @JsonProperty(value = "importance")
     private MicrosoftGraphImportance importance;
@@ -139,7 +136,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphOnlineMeetingInfo onlineMeeting;
 
     /*
-     * The onlineMeetingProvider property.
+     * onlineMeetingProviderType
      */
     @JsonProperty(value = "onlineMeetingProvider")
     private MicrosoftGraphOnlineMeetingProviderType onlineMeetingProvider;
@@ -209,7 +206,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphResponseStatus responseStatus;
 
     /*
-     * The sensitivity property.
+     * sensitivity
      */
     @JsonProperty(value = "sensitivity")
     private MicrosoftGraphSensitivity sensitivity;
@@ -222,7 +219,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private String seriesMasterId;
 
     /*
-     * The showAs property.
+     * freeBusyStatus
      */
     @JsonProperty(value = "showAs")
     private MicrosoftGraphFreeBusyStatus showAs;
@@ -253,7 +250,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private String transactionId;
 
     /*
-     * The type property.
+     * eventType
      */
     @JsonProperty(value = "type")
     private MicrosoftGraphEventType type;
@@ -285,7 +282,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Nullable.
      */
     @JsonProperty(value = "extensions")
-    private List<MicrosoftGraphExtensionInner> extensions;
+    private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The instances of the event. Navigation property. Read-only. Nullable.
@@ -477,7 +474,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Get the importance property: The importance property.
+     * Get the importance property: importance.
      *
      * @return the importance value.
      */
@@ -486,7 +483,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Set the importance property: The importance property.
+     * Set the importance property: importance.
      *
      * @param importance the importance value to set.
      * @return the MicrosoftGraphEvent object itself.
@@ -687,7 +684,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Get the onlineMeetingProvider property: The onlineMeetingProvider property.
+     * Get the onlineMeetingProvider property: onlineMeetingProviderType.
      *
      * @return the onlineMeetingProvider value.
      */
@@ -696,7 +693,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Set the onlineMeetingProvider property: The onlineMeetingProvider property.
+     * Set the onlineMeetingProvider property: onlineMeetingProviderType.
      *
      * @param onlineMeetingProvider the onlineMeetingProvider value to set.
      * @return the MicrosoftGraphEvent object itself.
@@ -900,7 +897,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Get the sensitivity property: The sensitivity property.
+     * Get the sensitivity property: sensitivity.
      *
      * @return the sensitivity value.
      */
@@ -909,7 +906,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Set the sensitivity property: The sensitivity property.
+     * Set the sensitivity property: sensitivity.
      *
      * @param sensitivity the sensitivity value to set.
      * @return the MicrosoftGraphEvent object itself.
@@ -942,7 +939,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Get the showAs property: The showAs property.
+     * Get the showAs property: freeBusyStatus.
      *
      * @return the showAs value.
      */
@@ -951,7 +948,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Set the showAs property: The showAs property.
+     * Set the showAs property: freeBusyStatus.
      *
      * @param showAs the showAs value to set.
      * @return the MicrosoftGraphEvent object itself.
@@ -1030,7 +1027,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: eventType.
      *
      * @return the type value.
      */
@@ -1039,7 +1036,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: eventType.
      *
      * @param type the type value to set.
      * @return the MicrosoftGraphEvent object itself.
@@ -1120,7 +1117,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      *
      * @return the extensions value.
      */
-    public List<MicrosoftGraphExtensionInner> extensions() {
+    public List<MicrosoftGraphExtension> extensions() {
         return this.extensions;
     }
 
@@ -1130,7 +1127,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
-    public MicrosoftGraphEvent withExtensions(List<MicrosoftGraphExtensionInner> extensions) {
+    public MicrosoftGraphEvent withExtensions(List<MicrosoftGraphExtension> extensions) {
         this.extensions = extensions;
         return this;
     }

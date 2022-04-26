@@ -130,7 +130,7 @@ public class ReactorConnection implements AmqpConnection {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
                     .filter(state -> state == AmqpEndpointState.ACTIVE)
                     .next()
-                    .timeout(operationTimeout, Mono.error(new AmqpException(true, String.format(
+                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, String.format(
                         "Connection '%s' not opened within AmqpRetryOptions.tryTimeout(): %s", connectionId,
                         operationTimeout), handler.getErrorContext())));
                 return activeEndpoint.thenReturn(reactorConnection);
@@ -318,7 +318,7 @@ public class ReactorConnection implements AmqpConnection {
             final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession().getEndpointStates()
                 .filter(state -> state == AmqpEndpointState.ACTIVE)
                 .next()
-                .timeout(retryPolicy.getRetryOptions().getTryTimeout(), Mono.error(new AmqpException(true,
+                .timeout(retryPolicy.getRetryOptions().getTryTimeout(), Mono.error(() -> new AmqpException(true,
                     String.format("connectionId[%s] sessionName[%s] Timeout waiting for session to be active.",
                         connectionId, sessionName), handler.getErrorContext())));
 

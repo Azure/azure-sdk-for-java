@@ -64,7 +64,7 @@ public class TableHelloWorld {
             .addProperty("Type", "Marker")
             .addProperty("Color", "Blue");
 
-        tableClient.updateEntity(entityForUpsert);
+        tableClient.upsertEntity(entityForUpsert);
 
         System.out.printf("Upserted entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey);
 
