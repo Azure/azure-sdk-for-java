@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Organization Create. */
 public final class OrganizationCreateSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Create.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Create.json
      */
     /**
      * Sample code: Organization_Create.

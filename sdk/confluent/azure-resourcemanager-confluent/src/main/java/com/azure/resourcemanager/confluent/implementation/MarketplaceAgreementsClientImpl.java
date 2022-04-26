@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.MarketplaceAgreementsClient;
 import com.azure.resourcemanager.confluent.fluent.models.ConfluentAgreementResourceInner;
 import com.azure.resourcemanager.confluent.models.ConfluentAgreementResourceListResponse;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient. */
 public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreementsClient {
-    private final ClientLogger logger = new ClientLogger(MarketplaceAgreementsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final MarketplaceAgreementsService service;
 
@@ -101,7 +98,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfluentAgreementResourceInner>> listSinglePageAsync() {
@@ -147,7 +144,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfluentAgreementResourceInner>> listSinglePageAsync(Context context) {
@@ -188,7 +185,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfluentAgreementResourceInner> listAsync() {
@@ -202,7 +199,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfluentAgreementResourceInner> listAsync(Context context) {
@@ -215,7 +212,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfluentAgreementResourceInner> list() {
@@ -229,7 +226,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfluentAgreementResourceInner> list(Context context) {
@@ -243,7 +240,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition.
+     * @return agreement Terms definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfluentAgreementResourceInner>> createWithResponseAsync(
@@ -286,7 +283,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition.
+     * @return agreement Terms definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfluentAgreementResourceInner>> createWithResponseAsync(
@@ -325,7 +322,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition.
+     * @return agreement Terms definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfluentAgreementResourceInner> createAsync(ConfluentAgreementResourceInner body) {
@@ -345,7 +342,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition.
+     * @return agreement Terms definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfluentAgreementResourceInner> createAsync() {
@@ -382,7 +379,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agreement Terms definition.
+     * @return agreement Terms definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfluentAgreementResourceInner> createWithResponse(
@@ -397,7 +394,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfluentAgreementResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -433,7 +430,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfluentAgreementResourceInner>> listNextSinglePageAsync(

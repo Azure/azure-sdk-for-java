@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Organization Delete. */
 public final class OrganizationDeleteSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Delete.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Delete.json
      */
     /**
      * Sample code: Confluent_Delete.

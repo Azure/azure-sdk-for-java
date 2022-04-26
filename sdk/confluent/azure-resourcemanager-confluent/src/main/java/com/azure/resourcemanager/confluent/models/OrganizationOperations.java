@@ -14,7 +14,7 @@ public interface OrganizationOperations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list Confluent operations.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationResult> list();
 
@@ -25,7 +25,7 @@ public interface OrganizationOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list Confluent operations.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationResult> list(Context context);
 }

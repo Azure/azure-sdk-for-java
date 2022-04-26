@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Terms properties for Marketplace and Confluent. */
 @Fluent
 public final class ConfluentAgreementProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfluentAgreementProperties.class);
-
     /*
      * Publisher identifier string.
      */

@@ -22,15 +22,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.ValidationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ValidationsClient. */
 public final class ValidationsClientImpl implements ValidationsClient {
-    private final ClientLogger logger = new ClientLogger(ValidationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ValidationsService service;
 
@@ -81,7 +78,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return organization resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrganizationResourceInner>> validateOrganizationWithResponseAsync(
@@ -138,7 +135,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return organization resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrganizationResourceInner>> validateOrganizationWithResponseAsync(
@@ -191,7 +188,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return organization resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrganizationResourceInner> validateOrganizationAsync(
@@ -234,7 +231,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return organization resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OrganizationResourceInner> validateOrganizationWithResponse(

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.confluent.fluent.ValidationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.Validations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ValidationsImpl implements Validations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ValidationsImpl.class);
 
     private final ValidationsClient innerClient;
 

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.confluent.fluent.OrganizationOperationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.confluent.models.OperationResult;
 import com.azure.resourcemanager.confluent.models.OrganizationOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OrganizationOperationsImpl implements OrganizationOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationOperationsImpl.class);
 
     private final OrganizationOperationsClient innerClient;
 

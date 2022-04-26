@@ -39,8 +39,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the ConfluentManagementClientImpl type. */
 @ServiceClient(builder = ConfluentManagementClientBuilder.class)
 public final class ConfluentManagementClientImpl implements ConfluentManagementClient {
-    private final ClientLogger logger = new ClientLogger(ConfluentManagementClientImpl.class);
-
     /** Microsoft Azure subscription id. */
     private final String subscriptionId;
 
@@ -183,7 +181,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-09-01-preview";
+        this.apiVersion = "2021-12-01";
         this.marketplaceAgreements = new MarketplaceAgreementsClientImpl(this);
         this.organizationOperations = new OrganizationOperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
@@ -273,7 +271,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -332,4 +330,6 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConfluentManagementClientImpl.class);
 }

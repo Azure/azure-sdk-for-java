@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 /** Samples for MarketplaceAgreements Create. */
 public final class MarketplaceAgreementsCreateSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/MarketplaceAgreements_Create.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/MarketplaceAgreements_Create.json
      */
     /**
      * Sample code: MarketplaceAgreements_Create.
@@ -51,7 +51,7 @@ import com.azure.core.util.Context;
 /** Samples for MarketplaceAgreements List. */
 public final class MarketplaceAgreementsListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/MarketplaceAgreements_List.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/MarketplaceAgreements_List.json
      */
     /**
      * Sample code: MarketplaceAgreements_List.
@@ -75,7 +75,7 @@ import java.util.Map;
 /** Samples for Organization Create. */
 public final class OrganizationCreateSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Create.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Create.json
      */
     /**
      * Sample code: Organization_Create.
@@ -125,7 +125,7 @@ import com.azure.core.util.Context;
 /** Samples for Organization Delete. */
 public final class OrganizationDeleteSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Delete.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Delete.json
      */
     /**
      * Sample code: Confluent_Delete.
@@ -146,7 +146,7 @@ import com.azure.core.util.Context;
 /** Samples for Organization GetByResourceGroup. */
 public final class OrganizationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Get.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Get.json
      */
     /**
      * Sample code: Organization_Get.
@@ -167,7 +167,7 @@ import com.azure.core.util.Context;
 /** Samples for Organization List. */
 public final class OrganizationListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_ListBySubscription.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_ListBySubscription.json
      */
     /**
      * Sample code: Organization_ListBySubscription.
@@ -188,7 +188,7 @@ import com.azure.core.util.Context;
 /** Samples for Organization ListByResourceGroup. */
 public final class OrganizationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_ListByResourceGroup.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_ListByResourceGroup.json
      */
     /**
      * Sample code: Organization_ListByResourceGroup.
@@ -212,7 +212,7 @@ import java.util.Map;
 /** Samples for Organization Update. */
 public final class OrganizationUpdateSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Update.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Organization_Update.json
      */
     /**
      * Sample code: Confluent_Update.
@@ -249,7 +249,7 @@ import com.azure.core.util.Context;
 /** Samples for OrganizationOperations List. */
 public final class OrganizationOperationsListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/OrganizationOperations_List.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/OrganizationOperations_List.json
      */
     /**
      * Sample code: OrganizationOperations_List.
@@ -275,7 +275,7 @@ import java.util.Map;
 /** Samples for Validations ValidateOrganization. */
 public final class ValidationsValidateOrganizationSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Validations_ValidateOrganizations.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/Validations_ValidateOrganizations.json
      */
     /**
      * Sample code: Validations_ValidateOrganizations.
