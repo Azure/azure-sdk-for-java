@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoCon
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.spring.cloud.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
-import com.azure.storage.blob.*;
+import com.azure.storage.blob.BlobServiceClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
