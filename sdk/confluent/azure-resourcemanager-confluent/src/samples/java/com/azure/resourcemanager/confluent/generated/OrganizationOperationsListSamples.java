@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for OrganizationOperations List. */
 public final class OrganizationOperationsListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/OrganizationOperations_List.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2021-12-01/examples/OrganizationOperations_List.json
      */
     /**
      * Sample code: OrganizationOperations_List.

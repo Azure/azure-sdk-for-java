@@ -7,16 +7,12 @@ package com.azure.resourcemanager.confluent.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Agreement Terms definition. */
 @Fluent
 public final class ConfluentAgreementResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfluentAgreementResourceInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource
      */

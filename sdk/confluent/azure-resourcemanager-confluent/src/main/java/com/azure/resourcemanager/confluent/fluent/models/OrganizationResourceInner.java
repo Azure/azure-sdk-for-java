@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
 import com.azure.resourcemanager.confluent.models.UserDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** Organization resource. */
 @Fluent
 public final class OrganizationResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationResourceInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource
      */
@@ -154,7 +151,7 @@ public final class OrganizationResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model OrganizationResourceInner"));
@@ -162,4 +159,6 @@ public final class OrganizationResourceInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationResourceInner.class);
 }

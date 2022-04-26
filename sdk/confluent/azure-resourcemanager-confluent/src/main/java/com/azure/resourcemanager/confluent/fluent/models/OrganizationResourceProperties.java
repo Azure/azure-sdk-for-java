@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
 import com.azure.resourcemanager.confluent.models.UserDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Organization resource property. */
 @Fluent
 public final class OrganizationResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationResourceProperties.class);
-
     /*
      * The creation time of the resource.
      */
@@ -137,7 +134,7 @@ public final class OrganizationResourceProperties {
      */
     public void validate() {
         if (offerDetail() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property offerDetail in model OrganizationResourceProperties"));
@@ -145,7 +142,7 @@ public final class OrganizationResourceProperties {
             offerDetail().validate();
         }
         if (userDetail() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property userDetail in model OrganizationResourceProperties"));
@@ -153,4 +150,6 @@ public final class OrganizationResourceProperties {
             userDetail().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationResourceProperties.class);
 }

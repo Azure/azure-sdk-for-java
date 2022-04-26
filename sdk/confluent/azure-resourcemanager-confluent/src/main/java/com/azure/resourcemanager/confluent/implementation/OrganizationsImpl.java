@@ -13,10 +13,9 @@ import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.Organizations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OrganizationsImpl implements Organizations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationsImpl.class);
 
     private final OrganizationsClient innerClient;
 
@@ -84,7 +83,7 @@ public final class OrganizationsImpl implements Organizations {
     public OrganizationResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +91,7 @@ public final class OrganizationsImpl implements Organizations {
         }
         String organizationName = Utils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
@@ -103,7 +102,7 @@ public final class OrganizationsImpl implements Organizations {
     public Response<OrganizationResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class OrganizationsImpl implements Organizations {
         }
         String organizationName = Utils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
@@ -122,7 +121,7 @@ public final class OrganizationsImpl implements Organizations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class OrganizationsImpl implements Organizations {
         }
         String organizationName = Utils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
@@ -141,7 +140,7 @@ public final class OrganizationsImpl implements Organizations {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class OrganizationsImpl implements Organizations {
         }
         String organizationName = Utils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
