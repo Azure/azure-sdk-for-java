@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.RESOURCE_SERVER;
@@ -130,16 +131,19 @@ public class AadAuthenticationProperties implements InitializingBean {
      */
     private AadApplicationType applicationType;
 
-    private static final Map<AadApplicationType, List<AadAuthorizationGrantType>> compatibleApplicationTypeAndGrantTypes = new HashMap<>();
+    private static final Map<AadApplicationType, Set<AadAuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES = new HashMap<>();
 
     static {
         initCompatibleApplicationTypeAndGrantTypes();
     }
 
     private static void initCompatibleApplicationTypeAndGrantTypes() {
-        compatibleApplicationTypeAndGrantTypes.put(WEB_APPLICATION, Arrays.asList(ON_BEHALF_OF));
-        compatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER, Arrays.asList(AUTHORIZATION_CODE, ON_BEHALF_OF));
-        compatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER_WITH_OBO, Arrays.asList(AUTHORIZATION_CODE));
+        NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.put(WEB_APPLICATION,
+            Stream.of(ON_BEHALF_OF).collect(Collectors.toSet()));
+        NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.put(RESOURCE_SERVER,
+            Stream.of(AUTHORIZATION_CODE, ON_BEHALF_OF).collect(Collectors.toSet()));
+        NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.put(RESOURCE_SERVER_WITH_OBO,
+            Stream.of(AUTHORIZATION_CODE).collect(Collectors.toSet()));
     }
 
     /**
@@ -579,6 +583,9 @@ public class AadAuthenticationProperties implements InitializingBean {
         if (grantType == null) {
             grantType = decideDefaultGrantTypeFromApplicationType(registrationId, applicationType);
             properties.setAuthorizationGrantType(grantType);
+
+            LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to '{}'.", grantType,
+                registrationId);
         }
 
         // Validate authorization grant grantType
@@ -626,8 +633,8 @@ public class AadAuthenticationProperties implements InitializingBean {
     private void validateAuthorizationGrantType(String registrationId, AadAuthorizationGrantType grantType,
                                                 AuthorizationClientProperties properties) {
 
-        if (compatibleApplicationTypeAndGrantTypes.containsKey(applicationType)) {
-            if (compatibleApplicationTypeAndGrantTypes.get(applicationType).contains(grantType)) {
+        if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.containsKey(applicationType)) {
+            if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.get(applicationType).contains(grantType)) {
                 throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
                     applicationType.getValue(), registrationId, grantType));
             }
@@ -670,9 +677,6 @@ public class AadAuthenticationProperties implements InitializingBean {
             default:
                 throw new IllegalStateException("Unsupported authorization grantType " + appType.getValue());
         }
-
-        LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to '{}'.", grantType,
-            registrationId);
 
         return grantType;
     }
