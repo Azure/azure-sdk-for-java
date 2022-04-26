@@ -112,7 +112,6 @@ val mergeJson = (rawBody: String, row: Row) => {
     val segments = fieldName.split('/')
     var currentJson = rawBodyNode
     for (i <- 0 until segments.length) {
-      print(i)
      if (i == segments.length - 1) {
        // we have reached to the end of the mapping path, set the fieldValue directly
       currentJson.set(segments(i), objectMapper.convertValue(row.getAs[String](fieldName), classOf[JsonNode]))
