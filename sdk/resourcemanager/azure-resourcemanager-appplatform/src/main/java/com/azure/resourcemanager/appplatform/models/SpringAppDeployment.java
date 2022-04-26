@@ -73,6 +73,18 @@ public interface SpringAppDeployment
     /** @return (Enterprise Tier Only) config file patterns */
     List<String> configFilePatterns();
 
+    /** @return cpu count, can be 0.5, 1, 2, etc */
+    Double cpu();
+
+    /** @return memory in GB, can be 0.5, 1, 2, etc */
+    Double memoryInGB();
+
+    /** @return RuntimeVersion of the deployment */
+    RuntimeVersion runtimeVersion();
+
+    /** @return JVM options of the deployment */
+    String jvmOptions();
+
     /**
      * Container interface for all the definitions that need to be implemented.
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
@@ -182,10 +194,10 @@ public interface SpringAppDeployment
 
             /**
              * Specifies the cpu number of the deployment.
-             * @param cpuCount the number of the cpu, 1 core can be represented by 1 or 1000m
+             * @param cpuCount the number of the cpu, can be 0.5, 1, 2, etc
              * @return the next stage of deployment definition
              */
-            T withCpu(String cpuCount);
+            T withCpu(double cpuCount);
 
             /**
              * Specifies the memory of the deployment.
@@ -196,10 +208,10 @@ public interface SpringAppDeployment
 
             /**
              * Specifies the memory of the deployment.
-             * @param size the size of the memory, 1 GB can be represented by 1Gi or 1024Mi
+             * @param sizeInGB the size of the memory in GB, can be 0.5, 1, 2, etc
              * @return the next stage of deployment definition
              */
-            T withMemory(String size);
+            T withMemory(double sizeInGB);
 
             /**
              * Specifies the runtime version of the deployment.
@@ -288,10 +300,10 @@ public interface SpringAppDeployment
 
             /**
              * Specifies the cpu number of the deployment.
-             * @param cpuCount the number of the cpu, 1 core can be represented by 1 or 1000m
+             * @param cpuCount the number of the cpu, can be 0.5, 1, 2, etc
              * @return the next stage of deployment update
              */
-            Update withCpu(String cpuCount);
+            Update withCpu(double cpuCount);
 
             /**
              * Specifies the memory of the deployment.
@@ -302,10 +314,10 @@ public interface SpringAppDeployment
 
             /**
              * Specifies the memory of the deployment.
-             * @param size the size of the memory, 1 GB can be represented by 1Gi or 1024Mi
+             * @param sizeInGB the size of the memory, can be 0.5, 1, 2, etc
              * @return the next stage of deployment update
              */
-            Update withMemory(String size);
+            Update withMemory(double sizeInGB);
 
             /**
              * Specifies the runtime version of the deployment.
