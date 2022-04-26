@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An operation for Azure Container Instance service. */
 @Fluent
 public final class Operation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
-
     /*
      * The name of the operation.
      */
@@ -125,15 +122,17 @@ public final class Operation {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Operation"));
         }
         if (display() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property display in model Operation"));
         } else {
             display().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Operation.class);
 }

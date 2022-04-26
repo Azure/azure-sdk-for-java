@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** externalLink. */
 @Fluent
 public final class MicrosoftGraphExternalLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphExternalLink.class);
-
     /*
      * The url of the link.
      */

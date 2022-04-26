@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,12 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Device Compilance Policy Setting State for a given device. */
+/** deviceCompliancePolicySettingState Device Compilance Policy Setting State for a given device. */
 @Fluent
 public final class MicrosoftGraphDeviceCompliancePolicySettingState {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphDeviceCompliancePolicySettingState.class);
-
     /*
      * Current value of setting on device
      */
@@ -63,7 +59,7 @@ public final class MicrosoftGraphDeviceCompliancePolicySettingState {
     private List<MicrosoftGraphSettingSource> sources;
 
     /*
-     * The state property.
+     * complianceStatus
      */
     @JsonProperty(value = "state")
     private MicrosoftGraphComplianceStatus state;
@@ -238,7 +234,7 @@ public final class MicrosoftGraphDeviceCompliancePolicySettingState {
     }
 
     /**
-     * Get the state property: The state property.
+     * Get the state property: complianceStatus.
      *
      * @return the state value.
      */
@@ -247,7 +243,7 @@ public final class MicrosoftGraphDeviceCompliancePolicySettingState {
     }
 
     /**
-     * Set the state property: The state property.
+     * Set the state property: complianceStatus.
      *
      * @param state the state value to set.
      * @return the MicrosoftGraphDeviceCompliancePolicySettingState object itself.

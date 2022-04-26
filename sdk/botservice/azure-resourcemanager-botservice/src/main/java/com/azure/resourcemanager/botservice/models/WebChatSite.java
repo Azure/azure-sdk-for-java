@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A site for the Webchat channel. */
 @Fluent
 public class WebChatSite {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebChatSite.class);
-
     /*
      * Site Id
      */
@@ -148,9 +145,11 @@ public class WebChatSite {
      */
     public void validate() {
         if (siteName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property siteName in model WebChatSite"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebChatSite.class);
 }

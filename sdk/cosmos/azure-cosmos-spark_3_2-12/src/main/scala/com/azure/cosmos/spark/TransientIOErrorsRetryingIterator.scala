@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.guava25.base.Throwables
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -48,6 +49,14 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   private val lastContinuationToken = new AtomicReference[String](null)
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
+  private lazy val operationContextString = operationContextAndListener match {
+    case Some(o) => if (o.getOperationContext != null) {
+      o.getOperationContext.toString
+    } else {
+      "n/a"
+    }
+    case None => "n/a"
+  }
 
   private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
@@ -83,7 +92,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         case None =>
           val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
           lastPagedFlux.getAndSet(newPagedFlux) match {
-            case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+            case Some(oldPagedFlux) => {
+              logInfo(s"Attempting to cancel oldPagedFlux, Context: $operationContextString")
+              oldPagedFlux.cancelOn(Schedulers.boundedElastic()).subscribe().dispose()
+            }
             case None =>
           }
           currentFeedResponseIterator = Some(
@@ -119,7 +131,6 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           // need to get attempt to get next FeedResponse to determine whether more records exist
           None
         }
-
       } else {
         Some(false)
       }
@@ -189,9 +200,11 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     returnValue.get
   }
 
+  //  Correct way to cancel a flux and dispose it
+  //  https://github.com/reactor/reactor-core/blob/main/reactor-core/src/test/java/reactor/core/publisher/scenarios/FluxTests.java#L837
   override def close(): Unit = {
     lastPagedFlux.getAndSet(None) match {
-      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic()).subscribe().dispose()
       case None =>
     }
   }

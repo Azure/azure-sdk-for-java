@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Containers ListLogs. */
 public final class ContainersListLogsSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerListLogs.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerListLogs.json
      */
     /**
      * Sample code: ContainerListLogs.

@@ -20,7 +20,7 @@ public interface KustoPoolDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByKustoPool(String resourceGroupName, String workspaceName, String kustoPoolName);
 
@@ -34,7 +34,7 @@ public interface KustoPoolDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByKustoPool(
         String resourceGroupName, String workspaceName, String kustoPoolName, Context context);

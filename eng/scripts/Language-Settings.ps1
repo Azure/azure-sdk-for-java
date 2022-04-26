@@ -279,6 +279,8 @@ $PackageExclusions = @{
   "azure-storage-internal-avro" = "No external APIs.";
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
+  "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
+  "azure-aot-graalvm-support" = "No Javadocs for the package.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -676,11 +678,17 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   }
 }
 
-function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
-{
-  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
-  {
-    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
+function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
+  # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
+  if (!$PackageInfos) {
+    $PackageInfos =  @($PackageInfo)
   }
+
+  foreach ($package in $PackageInfos) {
+    if (!(ValidatePackage $package.Group $package.Name $package.Version $DocValidationImageId)) {
+      Write-Error "Package $($package.Name) failed on validation" -ErrorAction Continue
+    }
+  }
+
   return
 }

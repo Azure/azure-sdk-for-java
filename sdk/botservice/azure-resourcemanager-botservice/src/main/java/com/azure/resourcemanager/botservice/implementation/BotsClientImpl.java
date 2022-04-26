@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.BotsClient;
 import com.azure.resourcemanager.botservice.fluent.models.BotInner;
 import com.azure.resourcemanager.botservice.fluent.models.CheckNameAvailabilityResponseBodyInner;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BotsClient. */
 public final class BotsClientImpl implements BotsClient {
-    private final ClientLogger logger = new ClientLogger(BotsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BotsService service;
 
@@ -913,7 +910,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BotInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -930,7 +927,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BotInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -946,7 +943,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BotInner> listByResourceGroup(String resourceGroupName) {
@@ -961,7 +958,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BotInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1062,7 +1059,7 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BotInner> listAsync() {
@@ -1076,7 +1073,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BotInner> listAsync(Context context) {
@@ -1089,7 +1086,7 @@ public final class BotsClientImpl implements BotsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BotInner> list() {
@@ -1103,7 +1100,7 @@ public final class BotsClientImpl implements BotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BotInner> list(Context context) {

@@ -32,7 +32,7 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties impl
      */
     private String directoryPath;
 
-
+    @Override
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }

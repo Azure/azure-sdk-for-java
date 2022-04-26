@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.29.0-beta.1 (Unreleased)
+### 4.30.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,14 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.29.0 (2022-04-22)
+#### Features Added
+* Added Beta API `continueOnInitError` in `ThroughputControlGroupConfigBuilder` - See [PR 27702](https://github.com/Azure/azure-sdk-for-java/pull/27702)
+
+#### Bugs Fixed
+* Added improvement for handling idle connection close event when `connectionEndpointRediscoveryEnabled` is enabled - See [PR 27242](https://github.com/Azure/azure-sdk-for-java/pull/27242)
+* Fixed memory leak issue related to circular reference of `CosmosDiagnostics` in `StoreResponse` and `CosmosException` - See [PR 28343](https://github.com/Azure/azure-sdk-for-java/pull/28343)
 
 ### 4.28.1 (2022-04-08)
 #### Other Changes

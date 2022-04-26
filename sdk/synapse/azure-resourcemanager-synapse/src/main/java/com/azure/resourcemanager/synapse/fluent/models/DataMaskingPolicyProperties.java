@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DataMaskingState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a database data masking policy. */
 @Fluent
 public final class DataMaskingPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingPolicyProperties.class);
-
     /*
      * The state of the data masking policy.
      */
@@ -113,10 +110,12 @@ public final class DataMaskingPolicyProperties {
      */
     public void validate() {
         if (dataMaskingState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataMaskingState in model DataMaskingPolicyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataMaskingPolicyProperties.class);
 }
