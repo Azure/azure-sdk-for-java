@@ -53,6 +53,19 @@
       <version>1.8.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-okhttp;dependency} -->
     </dependency>
 
+    <!-- TODO (kasobol-msft) these two below are to make sure we use current version of both http clients. Should be removed later -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.12.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-okhttp;dependency} -->
+    </dependency>
+
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>perf-test-core</artifactId>

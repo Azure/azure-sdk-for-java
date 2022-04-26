@@ -25,15 +25,16 @@ import java.util.Queue;
  */
 public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String LOGGER_LOG_EXCEPTION_AS_ERROR = "logger.logExceptionAsError";
+    private static final String LOGGER_LOG_IOEXCEPTION_AS_ERROR = "logger.logIOExceptionAsError";
     private static final String LOGGER_LOG_THROWABLE_AS_ERROR = "logger.logThrowableAsError";
-    private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR = "logger.atError().log";    
+    private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR = "logger.atError().log";
     private static final String LOGGER_LOG_EXCEPTION_AS_WARNING = "logger.logExceptionAsWarning";
-    private static final String LOGGER_LOG_THROWABLE_AS_WARNING = "logger.logThrowableAsWarning";    
+    private static final String LOGGER_LOG_THROWABLE_AS_WARNING = "logger.logThrowableAsWarning";
     private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_WARNING = "logger.atWarning().log";
 
     static final String THROW_LOGGER_EXCEPTION_MESSAGE = String.format("Directly throwing an exception is disallowed. "
-        + "Must throw through \"ClientLogger\" API, either of \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" where \"logger\" is "
-        + "type of ClientLogger from Azure Core package.", LOGGER_LOG_EXCEPTION_AS_ERROR,
+        + "Must throw through \"ClientLogger\" API, either of \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" where \"logger\" is "
+        + "type of ClientLogger from Azure Core package.", LOGGER_LOG_EXCEPTION_AS_ERROR, LOGGER_LOG_IOEXCEPTION_AS_ERROR,
         LOGGER_LOG_THROWABLE_AS_ERROR, LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR, LOGGER_LOG_EXCEPTION_AS_WARNING, LOGGER_LOG_THROWABLE_AS_WARNING, LOGGING_BUILDER_LOG_THROWABLE_AS_WARNING);
 
     // A LIFO queue stores the static status of class, skip this ThrowFromClientLoggerCheck if the class is static
@@ -98,7 +99,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
             case TokenTypes.LITERAL_THROW:
                 // Skip check if the throw exception from static class, constructor or static method
                 if (classStaticDeque.isEmpty() || classStaticDeque.peek() || isInConstructor
-                    || methodStaticDeque.isEmpty() || methodStaticDeque.peek() 
+                    || methodStaticDeque.isEmpty() || methodStaticDeque.peek()
                     || findLogMethodIdentifier(token)) {
                     return;
                 }
@@ -113,6 +114,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
                 String methodCallName =
                     FullIdent.createFullIdent(methodCallToken.findFirstToken(TokenTypes.DOT)).getText();
                 if (!LOGGER_LOG_EXCEPTION_AS_ERROR.equalsIgnoreCase(methodCallName)
+                    && !LOGGER_LOG_IOEXCEPTION_AS_ERROR.equalsIgnoreCase(methodCallName)
                     && !LOGGER_LOG_THROWABLE_AS_ERROR.equalsIgnoreCase(methodCallName)
                     && !LOGGER_LOG_EXCEPTION_AS_WARNING.equalsIgnoreCase(methodCallName)
                     && !LOGGER_LOG_THROWABLE_AS_WARNING.equalsIgnoreCase(methodCallName)) {
@@ -126,7 +128,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
     }
 
     /*
-     * Checks if the expression includes call to log(), which verifies logging builder call 
+     * Checks if the expression includes call to log(), which verifies logging builder call
      * e.g. logger.atError().log(ex)
      */
     private static boolean findLogMethodIdentifier(DetailAST root) {

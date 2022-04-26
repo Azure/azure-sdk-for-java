@@ -22,6 +22,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.http.rest.SyncRestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -68,6 +69,7 @@ import reactor.core.publisher.Mono;
 public final class BlobsImpl {
     /** The proxy service used to perform REST calls. */
     private final BlobsService service;
+    private final BlobsSyncService syncService;
 
     /** The service client containing this operation class. */
     private final AzureBlobStorageImpl client;
@@ -79,7 +81,45 @@ public final class BlobsImpl {
      */
     BlobsImpl(AzureBlobStorageImpl client) {
         this.service = RestProxy.create(BlobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.syncService = SyncRestProxy.create(BlobsSyncService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for AzureBlobStorageBlobs to be used by the proxy service to perform REST
+     * calls.
+     */
+    @Host("{url}")
+    @ServiceInterface(name = "AzureBlobStorageBlob")
+    public interface BlobsSyncService {
+
+        @Get("/{containerName}/{blob}")
+        @ExpectedResponses({200, 206})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        StreamResponse downloadSync(
+            @HostParam("url") String url,
+            @PathParam("containerName") String containerName,
+            @PathParam("blob") String blob,
+            @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId,
+            @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("x-ms-if-tags") String ifTags,
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -702,6 +742,107 @@ public final class BlobsImpl {
                 requestId,
                 accept,
                 context);
+    }
+
+    /**
+     * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
+     * also call Download to read a snapshot or version.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     *     snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     *     a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     *     of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param rangeGetContentMD5 When set to true and specified together with the Range, the service returns the MD5
+     *     hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param rangeGetContentCRC64 When set to true and specified together with the Range, the service returns the CRC64
+     *     hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamResponse downloadWithResponseSync(
+        String containerName,
+        String blob,
+        String snapshot,
+        String versionId,
+        Integer timeout,
+        String range,
+        String leaseId,
+        Boolean rangeGetContentMD5,
+        Boolean rangeGetContentCRC64,
+        OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince,
+        String ifMatch,
+        String ifNoneMatch,
+        String ifTags,
+        String requestId,
+        CpkInfo cpkInfo,
+        Context context) {
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+            ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+            ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return syncService.downloadSync(
+            this.client.getUrl(),
+            containerName,
+            blob,
+            snapshot,
+            versionId,
+            timeout,
+            range,
+            leaseId,
+            rangeGetContentMD5,
+            rangeGetContentCRC64,
+            encryptionKey,
+            encryptionKeySha256,
+            encryptionAlgorithm,
+            ifModifiedSinceConverted,
+            ifUnmodifiedSinceConverted,
+            ifMatch,
+            ifNoneMatch,
+            ifTags,
+            this.client.getVersion(),
+            requestId,
+            accept,
+            context);
     }
 
     /**

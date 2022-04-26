@@ -13,11 +13,14 @@ import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -26,6 +29,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -46,6 +50,7 @@ public abstract class HttpClientTests {
     private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
     private static final String ECHO_REQUEST = "echoRequest";
+    private static final Random RANDOM = new Random();
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
@@ -288,6 +293,34 @@ public abstract class HttpClientTests {
             () -> StepVerifier.create(sendEchoRequest(content))
                 .assertNext(actual -> assertEquals(expected, actual))
                 .verifyComplete());
+    }
+
+    /**
+     * Tests that a request is echoed back.
+     * @param size size.
+     * @throws Exception exception.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {10, 1024, 1024 * 1024, 1024 * 1024 * 10 + 13})
+    public void streamResponseSync(int size) throws Exception {
+
+        byte[] bytes = new byte[size];
+        RANDOM.nextBytes(bytes);
+        String expectedString = new String(bytes, StandardCharsets.UTF_8);
+        BinaryData content = BinaryData.fromString(expectedString);
+
+        HttpResponse response = createHttpClient()
+            .sendSync(new HttpRequest(
+                HttpMethod.PUT,
+                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
+                new HttpHeaders(),
+                content), Context.NONE);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        response.writeBodyTo(outputStream);
+
+        byte[] receivedBytes = outputStream.toByteArray();
+        assertEquals(expectedString, new String(receivedBytes, StandardCharsets.UTF_8));
     }
 
     /**

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.StreamUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;
@@ -16,6 +17,7 @@ import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -102,6 +104,11 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         }
 
         return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close());
+    }
+
+    @Override
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
+        StreamUtils.INSTANCE.transfer(responseBody.byteStream(), outputStream);
     }
 
     @Override

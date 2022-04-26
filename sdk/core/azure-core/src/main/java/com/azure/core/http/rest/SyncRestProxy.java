@@ -150,20 +150,16 @@ public final class SyncRestProxy implements InvocationHandler {
                 options.getRequestCallback().accept(request);
             }
 
-            if (request.getBody() != null) {
+            if (request.getBodyAsBinaryData() != null) {
                 request.setBody(validateLengthSync(request));
             }
 
             final HttpResponse response = send(request, context);
             decodedResponse = this.decoder.decodeSync(response, methodParser);
             return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throwable = e;
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+            throw LOGGER.logExceptionAsError(e);
         } finally {
             if (decodedResponse != null || throwable != null) {
                 endTracingSpan(decodedResponse, throwable, context);
@@ -437,7 +433,8 @@ public final class SyncRestProxy implements InvocationHandler {
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
         Exception e;
-        byte[] responseBytes = decodedResponse.getSourceResponse().getBodyAsBinaryData().toBytes();
+        BinaryData responseData = decodedResponse.getSourceResponse().getBodyAsBinaryData();
+        byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
             e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
@@ -460,8 +457,11 @@ public final class SyncRestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser,
         final Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
-            final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
+            if (entityType.equals(StreamResponse.class)) {
+                return createResponseSync(response, entityType, null);
+            }
 
+            final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 response.getSourceResponse().close();
                 return createResponseSync(response, entityType, null);
@@ -513,6 +513,8 @@ public final class SyncRestProxy implements InvocationHandler {
                 return (cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
                     decodedHeaders)));
             }
+        } else if (cls.equals(StreamResponse.class)) {
+            return new StreamResponse(request, httpResponse);
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response sub-type.

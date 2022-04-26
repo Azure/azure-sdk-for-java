@@ -10,14 +10,17 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.RetriableOutputStreamTransfer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -25,6 +28,7 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -57,8 +61,10 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -72,6 +78,7 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
@@ -861,16 +868,98 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
+    public BlobDownloadResponse downloadStreamWithResponse(
+        OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
-        Mono<BlobDownloadResponse> download = client
-            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new BlobDownloadResponse(response)));
 
-        return blockWithOptionalTimeout(download, timeout);
+        BlobRange finalRange = range == null ? new BlobRange(0) : range;
+        Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
+        BlobRequestConditions finalRequestConditions =
+            requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
+
+        StreamResponse initialResponse = client.downloadRangeSync(
+            finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context);
+        String eTag = ModelHelper.getETag(initialResponse.getHeaders());
+        BlobsDownloadHeaders blobsDownloadHeaders =
+            ModelHelper.transformBlobDownloadHeaders(initialResponse.getHeaders());
+        BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
+            blobsDownloadHeaders, ModelHelper.getErrorCode(initialResponse.getHeaders()));
+        /*
+          If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+          from the response for better book-keeping towards the end.
+        */
+        long finalCount;
+        if (finalRange.getCount() == null) {
+            long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
+            finalCount = blobLength - finalRange.getOffset();
+        } else {
+            finalCount = finalRange.getCount();
+        }
+
+        // TODO (kasobol-msft) is this ok?
+        /*
+                         It is possible that the network stream will throw an error after emitting all data but before
+                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
+                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
+                         of the stream.
+                         */
+        /*
+                TODO (kasobol-msft) is this possible in sync?
+                if (newCount == 0) {
+                    LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                        + "but before stream signaled completion. Returning success as all data was downloaded. "
+                        + "Exception message: " + throwable.getMessage());
+                    return Flux.empty();
+                }
+                */
+
+        try (RetriableOutputStreamTransfer retriableTransfer = new RetriableOutputStreamTransfer(
+            stream,
+            initialResponse,
+            (throwable, offset) -> {
+                throwable = Exceptions.unwrap(throwable);
+                if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
+                    // TODO (kasobol-msft) is this ok?
+                    throw LOGGER.logExceptionAsError(new RuntimeException(throwable));
+                }
+
+                long newCount = finalCount - (offset - finalRange.getOffset());
+
+                        /*
+                         It is possible that the network stream will throw an error after emitting all data but before
+                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
+                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
+                         of the stream.
+                         */
+                /*
+                TODO (kasobol-msft) is this possible in sync?
+                if (newCount == 0) {
+                    LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                        + "but before stream signaled completion. Returning success as all data was downloaded. "
+                        + "Exception message: " + throwable.getMessage());
+                    return Flux.empty();
+                }
+                */
+
+                return client.downloadRangeSync(
+                    new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context);
+            },
+            finalOptions.getMaxRetryRequests(),
+            finalRange.getOffset())) {
+            // TODO (kasobol-msft) what about timeout?
+            retriableTransfer.execute();
+            return new BlobDownloadResponse(
+                initialResponse.getRequest(),
+                initialResponse.getStatusCode(),
+                initialResponse.getHeaders(),
+                blobDownloadHeaders
+            );
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     /**
