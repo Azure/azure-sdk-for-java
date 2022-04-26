@@ -137,7 +137,7 @@ public final class AccessTokenCache {
                         return Mono.just(cache);
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return sinksOne.asMono().switchIfEmpty(Mono.just(cache));
+                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cache));
                     }
                 }
             } catch (Exception ex) {
