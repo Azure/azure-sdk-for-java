@@ -15,7 +15,6 @@ NOTE: This changelog entry should be added back to Features Added section of the
     - spring-cloud-azure-starter-keyvault-certificates
     - spring-cloud-azure-starter-appconfiguration
     - spring-cloud-azure-starter-eventhubs
-    - spring-cloud-azure-starter-servicebus
     - spring-cloud-azure-starter-integration-storage-queue
     - spring-cloud-azure-starter-integration-eventhubs
 
