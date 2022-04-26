@@ -24,7 +24,7 @@ import java.util.Objects;
 /**
  * {@link HttpClient} implementation for the Vert.x {@link WebClient}.
  */
-public final class VertxAsyncHttpClient implements HttpClient {
+class VertxAsyncHttpClient implements HttpClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClient.class);
     final WebClient client;
@@ -34,7 +34,7 @@ public final class VertxAsyncHttpClient implements HttpClient {
      *
      * @param client The Vert.x {@link WebClient}
      */
-    public VertxAsyncHttpClient(WebClient client) {
+    VertxAsyncHttpClient(WebClient client) {
         Objects.requireNonNull(client, "client cannot be null");
         this.client = client;
     }
