@@ -3,12 +3,15 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
@@ -183,6 +186,106 @@ public final class JsonUtils {
      */
     public static JsonWriter writeNonNullIntegerField(JsonWriter writer, String fieldName, Integer value) {
         return (value == null) ? writer : writer.writeIntField(fieldName, value);
+    }
+
+    /**
+     * Reads the {@link JsonReader} as an untyped object.
+     * <p>
+     * The returned object is one of the following:
+     *
+     * <ul>
+     *     <li></li>
+     *     <li></li>
+     *     <li></li>
+     *     <li></li>
+     *     <li></li>
+     *     <li></li>
+     * </ul>
+     *
+     * If the {@link JsonReader#currentToken()} is one of {@link JsonToken#END_ARRAY}, {@link JsonToken#END_OBJECT}, or
+     * {@link JsonToken#FIELD_NAME}, an {@link IllegalStateException} will be thrown as an untyped field cannot begin
+     * with the ending of an array or object or with the name of a field.
+     *
+     * @param jsonReader The {@link JsonReader} that will be read into an untyped object.
+     * @return The untyped object based on the description.
+     * @throws IllegalStateException If the {@link JsonReader#currentToken()} is {@link JsonToken#END_ARRAY},
+     * {@link JsonToken#END_OBJECT}, or {@link JsonToken#FIELD_NAME}.
+     */
+    public static Object readUntypedField(JsonReader jsonReader) {
+        JsonToken token = jsonReader.currentToken();
+
+        // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
+        if (token == JsonToken.END_ARRAY || token == JsonToken.END_OBJECT || token == JsonToken.FIELD_NAME) {
+            throw new IllegalStateException("Unexpected token to begin an untyped field: " + token);
+        }
+
+        if (token == JsonToken.NULL) {
+            return null;
+        } else if (token == JsonToken.BOOLEAN) {
+            return jsonReader.getBooleanValue();
+        } else if (token == JsonToken.NUMBER) {
+            return jsonReader.getTextValue();
+        } else if (token == JsonToken.STRING) {
+            return jsonReader.getStringValue();
+        } else if (token == JsonToken.START_ARRAY) {
+            List<Object> array = new ArrayList<>();
+
+            while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+                array.add(readUntypedField(jsonReader));
+            }
+
+            return array;
+        } else if (token == JsonToken.START_OBJECT) {
+            Map<String, Object> object = new LinkedHashMap<>();
+
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = jsonReader.getFieldName();
+                jsonReader.nextToken();
+                Object value = readUntypedField(jsonReader);
+
+                object.put(fieldName, value);
+            }
+
+            return object;
+        }
+
+        // This should never happen as all JsonToken cases are checked above.
+        throw new IllegalStateException("Unknown token type while reading an untyped field: " + token);
+    }
+
+    /**
+     * Writes the {@code value} as an untyped field to the {@link JsonWriter}.
+     *
+     * @param jsonWriter The {@link JsonWriter} that will be written.
+     * @param value The value to write.
+     * @return The updated {@code jsonWriter} with the {@code value} written to it.
+     */
+    public static JsonWriter writeUntypedField(JsonWriter jsonWriter, Object value) {
+        if (value == null) {
+            return jsonWriter.writeNull().flush();
+        } else if (value instanceof Short) {
+            return jsonWriter.writeInt((short) value).flush();
+        } else if (value instanceof Integer) {
+            return jsonWriter.writeInt((int) value).flush();
+        } else if (value instanceof Long) {
+            return jsonWriter.writeLong((long) value).flush();
+        } else if (value instanceof Float) {
+            return jsonWriter.writeFloat((float) value).flush();
+        } else if (value instanceof Double) {
+            return jsonWriter.writeDouble((double) value).flush();
+        } else if (value instanceof Boolean) {
+            return jsonWriter.writeBoolean((boolean) value).flush();
+        } else if (value instanceof byte[]) {
+            return jsonWriter.writeBinary((byte[]) value).flush();
+        } else if (value instanceof CharSequence) {
+            return jsonWriter.writeString(String.valueOf(value)).flush();
+        } else if (value instanceof JsonCapable<?>) {
+            return ((JsonCapable<?>) value).toJson(jsonWriter).flush();
+        } else if (value.getClass() == Object.class) {
+            return jsonWriter.writeStartObject().writeEndObject().flush();
+        } else {
+            return jsonWriter.writeString(String.valueOf(value)).flush();
+        }
     }
 
     private JsonUtils() {

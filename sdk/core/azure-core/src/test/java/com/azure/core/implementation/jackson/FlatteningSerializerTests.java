@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -68,15 +69,15 @@ public class FlatteningSerializerTests {
         List<String> baz = Arrays.asList("hello", "hello.world");
         foo.baz(baz);
 
-        HashMap<String, String> qux = new HashMap<>();
+        HashMap<String, String> qux = new LinkedHashMap<>();
         qux.put("hello", "world");
         qux.put("a.b", "c.d");
-        qux.put("bar.a", "ttyy");
         qux.put("bar.b", "uuzz");
+        qux.put("bar.a", "ttyy");
         foo.qux(qux);
 
         // serialization
-        String serialized = serialize(foo);
+        String serialized = writeJson(foo);
         assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}}}", serialized);
 
         // deserialization
@@ -92,8 +93,8 @@ public class FlatteningSerializerTests {
 
     @Test
     public void canSerializeMapKeysWithDotAndSlash() {
-        String serialized = serialize(prepareSchoolModel());
-        assertEquals("{\"teacher\":{\"students\":{\"af.B/D\":{},\"af.B/C\":{}}},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"},\"properties\":{\"name\":\"school1\"}}", serialized);
+        String serialized = writeJson(prepareSchoolModel());
+        assertEquals("{\"teacher\":{\"students\":{\"af.B/C\":{},\"af.B/D\":{}}},\"properties\":{\"name\":\"school1\"},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"}}", serialized);
     }
 
     /**
@@ -346,7 +347,7 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized.turtlesSet1());
         assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedCollectionWithTypeId, writeJson(composedTurtleDeserialized));
         //
         // -- Validate scalar property
         //
@@ -359,7 +360,7 @@ public class FlatteningSerializerTests {
         assertEquals(10, (long) composedTurtleDeserialized.turtlesSet1Lead().size());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet1Lead().age());
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedScalarWithTypeId, writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -375,7 +376,7 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized.turtlesSet1());
         assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedCollectionWithTypeId, writeJson(composedTurtleDeserialized));
         //
         // -- Validate scalar property
         //
@@ -387,7 +388,7 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized.turtlesSet1Lead());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet1Lead().age());
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedScalarWithTypeId, writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -403,7 +404,7 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized.turtlesSet1());
         assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedCollectionWithTypeId, writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -422,7 +423,7 @@ public class FlatteningSerializerTests {
         assertTrue(composedTurtleDeserialized.turtlesSet2().get(0) instanceof TurtleWithTypeIdContainingDot);
         assertTrue(composedTurtleDeserialized.turtlesSet2().get(1) instanceof TurtleWithTypeIdContainingDot);
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedCollectionWithTypeId, writeJson(composedTurtleDeserialized));
         //
         // -- Validate scalar property
         //
@@ -436,7 +437,7 @@ public class FlatteningSerializerTests {
         assertEquals(10, (long) ((TurtleWithTypeIdContainingDot) composedTurtleDeserialized.turtlesSet2Lead()).size());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet2Lead().age());
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedScalarWithTypeId, writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -457,7 +458,7 @@ public class FlatteningSerializerTests {
         //
         // -- Validate scalar property
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedCollectionWithTypeId, writeJson(composedTurtleDeserialized));
         //
         String serializedScalarWithTypeId = "{\"turtlesSet2Lead\":{\"age\":100,\"size\":10 }}";
         // de-serialization
@@ -466,7 +467,7 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet2Lead());
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedScalarWithTypeId, writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -485,7 +486,7 @@ public class FlatteningSerializerTests {
         assertTrue(composedTurtleDeserialized.turtlesSet2().get(0) instanceof TurtleWithTypeIdContainingDot);
         assertNotNull(composedTurtleDeserialized.turtlesSet2().get(1));
         //
-        serialize(composedTurtleDeserialized);
+        assertEquals(serializedCollectionWithTypeId, writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -516,7 +517,7 @@ public class FlatteningSerializerTests {
     public void canHandleSinglePropertyBeingFlattened() {
         ClassWithFlattenedProperties classWithFlattenedProperties = new ClassWithFlattenedProperties("random", "E24JJxztP");
 
-        String serialized = serialize(classWithFlattenedProperties);
+        String serialized = writeJson(classWithFlattenedProperties);
         String[] results = {
             "{\"@odata\":{\"type\":\"random\"},\"@odata.etag\":\"E24JJxztP\"}",
             "{\"@odata.etag\":\"E24JJxztP\",\"@odata\":{\"type\":\"random\"}}"
@@ -524,7 +525,7 @@ public class FlatteningSerializerTests {
 
         assertTrue(Arrays.asList(results).contains(serialized));
 
-        ClassWithFlattenedProperties deserialized = deserialize(serialized, ClassWithFlattenedProperties.class);
+        ClassWithFlattenedProperties deserialized = readJson(serialized, ClassWithFlattenedProperties::fromJson);
         assertNotNull(deserialized);
         assertEquals(classWithFlattenedProperties.getOdataType(), deserialized.getOdataType());
         assertEquals(classWithFlattenedProperties.getOdataETag(), deserialized.getOdataETag());
@@ -538,11 +539,11 @@ public class FlatteningSerializerTests {
                     .setNetworkInterfaceConfigurations(Collections.singletonList(
                         new VirtualMachineScaleSetNetworkConfiguration().setName("name").setPrimary(true)))));
 
-        String serialized = serialize(virtualMachineScaleSet);
+        String serialized = writeJson(virtualMachineScaleSet);
         String expected = "{\"properties\":{\"virtualMachineProfile\":{\"networkProfile\":{\"networkInterfaceConfigurations\":[{\"name\":\"name\",\"properties\":{\"primary\":true}}]}}}}";
         assertEquals(expected, serialized);
 
-        VirtualMachineScaleSet deserialized = deserialize(serialized, VirtualMachineScaleSet.class);
+        VirtualMachineScaleSet deserialized = readJson(serialized, VirtualMachineScaleSet::fromJson);
         assertNotNull(deserialized);
 
         VirtualMachineScaleSetNetworkConfiguration expectedConfig = virtualMachineScaleSet.getVirtualMachineProfile()
@@ -565,11 +566,11 @@ public class FlatteningSerializerTests {
             .setJsonFlattenArray(new String[]{"hello", "goodbye", null});
 
         String expectedSerialization = "{\"jsonflatten\":{\"array\":[\"hello\",\"goodbye\",null]}}";
-        String actualSerialization = serialize(expected);
+        String actualSerialization = writeJson(expected);
 
         assertEquals(expectedSerialization, actualSerialization);
 
-        JsonFlattenOnArrayType deserialized = deserialize(actualSerialization, JsonFlattenOnArrayType.class);
+        JsonFlattenOnArrayType deserialized = readJson(actualSerialization, JsonFlattenOnArrayType::fromJson);
         assertArrayEquals(expected.getJsonFlattenArray(), deserialized.getJsonFlattenArray());
     }
 
@@ -580,11 +581,11 @@ public class FlatteningSerializerTests {
             .setJsonFlattenCollection(Collections.unmodifiableList(listCollection));
 
         String expectedSerialization = "{\"jsonflatten\":{\"collection\":[\"hello\",\"goodbye\",null]}}";
-        String actualSerialization = serialize(expected);
+        String actualSerialization = writeJson(expected);
 
         assertEquals(expectedSerialization, actualSerialization);
 
-        JsonFlattenOnCollectionType deserialized = deserialize(actualSerialization, JsonFlattenOnCollectionType.class);
+        JsonFlattenOnCollectionType deserialized = readJson(actualSerialization, JsonFlattenOnCollectionType::fromJson);
         assertEquals(expected.getJsonFlattenCollection().size(), deserialized.getJsonFlattenCollection().size());
         for (int i = 0; i < expected.getJsonFlattenCollection().size(); i++) {
             assertEquals(expected.getJsonFlattenCollection().get(i), deserialized.getJsonFlattenCollection().get(i));
@@ -598,12 +599,12 @@ public class FlatteningSerializerTests {
             .setIgnored("ignored");
 
         String expectedSerialization = "{\"name\":\"name\"}";
-        String actualSerialization = serialize(expected);
+        String actualSerialization = writeJson(expected);
 
         assertEquals(expectedSerialization, actualSerialization);
 
-        JsonFlattenOnJsonIgnoredProperty deserialized = deserialize(actualSerialization,
-            JsonFlattenOnJsonIgnoredProperty.class);
+        JsonFlattenOnJsonIgnoredProperty deserialized = readJson(actualSerialization,
+            JsonFlattenOnJsonIgnoredProperty::fromJson);
         assertEquals(expected.getName(), deserialized.getName());
         assertNull(deserialized.getIgnored());
     }
@@ -617,11 +618,11 @@ public class FlatteningSerializerTests {
             .setJsonFlattenString("string");
 
         String expectedSerialization = "{\"jsonflatten\":{\"boolean\":true,\"decimal\":1.25,\"number\":2,\"string\":\"string\"}}";
-        String actualSerialization = serialize(expected);
+        String actualSerialization = writeJson(expected);
 
         assertEquals(expectedSerialization, actualSerialization);
 
-        JsonFlattenOnPrimitiveType deserialized = deserialize(actualSerialization, JsonFlattenOnPrimitiveType.class);
+        JsonFlattenOnPrimitiveType deserialized = readJson(actualSerialization, JsonFlattenOnPrimitiveType::fromJson);
         assertEquals(expected.isJsonFlattenBoolean(), deserialized.isJsonFlattenBoolean());
         assertEquals(expected.getJsonFlattenDecimal(), deserialized.getJsonFlattenDecimal());
         assertEquals(expected.getJsonFlattenNumber(), deserialized.getJsonFlattenNumber());
@@ -634,12 +635,12 @@ public class FlatteningSerializerTests {
             .setJsonFlattenDiscriminator("discriminator");
 
         String expectedSerialization = "{\"type\":\"JsonFlattenWithJsonInfoDiscriminator\",\"jsonflatten\":{\"discriminator\":\"discriminator\"}}";
-        String actualSerialization = serialize(expected);
+        String actualSerialization = writeJson(expected);
 
         assertEquals(expectedSerialization, actualSerialization);
 
-        JsonFlattenWithJsonInfoDiscriminator deserialized = deserialize(actualSerialization,
-            JsonFlattenWithJsonInfoDiscriminator.class);
+        JsonFlattenWithJsonInfoDiscriminator deserialized = readJson(actualSerialization,
+            JsonFlattenWithJsonInfoDiscriminator::fromJson);
         assertEquals(expected.getJsonFlattenDiscriminator(), deserialized.getJsonFlattenDiscriminator());
     }
 
@@ -651,7 +652,31 @@ public class FlatteningSerializerTests {
             .addAdditionalProperty("key2", "value2");
 
         String expectedSerialization = "{\"flattened\":{\"string\":\"string\"},\"key1\":\"value1\",\"key2\":\"value2\"}";
-        String actualSerialization = serialize(expected);
+        String actualSerialization = writeJson(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        FlattenedPropertiesAndJsonAnyGetter deserialized = readJson(actualSerialization,
+            FlattenedPropertiesAndJsonAnyGetter::fromJson);
+        assertEquals(expected.getString(), deserialized.getString());
+        assertEquals(expected.additionalProperties().size(), deserialized.additionalProperties().size());
+        for (String key : expected.additionalProperties().keySet()) {
+            assertEquals(expected.additionalProperties().get(key), deserialized.additionalProperties().get(key));
+        }
+    }
+
+    //@Test
+    public void flattenedPropertiesAndJsonAnyGetterWithSameNameAsFlattened() {
+        // What should we expect in this case as 'setString' sets a flattened property with the containing field being
+        // named 'flattened' and there is an additional property with field name 'flattened'.
+        FlattenedPropertiesAndJsonAnyGetter expected = new FlattenedPropertiesAndJsonAnyGetter()
+            .setString("string")
+            .addAdditionalProperty("key1", "value1")
+            .addAdditionalProperty("key2", "value2")
+            .addAdditionalProperty("flattened", "value3");
+
+        String expectedSerialization = "{\"flattened\":{\"string\":\"string\"},\"key1\":\"value1\",\"key2\":\"value2\"}";
+        String actualSerialization = writeJson(expected);
 
         assertEquals(expectedSerialization, actualSerialization);
 
@@ -670,10 +695,10 @@ public class FlatteningSerializerTests {
         mapProperties.put("/subscriptions/0-0-0-0-0/resourcegroups/0/providers/Microsoft.ManagedIdentity/0", "value");
         School school = new School().setTags(mapProperties);
 
-        String actualSerialization = serialize(school);
+        String actualSerialization = writeJson(school);
         String expectedSerialization = "{\"tags\":{\"/subscriptions/0-0-0-0-0/resourcegroups"
             + "/0/providers/Microsoft.ManagedIdentity/0\":\"value\"}}";
-        Assertions.assertEquals(expectedSerialization, actualSerialization);
+        assertEquals(expectedSerialization, actualSerialization);
     }
 
     @Test
@@ -690,9 +715,9 @@ public class FlatteningSerializerTests {
         String expectedSerialization = "{\"identity\":{\"type\":[\"SystemAssigned, UserAssigned\"],"
             + "\"userAssignedIdentities\":{\"/subscriptions/0-0-0-0-0/resourcegroups/0/providers/"
             + "Microsoft.ManagedIdentity/userAssignedIdentities/0\":{}}}}";
-        String actualSerialization = serialize(expected);
+        String actualSerialization = writeJson(expected);
 
-        Assertions.assertEquals(expectedSerialization, actualSerialization);
+        assertEquals(expectedSerialization, actualSerialization);
     }
 
     @Test
@@ -773,7 +798,9 @@ public class FlatteningSerializerTests {
     private School prepareSchoolModel() {
         Teacher teacher = new Teacher();
 
-        Map<String, Student> students = new HashMap<>();
+        // Use LinkedHashMap for testing as it retains insertion order. This allows for a static, well-known JSON to
+        // be produced instead of needing to inspect mutliple potential outputs based on Map insertion ordering.
+        Map<String, Student> students = new LinkedHashMap<>();
         students.put("af.B/C", new Student());
         students.put("af.B/D", new Student());
 
@@ -782,7 +809,7 @@ public class FlatteningSerializerTests {
         School school = new School().setName("school1");
         school.setTeacher(teacher);
 
-        Map<String, String> schoolTags = new HashMap<>();
+        Map<String, String> schoolTags = new LinkedHashMap<>();
         schoolTags.put("foo.aa", "bar");
         schoolTags.put("x.y", "zz");
 

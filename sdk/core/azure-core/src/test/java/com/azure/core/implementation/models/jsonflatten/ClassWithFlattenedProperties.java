@@ -4,25 +4,21 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing JSON flattening.
  */
 @Immutable
-public final class ClassWithFlattenedProperties {
-    @JsonFlatten
-    @JsonProperty(value = "@odata.type")
+public final class ClassWithFlattenedProperties implements JsonCapable<ClassWithFlattenedProperties> {
     private final String odataType;
-
-    @JsonProperty(value = "@odata.etag")
     private final String odataETag;
 
-    @JsonCreator
-    public ClassWithFlattenedProperties(@JsonProperty(value = "@odata.type") String odataType,
-        @JsonProperty(value = "@odata.etag") String odataETag) {
+    public ClassWithFlattenedProperties(String odataType, String odataETag) {
         this.odataType = odataType;
         this.odataETag = odataETag;
     }
@@ -33,5 +29,52 @@ public final class ClassWithFlattenedProperties {
 
     public String getOdataETag() {
         return odataETag;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (odataType != null) {
+            jsonWriter.writeFieldName("@odata")
+                .writeStartObject()
+                .writeStringField("type", odataType)
+                .writeEndObject();
+        }
+
+        return JsonUtils.writeNonNullStringField(jsonWriter, "@odata.etag", odataETag)
+            .writeEndObject()
+            .flush();
+    }
+
+    public static ClassWithFlattenedProperties fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+            String odataType = null;
+            String odataEtag = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.etag".equals(fieldName)) {
+                    odataEtag = reader.getStringValue();
+                } else if ("@odata".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("type".equals(fieldName)) {
+                            odataType = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new ClassWithFlattenedProperties(odataType, odataEtag);
+        });
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -87,6 +88,60 @@ public class Foo implements JsonCapable<Foo> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        return null;
+        return toJsonInternal(jsonWriter, "foo");
+    }
+
+    JsonWriter toJsonInternal(JsonWriter jsonWriter, String type) {
+        jsonWriter.writeStartObject()
+            .writeStringField("$type", type);
+
+        if (bar != null || baz != null || qux != null || moreProps != null) {
+            jsonWriter.writeFieldName("properties")
+                .writeStartObject();
+
+            JsonUtils.writeNonNullStringField(jsonWriter, "bar", bar);
+
+            if (baz != null || qux != null) {
+                jsonWriter.writeFieldName("props")
+                    .writeStartObject();
+
+                if (baz != null) {
+                    JsonUtils.writeArray(jsonWriter, "baz", baz, JsonWriter::writeString);
+                }
+
+                if (qux != null) {
+                    jsonWriter.writeFieldName("q")
+                        .writeStartObject()
+                        .writeFieldName("qux")
+                        .writeStartObject();
+
+                    qux.forEach(jsonWriter::writeStringField);
+
+                    jsonWriter.writeEndObject()
+                        .writeEndObject();
+                }
+
+                jsonWriter.writeEndObject();
+            }
+
+            JsonUtils.writeNonNullStringField(jsonWriter, "more.props", moreProps);
+
+            jsonWriter.writeEndObject();
+        }
+
+        if (empty != null) {
+            jsonWriter.writeFieldName("props")
+                .writeStartObject()
+                .writeIntField("empty", empty)
+                .writeEndObject();
+        }
+
+        if (additionalProperties != null) {
+            additionalProperties.forEach((key, value) ->
+                JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));
+
+        }
+
+        return jsonWriter.writeEndObject().flush();
     }
 }

@@ -3,24 +3,22 @@
 
 package com.azure.core.implementation.models.jsonflatten;
 
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing JSON flattening.
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-@JsonFlatten
-public class School {
-    @JsonProperty(value = "teacher")
+public class School implements JsonCapable<School> {
     private Teacher teacher;
-
-    @JsonProperty(value = "properties.name")
     private String name;
-
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     public School setTeacher(Teacher teacher) {
@@ -36,5 +34,77 @@ public class School {
     public School setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (teacher != null) {
+            jsonWriter.writeFieldName("teacher");
+            teacher.toJson(jsonWriter);
+        }
+
+        if (name != null) {
+            jsonWriter.writeFieldName("properties")
+                .writeStartObject()
+                .writeStringField("name", name)
+                .writeEndObject();
+        }
+
+        if (tags != null) {
+            jsonWriter.writeFieldName("tags")
+                .writeStartObject();
+
+            tags.forEach(jsonWriter::writeStringField);
+
+            jsonWriter.writeEndObject();
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static School fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+            Teacher teacher = null;
+            String name = null;
+            Map<String, String> tags = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                token = reader.nextToken();
+
+                if ("teacher".equals(fieldName)) {
+                    teacher = Teacher.fromJson(reader);
+                } else if ("properties".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else if ("tags".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                    if (tags == null) {
+                        tags = new LinkedHashMap<>();
+                    }
+
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String key = reader.getFieldName();
+                        reader.nextToken();
+                        String value = reader.isStartArrayOrObject() ? reader.readChildren() : reader.getTextValue();
+
+                        tags.put(key, value);
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new School().setTeacher(teacher).setName(name).setTags(tags);
+        });
     }
 }

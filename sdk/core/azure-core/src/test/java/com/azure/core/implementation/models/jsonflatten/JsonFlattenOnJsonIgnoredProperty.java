@@ -4,21 +4,18 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing JSON flattening.
  */
 @Fluent
-public final class JsonFlattenOnJsonIgnoredProperty {
-    @JsonProperty("name")
+public final class JsonFlattenOnJsonIgnoredProperty implements JsonCapable<JsonFlattenOnJsonIgnoredProperty> {
     private String name;
-
-    @JsonIgnore
-    @JsonFlatten
-    @JsonProperty("jsonflatten.ignored")
     private String ignored;
 
     public JsonFlattenOnJsonIgnoredProperty setName(String name) {
@@ -37,5 +34,31 @@ public final class JsonFlattenOnJsonIgnoredProperty {
 
     public String getIgnored() {
         return ignored;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        return JsonUtils.writeNonNullStringField(jsonWriter.writeStartObject(), "name", name)
+            .writeEndObject()
+            .flush();
+    }
+
+    public static JsonFlattenOnJsonIgnoredProperty fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+            String name = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getStringValue();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new JsonFlattenOnJsonIgnoredProperty().setName(name);
+        });
     }
 }
