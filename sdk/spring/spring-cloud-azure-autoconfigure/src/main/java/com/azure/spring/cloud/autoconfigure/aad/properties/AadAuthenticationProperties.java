@@ -589,7 +589,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         }
 
         // Validate authorization grant grantType
-        validateAuthorizationGrantType(registrationId, grantType, properties);
+        validateAuthorizationGrantType(registrationId, grantType);
 
         // Extract validated scopes from properties
         List<String> scopes = extractValidatedScopes(registrationId, properties);
@@ -630,9 +630,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         return scopes;
     }
 
-    private void validateAuthorizationGrantType(String registrationId, AadAuthorizationGrantType grantType,
-                                                AuthorizationClientProperties properties) {
-
+    private void validateAuthorizationGrantType(String registrationId, AadAuthorizationGrantType grantType) {
         if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.containsKey(applicationType)) {
             if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.get(applicationType).contains(grantType)) {
                 throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
@@ -643,7 +641,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         }
 
         if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
-            && AUTHORIZATION_CODE != properties.getAuthorizationGrantType()) {
+            && AUTHORIZATION_CODE != grantType) {
             throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
                 + AZURE_CLIENT_REGISTRATION_ID
                 + ".authorization-grant-type must be configured to 'authorization_code'.");
