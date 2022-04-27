@@ -1,0 +1,31 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring-experimental/
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring-experimental/
+
+parameters:
+  - name: Artifacts
+    type: object
+    default:
+    - name: spring-cloud-azure-native-configuration
+      groupId: com.azure.spring
+      safeName: springcloudazurenativeconfiguration
+      skipPublishDocMs: true
