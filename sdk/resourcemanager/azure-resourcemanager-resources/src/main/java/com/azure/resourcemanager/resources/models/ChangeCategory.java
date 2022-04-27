@@ -13,10 +13,7 @@ public enum ChangeCategory {
     USER("User"),
 
     /** Enum value System. */
-    SYSTEM("System"),
-
-    /** Enum value Create. */
-    CREATE("Create");
+    SYSTEM("System");
 
     /** The actual serialized value for a ChangeCategory instance. */
     private final String value;

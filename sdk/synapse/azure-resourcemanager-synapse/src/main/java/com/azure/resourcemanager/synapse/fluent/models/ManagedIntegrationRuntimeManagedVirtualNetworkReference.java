@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed integration runtime managed virtual network reference. */
 @Fluent
 public final class ManagedIntegrationRuntimeManagedVirtualNetworkReference {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeManagedVirtualNetworkReference.class);
-
     /*
      * The reference name of the managed virtual network.
      */

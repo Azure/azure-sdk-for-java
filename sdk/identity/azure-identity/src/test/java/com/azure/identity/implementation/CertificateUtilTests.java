@@ -6,19 +6,17 @@ package com.azure.identity.implementation;
 import com.azure.identity.implementation.util.CertificateUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.X509Certificate;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.Instant;
+
+import java.util.Date;
 import java.util.List;
 
-@RunWith(PowerMockRunner.class)
 public class CertificateUtilTests {
 
     @Test(expected = CertificateExpiredException.class)
@@ -26,7 +24,8 @@ public class CertificateUtilTests {
         String pemPath = getPath("certificate.pem");
         byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemPath));
         List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
-        x509CertificateList.get(0).checkValidity(Date.valueOf(LocalDate.of(2025, 12, 25)));
+
+        x509CertificateList.get(0).checkValidity(Date.from(Instant.parse("2025-12-25T00:00:00z")));
     }
 
     @Test(expected = CertificateExpiredException.class)
@@ -35,7 +34,7 @@ public class CertificateUtilTests {
         byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemPath));
         List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
         Assert.assertEquals(2, x509CertificateList.size());
-        x509CertificateList.get(0).checkValidity(Date.valueOf(LocalDate.of(4025, 12, 25)));
+        x509CertificateList.get(0).checkValidity(Date.from(Instant.parse("4025-12-25T00:00:00z")));
     }
 
 

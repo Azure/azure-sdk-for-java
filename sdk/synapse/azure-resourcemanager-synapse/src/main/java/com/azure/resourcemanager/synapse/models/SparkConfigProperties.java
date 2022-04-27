@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Spark pool Config Properties SparkConfig Properties for a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class SparkConfigProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkConfigProperties.class);
-
     /*
      * The last update time of the spark config properties file.
      */

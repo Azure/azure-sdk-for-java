@@ -6,7 +6,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Information about a SparkConfiguration created at the workspace level. SparkConfiguration Artifact information. */
 @Fluent
 public final class SparkConfigurationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkConfigurationInfo.class);
-
     /*
      * Description about the SparkConfiguration.
      */
@@ -182,9 +179,11 @@ public final class SparkConfigurationInfo {
      */
     public void validate() {
         if (configs() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property configs in model SparkConfigurationInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SparkConfigurationInfo.class);
 }
