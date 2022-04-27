@@ -43,7 +43,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * &#47;&#47; added to the instance. By default, this is false, so it will error if the schema is not found.
  * SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder&#40;&#41;
  *     .schemaRegistryAsyncClient&#40;schemaRegistryAsyncClient&#41;
- *     .autoRegisterSchema&#40;true&#41;
+ *     .autoRegisterSchemas&#40;true&#41;
  *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
  *     .buildSerializer&#40;&#41;;
  * </pre>
