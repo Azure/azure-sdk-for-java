@@ -27,15 +27,44 @@ dependencies {
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
+sourceSets {
+    java9 {
+        java {
+            srcDirs = ['src/main/java9']
+        }
+    }
+}
+
+compileJava9Java {
+    classpath = sourceSets.main.output
+    options.release = 9
+}
+
+jar {
+    into('META-INF/versions/9') {
+        from sourceSets.java9.output
+    }
+
+    manifest.attributes(
+        'Multi-Release': 'true'
+    )
+}
+
+test {
+    dependsOn jar
+    classpath = files(jar.archivePath, classpath) - sourceSets.main.output
+}
+
+
 description = 'Microsoft Azure Java Core Library'
 
-tasks.register('testsJar', Jar) {
-    archiveClassifier = 'tests'
-    from(sourceSets.test.output)
-}
-
-publishing.publications.maven.artifact(testsJar)
-
-java {
-    withJavadocJar()
-}
+//tasks.register('testsJar', Jar) {
+//    archiveClassifier = 'tests'
+//    from(sourceSets.test.output)
+//}
+//
+//publishing.publications.maven.artifact(testsJar)
+//
+//java {
+//    withJavadocJar()
+//}

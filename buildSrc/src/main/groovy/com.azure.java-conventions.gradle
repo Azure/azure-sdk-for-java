@@ -23,8 +23,52 @@ repositories {
 }
 
 group = 'com.azure'
-version = '1.0.0'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+//version = '1.0.0'
+
+compileJava {
+    exclude 'module-info.java'
+    options.release = 8
+    modularity.inferModulePath = false
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+task compileModuleInfoJava(type: JavaCompile) {
+    classpath = files() // empty
+    source = 'src/main/java/module-info.java'
+    destinationDir = compileJava.destinationDir // same dir to see classes compiled by compileJava
+    options.release = 9
+    modularity.inferModulePath = false
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', compileJava.classpath.asPath,
+        ]
+    }
+}
+
+compileModuleInfoJava.dependsOn compileJava
+classes.dependsOn compileModuleInfoJava
+
+javadoc {
+    exclude 'module-info.java', '**/impl/**', '**/implementation/**'
+    modularity.inferModulePath = false
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    filesMatching('**.properties') {
+        expand(
+            'project' : [
+                'artifactId' : project.name,
+                'version' : project.version
+            ]
+        )
+    }
+}
 
 publishing {
     publications {
