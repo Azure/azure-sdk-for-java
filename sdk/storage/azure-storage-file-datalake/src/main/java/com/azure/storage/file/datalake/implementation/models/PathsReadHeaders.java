@@ -57,6 +57,18 @@ public final class PathsReadHeaders {
     private String xMsProperties;
 
     /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    @JsonProperty(value = "x-ms-encryption-key-sha256")
+    private String xMsEncryptionKeySha256;
+
+    /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
+    private Boolean xMsRequestServerEncrypted;
+
+    /*
      * The Date property.
      */
     @JsonProperty(value = "Date")
@@ -278,6 +290,46 @@ public final class PathsReadHeaders {
      */
     public PathsReadHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @return the xMsEncryptionKeySha256 value.
+     */
+    public String getXMsEncryptionKeySha256() {
+        return this.xMsEncryptionKeySha256;
+    }
+
+    /**
+     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    public PathsReadHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
+        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @return the xMsRequestServerEncrypted value.
+     */
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
+    }
+
+    /**
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    public PathsReadHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
     }
 
