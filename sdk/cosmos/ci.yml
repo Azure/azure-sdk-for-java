@@ -96,3 +96,5 @@ extends:
         groupId: com.azure
       - name: azure-cosmos-spark_3_2-12
         groupId: com.azure.cosmos.spark
+    MatrixReplace:
+      - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
