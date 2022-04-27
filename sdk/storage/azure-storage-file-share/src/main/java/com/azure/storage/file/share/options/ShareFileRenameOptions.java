@@ -4,8 +4,10 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 import java.util.Map;
@@ -15,6 +17,7 @@ import java.util.Map;
  */
 @Fluent
 public final class ShareFileRenameOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(ShareFileRenameOptions.class);
 
     private final String destinationPath;
     private Boolean replaceIfExists;
@@ -24,6 +27,7 @@ public final class ShareFileRenameOptions {
     private String filePermission;
     private FileSmbProperties smbProperties;
     private Map<String, String> metadata;
+    private ShareFileHttpHeaders headers;
 
     /**
      * Creates a {@code ShareFileRenameOptions} object.
@@ -168,6 +172,48 @@ public final class ShareFileRenameOptions {
      */
     public ShareFileRenameOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Gets the {@link ShareFileHttpHeaders}. Currently, only content type is respected. Others are ignored.
+     *
+     * @return The {@link ShareFileHttpHeaders}.
+     */
+    public ShareFileHttpHeaders getHeaders() {
+        return this.headers;
+    }
+
+    /**
+     * Sets the {@link ShareFileHttpHeaders}.  Currently, only content type is respected. This method will throw if
+     * others are set.
+     *
+     * @param headers {@link ShareFileHttpHeaders}
+     * @return The updated options.
+     * @throws IllegalArgumentException If headers besides content type are set, this method will throw.
+     */
+    public ShareFileRenameOptions setHeaders(ShareFileHttpHeaders headers) {
+        if (headers.getCacheControl() != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("cache control is not supported on this api"));
+        }
+        if (headers.getContentDisposition() != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("content disposition is not supported on this api"));
+        }
+        if (headers.getContentEncoding() != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("content encoding is not supported on this api"));
+        }
+        if (headers.getContentLanguage() != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("content language is not supported on this api"));
+        }
+        if (headers.getContentMd5() != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("content md5 is not supported on this api"));
+        }
+        this.headers = headers;
         return this;
     }
 }
