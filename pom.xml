@@ -893,6 +893,7 @@
         <module>sdk/digitaltwins</module>
         <module>sdk/dnsresolver</module>
         <module>sdk/edgeorder</module>
+        <module>sdk/education</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
