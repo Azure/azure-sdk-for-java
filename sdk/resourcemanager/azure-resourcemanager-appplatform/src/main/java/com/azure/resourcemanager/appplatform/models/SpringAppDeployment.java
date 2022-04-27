@@ -79,7 +79,7 @@ public interface SpringAppDeployment
     /** @return memory in GB, can be 0.5, 1, 2, etc */
     Double memoryInGB();
 
-    /** @return RuntimeVersion of the deployment */
+    /** @return RuntimeVersion of the deployment, only support Basic/Standard Tier, null for Enterprise Tier */
     RuntimeVersion runtimeVersion();
 
     /** @return JVM options of the deployment */
