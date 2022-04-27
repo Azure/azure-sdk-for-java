@@ -280,7 +280,7 @@ object Platform {
     val hasSparkVersion = util.Properties.propIsSet("cosmos-spark-version")
     val sparkVersion = util.Properties.propOrElse("cosmos-spark-version", "unknown")
 
-    (javaVersion <= 15 || (hasSparkVersion && !sparkVersion.equals("3.1")),
+    (!util.Properties.isJavaAtLeast("16") || (hasSparkVersion && !sparkVersion.equals("3.1")),
       s"Test was skipped as it will attempt to reflectively access DirectByteBuffer while using JVM version $javaVersion and Spark version $sparkVersion. "
         + "These versions used together will result in an InaccessibleObjectException due to JVM changes on how internal APIs can be accessed by reflection,"
         + " and the Spark version, or unknown version, attempts to access DirectByteBuffer via reflection.")
