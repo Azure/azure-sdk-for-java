@@ -281,10 +281,6 @@
           "code": "java.class.nonPublicPartOfAPI",
           "new": "interface org.apache.qpid.proton.codec.BinaryType.BinaryEncoding",
           "justification": ""
-        }, {
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "",
-          "justification": ""
         }
       ]
     }
