@@ -21,11 +21,12 @@ pr:
     include:
       - sdk/spring-experimental/
 
-parameters:
-  - name: Artifacts
-    type: object
-    default:
-    - name: spring-cloud-azure-native-configuration
-      groupId: com.azure.spring
-      safeName: springcloudazurenativeconfiguration
-      skipPublishDocMs: true
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: spring-experimental
+    Artifacts:
+      - name: spring-cloud-azure-native-configuration
+        groupId: com.azure.spring
+        safeName: springcloudazurenativeconfiguration
+        skipPublishDocMs: true
