@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageId;
+import com.azure.core.models.MessageContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -48,7 +49,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventHubProducerClient
  * @see EventHubProducerAsyncClient
  */
-public class EventData {
+public class EventData extends MessageContent {
     /*
      * These are properties owned by the service and set when a message is received.
      */
