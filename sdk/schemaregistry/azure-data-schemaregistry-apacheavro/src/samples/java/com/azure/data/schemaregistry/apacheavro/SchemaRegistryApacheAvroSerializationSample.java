@@ -45,7 +45,7 @@ public class SchemaRegistryApacheAvroSerializationSample {
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
         // Serialize the playing card object and write to the output stream.
-        MessageContent message = serializer.serializeMessageData(playingCard,
+        MessageContent message = serializer.serialize(playingCard,
             TypeReference.createInstance(MessageContent.class));
     }
 }

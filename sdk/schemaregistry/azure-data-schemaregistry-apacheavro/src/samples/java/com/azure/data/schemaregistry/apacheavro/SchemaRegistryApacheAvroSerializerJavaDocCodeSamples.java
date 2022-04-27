@@ -69,7 +69,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
             .setFavouriteColour("Turquoise")
             .build();
 
-        MessageContent message = serializer.serializeMessageData(person,
+        MessageContent message = serializer.serialize(person,
             TypeReference.createInstance(MessageContent.class));
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize
     }
@@ -96,7 +96,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
             .build();
 
         // Serializes and creates an instance of ComplexMessage using the messageFactory function.
-        ComplexMessage message = serializer.serializeMessageData(person,
+        ComplexMessage message = serializer.serialize(person,
             TypeReference.createInstance(ComplexMessage.class),
             (encodedData) -> {
                 return new ComplexMessage("unique-id", OffsetDateTime.now());
@@ -115,7 +115,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
             .setContentType("avro/binary+{schema-id}");
 
         // This is an object generated from the Avro schema used in the serialization sample.
-        Person person = serializer.deserializeMessageData(message, TypeReference.createInstance(Person.class));
+        Person person = serializer.deserialize(message, TypeReference.createInstance(Person.class));
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize
     }
 }

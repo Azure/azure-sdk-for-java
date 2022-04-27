@@ -46,7 +46,7 @@ public class SchemaRegistryApacheAvroDeserializationSample {
 
         // Get serialized avro data to deserialize into strongly-typed object.
         MessageContent inputStream = getMessageToDeserialize();
-        PlayingCard deserializedObject = encoder.deserializeMessageData(inputStream,
+        PlayingCard deserializedObject = encoder.deserialize(inputStream,
             TypeReference.createInstance(PlayingCard.class));
     }
 

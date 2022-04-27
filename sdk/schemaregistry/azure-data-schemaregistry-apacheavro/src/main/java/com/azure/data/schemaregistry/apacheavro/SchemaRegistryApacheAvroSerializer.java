@@ -51,9 +51,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Serialize an object</strong></p>
  * Serializes an Avro generated object into {@link MessageContent}.
- * {@link #serializeMessageData(Object, TypeReference)} assumes that there is a no argument constructor used to
+ * {@link #serialize(Object, TypeReference)} assumes that there is a no argument constructor used to
  * instantiate the {@link MessageContent} type. If there is a different way to instantiate the concrete type, use
- * the overload which takes a message factory function, {@link #serializeMessageData(Object, TypeReference, Function)}.
+ * the overload which takes a message factory function, {@link #serialize(Object, TypeReference, Function)}.
  *
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
  * <pre>
@@ -168,8 +168,8 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> T serializeMessageData(Object object, TypeReference<T> typeReference) {
-        return serializeMessageDataAsync(object, typeReference).block();
+    public <T extends MessageContent> T serialize(Object object, TypeReference<T> typeReference) {
+        return serializeAsync(object, typeReference).block();
     }
 
     /**
@@ -191,9 +191,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> T serializeMessageData(Object object, TypeReference<T> typeReference,
+    public <T extends MessageContent> T serialize(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
-        return serializeMessageDataAsync(object, typeReference, messageFactory).block();
+        return serializeAsync(object, typeReference, messageFactory).block();
     }
 
     /**
@@ -214,10 +214,10 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> Mono<T> serializeMessageDataAsync(Object object,
+    public <T extends MessageContent> Mono<T> serializeAsync(Object object,
         TypeReference<T> typeReference) {
 
-        return serializeMessageDataAsync(object, typeReference, null);
+        return serializeAsync(object, typeReference, null);
     }
 
     /**
@@ -242,7 +242,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> Mono<T> serializeMessageDataAsync(Object object,
+    public <T extends MessageContent> Mono<T> serializeAsync(Object object,
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
@@ -338,8 +338,8 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T> T deserializeMessageData(MessageContent message, TypeReference<T> typeReference) {
-        return deserializeMessageDataAsync(message, typeReference).block();
+    public <T> T deserialize(MessageContent message, TypeReference<T> typeReference) {
+        return deserializeAsync(message, typeReference).block();
     }
 
     /**
@@ -362,7 +362,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T> Mono<T> deserializeMessageDataAsync(MessageContent message, TypeReference<T> typeReference) {
+    public <T> Mono<T> deserializeAsync(MessageContent message, TypeReference<T> typeReference) {
         if (message == null) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         } else if (typeReference == null) {
