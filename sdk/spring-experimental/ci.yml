@@ -30,3 +30,5 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurenativeconfiguration
         skipPublishDocMs: true
+    MatrixFilters:
+      - JavaTestVersion=1.11
