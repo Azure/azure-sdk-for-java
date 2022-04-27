@@ -3,6 +3,11 @@
  */
 
 rootProject.name = 'azure-sdk-all'
+
+include('eng:code-quality-reports')
+include('sdk:core:azure-core')
+//project(":azure-core").projectDir = file('sdk/core/azure-core')
+
 // include(':azure-resourcemanager-deploymentmanager')
 // include(':azure-aot-graalvm-perf')
 // include(':azure-resourcemanager-managedapplications')
@@ -255,7 +260,6 @@ rootProject.name = 'azure-sdk-all'
 // include(':azure-resourcemanager-recoveryservices')
 // include(':azure-analytics-synapse-artifacts')
 // include(':azure-data-tables')
-include(':azure-core')
 // include(':azure-data-appconfiguration')
 // include(':azure-security-attestation')
 // include(':azure-resourcemanager-confluent')
@@ -569,7 +573,6 @@ include(':azure-core')
 // project(":azure-resourcemanager-recoveryservices").projectDir = file('sdk/recoveryservices/azure-resourcemanager-recoveryservices')
 // project(":azure-analytics-synapse-artifacts").projectDir = file('sdk/synapse/azure-analytics-synapse-artifacts')
 // project(":azure-data-tables").projectDir = file('sdk/tables/azure-data-tables')
-project(":azure-core").projectDir = file('sdk/core/azure-core')
 // project(":azure-data-appconfiguration").projectDir = file('sdk/appconfiguration/azure-data-appconfiguration')
 // project(":azure-security-attestation").projectDir = file('sdk/attestation/azure-security-attestation')
 // project(":azure-resourcemanager-confluent").projectDir = file('sdk/confluent/azure-resourcemanager-confluent')

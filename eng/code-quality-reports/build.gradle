@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.puppycrawl.tools:checkstyle:9.2'
+    implementation 'org.revapi:revapi:0.14.4'
+
+    testImplementation 'com.puppycrawl.tools:checkstyle:9.2:tests'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'com.google.truth:truth:1.1.3'
+}

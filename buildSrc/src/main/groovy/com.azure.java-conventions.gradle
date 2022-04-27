@@ -5,6 +5,8 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'checkstyle'
+    id 'com.github.spotbugs'
 }
 
 repositories {
@@ -37,7 +39,7 @@ compileTestJava.options.encoding = "UTF-8"
 task compileModuleInfoJava(type: JavaCompile) {
     classpath = files() // empty
     source = 'src/main/java/module-info.java'
-    destinationDir = compileJava.destinationDir // same dir to see classes compiled by compileJava
+    destinationDirectory = compileJava.destinationDirectory // same dir to see classes compiled by compileJava
     options.release = 9
     modularity.inferModulePath = false
     doFirst {
@@ -77,3 +79,21 @@ publishing {
         }
     }
 }
+
+checkstyle {
+    configFile = file("${rootProject.projectDir}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml")
+    configProperties = [samedir: "${rootProject.projectDir}/eng/code-quality-reports/src/main/resources/checkstyle"]
+    toolVersion "9.2"
+}
+
+dependencies {
+    checkstyle project(":eng:code-quality-reports")
+    spotbugs 'com.github.spotbugs:spotbugs:4.2.2'
+}
+
+spotbugs {
+    effort = "max"
+    excludeFilter = file("${rootProject.projectDir}/eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml")
+}
+
+spotbugsTest.enabled = false
