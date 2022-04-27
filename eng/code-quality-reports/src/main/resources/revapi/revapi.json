@@ -294,6 +294,31 @@
           "code": "java.class.nonPublicPartOfAPI",
           "new": "interface org.apache.qpid.proton.codec.BinaryType.BinaryEncoding",
           "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class org.HdrHistogram.packedarray.AbstractPackedLongArray",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class org.apache.qpid.proton.codec.(Decimal64Type.Decimal64Encoding|Decimal32Type.Decimal32Encoding|Decimal128Type.Decimal128Encoding)",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org.apache.qpid.proton.codec.(UnsignedShortType.UnsignedShortEncoding|UUIDType.UUIDEncoding|TimestampType.TimestampEncoding|NullType.NullEncoding|MapType.MapEncoding|ListType.ListEncoding)",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class org.apache.qpid.proton.engine.impl.(LinkNode<E>|EventImpl|TransportLink<T extends org.apache.qpid.proton.engine.impl.LinkImpl>)",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class org.codehaus.stax2.ri.typed.ValueEncoderFactory.(DoubleArrayEncoder|Base64Encoder|FloatArrayEncoder|FloatEncoder|IntArrayEncoder|IntEncoder|LongArrayEncoder|LongEncoder|ScalarEncoder)",
+          "justification": ""
         }
       ]
     }
