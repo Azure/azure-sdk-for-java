@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Azure App Configuration Feature Flag.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
 
@@ -18,8 +21,17 @@ public class Feature {
     @JsonAlias("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
 
+    /**
+     * Feature Flag object.
+     */
     public Feature() {}
 
+    /**
+     * Feature Flag object.
+     *
+     * @param key Name of the Feature Flag
+     * @param featureItem Configurations of the Feature Flag.
+     */
     public Feature(String key, FeatureManagementItem featureItem) {
         this.key = key;
         List<FeatureFilterEvaluationContext> filterMapper = featureItem.getConditions().getClientFilters();

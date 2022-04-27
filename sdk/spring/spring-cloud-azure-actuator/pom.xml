@@ -41,7 +41,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator</artifactId>
-      <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
+      <version>2.6.6</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
       <scope>compile</scope>
     </dependency>
 
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.28.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.29.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -61,19 +61,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.11.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.11.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.3.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.4.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.6.6</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -113,7 +113,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-actuator:[2.6.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator:[2.6.6]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

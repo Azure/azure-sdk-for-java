@@ -28,7 +28,7 @@ import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties
 public final class AppConfigurationProperties {
 
     /**
-     * Prefix for client configurations for connecting to stores.
+     * Prefix for client configurations for connecting to configuration stores.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
 
@@ -98,7 +98,7 @@ public final class AppConfigurationProperties {
     }
 
     /**
-     * Overrides the default context of `applicaiton`.
+     * Overrides the default context of `application`.
      * @deprecated Use spring.cloud.azure.appconfiguration[0].selects
      * @param defaultContext Key Prefix.
      */
@@ -121,7 +121,7 @@ public final class AppConfigurationProperties {
     /**
      * Used to override the spring.application.name value
      * @deprecated Use spring.cloud.azure.appconfiguration[0].selects
-     * @param name application name in conifg key.
+     * @param name application name in config key.
      */
     @Deprecated
     public void setName(@Nullable String name) {

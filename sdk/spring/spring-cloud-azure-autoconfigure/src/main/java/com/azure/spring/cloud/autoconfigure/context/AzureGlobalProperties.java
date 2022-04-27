@@ -21,11 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Azure global properties.
  */
 @ConfigurationProperties(prefix = AzureGlobalProperties.PREFIX)
 public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvider {
 
+    /**
+     * Global properties prefix.
+     */
     public static final String PREFIX = "spring.cloud.azure";
 
     @NestedConfigurationProperty
@@ -76,10 +79,20 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
         private final GlobalHttpClientConfigurationProperties http = new GlobalHttpClientConfigurationProperties();
         private final GlobalAmqpClientConfigurationProperties amqp = new GlobalAmqpClientConfigurationProperties();
 
+        /**
+         * Gets the global HTTP client configuration properties.
+         *
+         * @return The global HTTP client configuration properties.
+         */
         public GlobalHttpClientConfigurationProperties getHttp() {
             return http;
         }
 
+        /**
+         * Gets the global AMQP client configuration properties.
+         *
+         * @return The global AMQP client configuration properties.
+         */
         public GlobalAmqpClientConfigurationProperties getAmqp() {
             return amqp;
         }
@@ -93,10 +106,20 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
         private final GlobalHttpProxyConfigurationProperties http = new GlobalHttpProxyConfigurationProperties();
         private final GlobalAmqpProxyConfigurationProperties amqp = new GlobalAmqpProxyConfigurationProperties();
 
+        /**
+         * Gets the global HTTP proxy configuration properties.
+         *
+         * @return The global HTTP proxy configuration properties.
+         */
         public GlobalHttpProxyConfigurationProperties getHttp() {
             return http;
         }
 
+        /**
+         * Gets the global AMQP proxy configuration properties.
+         *
+         * @return The global AMQP proxy configuration properties.
+         */
         public GlobalAmqpProxyConfigurationProperties getAmqp() {
             return amqp;
         }
@@ -109,6 +132,11 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
 
         private final GlobalAmqpRetryConfigurationProperties amqp = new GlobalAmqpRetryConfigurationProperties();
 
+        /**
+         * Gets the global AMQP retry configuration properties.
+         *
+         * @return The global AMQP retry configuration properties.
+         */
         public GlobalAmqpRetryConfigurationProperties getAmqp() {
             return amqp;
         }
@@ -124,10 +152,20 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
          */
         private Duration tryTimeout;
 
+        /**
+         * Gets the try timeout.
+         *
+         * @return The try timeout.
+         */
         public Duration getTryTimeout() {
             return tryTimeout;
         }
 
+        /**
+         * Sets the try timeout.
+         *
+         * @param tryTimeout The try timeout.
+         */
         public void setTryTimeout(Duration tryTimeout) {
             this.tryTimeout = tryTimeout;
         }
@@ -144,10 +182,20 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
          */
         private String nonProxyHosts;
 
+        /**
+         * Gets the non-proxy hosts.
+         *
+         * @return The non-proxy hosts.
+         */
         public String getNonProxyHosts() {
             return nonProxyHosts;
         }
 
+        /**
+         * Sets the non-proxy hosts.
+         *
+         * @param nonProxyHosts The non-proxy hosts.
+         */
         public void setNonProxyHosts(String nonProxyHosts) {
             this.nonProxyHosts = nonProxyHosts;
         }
@@ -163,10 +211,20 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
          */
         private String authenticationType;
 
+        /**
+         * Gets the authentication type.
+         *
+         * @return The authentication type.
+         */
         public String getAuthenticationType() {
             return authenticationType;
         }
 
+        /**
+         * Sets the authentication type.
+         *
+         * @param authenticationType The authentication type.
+         */
         public void setAuthenticationType(String authenticationType) {
             this.authenticationType = authenticationType;
         }
@@ -209,58 +267,128 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
         @NestedConfigurationProperty
         private final HttpLoggingConfigurationProperties logging = new HttpLoggingConfigurationProperties();
 
+        /**
+         * Gets the write timeout.
+         *
+         * @return The write timeout.
+         */
         public Duration getWriteTimeout() {
             return writeTimeout;
         }
 
+        /**
+         * Sets the write timeout.
+         *
+         * @param writeTimeout The write timeout.
+         */
         public void setWriteTimeout(Duration writeTimeout) {
             this.writeTimeout = writeTimeout;
         }
 
+        /**
+         * Gets the response timeout.
+         *
+         * @return The response timeout.
+         */
         public Duration getResponseTimeout() {
             return responseTimeout;
         }
 
+        /**
+         * Sets the response timeout.
+         *
+         * @param responseTimeout The response timeout.
+         */
         public void setResponseTimeout(Duration responseTimeout) {
             this.responseTimeout = responseTimeout;
         }
 
+        /**
+         * Gets the read timeout.
+         *
+         * @return The read timeout.
+         */
         public Duration getReadTimeout() {
             return readTimeout;
         }
 
+        /**
+         * Sets the read timeout.
+         *
+         * @param readTimeout The read timeout.
+         */
         public void setReadTimeout(Duration readTimeout) {
             this.readTimeout = readTimeout;
         }
 
+        /**
+         * Gets the connect timeout.
+         *
+         * @return The connect timeout.
+         */
         public Duration getConnectTimeout() {
             return connectTimeout;
         }
 
+        /**
+         * Sets the connect timeout.
+         *
+         * @param connectTimeout The connect timeout.
+         */
         public void setConnectTimeout(Duration connectTimeout) {
             this.connectTimeout = connectTimeout;
         }
 
+        /**
+         * Gets the maximum connection pool size.
+         *
+         * @return The maximum connection pool size.
+         */
         public Integer getMaximumConnectionPoolSize() {
             return maximumConnectionPoolSize;
         }
 
+        /**
+         * Sets the maximum connection pool size.
+         *
+         * @param maximumConnectionPoolSize The maximum connection pool size.
+         */
         public void setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
             this.maximumConnectionPoolSize = maximumConnectionPoolSize;
         }
 
+        /**
+         * Gets the connection idle timeout.
+         *
+         * @return The connection idle timeout.
+         */
         public Duration getConnectionIdleTimeout() {
             return connectionIdleTimeout;
         }
 
+        /**
+         * Sets the connection idle timeout.
+         *
+         * @param connectionIdleTimeout The connection idle timeout.
+         */
         public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
             this.connectionIdleTimeout = connectionIdleTimeout;
         }
 
+        /**
+         * Gets the headers.
+         *
+         * @return The headers.
+         */
         public List<HeaderProperties> getHeaders() {
             return headers;
         }
 
+        /**
+         * Gets the HTTP logging configuration properties.
+         *
+         * @return The HTTP logging configuration properties.
+         */
         public HttpLoggingConfigurationProperties getLogging() {
             return logging;
         }
@@ -276,10 +404,20 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
          */
         private AmqpTransportType transportType = AmqpTransportType.AMQP;
 
+        /**
+         * Gets the AMQP transport type.
+         *
+         * @return The AMQP transport type.
+         */
         public AmqpTransportType getTransportType() {
             return transportType;
         }
 
+        /**
+         * Sets the AMQP transport type.
+         *
+         * @param transportType The AMQP transport type.
+         */
         public void setTransportType(AmqpTransportType transportType) {
             this.transportType = transportType;
         }

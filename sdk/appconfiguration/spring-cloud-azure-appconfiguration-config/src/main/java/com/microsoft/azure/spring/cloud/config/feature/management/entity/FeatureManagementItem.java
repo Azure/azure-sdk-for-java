@@ -4,6 +4,9 @@ package com.microsoft.azure.spring.cloud.config.feature.management.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Feature management item
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureManagementItem {
 

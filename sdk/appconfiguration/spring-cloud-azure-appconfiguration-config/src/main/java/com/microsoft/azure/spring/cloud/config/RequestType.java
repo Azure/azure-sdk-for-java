@@ -7,13 +7,20 @@ package com.microsoft.azure.spring.cloud.config;
  */
 public enum RequestType {
 
+    /**
+     * Startup Request
+     */
     STARTUP("Startup"),
+
+    /**
+     * Watch Request
+     */
     WATCH("Watch");
 
     private final String text;
 
     /**
-     * @param text
+     * @param text Request Type Startup or Watch
      */
     RequestType(final String text) {
         this.text = text;

@@ -36,6 +36,9 @@ import com.microsoft.azure.spring.cloud.config.pipline.policies.BaseAppConfigura
 import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
 
+/**
+ * Client for connecting to and getting keys from an Azure App Configuration Instance
+ */
 public class ClientStore {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
 
@@ -49,6 +52,13 @@ public class ClientStore {
 
     private final HashMap<String, ConfigurationAsyncClient> clients;
 
+    /**
+     * Creates Client store for connecting to App Configuration
+     * @param appProperties App Configuration Provider Properties
+     * @param pool Connections to App Configuration
+     * @param tokenCredentialProvider optional Credential provider
+     * @param clientProvider optional Client Provider
+     */
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider) {
@@ -213,6 +223,13 @@ public class ClientStore {
         return watchedKeys;
     }
 
+    /**
+     * Gets the watched key names.
+     *
+     * @param store The configuration store.
+     * @param context Context
+     * @return The watched key names.
+     */
     public String watchedKeyNames(ConfigStore store, String context) {
         String watchedKey = store.getWatchedKey().trim();
         String watchedKeys = genKey(context, watchedKey);

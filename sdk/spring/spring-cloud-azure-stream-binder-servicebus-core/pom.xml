@@ -33,17 +33,21 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <properties>
-    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
-    <doclint>all,-missing</doclint>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
       <version>3.2.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
+
+    <!--To fix https://github.com/Azure/azure-sdk-for-java/issues/28179
+    Add this dependency temporary before spring-cloud upgrade to 2021.0.2-->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-function-context</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-function-context;external_dependency} -->
+    </dependency>
+
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-servicebus</artifactId>
@@ -52,12 +56,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.7.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.8.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.6.6</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -76,7 +80,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.15</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.18</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -92,7 +96,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-test;external_dependency} -->
+      <version>2.6.6</version> <!-- {x-version-update;org.springframework.boot:spring-boot-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -113,8 +117,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.6]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-stream:[3.2.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-function-context:[3.2.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-function-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

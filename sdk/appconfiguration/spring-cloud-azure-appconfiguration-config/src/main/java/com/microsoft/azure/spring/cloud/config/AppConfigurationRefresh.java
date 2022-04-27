@@ -29,6 +29,9 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
 
+/**
+ * Enables checking of Configuration updates.
+ */
 @Component
 public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefresh.class);
@@ -51,6 +54,13 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private final List<String> featureWatchKey = new ArrayList<>();
 
+    /**
+     * Component used for checking for and triggering configuration refreshes.
+     *
+     * @param properties Client properties to check against.
+     * @param storeContextsMap Store contexts map
+     * @param clientStore Clients stores used to connect to App Configuration.
+     */
     public AppConfigurationRefresh(AppConfigurationProperties properties, Map<String, List<String>> storeContextsMap,
             ClientStore clientStore) {
         this.configStores = properties.getStores();

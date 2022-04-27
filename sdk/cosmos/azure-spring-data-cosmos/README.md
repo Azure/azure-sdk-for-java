@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.19.1</version>
+    <version>3.20.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -484,6 +484,8 @@ public class MyItem {
     String _etag;
 }
 ```
+- Read more about Optimistic Locking [here](https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
+
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
 - Example, find operation, e.g., `findByAFieldAndBField`

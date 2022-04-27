@@ -32,6 +32,12 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
 
     private IDisabledFeaturesHandler disabledFeaturesHandler;
 
+    /**
+     * Interceptor for Requests to check if they should be run.
+     * @param featureManager App Configuration Feature Manager
+     * @param featureManagerSnapshot App Configuration Feature Manager snapshot version
+     * @param disabledFeaturesHandler optional handler for dealing with disabled endpoints.
+     */
     public FeatureHandler(FeatureManager featureManager, FeatureManagerSnapshot featureManagerSnapshot,
             IDisabledFeaturesHandler disabledFeaturesHandler) {
         this.featureManager = featureManager;

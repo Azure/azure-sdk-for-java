@@ -13,11 +13,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 
+/**
+ * Properties defining connection to Azure App Configuration.
+ */
 @Configuration
 @Validated
 @PropertySource("classpath:appConfiguration.yaml")
 @ConfigurationProperties(prefix = AppConfigurationProviderProperties.CONFIG_PREFIX)
 public class AppConfigurationProviderProperties {
+
+    /**
+     * Prefix for the libraries internal configurations.
+     */
     public static final String CONFIG_PREFIX = "spring.cloud.appconfiguration";
 
     @NotEmpty

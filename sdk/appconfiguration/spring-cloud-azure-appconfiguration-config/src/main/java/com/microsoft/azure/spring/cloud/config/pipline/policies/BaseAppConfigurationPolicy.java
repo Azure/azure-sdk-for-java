@@ -18,10 +18,16 @@ import com.microsoft.azure.spring.cloud.config.RequestType;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * HttpPipelinePolicy for connecting to Azure App Configuration.
+ */
 public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     private static final String PACKAGE_NAME = BaseAppConfigurationPolicy.class.getPackage().getImplementationTitle();
 
+    /**
+     * Format of User Agent
+     */
     public static final String USER_AGENT = String.format("%s/%s", StringUtils.remove(PACKAGE_NAME, " "),
             BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 

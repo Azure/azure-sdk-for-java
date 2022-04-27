@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.microsoft.azure.spring.cloud.config.AppConfigurationRefresh;
 
+/**
+ * Sets up refresh methods based on dependencies.
+ */
 @Configuration
 @ConditionalOnBean(AppConfigurationRefresh.class)
 public class AppConfigurationWebAutoConfiguration {

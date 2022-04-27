@@ -9,6 +9,9 @@ import com.azure.core.exception.AzureException;
  * Represents an exception that is thrown when Avro serialization or deserialization fails.
  */
 public class SchemaRegistryApacheAvroException extends AzureException {
+    /**
+     * The id of the schema being processed when this exception occurred. {@code null} if there was none.
+     */
     private final String schemaId;
 
     /**

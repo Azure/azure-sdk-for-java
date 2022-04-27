@@ -182,4 +182,39 @@ public final class AzureSqlSource extends TabularSource {
         this.partitionSettings = partitionSettings;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

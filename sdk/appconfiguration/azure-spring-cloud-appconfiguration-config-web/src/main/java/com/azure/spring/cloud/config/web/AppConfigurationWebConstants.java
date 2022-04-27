@@ -15,12 +15,14 @@ public final class AppConfigurationWebConstants {
      * Validation Topic for push refresh.
      */
     public static final String VALIDATION_TOPIC = "topic";
+
     /**
-     * Key for JSON node "data".
+     * Json field name for Data  section
      */
     public static final String DATA = "data";
+
     /**
-     * Key for JSON node "syncToken".
+     * Json field name for SyncToken value
      */
     public static final String SYNC_TOKEN = "syncToken";
 

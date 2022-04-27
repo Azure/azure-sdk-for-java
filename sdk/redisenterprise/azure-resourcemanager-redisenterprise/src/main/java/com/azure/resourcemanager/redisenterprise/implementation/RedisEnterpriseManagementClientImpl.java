@@ -41,8 +41,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the RedisEnterpriseManagementClientImpl type. */
 @ServiceClient(builder = RedisEnterpriseManagementClientBuilder.class)
 public final class RedisEnterpriseManagementClientImpl implements RedisEnterpriseManagementClient {
-    private final ClientLogger logger = new ClientLogger(RedisEnterpriseManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -209,7 +207,7 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2022-01-01";
         this.operations = new OperationsClientImpl(this);
         this.operationsStatus = new OperationsStatusClientImpl(this);
         this.redisEnterprises = new RedisEnterprisesClientImpl(this);
@@ -301,7 +299,7 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -360,4 +358,6 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisEnterpriseManagementClientImpl.class);
 }

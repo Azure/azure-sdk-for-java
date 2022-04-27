@@ -79,7 +79,15 @@ public class AzureEventHubsMessagingAutoConfiguration {
     @ConditionalOnBean(CheckpointStore.class)
     public static class ProcessorContainerConfiguration {
 
-
+        /**
+         * Creates the default Event Hubs namespace processor factory.
+         *
+         * @param properties Event Hubs namespace related properties.
+         * @param checkpointStore Checkpoint store for storing and retrieving partition ownership information and
+         * checkpoint details for each partition.
+         * @param suppliers Object provider suppliers.
+         * @return A default Event Hubs namespace processor factory.
+         */
         @Bean
         @ConditionalOnMissingBean
         public EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
@@ -97,6 +105,13 @@ public class AzureEventHubsMessagingAutoConfiguration {
     @Configuration(proxyBeanMethods = false)
     public static class EventHubsTemplateConfiguration {
 
+        /**
+         * Creates a default Event Hubs namespace producer factory.
+         *
+         * @param properties Event Hubs namespace related properties.
+         * @param suppliers Object provider suppliers.
+         * @return A default Event Hubs namespace producer factory.
+         */
         @Bean
         @ConditionalOnMissingBean
         public EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
@@ -105,12 +120,24 @@ public class AzureEventHubsMessagingAutoConfiguration {
             return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
+        /**
+         * Creates an Event Hubs message converter.
+         *
+         * @return An Event Hubs message converter.
+         */
         @Bean
         @ConditionalOnMissingBean
         public EventHubsMessageConverter eventHubsMessageConverter() {
             return new EventHubsMessageConverter();
         }
 
+        /**
+         * Creates an Event Hubs template.
+         *
+         * @param producerFactory An Event Hubs producer factory.
+         * @param messageConverter An Event Hubs message converter.
+         * @return An Event Hubs template.
+         */
         @Bean
         @ConditionalOnMissingBean
         public EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory,

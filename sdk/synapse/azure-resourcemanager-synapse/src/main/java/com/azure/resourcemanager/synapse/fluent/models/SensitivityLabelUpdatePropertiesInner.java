@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelUpdateKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an operation executed on a sensitivity label. */
 @Fluent
 public final class SensitivityLabelUpdatePropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabelUpdatePropertiesInner.class);
-
     /*
      * The op property.
      */
@@ -152,25 +149,25 @@ public final class SensitivityLabelUpdatePropertiesInner {
      */
     public void validate() {
         if (op() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property op in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (schema() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schema in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (table() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property table in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (column() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property column in model SensitivityLabelUpdatePropertiesInner"));
@@ -179,4 +176,6 @@ public final class SensitivityLabelUpdatePropertiesInner {
             sensitivityLabel().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SensitivityLabelUpdatePropertiesInner.class);
 }

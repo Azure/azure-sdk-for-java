@@ -137,4 +137,25 @@ public class TabularSource extends CopySource {
         this.additionalColumns = additionalColumns;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public TabularSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TabularSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TabularSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

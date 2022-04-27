@@ -6,7 +6,7 @@ package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 
 /**
- *
+ * Service Bus consumer properties.
  */
 public class ServiceBusConsumerProperties extends ProcessorProperties {
 
@@ -15,7 +15,6 @@ public class ServiceBusConsumerProperties extends ProcessorProperties {
     /**
      * Controls if the failed messages are routed to the DLQ
      *
-     * <p>
      * @return boolean, default : false
      */
     public boolean isRequeueRejected() {

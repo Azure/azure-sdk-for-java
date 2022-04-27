@@ -11,6 +11,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
+/**
+ * Setup AppConfigurationRefresh when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
+ */
 @Configuration
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 @EnableAsync

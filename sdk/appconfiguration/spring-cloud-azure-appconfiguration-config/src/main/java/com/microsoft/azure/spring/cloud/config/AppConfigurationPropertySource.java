@@ -35,6 +35,11 @@ import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_PRE
 import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
 import static com.microsoft.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
 
+/**
+ * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
+ *
+ * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p>
+ */
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
 

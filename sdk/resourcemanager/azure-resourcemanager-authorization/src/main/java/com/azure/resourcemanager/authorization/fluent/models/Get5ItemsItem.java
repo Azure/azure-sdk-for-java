@@ -16,57 +16,86 @@ public final class Get5ItemsItem extends ExpandableStringEnum<Get5ItemsItem> {
     /** Static value id desc for Get5ItemsItem. */
     public static final Get5ItemsItem ID_DESC = fromString("id desc");
 
-    /** Static value alternateNotificationEmails for Get5ItemsItem. */
-    public static final Get5ItemsItem ALTERNATE_NOTIFICATION_EMAILS = fromString("alternateNotificationEmails");
+    /** Static value authenticationType for Get5ItemsItem. */
+    public static final Get5ItemsItem AUTHENTICATION_TYPE = fromString("authenticationType");
 
-    /** Static value alternateNotificationEmails desc for Get5ItemsItem. */
-    public static final Get5ItemsItem ALTERNATE_NOTIFICATION_EMAILS_DESC =
-        fromString("alternateNotificationEmails desc");
+    /** Static value authenticationType desc for Get5ItemsItem. */
+    public static final Get5ItemsItem AUTHENTICATION_TYPE_DESC = fromString("authenticationType desc");
 
-    /** Static value groupLifetimeInDays for Get5ItemsItem. */
-    public static final Get5ItemsItem GROUP_LIFETIME_IN_DAYS = fromString("groupLifetimeInDays");
+    /** Static value availabilityStatus for Get5ItemsItem. */
+    public static final Get5ItemsItem AVAILABILITY_STATUS = fromString("availabilityStatus");
 
-    /** Static value groupLifetimeInDays desc for Get5ItemsItem. */
-    public static final Get5ItemsItem GROUP_LIFETIME_IN_DAYS_DESC = fromString("groupLifetimeInDays desc");
+    /** Static value availabilityStatus desc for Get5ItemsItem. */
+    public static final Get5ItemsItem AVAILABILITY_STATUS_DESC = fromString("availabilityStatus desc");
 
-    /** Static value managedGroupTypes for Get5ItemsItem. */
-    public static final Get5ItemsItem MANAGED_GROUP_TYPES = fromString("managedGroupTypes");
+    /** Static value isAdminManaged for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_ADMIN_MANAGED = fromString("isAdminManaged");
 
-    /** Static value managedGroupTypes desc for Get5ItemsItem. */
-    public static final Get5ItemsItem MANAGED_GROUP_TYPES_DESC = fromString("managedGroupTypes desc");
+    /** Static value isAdminManaged desc for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_ADMIN_MANAGED_DESC = fromString("isAdminManaged desc");
 
-    /** Static value * for Get5ItemsItem. */
-    public static final Get5ItemsItem ASTERISK = fromString("*");
+    /** Static value isDefault for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_DEFAULT = fromString("isDefault");
 
-    /** Static value deletedDateTime for Get5ItemsItem. */
-    public static final Get5ItemsItem DELETED_DATE_TIME = fromString("deletedDateTime");
+    /** Static value isDefault desc for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_DEFAULT_DESC = fromString("isDefault desc");
 
-    /** Static value deletedDateTime desc for Get5ItemsItem. */
-    public static final Get5ItemsItem DELETED_DATE_TIME_DESC = fromString("deletedDateTime desc");
+    /** Static value isInitial for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_INITIAL = fromString("isInitial");
 
-    /** Static value contractType for Get5ItemsItem. */
-    public static final Get5ItemsItem CONTRACT_TYPE = fromString("contractType");
+    /** Static value isInitial desc for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_INITIAL_DESC = fromString("isInitial desc");
 
-    /** Static value contractType desc for Get5ItemsItem. */
-    public static final Get5ItemsItem CONTRACT_TYPE_DESC = fromString("contractType desc");
+    /** Static value isRoot for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_ROOT = fromString("isRoot");
 
-    /** Static value customerId for Get5ItemsItem. */
-    public static final Get5ItemsItem CUSTOMER_ID = fromString("customerId");
+    /** Static value isRoot desc for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_ROOT_DESC = fromString("isRoot desc");
 
-    /** Static value customerId desc for Get5ItemsItem. */
-    public static final Get5ItemsItem CUSTOMER_ID_DESC = fromString("customerId desc");
+    /** Static value isVerified for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_VERIFIED = fromString("isVerified");
 
-    /** Static value defaultDomainName for Get5ItemsItem. */
-    public static final Get5ItemsItem DEFAULT_DOMAIN_NAME = fromString("defaultDomainName");
+    /** Static value isVerified desc for Get5ItemsItem. */
+    public static final Get5ItemsItem IS_VERIFIED_DESC = fromString("isVerified desc");
 
-    /** Static value defaultDomainName desc for Get5ItemsItem. */
-    public static final Get5ItemsItem DEFAULT_DOMAIN_NAME_DESC = fromString("defaultDomainName desc");
+    /** Static value manufacturer for Get5ItemsItem. */
+    public static final Get5ItemsItem MANUFACTURER = fromString("manufacturer");
 
-    /** Static value displayName for Get5ItemsItem. */
-    public static final Get5ItemsItem DISPLAY_NAME = fromString("displayName");
+    /** Static value manufacturer desc for Get5ItemsItem. */
+    public static final Get5ItemsItem MANUFACTURER_DESC = fromString("manufacturer desc");
 
-    /** Static value displayName desc for Get5ItemsItem. */
-    public static final Get5ItemsItem DISPLAY_NAME_DESC = fromString("displayName desc");
+    /** Static value model for Get5ItemsItem. */
+    public static final Get5ItemsItem MODEL = fromString("model");
+
+    /** Static value model desc for Get5ItemsItem. */
+    public static final Get5ItemsItem MODEL_DESC = fromString("model desc");
+
+    /** Static value passwordNotificationWindowInDays for Get5ItemsItem. */
+    public static final Get5ItemsItem PASSWORD_NOTIFICATION_WINDOW_IN_DAYS =
+        fromString("passwordNotificationWindowInDays");
+
+    /** Static value passwordNotificationWindowInDays desc for Get5ItemsItem. */
+    public static final Get5ItemsItem PASSWORD_NOTIFICATION_WINDOW_IN_DAYS_DESC =
+        fromString("passwordNotificationWindowInDays desc");
+
+    /** Static value passwordValidityPeriodInDays for Get5ItemsItem. */
+    public static final Get5ItemsItem PASSWORD_VALIDITY_PERIOD_IN_DAYS = fromString("passwordValidityPeriodInDays");
+
+    /** Static value passwordValidityPeriodInDays desc for Get5ItemsItem. */
+    public static final Get5ItemsItem PASSWORD_VALIDITY_PERIOD_IN_DAYS_DESC =
+        fromString("passwordValidityPeriodInDays desc");
+
+    /** Static value state for Get5ItemsItem. */
+    public static final Get5ItemsItem STATE = fromString("state");
+
+    /** Static value state desc for Get5ItemsItem. */
+    public static final Get5ItemsItem STATE_DESC = fromString("state desc");
+
+    /** Static value supportedServices for Get5ItemsItem. */
+    public static final Get5ItemsItem SUPPORTED_SERVICES = fromString("supportedServices");
+
+    /** Static value supportedServices desc for Get5ItemsItem. */
+    public static final Get5ItemsItem SUPPORTED_SERVICES_DESC = fromString("supportedServices desc");
 
     /**
      * Creates or finds a Get5ItemsItem from its string representation.

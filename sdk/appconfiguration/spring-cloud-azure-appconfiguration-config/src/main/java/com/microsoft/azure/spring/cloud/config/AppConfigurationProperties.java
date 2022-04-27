@@ -21,18 +21,31 @@ import org.springframework.validation.annotation.Validated;
 import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
 
+/**
+ * Properties for all Azure App Configuration stores that are loaded.
+ */
 @Validated
 @ConfigurationProperties(prefix = AppConfigurationProperties.CONFIG_PREFIX)
 @Import({ AppConfigurationProviderProperties.class })
 public class AppConfigurationProperties {
+
+    /**
+     * Prefix for client configurations for connecting to configuration stores.
+     */
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
 
+    /**
+     * Separator for multiple labels.
+     */
     public static final String LABEL_SEPARATOR = ",";
 
     private boolean enabled = true;
 
     private List<ConfigStore> stores = new ArrayList<>();
 
+    /**
+     * Context for loading configuration keys.
+     */
     @NotEmpty
     private String defaultContext = "application";
 
@@ -51,55 +64,97 @@ public class AppConfigurationProperties {
 
     private Duration cacheExpiration = Duration.ofSeconds(30);
 
+    /**
+     * @return the enabled
+     */
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * @param enabled the enabled to set
+     */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * @return the stores
+     */
     public List<ConfigStore> getStores() {
         return stores;
     }
 
+    /**
+     * @param stores the stores to set
+     */
     public void setStores(List<ConfigStore> stores) {
         this.stores = stores;
     }
 
+    /**
+     * @return The prefixed used before all keys loaded.
+     */
     public String getDefaultContext() {
         return defaultContext;
     }
 
+    /**
+     * Overrides the default context of `application`.
+     * @param defaultContext Key Prefix.
+     */
     public void setDefaultContext(String defaultContext) {
         this.defaultContext = defaultContext;
     }
 
+    /**
+     * Used to override the spring.application.name value
+     * @return name
+     */
     @Nullable
     public String getName() {
         return name;
     }
 
+    /**
+     * Used to override the spring.application.name value
+     * @param name application name in config key.
+     */
     public void setName(@Nullable String name) {
         this.name = name;
     }
 
+    /**
+     * @return the managedIdentity
+     */
     public AppConfigManagedIdentityProperties getManagedIdentity() {
         return managedIdentity;
     }
 
+    /**
+     * @param managedIdentity the managedIdentity to set
+     */
     public void setManagedIdentity(AppConfigManagedIdentityProperties managedIdentity) {
         this.managedIdentity = managedIdentity;
     }
 
+    /**
+     * @return the profileSeparator
+     */
     public String getProfileSeparator() {
         return profileSeparator;
     }
 
+    /**
+     * @param profileSeparator the profileSeparator to set
+     */
     public void setProfileSeparator(String profileSeparator) {
         this.profileSeparator = profileSeparator;
     }
 
+    /**
+     * @return the cacheExpiration
+     */
     public Duration getCacheExpiration() {
         return cacheExpiration;
     }
@@ -114,6 +169,9 @@ public class AppConfigurationProperties {
         this.cacheExpiration = cacheExpiration;
     }
 
+    /**
+     * Validates at least one store is configured for use and they are valid.
+     */
     @PostConstruct
     public void validateAndInit() {
         Assert.notEmpty(this.stores, "At least one config store has to be configured.");

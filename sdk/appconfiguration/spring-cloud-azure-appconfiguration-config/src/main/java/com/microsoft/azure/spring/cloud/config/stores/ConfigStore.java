@@ -24,6 +24,9 @@ import org.springframework.util.StringUtils;
 
 import com.microsoft.azure.spring.cloud.config.resource.Connection;
 
+/**
+ * Config Store Properties for Requests to an Azure App Configuration Store.
+ */
 public class ConfigStore {
     private static final String EMPTY_LABEL = "\0";
     private static final String[] EMPTY_LABEL_ARRAY = {EMPTY_LABEL};
@@ -45,58 +48,100 @@ public class ConfigStore {
 
     private boolean failFast = true;
 
+    /**
+     * Creates a {@link ConfigStore}.
+     */
     public ConfigStore() {
         label = null;
     }
 
+    /**
+     * @return the endpoint
+     */
     public String getEndpoint() {
         return this.endpoint;
     }
 
+    /**
+     * @param endpoint the endpoint to set
+     */
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * @return the prefix
+     */
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * @param prefix the prefix to set
+     */
     public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * @return the connectionString
+     */
     public String getConnectionString() {
         return connectionString;
     }
 
+    /**
+     * @param connectionString the connectionString to set
+     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     * @return the label
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * @param label the label to set
+     */
     public void setLabel(String label) {
         this.label = label;
     }
 
+    /**
+     * @return the watchedKey
+     */
     public String getWatchedKey() {
         return watchedKey;
     }
 
+    /**
+     * @param watchedKey the watchedKey to set
+     */
     public void setWatchedKey(String watchedKey) {
         this.watchedKey = watchedKey;
     }
 
+    /**
+     * @return the failFast
+     */
     public boolean isFailFast() {
         return failFast;
     }
 
+    /**
+     * @param failFast the failFast to set
+     */
     public void setFailFast(boolean failFast) {
         this.failFast = failFast;
     }
 
+    /**
+     * @throws IllegalStateException Connection String URL endpoint is invalid
+     */
     @PostConstruct
     public void validateAndInit() {
         if (StringUtils.hasText(label)) {

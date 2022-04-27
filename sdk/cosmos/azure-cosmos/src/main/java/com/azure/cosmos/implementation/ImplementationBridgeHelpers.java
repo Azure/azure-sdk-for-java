@@ -855,6 +855,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
+            CosmosException createSerializableCosmosException(CosmosException cosmosException);
         }
     }
 

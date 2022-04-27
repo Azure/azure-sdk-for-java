@@ -6,6 +6,13 @@ package com.azure.spring.cloud.service.servicebus.properties;
  * Entity type of Service Bus.
  */
 public enum ServiceBusEntityType {
+    /**
+     * Queue
+     */
     QUEUE,
+
+    /**
+     * Topic
+     */
     TOPIC
 }

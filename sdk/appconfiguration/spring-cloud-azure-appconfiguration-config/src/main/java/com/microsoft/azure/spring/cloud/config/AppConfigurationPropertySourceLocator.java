@@ -34,6 +34,9 @@ import com.microsoft.azure.spring.cloud.config.feature.management.entity.Feature
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
 
+/**
+ * Locates Azure App Configuration Property Sources.
+ */
 public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
 
@@ -61,6 +64,14 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private static final AtomicBoolean startup = new AtomicBoolean(true);
 
+    /**
+     * Loads all Azure App Configuration Property Sources configured.
+     * @param properties Configurations for stores to be loaded.
+     * @param appProperties Configurations for the library.
+     * @param clients Clients for connecting to Azure App Configuration.
+     * @param keyVaultCredentialProvider optional provider for Key Vault Credentials
+     * @param keyVaultClientProvider optional provider for modifying the Key Vault Client
+     */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, ClientStore clients,
             KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider) {
@@ -108,6 +119,9 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         return composite;
     }
 
+    /**
+     * @return the storeContextsMap
+     */
     public Map<String, List<String>> getStoreContextsMap() {
         return this.storeContextsMap;
     }

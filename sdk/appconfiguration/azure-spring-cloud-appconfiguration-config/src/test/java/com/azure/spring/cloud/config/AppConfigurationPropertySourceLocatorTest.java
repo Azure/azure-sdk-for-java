@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -167,6 +169,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(properties.getStores()).thenReturn(configStoresMock);
         when(properties.isEnabled()).thenReturn(true);
+        when(properties.getRefreshInterval()).thenReturn(null);
         when(configStoresMock.iterator()).thenReturn(configStoreIterator);
         when(configStoreIterator.hasNext()).thenReturn(true).thenReturn(false);
         when(configStoreIterator.next()).thenReturn(configStoreMock);
@@ -356,6 +359,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             clientStoreMock, tokenCredentialProvider, null, null);
 
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
+        when(clientStoreMock.getFeatureFlagWatchKey(any(), anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertNull(e.getMessage());
     }

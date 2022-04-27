@@ -175,4 +175,18 @@ public final class JsonFormat extends DatasetStorageFormat {
         this.jsonPathDefinition = jsonPathDefinition;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonFormat setSerializer(Object serializer) {
+        super.setSerializer(serializer);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonFormat setDeserializer(Object deserializer) {
+        super.setDeserializer(deserializer);
+        return this;
+    }
 }

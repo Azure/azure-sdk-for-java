@@ -7,6 +7,9 @@ import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * App Configuration Feature defines the feature name and a Map of FeatureFilterEvaluationContexts.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
 

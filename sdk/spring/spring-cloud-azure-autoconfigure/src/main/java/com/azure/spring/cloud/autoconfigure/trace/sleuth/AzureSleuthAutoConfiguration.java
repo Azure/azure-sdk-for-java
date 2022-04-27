@@ -27,6 +27,9 @@ import org.springframework.context.annotation.Role;
 @ConditionalOnProperty(value = "spring.sleuth.enabled", matchIfMissing = true)
 public class AzureSleuthAutoConfiguration {
 
+    /**
+     * Default sleuth HTTP policy bean name.
+     */
     public static final String DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME = "AzureSleuthHttpPolicy";
 
     /**

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookOperation. */
 @Fluent
 public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookOperation.class);
-
     /*
      * workbookOperationError
      */
@@ -31,7 +28,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
     private String resourceLocation;
 
     /*
-     * The status property.
+     * workbookOperationStatus
      */
     @JsonProperty(value = "status")
     private MicrosoftGraphWorkbookOperationStatus status;
@@ -82,7 +79,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
     }
 
     /**
-     * Get the status property: The status property.
+     * Get the status property: workbookOperationStatus.
      *
      * @return the status value.
      */
@@ -91,7 +88,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
     }
 
     /**
-     * Set the status property: The status property.
+     * Set the status property: workbookOperationStatus.
      *
      * @param status the status value to set.
      * @return the MicrosoftGraphWorkbookOperation object itself.

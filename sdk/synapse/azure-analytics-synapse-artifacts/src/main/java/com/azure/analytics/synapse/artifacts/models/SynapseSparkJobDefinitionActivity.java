@@ -315,4 +315,46 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
         this.numExecutors = numExecutors;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseSparkJobDefinitionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseSparkJobDefinitionActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseSparkJobDefinitionActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseSparkJobDefinitionActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseSparkJobDefinitionActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseSparkJobDefinitionActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
+        return this;
+    }
 }

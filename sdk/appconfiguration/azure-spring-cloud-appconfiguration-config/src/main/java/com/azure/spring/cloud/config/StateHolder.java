@@ -121,7 +121,7 @@ final class StateHolder {
 
     /**
      * Set after load or refresh is successful.
-     * @param nextForcedRefresh the nextForcedRefresh to set
+     * @param refreshPeriod the refreshPeriod to set
      */
     public static void setNextForcedRefresh(Duration refreshPeriod) {
         nextForcedRefresh = Instant.now().plusSeconds(refreshPeriod.getSeconds());
@@ -130,7 +130,7 @@ final class StateHolder {
     /**
      * Sets a minimum value until the next refresh. If a refresh interval has passed or is smaller than the calculated
      * backoff time, the refresh interval is set to the backoff time.
-     * @param refreshInterval period between refreshe checks.
+     * @param refreshInterval period between refresh checks.
      * @param properties Provider properties for min and max backoff periods.
      */
     static void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties) {
@@ -156,7 +156,7 @@ final class StateHolder {
             STATE.put(entry.getKey(), updatedState);
         }
     }
-    
+
     /**
      * Calculates the amount of time to the next refresh, if a refresh fails. Takes current Refresh date into account
      * for watch keys. Used for checking client refresh-interval only.

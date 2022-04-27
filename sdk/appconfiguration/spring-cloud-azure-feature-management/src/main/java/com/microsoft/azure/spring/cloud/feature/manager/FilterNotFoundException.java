@@ -16,6 +16,9 @@ public class FilterNotFoundException extends RuntimeException {
 
     private final transient FeatureFilterEvaluationContext filter;
 
+    /**
+     * Exception message
+     */
     private final String message;
 
     /**

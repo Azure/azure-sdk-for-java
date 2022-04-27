@@ -20,6 +20,9 @@ import com.microsoft.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.microsoft.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 
+/**
+ * Client for connecting to and getting secrets from a Key Vault
+ */
 public class KeyVaultClient {
 
     private SecretAsyncClient secretClient;

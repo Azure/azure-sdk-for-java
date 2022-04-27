@@ -77,6 +77,13 @@ public class AzureServiceBusMessagingAutoConfiguration {
     @Configuration(proxyBeanMethods = false)
     public static class ProcessorContainerConfiguration {
 
+        /**
+         * Creates a default Service Bus namespace processor factory.
+         *
+         * @param properties Service Bus namespace properties.
+         * @param suppliers ObjectProvider suppliers.
+         * @return A default Service Bus namespace processor factory.
+         */
         @Bean
         @ConditionalOnMissingBean
         public ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(
@@ -92,6 +99,13 @@ public class AzureServiceBusMessagingAutoConfiguration {
     @Configuration(proxyBeanMethods = false)
     public static class ServiceBusTemplateConfiguration {
 
+        /**
+         * Creates a default Service Bus namespace producer factory.
+         *
+         * @param properties Service Bus namespace properties.
+         * @param suppliers ObjectProvider suppliers.
+         * @return A default Service Bus namespace producer factory.
+         */
         @Bean
         @ConditionalOnMissingBean
         public ServiceBusProducerFactory defaultServiceBusNamespaceProducerFactory(
@@ -100,12 +114,24 @@ public class AzureServiceBusMessagingAutoConfiguration {
             return new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
+        /**
+         * Creates a Service Bus message converter.
+         *
+         * @return A Service Bus message converter.
+         */
         @Bean
         @ConditionalOnMissingBean
         public ServiceBusMessageConverter serviceBusMessageConverter() {
             return new ServiceBusMessageConverter();
         }
 
+        /**
+         * Creates a Service Bus template.
+         *
+         * @param senderClientfactory A Service Bus producer factory.
+         * @param messageConverter A Service Bus message converter.
+         * @return A Service Bus template.
+         */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
