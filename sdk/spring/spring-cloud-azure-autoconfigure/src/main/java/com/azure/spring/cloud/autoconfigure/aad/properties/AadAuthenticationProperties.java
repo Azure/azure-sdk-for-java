@@ -580,16 +580,16 @@ public class AadAuthenticationProperties implements InitializingBean {
         AadAuthorizationGrantType grantType = Optional.of(properties)
                                    .map(AuthorizationClientProperties::getAuthorizationGrantType)
                                    .orElse(null);
-        if (grantType == null) {
+        if (grantType != null) {
+            // Validate authorization grant grantType
+            validateAuthorizationGrantType(registrationId, grantType);
+        } else {
             grantType = decideDefaultGrantTypeFromApplicationType(registrationId, applicationType);
             properties.setAuthorizationGrantType(grantType);
 
             LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to '{}'.", grantType,
                 registrationId);
         }
-
-        // Validate authorization grant grantType
-        validateAuthorizationGrantType(registrationId, grantType);
 
         // Extract validated scopes from properties
         List<String> scopes = extractValidatedScopes(registrationId, properties);
