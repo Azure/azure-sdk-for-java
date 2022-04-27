@@ -114,8 +114,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             Duration retryAfter = retryAfterValue == null ? null : Duration.ofSeconds(Long.parseLong(retryAfterValue));
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
-                .switchIfEmpty(Mono.defer(() -> Mono.just(new PollResponse<>(
-                    LongRunningOperationStatus.IN_PROGRESS, null, retryAfter))));
+                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
+                    LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
             return Mono.error(new AzureException(String.format("Operation failed or cancelled with status code %d,"
                 + ", '%s' header: %s, and response body: %s", response.getStatusCode(), operationLocationHeaderName,
