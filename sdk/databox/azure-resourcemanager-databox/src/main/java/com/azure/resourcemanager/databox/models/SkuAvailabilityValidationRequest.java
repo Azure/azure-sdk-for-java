@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidateSkuAvailability")
 @Fluent
 public final class SkuAvailabilityValidationRequest extends ValidationInputRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuAvailabilityValidationRequest.class);
-
     /*
      * Device type to be used for the job.
      */
@@ -137,28 +134,30 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
     public void validate() {
         super.validate();
         if (deviceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deviceType in model SkuAvailabilityValidationRequest"));
         }
         if (transferType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property transferType in model SkuAvailabilityValidationRequest"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property country in model SkuAvailabilityValidationRequest"));
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model SkuAvailabilityValidationRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SkuAvailabilityValidationRequest.class);
 }

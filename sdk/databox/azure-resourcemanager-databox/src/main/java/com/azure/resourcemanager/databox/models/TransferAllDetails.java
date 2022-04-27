@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details to transfer all data. */
 @Fluent
 public final class TransferAllDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransferAllDetails.class);
-
     /*
      * Type of the account of data
      */
@@ -99,10 +96,12 @@ public final class TransferAllDetails {
      */
     public void validate() {
         if (dataAccountType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataAccountType in model TransferAllDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransferAllDetails.class);
 }

@@ -23,10 +23,9 @@ import com.azure.resourcemanager.databox.models.SkuInformation;
 import com.azure.resourcemanager.databox.models.ValidateAddress;
 import com.azure.resourcemanager.databox.models.ValidationRequest;
 import com.azure.resourcemanager.databox.models.ValidationResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 

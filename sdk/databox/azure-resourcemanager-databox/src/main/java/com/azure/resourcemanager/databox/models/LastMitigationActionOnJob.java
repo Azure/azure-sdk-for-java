@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Last Mitigation Action Performed On Job. */
 @Fluent
 public final class LastMitigationActionOnJob {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LastMitigationActionOnJob.class);
-
     /*
      * Action performed date time
      */

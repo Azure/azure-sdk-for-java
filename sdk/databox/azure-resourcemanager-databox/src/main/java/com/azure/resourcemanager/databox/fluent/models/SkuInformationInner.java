@@ -5,23 +5,17 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.models.DataLocationToServiceLocationMap;
 import com.azure.resourcemanager.databox.models.Sku;
 import com.azure.resourcemanager.databox.models.SkuCapacity;
 import com.azure.resourcemanager.databox.models.SkuCost;
 import com.azure.resourcemanager.databox.models.SkuDisabledReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information of the sku. */
-@JsonFlatten
 @Immutable
-public class SkuInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInformationInner.class);
-
+public final class SkuInformationInner {
     /*
      * The Sku.
      */
@@ -35,46 +29,10 @@ public class SkuInformationInner {
     private Boolean enabled;
 
     /*
-     * The map of data location to service location.
+     * Properties of the sku.
      */
-    @JsonProperty(value = "properties.dataLocationToServiceLocationMap", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DataLocationToServiceLocationMap> dataLocationToServiceLocationMap;
-
-    /*
-     * Capacity of the Sku.
-     */
-    @JsonProperty(value = "properties.capacity", access = JsonProperty.Access.WRITE_ONLY)
-    private SkuCapacity capacity;
-
-    /*
-     * Cost of the Sku.
-     */
-    @JsonProperty(value = "properties.costs", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SkuCost> costs;
-
-    /*
-     * Api versions that support this Sku.
-     */
-    @JsonProperty(value = "properties.apiVersions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> apiVersions;
-
-    /*
-     * Reason why the Sku is disabled.
-     */
-    @JsonProperty(value = "properties.disabledReason", access = JsonProperty.Access.WRITE_ONLY)
-    private SkuDisabledReason disabledReason;
-
-    /*
-     * Message for why the Sku is disabled.
-     */
-    @JsonProperty(value = "properties.disabledReasonMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String disabledReasonMessage;
-
-    /*
-     * Required feature to access the sku.
-     */
-    @JsonProperty(value = "properties.requiredFeature", access = JsonProperty.Access.WRITE_ONLY)
-    private String requiredFeature;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private SkuProperties innerProperties;
 
     /**
      * Get the sku property: The Sku.
@@ -95,12 +53,21 @@ public class SkuInformationInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of the sku.
+     *
+     * @return the innerProperties value.
+     */
+    private SkuProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the dataLocationToServiceLocationMap property: The map of data location to service location.
      *
      * @return the dataLocationToServiceLocationMap value.
      */
     public List<DataLocationToServiceLocationMap> dataLocationToServiceLocationMap() {
-        return this.dataLocationToServiceLocationMap;
+        return this.innerProperties() == null ? null : this.innerProperties().dataLocationToServiceLocationMap();
     }
 
     /**
@@ -109,7 +76,7 @@ public class SkuInformationInner {
      * @return the capacity value.
      */
     public SkuCapacity capacity() {
-        return this.capacity;
+        return this.innerProperties() == null ? null : this.innerProperties().capacity();
     }
 
     /**
@@ -118,7 +85,7 @@ public class SkuInformationInner {
      * @return the costs value.
      */
     public List<SkuCost> costs() {
-        return this.costs;
+        return this.innerProperties() == null ? null : this.innerProperties().costs();
     }
 
     /**
@@ -127,7 +94,7 @@ public class SkuInformationInner {
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
-        return this.apiVersions;
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersions();
     }
 
     /**
@@ -136,7 +103,7 @@ public class SkuInformationInner {
      * @return the disabledReason value.
      */
     public SkuDisabledReason disabledReason() {
-        return this.disabledReason;
+        return this.innerProperties() == null ? null : this.innerProperties().disabledReason();
     }
 
     /**
@@ -145,7 +112,7 @@ public class SkuInformationInner {
      * @return the disabledReasonMessage value.
      */
     public String disabledReasonMessage() {
-        return this.disabledReasonMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().disabledReasonMessage();
     }
 
     /**
@@ -154,7 +121,7 @@ public class SkuInformationInner {
      * @return the requiredFeature value.
      */
     public String requiredFeature() {
-        return this.requiredFeature;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredFeature();
     }
 
     /**
@@ -166,14 +133,8 @@ public class SkuInformationInner {
         if (sku() != null) {
             sku().validate();
         }
-        if (dataLocationToServiceLocationMap() != null) {
-            dataLocationToServiceLocationMap().forEach(e -> e.validate());
-        }
-        if (capacity() != null) {
-            capacity().validate();
-        }
-        if (costs() != null) {
-            costs().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -4,19 +4,15 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Request body to get the availability for scheduling data box orders orders. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "skuName")
 @JsonTypeName("DataBox")
-@Immutable
+@Fluent
 public final class DataBoxScheduleAvailabilityRequest extends ScheduleAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxScheduleAvailabilityRequest.class);
-
     /** {@inheritDoc} */
     @Override
     public DataBoxScheduleAvailabilityRequest withStorageLocation(String storageLocation) {

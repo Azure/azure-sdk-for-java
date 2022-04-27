@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Copy progress. */
 @Immutable
-public final class CopyProgress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopyProgress.class);
-
+public class CopyProgress {
     /*
      * Name of the storage account. This will be empty for data account types
      * other than storage account.

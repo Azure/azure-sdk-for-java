@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Job details for update. */
 @Fluent
 public final class UpdateJobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateJobDetails.class);
-
     /*
      * Contact details for notification and shipping.
      */
@@ -31,6 +27,12 @@ public final class UpdateJobDetails {
      */
     @JsonProperty(value = "keyEncryptionKey")
     private KeyEncryptionKey keyEncryptionKey;
+
+    /*
+     * Return package details of job.
+     */
+    @JsonProperty(value = "returnToCustomerPackageDetails")
+    private PackageCarrierDetails returnToCustomerPackageDetails;
 
     /**
      * Get the contactDetails property: Contact details for notification and shipping.
@@ -93,6 +95,26 @@ public final class UpdateJobDetails {
     }
 
     /**
+     * Get the returnToCustomerPackageDetails property: Return package details of job.
+     *
+     * @return the returnToCustomerPackageDetails value.
+     */
+    public PackageCarrierDetails returnToCustomerPackageDetails() {
+        return this.returnToCustomerPackageDetails;
+    }
+
+    /**
+     * Set the returnToCustomerPackageDetails property: Return package details of job.
+     *
+     * @param returnToCustomerPackageDetails the returnToCustomerPackageDetails value to set.
+     * @return the UpdateJobDetails object itself.
+     */
+    public UpdateJobDetails withReturnToCustomerPackageDetails(PackageCarrierDetails returnToCustomerPackageDetails) {
+        this.returnToCustomerPackageDetails = returnToCustomerPackageDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +128,9 @@ public final class UpdateJobDetails {
         }
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
+        }
+        if (returnToCustomerPackageDetails() != null) {
+            returnToCustomerPackageDetails().validate();
         }
     }
 }

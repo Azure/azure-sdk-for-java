@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Encryption key containing details about key to encrypt different keys. */
 @Fluent
 public final class KeyEncryptionKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyEncryptionKey.class);
-
     /*
      * Type of encryption key used for key encryption.
      */
@@ -126,7 +123,7 @@ public final class KeyEncryptionKey {
      */
     public void validate() {
         if (kekType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kekType in model KeyEncryptionKey"));
         }
@@ -134,4 +131,6 @@ public final class KeyEncryptionKey {
             identityProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKey.class);
 }

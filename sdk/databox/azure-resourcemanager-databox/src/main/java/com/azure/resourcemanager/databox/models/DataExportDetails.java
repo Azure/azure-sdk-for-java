@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the data to be used for exporting data from azure. */
 @Fluent
 public final class DataExportDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataExportDetails.class);
-
     /*
      * Configuration for the data transfer.
      */
@@ -99,7 +96,7 @@ public final class DataExportDetails {
      */
     public void validate() {
         if (transferConfiguration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property transferConfiguration in model DataExportDetails"));
@@ -107,7 +104,7 @@ public final class DataExportDetails {
             transferConfiguration().validate();
         }
         if (accountDetails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accountDetails in model DataExportDetails"));
@@ -115,4 +112,6 @@ public final class DataExportDetails {
             accountDetails().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataExportDetails.class);
 }

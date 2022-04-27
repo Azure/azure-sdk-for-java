@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,13 +18,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CopyLogDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DataBox", value = DataBoxAccountCopyLogDetails.class),
+    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxCustomerDiskCopyLogDetails.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskCopyLogDetails.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyAccountCopyLogDetails.class)
 })
 @Immutable
 public class CopyLogDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopyLogDetails.class);
-
     /**
      * Validates the instance.
      *

@@ -23,10 +23,6 @@ public final class AddressValidationOutputImpl implements AddressValidationOutpu
         this.serviceManager = serviceManager;
     }
 
-    public CloudError error() {
-        return this.innerModel().error();
-    }
-
     public AddressValidationStatus validationStatus() {
         return this.innerModel().validationStatus();
     }
@@ -38,6 +34,10 @@ public final class AddressValidationOutputImpl implements AddressValidationOutpu
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public CloudError error() {
+        return this.innerModel().error();
     }
 
     public AddressValidationOutputInner innerModel() {

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DataBoxDisk")
 @Fluent
 public final class DiskScheduleAvailabilityRequest extends ScheduleAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskScheduleAvailabilityRequest.class);
-
     /*
      * The expected size of the data, which needs to be transferred in this
      * job, in terabytes.

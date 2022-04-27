@@ -15,7 +15,7 @@ public interface Jobs {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection.
+     * @return job Resource Collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResource> list();
 
@@ -27,9 +27,39 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection.
+     * @return job Resource Collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResource> list(String skipToken, Context context);
+
+    /**
+     * Request to mark devices for a given job as shipped.
+     *
+     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
+     *     24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The Resource Group Name.
+     * @param markDevicesShippedRequest Mark Devices Shipped Request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void markDevicesShipped(
+        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest);
+
+    /**
+     * Request to mark devices for a given job as shipped.
+     *
+     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
+     *     24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The Resource Group Name.
+     * @param markDevicesShippedRequest Mark Devices Shipped Request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> markDevicesShippedWithResponse(
+        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest, Context context);
 
     /**
      * Lists all the jobs available under the given resource group.
@@ -38,7 +68,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection.
+     * @return job Resource Collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResource> listByResourceGroup(String resourceGroupName);
 
@@ -51,7 +81,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return job Resource Collection.
+     * @return job Resource Collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResource> listByResourceGroup(String resourceGroupName, String skipToken, Context context);
 
@@ -79,7 +109,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified job.
+     * @return information about the specified job along with {@link Response}.
      */
     Response<JobResource> getByResourceGroupWithResponse(
         String resourceGroupName, String jobName, String expand, Context context);
@@ -135,7 +165,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shipment pick up response.
+     * @return shipment pick up response along with {@link Response}.
      */
     Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(
         String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context);
@@ -164,7 +194,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> cancelWithResponse(
         String resourceGroupName, String jobName, CancellationReason cancellationReason, Context context);
@@ -178,7 +208,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of unencrypted credentials for accessing device.
+     * @return list of unencrypted credentials for accessing device as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UnencryptedCredentials> listCredentials(String resourceGroupName, String jobName);
 
@@ -192,7 +222,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of unencrypted credentials for accessing device.
+     * @return list of unencrypted credentials for accessing device as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UnencryptedCredentials> listCredentials(String resourceGroupName, String jobName, Context context);
 
@@ -203,7 +233,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified job.
+     * @return information about the specified job along with {@link Response}.
      */
     JobResource getById(String id);
 
@@ -216,7 +246,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified job.
+     * @return information about the specified job along with {@link Response}.
      */
     Response<JobResource> getByIdWithResponse(String id, String expand, Context context);
 

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -20,14 +18,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = JobSecrets.class)
 @JsonTypeName("JobSecrets")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = CustomerDiskJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBox", value = DataboxJobSecrets.class)
 })
 @Immutable
 public class JobSecrets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobSecrets.class);
-
     /*
      * Dc Access Security Code for Customer Managed Shipping
      */

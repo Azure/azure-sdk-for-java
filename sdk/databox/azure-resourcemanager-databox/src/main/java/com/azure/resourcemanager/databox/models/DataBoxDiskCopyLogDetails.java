@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DataBoxDisk")
 @Immutable
 public final class DataBoxDiskCopyLogDetails extends CopyLogDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxDiskCopyLogDetails.class);
-
     /*
      * Disk Serial Number.
      */

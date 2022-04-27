@@ -19,7 +19,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(
         String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest);
@@ -34,7 +34,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(
         String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest, Context context);
@@ -62,7 +62,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api.
+     * @return output of the address validation api along with {@link Response}.
      */
     Response<AddressValidationOutput> validateAddressWithResponse(
         String location, ValidateAddress validateAddress, Context context);
@@ -91,7 +91,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations along with {@link Response}.
      */
     Response<ValidationResponse> validateInputsByResourceGroupWithResponse(
         String resourceGroupName, String location, ValidationRequest validationRequest, Context context);
@@ -117,7 +117,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations along with {@link Response}.
      */
     Response<ValidationResponse> validateInputsWithResponse(
         String location, ValidationRequest validationRequest, Context context);
@@ -144,7 +144,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region along with {@link Response}.
      */
     Response<RegionConfigurationResponse> regionConfigurationWithResponse(
         String location, RegionConfigurationRequest regionConfigurationRequest, Context context);
@@ -173,7 +173,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region along with {@link Response}.
      */
     Response<RegionConfigurationResponse> regionConfigurationByResourceGroupWithResponse(
         String resourceGroupName,

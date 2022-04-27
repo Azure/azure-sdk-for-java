@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Job stages. */
 @Immutable
 public final class JobStages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStages.class);
-
     /*
      * Name of the job stage.
      */

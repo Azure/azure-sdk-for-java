@@ -6,15 +6,12 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Details of the filtering the transfer of data. */
 @Fluent
 public final class TransferFilterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransferFilterDetails.class);
-
     /*
      * Type of the account of data.
      */
@@ -126,7 +123,7 @@ public final class TransferFilterDetails {
      */
     public void validate() {
         if (dataAccountType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataAccountType in model TransferFilterDetails"));
@@ -141,4 +138,6 @@ public final class TransferFilterDetails {
             filterFileDetails().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransferFilterDetails.class);
 }

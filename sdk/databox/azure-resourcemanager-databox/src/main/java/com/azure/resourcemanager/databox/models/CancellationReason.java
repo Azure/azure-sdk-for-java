@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reason for cancellation. */
 @Fluent
 public final class CancellationReason {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CancellationReason.class);
-
     /*
      * Reason for cancellation.
      */
@@ -47,9 +44,11 @@ public final class CancellationReason {
      */
     public void validate() {
         if (reason() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property reason in model CancellationReason"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CancellationReason.class);
 }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,14 +20,13 @@ import java.util.List;
     defaultImpl = JobDetails.class)
 @JsonTypeName("JobDetails")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxCustomerDiskJobDetails.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobDetails.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobDetails.class),
     @JsonSubTypes.Type(name = "DataBox", value = DataBoxJobDetails.class)
 })
 @Fluent
 public class JobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobDetails.class);
-
     /*
      * List of stages that run in the job.
      */
@@ -96,6 +94,12 @@ public class JobDetails {
     private String chainOfCustodySasKey;
 
     /*
+     * Holds device data erasure details
+     */
+    @JsonProperty(value = "deviceErasureDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private DeviceErasureDetails deviceErasureDetails;
+
+    /*
      * Details about which key encryption type is being used.
      */
     @JsonProperty(value = "keyEncryptionKey")
@@ -119,6 +123,18 @@ public class JobDetails {
      */
     @JsonProperty(value = "lastMitigationActionOnJob", access = JsonProperty.Access.WRITE_ONLY)
     private LastMitigationActionOnJob lastMitigationActionOnJob;
+
+    /*
+     * Datacenter address to ship to, for the given sku and storage location.
+     */
+    @JsonProperty(value = "datacenterAddress", access = JsonProperty.Access.WRITE_ONLY)
+    private DatacenterAddressResponse datacenterAddress;
+
+    /*
+     * DataCenter code.
+     */
+    @JsonProperty(value = "dataCenterCode", access = JsonProperty.Access.WRITE_ONLY)
+    private DataCenterCode dataCenterCode;
 
     /**
      * Get the jobStages property: List of stages that run in the job.
@@ -275,6 +291,15 @@ public class JobDetails {
     }
 
     /**
+     * Get the deviceErasureDetails property: Holds device data erasure details.
+     *
+     * @return the deviceErasureDetails value.
+     */
+    public DeviceErasureDetails deviceErasureDetails() {
+        return this.deviceErasureDetails;
+    }
+
+    /**
      * Get the keyEncryptionKey property: Details about which key encryption type is being used.
      *
      * @return the keyEncryptionKey value.
@@ -335,6 +360,24 @@ public class JobDetails {
     }
 
     /**
+     * Get the datacenterAddress property: Datacenter address to ship to, for the given sku and storage location.
+     *
+     * @return the datacenterAddress value.
+     */
+    public DatacenterAddressResponse datacenterAddress() {
+        return this.datacenterAddress;
+    }
+
+    /**
+     * Get the dataCenterCode property: DataCenter code.
+     *
+     * @return the dataCenterCode value.
+     */
+    public DataCenterCode dataCenterCode() {
+        return this.dataCenterCode;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -344,7 +387,7 @@ public class JobDetails {
             jobStages().forEach(e -> e.validate());
         }
         if (contactDetails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactDetails in model JobDetails"));
         } else {
@@ -371,11 +414,19 @@ public class JobDetails {
         if (copyLogDetails() != null) {
             copyLogDetails().forEach(e -> e.validate());
         }
+        if (deviceErasureDetails() != null) {
+            deviceErasureDetails().validate();
+        }
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
         }
         if (lastMitigationActionOnJob() != null) {
             lastMitigationActionOnJob().validate();
         }
+        if (datacenterAddress() != null) {
+            datacenterAddress().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobDetails.class);
 }

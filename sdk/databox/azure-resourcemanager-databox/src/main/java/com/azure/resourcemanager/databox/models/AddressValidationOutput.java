@@ -10,13 +10,6 @@ import java.util.List;
 /** An immutable client-side representation of AddressValidationOutput. */
 public interface AddressValidationOutput {
     /**
-     * Gets the error property: Error code and message of validation response.
-     *
-     * @return the error value.
-     */
-    CloudError error();
-
-    /**
      * Gets the validationStatus property: The address validation status.
      *
      * @return the validationStatus value.
@@ -29,6 +22,13 @@ public interface AddressValidationOutput {
      * @return the alternateAddresses value.
      */
     List<ShippingAddress> alternateAddresses();
+
+    /**
+     * Gets the error property: Error code and message of validation response.
+     *
+     * @return the error value.
+     */
+    CloudError error();
 
     /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.AddressValidationOutputInner object.

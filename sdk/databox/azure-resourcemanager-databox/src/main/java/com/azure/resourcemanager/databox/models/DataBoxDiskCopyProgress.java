@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DataBox Disk Copy Progress. */
 @Immutable
 public final class DataBoxDiskCopyProgress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxDiskCopyProgress.class);
-
     /*
      * The serial number of the disk
      */

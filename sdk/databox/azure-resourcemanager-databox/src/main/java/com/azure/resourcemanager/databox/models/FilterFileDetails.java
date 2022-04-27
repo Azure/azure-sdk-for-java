@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the filter files to be used for data transfer. */
 @Fluent
 public final class FilterFileDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FilterFileDetails.class);
-
     /*
      * Type of the filter file.
      */
@@ -73,16 +70,18 @@ public final class FilterFileDetails {
      */
     public void validate() {
         if (filterFileType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property filterFileType in model FilterFileDetails"));
         }
         if (filterFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property filterFilePath in model FilterFileDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FilterFileDetails.class);
 }

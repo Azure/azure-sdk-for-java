@@ -5,14 +5,16 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Shipping details. */
+/** package shipping details. */
 @Immutable
 public final class PackageShippingDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PackageShippingDetails.class);
+    /*
+     * Url where shipment can be tracked.
+     */
+    @JsonProperty(value = "trackingUrl", access = JsonProperty.Access.WRITE_ONLY)
+    private String trackingUrl;
 
     /*
      * Name of the carrier.
@@ -26,11 +28,14 @@ public final class PackageShippingDetails {
     @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
-    /*
-     * Url where shipment can be tracked.
+    /**
+     * Get the trackingUrl property: Url where shipment can be tracked.
+     *
+     * @return the trackingUrl value.
      */
-    @JsonProperty(value = "trackingUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String trackingUrl;
+    public String trackingUrl() {
+        return this.trackingUrl;
+    }
 
     /**
      * Get the carrierName property: Name of the carrier.
@@ -48,15 +53,6 @@ public final class PackageShippingDetails {
      */
     public String trackingId() {
         return this.trackingId;
-    }
-
-    /**
-     * Get the trackingUrl property: Url where shipment can be tracked.
-     *
-     * @return the trackingUrl value.
-     */
-    public String trackingUrl() {
-        return this.trackingUrl;
     }
 
     /**

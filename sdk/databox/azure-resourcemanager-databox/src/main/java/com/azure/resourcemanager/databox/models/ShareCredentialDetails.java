@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Credential details of the shares in account. */
 @Immutable
 public final class ShareCredentialDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareCredentialDetails.class);
-
     /*
      * Name of the share.
      */

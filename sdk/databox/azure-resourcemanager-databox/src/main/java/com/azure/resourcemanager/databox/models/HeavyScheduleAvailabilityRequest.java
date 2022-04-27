@@ -4,19 +4,15 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Request body to get the availability for scheduling heavy orders. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "skuName")
 @JsonTypeName("DataBoxHeavy")
-@Immutable
+@Fluent
 public final class HeavyScheduleAvailabilityRequest extends ScheduleAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HeavyScheduleAvailabilityRequest.class);
-
     /** {@inheritDoc} */
     @Override
     public HeavyScheduleAvailabilityRequest withStorageLocation(String storageLocation) {

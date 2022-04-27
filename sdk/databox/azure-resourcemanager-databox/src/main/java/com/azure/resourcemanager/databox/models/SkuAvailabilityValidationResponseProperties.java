@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidateSkuAvailability")
 @Immutable
 public final class SkuAvailabilityValidationResponseProperties extends ValidationInputResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuAvailabilityValidationResponseProperties.class);
-
     /*
      * Sku availability validation status.
      */

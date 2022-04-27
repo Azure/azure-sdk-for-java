@@ -16,13 +16,13 @@ import com.azure.resourcemanager.databox.fluent.models.UnencryptedCredentialsInn
 import com.azure.resourcemanager.databox.models.CancellationReason;
 import com.azure.resourcemanager.databox.models.JobResource;
 import com.azure.resourcemanager.databox.models.Jobs;
+import com.azure.resourcemanager.databox.models.MarkDevicesShippedRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpResponse;
 import com.azure.resourcemanager.databox.models.UnencryptedCredentials;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 
@@ -41,6 +41,21 @@ public final class JobsImpl implements Jobs {
     public PagedIterable<JobResource> list(String skipToken, Context context) {
         PagedIterable<JobResourceInner> inner = this.serviceClient().list(skipToken, context);
         return Utils.mapPage(inner, inner1 -> new JobResourceImpl(inner1, this.manager()));
+    }
+
+    public void markDevicesShipped(
+        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest) {
+        this.serviceClient().markDevicesShipped(jobName, resourceGroupName, markDevicesShippedRequest);
+    }
+
+    public Response<Void> markDevicesShippedWithResponse(
+        String jobName,
+        String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest,
+        Context context) {
+        return this
+            .serviceClient()
+            .markDevicesShippedWithResponse(jobName, resourceGroupName, markDevicesShippedRequest, context);
     }
 
     public PagedIterable<JobResource> listByResourceGroup(String resourceGroupName) {
@@ -139,7 +154,7 @@ public final class JobsImpl implements Jobs {
     public JobResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +162,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -159,7 +174,7 @@ public final class JobsImpl implements Jobs {
     public Response<JobResource> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +182,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -178,7 +193,7 @@ public final class JobsImpl implements Jobs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +201,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -197,7 +212,7 @@ public final class JobsImpl implements Jobs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -205,7 +220,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));

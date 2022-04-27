@@ -39,8 +39,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the DataBoxManagementClientImpl type. */
 @ServiceClient(builder = DataBoxManagementClientBuilder.class)
 public final class DataBoxManagementClientImpl implements DataBoxManagementClient {
-    private final ClientLogger logger = new ClientLogger(DataBoxManagementClientImpl.class);
-
     /** The Subscription Id. */
     private final String subscriptionId;
 
@@ -183,7 +181,7 @@ public final class DataBoxManagementClientImpl implements DataBoxManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2022-02-01";
         this.operations = new OperationsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
@@ -273,7 +271,7 @@ public final class DataBoxManagementClientImpl implements DataBoxManagementClien
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -332,4 +330,6 @@ public final class DataBoxManagementClientImpl implements DataBoxManagementClien
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataBoxManagementClientImpl.class);
 }

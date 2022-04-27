@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Map of data location to service location. */
 @Immutable
 public final class DataLocationToServiceLocationMap {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLocationToServiceLocationMap.class);
-
     /*
      * Location of the data.
      */

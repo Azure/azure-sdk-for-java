@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Preferences related to the shipment logistics of the sku. */
 @Fluent
 public final class TransportPreferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransportPreferences.class);
-
     /*
      * Indicates Shipment Logistics type that the customer preferred.
      */
@@ -47,10 +44,12 @@ public final class TransportPreferences {
      */
     public void validate() {
         if (preferredShipmentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredShipmentType in model TransportPreferences"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransportPreferences.class);
 }

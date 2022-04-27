@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes metadata for retrieving price info. */
 @Immutable
 public final class SkuCost {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCost.class);
-
     /*
      * Meter id of the Sku.
      */

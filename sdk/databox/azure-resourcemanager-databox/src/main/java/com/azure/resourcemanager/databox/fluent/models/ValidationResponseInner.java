@@ -5,32 +5,28 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.models.OverallValidationStatus;
 import com.azure.resourcemanager.databox.models.ValidationInputResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response of pre job creation validations. */
-@JsonFlatten
 @Immutable
-public class ValidationResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationResponseInner.class);
-
+public final class ValidationResponseInner {
     /*
-     * Overall validation status.
+     * Properties of pre job creation validation response.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private OverallValidationStatus status;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private ValidationResponseProperties innerProperties;
 
-    /*
-     * List of response details contain validationType and its response as key
-     * and value respectively.
+    /**
+     * Get the innerProperties property: Properties of pre job creation validation response.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.individualResponseDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ValidationInputResponse> individualResponseDetails;
+    private ValidationResponseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the status property: Overall validation status.
@@ -38,7 +34,7 @@ public class ValidationResponseInner {
      * @return the status value.
      */
     public OverallValidationStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -48,7 +44,7 @@ public class ValidationResponseInner {
      * @return the individualResponseDetails value.
      */
     public List<ValidationInputResponse> individualResponseDetails() {
-        return this.individualResponseDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().individualResponseDetails();
     }
 
     /**
@@ -57,8 +53,8 @@ public class ValidationResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (individualResponseDetails() != null) {
-            individualResponseDetails().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

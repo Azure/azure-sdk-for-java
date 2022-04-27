@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Preferences related to the order. */
 @Fluent
 public final class Preferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Preferences.class);
-
     /*
      * Preferred data center region.
      */
@@ -32,6 +28,12 @@ public final class Preferences {
      */
     @JsonProperty(value = "encryptionPreferences")
     private EncryptionPreferences encryptionPreferences;
+
+    /*
+     * Preferences related to the Access Tier of storage accounts.
+     */
+    @JsonProperty(value = "storageAccountAccessTierPreferences")
+    private List<String> storageAccountAccessTierPreferences;
 
     /**
      * Get the preferredDataCenterRegion property: Preferred data center region.
@@ -90,6 +92,26 @@ public final class Preferences {
      */
     public Preferences withEncryptionPreferences(EncryptionPreferences encryptionPreferences) {
         this.encryptionPreferences = encryptionPreferences;
+        return this;
+    }
+
+    /**
+     * Get the storageAccountAccessTierPreferences property: Preferences related to the Access Tier of storage accounts.
+     *
+     * @return the storageAccountAccessTierPreferences value.
+     */
+    public List<String> storageAccountAccessTierPreferences() {
+        return this.storageAccountAccessTierPreferences;
+    }
+
+    /**
+     * Set the storageAccountAccessTierPreferences property: Preferences related to the Access Tier of storage accounts.
+     *
+     * @param storageAccountAccessTierPreferences the storageAccountAccessTierPreferences value to set.
+     * @return the Preferences object itself.
+     */
+    public Preferences withStorageAccountAccessTierPreferences(List<String> storageAccountAccessTierPreferences) {
+        this.storageAccountAccessTierPreferences = storageAccountAccessTierPreferences;
         return this;
     }
 

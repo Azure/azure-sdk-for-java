@@ -23,6 +23,13 @@ public interface RegionConfigurationResponse {
     TransportAvailabilityResponse transportAvailabilityResponse();
 
     /**
+     * Gets the datacenterAddressResponse property: Datacenter address for given sku in a region.
+     *
+     * @return the datacenterAddressResponse value.
+     */
+    DatacenterAddressResponse datacenterAddressResponse();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.RegionConfigurationResponseInner object.
      *
      * @return the inner object.

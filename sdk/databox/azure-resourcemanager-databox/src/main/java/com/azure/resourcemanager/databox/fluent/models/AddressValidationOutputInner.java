@@ -5,46 +5,28 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.models.AddressValidationStatus;
 import com.azure.resourcemanager.databox.models.CloudError;
 import com.azure.resourcemanager.databox.models.ShippingAddress;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output of the address validation api. */
-@JsonFlatten
 @Immutable
-public class AddressValidationOutputInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressValidationOutputInner.class);
-
+public final class AddressValidationOutputInner {
     /*
-     * Error code and message of validation response.
+     * The address validation properties.
      */
-    @JsonProperty(value = "properties.error", access = JsonProperty.Access.WRITE_ONLY)
-    private CloudError error;
-
-    /*
-     * The address validation status.
-     */
-    @JsonProperty(value = "properties.validationStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private AddressValidationStatus validationStatus;
-
-    /*
-     * List of alternate addresses.
-     */
-    @JsonProperty(value = "properties.alternateAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ShippingAddress> alternateAddresses;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private AddressValidationProperties innerProperties;
 
     /**
-     * Get the error property: Error code and message of validation response.
+     * Get the innerProperties property: The address validation properties.
      *
-     * @return the error value.
+     * @return the innerProperties value.
      */
-    public CloudError error() {
-        return this.error;
+    private AddressValidationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -53,7 +35,7 @@ public class AddressValidationOutputInner {
      * @return the validationStatus value.
      */
     public AddressValidationStatus validationStatus() {
-        return this.validationStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().validationStatus();
     }
 
     /**
@@ -62,7 +44,16 @@ public class AddressValidationOutputInner {
      * @return the alternateAddresses value.
      */
     public List<ShippingAddress> alternateAddresses() {
-        return this.alternateAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().alternateAddresses();
+    }
+
+    /**
+     * Get the error property: Error code and message of validation response.
+     *
+     * @return the error value.
+     */
+    public CloudError error() {
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -71,11 +62,8 @@ public class AddressValidationOutputInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
-        if (alternateAddresses() != null) {
-            alternateAddresses().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

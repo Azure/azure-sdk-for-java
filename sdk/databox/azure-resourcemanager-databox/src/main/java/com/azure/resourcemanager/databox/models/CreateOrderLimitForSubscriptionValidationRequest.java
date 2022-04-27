@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidateCreateOrderLimit")
 @Fluent
 public final class CreateOrderLimitForSubscriptionValidationRequest extends ValidationInputRequest {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CreateOrderLimitForSubscriptionValidationRequest.class);
-
     /*
      * Device type to be used for the job.
      */
@@ -54,11 +50,13 @@ public final class CreateOrderLimitForSubscriptionValidationRequest extends Vali
     public void validate() {
         super.validate();
         if (deviceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deviceType in model"
                             + " CreateOrderLimitForSubscriptionValidationRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrderLimitForSubscriptionValidationRequest.class);
 }

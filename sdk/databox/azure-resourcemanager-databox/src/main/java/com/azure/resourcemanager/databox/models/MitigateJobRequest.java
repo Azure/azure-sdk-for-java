@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Mitigate Job captured from request body for Mitigate API. */
 @Fluent
 public final class MitigateJobRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MitigateJobRequest.class);
-
     /*
      * Resolution code for the job
      */
@@ -47,10 +44,12 @@ public final class MitigateJobRequest {
      */
     public void validate() {
         if (customerResolutionCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property customerResolutionCode in model MitigateJobRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MitigateJobRequest.class);
 }

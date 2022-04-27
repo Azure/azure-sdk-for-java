@@ -34,7 +34,19 @@ public enum StageStatus {
     WAITING_FOR_CUSTOMER_ACTION("WaitingForCustomerAction"),
 
     /** Enum value SucceededWithWarnings. */
-    SUCCEEDED_WITH_WARNINGS("SucceededWithWarnings");
+    SUCCEEDED_WITH_WARNINGS("SucceededWithWarnings"),
+
+    /** Enum value WaitingForCustomerActionForKek. */
+    WAITING_FOR_CUSTOMER_ACTION_FOR_KEK("WaitingForCustomerActionForKek"),
+
+    /** Enum value WaitingForCustomerActionForCleanUp. */
+    WAITING_FOR_CUSTOMER_ACTION_FOR_CLEAN_UP("WaitingForCustomerActionForCleanUp"),
+
+    /** Enum value CustomerActionPerformedForCleanUp. */
+    CUSTOMER_ACTION_PERFORMED_FOR_CLEAN_UP("CustomerActionPerformedForCleanUp"),
+
+    /** Enum value CustomerActionPerformed. */
+    CUSTOMER_ACTION_PERFORMED("CustomerActionPerformed");
 
     /** The actual serialized value for a StageStatus instance. */
     private final String value;

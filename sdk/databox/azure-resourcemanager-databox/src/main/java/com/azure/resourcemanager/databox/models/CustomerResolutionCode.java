@@ -16,7 +16,13 @@ public enum CustomerResolutionCode {
     MOVE_TO_CLEAN_UP_DEVICE("MoveToCleanUpDevice"),
 
     /** Enum value Resume. */
-    RESUME("Resume");
+    RESUME("Resume"),
+
+    /** Enum value Restart. */
+    RESTART("Restart"),
+
+    /** Enum value ReachOutToOperation. */
+    REACH_OUT_TO_OPERATION("ReachOutToOperation");
 
     /** The actual serialized value for a CustomerResolutionCode instance. */
     private final String value;

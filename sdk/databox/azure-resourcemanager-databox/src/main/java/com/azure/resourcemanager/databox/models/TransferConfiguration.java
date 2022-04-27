@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration for defining the transfer of data. */
 @Fluent
 public final class TransferConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransferConfiguration.class);
-
     /*
      * Type of the configuration for transfer.
      */
@@ -106,7 +103,7 @@ public final class TransferConfiguration {
      */
     public void validate() {
         if (transferConfigurationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property transferConfigurationType in model TransferConfiguration"));
@@ -118,4 +115,6 @@ public final class TransferConfiguration {
             transferAllDetails().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransferConfiguration.class);
 }

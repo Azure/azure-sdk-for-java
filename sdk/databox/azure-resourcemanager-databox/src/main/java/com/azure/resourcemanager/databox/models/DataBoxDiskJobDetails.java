@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,14 +17,13 @@ import java.util.Map;
 @JsonTypeName("DataBoxDisk")
 @Fluent
 public final class DataBoxDiskJobDetails extends JobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxDiskJobDetails.class);
-
     /*
      * User preference on what size disks are needed for the job. The map is
      * from the disk size in TB to the count. Eg. {2,5} means 5 disks of 2 TB
      * size. Key is string but will be checked against an int.
      */
     @JsonProperty(value = "preferredDisks")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> preferredDisks;
 
     /*
@@ -35,10 +33,17 @@ public final class DataBoxDiskJobDetails extends JobDetails {
     private List<DataBoxDiskCopyProgress> copyProgress;
 
     /*
+     * Copy progress per disk.
+     */
+    @JsonProperty(value = "granularCopyProgress", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DataBoxDiskGranularCopyProgress> granularCopyProgress;
+
+    /*
      * Contains the map of disk serial number to the disk size being used for
      * the job. Is returned only after the disks are shipped to the customer.
      */
     @JsonProperty(value = "disksAndSizeDetails", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> disksAndSizeDetails;
 
     /*
@@ -78,6 +83,15 @@ public final class DataBoxDiskJobDetails extends JobDetails {
      */
     public List<DataBoxDiskCopyProgress> copyProgress() {
         return this.copyProgress;
+    }
+
+    /**
+     * Get the granularCopyProgress property: Copy progress per disk.
+     *
+     * @return the granularCopyProgress value.
+     */
+    public List<DataBoxDiskGranularCopyProgress> granularCopyProgress() {
+        return this.granularCopyProgress;
     }
 
     /**
@@ -169,6 +183,9 @@ public final class DataBoxDiskJobDetails extends JobDetails {
         super.validate();
         if (copyProgress() != null) {
             copyProgress().forEach(e -> e.validate());
+        }
+        if (granularCopyProgress() != null) {
+            granularCopyProgress().forEach(e -> e.validate());
         }
     }
 }

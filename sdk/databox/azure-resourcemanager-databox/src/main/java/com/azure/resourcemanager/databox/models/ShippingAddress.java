@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Shipping address where customer wishes to receive the device. */
 @Fluent
 public final class ShippingAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShippingAddress.class);
-
     /*
      * Street Address line 1.
      */
@@ -281,14 +278,16 @@ public final class ShippingAddress {
      */
     public void validate() {
         if (streetAddress1() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property streetAddress1 in model ShippingAddress"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model ShippingAddress"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ShippingAddress.class);
 }
