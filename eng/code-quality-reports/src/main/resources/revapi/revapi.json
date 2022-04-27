@@ -285,14 +285,6 @@
           "code": "java.class.nonPublicPartOfAPI",
           "new": "",
           "justification": ""
-        }, {
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "class org.HdrHistogram.packedarray.AbstractPackedLongArray",
-          "justification": ""
-        }, {
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "class org.HdrHistogram.packedarray.AbstractPackedLongArray",
-          "justification": ""
         }
       ]
     }
