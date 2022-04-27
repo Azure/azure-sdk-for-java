@@ -166,6 +166,8 @@
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+# PRLabel: %azure-spring
+/sdk/spring-experimental                            @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 # end to end tests
 # PRLabel: %Azure.Identity
