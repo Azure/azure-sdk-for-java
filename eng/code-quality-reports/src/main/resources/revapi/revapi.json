@@ -117,6 +117,10 @@
           {
             "matcher": "java-package",
             "match": "/com\\.google\\.gson(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.azure\\.aot\\.graalvm\\.samples(\\..*)?/"
           }
         ]
       }
