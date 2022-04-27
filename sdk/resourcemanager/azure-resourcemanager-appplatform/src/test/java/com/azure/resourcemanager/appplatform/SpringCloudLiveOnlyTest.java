@@ -83,6 +83,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withCpu(2)
             .withMemory(4)
             .withRuntime(RuntimeVersion.JAVA_11)
+            .withJvmOptions("-Xms512m")
             .attach()
             .withDefaultPublicEndpoint()
             .create();
@@ -91,9 +92,11 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         Assertions.assertNotNull(app.activeDeploymentName());
         Assertions.assertEquals(1, app.deployments().list().stream().count());
 
-        Assertions.assertTrue(requestSuccess(app.url()));
-
         SpringAppDeployment deployment = app.getActiveDeployment();
+        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.runtimeVersion());
+        Assertions.assertEquals("-Xms512m", deployment.jvmOptions());
+
+        Assertions.assertTrue(requestSuccess(app.url()));
 
         Assertions.assertEquals("2", deployment.settings().resourceRequests().cpu());
         Assertions.assertEquals("4Gi", deployment.settings().resourceRequests().memory());
@@ -262,8 +265,9 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .defineActiveDeployment(deploymentName)
             .withJarFile(jarFile)
             .withInstance(2)
-            .withCpu("500m")
-            .withMemory("512Mi")
+            .withCpu(0.5)
+            .withMemory(0.5)
+            .withJvmOptions("-DskipTests=true")
             .attach()
             .withDefaultPublicEndpoint()
             .withConfigurationServiceBinding()
@@ -271,6 +275,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         SpringAppDeployment deployment = app.deployments().getByName(deploymentName);
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
+        String jvmOptions = deployment.jvmOptions();
+        Assertions.assertEquals(jvmOptions, "-DskipTests=true");
 
         deployment.update()
             .withConfigFilePatterns(apiGatewayConfigFilePatterns)
