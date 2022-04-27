@@ -245,6 +245,51 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "missing-class org.osgi.framework.BundleContext",
+          "justification": ""
+        },
+        {
+          "code": "java.missing.newClass",
+          "new": "missing-class org.osgi.framework.BundleContext",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.ctc.wstx.shaded.msv.org_isorelax.dispatcher.impl.DispatcherImpl.Transponder",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.ctc.wstx.shaded.msv_core.verifier.identity.KeyValue",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.ctc.wstx.shaded.msv_core.writer.relaxng.RELAXNGWriter.SmartPatternWriter",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.ctc.wstx.util.SymbolTable.Bucket",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.microsoft.aad.msal4j.AadInstanceDiscoveryResponse/Authority/ClientAssertion/ErrorResponse",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class net.minidev.asm.DynamicClassLoader",
+          "justification": ""
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "interface org.apache.qpid.proton.codec.BinaryType.BinaryEncoding",
+          "justification": ""
         }
       ]
     }
