@@ -1,14 +1,8 @@
 ## Release History
 
-### 4.30.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
+### 4.29.1 (2022-04-27)
 #### Bugs Fixed
-
-#### Other Changes
+* Fixed AAD authentication for `CosmosPatchOperations` - See [PR 28537](https://github.com/Azure/azure-sdk-for-java/pull/28537)
 
 ### 4.29.0 (2022-04-22)
 #### Features Added
