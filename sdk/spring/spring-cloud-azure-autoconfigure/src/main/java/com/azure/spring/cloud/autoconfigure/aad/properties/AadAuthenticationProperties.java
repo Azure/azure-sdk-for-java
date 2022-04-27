@@ -131,19 +131,19 @@ public class AadAuthenticationProperties implements InitializingBean {
      */
     private AadApplicationType applicationType;
 
-    private static final Map<AadApplicationType, Set<AadAuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES = new HashMap<>();
+    private static final Map<AadApplicationType, Set<AadAuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES = initCompatibleApplicationTypeAndGrantTypes();
 
-    static {
-        initCompatibleApplicationTypeAndGrantTypes();
-    }
-
-    private static void initCompatibleApplicationTypeAndGrantTypes() {
-        NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.put(WEB_APPLICATION,
+    private static Map<AadApplicationType, Set<AadAuthorizationGrantType>> initCompatibleApplicationTypeAndGrantTypes() {
+        Map<AadApplicationType, Set<AadAuthorizationGrantType>> nonCompatibleApplicationTypeAndGrantTypes =
+            new HashMap<>();
+        nonCompatibleApplicationTypeAndGrantTypes.put(WEB_APPLICATION,
             Stream.of(ON_BEHALF_OF).collect(Collectors.toSet()));
-        NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.put(RESOURCE_SERVER,
+        nonCompatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER,
             Stream.of(AUTHORIZATION_CODE, ON_BEHALF_OF).collect(Collectors.toSet()));
-        NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.put(RESOURCE_SERVER_WITH_OBO,
+        nonCompatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER_WITH_OBO,
             Stream.of(AUTHORIZATION_CODE).collect(Collectors.toSet()));
+
+        return nonCompatibleApplicationTypeAndGrantTypes;
     }
 
     /**
@@ -581,7 +581,6 @@ public class AadAuthenticationProperties implements InitializingBean {
                                    .map(AuthorizationClientProperties::getAuthorizationGrantType)
                                    .orElse(null);
         if (grantType != null) {
-            // Validate authorization grant grantType
             validateAuthorizationGrantType(registrationId, grantType);
         } else {
             grantType = decideDefaultGrantTypeFromApplicationType(registrationId, applicationType);
