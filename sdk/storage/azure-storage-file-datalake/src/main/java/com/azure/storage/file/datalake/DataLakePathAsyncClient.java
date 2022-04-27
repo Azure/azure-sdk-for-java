@@ -415,7 +415,7 @@ public class DataLakePathAsyncClient {
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null,
+            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
