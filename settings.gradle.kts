@@ -7,6 +7,7 @@ rootProject.name = "azure-sdk-all"
 include("eng:code-quality-reports")
 include("sdk:core:azure-core")
 include("sdk:core:azure-core-test")
+include("sdk:core:azure-core-http-netty")
 
 // include(':azure-resourcemanager-deploymentmanager')
 // include(':azure-aot-graalvm-perf')
@@ -305,7 +306,7 @@ include("sdk:core:azure-core-test")
 // include(':azure-cognitiveservices-qnamaker')
 // include(':azure-resourcemanager-attestation')
 // include(':spring-integration-azure-storage-queue')
-// include(':azure-core-http-netty')
+
 // include(':azure-sdk-template')
 // include(':azure-analytics-synapse-accesscontrol')
 // include(':azure-containers-containerregistry-perf')

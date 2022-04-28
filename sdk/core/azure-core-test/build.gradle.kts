@@ -18,13 +18,19 @@ dependencies {
 
 description = "Microsoft Azure Java Core Test Library"
 
-//tasks.register("testsJar", Jar) {
-//    archiveClassifier = "tests"
-//    from(sourceSets.test.output)
-//}
-//
-//publishing.publications.maven.artifact(testsJar)
-//
-//java {
-//    withJavadocJar()
-//}
+val testJar = tasks.register<Jar>("testJar") {
+    from(sourceSets.test.get().output)
+    archiveClassifier.set("tests")
+}
+
+configurations {
+    create("tests") {
+        extendsFrom(testImplementation.get())
+    }
+}
+
+artifacts.add("tests", testJar)
+
+tasks.named("build") {
+    dependsOn("testJar")
+}
