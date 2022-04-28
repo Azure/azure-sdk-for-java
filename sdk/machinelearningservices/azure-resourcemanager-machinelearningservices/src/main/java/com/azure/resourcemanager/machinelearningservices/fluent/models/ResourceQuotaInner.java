@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.QuotaUnit;
 import com.azure.resourcemanager.machinelearningservices.models.ResourceName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The quota assigned to a resource. */
 @Immutable
 public final class ResourceQuotaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceQuotaInner.class);
-
     /*
      * Specifies the resource ID.
      */
@@ -41,7 +37,7 @@ public final class ResourceQuotaInner {
     private ResourceName name;
 
     /*
-     * The maximum permitted quota of the resource.
+     * Limit. The maximum permitted quota of the resource.
      */
     @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Long limit;
@@ -89,7 +85,7 @@ public final class ResourceQuotaInner {
     }
 
     /**
-     * Get the limit property: The maximum permitted quota of the resource.
+     * Get the limit property: Limit. The maximum permitted quota of the resource.
      *
      * @return the limit value.
      */

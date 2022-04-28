@@ -6,14 +6,11 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Machine image for Windows AML Compute. */
 @Fluent
 public final class VirtualMachineImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImage.class);
-
     /*
      * Virtual Machine image path
      */
@@ -47,9 +44,11 @@ public final class VirtualMachineImage {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model VirtualMachineImage"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineImage.class);
 }

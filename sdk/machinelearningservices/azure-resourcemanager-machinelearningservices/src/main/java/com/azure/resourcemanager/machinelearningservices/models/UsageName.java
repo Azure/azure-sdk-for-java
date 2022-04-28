@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Usage Names. */
 @Immutable
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
-
     /*
      * The name of the resource.
      */

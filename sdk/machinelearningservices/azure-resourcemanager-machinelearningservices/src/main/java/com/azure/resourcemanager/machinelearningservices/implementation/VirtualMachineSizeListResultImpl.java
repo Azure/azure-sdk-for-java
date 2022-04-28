@@ -22,8 +22,8 @@ public final class VirtualMachineSizeListResultImpl implements VirtualMachineSiz
         this.serviceManager = serviceManager;
     }
 
-    public List<VirtualMachineSize> amlCompute() {
-        List<VirtualMachineSize> inner = this.innerModel().amlCompute();
+    public List<VirtualMachineSize> value() {
+        List<VirtualMachineSize> inner = this.innerModel().value();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,16 +14,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("HDInsight")
 @Fluent
 public final class HDInsight extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsight.class);
-
     /*
-     * The properties property.
+     * HDInsight compute properties
      */
     @JsonProperty(value = "properties")
     private HDInsightProperties properties;
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: HDInsight compute properties.
      *
      * @return the properties value.
      */
@@ -34,7 +30,7 @@ public final class HDInsight extends Compute {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: HDInsight compute properties.
      *
      * @param properties the properties value to set.
      * @return the HDInsight object itself.

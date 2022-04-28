@@ -6,38 +6,36 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The estimated price info for using a VM. */
 @Fluent
 public final class EstimatedVMPrices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EstimatedVMPrices.class);
-
     /*
-     * Three lettered code specifying the currency of the VM price. Example:
-     * USD
+     * Billing currency Three lettered code specifying the currency of the VM
+     * price. Example: USD
      */
     @JsonProperty(value = "billingCurrency", required = true)
     private BillingCurrency billingCurrency;
 
     /*
-     * The unit of time measurement for the specified VM price. Example:
-     * OneHour
+     * Unit of time measure The unit of time measurement for the specified VM
+     * price. Example: OneHour
      */
     @JsonProperty(value = "unitOfMeasure", required = true)
     private UnitOfMeasure unitOfMeasure;
 
     /*
-     * The list of estimated prices for using a VM of a particular OS type,
-     * tier, etc.
+     * List of estimated VM prices. The list of estimated prices for using a VM
+     * of a particular OS type, tier, etc.
      */
     @JsonProperty(value = "values", required = true)
     private List<EstimatedVMPrice> values;
 
     /**
-     * Get the billingCurrency property: Three lettered code specifying the currency of the VM price. Example: USD.
+     * Get the billingCurrency property: Billing currency Three lettered code specifying the currency of the VM price.
+     * Example: USD.
      *
      * @return the billingCurrency value.
      */
@@ -46,7 +44,8 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Set the billingCurrency property: Three lettered code specifying the currency of the VM price. Example: USD.
+     * Set the billingCurrency property: Billing currency Three lettered code specifying the currency of the VM price.
+     * Example: USD.
      *
      * @param billingCurrency the billingCurrency value to set.
      * @return the EstimatedVMPrices object itself.
@@ -57,7 +56,8 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Get the unitOfMeasure property: The unit of time measurement for the specified VM price. Example: OneHour.
+     * Get the unitOfMeasure property: Unit of time measure The unit of time measurement for the specified VM price.
+     * Example: OneHour.
      *
      * @return the unitOfMeasure value.
      */
@@ -66,7 +66,8 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Set the unitOfMeasure property: The unit of time measurement for the specified VM price. Example: OneHour.
+     * Set the unitOfMeasure property: Unit of time measure The unit of time measurement for the specified VM price.
+     * Example: OneHour.
      *
      * @param unitOfMeasure the unitOfMeasure value to set.
      * @return the EstimatedVMPrices object itself.
@@ -77,7 +78,8 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Get the values property: The list of estimated prices for using a VM of a particular OS type, tier, etc.
+     * Get the values property: List of estimated VM prices. The list of estimated prices for using a VM of a particular
+     * OS type, tier, etc.
      *
      * @return the values value.
      */
@@ -86,7 +88,8 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Set the values property: The list of estimated prices for using a VM of a particular OS type, tier, etc.
+     * Set the values property: List of estimated VM prices. The list of estimated prices for using a VM of a particular
+     * OS type, tier, etc.
      *
      * @param values the values value to set.
      * @return the EstimatedVMPrices object itself.
@@ -103,22 +106,24 @@ public final class EstimatedVMPrices {
      */
     public void validate() {
         if (billingCurrency() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property billingCurrency in model EstimatedVMPrices"));
         }
         if (unitOfMeasure() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property unitOfMeasure in model EstimatedVMPrices"));
         }
         if (values() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property values in model EstimatedVMPrices"));
         } else {
             values().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EstimatedVMPrices.class);
 }

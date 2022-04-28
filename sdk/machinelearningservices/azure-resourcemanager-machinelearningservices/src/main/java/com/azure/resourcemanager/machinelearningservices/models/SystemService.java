@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A system service running on a compute. */
 @Immutable
 public final class SystemService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemService.class);
-
     /*
      * The type of this system service.
      */

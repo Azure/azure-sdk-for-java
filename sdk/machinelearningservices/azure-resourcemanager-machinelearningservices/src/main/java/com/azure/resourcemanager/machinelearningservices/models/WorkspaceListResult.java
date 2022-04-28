@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of a request to list machine learning workspaces. */
 @Fluent
 public final class WorkspaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceListResult.class);
-
     /*
      * The list of machine learning workspaces. Since this list may be
      * incomplete, the nextLink field should be used to request the next list

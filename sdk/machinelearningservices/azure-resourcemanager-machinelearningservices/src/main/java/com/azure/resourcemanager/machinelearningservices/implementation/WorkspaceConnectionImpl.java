@@ -8,7 +8,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspaceConnectionInner;
 import com.azure.resourcemanager.machinelearningservices.models.ValueFormat;
 import com.azure.resourcemanager.machinelearningservices.models.WorkspaceConnection;
-import com.azure.resourcemanager.machinelearningservices.models.WorkspaceConnectionDto;
 
 public final class WorkspaceConnectionImpl implements WorkspaceConnection, WorkspaceConnection.Definition {
     private WorkspaceConnectionInner innerObject;
@@ -68,8 +67,6 @@ public final class WorkspaceConnectionImpl implements WorkspaceConnection, Works
 
     private String connectionName;
 
-    private WorkspaceConnectionDto createParameters;
-
     public WorkspaceConnectionImpl withExistingWorkspace(String resourceGroupName, String workspaceName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
@@ -81,7 +78,7 @@ public final class WorkspaceConnectionImpl implements WorkspaceConnection, Works
             serviceManager
                 .serviceClient()
                 .getWorkspaceConnections()
-                .createWithResponse(resourceGroupName, workspaceName, connectionName, createParameters, Context.NONE)
+                .createWithResponse(resourceGroupName, workspaceName, connectionName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -91,7 +88,7 @@ public final class WorkspaceConnectionImpl implements WorkspaceConnection, Works
             serviceManager
                 .serviceClient()
                 .getWorkspaceConnections()
-                .createWithResponse(resourceGroupName, workspaceName, connectionName, createParameters, context)
+                .createWithResponse(resourceGroupName, workspaceName, connectionName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -101,7 +98,6 @@ public final class WorkspaceConnectionImpl implements WorkspaceConnection, Works
         this.innerObject = new WorkspaceConnectionInner();
         this.serviceManager = serviceManager;
         this.connectionName = name;
-        this.createParameters = new WorkspaceConnectionDto();
     }
 
     public WorkspaceConnection refresh() {
@@ -124,33 +120,28 @@ public final class WorkspaceConnectionImpl implements WorkspaceConnection, Works
         return this;
     }
 
-    public WorkspaceConnectionImpl withName(String name) {
-        this.createParameters.withName(name);
-        return this;
-    }
-
     public WorkspaceConnectionImpl withCategory(String category) {
-        this.createParameters.withCategory(category);
+        this.innerModel().withCategory(category);
         return this;
     }
 
     public WorkspaceConnectionImpl withTarget(String target) {
-        this.createParameters.withTarget(target);
+        this.innerModel().withTarget(target);
         return this;
     }
 
     public WorkspaceConnectionImpl withAuthType(String authType) {
-        this.createParameters.withAuthType(authType);
+        this.innerModel().withAuthType(authType);
         return this;
     }
 
     public WorkspaceConnectionImpl withValue(String value) {
-        this.createParameters.withValue(value);
+        this.innerModel().withValue(value);
         return this;
     }
 
     public WorkspaceConnectionImpl withValueFormat(ValueFormat valueFormat) {
-        this.createParameters.withValueFormat(valueFormat);
+        this.innerModel().withValueFormat(valueFormat);
         return this;
     }
 }

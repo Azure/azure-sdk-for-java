@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Password model. */
 @Immutable
 public final class Password {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Password.class);
-
     /*
      * The name property.
      */

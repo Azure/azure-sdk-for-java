@@ -28,17 +28,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.WorkspaceConnectionsClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspaceConnectionInner;
 import com.azure.resourcemanager.machinelearningservices.models.PaginatedWorkspaceConnectionsList;
-import com.azure.resourcemanager.machinelearningservices.models.WorkspaceConnectionDto;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkspaceConnectionsClient. */
 public final class WorkspaceConnectionsClientImpl implements WorkspaceConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(WorkspaceConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkspaceConnectionsService service;
 
@@ -94,7 +90,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             @PathParam("workspaceName") String workspaceName,
             @PathParam("connectionName") String connectionName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkspaceConnectionDto parameters,
+            @BodyParam("application/json") WorkspaceConnectionInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -134,14 +130,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * List all connections under a AML workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param target Target of the workspace connection.
      * @param category Category of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Workspace connection objects.
+     * @return paginated list of Workspace connection objects along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceConnectionInner>> listSinglePageAsync(
@@ -190,7 +187,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * List all connections under a AML workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param target Target of the workspace connection.
      * @param category Category of the workspace connection.
@@ -198,7 +195,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Workspace connection objects.
+     * @return paginated list of Workspace connection objects along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceConnectionInner>> listSinglePageAsync(
@@ -244,14 +242,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * List all connections under a AML workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param target Target of the workspace connection.
      * @param category Category of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Workspace connection objects.
+     * @return paginated list of Workspace connection objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkspaceConnectionInner> listAsync(
@@ -262,12 +260,12 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * List all connections under a AML workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Workspace connection objects.
+     * @return paginated list of Workspace connection objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkspaceConnectionInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -279,7 +277,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * List all connections under a AML workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param target Target of the workspace connection.
      * @param category Category of the workspace connection.
@@ -287,7 +285,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Workspace connection objects.
+     * @return paginated list of Workspace connection objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkspaceConnectionInner> listAsync(
@@ -298,12 +296,12 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * List all connections under a AML workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Workspace connection objects.
+     * @return paginated list of Workspace connection objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceConnectionInner> list(String resourceGroupName, String workspaceName) {
@@ -315,7 +313,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * List all connections under a AML workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param target Target of the workspace connection.
      * @param category Category of the workspace connection.
@@ -323,7 +321,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Workspace connection objects.
+     * @return paginated list of Workspace connection objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceConnectionInner> list(
@@ -334,18 +332,18 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Add a new workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param parameters The object for creating or updating a new workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace connection.
+     * @return workspace connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceConnectionInner>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionDto parameters) {
+        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -394,7 +392,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Add a new workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param parameters The object for creating or updating a new workspace connection.
@@ -402,14 +400,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace connection.
+     * @return workspace connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceConnectionInner>> createWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String connectionName,
-        WorkspaceConnectionDto parameters,
+        WorkspaceConnectionInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -456,18 +454,18 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Add a new workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param parameters The object for creating or updating a new workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace connection.
+     * @return workspace connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspaceConnectionInner> createAsync(
-        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionDto parameters) {
+        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionInner parameters) {
         return createWithResponseAsync(resourceGroupName, workspaceName, connectionName, parameters)
             .flatMap(
                 (Response<WorkspaceConnectionInner> res) -> {
@@ -482,7 +480,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Add a new workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param parameters The object for creating or updating a new workspace connection.
@@ -493,14 +491,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceConnectionInner create(
-        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionDto parameters) {
+        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionInner parameters) {
         return createAsync(resourceGroupName, workspaceName, connectionName, parameters).block();
     }
 
     /**
      * Add a new workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param parameters The object for creating or updating a new workspace connection.
@@ -508,14 +506,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace connection.
+     * @return workspace connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceConnectionInner> createWithResponse(
         String resourceGroupName,
         String workspaceName,
         String connectionName,
-        WorkspaceConnectionDto parameters,
+        WorkspaceConnectionInner parameters,
         Context context) {
         return createWithResponseAsync(resourceGroupName, workspaceName, connectionName, parameters, context).block();
     }
@@ -523,13 +521,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Get the detail of a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detail of a workspace connection.
+     * @return the detail of a workspace connection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceConnectionInner>> getWithResponseAsync(
@@ -576,14 +575,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Get the detail of a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detail of a workspace connection.
+     * @return the detail of a workspace connection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceConnectionInner>> getWithResponseAsync(
@@ -627,13 +627,13 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Get the detail of a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detail of a workspace connection.
+     * @return the detail of a workspace connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspaceConnectionInner> getAsync(
@@ -652,7 +652,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Get the detail of a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,14 +668,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Get the detail of a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detail of a workspace connection.
+     * @return the detail of a workspace connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceConnectionInner> getWithResponse(
@@ -686,13 +686,13 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Delete a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -739,14 +739,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Delete a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -790,13 +790,13 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Delete a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String connectionName) {
@@ -807,7 +807,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Delete a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -822,14 +822,14 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     /**
      * Delete a workspace connection.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.machinelearningservices.fluent.models.SharedPrivateLinkResourceProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SharedPrivateLinkResource model. */
-@JsonFlatten
 @Fluent
-public class SharedPrivateLinkResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResource.class);
-
+public final class SharedPrivateLinkResource {
     /*
      * Unique name of the private link.
      */
@@ -23,29 +18,10 @@ public class SharedPrivateLinkResource {
     private String name;
 
     /*
-     * The resource id that private link links to.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.privateLinkResourceId")
-    private String privateLinkResourceId;
-
-    /*
-     * The private link resource group id.
-     */
-    @JsonProperty(value = "properties.groupId")
-    private String groupId;
-
-    /*
-     * Request message.
-     */
-    @JsonProperty(value = "properties.requestMessage")
-    private String requestMessage;
-
-    /*
-     * Indicates whether the connection has been Approved/Rejected/Removed by
-     * the owner of the service.
-     */
-    @JsonProperty(value = "properties.status")
-    private PrivateEndpointServiceConnectionStatus status;
+    @JsonProperty(value = "properties")
+    private SharedPrivateLinkResourceProperty innerProperties;
 
     /**
      * Get the name property: Unique name of the private link.
@@ -68,12 +44,21 @@ public class SharedPrivateLinkResource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SharedPrivateLinkResourceProperty innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the privateLinkResourceId property: The resource id that private link links to.
      *
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
-        return this.privateLinkResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkResourceId();
     }
 
     /**
@@ -83,7 +68,10 @@ public class SharedPrivateLinkResource {
      * @return the SharedPrivateLinkResource object itself.
      */
     public SharedPrivateLinkResource withPrivateLinkResourceId(String privateLinkResourceId) {
-        this.privateLinkResourceId = privateLinkResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedPrivateLinkResourceProperty();
+        }
+        this.innerProperties().withPrivateLinkResourceId(privateLinkResourceId);
         return this;
     }
 
@@ -93,7 +81,7 @@ public class SharedPrivateLinkResource {
      * @return the groupId value.
      */
     public String groupId() {
-        return this.groupId;
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
     /**
@@ -103,7 +91,10 @@ public class SharedPrivateLinkResource {
      * @return the SharedPrivateLinkResource object itself.
      */
     public SharedPrivateLinkResource withGroupId(String groupId) {
-        this.groupId = groupId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedPrivateLinkResourceProperty();
+        }
+        this.innerProperties().withGroupId(groupId);
         return this;
     }
 
@@ -113,7 +104,7 @@ public class SharedPrivateLinkResource {
      * @return the requestMessage value.
      */
     public String requestMessage() {
-        return this.requestMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().requestMessage();
     }
 
     /**
@@ -123,7 +114,10 @@ public class SharedPrivateLinkResource {
      * @return the SharedPrivateLinkResource object itself.
      */
     public SharedPrivateLinkResource withRequestMessage(String requestMessage) {
-        this.requestMessage = requestMessage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedPrivateLinkResourceProperty();
+        }
+        this.innerProperties().withRequestMessage(requestMessage);
         return this;
     }
 
@@ -134,7 +128,7 @@ public class SharedPrivateLinkResource {
      * @return the status value.
      */
     public PrivateEndpointServiceConnectionStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -145,7 +139,10 @@ public class SharedPrivateLinkResource {
      * @return the SharedPrivateLinkResource object itself.
      */
     public SharedPrivateLinkResource withStatus(PrivateEndpointServiceConnectionStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedPrivateLinkResourceProperty();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -155,5 +152,8 @@ public class SharedPrivateLinkResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

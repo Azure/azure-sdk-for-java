@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies policy and settings for SSH access. */
 @Fluent
 public final class ComputeInstanceSshSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceSshSettings.class);
-
     /*
-     * State of the public SSH port. Possible values are: Disabled - Indicates
-     * that the public ssh port is closed on this instance. Enabled - Indicates
-     * that the public ssh port is open and accessible according to the
-     * VNet/subnet policy if applicable.
+     * Access policy for SSH State of the public SSH port. Possible values are:
+     * Disabled - Indicates that the public ssh port is closed on this
+     * instance. Enabled - Indicates that the public ssh port is open and
+     * accessible according to the VNet/subnet policy if applicable.
      */
     @JsonProperty(value = "sshPublicAccess")
     private SshPublicAccess sshPublicAccess;
@@ -43,9 +39,9 @@ public final class ComputeInstanceSshSettings {
     private String adminPublicKey;
 
     /**
-     * Get the sshPublicAccess property: State of the public SSH port. Possible values are: Disabled - Indicates that
-     * the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and
-     * accessible according to the VNet/subnet policy if applicable.
+     * Get the sshPublicAccess property: Access policy for SSH State of the public SSH port. Possible values are:
+     * Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh
+     * port is open and accessible according to the VNet/subnet policy if applicable.
      *
      * @return the sshPublicAccess value.
      */
@@ -54,9 +50,9 @@ public final class ComputeInstanceSshSettings {
     }
 
     /**
-     * Set the sshPublicAccess property: State of the public SSH port. Possible values are: Disabled - Indicates that
-     * the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and
-     * accessible according to the VNet/subnet policy if applicable.
+     * Set the sshPublicAccess property: Access policy for SSH State of the public SSH port. Possible values are:
+     * Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh
+     * port is open and accessible according to the VNet/subnet policy if applicable.
      *
      * @param sshPublicAccess the sshPublicAccess value to set.
      * @return the ComputeInstanceSshSettings object itself.

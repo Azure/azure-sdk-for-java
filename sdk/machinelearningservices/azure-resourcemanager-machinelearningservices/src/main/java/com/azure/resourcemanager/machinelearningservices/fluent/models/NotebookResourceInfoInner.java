@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.NotebookPreparationError;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NotebookResourceInfo model. */
 @Fluent
 public final class NotebookResourceInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookResourceInfoInner.class);
-
     /*
      * The fqdn property.
      */

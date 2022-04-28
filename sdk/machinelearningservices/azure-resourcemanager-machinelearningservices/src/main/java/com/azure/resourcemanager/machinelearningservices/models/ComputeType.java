@@ -13,6 +13,9 @@ public final class ComputeType extends ExpandableStringEnum<ComputeType> {
     /** Static value AKS for ComputeType. */
     public static final ComputeType AKS = fromString("AKS");
 
+    /** Static value Kubernetes for ComputeType. */
+    public static final ComputeType KUBERNETES = fromString("Kubernetes");
+
     /** Static value AmlCompute for ComputeType. */
     public static final ComputeType AML_COMPUTE = fromString("AmlCompute");
 

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Quota update parameters. */
 @Fluent
 public final class QuotaUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaUpdateParameters.class);
-
     /*
      * The list for update quota.
      */

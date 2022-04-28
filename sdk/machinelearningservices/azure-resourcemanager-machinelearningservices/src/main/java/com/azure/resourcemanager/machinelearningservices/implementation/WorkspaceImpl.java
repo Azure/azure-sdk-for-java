@@ -11,13 +11,18 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.NotebookResourceInfoInner;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspaceInner;
+import com.azure.resourcemanager.machinelearningservices.models.DiagnoseResponseResult;
+import com.azure.resourcemanager.machinelearningservices.models.DiagnoseWorkspaceParameters;
 import com.azure.resourcemanager.machinelearningservices.models.EncryptionProperty;
 import com.azure.resourcemanager.machinelearningservices.models.Identity;
+import com.azure.resourcemanager.machinelearningservices.models.ListNotebookKeysResult;
+import com.azure.resourcemanager.machinelearningservices.models.ListStorageAccountKeysResult;
 import com.azure.resourcemanager.machinelearningservices.models.ListWorkspaceKeysResult;
 import com.azure.resourcemanager.machinelearningservices.models.NotebookAccessTokenResult;
 import com.azure.resourcemanager.machinelearningservices.models.NotebookResourceInfo;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.machinelearningservices.models.ProvisioningState;
+import com.azure.resourcemanager.machinelearningservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.machinelearningservices.models.ServiceManagedResourcesSettings;
 import com.azure.resourcemanager.machinelearningservices.models.SharedPrivateLinkResource;
 import com.azure.resourcemanager.machinelearningservices.models.Sku;
@@ -45,6 +50,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().type();
     }
 
+    public Identity identity() {
+        return this.innerModel().identity();
+    }
+
     public String location() {
         return this.innerModel().location();
     }
@@ -56,6 +65,14 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public Sku sku() {
+        return this.innerModel().sku();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String workspaceId() {
@@ -118,6 +135,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().allowPublicAccessWhenBehindVnet();
     }
 
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
@@ -162,16 +183,12 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().tenantId();
     }
 
-    public Identity identity() {
-        return this.innerModel().identity();
+    public Boolean storageHnsEnabled() {
+        return this.innerModel().storageHnsEnabled();
     }
 
-    public Sku sku() {
-        return this.innerModel().sku();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public String mlFlowTrackingUri() {
+        return this.innerModel().mlFlowTrackingUri();
     }
 
     public Region region() {
@@ -280,6 +297,18 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
+    public DiagnoseResponseResult diagnose(DiagnoseWorkspaceParameters parameters) {
+        return serviceManager.workspaces().diagnose(resourceGroupName, workspaceName, parameters);
+    }
+
+    public DiagnoseResponseResult diagnose() {
+        return serviceManager.workspaces().diagnose(resourceGroupName, workspaceName);
+    }
+
+    public DiagnoseResponseResult diagnose(DiagnoseWorkspaceParameters parameters, Context context) {
+        return serviceManager.workspaces().diagnose(resourceGroupName, workspaceName, parameters, context);
+    }
+
     public ListWorkspaceKeysResult listKeys() {
         return serviceManager.workspaces().listKeys(resourceGroupName, workspaceName);
     }
@@ -306,6 +335,32 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             .listNotebookAccessTokenWithResponse(resourceGroupName, workspaceName, context);
     }
 
+    public NotebookResourceInfo prepareNotebook() {
+        return serviceManager.workspaces().prepareNotebook(resourceGroupName, workspaceName);
+    }
+
+    public NotebookResourceInfo prepareNotebook(Context context) {
+        return serviceManager.workspaces().prepareNotebook(resourceGroupName, workspaceName, context);
+    }
+
+    public ListStorageAccountKeysResult listStorageAccountKeys() {
+        return serviceManager.workspaces().listStorageAccountKeys(resourceGroupName, workspaceName);
+    }
+
+    public Response<ListStorageAccountKeysResult> listStorageAccountKeysWithResponse(Context context) {
+        return serviceManager
+            .workspaces()
+            .listStorageAccountKeysWithResponse(resourceGroupName, workspaceName, context);
+    }
+
+    public ListNotebookKeysResult listNotebookKeys() {
+        return serviceManager.workspaces().listNotebookKeys(resourceGroupName, workspaceName);
+    }
+
+    public Response<ListNotebookKeysResult> listNotebookKeysWithResponse(Context context) {
+        return serviceManager.workspaces().listNotebookKeysWithResponse(resourceGroupName, workspaceName, context);
+    }
+
     public WorkspaceImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -322,6 +377,26 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             return this;
         } else {
             this.updateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withIdentity(Identity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withSku(Sku sku) {
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateParameters.withSku(sku);
             return this;
         }
     }
@@ -396,6 +471,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
+    public WorkspaceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
     public WorkspaceImpl withSharedPrivateLinkResources(List<SharedPrivateLinkResource> sharedPrivateLinkResources) {
         this.innerModel().withSharedPrivateLinkResources(sharedPrivateLinkResources);
         return this;
@@ -418,26 +503,6 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             return this;
         } else {
             this.updateParameters.withPrimaryUserAssignedIdentity(primaryUserAssignedIdentity);
-            return this;
-        }
-    }
-
-    public WorkspaceImpl withIdentity(Identity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateParameters.withIdentity(identity);
-            return this;
-        }
-    }
-
-    public WorkspaceImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
             return this;
         }
     }

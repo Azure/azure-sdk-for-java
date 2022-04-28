@@ -11,10 +11,9 @@ import com.azure.resourcemanager.machinelearningservices.fluent.WorkspaceFeature
 import com.azure.resourcemanager.machinelearningservices.fluent.models.AmlUserFeatureInner;
 import com.azure.resourcemanager.machinelearningservices.models.AmlUserFeature;
 import com.azure.resourcemanager.machinelearningservices.models.WorkspaceFeatures;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceFeaturesImpl implements WorkspaceFeatures {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceFeaturesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceFeaturesImpl.class);
 
     private final WorkspaceFeaturesClient innerClient;
 

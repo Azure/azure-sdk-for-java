@@ -34,18 +34,39 @@ public interface PrivateEndpointConnection {
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
+     * Gets the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
+     * Gets the location property: Specifies the location of the resource.
      *
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Resource tags.
+     * Gets the tags property: Contains resource tags defined as key/value pairs.
      *
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: The sku of the workspace.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
+
+    /**
+     * Gets the systemData property: System data.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the privateEndpoint property: The resource of private end point.
@@ -68,27 +89,6 @@ public interface PrivateEndpointConnection {
      * @return the provisioningState value.
      */
     PrivateEndpointConnectionProvisioningState provisioningState();
-
-    /**
-     * Gets the identity property: The identity of the resource.
-     *
-     * @return the identity value.
-     */
-    Identity identity();
-
-    /**
-     * Gets the sku property: The sku of the workspace.
-     *
-     * @return the sku value.
-     */
-    Sku sku();
-
-    /**
-     * Gets the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the region of the resource.
@@ -114,40 +114,19 @@ public interface PrivateEndpointConnection {
 
     /** The entirety of the PrivateEndpointConnection definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
     /** The PrivateEndpointConnection definition stages. */
     interface DefinitionStages {
         /** The first stage of the PrivateEndpointConnection definition. */
-        interface Blank extends WithLocation {
-        }
-        /** The stage of the PrivateEndpointConnection definition allowing to specify location. */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithParentResource withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithParentResource withRegion(String location);
+        interface Blank extends WithParentResource {
         }
         /** The stage of the PrivateEndpointConnection definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, workspaceName.
              *
-             * @param resourceGroupName Name of the resource group in which workspace is located.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName Name of Azure Machine Learning workspace.
              * @return the next definition stage.
              */
@@ -158,11 +137,12 @@ public interface PrivateEndpointConnection {
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithPrivateEndpoint,
-                DefinitionStages.WithPrivateLinkServiceConnectionState,
+            extends DefinitionStages.WithLocation,
+                DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku {
+                DefinitionStages.WithSku,
+                DefinitionStages.WithPrivateEndpoint,
+                DefinitionStages.WithPrivateLinkServiceConnectionState {
             /**
              * Executes the create request.
              *
@@ -178,15 +158,53 @@ public interface PrivateEndpointConnection {
              */
             PrivateEndpointConnection create(Context context);
         }
+        /** The stage of the PrivateEndpointConnection definition allowing to specify location. */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location Specifies the location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location Specifies the location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
+        }
         /** The stage of the PrivateEndpointConnection definition allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Contains resource tags defined as key/value pairs..
              *
-             * @param tags Resource tags.
+             * @param tags Contains resource tags defined as key/value pairs.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the PrivateEndpointConnection definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
+        }
+        /** The stage of the PrivateEndpointConnection definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The sku of the workspace..
+             *
+             * @param sku The sku of the workspace.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
         }
         /** The stage of the PrivateEndpointConnection definition allowing to specify privateEndpoint. */
         interface WithPrivateEndpoint {
@@ -213,26 +231,6 @@ public interface PrivateEndpointConnection {
             WithCreate withPrivateLinkServiceConnectionState(
                 PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
         }
-        /** The stage of the PrivateEndpointConnection definition allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the resource..
-             *
-             * @param identity The identity of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(Identity identity);
-        }
-        /** The stage of the PrivateEndpointConnection definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The sku of the workspace..
-             *
-             * @param sku The sku of the workspace.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(Sku sku);
-        }
     }
     /**
      * Begins update for the PrivateEndpointConnection resource.
@@ -244,10 +242,10 @@ public interface PrivateEndpointConnection {
     /** The template for PrivateEndpointConnection update. */
     interface Update
         extends UpdateStages.WithTags,
-            UpdateStages.WithPrivateEndpoint,
-            UpdateStages.WithPrivateLinkServiceConnectionState,
             UpdateStages.WithIdentity,
-            UpdateStages.WithSku {
+            UpdateStages.WithSku,
+            UpdateStages.WithPrivateEndpoint,
+            UpdateStages.WithPrivateLinkServiceConnectionState {
         /**
          * Executes the update request.
          *
@@ -268,12 +266,32 @@ public interface PrivateEndpointConnection {
         /** The stage of the PrivateEndpointConnection update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Contains resource tags defined as key/value pairs..
              *
-             * @param tags Resource tags.
+             * @param tags Contains resource tags defined as key/value pairs.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the PrivateEndpointConnection update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
+        }
+        /** The stage of the PrivateEndpointConnection update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The sku of the workspace..
+             *
+             * @param sku The sku of the workspace.
+             * @return the next definition stage.
+             */
+            Update withSku(Sku sku);
         }
         /** The stage of the PrivateEndpointConnection update allowing to specify privateEndpoint. */
         interface WithPrivateEndpoint {
@@ -297,26 +315,6 @@ public interface PrivateEndpointConnection {
              */
             Update withPrivateLinkServiceConnectionState(
                 PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
-        }
-        /** The stage of the PrivateEndpointConnection update allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the resource..
-             *
-             * @param identity The identity of the resource.
-             * @return the next definition stage.
-             */
-            Update withIdentity(Identity identity);
-        }
-        /** The stage of the PrivateEndpointConnection update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The sku of the workspace..
-             *
-             * @param sku The sku of the workspace.
-             * @return the next definition stage.
-             */
-            Update withSku(Sku sku);
         }
     }
     /**

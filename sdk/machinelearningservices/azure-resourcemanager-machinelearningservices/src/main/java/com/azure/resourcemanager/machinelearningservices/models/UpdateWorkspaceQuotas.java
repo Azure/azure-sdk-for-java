@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for update Quota response. */
 @Fluent
 public final class UpdateWorkspaceQuotas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateWorkspaceQuotas.class);
-
     /*
      * Specifies the resource ID.
      */
@@ -27,7 +23,7 @@ public final class UpdateWorkspaceQuotas {
     private String type;
 
     /*
-     * The maximum permitted quota of the resource.
+     * Limit. The maximum permitted quota of the resource.
      */
     @JsonProperty(value = "limit")
     private Long limit;
@@ -39,7 +35,7 @@ public final class UpdateWorkspaceQuotas {
     private QuotaUnit unit;
 
     /*
-     * Status of update workspace quota.
+     * Update Workspace Quota Status. Status of update workspace quota.
      */
     @JsonProperty(value = "status")
     private Status status;
@@ -63,7 +59,7 @@ public final class UpdateWorkspaceQuotas {
     }
 
     /**
-     * Get the limit property: The maximum permitted quota of the resource.
+     * Get the limit property: Limit. The maximum permitted quota of the resource.
      *
      * @return the limit value.
      */
@@ -72,7 +68,7 @@ public final class UpdateWorkspaceQuotas {
     }
 
     /**
-     * Set the limit property: The maximum permitted quota of the resource.
+     * Set the limit property: Limit. The maximum permitted quota of the resource.
      *
      * @param limit the limit value to set.
      * @return the UpdateWorkspaceQuotas object itself.
@@ -92,7 +88,7 @@ public final class UpdateWorkspaceQuotas {
     }
 
     /**
-     * Get the status property: Status of update workspace quota.
+     * Get the status property: Update Workspace Quota Status. Status of update workspace quota.
      *
      * @return the status value.
      */
@@ -101,7 +97,7 @@ public final class UpdateWorkspaceQuotas {
     }
 
     /**
-     * Set the status property: Status of update workspace quota.
+     * Set the status property: Update Workspace Quota Status. Status of update workspace quota.
      *
      * @param status the status value to set.
      * @return the UpdateWorkspaceQuotas object itself.

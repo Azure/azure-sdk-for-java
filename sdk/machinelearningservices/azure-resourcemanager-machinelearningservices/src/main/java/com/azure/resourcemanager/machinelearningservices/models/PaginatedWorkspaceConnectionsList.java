@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspaceConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paginated list of Workspace connection objects. */
 @Fluent
 public final class PaginatedWorkspaceConnectionsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PaginatedWorkspaceConnectionsList.class);
-
     /*
      * An array of Workspace connection objects.
      */

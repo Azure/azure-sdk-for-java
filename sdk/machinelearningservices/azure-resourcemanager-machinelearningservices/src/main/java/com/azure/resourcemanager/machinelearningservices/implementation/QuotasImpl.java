@@ -16,10 +16,9 @@ import com.azure.resourcemanager.machinelearningservices.models.QuotaUpdateParam
 import com.azure.resourcemanager.machinelearningservices.models.Quotas;
 import com.azure.resourcemanager.machinelearningservices.models.ResourceQuota;
 import com.azure.resourcemanager.machinelearningservices.models.UpdateWorkspaceQuotasResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QuotasImpl implements Quotas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QuotasImpl.class);
 
     private final QuotasClient innerClient;
 

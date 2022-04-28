@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity that will be used to access key vault for encryption at rest. */
 @Fluent
 public final class IdentityForCmk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityForCmk.class);
-
     /*
      * The ArmId of the user assigned identity that will be used to access the
      * customer managed key vault

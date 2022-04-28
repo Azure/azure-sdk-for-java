@@ -5,65 +5,68 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Describes the properties of a VM size. */
 @Fluent
 public final class VirtualMachineSize {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSize.class);
-
     /*
-     * The name of the virtual machine size.
+     * Virtual Machine size name The name of the virtual machine size.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The family name of the virtual machine size.
+     * Virtual Machine family name The family name of the virtual machine size.
      */
     @JsonProperty(value = "family", access = JsonProperty.Access.WRITE_ONLY)
     private String family;
 
     /*
-     * The number of vCPUs supported by the virtual machine size.
+     * Number of vPUs The number of vCPUs supported by the virtual machine
+     * size.
      */
     @JsonProperty(value = "vCPUs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer vCPUs;
 
     /*
-     * The number of gPUs supported by the virtual machine size.
+     * Number of gPUs The number of gPUs supported by the virtual machine size.
      */
     @JsonProperty(value = "gpus", access = JsonProperty.Access.WRITE_ONLY)
     private Integer gpus;
 
     /*
-     * The OS VHD disk size, in MB, allowed by the virtual machine size.
+     * OS VHD Disk size The OS VHD disk size, in MB, allowed by the virtual
+     * machine size.
      */
     @JsonProperty(value = "osVhdSizeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer osVhdSizeMB;
 
     /*
-     * The resource volume size, in MB, allowed by the virtual machine size.
+     * Resource volume size The resource volume size, in MB, allowed by the
+     * virtual machine size.
      */
     @JsonProperty(value = "maxResourceVolumeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxResourceVolumeMB;
 
     /*
-     * The amount of memory, in GB, supported by the virtual machine size.
+     * Memory size The amount of memory, in GB, supported by the virtual
+     * machine size.
      */
     @JsonProperty(value = "memoryGB", access = JsonProperty.Access.WRITE_ONLY)
     private Double memoryGB;
 
     /*
-     * Specifies if the virtual machine size supports low priority VMs.
+     * Low priority capable Specifies if the virtual machine size supports low
+     * priority VMs.
      */
     @JsonProperty(value = "lowPriorityCapable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean lowPriorityCapable;
 
     /*
-     * Specifies if the virtual machine size supports premium IO.
+     * Premium IO supported Specifies if the virtual machine size supports
+     * premium IO.
      */
     @JsonProperty(value = "premiumIO", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean premiumIO;
@@ -74,8 +77,15 @@ public final class VirtualMachineSize {
     @JsonProperty(value = "estimatedVMPrices")
     private EstimatedVMPrices estimatedVMPrices;
 
+    /*
+     * Supported Compute Types Specifies the compute types supported by the
+     * virtual machine size.
+     */
+    @JsonProperty(value = "supportedComputeTypes")
+    private List<String> supportedComputeTypes;
+
     /**
-     * Get the name property: The name of the virtual machine size.
+     * Get the name property: Virtual Machine size name The name of the virtual machine size.
      *
      * @return the name value.
      */
@@ -84,7 +94,7 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the family property: The family name of the virtual machine size.
+     * Get the family property: Virtual Machine family name The family name of the virtual machine size.
      *
      * @return the family value.
      */
@@ -93,7 +103,7 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the vCPUs property: The number of vCPUs supported by the virtual machine size.
+     * Get the vCPUs property: Number of vPUs The number of vCPUs supported by the virtual machine size.
      *
      * @return the vCPUs value.
      */
@@ -102,7 +112,7 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the gpus property: The number of gPUs supported by the virtual machine size.
+     * Get the gpus property: Number of gPUs The number of gPUs supported by the virtual machine size.
      *
      * @return the gpus value.
      */
@@ -111,7 +121,7 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the osVhdSizeMB property: The OS VHD disk size, in MB, allowed by the virtual machine size.
+     * Get the osVhdSizeMB property: OS VHD Disk size The OS VHD disk size, in MB, allowed by the virtual machine size.
      *
      * @return the osVhdSizeMB value.
      */
@@ -120,7 +130,8 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the maxResourceVolumeMB property: The resource volume size, in MB, allowed by the virtual machine size.
+     * Get the maxResourceVolumeMB property: Resource volume size The resource volume size, in MB, allowed by the
+     * virtual machine size.
      *
      * @return the maxResourceVolumeMB value.
      */
@@ -129,7 +140,7 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the memoryGB property: The amount of memory, in GB, supported by the virtual machine size.
+     * Get the memoryGB property: Memory size The amount of memory, in GB, supported by the virtual machine size.
      *
      * @return the memoryGB value.
      */
@@ -138,7 +149,8 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the lowPriorityCapable property: Specifies if the virtual machine size supports low priority VMs.
+     * Get the lowPriorityCapable property: Low priority capable Specifies if the virtual machine size supports low
+     * priority VMs.
      *
      * @return the lowPriorityCapable value.
      */
@@ -147,7 +159,7 @@ public final class VirtualMachineSize {
     }
 
     /**
-     * Get the premiumIO property: Specifies if the virtual machine size supports premium IO.
+     * Get the premiumIO property: Premium IO supported Specifies if the virtual machine size supports premium IO.
      *
      * @return the premiumIO value.
      */
@@ -172,6 +184,28 @@ public final class VirtualMachineSize {
      */
     public VirtualMachineSize withEstimatedVMPrices(EstimatedVMPrices estimatedVMPrices) {
         this.estimatedVMPrices = estimatedVMPrices;
+        return this;
+    }
+
+    /**
+     * Get the supportedComputeTypes property: Supported Compute Types Specifies the compute types supported by the
+     * virtual machine size.
+     *
+     * @return the supportedComputeTypes value.
+     */
+    public List<String> supportedComputeTypes() {
+        return this.supportedComputeTypes;
+    }
+
+    /**
+     * Set the supportedComputeTypes property: Supported Compute Types Specifies the compute types supported by the
+     * virtual machine size.
+     *
+     * @param supportedComputeTypes the supportedComputeTypes value to set.
+     * @return the VirtualMachineSize object itself.
+     */
+    public VirtualMachineSize withSupportedComputeTypes(List<String> supportedComputeTypes) {
+        this.supportedComputeTypes = supportedComputeTypes;
         return this;
     }
 

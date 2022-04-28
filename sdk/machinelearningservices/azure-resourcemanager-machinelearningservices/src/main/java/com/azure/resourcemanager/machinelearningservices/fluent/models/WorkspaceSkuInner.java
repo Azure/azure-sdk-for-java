@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.ResourceSkuLocationInfo;
 import com.azure.resourcemanager.machinelearningservices.models.Restriction;
 import com.azure.resourcemanager.machinelearningservices.models.SkuCapability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes Workspace Sku details and features. */
 @Fluent
 public final class WorkspaceSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceSkuInner.class);
-
     /*
      * The set of locations that the SKU is available. This will be supported
      * and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia,

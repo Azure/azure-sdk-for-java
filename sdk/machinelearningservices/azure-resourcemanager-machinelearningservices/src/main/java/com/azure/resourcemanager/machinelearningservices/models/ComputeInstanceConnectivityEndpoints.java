@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines all connectivity endpoints and properties for an ComputeInstance. */
 @Immutable
 public final class ComputeInstanceConnectivityEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceConnectivityEndpoints.class);
-
     /*
      * Public IP Address of this ComputeInstance.
      */

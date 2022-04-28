@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for Quota update or retrieval. */
 @Fluent
 public final class QuotaBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaBaseProperties.class);
-
     /*
      * Specifies the resource ID.
      */
@@ -27,7 +23,7 @@ public final class QuotaBaseProperties {
     private String type;
 
     /*
-     * The maximum permitted quota of the resource.
+     * Limit. The maximum permitted quota of the resource.
      */
     @JsonProperty(value = "limit")
     private Long limit;
@@ -79,7 +75,7 @@ public final class QuotaBaseProperties {
     }
 
     /**
-     * Get the limit property: The maximum permitted quota of the resource.
+     * Get the limit property: Limit. The maximum permitted quota of the resource.
      *
      * @return the limit value.
      */
@@ -88,7 +84,7 @@ public final class QuotaBaseProperties {
     }
 
     /**
-     * Set the limit property: The maximum permitted quota of the resource.
+     * Set the limit property: Limit. The maximum permitted quota of the resource.
      *
      * @param limit the limit value to set.
      * @return the QuotaBaseProperties object itself.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A user that can be assigned to a compute instance. */
 @Fluent
 public final class AssignedUser {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssignedUser.class);
-
     /*
      * User’s AAD Object Id.
      */
@@ -73,14 +70,16 @@ public final class AssignedUser {
      */
     public void validate() {
         if (objectId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property objectId in model AssignedUser"));
         }
         if (tenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property tenantId in model AssignedUser"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssignedUser.class);
 }

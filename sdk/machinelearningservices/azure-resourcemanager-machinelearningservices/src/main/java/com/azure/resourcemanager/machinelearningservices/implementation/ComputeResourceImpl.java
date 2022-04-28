@@ -16,7 +16,7 @@ import com.azure.resourcemanager.machinelearningservices.models.Compute;
 import com.azure.resourcemanager.machinelearningservices.models.ComputeResource;
 import com.azure.resourcemanager.machinelearningservices.models.ComputeSecrets;
 import com.azure.resourcemanager.machinelearningservices.models.Identity;
-import com.azure.resourcemanager.machinelearningservices.models.ScaleSettings;
+import com.azure.resourcemanager.machinelearningservices.models.ScaleSettingsInformation;
 import com.azure.resourcemanager.machinelearningservices.models.Sku;
 import java.util.Collections;
 import java.util.Map;
@@ -38,6 +38,10 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         return this.innerModel().type();
     }
 
+    public Identity identity() {
+        return this.innerModel().identity();
+    }
+
     public String location() {
         return this.innerModel().location();
     }
@@ -51,20 +55,16 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         }
     }
 
-    public Compute properties() {
-        return this.innerModel().properties();
-    }
-
-    public Identity identity() {
-        return this.innerModel().identity();
-    }
-
     public Sku sku() {
         return this.innerModel().sku();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public Compute properties() {
+        return this.innerModel().properties();
     }
 
     public Region region() {
@@ -101,7 +101,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getMachineLearningComputes()
+                .getComputes()
                 .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), Context.NONE);
         return this;
     }
@@ -110,7 +110,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getMachineLearningComputes()
+                .getComputes()
                 .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), context);
         return this;
     }
@@ -131,7 +131,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getMachineLearningComputes()
+                .getComputes()
                 .update(resourceGroupName, workspaceName, computeName, updateParameters, Context.NONE);
         return this;
     }
@@ -140,7 +140,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getMachineLearningComputes()
+                .getComputes()
                 .update(resourceGroupName, workspaceName, computeName, updateParameters, context);
         return this;
     }
@@ -159,7 +159,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getMachineLearningComputes()
+                .getComputes()
                 .getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE)
                 .getValue();
         return this;
@@ -169,56 +169,50 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         this.innerObject =
             serviceManager
                 .serviceClient()
-                .getMachineLearningComputes()
+                .getComputes()
                 .getWithResponse(resourceGroupName, workspaceName, computeName, context)
                 .getValue();
         return this;
     }
 
     public PagedIterable<AmlComputeNodeInformation> listNodes() {
-        return serviceManager.machineLearningComputes().listNodes(resourceGroupName, workspaceName, computeName);
+        return serviceManager.computes().listNodes(resourceGroupName, workspaceName, computeName);
     }
 
     public PagedIterable<AmlComputeNodeInformation> listNodes(Context context) {
-        return serviceManager
-            .machineLearningComputes()
-            .listNodes(resourceGroupName, workspaceName, computeName, context);
+        return serviceManager.computes().listNodes(resourceGroupName, workspaceName, computeName, context);
     }
 
     public ComputeSecrets listKeys() {
-        return serviceManager.machineLearningComputes().listKeys(resourceGroupName, workspaceName, computeName);
+        return serviceManager.computes().listKeys(resourceGroupName, workspaceName, computeName);
     }
 
     public Response<ComputeSecrets> listKeysWithResponse(Context context) {
-        return serviceManager
-            .machineLearningComputes()
-            .listKeysWithResponse(resourceGroupName, workspaceName, computeName, context);
+        return serviceManager.computes().listKeysWithResponse(resourceGroupName, workspaceName, computeName, context);
     }
 
     public void start() {
-        serviceManager.machineLearningComputes().start(resourceGroupName, workspaceName, computeName);
+        serviceManager.computes().start(resourceGroupName, workspaceName, computeName);
     }
 
     public void start(Context context) {
-        serviceManager.machineLearningComputes().start(resourceGroupName, workspaceName, computeName, context);
+        serviceManager.computes().start(resourceGroupName, workspaceName, computeName, context);
     }
 
     public void stop() {
-        serviceManager.machineLearningComputes().stop(resourceGroupName, workspaceName, computeName);
+        serviceManager.computes().stop(resourceGroupName, workspaceName, computeName);
     }
 
     public void stop(Context context) {
-        serviceManager.machineLearningComputes().stop(resourceGroupName, workspaceName, computeName, context);
+        serviceManager.computes().stop(resourceGroupName, workspaceName, computeName, context);
     }
 
     public void restart() {
-        serviceManager.machineLearningComputes().restart(resourceGroupName, workspaceName, computeName);
+        serviceManager.computes().restart(resourceGroupName, workspaceName, computeName);
     }
 
-    public Response<Void> restartWithResponse(Context context) {
-        return serviceManager
-            .machineLearningComputes()
-            .restartWithResponse(resourceGroupName, workspaceName, computeName, context);
+    public void restart(Context context) {
+        serviceManager.computes().restart(resourceGroupName, workspaceName, computeName, context);
     }
 
     public ComputeResourceImpl withRegion(Region location) {
@@ -236,11 +230,6 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         return this;
     }
 
-    public ComputeResourceImpl withProperties(Compute properties) {
-        this.innerModel().withProperties(properties);
-        return this;
-    }
-
     public ComputeResourceImpl withIdentity(Identity identity) {
         this.innerModel().withIdentity(identity);
         return this;
@@ -251,8 +240,13 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         return this;
     }
 
-    public ComputeResourceImpl withScaleSettings(ScaleSettings scaleSettings) {
-        this.updateParameters.withScaleSettings(scaleSettings);
+    public ComputeResourceImpl withProperties(Compute properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
+    public ComputeResourceImpl withProperties(ScaleSettingsInformation properties) {
+        this.updateParameters.withProperties(properties);
         return this;
     }
 }

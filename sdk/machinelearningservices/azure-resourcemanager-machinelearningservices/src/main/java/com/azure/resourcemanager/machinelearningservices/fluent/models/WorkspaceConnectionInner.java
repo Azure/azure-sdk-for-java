@@ -5,48 +5,27 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.ValueFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workspace connection. */
-@JsonFlatten
 @Fluent
-public class WorkspaceConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceConnectionInner.class);
-
+public final class WorkspaceConnectionInner extends ProxyResource {
     /*
-     * Category of the workspace connection.
+     * Properties of workspace connection.
      */
-    @JsonProperty(value = "properties.category")
-    private String category;
+    @JsonProperty(value = "properties")
+    private WorkspaceConnectionProps innerProperties;
 
-    /*
-     * Target of the workspace connection.
+    /**
+     * Get the innerProperties property: Properties of workspace connection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.target")
-    private String target;
-
-    /*
-     * Authorization type of the workspace connection.
-     */
-    @JsonProperty(value = "properties.authType")
-    private String authType;
-
-    /*
-     * Value details of the workspace connection.
-     */
-    @JsonProperty(value = "properties.value")
-    private String value;
-
-    /*
-     * format for the workspace connection value
-     */
-    @JsonProperty(value = "properties.valueFormat")
-    private ValueFormat valueFormat;
+    private WorkspaceConnectionProps innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the category property: Category of the workspace connection.
@@ -54,7 +33,7 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the category value.
      */
     public String category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
@@ -64,7 +43,10 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the WorkspaceConnectionInner object itself.
      */
     public WorkspaceConnectionInner withCategory(String category) {
-        this.category = category;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceConnectionProps();
+        }
+        this.innerProperties().withCategory(category);
         return this;
     }
 
@@ -74,7 +56,7 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the target value.
      */
     public String target() {
-        return this.target;
+        return this.innerProperties() == null ? null : this.innerProperties().target();
     }
 
     /**
@@ -84,7 +66,10 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the WorkspaceConnectionInner object itself.
      */
     public WorkspaceConnectionInner withTarget(String target) {
-        this.target = target;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceConnectionProps();
+        }
+        this.innerProperties().withTarget(target);
         return this;
     }
 
@@ -94,7 +79,7 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the authType value.
      */
     public String authType() {
-        return this.authType;
+        return this.innerProperties() == null ? null : this.innerProperties().authType();
     }
 
     /**
@@ -104,7 +89,10 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the WorkspaceConnectionInner object itself.
      */
     public WorkspaceConnectionInner withAuthType(String authType) {
-        this.authType = authType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceConnectionProps();
+        }
+        this.innerProperties().withAuthType(authType);
         return this;
     }
 
@@ -114,7 +102,7 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -124,7 +112,10 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the WorkspaceConnectionInner object itself.
      */
     public WorkspaceConnectionInner withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceConnectionProps();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -134,7 +125,7 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the valueFormat value.
      */
     public ValueFormat valueFormat() {
-        return this.valueFormat;
+        return this.innerProperties() == null ? null : this.innerProperties().valueFormat();
     }
 
     /**
@@ -144,7 +135,10 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @return the WorkspaceConnectionInner object itself.
      */
     public WorkspaceConnectionInner withValueFormat(ValueFormat valueFormat) {
-        this.valueFormat = valueFormat;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceConnectionProps();
+        }
+        this.innerProperties().withValueFormat(valueFormat);
         return this;
     }
 
@@ -154,5 +148,8 @@ public class WorkspaceConnectionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

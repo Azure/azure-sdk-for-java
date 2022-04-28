@@ -6,14 +6,11 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a resource ID. For example, for a subnet, it is the resource URL for the subnet. */
 @Fluent
 public final class ResourceId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceId.class);
-
     /*
      * The ID of the resource
      */
@@ -47,8 +44,10 @@ public final class ResourceId {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property id in model ResourceId"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceId.class);
 }

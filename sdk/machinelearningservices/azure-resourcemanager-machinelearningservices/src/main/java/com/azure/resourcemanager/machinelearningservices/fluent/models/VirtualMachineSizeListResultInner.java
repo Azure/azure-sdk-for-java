@@ -5,40 +5,36 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.VirtualMachineSize;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Virtual Machine size operation response. */
 @Fluent
 public final class VirtualMachineSizeListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSizeListResultInner.class);
-
     /*
      * The list of virtual machine sizes supported by AmlCompute.
      */
-    @JsonProperty(value = "amlCompute")
-    private List<VirtualMachineSize> amlCompute;
+    @JsonProperty(value = "value")
+    private List<VirtualMachineSize> value;
 
     /**
-     * Get the amlCompute property: The list of virtual machine sizes supported by AmlCompute.
+     * Get the value property: The list of virtual machine sizes supported by AmlCompute.
      *
-     * @return the amlCompute value.
+     * @return the value value.
      */
-    public List<VirtualMachineSize> amlCompute() {
-        return this.amlCompute;
+    public List<VirtualMachineSize> value() {
+        return this.value;
     }
 
     /**
-     * Set the amlCompute property: The list of virtual machine sizes supported by AmlCompute.
+     * Set the value property: The list of virtual machine sizes supported by AmlCompute.
      *
-     * @param amlCompute the amlCompute value to set.
+     * @param value the value value to set.
      * @return the VirtualMachineSizeListResultInner object itself.
      */
-    public VirtualMachineSizeListResultInner withAmlCompute(List<VirtualMachineSize> amlCompute) {
-        this.amlCompute = amlCompute;
+    public VirtualMachineSizeListResultInner withValue(List<VirtualMachineSize> value) {
+        this.value = value;
         return this;
     }
 
@@ -48,8 +44,8 @@ public final class VirtualMachineSizeListResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (amlCompute() != null) {
-            amlCompute().forEach(e -> e.validate());
+        if (value() != null) {
+            value().forEach(e -> e.validate());
         }
     }
 }

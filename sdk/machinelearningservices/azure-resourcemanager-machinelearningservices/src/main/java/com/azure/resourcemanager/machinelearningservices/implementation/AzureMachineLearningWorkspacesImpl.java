@@ -22,19 +22,16 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.machinelearningservices.fluent.AzureMachineLearningWorkspaces;
-import com.azure.resourcemanager.machinelearningservices.fluent.MachineLearningComputesClient;
-import com.azure.resourcemanager.machinelearningservices.fluent.MachineLearningServicesClient;
-import com.azure.resourcemanager.machinelearningservices.fluent.NotebooksClient;
+import com.azure.resourcemanager.machinelearningservices.fluent.ComputesClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.OperationsClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.QuotasClient;
-import com.azure.resourcemanager.machinelearningservices.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.UsagesClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.VirtualMachineSizesClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.WorkspaceConnectionsClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.WorkspaceFeaturesClient;
-import com.azure.resourcemanager.machinelearningservices.fluent.WorkspaceOperationsClient;
+import com.azure.resourcemanager.machinelearningservices.fluent.WorkspaceSkusClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.WorkspacesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -49,13 +46,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the AzureMachineLearningWorkspacesImpl type. */
 @ServiceClient(builder = AzureMachineLearningWorkspacesBuilder.class)
 public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLearningWorkspaces {
-    private final ClientLogger logger = new ClientLogger(AzureMachineLearningWorkspacesImpl.class);
-
-    /** Azure subscription identifier. */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Azure subscription identifier.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -147,18 +142,6 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         return this.workspaces;
     }
 
-    /** The WorkspaceFeaturesClient object to access its operations. */
-    private final WorkspaceFeaturesClient workspaceFeatures;
-
-    /**
-     * Gets the WorkspaceFeaturesClient object to access its operations.
-     *
-     * @return the WorkspaceFeaturesClient object.
-     */
-    public WorkspaceFeaturesClient getWorkspaceFeatures() {
-        return this.workspaceFeatures;
-    }
-
     /** The UsagesClient object to access its operations. */
     private final UsagesClient usages;
 
@@ -195,28 +178,16 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         return this.quotas;
     }
 
-    /** The MachineLearningComputesClient object to access its operations. */
-    private final MachineLearningComputesClient machineLearningComputes;
+    /** The ComputesClient object to access its operations. */
+    private final ComputesClient computes;
 
     /**
-     * Gets the MachineLearningComputesClient object to access its operations.
+     * Gets the ComputesClient object to access its operations.
      *
-     * @return the MachineLearningComputesClient object.
+     * @return the ComputesClient object.
      */
-    public MachineLearningComputesClient getMachineLearningComputes() {
-        return this.machineLearningComputes;
-    }
-
-    /** The WorkspaceOperationsClient object to access its operations. */
-    private final WorkspaceOperationsClient workspaceOperations;
-
-    /**
-     * Gets the WorkspaceOperationsClient object to access its operations.
-     *
-     * @return the WorkspaceOperationsClient object.
-     */
-    public WorkspaceOperationsClient getWorkspaceOperations() {
-        return this.workspaceOperations;
+    public ComputesClient getComputes() {
+        return this.computes;
     }
 
     /** The PrivateEndpointConnectionsClient object to access its operations. */
@@ -243,42 +214,6 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         return this.privateLinkResources;
     }
 
-    /** The MachineLearningServicesClient object to access its operations. */
-    private final MachineLearningServicesClient machineLearningServices;
-
-    /**
-     * Gets the MachineLearningServicesClient object to access its operations.
-     *
-     * @return the MachineLearningServicesClient object.
-     */
-    public MachineLearningServicesClient getMachineLearningServices() {
-        return this.machineLearningServices;
-    }
-
-    /** The NotebooksClient object to access its operations. */
-    private final NotebooksClient notebooks;
-
-    /**
-     * Gets the NotebooksClient object to access its operations.
-     *
-     * @return the NotebooksClient object.
-     */
-    public NotebooksClient getNotebooks() {
-        return this.notebooks;
-    }
-
-    /** The StorageAccountsClient object to access its operations. */
-    private final StorageAccountsClient storageAccounts;
-
-    /**
-     * Gets the StorageAccountsClient object to access its operations.
-     *
-     * @return the StorageAccountsClient object.
-     */
-    public StorageAccountsClient getStorageAccounts() {
-        return this.storageAccounts;
-    }
-
     /** The WorkspaceConnectionsClient object to access its operations. */
     private final WorkspaceConnectionsClient workspaceConnections;
 
@@ -291,6 +226,30 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         return this.workspaceConnections;
     }
 
+    /** The WorkspaceFeaturesClient object to access its operations. */
+    private final WorkspaceFeaturesClient workspaceFeatures;
+
+    /**
+     * Gets the WorkspaceFeaturesClient object to access its operations.
+     *
+     * @return the WorkspaceFeaturesClient object.
+     */
+    public WorkspaceFeaturesClient getWorkspaceFeatures() {
+        return this.workspaceFeatures;
+    }
+
+    /** The WorkspaceSkusClient object to access its operations. */
+    private final WorkspaceSkusClient workspaceSkus;
+
+    /**
+     * Gets the WorkspaceSkusClient object to access its operations.
+     *
+     * @return the WorkspaceSkusClient object.
+     */
+    public WorkspaceSkusClient getWorkspaceSkus() {
+        return this.workspaceSkus;
+    }
+
     /**
      * Initializes an instance of AzureMachineLearningWorkspaces client.
      *
@@ -298,7 +257,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Azure subscription identifier.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     AzureMachineLearningWorkspacesImpl(
@@ -313,21 +272,18 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-01";
+        this.apiVersion = "2021-07-01";
         this.operations = new OperationsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
-        this.workspaceFeatures = new WorkspaceFeaturesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.virtualMachineSizes = new VirtualMachineSizesClientImpl(this);
         this.quotas = new QuotasClientImpl(this);
-        this.machineLearningComputes = new MachineLearningComputesClientImpl(this);
-        this.workspaceOperations = new WorkspaceOperationsClientImpl(this);
+        this.computes = new ComputesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
-        this.machineLearningServices = new MachineLearningServicesClientImpl(this);
-        this.notebooks = new NotebooksClientImpl(this);
-        this.storageAccounts = new StorageAccountsClientImpl(this);
         this.workspaceConnections = new WorkspaceConnectionsClientImpl(this);
+        this.workspaceFeatures = new WorkspaceFeaturesClientImpl(this);
+        this.workspaceSkus = new WorkspaceSkusClientImpl(this);
     }
 
     /**
@@ -413,7 +369,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -472,4 +428,6 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMachineLearningWorkspacesImpl.class);
 }

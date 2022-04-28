@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for AzureMachineLearningWorkspaces class. */
 public interface AzureMachineLearningWorkspaces {
     /**
-     * Gets Azure subscription identifier.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -59,13 +59,6 @@ public interface AzureMachineLearningWorkspaces {
     WorkspacesClient getWorkspaces();
 
     /**
-     * Gets the WorkspaceFeaturesClient object to access its operations.
-     *
-     * @return the WorkspaceFeaturesClient object.
-     */
-    WorkspaceFeaturesClient getWorkspaceFeatures();
-
-    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.
@@ -87,18 +80,11 @@ public interface AzureMachineLearningWorkspaces {
     QuotasClient getQuotas();
 
     /**
-     * Gets the MachineLearningComputesClient object to access its operations.
+     * Gets the ComputesClient object to access its operations.
      *
-     * @return the MachineLearningComputesClient object.
+     * @return the ComputesClient object.
      */
-    MachineLearningComputesClient getMachineLearningComputes();
-
-    /**
-     * Gets the WorkspaceOperationsClient object to access its operations.
-     *
-     * @return the WorkspaceOperationsClient object.
-     */
-    WorkspaceOperationsClient getWorkspaceOperations();
+    ComputesClient getComputes();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
@@ -115,30 +101,23 @@ public interface AzureMachineLearningWorkspaces {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the MachineLearningServicesClient object to access its operations.
-     *
-     * @return the MachineLearningServicesClient object.
-     */
-    MachineLearningServicesClient getMachineLearningServices();
-
-    /**
-     * Gets the NotebooksClient object to access its operations.
-     *
-     * @return the NotebooksClient object.
-     */
-    NotebooksClient getNotebooks();
-
-    /**
-     * Gets the StorageAccountsClient object to access its operations.
-     *
-     * @return the StorageAccountsClient object.
-     */
-    StorageAccountsClient getStorageAccounts();
-
-    /**
      * Gets the WorkspaceConnectionsClient object to access its operations.
      *
      * @return the WorkspaceConnectionsClient object.
      */
     WorkspaceConnectionsClient getWorkspaceConnections();
+
+    /**
+     * Gets the WorkspaceFeaturesClient object to access its operations.
+     *
+     * @return the WorkspaceFeaturesClient object.
+     */
+    WorkspaceFeaturesClient getWorkspaceFeatures();
+
+    /**
+     * Gets the WorkspaceSkusClient object to access its operations.
+     *
+     * @return the WorkspaceSkusClient object.
+     */
+    WorkspaceSkusClient getWorkspaceSkus();
 }
