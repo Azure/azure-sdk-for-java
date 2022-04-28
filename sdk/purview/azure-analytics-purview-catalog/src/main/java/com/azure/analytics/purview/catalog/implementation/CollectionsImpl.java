@@ -52,7 +52,7 @@ public final class CollectionsImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface CollectionsService {
+    public interface CollectionsService {
         @Post("/collections/{collection}/entity")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

@@ -58,7 +58,7 @@ public final class SqlScriptsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSqlSc")
-    private interface SqlScriptsService {
+    public interface SqlScriptsService {
         @Get("/sqlScripts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

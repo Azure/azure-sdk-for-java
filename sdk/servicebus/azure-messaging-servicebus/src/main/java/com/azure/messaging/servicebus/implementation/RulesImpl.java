@@ -48,7 +48,7 @@ public final class RulesImpl {
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface RulesService {
+    public interface RulesService {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)

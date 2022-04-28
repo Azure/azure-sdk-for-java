@@ -101,3 +101,49 @@ custom-types-subpackage: models
 generic-response-type: true
 custom-strongly-typed-header-deserialization: true
 ```
+
+Some services may leverage multiple Swagger files, which means that they may require different packages based on the
+file being used in generation to prevent overwriting same-name classes. For this, sections with name `Tag:` and `yaml`
+configurations with `$(tag) == '<tag value>'` can be used to have the Java AutoRest generation have branching generation 
+logic, each tag will need to be generated with a separate run of `autorest`. Fortunately, a top-level configuration, 
+such as above, can be used for common features between each Swagger file, such as `output-folder`, `license-header`, etc, 
+the only configurations that must be different are the `input-file`, `namespace`, `models-subpackage`, `custom-types`, 
+and `custom-types-subpackage`. The following is an example:
+
+_Shared configurations_
+
+``` yaml
+java: true
+output-folder: ../
+generate-client-as-impl: true
+generate-client-interfaces: false
+service-interface-as-public: true
+sync-methods: none
+license-header: MICROSOFT_MIT_SMALL
+context-client-method-parameter: true
+generic-response-type: true
+custom-strongly-typed-header-deserialization: true
+```
+
+### Tag: storage-blob-package
+
+``` yaml $(tag) == 'storage-blob-package'
+input-file: <URL of Swagger file>
+namespace: com.azure.storage.blob
+models-subpackage: implementation.models
+custom-types: <list of models that are generated into public API> 
+custom-types-subpackage: models
+```
+
+### Tag: storage-another-package
+
+``` yaml $(tag) == 'storage-another-package'
+input-file: <URL of Swagger file>
+namespace: com.azure.storage.another
+models-subpackage: implementation.models
+custom-types: <list of models that are generated into public API> 
+custom-types-subpackage: models
+```
+
+When the configuration file has multiple tags, `--tag=<tag name>` needs to be passed to specify which Swagger to
+generate.

@@ -60,7 +60,7 @@ public final class LibrariesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientLibra")
-    private interface LibrariesService {
+    public interface LibrariesService {
         @Get("/libraries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
