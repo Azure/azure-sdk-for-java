@@ -3,6 +3,8 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.util.FluxUtil;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -42,6 +44,12 @@ public class AmqpTransaction {
      * @return string representation of the transaction id.
      */
     public String toString() {
-        return new String(transactionId.array(), StandardCharsets.UTF_8);
+        if (transactionId.hasArray()) {
+            return new String(transactionId.array(), transactionId.arrayOffset(),
+                transactionId.limit() - transactionId.arrayOffset(), StandardCharsets.UTF_8);
+        } else {
+            // 0 10 40 50
+            return new String(FluxUtil.byteBufferToArray(transactionId.duplicate()), StandardCharsets.UTF_8);
+        }
     }
 }

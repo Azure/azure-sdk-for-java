@@ -8,6 +8,7 @@ import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.ByteBuffer;
@@ -96,7 +97,12 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").array());
+        // Extract the ByteBuffer as it isn't guaranteed that the ByteBuffer will be a HeapByteBuffer and using
+        // .array() on a DirectByteBuffer or read-only ByteBuffer will throw an exception. Additionally, even if the
+        // ByteBuffer was a HeapByteBuffer the entire backing array may not have been written.
+        //
+        // Duplicate the ByteBuffer so the original body won't have its read position mutated.
+        this(FluxUtil.byteBufferToArray(Objects.requireNonNull(body, "'body' cannot be null.").duplicate()));
     }
 
     /**
