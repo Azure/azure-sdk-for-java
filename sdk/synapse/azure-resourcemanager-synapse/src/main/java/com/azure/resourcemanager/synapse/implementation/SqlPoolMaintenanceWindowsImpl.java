@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowsClient;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindows;
 import com.azure.resourcemanager.synapse.models.SqlPoolMaintenanceWindows;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWindows {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolMaintenanceWindowsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolMaintenanceWindowsImpl.class);
 
     private final SqlPoolMaintenanceWindowsClient innerClient;
 

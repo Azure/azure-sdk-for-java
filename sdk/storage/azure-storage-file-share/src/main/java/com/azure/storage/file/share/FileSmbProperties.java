@@ -19,7 +19,7 @@ public class FileSmbProperties {
     private EnumSet<NtfsFileAttributes> ntfsFileAttributes;
     private OffsetDateTime fileCreationTime;
     private OffsetDateTime fileLastWriteTime;
-    private final OffsetDateTime fileChangeTime;
+    private OffsetDateTime fileChangeTime;
     private final String fileId;
     private final String parentId;
 
@@ -28,7 +28,6 @@ public class FileSmbProperties {
      */
     public FileSmbProperties() {
         // Non user-settable properties
-        fileChangeTime = null;
         fileId = null;
         parentId = null;
     }
@@ -126,6 +125,17 @@ public class FileSmbProperties {
         return this;
     }
 
+    /**
+     * Sets the file change time.
+     *
+     * @param fileChangeTime The file change time.
+     * @return the updated FileSmbProperties object.
+     */
+    public FileSmbProperties setFileChangeTime(OffsetDateTime fileChangeTime) {
+        this.fileChangeTime = fileChangeTime;
+        return this;
+    }
+
     // HELPER METHODS
 
     /**
@@ -175,6 +185,18 @@ public class FileSmbProperties {
         return fileLastWriteTime == null
             ? defaultValue
             : parseFileSMBDate(fileLastWriteTime);
+    }
+
+    /**
+     * Determines the value of the file change time header.
+     *
+     * @param defaultValue The default change time header value.
+     * @return The value of the file change time header
+     */
+    String setFileChangeTime(String defaultValue) {
+        return fileChangeTime == null
+            ? defaultValue
+            : parseFileSMBDate(fileChangeTime);
     }
 
     /**

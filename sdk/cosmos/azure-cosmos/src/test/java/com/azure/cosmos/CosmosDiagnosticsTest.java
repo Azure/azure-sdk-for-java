@@ -546,7 +546,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
-            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+            if (!query.contains("group by") || qroupByFirstResponse) {
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
                 validateGatewayModeQueryDiagnostics(queryDiagnostics);
                 if (query.contains("group by")) {
@@ -719,10 +719,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void supplementalResponseStatisticsList() throws Exception {
-        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics(mockDiagnosticsClientContext(),null);
+        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
         for (int i = 0; i < 15; i++) {
             RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
-            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null, null);
         }
         List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -737,7 +737,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(storeResponseStatistics.size()).isEqualTo(0);
         for (int i = 0; i < 7; i++) {
             RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
-            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null, null);
         }
         storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
         objectMapper = new ObjectMapper();
@@ -954,11 +954,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
         Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
     }
 
     private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {

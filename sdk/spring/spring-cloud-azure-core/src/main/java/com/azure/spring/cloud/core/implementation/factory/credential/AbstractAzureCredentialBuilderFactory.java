@@ -75,10 +75,10 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
             if (retry.getExponential() != null && retry.getExponential().getMaxRetries() != null) {
                 builder.maxRetry(retry.getExponential().getMaxRetries());
             }
-        } else if (RetryOptionsProvider.RetryMode.FIXED == retry.getMode()) {
-            if (retry.getFixed() != null && retry.getFixed().getMaxRetries() != null) {
-                builder.maxRetry(retry.getFixed().getMaxRetries());
-            }
+        } else if (RetryOptionsProvider.RetryMode.FIXED == retry.getMode()
+            && retry.getFixed() != null
+            && retry.getFixed().getMaxRetries() != null) {
+            builder.maxRetry(retry.getFixed().getMaxRetries());
         }
 
     }

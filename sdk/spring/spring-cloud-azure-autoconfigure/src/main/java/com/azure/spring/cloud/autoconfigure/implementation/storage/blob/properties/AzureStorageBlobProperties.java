@@ -37,6 +37,7 @@ public class AzureStorageBlobProperties extends AzureStorageProperties implement
      */
     private String blobName;
 
+    @Override
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }

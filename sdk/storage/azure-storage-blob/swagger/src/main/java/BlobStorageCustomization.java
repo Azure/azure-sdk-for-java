@@ -23,6 +23,9 @@ public class BlobStorageCustomization extends Customization {
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
 
+        models.getClass("BlobCopySourceTags").rename("BlobCopySourceTagsMode");
+
+
         ClassCustomization blobHttpHeaders = models.getClass("BlobHttpHeaders");
         blobHttpHeaders.getMethod("getContentMd5").getJavadoc().setDescription("Get the contentMd5 property: " +
             "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +
