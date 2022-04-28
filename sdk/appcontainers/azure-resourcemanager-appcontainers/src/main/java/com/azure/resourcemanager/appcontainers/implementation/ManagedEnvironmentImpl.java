@@ -11,7 +11,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentI
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPatch;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import java.util.Collections;
 import java.util.Map;
@@ -59,6 +58,10 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().daprAIInstrumentationKey();
     }
 
+    public String daprAIConnectionString() {
+        return this.innerModel().daprAIConnectionString();
+    }
+
     public VnetConfiguration vnetConfiguration() {
         return this.innerModel().vnetConfiguration();
     }
@@ -77,6 +80,10 @@ public final class ManagedEnvironmentImpl
 
     public AppLogsConfiguration appLogsConfiguration() {
         return this.innerModel().appLogsConfiguration();
+    }
+
+    public Boolean zoneRedundant() {
+        return this.innerModel().zoneRedundant();
     }
 
     public Region region() {
@@ -98,8 +105,6 @@ public final class ManagedEnvironmentImpl
     private String resourceGroupName;
 
     private String name;
-
-    private ManagedEnvironmentPatch updateEnvironmentEnvelope;
 
     public ManagedEnvironmentImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -132,7 +137,6 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironmentImpl update() {
-        this.updateEnvironmentEnvelope = new ManagedEnvironmentPatch();
         return this;
     }
 
@@ -141,8 +145,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .updateWithResponse(resourceGroupName, name, updateEnvironmentEnvelope, Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -151,8 +154,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .updateWithResponse(resourceGroupName, name, updateEnvironmentEnvelope, context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
         return this;
     }
 
@@ -196,17 +198,17 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironmentImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateEnvironmentEnvelope.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public ManagedEnvironmentImpl withDaprAIInstrumentationKey(String daprAIInstrumentationKey) {
         this.innerModel().withDaprAIInstrumentationKey(daprAIInstrumentationKey);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withDaprAIConnectionString(String daprAIConnectionString) {
+        this.innerModel().withDaprAIConnectionString(daprAIConnectionString);
         return this;
     }
 
@@ -220,7 +222,8 @@ public final class ManagedEnvironmentImpl
         return this;
     }
 
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public ManagedEnvironmentImpl withZoneRedundant(Boolean zoneRedundant) {
+        this.innerModel().withZoneRedundant(zoneRedundant);
+        return this;
     }
 }
