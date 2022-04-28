@@ -13,7 +13,7 @@ dependencies {
     api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.2")
     api("org.slf4j:slf4j-api:1.7.36")
-    implementation("io.projectreactor:reactor-core:3.4.16")
+    api("io.projectreactor:reactor-core:3.4.16")
     testImplementation("io.projectreactor:reactor-test:3.4.16")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
