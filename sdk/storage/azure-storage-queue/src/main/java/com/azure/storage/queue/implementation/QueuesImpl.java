@@ -18,14 +18,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.implementation.models.QueuesCreateResponse;
-import com.azure.storage.queue.implementation.models.QueuesDeleteResponse;
-import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyResponse;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
-import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyResponse;
-import com.azure.storage.queue.implementation.models.QueuesSetMetadataResponse;
+import com.azure.storage.queue.implementation.models.QueuesCreateHeaders;
+import com.azure.storage.queue.implementation.models.QueuesDeleteHeaders;
+import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyHeaders;
+import com.azure.storage.queue.implementation.models.QueuesSetMetadataHeaders;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
 import java.util.List;
@@ -60,7 +61,7 @@ public final class QueuesImpl {
         @Put("/{queueName}")
         @ExpectedResponses({201, 204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<QueuesCreateResponse> create(
+        Mono<ResponseBase<QueuesCreateHeaders, Void>> create(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("timeout") Integer timeout,
@@ -73,7 +74,7 @@ public final class QueuesImpl {
         @Delete("/{queueName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<QueuesDeleteResponse> delete(
+        Mono<ResponseBase<QueuesDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("timeout") Integer timeout,
@@ -85,7 +86,7 @@ public final class QueuesImpl {
         @Get("/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<QueuesGetPropertiesResponse> getProperties(
+        Mono<ResponseBase<QueuesGetPropertiesHeaders, Void>> getProperties(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -98,7 +99,7 @@ public final class QueuesImpl {
         @Put("/{queueName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<QueuesSetMetadataResponse> setMetadata(
+        Mono<ResponseBase<QueuesSetMetadataHeaders, Void>> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -112,7 +113,7 @@ public final class QueuesImpl {
         @Get("/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<QueuesGetAccessPolicyResponse> getAccessPolicy(
+        Mono<ResponseBase<QueuesGetAccessPolicyHeaders, List<QueueSignedIdentifier>>> getAccessPolicy(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -125,7 +126,7 @@ public final class QueuesImpl {
         @Put("/{queueName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<QueuesSetAccessPolicyResponse> setAccessPolicy(
+        Mono<ResponseBase<QueuesSetAccessPolicyHeaders, Void>> setAccessPolicy(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -154,10 +155,10 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<QueuesCreateHeaders, Void>> createWithResponseAsync(
             String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
         final String accept = "application/xml";
         return service.create(
@@ -184,10 +185,10 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesDeleteResponse> deleteWithResponseAsync(
+    public Mono<ResponseBase<QueuesDeleteHeaders, Void>> deleteWithResponseAsync(
             String queueName, Integer timeout, String requestId, Context context) {
         final String accept = "application/xml";
         return service.delete(
@@ -208,10 +209,10 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesGetPropertiesResponse> getPropertiesWithResponseAsync(
+    public Mono<ResponseBase<QueuesGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(
             String queueName, Integer timeout, String requestId, Context context) {
         final String comp = "metadata";
         final String accept = "application/xml";
@@ -236,10 +237,10 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesSetMetadataResponse> setMetadataWithResponseAsync(
+    public Mono<ResponseBase<QueuesSetMetadataHeaders, Void>> setMetadataWithResponseAsync(
             String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
         final String comp = "metadata";
         final String accept = "application/xml";
@@ -269,11 +270,12 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of signed identifiers.
+     * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyWithResponseAsync(
-            String queueName, Integer timeout, String requestId, Context context) {
+    public Mono<ResponseBase<QueuesGetAccessPolicyHeaders, List<QueueSignedIdentifier>>>
+            getAccessPolicyWithResponseAsync(String queueName, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicy(
@@ -294,10 +296,10 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithResponseAsync(
+    public Mono<ResponseBase<QueuesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(
             String queueName,
             Integer timeout,
             String requestId,
