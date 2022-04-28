@@ -12,7 +12,7 @@ abstract class FixOkioRule : ComponentMetadataRule {
     override fun execute(context: ComponentMetadataContext) {
         // https://github.com/square/okio/issues/954#issuecomment-895403938
         // this renames "okio-jvm-2.8.0.jar" to "okio-2.8.0.jar"
-        // otherwise compilation fails.
+        // otherwise module-info compilation fails.
         context.details.allVariants {
             withFiles {
                 removeAllFiles()
