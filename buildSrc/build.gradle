@@ -20,7 +20,7 @@ repositories {
 
 gradlePlugin {
     plugins {
-        simplePlugin {
+        azureRevapiPlugin {
             id = 'com.azure.revapi'
             implementationClass = 'com.azure.gradle.RevApiPlugin'
         }

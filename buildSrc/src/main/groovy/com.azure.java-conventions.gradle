@@ -26,7 +26,6 @@ repositories {
 }
 
 group = 'com.azure'
-//version = '1.0.0'
 
 compileJava {
     exclude 'module-info.java'
@@ -58,6 +57,11 @@ javadoc {
     modularity.inferModulePath = false
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 test {
     useJUnitPlatform()
 }
@@ -70,14 +74,6 @@ processResources {
                 'version' : project.version
             ]
         )
-    }
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
     }
 }
 
@@ -99,3 +95,51 @@ spotbugs {
 
 spotbugsTest.enabled = false
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = project.name
+            from components.java
+            pom {
+                name = project.publishName
+                description = project.publishDescription
+                url = 'https://github.com/Azure/azure-sdk-for-java'
+                packaging = "jar"
+                licenses {
+                    license {
+                        name = 'The MIT License (MIT)'
+                        url = 'http://opensource.org/licenses/MIT'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/Azure/azure-sdk-for-java.git'
+                    developerConnection = 'scm:git:https://github.com/Azure/azure-sdk-for-java.git'
+                    url = 'https://github.com/Azure/azure-sdk-for-java'
+                }
+            }
+        }
+    }
+}
+
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+jar {
+    into("META-INF/maven/$project.group/$project.name") {
+        from { generatePomFileForMavenJavaPublication }
+        rename ".*", "pom.xml"
+    }
+}
+
+task stageArtifacts(type: Copy) {
+    from(generatePomFileForMavenJavaPublication) {
+        rename ".*", "${project.name}-${project.version}.pom"
+    }
+    from(jar)
+    from(javadocJar)
+    from(sourcesJar)
+    into "build/artifacts"
+}
+
+build.dependsOn stageArtifacts
