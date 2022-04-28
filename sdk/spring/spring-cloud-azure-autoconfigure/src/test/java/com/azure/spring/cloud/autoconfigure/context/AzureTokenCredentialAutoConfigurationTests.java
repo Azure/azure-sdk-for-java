@@ -236,7 +236,7 @@ class AzureTokenCredentialAutoConfigurationTests {
     }
 
     @Test
-    void byDefaultShouldConfigureWhenMultiExecutorBeans() {
+    void defaultCredentialThreadPoolShouldConfigureWhenMultiExecutorBeans() {
         contextRunner
             .withConfiguration(AutoConfigurations.of(MultiExecutorConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -246,9 +246,12 @@ class AzureTokenCredentialAutoConfigurationTests {
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
             });
+    }
 
+    @Test
+    void defaultCredentialThreadPoolShouldNotConfigureWhenOverride() {
         contextRunner
-            .withConfiguration(AutoConfigurations.of(MultiExecutorConfigurationWithPrimaryAnnotation.class))
+            .withConfiguration(AutoConfigurations.of(CredentialThreadPoolConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 ThreadPoolTaskExecutor credentialTaskExecutor = (ThreadPoolTaskExecutor) context.getBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME);
@@ -282,14 +285,10 @@ class AzureTokenCredentialAutoConfigurationTests {
         }
     }
 
-    static class ThreadPoolTaskExecutorExtend extends ThreadPoolTaskExecutor {
-
-    }
-
     @Configuration
     @AutoConfigureBefore(AzureTokenCredentialAutoConfiguration.class)
     @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
-    static class MultiExecutorConfigurationWithPrimaryAnnotation {
+    static class CredentialThreadPoolConfiguration {
 
         @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
         public ThreadPoolTaskExecutor credentialTaskExecutor() {
@@ -299,9 +298,15 @@ class AzureTokenCredentialAutoConfigurationTests {
             executor.initialize();
             return executor;
         }
+
     }
 
+    static class ThreadPoolTaskExecutorExtend extends ThreadPoolTaskExecutor {
+
+    }
+    
     private static class DefaultTokenCredentialBuilderCustomizer extends TestBuilderCustomizer<DefaultAzureCredentialBuilder> {
+
 
     }
 
