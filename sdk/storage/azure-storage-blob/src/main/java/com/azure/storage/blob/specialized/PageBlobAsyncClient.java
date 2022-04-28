@@ -30,6 +30,7 @@ import com.azure.storage.blob.implementation.models.PageBlobsResizeHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
+import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -997,7 +998,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                         response.getStatusCode(),
                         response.getHeaders(),
                         value,
-                        response.getValue().getNextMarker(),
+                        PageListHelper.getNextMarker(response.getValue()),
                         response.getDeserializedHeaders());
                 });
         };
@@ -1318,7 +1319,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                         response.getStatusCode(),
                         response.getHeaders(),
                         value,
-                        response.getValue().getNextMarker(),
+                        PageListHelper.getNextMarker(response.getValue()),
                         response.getDeserializedHeaders());
                 });
         };

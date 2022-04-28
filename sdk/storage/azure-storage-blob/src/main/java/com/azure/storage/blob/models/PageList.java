@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -16,6 +17,20 @@ import java.util.List;
 @Fluent
 @JsonDeserialize(using = PageListDeserializer.class)
 public final class PageList {
+    static {
+        PageListHelper.setAccessor(
+                new PageListHelper.PageListAccessor() {
+                    @Override
+                    public String getNextMarker(PageList pageList) {
+                        return pageList.getNextMarker();
+                    }
+
+                    @Override
+                    public PageList setNextMarker(PageList pageList, String marker) {
+                        return pageList.setNextMarker(marker);
+                    }
+                });
+    }
     /*
      * The PageRange property.
      */
@@ -79,7 +94,7 @@ public final class PageList {
      *
      * @return the nextMarker value.
      */
-    public String getNextMarker() {
+    private String getNextMarker() {
         return this.nextMarker;
     }
 
@@ -89,7 +104,7 @@ public final class PageList {
      * @param nextMarker the nextMarker value to set.
      * @return the PageList object itself.
      */
-    public PageList setNextMarker(String nextMarker) {
+    private PageList setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

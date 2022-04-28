@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.JsonTokenId;
@@ -80,6 +81,7 @@ final class PageListDeserializer extends JsonDeserializer<PageList> {
             }
         }
 
-        return new PageList().setPageRange(pageRanges).setClearRange(clearRanges).setNextMarker(nextMarker);
+        return PageListHelper.setNextMarker(new PageList().setPageRange(pageRanges).setClearRange(clearRanges),
+            nextMarker);
     }
 }
