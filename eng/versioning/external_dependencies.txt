@@ -73,7 +73,7 @@ javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 javax.websocket:javax.websocket-api;1.1
 mysql:mysql-connector-java;8.0.28
-net.minidev:json-smart;2.4.8
+net.minidev:json-smart;2.4.7
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.10.1
 org.apache.avro:avro-maven-plugin;1.10.1
