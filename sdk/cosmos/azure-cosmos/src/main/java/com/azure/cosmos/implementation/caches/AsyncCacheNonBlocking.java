@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 public class AsyncCacheNonBlocking<TKey, TValue> {
-    private final Logger logger = LoggerFactory.getLogger(AsyncCacheNonBlocking.class);
+    private final static Logger logger = LoggerFactory.getLogger(AsyncCacheNonBlocking.class);
     private final ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values;
     private final IEqualityComparer<TKey> keyEqualityComparer;
 
@@ -168,7 +168,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             }
         }
 
-        public synchronized Mono<TValue> createAndWaitForBackgroundRefreshTaskAsync(Function<TValue, Mono<TValue>> createRefreshFunction) {
+        public Mono<TValue> createAndWaitForBackgroundRefreshTaskAsync(Function<TValue, Mono<TValue>> createRefreshFunction) {
             Mono<TValue> valueMono = this.value;
             AtomicReference<TValue> originalValue = new AtomicReference<>();
 
