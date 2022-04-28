@@ -17,7 +17,7 @@ class PartitionPump implements AutoCloseable {
     private final EventHubConsumerAsyncClient client;
     private final Scheduler scheduler;
     private LastEnqueuedEventProperties lastEnqueuedEventProperties;
-    private final ClientLogger logger = new ClientLogger(PartitionPump.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionPump.class);
 
     /**
      * Creates an instance with the given client and scheduler.
@@ -63,7 +63,7 @@ class PartitionPump implements AutoCloseable {
         try {
             client.close();
         } catch (Exception error) {
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .log("Exception occurred disposing of consumer client.", error);
         } finally {

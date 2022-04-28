@@ -25,7 +25,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
     private final Semaphore completionLock;
     private final Function<ServiceBusMessageContext, Mono<Void>> onComplete;
     private final Function<ServiceBusMessageContext, Mono<Void>> onAbandon;
-    private final ClientLogger logger = new ClientLogger(FluxAutoComplete.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FluxAutoComplete.class);
 
     FluxAutoComplete(Flux<? extends ServiceBusMessageContext> upstream, Semaphore completionLock,
                      Function<ServiceBusMessageContext, Mono<Void>> onComplete,
@@ -46,7 +46,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
         final AutoCompleteSubscriber subscriber =
-            new AutoCompleteSubscriber(coreSubscriber, completionLock, onComplete, onAbandon, logger);
+            new AutoCompleteSubscriber(coreSubscriber, completionLock, onComplete, onAbandon, LOGGER);
 
         source.subscribe(subscriber);
     }

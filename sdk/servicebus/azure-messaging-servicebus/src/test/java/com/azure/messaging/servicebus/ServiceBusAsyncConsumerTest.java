@@ -53,7 +53,7 @@ class ServiceBusAsyncConsumerTest {
     private final TestPublisher<AmqpEndpointState> endpointPublisher = TestPublisher.create();
     private final Flux<AmqpEndpointState> endpointStateFlux = endpointPublisher.flux();
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
     private Function<String, Mono<OffsetDateTime>> onRenewLock;
@@ -81,7 +81,7 @@ class ServiceBusAsyncConsumerTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}]: Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}]: Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
@@ -98,7 +98,7 @@ class ServiceBusAsyncConsumerTest {
 
     @AfterEach
     void teardown(TestInfo testInfo) {
-        logger.info("[{}]: Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}]: Tearing down.", testInfo.getDisplayName());
 
         Mockito.framework().clearInlineMock(this);
 

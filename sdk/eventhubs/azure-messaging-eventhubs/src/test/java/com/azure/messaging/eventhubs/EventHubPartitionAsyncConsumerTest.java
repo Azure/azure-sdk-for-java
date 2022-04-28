@@ -81,7 +81,7 @@ class EventHubPartitionAsyncConsumerTest {
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
 
-    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
 
@@ -270,10 +270,10 @@ class EventHubPartitionAsyncConsumerTest {
         final CountDownLatch shutdownReceived = new CountDownLatch(1);
         final Disposable subscriptions = consumer.receive()
                 .subscribe(
-                    event -> logger.info("1. Received: {}", event.getData().getSequenceNumber()),
+                    event -> LOGGER.info("1. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
                     () -> {
-                        logger.info("1. Shutdown received");
+                        LOGGER.info("1. Shutdown received");
                         shutdownReceived.countDown();
                     });
 
