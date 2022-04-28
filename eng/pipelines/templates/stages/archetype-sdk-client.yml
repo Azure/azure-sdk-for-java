@@ -102,13 +102,15 @@ stages:
             - Build
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
-          # By default, the Artifacts list will contain everything as forRelease defaults to true which
-          # ensures everything is correctly processed for the nightly builds. For batch release, the user
-          # will use the checkboxes to say what will be released and that trimmed down list is what'll be
-          # passed to archetype-java-release.yml
+          # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
+          # specifically, has releaseInBatch set to false. releaseInBatch should only be set libraries,
+          # not ready for release, in service directories that have batch release enabled. The if statement
+          # below, looking for releaseInBatch not equal false has to be set this way because if the library's
+          # metadata in the ci.yml doesn't have this variable then it defaults to being released. If the
+          # variable is set via checkbox, checked = true = release it, unchecked = false = don't release it.
           Artifacts:
           - ${{ each artifact in parameters.Artifacts }}:
-            - ${{ if ne(artifact.skipRelease, 'false') }}:
+            - ${{ if ne(artifact.releaseInBatch, 'false') }}:
               - ${{ artifact }}
           ${{ if eq(parameters.ServiceDirectory, 'template') }}:
             TestPipeline: true
@@ -121,14 +123,7 @@ stages:
             - Build
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
-          # By default, the Artifacts list will contain everything as forRelease defaults to true which
-          # ensures everything is correctly processed for the nightly builds. For batch release, the user
-          # will use the checkboxes to say what will be released and that trimmed down list is what'll be
-          # passed to archetype-java-release.yml
-          Artifacts:
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{ if ne(artifact.skipRelease, 'false') }}:
-              - ${{ artifact }}
+          Artifacts: ${{ parameters.Artifacts }}
           ${{ if eq(parameters.ServiceDirectory, 'template') }}:
             TestPipeline: true
           ArtifactName: packages
