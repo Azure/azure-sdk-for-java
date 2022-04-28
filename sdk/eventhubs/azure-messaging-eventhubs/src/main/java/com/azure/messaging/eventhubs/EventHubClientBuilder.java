@@ -213,7 +213,6 @@ public class EventHubClientBuilder implements
      */
     public EventHubClientBuilder() {
         transport = AmqpTransportType.AMQP;
-        identifier = UUID.randomUUID().toString();
     }
 
     /**
@@ -827,7 +826,8 @@ public class EventHubClientBuilder implements
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, this.identifier);
+            isSharedConnection.get(), this::onClientClose,
+            Objects.isNull(this.identifier) ? UUID.randomUUID().toString() : this.identifier);
     }
 
     /**

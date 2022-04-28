@@ -53,6 +53,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -97,8 +98,6 @@ public class ReactorSession implements AmqpSession {
 
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
     private final Flux<AmqpShutdownSignal> shutdownSignals;
-
-    public static final Symbol CLIENT_IDENTIFIER = Symbol.getSymbol(AmqpConstants.VENDOR + ":receiver-name");
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -532,7 +531,7 @@ public class ReactorSession implements AmqpSession {
 
         final Source source = new Source();
         if (linkProperties != null && linkProperties.size() > 0) {
-            String clientIdentifier = (String) linkProperties.get(CLIENT_IDENTIFIER);
+            final String clientIdentifier = (String) linkProperties.get(CLIENT_IDENTIFIER);
             if (!CoreUtils.isNullOrEmpty(clientIdentifier)) {
                 source.setAddress(clientIdentifier);
                 linkProperties.remove(CLIENT_IDENTIFIER);
@@ -597,7 +596,7 @@ public class ReactorSession implements AmqpSession {
         final Target target = new Target();
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
-            String clientIdentifier = (String) receiverProperties.get(CLIENT_IDENTIFIER);
+            final String clientIdentifier = (String) receiverProperties.get(CLIENT_IDENTIFIER);
             if (!CoreUtils.isNullOrEmpty(clientIdentifier)) {
                 target.setAddress(clientIdentifier);
             }

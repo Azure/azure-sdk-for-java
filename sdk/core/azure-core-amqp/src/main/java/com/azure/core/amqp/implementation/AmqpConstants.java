@@ -18,4 +18,6 @@ public final class AmqpConstants {
     public static final Symbol STRING_FILTER = Symbol.getSymbol(APACHE + ":selector-filter:string");
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
+
+    public static final Symbol CLIENT_IDENTIFIER = Symbol.getSymbol(AmqpConstants.VENDOR + ":receiver-name");
 }

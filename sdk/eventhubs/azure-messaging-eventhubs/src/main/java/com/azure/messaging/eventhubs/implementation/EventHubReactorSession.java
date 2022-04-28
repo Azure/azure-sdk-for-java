@@ -36,6 +36,7 @@ import java.util.Objects;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 
 /**
