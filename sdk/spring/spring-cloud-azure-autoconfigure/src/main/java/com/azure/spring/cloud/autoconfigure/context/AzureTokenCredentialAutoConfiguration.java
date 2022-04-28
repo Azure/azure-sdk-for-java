@@ -26,9 +26,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
+import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -38,6 +42,8 @@ import org.springframework.util.StringUtils;
 import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -46,6 +52,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
  * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
 
     private final IdentityClientProperties identityClientProperties;
@@ -72,9 +79,9 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @ConditionalOnMissingBean
     DefaultAzureCredentialBuilderFactory azureCredentialBuilderFactory(
         ObjectProvider<AzureServiceClientBuilderCustomizer<DefaultAzureCredentialBuilder>> customizers,
-        ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
+        @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         DefaultAzureCredentialBuilderFactory factory = new DefaultAzureCredentialBuilderFactory(identityClientProperties);
-        setExecutorService(factory, threadPoolTaskExecutors);
+        consumeExecutorService().accept(factory, threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
@@ -149,10 +156,10 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean
     @ConditionalOnMissingBean
     ClientSecretCredentialBuilderFactory clientSecretCredentialBuilderFactory(
-        ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors,
+        @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ClientSecretCredentialBuilder>> customizers) {
         ClientSecretCredentialBuilderFactory factory = new ClientSecretCredentialBuilderFactory(identityClientProperties);
-        setExecutorService(factory, threadPoolTaskExecutors);
+        consumeExecutorService().accept(factory, threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
@@ -160,10 +167,10 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean
     @ConditionalOnMissingBean
     ClientCertificateCredentialBuilderFactory clientCertificateCredentialBuilderFactory(
-        ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors,
+        @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ClientCertificateCredentialBuilder>> customizers) {
         ClientCertificateCredentialBuilderFactory factory = new ClientCertificateCredentialBuilderFactory(identityClientProperties);
-        setExecutorService(factory, threadPoolTaskExecutors);
+        consumeExecutorService().accept(factory, threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
@@ -197,28 +204,25 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
      * @return the BPP.
      */
     @Bean
-    public static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
+    AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
         return new AzureServiceClientBuilderFactoryPostProcessor();
     }
 
-    private BiConsumer<AbstractAzureCredentialBuilderFactory<?>, ThreadPoolTaskExecutor> consumeExecutorService() {
-        return (factory, taskExecutor) -> {
-            ExecutorService executorService = taskExecutor == null ? null : taskExecutor.getThreadPoolExecutor();
+    @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
+    @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
+    ThreadPoolTaskExecutor credentialTaskExecutor(TaskExecutorBuilder builder) {
+        builder.threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX);
+        return builder.build();
+    }
+
+    private BiConsumer<AbstractAzureCredentialBuilderFactory<?>, ExecutorService> consumeExecutorService() {
+        return (factory, executorService) -> {
             if (factory instanceof AzureAadCredentialBuilderFactory) {
                 ((AzureAadCredentialBuilderFactory<?>) factory).setExecutorService(executorService);
             } else if (factory instanceof DefaultAzureCredentialBuilderFactory) {
                 ((DefaultAzureCredentialBuilderFactory) factory).setExecutorService(executorService);
             }
         };
-    }
-
-    private void setExecutorService(AbstractAzureCredentialBuilderFactory<?> factory,
-                                    ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
-        ThreadPoolTaskExecutor threadPoolTaskExecutor = threadPoolTaskExecutors.getIfUnique();
-        if (threadPoolTaskExecutor == null) {
-            threadPoolTaskExecutor = threadPoolTaskExecutors.orderedStream().findFirst().orElse(null);
-        }
-        consumeExecutorService().accept(factory, threadPoolTaskExecutor);
     }
 
     /**

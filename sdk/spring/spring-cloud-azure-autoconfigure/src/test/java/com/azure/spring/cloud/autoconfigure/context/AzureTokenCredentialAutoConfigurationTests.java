@@ -22,6 +22,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
+import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +35,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
@@ -39,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AzureTokenCredentialAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureTokenCredentialAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureTokenCredentialAutoConfiguration.class, TaskExecutionAutoConfiguration.class));
 
     @Test
     void byDefaultShouldConfigure() {
@@ -50,7 +56,7 @@ class AzureTokenCredentialAutoConfigurationTests {
                 assertThat(context).hasSingleBean(TokenCredential.class);
 
                 final TokenCredential credential = context.getBean(TokenCredential.class);
-                Assertions.assertTrue(credential instanceof DefaultAzureCredential);
+                assertTrue(credential instanceof DefaultAzureCredential);
 
             });
     }
@@ -234,27 +240,22 @@ class AzureTokenCredentialAutoConfigurationTests {
     @Test
     void byDefaultShouldConfigureWhenMultiExecutorBeans() {
         contextRunner
-            .withUserConfiguration(MultiExecutorConfiguration.class)
+            .withConfiguration(AutoConfigurations.of(MultiExecutorConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
-                ThreadPoolTaskExecutor executor1 = (ThreadPoolTaskExecutor) context.getBean("executor1");
-                ObjectProvider<ThreadPoolTaskExecutor> executors = context.getBeanProvider(ThreadPoolTaskExecutor.class);
-                executors.orderedStream()
-                         .findFirst()
-                             .ifPresent(e -> assertThat(e).isEqualTo(executor1));
+                assertThat(context).hasSingleBean(TaskExecutorBuilder.class);
+                assertThat(context.containsBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)).isTrue();
                 assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
             });
 
         contextRunner
-            .withUserConfiguration(MultiExecutorConfigurationWithPrimaryAnnotation.class)
+            .withConfiguration(AutoConfigurations.of(MultiExecutorConfigurationWithPrimaryAnnotation.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
-                ThreadPoolTaskExecutor executor2 = (ThreadPoolTaskExecutor) context.getBean("executor2");
-                ObjectProvider<ThreadPoolTaskExecutor> executors = context.getBeanProvider(ThreadPoolTaskExecutor.class);
-                ThreadPoolTaskExecutor taskExecutor = executors.getIfUnique();
-                assertThat(executor2).isEqualTo(taskExecutor);
+                ThreadPoolTaskExecutor credentialTaskExecutor = (ThreadPoolTaskExecutor) context.getBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME);
+                assertTrue(credentialTaskExecutor instanceof ThreadPoolTaskExecutorExtend);
                 assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
@@ -273,6 +274,7 @@ class AzureTokenCredentialAutoConfigurationTests {
             return executor;
         }
 
+        @Primary
         @Bean
         public ThreadPoolTaskExecutor executor2() {
             ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -283,22 +285,18 @@ class AzureTokenCredentialAutoConfigurationTests {
         }
     }
 
+    static class ThreadPoolTaskExecutorExtend extends ThreadPoolTaskExecutor {
+
+    }
+
     @Configuration
+    @AutoConfigureBefore(AzureTokenCredentialAutoConfiguration.class)
+    @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
     static class MultiExecutorConfigurationWithPrimaryAnnotation {
 
-        @Bean
-        public ThreadPoolTaskExecutor executor1() {
-            ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-            executor.setMaxPoolSize(1);
-            executor.setCorePoolSize(1);
-            executor.initialize();
-            return executor;
-        }
-
-        @Primary
-        @Bean
-        public ThreadPoolTaskExecutor executor2() {
-            ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
+        public ThreadPoolTaskExecutor credentialTaskExecutor() {
+            ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutorExtend();
             executor.setMaxPoolSize(1);
             executor.setCorePoolSize(1);
             executor.initialize();
