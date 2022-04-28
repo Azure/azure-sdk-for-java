@@ -7,12 +7,12 @@ plugins {
 }
 
 dependencies {
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.2")
+    api("com.fasterxml.jackson.core:jackson-annotations:2.13.2")
     implementation("com.fasterxml.jackson.core:jackson-core:2.13.2")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.2")
-    implementation("org.slf4j:slf4j-api:1.7.36")
+    api("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2")
+    api("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.2")
+    api("org.slf4j:slf4j-api:1.7.36")
     implementation("io.projectreactor:reactor-core:3.4.16")
     testImplementation("io.projectreactor:reactor-test:3.4.16")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")

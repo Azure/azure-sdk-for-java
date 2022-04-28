@@ -6,7 +6,7 @@ rootProject.name = "azure-sdk-all"
 
 include("eng:code-quality-reports")
 include("sdk:core:azure-core")
-//project(":azure-core").projectDir = file('sdk/core/azure-core')
+include("sdk:core:azure-core-test")
 
 // include(':azure-resourcemanager-deploymentmanager')
 // include(':azure-aot-graalvm-perf')
@@ -310,7 +310,7 @@ include("sdk:core:azure-core")
 // include(':azure-analytics-synapse-accesscontrol')
 // include(':azure-containers-containerregistry-perf')
 // include(':azure-resourcemanager-redis')
-// include(':azure-core-test')
+
 // include(':azure-messaging-servicebus-track2-perf')
 // include(':azure-resourcemanager-recoveryservicesbackup')
 // include(':azure-ai-textanalytics-perf')
