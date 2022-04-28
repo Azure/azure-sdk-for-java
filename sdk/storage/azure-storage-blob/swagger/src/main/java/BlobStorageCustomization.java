@@ -55,6 +55,9 @@ public class BlobStorageCustomization extends Customization {
         customization.getRawEditor().removeFile(pageListFileName);
         customization.getRawEditor().addFile(pageListFileName, updatedFileContent);
 
+        models.getClass("BlobCopySourceTags").rename("BlobCopySourceTagsMode");
+
+
         ClassCustomization blobHttpHeaders = models.getClass("BlobHttpHeaders");
         blobHttpHeaders.getMethod("getContentMd5").getJavadoc().setDescription("Get the contentMd5 property: " +
             "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +

@@ -19,6 +19,7 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
 import org.apache.qpid.proton.Proton;
@@ -61,7 +62,8 @@ public class EventHubReactorConnectionTest {
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String CONNECTION_ID = "test-connection-id";
-    private static final String HOSTNAME = "test-event-hub.servicebus.windows.net/";
+    private static final String HOSTNAME = String.format("test-event-hub%s/",
+        Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net"));
 
     private static String product;
     private static String clientVersion;

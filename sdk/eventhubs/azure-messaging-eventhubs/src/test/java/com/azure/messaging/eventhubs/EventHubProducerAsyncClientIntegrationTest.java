@@ -42,11 +42,6 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncProducerClient();
     }
 
-    @Override
-    protected void afterTest() {
-        dispose(producer);
-    }
-
     /**
      * Verifies that we can create and send a message to an Event Hub partition.
      */

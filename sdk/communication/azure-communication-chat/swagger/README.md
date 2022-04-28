@@ -43,6 +43,7 @@ custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChat
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
+service-interface-as-public: true
 generate-sync-async-clients: false
 sync-methods: all
 add-context-parameter: true

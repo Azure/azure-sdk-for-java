@@ -16,9 +16,11 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -128,6 +130,27 @@ public class DataLakePathClient {
      */
     public DataLakeServiceVersion getServiceVersion() {
         return dataLakePathAsyncClient.getServiceVersion();
+    }
+
+    /**
+     * Gets the {@link CpkInfo} used to encrypt this path's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CustomerProvidedKey getCustomerProvidedKey() {
+        return this.dataLakePathAsyncClient.getCustomerProvidedKey();
+    }
+
+    /**
+     * Creates a new {@link DataLakePathClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the path,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakePathClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakePathClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new DataLakePathClient(dataLakePathAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey),
+            blockBlobClient.getCustomerProvidedKeyClient(Transforms.toBlobCustomerProvidedKey(customerProvidedKey)));
     }
 
     /**

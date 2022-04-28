@@ -544,7 +544,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
                     ZoneOffset.UTC)), ArgumentMatchers.any());
-            assertThat(attributesMap.get("ClientCfgs").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+            assertThat(attributesMap.get("ClientCfgs").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
 
 
             //verifying add event call for serializationDiagnostics

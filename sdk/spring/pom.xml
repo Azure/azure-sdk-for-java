@@ -238,6 +238,5 @@
         <module>spring-cloud-azure-trace-sleuth</module>
       </modules>
     </profile>
-
   </profiles>
 </project>
