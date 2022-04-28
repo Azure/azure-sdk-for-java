@@ -4,7 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.models.FilterBlobsIncludeItem;
+import com.azure.storage.blob.models.FilterBlobsIncludeItem;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
@@ -69,7 +69,13 @@ public class FindBlobsOptions {
         return filterBlobsIncludeItems;
     }
 
-    public void setFilterBlobsIncludeItems(List<FilterBlobsIncludeItem> filterBlobsIncludeItems) {
+    public FindBlobsOptions setFilterBlobsIncludeItems(List<FilterBlobsIncludeItem> filterBlobsIncludeItems) {
         this.filterBlobsIncludeItems = filterBlobsIncludeItems;
+        return this;
+    }
+
+    public FindBlobsOptions addFilterBlobsIncludeItems(FilterBlobsIncludeItem item) {
+        filterBlobsIncludeItems.add(item);
+        return this;
     }
 }

@@ -1452,6 +1452,7 @@ public final class BlobContainerAsyncClient {
         FindBlobsOptions options, String marker,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
+        context = context == null ? Context.NONE : context;
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(), options.getFilterBlobsIncludeItems(),

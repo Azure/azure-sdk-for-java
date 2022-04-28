@@ -20,9 +20,11 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.FilterBlobsIncludeItem
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
+import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
@@ -513,6 +515,34 @@ class ServiceAPITest extends APISpec {
 
         cleanup:
         cc.delete()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_08_06")
+    def "Find blobs by tag blob versions"() {
+        setup:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def blobClient = cc.getBlobClient(generateBlobName())
+        def appendBlobClient = blobClient.getAppendBlobClient()
+        def tagKey = "myTagKey"
+        def tagValue = "myTagValue"
+        def tags = Collections.singletonMap(tagKey, tagValue)
+        def options = new AppendBlobCreateOptions().setTags(tags)
+        appendBlobClient.createWithResponse(options, null, null)
+        // Create blob again to trigger new version
+        appendBlobClient.createWithResponse(options, null, null)
+        sleepIfRecord(10 * 1000) // To allow tags to index
+        def query = String.format("\"%s\"='%s'", tagKey, tagValue)
+        List blobs = new ArrayList<FilterBlobsIncludeItem>()
+        def findBlobOptions = new FindBlobsOptions(query).setFilterBlobsIncludeItems(blobs).addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS)
+
+        when:
+        def results = primaryBlobServiceClient.findBlobsByTags(findBlobOptions, null, null)
+
+        then:
+        results.size() == 2
+        def resultTags = results.first().getTags()
+        resultTags.size() == 1
+        resultTags.get(tagKey) == tagValue
     }
 
     def validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {

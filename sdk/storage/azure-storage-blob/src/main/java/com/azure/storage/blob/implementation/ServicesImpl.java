@@ -25,7 +25,6 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.storage.blob.implementation.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
@@ -37,6 +36,7 @@ import com.azure.storage.blob.implementation.models.ServicesSetPropertiesRespons
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import java.nio.ByteBuffer;
