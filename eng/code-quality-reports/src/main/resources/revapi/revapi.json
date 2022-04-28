@@ -128,7 +128,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/org.codehaus.stax2.ri.typed.ValueEncoderFactory(..*)?/"
+            "match": "/org\\.codehaus\\.stax2\\.ri\\.typed(\\..*)?/"
           }
         ]
       }
@@ -290,8 +290,8 @@
         },
         {
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "class com.microsoft.aad.msal4j.(AadInstanceDiscoveryResponse|Authority|ClientAssertion|ErrorResponse).*",
-          "justification": ""
+          "new": "class com.microsoft.aad.msal4j..*",
+          "justification": "class com.microsoft.aad.msal4j.(AadInstanceDiscoveryResponse|Authority|ClientAssertion|ErrorResponse)"
         },
         {
           "code": "java.class.nonPublicPartOfAPI",
