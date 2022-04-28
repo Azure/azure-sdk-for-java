@@ -175,6 +175,9 @@ stages:
         - deployment: PublishPackage
           displayName: "Publish to Maven Central"
           condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+          # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
+          # this is here to ensure larger areas (30+) libraries don't time out.
+          timeoutInMinutes: 120
           environment: maven
           dependsOn: TagRepository
           variables:
@@ -314,24 +317,26 @@ stages:
                         - .github/CODEOWNERS
                         - '!sdk/**/test-recordings'
                         - '!sdk/**/session-records'
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                    artifact: ${{parameters.ArtifactName}}
+                  - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+                    parameters:
+                      PackageInfoLocations:
+                        - ${{ each artifact in parameters.Artifacts }}:
+                          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                            - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+                      WorkingDirectory: $(System.DefaultWorkingDirectory)
+                      TargetDocRepoOwner: 'Azure'
+                      TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                      Language: 'java'
+                      SparseCheckoutPaths:
+                        - docs-ref-services/
+                        - metadata/
+                      DocValidationImageId: "$(DocValidationImageId)"
+
                   - ${{ each artifact in parameters.Artifacts }}:
                     - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-                      - download: current
-                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
-                        artifact: ${{parameters.ArtifactName}}
-                      # Pull and build the docker image.
-                      - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-                        parameters:
-                          PackageInfoLocations:
-                            - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
-                          WorkingDirectory: $(System.DefaultWorkingDirectory)
-                          TargetDocRepoOwner: 'Azure'
-                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          Language: 'java'
-                          SparseCheckoutPaths:
-                            - docs-ref-services/
-                            - metadata/
-                          DocValidationImageId: "$(DocValidationImageId)"
                       - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                         parameters:
                           JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
@@ -471,22 +476,24 @@ stages:
             displayName: 'Configure mvn'
             workingDirectory: $(Build.SourcesDirectory)
 
+          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+            parameters:
+              PackageInfoLocations:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+              WorkingDirectory: $(System.DefaultWorkingDirectory)
+              TargetDocRepoOwner: "azure-sdk"
+              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+              Language: 'java'
+              DailyDocsBuild: true
+              SparseCheckoutPaths:
+                - docs-ref-services/
+                - metadata/
+              DocValidationImageId: "$(DocValidationImageId)"
+
           - ${{ each artifact in parameters.Artifacts }}:
             - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-                parameters:
-                  PackageInfoLocations:
-                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
-                  WorkingDirectory: $(System.DefaultWorkingDirectory)
-                  TargetDocRepoOwner: "azure-sdk"
-                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                  Language: 'java'
-                  DailyDocsBuild: true
-                  SparseCheckoutPaths:
-                    - docs-ref-services/
-                    - metadata/
-                  DocValidationImageId: "$(DocValidationImageId)"
-
               - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                 parameters:
                   JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
