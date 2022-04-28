@@ -20,6 +20,9 @@ import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
 import org.apache.avro.Schema;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,18 +44,20 @@ import static org.mockito.Mockito.when;
 public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase {
     static final String SCHEMA_REGISTRY_ENDPOINT = "SCHEMA_REGISTRY_ENDPOINT";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
+    static final String SCHEMA_REGISTRY_EVENT_HUB_NAME = "SCHEMA_REGISTRY_EVENT_HUB_NAME";
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
     static final String PLAYBACK_TEST_GROUP = "mygroup";
     static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
+    private TokenCredential tokenCredential;
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
+    private String endpoint;
+    private String eventHubName;
 
     @Override
     protected void beforeTest() {
-        TokenCredential tokenCredential;
-        String endpoint;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
             schemaGroup = PLAYBACK_TEST_GROUP;
@@ -65,11 +70,14 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
             });
 
             endpoint = PLAYBACK_ENDPOINT;
+            eventHubName = "javaeventhub";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
+            eventHubName = System.getenv(SCHEMA_REGISTRY_EVENT_HUB_NAME);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 
+            assertNotNull(eventHubName, "'eventHubName' cannot be null in LIVE/RECORD mode.");
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
@@ -144,5 +152,26 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         assertNotNull(actual);
         assertNotNull(actual.getCards());
         assertEquals(cards.getCards().size(), actual.getCards().size());
+    }
+
+    @Test
+    public void serializeAndDeserializeEventData() {
+        // Arrange
+        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
+            .schemaGroup(schemaGroup)
+            .schemaRegistryAsyncClient(builder.buildAsyncClient())
+            .avroSpecificReader(true)
+            .buildSerializer();
+
+        final PlayingCard playingCard = PlayingCard.newBuilder()
+            .setCardValue(1)
+            .setPlayingCardSuit(PlayingCardSuit.SPADES)
+            .setIsFaceCard(false)
+            .build();
+        final EventData event = serializer.serialize(playingCard, TypeReference.createInstance(EventData.class));
+
+        final EventHubProducerClient client = new EventHubClientBuilder()
+            .credential(endpoint, eventHubName, tokenCredential)
+            .buildProducerClient();
     }
 }

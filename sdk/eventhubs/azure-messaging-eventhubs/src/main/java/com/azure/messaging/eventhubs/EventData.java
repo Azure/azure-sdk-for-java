@@ -54,11 +54,12 @@ public class EventData extends MessageContent {
      * These are properties owned by the service and set when a message is received.
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
+    static final AmqpAnnotatedMessage EMPTY_MESSAGE = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(new byte[0]));
 
     private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final SystemProperties systemProperties;
-    private final AmqpAnnotatedMessage annotatedMessage;
+    private AmqpAnnotatedMessage annotatedMessage;
     private Context context;
 
     static {
@@ -70,6 +71,13 @@ public class EventData extends MessageContent {
         properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
+    }
+
+    public EventData() {
+        this.context = Context.NONE;
+        this.annotatedMessage = EMPTY_MESSAGE;
+        this.properties = annotatedMessage.getApplicationProperties();
+        this.systemProperties = new SystemProperties();
     }
 
     /**
@@ -218,8 +226,18 @@ public class EventData extends MessageContent {
      *
      * @return the {@link BinaryData} payload associated with this event.
      */
+    @Override
     public BinaryData getBodyAsBinaryData() {
         return BinaryData.fromBytes(annotatedMessage.getBody().getFirstData());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EventData setBodyAsBinaryData(BinaryData binaryData) {
+        this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(binaryData.toBytes()));
+        return this;
     }
 
     /**
