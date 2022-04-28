@@ -1,6 +1,7 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.util.Context
+import com.azure.core.util.DateTimeRfc1123
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
@@ -19,6 +20,7 @@ import com.azure.storage.file.datalake.models.PathItem
 import com.azure.storage.file.datalake.models.PublicAccessType
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
+import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -1472,7 +1474,9 @@ class FileSystemAPITest extends APISpec {
         fsc.getDirectoryClient(dirName).create()
 
         def fileName = generatePathName()
-        fsc.getFileClient(fileName).create()
+        def fileClient = fsc.getFileClient(fileName)
+        fileClient.create()
+        fileClient.scheduleDeletion(new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(2)))
 
         when:
         def response = fsc.listPaths().iterator()
@@ -1487,6 +1491,8 @@ class FileSystemAPITest extends APISpec {
         dirPath.getPermissions()
 //        dirPath.getContentLength() // known issue with service
         dirPath.isDirectory()
+        dirPath.getCreationTime()
+        !dirPath.getExpiryTime()
 
         response.hasNext()
         def filePath = response.next()
@@ -1498,6 +1504,8 @@ class FileSystemAPITest extends APISpec {
         filePath.getPermissions()
 //        filePath.getContentLength() // known issue with service
         !filePath.isDirectory()
+        filePath.getCreationTime()
+        filePath.getExpiryTime()
 
         !response.hasNext()
     }

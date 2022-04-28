@@ -19,10 +19,10 @@ public interface SpringConfigurationService
     extends ExternalChildResource<SpringConfigurationService, SpringService>,
         HasInnerModel<ConfigurationServiceResourceInner> {
     /** @return cpu for the Configuration Service */
-    String cpu();
+    Double cpu();
 
     /** @return memory for the Configuration Service, 1 GB can be represented by 1Gi or 1024Mi */
-    String memory();
+    Double memory();
 
     /** @return default git URI in the Configuration Service */
     String gitUri();
