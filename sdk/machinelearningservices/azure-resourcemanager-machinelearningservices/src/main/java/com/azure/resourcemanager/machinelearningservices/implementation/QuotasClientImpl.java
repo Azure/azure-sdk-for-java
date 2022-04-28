@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.QuotasClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.ResourceQuotaInner;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.UpdateWorkspaceQuotasResultInner;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QuotasClient. */
 public final class QuotasClientImpl implements QuotasClient {
-    private final ClientLogger logger = new ClientLogger(QuotasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QuotasService service;
 
@@ -108,7 +105,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota.
+     * @return the result of update workspace quota along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UpdateWorkspaceQuotasResultInner>> updateWithResponseAsync(
@@ -158,7 +156,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota.
+     * @return the result of update workspace quota along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UpdateWorkspaceQuotasResultInner>> updateWithResponseAsync(
@@ -204,7 +203,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota.
+     * @return the result of update workspace quota on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateWorkspaceQuotasResultInner> updateAsync(String location, QuotaUpdateParameters parameters) {
@@ -243,7 +242,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota.
+     * @return the result of update workspace quota along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateWorkspaceQuotasResultInner> updateWithResponse(
@@ -258,7 +257,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceQuotaInner>> listSinglePageAsync(String location) {
@@ -309,7 +309,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceQuotaInner>> listSinglePageAsync(String location, Context context) {
@@ -356,7 +357,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceQuotaInner> listAsync(String location) {
@@ -371,7 +372,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceQuotaInner> listAsync(String location, Context context) {
@@ -386,7 +387,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceQuotaInner> list(String location) {
@@ -401,7 +403,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceQuotaInner> list(String location, Context context) {
@@ -415,7 +418,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List WorkspaceQuotasByVMFamily operation response.
+     * @return the List WorkspaceQuotasByVMFamily operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceQuotaInner>> listNextSinglePageAsync(String nextLink) {
@@ -451,7 +455,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List WorkspaceQuotasByVMFamily operation response.
+     * @return the List WorkspaceQuotasByVMFamily operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceQuotaInner>> listNextSinglePageAsync(String nextLink, Context context) {

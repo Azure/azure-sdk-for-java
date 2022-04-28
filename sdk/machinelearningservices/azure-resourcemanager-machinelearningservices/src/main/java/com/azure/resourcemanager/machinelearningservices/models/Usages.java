@@ -16,7 +16,8 @@ public interface Usages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage information as well as limits for AML resources for given subscription and location.
+     * @return the current usage information as well as limits for AML resources for given subscription and location as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> list(String location);
 
@@ -28,7 +29,8 @@ public interface Usages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage information as well as limits for AML resources for given subscription and location.
+     * @return the current usage information as well as limits for AML resources for given subscription and location as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> list(String location, Context context);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.UpdateWorkspaceQuotas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of update workspace quota. */
 @Immutable
 public final class UpdateWorkspaceQuotasResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateWorkspaceQuotasResultInner.class);
-
     /*
      * The list of workspace quota update result.
      */

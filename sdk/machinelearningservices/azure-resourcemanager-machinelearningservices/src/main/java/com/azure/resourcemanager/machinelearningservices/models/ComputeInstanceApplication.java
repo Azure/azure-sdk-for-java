@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines an Aml Instance application and its connectivity endpoint URI. */
 @Fluent
 public final class ComputeInstanceApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceApplication.class);
-
     /*
      * Name of the ComputeInstance application.
      */

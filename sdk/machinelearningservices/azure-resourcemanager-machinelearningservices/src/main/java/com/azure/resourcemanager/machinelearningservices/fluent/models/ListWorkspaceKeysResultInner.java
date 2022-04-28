@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.RegistryListCredentialsResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ListWorkspaceKeysResult model. */
 @Immutable
 public final class ListWorkspaceKeysResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListWorkspaceKeysResultInner.class);
-
     /*
      * The userStorageKey property.
      */

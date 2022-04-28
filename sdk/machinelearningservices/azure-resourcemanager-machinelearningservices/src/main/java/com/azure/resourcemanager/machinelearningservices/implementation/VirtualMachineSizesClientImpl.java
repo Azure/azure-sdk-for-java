@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.VirtualMachineSizesClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.VirtualMachineSizeListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineSizesClient. */
 public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesClient {
-    private final ClientLogger logger = new ClientLogger(VirtualMachineSizesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineSizesService service;
 
@@ -74,7 +71,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
+     * @return the List Virtual Machine size operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineSizeListResultInner>> listWithResponseAsync(String location) {
@@ -116,7 +114,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
+     * @return the List Virtual Machine size operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineSizeListResultInner>> listWithResponseAsync(String location, Context context) {
@@ -154,7 +153,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
+     * @return the List Virtual Machine size operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineSizeListResultInner> listAsync(String location) {
@@ -191,7 +190,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
+     * @return the List Virtual Machine size operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineSizeListResultInner> listWithResponse(String location, Context context) {

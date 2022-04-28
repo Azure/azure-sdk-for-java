@@ -10,11 +10,11 @@ import java.util.List;
 /** An immutable client-side representation of VirtualMachineSizeListResult. */
 public interface VirtualMachineSizeListResult {
     /**
-     * Gets the amlCompute property: The list of virtual machine sizes supported by AmlCompute.
+     * Gets the value property: The list of virtual machine sizes supported by AmlCompute.
      *
-     * @return the amlCompute value.
+     * @return the value value.
      */
-    List<VirtualMachineSize> amlCompute();
+    List<VirtualMachineSize> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearningservices.fluent.models.VirtualMachineSizeListResultInner

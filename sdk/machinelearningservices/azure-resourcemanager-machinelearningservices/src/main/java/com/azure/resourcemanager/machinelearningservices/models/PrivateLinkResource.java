@@ -5,38 +5,22 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.machinelearningservices.fluent.models.PrivateLinkResourceProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** A private link resource. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
-
+public final class PrivateLinkResource extends ProxyResource {
     /*
-     * The private link resource group id.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.groupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String groupId;
-
-    /*
-     * The private link resource required member names.
-     */
-    @JsonProperty(value = "properties.requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> requiredMembers;
-
-    /*
-     * The private link resource Private link DNS zone name.
-     */
-    @JsonProperty(value = "properties.requiredZoneNames")
-    private List<String> requiredZoneNames;
+    @JsonProperty(value = "properties")
+    private PrivateLinkResourceProperties innerProperties;
 
     /*
      * The identity of the resource.
@@ -45,53 +29,37 @@ public class PrivateLinkResource extends Resource {
     private Identity identity;
 
     /*
+     * Specifies the location of the resource.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
+     * Contains resource tags defined as key/value pairs.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
      * The sku of the workspace.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Read only system data
+     * System data
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /**
-     * Get the groupId property: The private link resource group id.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the groupId value.
+     * @return the innerProperties value.
      */
-    public String groupId() {
-        return this.groupId;
-    }
-
-    /**
-     * Get the requiredMembers property: The private link resource required member names.
-     *
-     * @return the requiredMembers value.
-     */
-    public List<String> requiredMembers() {
-        return this.requiredMembers;
-    }
-
-    /**
-     * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
-     * @return the requiredZoneNames value.
-     */
-    public List<String> requiredZoneNames() {
-        return this.requiredZoneNames;
-    }
-
-    /**
-     * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
-     * @param requiredZoneNames the requiredZoneNames value to set.
-     * @return the PrivateLinkResource object itself.
-     */
-    public PrivateLinkResource withRequiredZoneNames(List<String> requiredZoneNames) {
-        this.requiredZoneNames = requiredZoneNames;
-        return this;
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -111,6 +79,46 @@ public class PrivateLinkResource extends Resource {
      */
     public PrivateLinkResource withIdentity(Identity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the location property: Specifies the location of the resource.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Specifies the location of the resource.
+     *
+     * @param location the location value to set.
+     * @return the PrivateLinkResource object itself.
+     */
+    public PrivateLinkResource withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Contains resource tags defined as key/value pairs.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Contains resource tags defined as key/value pairs.
+     *
+     * @param tags the tags value to set.
+     * @return the PrivateLinkResource object itself.
+     */
+    public PrivateLinkResource withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -135,7 +143,7 @@ public class PrivateLinkResource extends Resource {
     }
 
     /**
-     * Get the systemData property: Read only system data.
+     * Get the systemData property: System data.
      *
      * @return the systemData value.
      */
@@ -143,17 +151,44 @@ public class PrivateLinkResource extends Resource {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public PrivateLinkResource withLocation(String location) {
-        super.withLocation(location);
-        return this;
+    /**
+     * Get the groupId property: The private link resource group id.
+     *
+     * @return the groupId value.
+     */
+    public String groupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public PrivateLinkResource withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    /**
+     * Get the requiredMembers property: The private link resource required member names.
+     *
+     * @return the requiredMembers value.
+     */
+    public List<String> requiredMembers() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
+    }
+
+    /**
+     * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
+     *
+     * @return the requiredZoneNames value.
+     */
+    public List<String> requiredZoneNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
+    }
+
+    /**
+     * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
+     *
+     * @param requiredZoneNames the requiredZoneNames value to set.
+     * @return the PrivateLinkResource object itself.
+     */
+    public PrivateLinkResource withRequiredZoneNames(List<String> requiredZoneNames) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
         return this;
     }
 
@@ -163,6 +198,9 @@ public class PrivateLinkResource extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

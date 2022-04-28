@@ -6,14 +6,11 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KeyVaultProperties model. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
-
     /*
      * The ArmId of the keyVault where the customer owned encryption key is
      * present.
@@ -103,16 +100,18 @@ public final class KeyVaultProperties {
      */
     public void validate() {
         if (keyVaultArmId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyVaultArmId in model KeyVaultProperties"));
         }
         if (keyIdentifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyIdentifier in model KeyVaultProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultProperties.class);
 }

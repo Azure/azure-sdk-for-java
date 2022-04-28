@@ -12,10 +12,9 @@ import com.azure.resourcemanager.machinelearningservices.fluent.PrivateLinkResou
 import com.azure.resourcemanager.machinelearningservices.fluent.models.PrivateLinkResourceListResultInner;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateLinkResourceListResult;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 
@@ -28,9 +27,8 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         this.serviceManager = serviceManager;
     }
 
-    public PrivateLinkResourceListResult listByWorkspace(String resourceGroupName, String workspaceName) {
-        PrivateLinkResourceListResultInner inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+    public PrivateLinkResourceListResult list(String resourceGroupName, String workspaceName) {
+        PrivateLinkResourceListResultInner inner = this.serviceClient().list(resourceGroupName, workspaceName);
         if (inner != null) {
             return new PrivateLinkResourceListResultImpl(inner, this.manager());
         } else {
@@ -38,10 +36,10 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public Response<PrivateLinkResourceListResult> listByWorkspaceWithResponse(
+    public Response<PrivateLinkResourceListResult> listWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<PrivateLinkResourceListResultInner> inner =
-            this.serviceClient().listByWorkspaceWithResponse(resourceGroupName, workspaceName, context);
+            this.serviceClient().listWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

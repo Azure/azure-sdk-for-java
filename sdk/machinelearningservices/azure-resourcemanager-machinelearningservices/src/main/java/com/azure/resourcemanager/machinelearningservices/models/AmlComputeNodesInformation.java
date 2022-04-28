@@ -5,25 +5,23 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Compute node information related to a AmlCompute. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "computeType")
-@JsonTypeName("AmlCompute")
+/** Result of AmlCompute Nodes. */
 @Immutable
-public final class AmlComputeNodesInformation extends ComputeNodesInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmlComputeNodesInformation.class);
-
+public final class AmlComputeNodesInformation {
     /*
      * The collection of returned AmlCompute nodes details.
      */
     @JsonProperty(value = "nodes", access = JsonProperty.Access.WRITE_ONLY)
     private List<AmlComputeNodeInformation> nodes;
+
+    /*
+     * The continuation token.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
 
     /**
      * Get the nodes property: The collection of returned AmlCompute nodes details.
@@ -35,13 +33,20 @@ public final class AmlComputeNodesInformation extends ComputeNodesInformation {
     }
 
     /**
+     * Get the nextLink property: The continuation token.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (nodes() != null) {
             nodes().forEach(e -> e.validate());
         }

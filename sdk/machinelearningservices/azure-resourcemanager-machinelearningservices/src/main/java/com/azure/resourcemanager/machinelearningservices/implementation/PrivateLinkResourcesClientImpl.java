@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkResourcesService service;
 
@@ -61,7 +58,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResultInner>> listByWorkspace(
+        Mono<Response<PrivateLinkResourceListResultInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -74,15 +71,16 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets the private link resources that need to be created for a workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace.
+     * @return the private link resources that need to be created for a workspace along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>> listByWorkspaceWithResponseAsync(
+    private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(
         String resourceGroupName, String workspaceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -108,7 +106,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .withContext(
                 context ->
                     service
-                        .listByWorkspace(
+                        .list(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -122,16 +120,17 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets the private link resources that need to be created for a workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace.
+     * @return the private link resources that need to be created for a workspace along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>> listByWorkspaceWithResponseAsync(
+    private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(
         String resourceGroupName, String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -155,7 +154,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
+            .list(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -168,17 +167,17 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets the private link resources that need to be created for a workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace.
+     * @return the private link resources that need to be created for a workspace on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceListResultInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName) {
-        return listByWorkspaceWithResponseAsync(resourceGroupName, workspaceName)
+    private Mono<PrivateLinkResourceListResultInner> listAsync(String resourceGroupName, String workspaceName) {
+        return listWithResponseAsync(resourceGroupName, workspaceName)
             .flatMap(
                 (Response<PrivateLinkResourceListResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -192,7 +191,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets the private link resources that need to be created for a workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -200,24 +199,24 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return the private link resources that need to be created for a workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceListResultInner listByWorkspace(String resourceGroupName, String workspaceName) {
-        return listByWorkspaceAsync(resourceGroupName, workspaceName).block();
+    public PrivateLinkResourceListResultInner list(String resourceGroupName, String workspaceName) {
+        return listAsync(resourceGroupName, workspaceName).block();
     }
 
     /**
      * Gets the private link resources that need to be created for a workspace.
      *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace.
+     * @return the private link resources that need to be created for a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceListResultInner> listByWorkspaceWithResponse(
+    public Response<PrivateLinkResourceListResultInner> listWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
-        return listByWorkspaceWithResponseAsync(resourceGroupName, workspaceName, context).block();
+        return listWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 }

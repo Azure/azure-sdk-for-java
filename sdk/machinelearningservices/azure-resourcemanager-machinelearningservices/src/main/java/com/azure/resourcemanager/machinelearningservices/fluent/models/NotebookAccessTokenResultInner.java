@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NotebookAccessTokenResult model. */
 @Immutable
 public final class NotebookAccessTokenResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookAccessTokenResultInner.class);
-
     /*
      * The notebookResourceId property.
      */

@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.AksComputeSecrets;
 import com.azure.resourcemanager.machinelearningservices.models.DatabricksComputeSecrets;
 import com.azure.resourcemanager.machinelearningservices.models.VirtualMachineSecrets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -28,8 +26,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ComputeSecretsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeSecretsInner.class);
-
     /**
      * Validates the instance.
      *

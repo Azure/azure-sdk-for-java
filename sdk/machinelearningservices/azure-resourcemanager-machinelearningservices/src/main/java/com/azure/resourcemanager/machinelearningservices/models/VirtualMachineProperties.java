@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineProperties model. */
 @Fluent
 public final class VirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineProperties.class);
-
     /*
      * Virtual Machine size
      */

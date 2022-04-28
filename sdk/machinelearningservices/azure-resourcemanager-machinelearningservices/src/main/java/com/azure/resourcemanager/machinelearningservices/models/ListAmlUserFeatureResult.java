@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.AmlUserFeatureInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Aml user feature operation response. */
 @Immutable
 public final class ListAmlUserFeatureResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListAmlUserFeatureResult.class);
-
     /*
      * The list of AML user facing features.
      */

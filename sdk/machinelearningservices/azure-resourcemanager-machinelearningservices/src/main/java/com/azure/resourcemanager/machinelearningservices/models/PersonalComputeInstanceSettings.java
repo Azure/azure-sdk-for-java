@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for a personal compute instance. */
 @Fluent
 public final class PersonalComputeInstanceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PersonalComputeInstanceSettings.class);
-
     /*
      * A user explicitly assigned to a personal compute instance.
      */

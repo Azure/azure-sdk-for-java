@@ -5,43 +5,25 @@
 package com.azure.resourcemanager.machinelearningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.models.Identity;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateEndpoint;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.machinelearningservices.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.machinelearningservices.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The Private Endpoint Connection resource. */
-@JsonFlatten
 @Fluent
-public class PrivateEndpointConnectionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
-
+public final class PrivateEndpointConnectionInner extends ProxyResource {
     /*
-     * The resource of private end point.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.privateEndpoint")
-    private PrivateEndpoint privateEndpoint;
-
-    /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
-     */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
-
-    /*
-     * The provisioning state of the private endpoint connection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private PrivateEndpointConnectionProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private PrivateEndpointConnectionProperties innerProperties;
 
     /*
      * The identity of the resource.
@@ -50,67 +32,37 @@ public class PrivateEndpointConnectionInner extends Resource {
     private Identity identity;
 
     /*
+     * Specifies the location of the resource.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
+     * Contains resource tags defined as key/value pairs.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
      * The sku of the workspace.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Read only system data
+     * System data
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /**
-     * Get the privateEndpoint property: The resource of private end point.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the privateEndpoint value.
+     * @return the innerProperties value.
      */
-    public PrivateEndpoint privateEndpoint() {
-        return this.privateEndpoint;
-    }
-
-    /**
-     * Set the privateEndpoint property: The resource of private end point.
-     *
-     * @param privateEndpoint the privateEndpoint value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
-     */
-    public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
-        this.privateEndpoint = privateEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
-     * @return the privateLinkServiceConnectionState value.
-     */
-    public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
-    }
-
-    /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
-     * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
-     */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
-     *
-     * @return the provisioningState value.
-     */
-    public PrivateEndpointConnectionProvisioningState provisioningState() {
-        return this.provisioningState;
+    private PrivateEndpointConnectionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -130,6 +82,46 @@ public class PrivateEndpointConnectionInner extends Resource {
      */
     public PrivateEndpointConnectionInner withIdentity(Identity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the location property: Specifies the location of the resource.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Specifies the location of the resource.
+     *
+     * @param location the location value to set.
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Contains resource tags defined as key/value pairs.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Contains resource tags defined as key/value pairs.
+     *
+     * @param tags the tags value to set.
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -154,7 +146,7 @@ public class PrivateEndpointConnectionInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Read only system data.
+     * Get the systemData property: System data.
      *
      * @return the systemData value.
      */
@@ -162,18 +154,62 @@ public class PrivateEndpointConnectionInner extends Resource {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public PrivateEndpointConnectionInner withLocation(String location) {
-        super.withLocation(location);
+    /**
+     * Get the privateEndpoint property: The resource of private end point.
+     *
+     * @return the privateEndpoint value.
+     */
+    public PrivateEndpoint privateEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
+    }
+
+    /**
+     * Set the privateEndpoint property: The resource of private end point.
+     *
+     * @param privateEndpoint the privateEndpoint value to set.
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateEndpoint(privateEndpoint);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public PrivateEndpointConnectionInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    /**
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
+     *
+     * @return the privateLinkServiceConnectionState value.
+     */
+    public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
+    }
+
+    /**
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
+     *
+     * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
+     *
+     * @return the provisioningState value.
+     */
+    public PrivateEndpointConnectionProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -182,11 +218,8 @@ public class PrivateEndpointConnectionInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpoint() != null) {
-            privateEndpoint().validate();
-        }
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();

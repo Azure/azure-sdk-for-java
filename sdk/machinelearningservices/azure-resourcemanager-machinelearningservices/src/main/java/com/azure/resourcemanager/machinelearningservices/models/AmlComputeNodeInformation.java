@@ -5,35 +5,31 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Compute node information related to a AmlCompute. */
 @Immutable
 public final class AmlComputeNodeInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmlComputeNodeInformation.class);
-
     /*
-     * ID of the compute node.
+     * Node ID. ID of the compute node.
      */
     @JsonProperty(value = "nodeId", access = JsonProperty.Access.WRITE_ONLY)
     private String nodeId;
 
     /*
-     * Private IP address of the compute node.
+     * Private IP address. Private IP address of the compute node.
      */
     @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
-     * Public IP address of the compute node.
+     * Public IP address. Public IP address of the compute node.
      */
     @JsonProperty(value = "publicIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String publicIpAddress;
 
     /*
-     * SSH port number of the node.
+     * Port. SSH port number of the node.
      */
     @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Integer port;
@@ -46,13 +42,13 @@ public final class AmlComputeNodeInformation {
     private NodeState nodeState;
 
     /*
-     * ID of the Experiment running on the node, if any else null.
+     * Run ID. ID of the Experiment running on the node, if any else null.
      */
     @JsonProperty(value = "runId", access = JsonProperty.Access.WRITE_ONLY)
     private String runId;
 
     /**
-     * Get the nodeId property: ID of the compute node.
+     * Get the nodeId property: Node ID. ID of the compute node.
      *
      * @return the nodeId value.
      */
@@ -61,7 +57,7 @@ public final class AmlComputeNodeInformation {
     }
 
     /**
-     * Get the privateIpAddress property: Private IP address of the compute node.
+     * Get the privateIpAddress property: Private IP address. Private IP address of the compute node.
      *
      * @return the privateIpAddress value.
      */
@@ -70,7 +66,7 @@ public final class AmlComputeNodeInformation {
     }
 
     /**
-     * Get the publicIpAddress property: Public IP address of the compute node.
+     * Get the publicIpAddress property: Public IP address. Public IP address of the compute node.
      *
      * @return the publicIpAddress value.
      */
@@ -79,7 +75,7 @@ public final class AmlComputeNodeInformation {
     }
 
     /**
-     * Get the port property: SSH port number of the node.
+     * Get the port property: Port. SSH port number of the node.
      *
      * @return the port value.
      */
@@ -98,7 +94,7 @@ public final class AmlComputeNodeInformation {
     }
 
     /**
-     * Get the runId property: ID of the Experiment running on the node, if any else null.
+     * Get the runId property: Run ID. ID of the Experiment running on the node, if any else null.
      *
      * @return the runId value.
      */

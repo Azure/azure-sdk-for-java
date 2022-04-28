@@ -31,7 +31,7 @@ public interface Quotas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of update workspace quota.
+     * @return the result of update workspace quota along with {@link Response}.
      */
     Response<UpdateWorkspaceQuotasResult> updateWithResponse(
         String location, QuotaUpdateParameters parameters, Context context);
@@ -43,7 +43,8 @@ public interface Quotas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ResourceQuota> list(String location);
 
@@ -55,7 +56,8 @@ public interface Quotas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ResourceQuota> list(String location, Context context);
 }

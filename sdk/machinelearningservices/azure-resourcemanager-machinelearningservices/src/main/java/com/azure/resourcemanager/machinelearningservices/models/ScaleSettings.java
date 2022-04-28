@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** scale settings for AML Compute. */
 @Fluent
 public final class ScaleSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleSettings.class);
-
     /*
      * Max number of nodes to use
      */

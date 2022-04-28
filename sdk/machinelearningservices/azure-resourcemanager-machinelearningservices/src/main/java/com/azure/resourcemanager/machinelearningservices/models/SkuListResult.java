@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspaceSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of skus with features. */
 @Fluent
 public final class SkuListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuListResult.class);
-
     /*
      * The value property.
      */

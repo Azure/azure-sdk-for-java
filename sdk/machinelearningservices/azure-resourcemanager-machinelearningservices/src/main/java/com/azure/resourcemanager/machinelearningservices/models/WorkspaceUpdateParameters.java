@@ -5,22 +5,19 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspacePropertiesUpdateParameters;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters for updating a machine learning workspace. */
-@JsonFlatten
 @Fluent
-public class WorkspaceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceUpdateParameters.class);
-
+public final class WorkspaceUpdateParameters {
     /*
      * The resource tags for the machine learning workspace.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -36,35 +33,10 @@ public class WorkspaceUpdateParameters {
     private Identity identity;
 
     /*
-     * The description of this workspace.
+     * The properties that the machine learning workspace will be updated with.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The friendly name for this workspace.
-     */
-    @JsonProperty(value = "properties.friendlyName")
-    private String friendlyName;
-
-    /*
-     * The compute name for image build
-     */
-    @JsonProperty(value = "properties.imageBuildCompute")
-    private String imageBuildCompute;
-
-    /*
-     * The service managed resource settings.
-     */
-    @JsonProperty(value = "properties.serviceManagedResourcesSettings")
-    private ServiceManagedResourcesSettings serviceManagedResourcesSettings;
-
-    /*
-     * The user assigned identity resource id that represents the workspace
-     * identity.
-     */
-    @JsonProperty(value = "properties.primaryUserAssignedIdentity")
-    private String primaryUserAssignedIdentity;
+    @JsonProperty(value = "properties")
+    private WorkspacePropertiesUpdateParameters innerProperties;
 
     /**
      * Get the tags property: The resource tags for the machine learning workspace.
@@ -127,12 +99,21 @@ public class WorkspaceUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The properties that the machine learning workspace will be updated with.
+     *
+     * @return the innerProperties value.
+     */
+    private WorkspacePropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the description property: The description of this workspace.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -142,7 +123,10 @@ public class WorkspaceUpdateParameters {
      * @return the WorkspaceUpdateParameters object itself.
      */
     public WorkspaceUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesUpdateParameters();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -152,7 +136,7 @@ public class WorkspaceUpdateParameters {
      * @return the friendlyName value.
      */
     public String friendlyName() {
-        return this.friendlyName;
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
     }
 
     /**
@@ -162,7 +146,10 @@ public class WorkspaceUpdateParameters {
      * @return the WorkspaceUpdateParameters object itself.
      */
     public WorkspaceUpdateParameters withFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesUpdateParameters();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
         return this;
     }
 
@@ -172,7 +159,7 @@ public class WorkspaceUpdateParameters {
      * @return the imageBuildCompute value.
      */
     public String imageBuildCompute() {
-        return this.imageBuildCompute;
+        return this.innerProperties() == null ? null : this.innerProperties().imageBuildCompute();
     }
 
     /**
@@ -182,7 +169,10 @@ public class WorkspaceUpdateParameters {
      * @return the WorkspaceUpdateParameters object itself.
      */
     public WorkspaceUpdateParameters withImageBuildCompute(String imageBuildCompute) {
-        this.imageBuildCompute = imageBuildCompute;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesUpdateParameters();
+        }
+        this.innerProperties().withImageBuildCompute(imageBuildCompute);
         return this;
     }
 
@@ -192,7 +182,7 @@ public class WorkspaceUpdateParameters {
      * @return the serviceManagedResourcesSettings value.
      */
     public ServiceManagedResourcesSettings serviceManagedResourcesSettings() {
-        return this.serviceManagedResourcesSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceManagedResourcesSettings();
     }
 
     /**
@@ -203,7 +193,10 @@ public class WorkspaceUpdateParameters {
      */
     public WorkspaceUpdateParameters withServiceManagedResourcesSettings(
         ServiceManagedResourcesSettings serviceManagedResourcesSettings) {
-        this.serviceManagedResourcesSettings = serviceManagedResourcesSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesUpdateParameters();
+        }
+        this.innerProperties().withServiceManagedResourcesSettings(serviceManagedResourcesSettings);
         return this;
     }
 
@@ -214,7 +207,7 @@ public class WorkspaceUpdateParameters {
      * @return the primaryUserAssignedIdentity value.
      */
     public String primaryUserAssignedIdentity() {
-        return this.primaryUserAssignedIdentity;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryUserAssignedIdentity();
     }
 
     /**
@@ -225,7 +218,33 @@ public class WorkspaceUpdateParameters {
      * @return the WorkspaceUpdateParameters object itself.
      */
     public WorkspaceUpdateParameters withPrimaryUserAssignedIdentity(String primaryUserAssignedIdentity) {
-        this.primaryUserAssignedIdentity = primaryUserAssignedIdentity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesUpdateParameters();
+        }
+        this.innerProperties().withPrimaryUserAssignedIdentity(primaryUserAssignedIdentity);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the WorkspaceUpdateParameters object itself.
+     */
+    public WorkspaceUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesUpdateParameters();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -241,8 +260,8 @@ public class WorkspaceUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
-        if (serviceManagedResourcesSettings() != null) {
-            serviceManagedResourcesSettings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

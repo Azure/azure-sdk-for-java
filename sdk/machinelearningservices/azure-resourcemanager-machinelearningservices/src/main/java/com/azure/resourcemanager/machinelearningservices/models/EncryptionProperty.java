@@ -6,14 +6,11 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EncryptionProperty model. */
 @Fluent
 public final class EncryptionProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProperty.class);
-
     /*
      * Indicates whether or not the encryption is enabled for the workspace.
      */
@@ -100,7 +97,7 @@ public final class EncryptionProperty {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model EncryptionProperty"));
         }
@@ -108,7 +105,7 @@ public final class EncryptionProperty {
             identity().validate();
         }
         if (keyVaultProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyVaultProperties in model EncryptionProperty"));
@@ -116,4 +113,6 @@ public final class EncryptionProperty {
             keyVaultProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionProperty.class);
 }

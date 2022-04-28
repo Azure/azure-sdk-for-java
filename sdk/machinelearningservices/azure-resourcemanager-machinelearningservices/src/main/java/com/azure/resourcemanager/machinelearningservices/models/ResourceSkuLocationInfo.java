@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceSkuLocationInfo model. */
 @Immutable
 public final class ResourceSkuLocationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
-
     /*
      * Location of the SKU
      */

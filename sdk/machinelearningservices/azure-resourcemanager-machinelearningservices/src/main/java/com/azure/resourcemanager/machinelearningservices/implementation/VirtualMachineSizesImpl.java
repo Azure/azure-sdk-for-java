@@ -12,10 +12,9 @@ import com.azure.resourcemanager.machinelearningservices.fluent.VirtualMachineSi
 import com.azure.resourcemanager.machinelearningservices.fluent.models.VirtualMachineSizeListResultInner;
 import com.azure.resourcemanager.machinelearningservices.models.VirtualMachineSizeListResult;
 import com.azure.resourcemanager.machinelearningservices.models.VirtualMachineSizes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachineSizesImpl implements VirtualMachineSizes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSizesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineSizesImpl.class);
 
     private final VirtualMachineSizesClient innerClient;
 

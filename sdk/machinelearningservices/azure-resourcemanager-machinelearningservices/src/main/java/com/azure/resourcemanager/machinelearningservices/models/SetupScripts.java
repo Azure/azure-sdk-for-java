@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of customized scripts to execute for setting up the cluster. */
 @Fluent
 public final class SetupScripts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SetupScripts.class);
-
     /*
      * Customized setup scripts
      */

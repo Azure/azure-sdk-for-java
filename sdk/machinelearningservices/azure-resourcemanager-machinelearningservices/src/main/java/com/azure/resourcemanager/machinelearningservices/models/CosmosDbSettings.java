@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CosmosDbSettings model. */
 @Fluent
 public final class CosmosDbSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CosmosDbSettings.class);
-
     /*
      * The throughput of the collections in cosmosdb database
      */

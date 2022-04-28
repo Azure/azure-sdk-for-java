@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Script reference. */
 @Fluent
 public final class ScriptReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptReference.class);
-
     /*
      * The storage source of the script: inline, workspace.
      */

@@ -6,34 +6,31 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The estimated price info for using a VM of a particular OS type, tier, etc. */
 @Fluent
 public final class EstimatedVMPrice {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EstimatedVMPrice.class);
-
     /*
-     * The price charged for using the VM.
+     * Retail price The price charged for using the VM.
      */
     @JsonProperty(value = "retailPrice", required = true)
     private double retailPrice;
 
     /*
-     * Operating system type used by the VM.
+     * OS type Operating system type used by the VM.
      */
     @JsonProperty(value = "osType", required = true)
     private VMPriceOSType osType;
 
     /*
-     * The type of the VM.
+     * VM tier The type of the VM.
      */
     @JsonProperty(value = "vmTier", required = true)
     private VMTier vmTier;
 
     /**
-     * Get the retailPrice property: The price charged for using the VM.
+     * Get the retailPrice property: Retail price The price charged for using the VM.
      *
      * @return the retailPrice value.
      */
@@ -42,7 +39,7 @@ public final class EstimatedVMPrice {
     }
 
     /**
-     * Set the retailPrice property: The price charged for using the VM.
+     * Set the retailPrice property: Retail price The price charged for using the VM.
      *
      * @param retailPrice the retailPrice value to set.
      * @return the EstimatedVMPrice object itself.
@@ -53,7 +50,7 @@ public final class EstimatedVMPrice {
     }
 
     /**
-     * Get the osType property: Operating system type used by the VM.
+     * Get the osType property: OS type Operating system type used by the VM.
      *
      * @return the osType value.
      */
@@ -62,7 +59,7 @@ public final class EstimatedVMPrice {
     }
 
     /**
-     * Set the osType property: Operating system type used by the VM.
+     * Set the osType property: OS type Operating system type used by the VM.
      *
      * @param osType the osType value to set.
      * @return the EstimatedVMPrice object itself.
@@ -73,7 +70,7 @@ public final class EstimatedVMPrice {
     }
 
     /**
-     * Get the vmTier property: The type of the VM.
+     * Get the vmTier property: VM tier The type of the VM.
      *
      * @return the vmTier value.
      */
@@ -82,7 +79,7 @@ public final class EstimatedVMPrice {
     }
 
     /**
-     * Set the vmTier property: The type of the VM.
+     * Set the vmTier property: VM tier The type of the VM.
      *
      * @param vmTier the vmTier value to set.
      * @return the EstimatedVMPrice object itself.
@@ -99,14 +96,16 @@ public final class EstimatedVMPrice {
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osType in model EstimatedVMPrice"));
         }
         if (vmTier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property vmTier in model EstimatedVMPrice"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EstimatedVMPrice.class);
 }

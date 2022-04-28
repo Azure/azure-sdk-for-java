@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The RegistryListCredentialsResult model. */
 @Fluent
 public final class RegistryListCredentialsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryListCredentialsResult.class);
-
     /*
      * The location property.
      */

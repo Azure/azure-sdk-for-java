@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.ComputeResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paginated list of Machine Learning compute objects wrapped in ARM resource envelope. */
 @Fluent
 public final class PaginatedComputeResourcesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PaginatedComputeResourcesList.class);
-
     /*
      * An array of Machine Learning compute objects wrapped in ARM resource
      * envelope.

@@ -5,40 +5,47 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.machinelearningservices.fluent.models.ClusterUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AmlCompute update parameters. */
-@JsonFlatten
 @Fluent
-public class ClusterUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdateParameters.class);
-
+public final class ClusterUpdateParameters {
     /*
-     * Desired scale settings for the amlCompute.
+     * The properties of the amlCompute.
      */
-    @JsonProperty(value = "properties.scaleSettings")
-    private ScaleSettings scaleSettings;
+    @JsonProperty(value = "properties")
+    private ClusterUpdateProperties innerProperties;
 
     /**
-     * Get the scaleSettings property: Desired scale settings for the amlCompute.
+     * Get the innerProperties property: The properties of the amlCompute.
      *
-     * @return the scaleSettings value.
+     * @return the innerProperties value.
      */
-    public ScaleSettings scaleSettings() {
-        return this.scaleSettings;
+    private ClusterUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the scaleSettings property: Desired scale settings for the amlCompute.
+     * Get the properties property: Properties of ClusterUpdate.
      *
-     * @param scaleSettings the scaleSettings value to set.
+     * @return the properties value.
+     */
+    public ScaleSettingsInformation properties() {
+        return this.innerProperties() == null ? null : this.innerProperties().properties();
+    }
+
+    /**
+     * Set the properties property: Properties of ClusterUpdate.
+     *
+     * @param properties the properties value to set.
      * @return the ClusterUpdateParameters object itself.
      */
-    public ClusterUpdateParameters withScaleSettings(ScaleSettings scaleSettings) {
-        this.scaleSettings = scaleSettings;
+    public ClusterUpdateParameters withProperties(ScaleSettingsInformation properties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterUpdateProperties();
+        }
+        this.innerProperties().withProperties(properties);
         return this;
     }
 
@@ -48,8 +55,8 @@ public class ClusterUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (scaleSettings() != null) {
-            scaleSettings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

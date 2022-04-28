@@ -28,7 +28,7 @@ public interface VirtualMachineSizes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
+     * @return the List Virtual Machine size operation response along with {@link Response}.
      */
     Response<VirtualMachineSizeListResult> listWithResponse(String location, Context context);
 }

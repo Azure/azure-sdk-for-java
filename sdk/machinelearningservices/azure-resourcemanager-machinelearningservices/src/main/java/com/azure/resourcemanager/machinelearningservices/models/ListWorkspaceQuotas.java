@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearningservices.fluent.models.ResourceQuotaInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List WorkspaceQuotasByVMFamily operation response. */
 @Immutable
 public final class ListWorkspaceQuotas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListWorkspaceQuotas.class);
-
     /*
      * The list of Workspace Quotas by VM Family
      */

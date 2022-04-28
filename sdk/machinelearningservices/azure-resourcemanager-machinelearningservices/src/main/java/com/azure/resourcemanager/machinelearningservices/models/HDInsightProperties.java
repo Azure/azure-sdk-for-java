@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HDInsightProperties model. */
+/** HDInsight compute properties. */
 @Fluent
 public final class HDInsightProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightProperties.class);
-
     /*
      * Port open for ssh connections on the master node of the cluster.
      */

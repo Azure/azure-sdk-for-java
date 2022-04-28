@@ -36,32 +36,25 @@ public interface ComputeResource {
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
+     * Gets the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
+     * Gets the location property: Specifies the location of the resource.
      *
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Resource tags.
+     * Gets the tags property: Contains resource tags defined as key/value pairs.
      *
      * @return the tags value.
      */
     Map<String, String> tags();
-
-    /**
-     * Gets the properties property: Compute properties.
-     *
-     * @return the properties value.
-     */
-    Compute properties();
-
-    /**
-     * Gets the identity property: The identity of the resource.
-     *
-     * @return the identity value.
-     */
-    Identity identity();
 
     /**
      * Gets the sku property: The sku of the workspace.
@@ -71,11 +64,18 @@ public interface ComputeResource {
     Sku sku();
 
     /**
-     * Gets the systemData property: Read only system data.
+     * Gets the systemData property: System data.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the properties property: Compute properties.
+     *
+     * @return the properties value.
+     */
+    Compute properties();
 
     /**
      * Gets the region of the resource.
@@ -100,40 +100,19 @@ public interface ComputeResource {
 
     /** The entirety of the ComputeResource definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
     /** The ComputeResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ComputeResource definition. */
-        interface Blank extends WithLocation {
-        }
-        /** The stage of the ComputeResource definition allowing to specify location. */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithParentResource withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithParentResource withRegion(String location);
+        interface Blank extends WithParentResource {
         }
         /** The stage of the ComputeResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, workspaceName.
              *
-             * @param resourceGroupName Name of the resource group in which workspace is located.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName Name of Azure Machine Learning workspace.
              * @return the next definition stage.
              */
@@ -144,10 +123,11 @@ public interface ComputeResource {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithProperties,
+            extends DefinitionStages.WithLocation,
+                DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku {
+                DefinitionStages.WithSku,
+                DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -163,25 +143,33 @@ public interface ComputeResource {
              */
             ComputeResource create(Context context);
         }
+        /** The stage of the ComputeResource definition allowing to specify location. */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location Specifies the location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location Specifies the location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
+        }
         /** The stage of the ComputeResource definition allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Contains resource tags defined as key/value pairs..
              *
-             * @param tags Resource tags.
+             * @param tags Contains resource tags defined as key/value pairs.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the ComputeResource definition allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: Compute properties.
-             *
-             * @param properties Compute properties.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(Compute properties);
         }
         /** The stage of the ComputeResource definition allowing to specify identity. */
         interface WithIdentity {
@@ -203,6 +191,16 @@ public interface ComputeResource {
              */
             WithCreate withSku(Sku sku);
         }
+        /** The stage of the ComputeResource definition allowing to specify properties. */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Compute properties.
+             *
+             * @param properties Compute properties.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(Compute properties);
+        }
     }
     /**
      * Begins update for the ComputeResource resource.
@@ -212,7 +210,7 @@ public interface ComputeResource {
     ComputeResource.Update update();
 
     /** The template for ComputeResource update. */
-    interface Update extends UpdateStages.WithScaleSettings {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -230,15 +228,15 @@ public interface ComputeResource {
     }
     /** The ComputeResource update stages. */
     interface UpdateStages {
-        /** The stage of the ComputeResource update allowing to specify scaleSettings. */
-        interface WithScaleSettings {
+        /** The stage of the ComputeResource update allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the scaleSettings property: Desired scale settings for the amlCompute..
+             * Specifies the properties property: Properties of ClusterUpdate.
              *
-             * @param scaleSettings Desired scale settings for the amlCompute.
+             * @param properties Properties of ClusterUpdate.
              * @return the next definition stage.
              */
-            Update withScaleSettings(ScaleSettings scaleSettings);
+            Update withProperties(ScaleSettingsInformation properties);
         }
     }
     /**
@@ -261,7 +259,8 @@ public interface ComputeResource {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details (e.
+     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<AmlComputeNodeInformation> listNodes();
 
@@ -272,7 +271,8 @@ public interface ComputeResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details (e.
+     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<AmlComputeNodeInformation> listNodes(Context context);
 
@@ -292,7 +292,8 @@ public interface ComputeResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
+     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with {@link
+     *     Response}.
      */
     Response<ComputeSecrets> listKeysWithResponse(Context context);
 
@@ -347,7 +348,6 @@ public interface ComputeResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> restartWithResponse(Context context);
+    void restart(Context context);
 }

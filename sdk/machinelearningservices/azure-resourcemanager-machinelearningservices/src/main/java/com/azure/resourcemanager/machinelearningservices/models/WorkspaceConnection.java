@@ -86,7 +86,7 @@ public interface WorkspaceConnection {
             /**
              * Specifies resourceGroupName, workspaceName.
              *
-             * @param resourceGroupName Name of the resource group in which workspace is located.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName Name of Azure Machine Learning workspace.
              * @return the next definition stage.
              */
@@ -97,8 +97,7 @@ public interface WorkspaceConnection {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithName,
-                DefinitionStages.WithCategory,
+            extends DefinitionStages.WithCategory,
                 DefinitionStages.WithTarget,
                 DefinitionStages.WithAuthType,
                 DefinitionStages.WithValue,
@@ -117,16 +116,6 @@ public interface WorkspaceConnection {
              * @return the created resource.
              */
             WorkspaceConnection create(Context context);
-        }
-        /** The stage of the WorkspaceConnection definition allowing to specify name. */
-        interface WithName {
-            /**
-             * Specifies the name property: Friendly name of the workspace connection.
-             *
-             * @param name Friendly name of the workspace connection.
-             * @return the next definition stage.
-             */
-            WithCreate withName(String name);
         }
         /** The stage of the WorkspaceConnection definition allowing to specify category. */
         interface WithCategory {

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.machinelearningservices.fluent.WorkspaceConnect
 import com.azure.resourcemanager.machinelearningservices.fluent.models.WorkspaceConnectionInner;
 import com.azure.resourcemanager.machinelearningservices.models.WorkspaceConnection;
 import com.azure.resourcemanager.machinelearningservices.models.WorkspaceConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceConnectionsImpl.class);
 
     private final WorkspaceConnectionsClient innerClient;
 
@@ -77,7 +76,7 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
     public WorkspaceConnection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,14 +84,14 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
@@ -103,7 +102,7 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
     public Response<WorkspaceConnection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,14 +110,14 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
@@ -129,7 +128,7 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,25 +136,25 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,14 +162,14 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));

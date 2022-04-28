@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes information on user who created this ComputeInstance. */
 @Immutable
 public final class ComputeInstanceCreatedBy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceCreatedBy.class);
-
     /*
      * Name of the user.
      */

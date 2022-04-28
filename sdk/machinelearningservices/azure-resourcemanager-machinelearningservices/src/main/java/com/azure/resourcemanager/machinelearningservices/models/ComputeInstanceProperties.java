@@ -6,16 +6,12 @@ package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Compute Instance properties. */
 @Fluent
 public final class ComputeInstanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceProperties.class);
-
     /*
      * Virtual Machine Size
      */
@@ -29,9 +25,10 @@ public final class ComputeInstanceProperties {
     private ResourceId subnet;
 
     /*
-     * Policy for sharing applications on this compute instance among users of
-     * parent workspace. If Personal, only the creator can access applications
-     * on this compute instance. When Shared, any workspace user can access
+     * Sharing policy for applications on this compute instance Policy for
+     * sharing applications on this compute instance among users of parent
+     * workspace. If Personal, only the creator can access applications on this
+     * compute instance. When Shared, any workspace user can access
      * applications on this instance depending on his/her assigned role.
      */
     @JsonProperty(value = "applicationSharingPolicy")
@@ -63,7 +60,7 @@ public final class ComputeInstanceProperties {
     private ComputeInstanceCreatedBy createdBy;
 
     /*
-     * Collection of errors encountered on this ComputeInstance.
+     * Errors. Collection of errors encountered on this ComputeInstance.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagementError> errors;
@@ -75,8 +72,8 @@ public final class ComputeInstanceProperties {
     private ComputeInstanceState state;
 
     /*
-     * The Compute Instance Authorization type. Available values are personal
-     * (default).
+     * Compute Instance Authorization type. The Compute Instance Authorization
+     * type. Available values are personal (default).
      */
     @JsonProperty(value = "computeInstanceAuthorizationType")
     private ComputeInstanceAuthorizationType computeInstanceAuthorizationType;
@@ -140,9 +137,10 @@ public final class ComputeInstanceProperties {
     }
 
     /**
-     * Get the applicationSharingPolicy property: Policy for sharing applications on this compute instance among users
-     * of parent workspace. If Personal, only the creator can access applications on this compute instance. When Shared,
-     * any workspace user can access applications on this instance depending on his/her assigned role.
+     * Get the applicationSharingPolicy property: Sharing policy for applications on this compute instance Policy for
+     * sharing applications on this compute instance among users of parent workspace. If Personal, only the creator can
+     * access applications on this compute instance. When Shared, any workspace user can access applications on this
+     * instance depending on his/her assigned role.
      *
      * @return the applicationSharingPolicy value.
      */
@@ -151,9 +149,10 @@ public final class ComputeInstanceProperties {
     }
 
     /**
-     * Set the applicationSharingPolicy property: Policy for sharing applications on this compute instance among users
-     * of parent workspace. If Personal, only the creator can access applications on this compute instance. When Shared,
-     * any workspace user can access applications on this instance depending on his/her assigned role.
+     * Set the applicationSharingPolicy property: Sharing policy for applications on this compute instance Policy for
+     * sharing applications on this compute instance among users of parent workspace. If Personal, only the creator can
+     * access applications on this compute instance. When Shared, any workspace user can access applications on this
+     * instance depending on his/her assigned role.
      *
      * @param applicationSharingPolicy the applicationSharingPolicy value to set.
      * @return the ComputeInstanceProperties object itself.
@@ -211,7 +210,7 @@ public final class ComputeInstanceProperties {
     }
 
     /**
-     * Get the errors property: Collection of errors encountered on this ComputeInstance.
+     * Get the errors property: Errors. Collection of errors encountered on this ComputeInstance.
      *
      * @return the errors value.
      */
@@ -229,8 +228,8 @@ public final class ComputeInstanceProperties {
     }
 
     /**
-     * Get the computeInstanceAuthorizationType property: The Compute Instance Authorization type. Available values are
-     * personal (default).
+     * Get the computeInstanceAuthorizationType property: Compute Instance Authorization type. The Compute Instance
+     * Authorization type. Available values are personal (default).
      *
      * @return the computeInstanceAuthorizationType value.
      */
@@ -239,8 +238,8 @@ public final class ComputeInstanceProperties {
     }
 
     /**
-     * Set the computeInstanceAuthorizationType property: The Compute Instance Authorization type. Available values are
-     * personal (default).
+     * Set the computeInstanceAuthorizationType property: Compute Instance Authorization type. The Compute Instance
+     * Authorization type. Available values are personal (default).
      *
      * @param computeInstanceAuthorizationType the computeInstanceAuthorizationType value to set.
      * @return the ComputeInstanceProperties object itself.

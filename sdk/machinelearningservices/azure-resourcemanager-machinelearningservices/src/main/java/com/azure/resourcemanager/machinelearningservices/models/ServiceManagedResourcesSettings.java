@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.machinelearningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServiceManagedResourcesSettings model. */
 @Fluent
 public final class ServiceManagedResourcesSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceManagedResourcesSettings.class);
-
     /*
      * The settings for the service managed cosmosdb account.
      */
