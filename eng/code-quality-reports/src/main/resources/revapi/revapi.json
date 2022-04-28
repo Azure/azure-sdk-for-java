@@ -121,6 +121,14 @@
           {
             "matcher": "java-package",
             "match": "/com\\.azure\\.aot\\.graalvm\\.samples(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org\\.apache\\.qpid(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.codehaus.stax2.ri.typed.ValueEncoderFactory(..*)?/"
           }
         ]
       }
@@ -282,7 +290,7 @@
         },
         {
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "class com.microsoft.aad.msal4j.(AadInstanceDiscoveryResponse|Authority|ClientAssertion|ErrorResponse)",
+          "new": "class com.microsoft.aad.msal4j.(AadInstanceDiscoveryResponse|Authority|ClientAssertion|ErrorResponse).*",
           "justification": ""
         },
         {
