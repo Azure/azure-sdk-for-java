@@ -5,6 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -23,6 +24,17 @@ public final class ServicesGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ServicesGetPropertiesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ServicesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
