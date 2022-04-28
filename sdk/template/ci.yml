@@ -43,6 +43,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: template
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-sdk-template
         groupId: com.azure
@@ -53,6 +54,7 @@ extends:
       - name: azure-sdk-template-three
         groupId: com.azure
         safeName: azuresdktemplatethree
+        releaseInBatch: false
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
