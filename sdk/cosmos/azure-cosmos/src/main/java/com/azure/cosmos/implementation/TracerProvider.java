@@ -566,7 +566,7 @@ public class TracerProvider {
         //adding clientCfgs
         attributes = new HashMap<>();
         attributes.put(JSON_STRING,
-            mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+            mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
         this.addEvent("ClientCfgs", attributes,
             OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
     }

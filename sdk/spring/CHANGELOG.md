@@ -8,6 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fix the bean 'AzureTokenCredentialAutoConfiguration' initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
 
 ### Other Changes
 

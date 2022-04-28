@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
@@ -85,7 +86,8 @@ class EventHubProducerAsyncClientTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
-    private static final String ENTITY_PATH = HOSTNAME + ".servicebus.windows.net";
+    private static final String ENTITY_PATH = HOSTNAME + Configuration.getGlobalConfiguration()
+        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
 
     @Mock
     private AmqpSendLink sendLink;
@@ -429,7 +431,7 @@ class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.error(error))
             .thenReturn(Mono.empty());
 
-        StepVerifier.create(producer.send(testData)).verifyComplete();
+        producer.send(testData).block();
 
         //Assert
         verify(tracer1, times(1))

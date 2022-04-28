@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolReplicationLinksClient;
 import com.azure.resourcemanager.synapse.fluent.models.ReplicationLinkInner;
 import com.azure.resourcemanager.synapse.models.ReplicationLink;
 import com.azure.resourcemanager.synapse.models.SqlPoolReplicationLinks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolReplicationLinksImpl implements SqlPoolReplicationLinks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolReplicationLinksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolReplicationLinksImpl.class);
 
     private final SqlPoolReplicationLinksClient innerClient;
 

@@ -12,11 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeNodeIpAddressO
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeNodeIpAddressInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeNodeIpAddress;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeNodeIpAddressOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeNodeIpAddressOperationsImpl implements IntegrationRuntimeNodeIpAddressOperations {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeNodeIpAddressOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeNodeIpAddressOperationsImpl.class);
 
     private final IntegrationRuntimeNodeIpAddressOperationsClient innerClient;
 

@@ -159,10 +159,6 @@ public final class GraalVMFeatureUtils {
                     .replace(".class", "");
 
                 if (fqcn.startsWith(packageName)) {
-                    if (!fqcn.startsWith(packageName)) {
-                        continue;
-                    }
-
                     classNames.add(fqcn);
                 }
             }

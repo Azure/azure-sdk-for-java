@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure-SSIS integration runtime outbound network dependency endpoints. */
 @Fluent
 public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
-
     /*
      * The list of outbound network dependency endpoints.
      */

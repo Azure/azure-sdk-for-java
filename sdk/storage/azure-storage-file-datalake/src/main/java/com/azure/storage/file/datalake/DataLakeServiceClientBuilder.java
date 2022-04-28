@@ -32,6 +32,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -438,4 +439,20 @@ public class DataLakeServiceClientBuilder implements
         return this;
     }
 
+
+    /**
+     * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt file contents on the server.
+     *
+     * @param customerProvidedKey Customer provided key containing the encryption key information.
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
+        if (customerProvidedKey == null) {
+            blobServiceClientBuilder.customerProvidedKey(null);
+        } else {
+            blobServiceClientBuilder.customerProvidedKey(Transforms.toBlobCustomerProvidedKey(customerProvidedKey));
+        }
+
+        return this;
+    }
 }

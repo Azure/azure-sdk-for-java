@@ -74,8 +74,8 @@ public final class BridgeInternal {
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
-        return new CosmosDiagnostics(diagnosticsClientContext, globalEndpointManager);
+    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+        return new CosmosDiagnostics(diagnosticsClientContext);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -569,8 +569,10 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordResponse(CosmosDiagnostics cosmosDiagnostics,
-                                      RxDocumentServiceRequest request, StoreResult storeResult) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
+                                      RxDocumentServiceRequest request,
+                                      StoreResult storeResult,
+                                      GlobalEndpointManager globalEndpointManager) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult, globalEndpointManager);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -600,8 +602,9 @@ public final class BridgeInternal {
     public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              StoreResponse storeResponse,
-                                             CosmosException exception) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponse, exception);
+                                             CosmosException exception,
+                                             GlobalEndpointManager globalEndpointManager) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponse, exception, globalEndpointManager);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

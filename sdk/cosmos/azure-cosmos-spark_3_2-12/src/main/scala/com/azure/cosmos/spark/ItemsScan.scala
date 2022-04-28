@@ -64,11 +64,12 @@ private case class ItemsScan(session: SparkSession,
   }
 
   override def planInputPartitions(): Array[InputPartition] = {
-    val partitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
+    val partitionMetadata = CosmosPartitionPlanner.getFilteredPartitionMetadata(
       config,
       clientConfiguration,
       Some(cosmosClientStateHandle),
-      containerConfig
+      containerConfig,
+      partitioningConfig
     )
 
     Loan(CosmosClientCache.apply(
@@ -81,24 +82,16 @@ private case class ItemsScan(session: SparkSession,
           .getContainer(config, containerConfig, clientCacheItem.client)
         SparkUtils.safeOpenConnectionInitCaches(container, log)
 
-        val cosmosInputPartitions =CosmosPartitionPlanner.createInputPartitions(
-          partitioningConfig,
-          container,
-          partitionMetadata,
-          defaultMinPartitionCount,
-          CosmosPartitionPlanner.DefaultPartitionSizeInMB,
-          ReadLimit.allAvailable()
-        )
-
-        val effectiveCosmosInputPartitions = partitioningConfig.feedRangeFiler match {
-          case Some(epkRangesInScope) => cosmosInputPartitions
-            .filter(cosmosInputPartition => {
-              epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(epk, cosmosInputPartition.feedRange))
-            })
-          case None => cosmosInputPartitions
-        }
-
-        effectiveCosmosInputPartitions.map(_.asInstanceOf[InputPartition])
+        CosmosPartitionPlanner
+          .createInputPartitions(
+            partitioningConfig,
+            container,
+            partitionMetadata,
+            defaultMinPartitionCount,
+            CosmosPartitionPlanner.DefaultPartitionSizeInMB,
+            ReadLimit.allAvailable()
+          )
+          .map(_.asInstanceOf[InputPartition])
       })
   }
 

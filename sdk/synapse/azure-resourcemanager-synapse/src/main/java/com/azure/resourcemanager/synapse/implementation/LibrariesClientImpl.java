@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.LibrariesClient;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LibrariesClient. */
 public final class LibrariesClientImpl implements LibrariesClient {
-    private final ClientLogger logger = new ClientLogger(LibrariesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LibrariesService service;
 

@@ -7,7 +7,7 @@ namespace: com.azure.analytics.purview.catalog
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-low-level-client: true
+data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 title: PurviewCatalogClient

@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.EncryptionProtectorInner;
 import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -64,7 +63,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
@@ -84,7 +83,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
@@ -142,7 +141,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EncryptionProtectorInner> list(String resourceGroupName, String workspaceName);
@@ -156,7 +156,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EncryptionProtectorInner> list(String resourceGroupName, String workspaceName, Context context);
@@ -170,7 +171,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
@@ -186,7 +187,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
