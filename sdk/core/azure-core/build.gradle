@@ -52,7 +52,7 @@ jar {
 
 test {
     dependsOn jar
-    classpath = files(jar.archivePath, classpath) - sourceSets.main.output
+    classpath = files(jar.archiveFile, classpath) - sourceSets.main.output
 }
 
 

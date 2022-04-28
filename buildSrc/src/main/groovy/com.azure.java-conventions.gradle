@@ -7,6 +7,7 @@ plugins {
     id 'maven-publish'
     id 'checkstyle'
     id 'com.github.spotbugs'
+    id 'com.azure.revapi'
 }
 
 repositories {
@@ -97,3 +98,4 @@ spotbugs {
 }
 
 spotbugsTest.enabled = false
+
