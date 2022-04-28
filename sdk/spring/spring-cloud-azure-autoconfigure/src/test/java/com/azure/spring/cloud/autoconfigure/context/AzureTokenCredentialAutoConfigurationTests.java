@@ -304,10 +304,9 @@ class AzureTokenCredentialAutoConfigurationTests {
     static class ThreadPoolTaskExecutorExtend extends ThreadPoolTaskExecutor {
 
     }
-    
+
     private static class DefaultTokenCredentialBuilderCustomizer extends TestBuilderCustomizer<DefaultAzureCredentialBuilder> {
-
-
+        
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
