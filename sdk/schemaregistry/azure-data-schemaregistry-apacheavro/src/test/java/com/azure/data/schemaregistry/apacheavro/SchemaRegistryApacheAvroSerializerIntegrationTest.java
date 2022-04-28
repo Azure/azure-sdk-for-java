@@ -131,14 +131,14 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         assertNotNull(schemaProperties);
 
         // Act & Assert
-        final MessageContent encodedMessage = encoder.serializeMessageData(cards,
+        final MessageContent encodedMessage = encoder.serialize(cards,
             TypeReference.createInstance(MessageContent.class));
         assertNotNull(encodedMessage);
 
         final byte[] outputArray = encodedMessage.getBodyAsBinaryData().toBytes();
         assertTrue(outputArray.length > 0, "There should have been contents in array.");
 
-        final HandOfCards actual = encoder.deserializeMessageData(encodedMessage,
+        final HandOfCards actual = encoder.deserialize(encodedMessage,
             TypeReference.createInstance(HandOfCards.class));
 
         assertNotNull(actual);

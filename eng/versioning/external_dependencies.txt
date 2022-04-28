@@ -369,7 +369,6 @@ media_commons-logging:commons-logging;1.1.1
 media_io.jsonwebtoken:jjwt;0.5.1
 media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
-spring_com.microsoft.azure:oauth2-oidc-sdk;5.64.4
 # sdk\resourcemanager\azure-resourcemanager\pom.xml
 # sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
 resourcemanager_com.jcraft:jsch;0.1.55
