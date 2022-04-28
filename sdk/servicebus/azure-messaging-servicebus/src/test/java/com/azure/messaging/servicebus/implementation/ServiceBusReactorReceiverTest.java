@@ -53,7 +53,7 @@ class ServiceBusReactorReceiverTest {
     private static final String LINK_NAME = "a-link-name";
     private static final String CONNECTION_ID = "a-connection-id";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorReceiver.class);
     private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
     private final FluxSink<EndpointState> endpointStatesSink = endpointStates.sink();
 
@@ -90,19 +90,19 @@ class ServiceBusReactorReceiverTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) throws IOException {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         openMocks = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
         doAnswer(invocation -> {
-            logger.info("Running work on dispatcher.");
+            LOGGER.info("Running work on dispatcher.");
             return null;
         }).when(reactorDispatcher).invoke(any());
 
         doAnswer(invocation -> {
-            logger.info("Running work on dispatcher.");
+            LOGGER.info("Running work on dispatcher.");
             return null;
         }).when(reactorDispatcher).invoke(any(), any());
 
@@ -121,7 +121,7 @@ class ServiceBusReactorReceiverTest {
 
     @AfterEach
     void teardown(TestInfo testInfo) throws Exception {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         openMocks.close();
         Mockito.framework().clearInlineMock(this);
