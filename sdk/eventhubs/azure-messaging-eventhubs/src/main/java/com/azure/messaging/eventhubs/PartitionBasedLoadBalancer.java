@@ -326,13 +326,14 @@ final class PartitionBasedLoadBalancer {
                     throw logger.logExceptionAsError(Exceptions.propagate(
                         new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
                 }
-                partitionsCache.set(partitionIds);
 
                 if (!isValid(partitionOwnershipMap)) {
                     // User data is corrupt.
                     throw logger.logExceptionAsError(Exceptions.propagate(
                         new IllegalStateException("Invalid partitionOwnership data from CheckpointStore")));
                 }
+
+                partitionsCache.set(partitionIds);
 
                 /*
                  * Remove all partitions' ownership that have not been modified for a configuration period of time. This

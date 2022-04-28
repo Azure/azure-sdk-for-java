@@ -3,7 +3,7 @@
 ## 5.12.0-beta.1 (Unreleased)
 
 ### Features Added
-- Update checking checkpoint store available before starting processor client.
+- Updated checking checkpoint store available before starting processor client. Changed the behavior of starting processor client from __started but not working__ to __log error and stop__.
 
 ### Breaking Changes
 
