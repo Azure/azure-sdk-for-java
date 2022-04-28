@@ -20,7 +20,6 @@ import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIden
 import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -244,7 +243,7 @@ class AzureTokenCredentialAutoConfigurationTests {
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(TaskExecutorBuilder.class);
-                assertThat(context.containsBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)).isTrue();
+                assertThat(context).hasBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME);
                 assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
