@@ -306,7 +306,7 @@ class AzureTokenCredentialAutoConfigurationTests {
     }
 
     private static class DefaultTokenCredentialBuilderCustomizer extends TestBuilderCustomizer<DefaultAzureCredentialBuilder> {
-        
+
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
