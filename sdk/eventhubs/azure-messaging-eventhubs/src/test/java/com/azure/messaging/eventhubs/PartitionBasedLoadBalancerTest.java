@@ -59,11 +59,11 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link PartitionBasedLoadBalancer}.
  */
 public class PartitionBasedLoadBalancerTest {
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionBasedLoadBalancerTest.class);
 
     private final String fqNamespace = "fq-namespace";
     private final String eventHubName = "test-event-hub";
     private final String consumerGroupName = "test-consumer-group";
-    private static final ClientLogger LOGGER = new ClientLogger(PartitionBasedLoadBalancerTest.class);
     private final boolean batchReceiveMode = false;
 
     private List<EventData> eventDataList;

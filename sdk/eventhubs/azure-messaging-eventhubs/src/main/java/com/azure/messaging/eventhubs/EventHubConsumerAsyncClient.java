@@ -142,10 +142,10 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerAsyncClient.class);
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
-    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final EventHubConnectionProcessor connectionProcessor;

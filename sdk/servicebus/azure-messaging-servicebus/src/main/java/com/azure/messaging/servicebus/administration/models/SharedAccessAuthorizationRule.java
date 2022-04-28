@@ -27,11 +27,11 @@ public final class SharedAccessAuthorizationRule implements AuthorizationRule {
      */
     private static final String FIXED_CLAIM_TYPE = "SharedAccessKey";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+    private static final ClientLogger LOGGER = new ClientLogger(SharedAccessAuthorizationRule.class);
 
     private final List<AccessRights> accessRights;
     private final OffsetDateTime createdAt;
     private final String keyName;
-    private static final ClientLogger LOGGER = new ClientLogger(SharedAccessAuthorizationRule.class);
     private final OffsetDateTime modifiedAt;
 
     private String primaryKey;

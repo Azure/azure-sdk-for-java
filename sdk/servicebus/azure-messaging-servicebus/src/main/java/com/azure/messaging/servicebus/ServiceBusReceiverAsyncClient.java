@@ -220,11 +220,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
 
     private final LockContainer<LockRenewalOperation> renewalContainer;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final LockContainer<OffsetDateTime> managementNodeLocks;
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;

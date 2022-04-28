@@ -63,9 +63,9 @@ public class BlobCheckpointStore implements CheckpointStore {
     public static final String EMPTY_STRING = "";
 
     private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap(EMPTY_STRING.getBytes(UTF_8));
+    private static final ClientLogger LOGGER = new ClientLogger(BlobCheckpointStore.class);
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
-    private static final ClientLogger LOGGER = new ClientLogger(BlobCheckpointStore.class);
     private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
 
     /**

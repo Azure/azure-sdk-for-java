@@ -63,11 +63,11 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUE
  */
 class PartitionPumpManager {
     private static final int MAXIMUM_QUEUE_SIZE = 10000;
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionPumpManager.class);
 
     //TODO (conniey): Add a configurable scheduler size, at the moment we are creating a new elastic scheduler
     // for each partition pump that will have at most number of processors * 4.
     private final int schedulerSize = Runtime.getRuntime().availableProcessors() * 4;
-    private static final ClientLogger LOGGER = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
     private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;

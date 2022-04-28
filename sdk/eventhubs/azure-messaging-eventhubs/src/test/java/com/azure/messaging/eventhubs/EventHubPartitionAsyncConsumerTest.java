@@ -60,6 +60,7 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
     private static final Instant TEST_DATE = Instant.ofEpochSecond(1578643343);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
 
     @Mock
     private AmqpReceiveLink link1;
@@ -81,7 +82,6 @@ class EventHubPartitionAsyncConsumerTest {
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
 
-    private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
 

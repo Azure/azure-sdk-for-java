@@ -13,11 +13,12 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * Contains the event hub consumer and scheduler that continuously receive events.
  */
 class PartitionPump implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionPump.class);
+
     private final String partitionId;
     private final EventHubConsumerAsyncClient client;
     private final Scheduler scheduler;
     private LastEnqueuedEventProperties lastEnqueuedEventProperties;
-    private static final ClientLogger LOGGER = new ClientLogger(PartitionPump.class);
 
     /**
      * Creates an instance with the given client and scheduler.

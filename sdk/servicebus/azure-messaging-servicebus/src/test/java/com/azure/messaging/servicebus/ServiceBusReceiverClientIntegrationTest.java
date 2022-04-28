@@ -49,9 +49,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Tag("integration")
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
+
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final AtomicReference<List<Long>> messagesDeferred = new AtomicReference<>(new ArrayList<>());
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
 
     private ServiceBusReceiverClient receiver;
     private ServiceBusSenderClient sender;

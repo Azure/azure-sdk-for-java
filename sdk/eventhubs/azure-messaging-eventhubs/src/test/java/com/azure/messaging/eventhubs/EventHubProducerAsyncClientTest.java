@@ -88,6 +88,7 @@ class EventHubProducerAsyncClientTest {
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String ENTITY_PATH = HOSTNAME + Configuration.getGlobalConfiguration()
         .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
 
     @Mock
     private AmqpSendLink sendLink;
@@ -112,7 +113,6 @@ class EventHubProducerAsyncClientTest {
     @Captor
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
-    private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))

@@ -163,6 +163,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class, isAsync = true)
 public final class ServiceBusAdministrationAsyncClient {
     private static final String CONTENT_TYPE = "application/xml";
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
 
     // Name of the entity type when listing queues and topics.
     private static final String QUEUES_ENTITY_TYPE = "queues";
@@ -172,7 +173,6 @@ public final class ServiceBusAdministrationAsyncClient {
 
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
 

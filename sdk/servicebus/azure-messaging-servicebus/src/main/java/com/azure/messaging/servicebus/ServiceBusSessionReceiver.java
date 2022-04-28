@@ -31,9 +31,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * Represents an session that is received when "any" session is accepted from the service.
+ * Represents a session that is received when "any" session is accepted from the service.
  */
 class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiver.class);
+
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     // Each session-specific receiver tracks the lock of the received messages via lock-container.
     // When the app uses SessionManager (multiplexing session receivers) and wants to perform message
@@ -44,7 +46,6 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusMessageContext> receivedMessages;

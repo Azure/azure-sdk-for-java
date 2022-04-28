@@ -87,6 +87,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
+
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
@@ -96,7 +98,6 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager unNamedSessionManager;  // for acceptNextSession()
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
 
     ServiceBusSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
         MessagingEntityType entityType, ReceiverOptions receiverOptions,

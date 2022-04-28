@@ -50,9 +50,9 @@ public class ServiceBusMessage {
     private static final int MAX_MESSAGE_ID_LENGTH = 128;
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final int MAX_SESSION_ID_LENGTH = 128;
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMessage.class);
 
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMessage.class);
 
     private Context context;
 

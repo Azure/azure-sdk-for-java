@@ -204,9 +204,9 @@ public final class ServiceBusClientBuilder implements
     private static final String UNKNOWN = "UNKNOWN";
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
 
     private final Object connectionLock = new Object();
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 

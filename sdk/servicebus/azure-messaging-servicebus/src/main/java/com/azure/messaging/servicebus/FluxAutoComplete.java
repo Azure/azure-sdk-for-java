@@ -22,10 +22,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
 final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
+    private static final ClientLogger LOGGER = new ClientLogger(FluxAutoComplete.class);
+
     private final Semaphore completionLock;
     private final Function<ServiceBusMessageContext, Mono<Void>> onComplete;
     private final Function<ServiceBusMessageContext, Mono<Void>> onAbandon;
-    private static final ClientLogger LOGGER = new ClientLogger(FluxAutoComplete.class);
 
     FluxAutoComplete(Flux<? extends ServiceBusMessageContext> upstream, Semaphore completionLock,
                      Function<ServiceBusMessageContext, Mono<Void>> onComplete,
