@@ -207,11 +207,11 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     ThreadPoolTaskExecutor credentialTaskExecutor() {
-        TaskExecutorBuilder taskExecutorBuilder = new TaskExecutorBuilder();
-        taskExecutorBuilder.corePoolSize(8)
-                           .allowCoreThreadTimeOut(true)
-                           .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX);
-        return taskExecutorBuilder.build();
+        return new TaskExecutorBuilder()
+            .corePoolSize(8)
+            .allowCoreThreadTimeOut(true)
+            .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX)
+            .build();
     }
 
     /**
