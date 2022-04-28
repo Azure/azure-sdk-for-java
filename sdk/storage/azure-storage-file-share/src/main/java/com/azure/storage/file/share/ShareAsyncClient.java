@@ -12,6 +12,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -22,11 +23,10 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.SharePermission;
+import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
-import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
+import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -411,12 +411,12 @@ public class ShareAsyncClient {
      * shareAsyncClient.createIfNotExistsWithResponse&#40;new ShareCreateOptions&#40;&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;&#41;.setQuotaInGb&#40;1&#41;
      *     .setAccessTier&#40;ShareAccessTier.HOT&#41;&#41;.subscribe&#40;response -&gt; &#123;
-     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
-     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     *         if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *             System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions -->
      *
@@ -668,12 +668,12 @@ public class ShareAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse -->
      * <pre>
      * shareAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse -->
      *
@@ -703,12 +703,12 @@ public class ShareAsyncClient {
      * <pre>
      * shareAsyncClient.deleteIfExistsWithResponse&#40;new ShareDeleteOptions&#40;&#41;
      *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *         if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *             System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse#ShareDeleteOptions -->
      *
@@ -1850,12 +1850,12 @@ public class ShareAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteDirectoryIfExistsWithResponse#string -->
      * <pre>
      * shareAsyncClient.deleteDirectoryIfExistsWithResponse&#40;&quot;mydirectory&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteDirectoryIfExistsWithResponse#string -->
      *
@@ -2031,12 +2031,13 @@ public class ShareAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteFileIfExistsWithResponse#string -->
      * <pre>
      * shareAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFileIfExistsWithResponse#string -->
      *
      * <p>For more information, see the
@@ -2068,12 +2069,12 @@ public class ShareAsyncClient {
      * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
      * shareAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions -->
      *
@@ -2345,7 +2346,8 @@ public class ShareAsyncClient {
             new ShareInfo(eTag, lastModified));
     }
 
-    private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(SharesCreateSnapshotResponse response) {
+    private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(
+        ResponseBase<SharesCreateSnapshotHeaders, Void> response) {
         SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
         ShareSnapshotInfo snapshotInfo =
             new ShareSnapshotInfo(headers.getXMsSnapshot(), headers.getETag(), headers.getLastModified());
@@ -2353,7 +2355,8 @@ public class ShareAsyncClient {
         return new SimpleResponse<>(response, snapshotInfo);
     }
 
-    private Response<ShareProperties> mapGetPropertiesResponse(SharesGetPropertiesResponse response) {
+    private Response<ShareProperties> mapGetPropertiesResponse(
+        ResponseBase<SharesGetPropertiesHeaders, Void> response) {
         SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         ShareProperties shareProperties = new ShareProperties()
             .setETag(headers.getETag())
@@ -2377,7 +2380,8 @@ public class ShareAsyncClient {
         return new SimpleResponse<>(response, shareProperties);
     }
 
-    private Response<ShareStatistics> mapGetStatisticsResponse(SharesGetStatisticsResponse response) {
+    private Response<ShareStatistics> mapGetStatisticsResponse(
+        ResponseBase<SharesGetStatisticsHeaders, ShareStats> response) {
         ShareStatistics shareStatistics =
             new ShareStatistics(response.getValue().getShareUsageBytes());
 
