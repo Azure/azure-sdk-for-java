@@ -24,7 +24,6 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
-import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AzureTokenCredentialAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureTokenCredentialAutoConfiguration.class, TaskExecutionAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureTokenCredentialAutoConfiguration.class));
 
     @Test
     void byDefaultShouldConfigure() {
@@ -242,7 +241,6 @@ class AzureTokenCredentialAutoConfigurationTests {
             .withConfiguration(AutoConfigurations.of(MultiExecutorConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
-                assertThat(context).hasSingleBean(TaskExecutorBuilder.class);
                 assertThat(context).hasBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME);
                 assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
