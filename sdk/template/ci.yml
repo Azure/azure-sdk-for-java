@@ -54,6 +54,7 @@ extends:
       - name: azure-sdk-template-three
         groupId: com.azure
         safeName: azuresdktemplatethree
+        releaseInBatch: false
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
