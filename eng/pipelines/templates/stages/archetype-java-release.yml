@@ -97,6 +97,18 @@ stages:
                   ServiceDirectory: "template"
                   TestPipeline: ${{ parameters.TestPipeline }}
 
+              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+                parameters:
+                  PackageName: "azure-sdk-template-two"
+                  ServiceDirectory: "template"
+                  TestPipeline: ${{ parameters.TestPipeline }}
+
+              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+                parameters:
+                  PackageName: "azure-sdk-template-three"
+                  ServiceDirectory: "template"
+                  TestPipeline: ${{ parameters.TestPipeline }}
+
               - script: |
                   python --version
                   python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
@@ -461,7 +473,7 @@ stages:
               DocValidationImageId: "$(DocValidationImageId)"
 
           - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipPublishDocMs, 'true')}}:              
+            - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
               - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                 parameters:
                   JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
