@@ -4,7 +4,6 @@
 package com.azure.core.amqp;
 
 import com.azure.core.util.FluxUtil;
-import org.apache.qpid.proton.amqp.Binary;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -49,7 +48,6 @@ public class AmqpTransaction {
             return new String(transactionId.array(), transactionId.arrayOffset() + transactionId.position(),
                 transactionId.remaining(), StandardCharsets.UTF_8);
         } else {
-            // 0 10 40 50
             return new String(FluxUtil.byteBufferToArray(transactionId.duplicate()), StandardCharsets.UTF_8);
         }
     }
