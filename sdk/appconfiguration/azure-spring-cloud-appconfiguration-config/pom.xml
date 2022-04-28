@@ -42,12 +42,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
+            <version>3.1.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+            <version>3.1.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -142,8 +142,8 @@
                                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                                <include>org.springframework.cloud:spring-cloud-context:[3.1.1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
-                                <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
+                                <include>org.springframework.cloud:spring-cloud-context:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+                                <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
                                 <include>org.springframework:spring-web:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                             </includes>
                         </bannedDependencies>
