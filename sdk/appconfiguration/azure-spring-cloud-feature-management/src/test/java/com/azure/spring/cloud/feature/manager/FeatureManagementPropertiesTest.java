@@ -9,12 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.Test;
 
+import com.azure.spring.cloud.feature.manager.entities.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
 
 public class FeatureManagementPropertiesTest {
 
@@ -120,5 +123,38 @@ public class FeatureManagementPropertiesTest {
         assertEquals(ffec.getName(), "Random");
         assertEquals(ffec.getParameters().size(), 1);
         assertEquals(ffec.getParameters().get("chance"), "50");
+    }
+    
+    @Test
+    public void featureVariantLoadTest() {
+    	HashMap<String, Object> features = new HashMap<String, Object>();
+    	
+    	DynamicFeature df = new DynamicFeature();
+    	df.setAssigner("Microsoft.Targeting");
+    	
+    	FeatureVariant fv = new FeatureVariant();
+    	fv.setName("TestVariant");
+    	fv.setDefault(true);
+    	fv.setConfigurationReference("config.reference");
+    	
+    	LinkedHashMap<String, Object> assignmentParameters = new LinkedHashMap<>();
+    	
+    	assignmentParameters.put("User", "Doe");
+    	
+    	fv.setAssignmentParameters(assignmentParameters);
+    	
+    	Map<String, FeatureVariant> variants = new HashMap<>();
+    	
+    	variants.put("TestVariant", fv);
+    	
+    	df.setVariants(variants);
+    	
+    	features.put("TestDynamicFeature", df);
+    	
+    	
+    	FeatureManagementProperties properties = new FeatureManagementProperties();
+        properties.putAll(features);
+        
+        assertNotNull(properties.getDynamicFeatures().get("TestDynamicFeature"));
     }
 }

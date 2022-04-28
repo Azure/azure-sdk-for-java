@@ -2,86 +2,71 @@ package com.azure.spring.cloud.feature.manager;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import com.azure.spring.cloud.feature.manager.entities.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
-public class DynamicFeatureDeserializer extends StdDeserializer<FeatureVariant> {
+class DynamicFeatureDeserializer extends FeatureDeserializer<DynamicFeature> {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+	private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    public DynamicFeatureDeserializer() {
-        this(null);
-    }
+	DynamicFeatureDeserializer() {
+		this(null);
 
-    protected DynamicFeatureDeserializer(Class<?> vc) {
-        super(vc);
-    }
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(FeatureVariant.class, new FeatureVariantDeserializer());
+		MAPPER.registerModule(module);
+	}
 
-    @Override
-    public FeatureVariant deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JacksonException {
-        JsonNode node = jp.getCodec().readTree(jp);
-        FeatureVariant variant = new FeatureVariant();
-        Map<String, JsonNode> map = new HashMap<>();
+	DynamicFeatureDeserializer(Class<?> vc) {
+		super(vc);
 
-        Iterator<String> fieldNames = node.fieldNames();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(FeatureVariant.class, new FeatureVariantDeserializer());
+		MAPPER.registerModule(module);
+	}
 
-        while (fieldNames.hasNext()) {
-            String name = fieldNames.next();
+	@Override
+	public DynamicFeature deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+		JsonNode node = jp.getCodec().readTree(jp);
 
-            map.put(translateLowerCaseWithSeparator(name), node.get(name));
-        }
+		DynamicFeature dynamicFeature = new DynamicFeature();
 
-        variant.setName(map.get("name").asText());
+		Map<String, JsonNode> variantNameMap = new HashMap<>();
 
-        variant.setConfigurationReference(map.get("configurationReference").asText());
-        variant.setAssignmentParameters(
-            MAPPER.convertValue(map.get("assignmentParameters"), new TypeReference<LinkedHashMap<String, Object>>() {
-            }));
+		Map<String, FeatureVariant> variantMap = new LinkedHashMap<>();
 
-        if (map.containsKey("default")) {
-            variant.setDefault(map.get("default").asBoolean());
-        }
+		// Converts Values from kabab case to camel case
+		node.fieldNames().forEachRemaining(variantName -> {
+			variantNameMap.put(translateLowerCaseWithSeparator(variantName), node.get(variantName));
+		});
 
-        return variant;
-    }
+		dynamicFeature.setAssigner(setupValue(variantNameMap, "assigner"));
 
-    private String translateLowerCaseWithSeparator(final String input) {
-        if (input == null) {
-            return input; // garbage in, garbage out
-        }
-        final int length = input.length();
-        if (length == 0) {
-            return input;
-        }
+		if (variantNameMap.containsKey("variants")) {
+			
+			JsonNode variants = variantNameMap.get("variants");
+			
+			variants.fieldNames().forEachRemaining(variant -> {
+				System.out.println(variant);
+				variantMap.put(variant, MAPPER.convertValue(variants.get(variant), FeatureVariant.class));
+			});
+		}
 
-        final StringBuilder result = new StringBuilder(length + (length >> 1));
+		dynamicFeature.setVariants(variantMap);
 
-        for (int i = 0; i < length - 1; i++) {
-            char ch = input.charAt(i);
-            char next = input.charAt(i + 1);
-            char uc = Character.toUpperCase(next);
-
-            if ("-".equals(String.valueOf(ch))) {
-                result.append(uc);
-                i++;
-            } else {
-                result.append(ch);
-            }
-        }
-        result.append(input.charAt(length - 1));
-        return result.toString();
-    }
+		return dynamicFeature;
+	}
 
 }
