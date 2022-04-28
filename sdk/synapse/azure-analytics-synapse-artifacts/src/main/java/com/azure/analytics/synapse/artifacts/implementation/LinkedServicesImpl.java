@@ -58,7 +58,7 @@ public final class LinkedServicesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientLinke")
-    private interface LinkedServicesService {
+    public interface LinkedServicesService {
         @Get("/linkedservices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
