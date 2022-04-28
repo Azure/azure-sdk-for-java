@@ -211,8 +211,9 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     ThreadPoolTaskExecutor credentialTaskExecutor(TaskExecutorBuilder builder) {
-        builder.threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX);
-        return builder.build();
+        ThreadPoolTaskExecutor credentialTaskExecutor = builder.build();
+        credentialTaskExecutor.setThreadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX);
+        return credentialTaskExecutor;
     }
 
     private BiConsumer<AbstractAzureCredentialBuilderFactory<?>, ExecutorService> consumeExecutorService() {
@@ -233,7 +234,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         private BeanFactory beanFactory;
 
         @Override
-        @SuppressWarnings("rawtypes")
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
             if (bean instanceof AbstractAzureCredentialBuilderFactory) {
                 return bean;
@@ -241,8 +242,10 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
             if (bean instanceof AbstractAzureServiceClientBuilderFactory
                 && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
-                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(
+                AbstractAzureServiceClientBuilderFactory factory = (AbstractAzureServiceClientBuilderFactory) bean;
+                factory.setDefaultTokenCredential(
                     (TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
+                factory.setTokenCredentialResolver(beanFactory.getBean(AzureTokenCredentialResolver.class));
             }
             return bean;
         }

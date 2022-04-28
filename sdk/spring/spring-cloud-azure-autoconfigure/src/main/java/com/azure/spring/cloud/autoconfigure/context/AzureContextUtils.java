@@ -16,7 +16,7 @@ public abstract class AzureContextUtils {
 
     public static final String DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME = "springCloudAzureCredentialTaskExecutor";
 
-    public static final String DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX = "azure-credential-";
+    public static final String DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX = "az-identity-";
 
     public static final String EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME =
         "springCloudAzureEventHubsClientBuilderFactory";
