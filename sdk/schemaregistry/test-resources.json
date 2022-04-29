@@ -72,9 +72,9 @@
     },
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
-      "apiVersion": "[variables('eventHubsApiVersion')]",
-      "name": "[concat(variables('baseName'), '/', parameters('eventHubName'))]",
-      "location": "[variables('location')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.EventHub/namespaces', parameters('baseName'))]"
       ],
