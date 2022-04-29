@@ -786,27 +786,6 @@ class ContainerAPITest extends APISpec {
         response.getStatusCode() == 404
     }
 
-    def "Delete if exists service container min"() {
-        setup:
-        def containerName = generateContainerName()
-        primaryBlobServiceClient.createBlobContainer(containerName)
-
-        when:
-        def result = premiumBlobServiceClient.deleteBlobContainerIfExists(containerName)
-
-        then:
-        !premiumBlobServiceClient.getBlobContainerClient(containerName).exists()
-        result
-    }
-
-    def "Delete if exists service container that does not exist"() {
-        when:
-        def response = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(generateContainerName(), null)
-
-        then:
-        response.getStatusCode() == 404
-    }
-
     def "Delete if exists container that was already deleted"() {
         when:
         boolean result = cc.deleteIfExists()
