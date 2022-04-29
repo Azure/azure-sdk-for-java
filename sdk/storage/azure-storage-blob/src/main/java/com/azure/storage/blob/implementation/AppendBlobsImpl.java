@@ -16,14 +16,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUrlResponse;
-import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockResponse;
-import com.azure.storage.blob.implementation.models.AppendBlobsCreateResponse;
-import com.azure.storage.blob.implementation.models.AppendBlobsSealResponse;
+import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobsSealHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
@@ -65,7 +66,7 @@ public final class AppendBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<AppendBlobsCreateResponse> create(
+        Mono<ResponseBase<AppendBlobsCreateHeaders, Void>> create(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -101,7 +102,7 @@ public final class AppendBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<AppendBlobsAppendBlockResponse> appendBlock(
+        Mono<ResponseBase<AppendBlobsAppendBlockHeaders, Void>> appendBlock(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -131,7 +132,7 @@ public final class AppendBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(
+        Mono<ResponseBase<AppendBlobsAppendBlockFromUrlHeaders, Void>> appendBlockFromUrl(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -168,7 +169,7 @@ public final class AppendBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<AppendBlobsSealResponse> seal(
+        Mono<ResponseBase<AppendBlobsSealHeaders, Void>> seal(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -222,10 +223,10 @@ public final class AppendBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobsCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<AppendBlobsCreateHeaders, Void>> createWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -377,10 +378,10 @@ public final class AppendBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobsAppendBlockResponse> appendBlockWithResponseAsync(
+    public Mono<ResponseBase<AppendBlobsAppendBlockHeaders, Void>> appendBlockWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -505,10 +506,10 @@ public final class AppendBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrlWithResponseAsync(
+    public Mono<ResponseBase<AppendBlobsAppendBlockFromUrlHeaders, Void>> appendBlockFromUrlWithResponseAsync(
             String containerName,
             String blob,
             String sourceUrl,
@@ -629,10 +630,10 @@ public final class AppendBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobsSealResponse> sealWithResponseAsync(
+    public Mono<ResponseBase<AppendBlobsSealHeaders, Void>> sealWithResponseAsync(
             String containerName,
             String blob,
             Integer timeout,
