@@ -43,6 +43,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- This sample package is not released to maven and revapi checks are not required -->
+        <revapi.skip>true</revapi.skip>
         <legal>
             <![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
     </properties>
