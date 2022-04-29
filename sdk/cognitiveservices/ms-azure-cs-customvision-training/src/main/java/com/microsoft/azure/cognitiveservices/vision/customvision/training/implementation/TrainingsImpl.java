@@ -2982,8 +2982,8 @@ public class TrainingsImpl implements Trainings {
      *
      * @param projectId The id of the project the iteration belongs to.
      * @param iterationId The id of the iteration to get.
-     * @param threshold The threshold used to determine true predictions.
-     * @param overlapThreshold If applicable, the bounding box overlap threshold used to determine true predictions.
+     * @param threshold The threshold used to determine true predictions. Accepted values are between 1 and 0. Defaults to 0.8
+     * @param overlapThreshold If applicable, the bounding box overlap threshold used to determine true predictions. Accepted values are between 1 and 0. Defaults to 0.5
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IterationPerformance object
      */
