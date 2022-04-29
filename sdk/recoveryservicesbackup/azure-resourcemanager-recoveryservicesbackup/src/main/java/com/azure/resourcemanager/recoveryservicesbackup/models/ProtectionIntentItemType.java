@@ -42,7 +42,11 @@ public final class ProtectionIntentItemType extends ExpandableStringEnum<Protect
         return fromString(name, ProtectionIntentItemType.class);
     }
 
-    /** @return known ProtectionIntentItemType values. */
+    /**
+     * Gets known ProtectionIntentItemType values.
+     *
+     * @return known ProtectionIntentItemType values.
+     */
     public static Collection<ProtectionIntentItemType> values() {
         return values(ProtectionIntentItemType.class);
     }
