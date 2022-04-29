@@ -1147,6 +1147,8 @@ class ServiceAPITest extends APISpec {
         !response
     }
 
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
     def "Delete container if exists already deleted"() {
         setup:
         def containerName = generateContainerName()
