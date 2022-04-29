@@ -7,8 +7,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":sdk:core:azure-core"))
-    implementation(project(":sdk:core:azure-core-http-netty"))
+    implementation(project(":sdk:core:azure-core", "azureProjectDependency"))
+    implementation(project(":sdk:core:azure-core-http-netty", "azureProjectDependency"))
     implementation("com.microsoft.azure:msal4j:1.11.3")
     implementation("com.microsoft.azure:msal4j-persistence-extension:1.1.0")
     implementation("net.java.dev.jna:jna-platform:5.6.0")

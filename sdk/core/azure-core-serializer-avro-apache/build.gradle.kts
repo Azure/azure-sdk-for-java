@@ -7,10 +7,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":sdk:core:azure-core"))
-    implementation(project(":sdk:core:azure-core", "archives"))
-    implementation(project(":sdk:core:azure-core-experimental"))
-    implementation(project(":sdk:core:azure-core-experimental", "archives"))
+    implementation(project(":sdk:core:azure-core", "azureProjectDependency"))
+    implementation(project(":sdk:core:azure-core-experimental", "azureProjectDependency"))
     implementation("org.apache.avro:avro:1.10.1")
     testImplementation("io.projectreactor:reactor-test:3.4.16")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")

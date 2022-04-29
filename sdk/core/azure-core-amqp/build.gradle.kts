@@ -7,8 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":sdk:core:azure-core"))
-    api(project(":sdk:core:azure-core", "archives"))
+    api(project(":sdk:core:azure-core", "azureProjectDependency"))
     api("com.microsoft.azure:qpid-proton-j-extensions:1.2.4")
     api("org.apache.qpid:proton-j:0.33.8")
     testImplementation("io.projectreactor:reactor-test:3.4.16")
@@ -16,7 +15,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.mockito:mockito-core:4.0.0")
-    testImplementation(project(":sdk:core:azure-core-test"))
+    testImplementation(project(":sdk:core:azure-core-test", "azureProjectDependency"))
     testImplementation(project(":sdk:core:azure-core-test", "tests"))
 }
 

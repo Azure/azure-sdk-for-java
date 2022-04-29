@@ -47,6 +47,18 @@ sourceSets {
     }
 }
 
+// This makes sure module-info output is included in dependent projects compilation.
+// https://stackoverflow.com/questions/19936915/gradle-what-is-the-default-configuration-and-how-do-i-change-it
+// https://github.com/gradle/gradle/blob/85d30969f4672bb2739550b4de784910a6810b7a/subprojects/plugins/src/main/java/org/gradle/api/plugins/JavaPlugin.java#L437
+// https://discuss.gradle.org/t/why-does-a-compile-project-dependency-use-the-default-configuration-by-default/3497
+configurations.create("azureProjectDependency") {
+    extendsFrom(
+        configurations.getByName("default"),
+        configurations.getByName("moduleInfoImplementation"),
+        configurations.getByName("moduleInfoRuntimeOnly")
+    )
+}
+
 tasks.withType<JavaCompile> {
     modularity.inferModulePath.set(false)
     options.encoding = "UTF-8"

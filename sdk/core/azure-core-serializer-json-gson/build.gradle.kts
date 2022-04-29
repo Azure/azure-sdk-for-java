@@ -7,8 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":sdk:core:azure-core"))
-    implementation(project(":sdk:core:azure-core", "archives"))
+    implementation(project(":sdk:core:azure-core", "azureProjectDependency"))
     implementation("com.google.code.gson:gson:2.8.9")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")

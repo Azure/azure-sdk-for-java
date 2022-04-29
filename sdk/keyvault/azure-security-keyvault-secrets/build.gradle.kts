@@ -7,16 +7,16 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":sdk:core:azure-core"))
-    implementation(project(":sdk:core:azure-core-http-netty"))
-    testImplementation(project(":sdk:core:azure-core-http-okhttp"))
+    implementation(project(":sdk:core:azure-core", "azureProjectDependency"))
+    implementation(project(":sdk:core:azure-core-http-netty", "azureProjectDependency"))
+    testImplementation(project(":sdk:core:azure-core-http-okhttp", "azureProjectDependency"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.hamcrest:hamcrest-library:2.2")
     testImplementation("io.projectreactor:reactor-test:3.4.16")
-    testImplementation(project(":sdk:core:azure-core-test"))
-    testImplementation(project(":sdk:identity:azure-identity"))
+    testImplementation(project(":sdk:core:azure-core-test", "azureProjectDependency"))
+    testImplementation(project(":sdk:identity:azure-identity", "azureProjectDependency"))
     testImplementation("org.mockito:mockito-core:4.0.0")
 }
 

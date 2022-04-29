@@ -7,8 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":sdk:core:azure-core"))
-    api(project(":sdk:core:azure-core", "archives"))
+    api(project(":sdk:core:azure-core", "azureProjectDependency"))
     api("io.projectreactor:reactor-test:3.4.16")
     implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     implementation("org.junit.jupiter:junit-jupiter-params:5.8.2")

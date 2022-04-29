@@ -7,8 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":sdk:core:azure-core"))
-    api(project(":sdk:core:azure-core", "archives"))
+    api(project(":sdk:core:azure-core", "azureProjectDependency"))
     api("io.netty:netty-handler:4.1.75.Final")
     api("io.netty:netty-handler-proxy:4.1.75.Final")
     api("io.netty:netty-buffer:4.1.75.Final")
@@ -19,8 +18,8 @@ dependencies {
     api("io.netty:netty-transport-native-kqueue:4.1.75.Final")
     api("io.netty:netty-tcnative-boringssl-static:2.0.51.Final")
     api("io.projectreactor.netty:reactor-netty-http:1.0.17")
-    testImplementation(project(":sdk:core:azure-core"))
-    testImplementation(project(":sdk:core:azure-core-test"))
+    testImplementation(project(":sdk:core:azure-core", "azureProjectDependency"))
+    testImplementation(project(":sdk:core:azure-core-test", "azureProjectDependency"))
     testImplementation(project(":sdk:core:azure-core-test", "tests"))
     testImplementation("io.projectreactor:reactor-test:3.4.16")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")

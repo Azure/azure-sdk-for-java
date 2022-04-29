@@ -7,11 +7,10 @@ plugins {
 }
 
 dependencies {
-    api(project(":sdk:core:azure-core"))
-    api(project(":sdk:core:azure-core-amqp"))
-    api(project(":sdk:core:azure-core-amqp", "archives"))
-    testImplementation(project(":sdk:identity:azure-identity"))
-    testImplementation(project(":sdk:core:azure-core-test"))
+    api(project(":sdk:core:azure-core", "azureProjectDependency"))
+    api(project(":sdk:core:azure-core-amqp", "azureProjectDependency"))
+    testImplementation(project(":sdk:identity:azure-identity", "azureProjectDependency"))
+    testImplementation(project(":sdk:core:azure-core-test", "azureProjectDependency"))
     testImplementation(project(":sdk:core:azure-core-test", "tests"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")

@@ -28,11 +28,10 @@ dependencies {
         withModule<FixOkioRule>("com.squareup.okio:okio")
     }
 
-    api(project(":sdk:core:azure-core"))
-    api(project(":sdk:core:azure-core", "archives"))
+    api(project(":sdk:core:azure-core", "azureProjectDependency"))
     api("com.squareup.okhttp3:okhttp:4.9.2")
-    testImplementation(project(":sdk:core:azure-core"))
-    testImplementation(project(":sdk:core:azure-core-test"))
+    testImplementation(project(":sdk:core:azure-core", "azureProjectDependency"))
+    testImplementation(project(":sdk:core:azure-core-test", "azureProjectDependency"))
     testImplementation(project(":sdk:core:azure-core-test", "tests"))
     testImplementation("io.projectreactor:reactor-test:3.4.16")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")

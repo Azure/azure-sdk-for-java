@@ -8,20 +8,19 @@ plugins {
 
 dependencies {
     implementation("io.opentelemetry:opentelemetry-api:1.11.0")
-    implementation(project(":sdk:core:azure-core"))
-    implementation(project(":sdk:core:azure-core", "archives"))
+    implementation(project(":sdk:core:azure-core", "azureProjectDependency"))
     testImplementation("io.opentelemetry:opentelemetry-sdk:1.11.0")
-    testImplementation(project(":sdk:core:azure-core-test"))
-    testImplementation(project(":sdk:core:azure-core-http-netty"))
+    testImplementation(project(":sdk:core:azure-core-test", "azureProjectDependency"))
+    testImplementation(project(":sdk:core:azure-core-http-netty", "azureProjectDependency"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.mockito:mockito-core:4.0.0")
-    testImplementation(project(":sdk:appconfiguration:azure-data-appconfiguration"))
+    testImplementation(project(":sdk:appconfiguration:azure-data-appconfiguration", "azureProjectDependency"))
     testImplementation("io.opentelemetry:opentelemetry-exporter-logging:1.11.0")
     testImplementation("io.opentelemetry:opentelemetry-exporter-jaeger:1.11.0")
-    testImplementation(project(":sdk:keyvault:azure-security-keyvault-secrets"))
-    testImplementation(project(":sdk:identity:azure-identity"))
-    testImplementation(project(":sdk:eventhubs:azure-messaging-eventhubs"))
+    testImplementation(project(":sdk:keyvault:azure-security-keyvault-secrets", "azureProjectDependency"))
+    testImplementation(project(":sdk:identity:azure-identity", "azureProjectDependency"))
+    testImplementation(project(":sdk:eventhubs:azure-messaging-eventhubs", "azureProjectDependency"))
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 }
 
