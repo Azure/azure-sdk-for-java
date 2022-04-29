@@ -57,7 +57,7 @@ public final class TriggersImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientTrigg")
-    private interface TriggersService {
+    public interface TriggersService {
         @Get("/triggers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

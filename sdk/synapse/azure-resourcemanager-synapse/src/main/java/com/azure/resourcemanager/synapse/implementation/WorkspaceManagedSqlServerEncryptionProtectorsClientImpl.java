@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerEncryptionProtectorsClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
     implements WorkspaceManagedSqlServerEncryptionProtectorsClient {
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerEncryptionProtectorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkspaceManagedSqlServerEncryptionProtectorsService service;
 
@@ -469,7 +466,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
@@ -500,7 +497,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
@@ -533,7 +530,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
@@ -556,7 +553,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
@@ -786,7 +783,8 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EncryptionProtectorInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -803,7 +801,8 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EncryptionProtectorInner> listAsync(
@@ -821,7 +820,8 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionProtectorInner> list(String resourceGroupName, String workspaceName) {
@@ -837,7 +837,8 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionProtectorInner> list(
@@ -963,7 +964,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
@@ -986,7 +987,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
@@ -1011,7 +1012,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(
@@ -1029,7 +1030,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(

@@ -3,9 +3,19 @@
 
 package com.azure.resourcemanager.appplatform.implementation;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
+import com.azure.resourcemanager.appplatform.fluent.models.BuildInner;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
+import com.azure.resourcemanager.appplatform.models.BuildProperties;
+import com.azure.resourcemanager.appplatform.models.BuildResultProvisioningState;
 import com.azure.resourcemanager.appplatform.models.BuildResultUserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.DeploymentInstance;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
@@ -23,14 +33,27 @@ import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.UploadedUserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.UserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClientBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 public class SpringAppDeploymentImpl
@@ -38,6 +61,8 @@ public class SpringAppDeploymentImpl
     implements SpringAppDeployment,
         SpringAppDeployment.Definition<SpringAppImpl, SpringAppDeploymentImpl>,
         SpringAppDeployment.Update {
+    private static final Duration MAX_BUILD_TIMEOUT = Duration.ofHours(1);
+    private BuildServiceTask buildServiceTask;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);
@@ -132,12 +157,83 @@ public class SpringAppDeploymentImpl
             .map(LogFileUrlResponseInner::url);
     }
 
+    @Override
+    public List<String> configFilePatterns() {
+        Map<String, Map<String, Object>> addonConfigs = this.innerModel().properties().deploymentSettings().addonConfigs();
+        if (addonConfigs == null) {
+            return Collections.emptyList();
+        }
+        Map<String, Object> configurationConfigs = addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
+        if (configurationConfigs == null) {
+            return Collections.emptyList();
+        }
+        if (configurationConfigs.get(Constants.CONFIG_FILE_PATTERNS_KEY) instanceof String) {
+            String patterns = (String) configurationConfigs.get(Constants.CONFIG_FILE_PATTERNS_KEY);
+            return Collections.unmodifiableList(Arrays.asList(patterns.split(",")));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public Double cpu() {
+        return Utils.fromCpuString(innerModel().properties().deploymentSettings().resourceRequests().cpu());
+    }
+
+    @Override
+    public Double memoryInGB() {
+        return Utils.fromMemoryString(innerModel().properties().deploymentSettings().resourceRequests().memory());
+    }
+
+    @Override
+    public RuntimeVersion runtimeVersion() {
+        if (isEnterpriseTier() || innerModel().properties() == null) {
+            return null;
+        }
+        UserSourceInfo userSourceInfo = innerModel().properties().source();
+        if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+            JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
+            return RuntimeVersion.fromString(uploadedUserSourceInfo.runtimeVersion());
+        } else if (userSourceInfo instanceof NetCoreZipUploadedUserSourceInfo) {
+            NetCoreZipUploadedUserSourceInfo uploadedUserSourceInfo = (NetCoreZipUploadedUserSourceInfo) userSourceInfo;
+            return RuntimeVersion.fromString(uploadedUserSourceInfo.runtimeVersion());
+        } else if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
+            SourceUploadedUserSourceInfo uploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
+            return RuntimeVersion.fromString(uploadedUserSourceInfo.runtimeVersion());
+        }
+        return null;
+    }
+
+    @Override
+    public String jvmOptions() {
+        if (innerModel().properties() == null) {
+            return null;
+        }
+        String jvmOptions = null;
+        if (isEnterpriseTier() && innerModel().properties().deploymentSettings() != null) {
+            Map<String, String> environment = innerModel().properties().deploymentSettings().environmentVariables();
+            if (environment != null) {
+                jvmOptions = environment.get(Constants.JAVA_OPTS);
+            }
+        } else if (innerModel().properties().source() != null) {
+            UserSourceInfo userSourceInfo = innerModel().properties().source();
+            if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+                JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
+                jvmOptions = uploadedUserSourceInfo.jvmOptions();
+            }
+        }
+        return jvmOptions;
+    }
+
     private void ensureDeploySettings() {
         if (innerModel().properties() == null) {
             innerModel().withProperties(new DeploymentResourceProperties());
         }
         if (innerModel().properties().deploymentSettings() == null) {
             innerModel().properties().withDeploymentSettings(new DeploymentSettings());
+        }
+        if (innerModel().properties().deploymentSettings().resourceRequests() == null) {
+            innerModel().properties().deploymentSettings().withResourceRequests(new ResourceRequests());
         }
     }
 
@@ -189,35 +285,10 @@ public class SpringAppDeploymentImpl
     //     return compressFile;
     // }
 
-    private ShareFileAsyncClient createShareFileAsyncClient(ResourceUploadDefinition option) {
-        return new ShareFileClientBuilder()
-            .endpoint(option.uploadUrl())
-            .httpClient(manager().httpPipeline().getHttpClient())
-            .buildFileAsyncClient();
-    }
-
-    private Mono<Void> uploadToStorage(File source, ResourceUploadDefinition option) {
-        UserSourceInfo userSourceInfo = innerModel().properties().source();
-        if (userSourceInfo instanceof UploadedUserSourceInfo) {
-            UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) userSourceInfo;
-            try {
-                uploadedUserSourceInfo.withRelativePath(option.relativePath());
-                ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
-                return shareFileAsyncClient.create(source.length())
-                    .flatMap(fileInfo -> shareFileAsyncClient.uploadFromFile(source.getAbsolutePath()))
-                    .then(Mono.empty());
-            } catch (Exception e) {
-                return Mono.error(e);
-            }
-        } else {
-            return Mono.empty();
-        }
-    }
-
     @Override
     public SpringAppDeploymentImpl withJarFile(File jar) {
         if (service().isEnterpriseTier()) {
-            throw new UnsupportedOperationException("Enterprise tier artifact deployment not supported yet.");
+            return withJarFile(jar, null);
         } else {
             ensureSource(UserSourceType.JAR);
             this.addDependency(
@@ -225,12 +296,30 @@ public class SpringAppDeploymentImpl
                     .flatMap(option -> {
                         UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
                         uploadedUserSourceInfo.withRelativePath(option.relativePath());
-                        return uploadToStorage(jar, option)
+                        return uploadToStorageAsync(jar, option)
                             .then(context.voidMono());
                     })
             );
+            return this;
         }
-        return this;
+    }
+
+    private ShareFileAsyncClient createShareFileAsyncClient(ResourceUploadDefinition option) {
+        return new ShareFileClientBuilder()
+            .endpoint(option.uploadUrl())
+            .httpClient(manager().httpPipeline().getHttpClient())
+            .buildFileAsyncClient();
+    }
+
+    private Mono<Void> uploadToStorageAsync(File source, ResourceUploadDefinition option) {
+        try {
+            ShareFileAsyncClient shareFileAsyncClient = createShareFileAsyncClient(option);
+            return shareFileAsyncClient.create(source.length())
+                .flatMap(fileInfo -> shareFileAsyncClient.uploadFromFile(source.getAbsolutePath()))
+                .then(Mono.empty());
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
     }
 
     // @Override
@@ -271,47 +360,67 @@ public class SpringAppDeploymentImpl
         return this;
     }
 
+    @Override
+    public SpringAppDeploymentImpl withJarFile(File jar, List<String> configFilePatterns) {
+        ensureSource(UserSourceType.BUILD_RESULT);
+        this.buildServiceTask = new BuildServiceTask(jar, configFilePatterns);
+        return this;
+    }
+
     private boolean isEnterpriseTier() {
         return service().isEnterpriseTier();
     }
 
     @Override
     public SpringAppDeploymentImpl withSourceCodeTarGzFile(File sourceCodeTarGz) {
-        ensureSource(UserSourceType.SOURCE);
-        this.addDependency(
-            context -> parent().getResourceUploadUrlAsync()
-                .flatMap(option -> uploadToStorage(sourceCodeTarGz, option)
-                    .then(context.voidMono()))
-        );
+        return withSourceCodeTarGzFile(sourceCodeTarGz, null);
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns) {
+        if (isEnterpriseTier()) {
+            ensureSource(UserSourceType.BUILD_RESULT);
+            this.buildServiceTask = new BuildServiceTask(sourceCodeTarGz, configFilePatterns, true);
+        } else {
+            ensureSource(UserSourceType.SOURCE);
+            this.addDependency(
+                context -> parent().getResourceUploadUrlAsync()
+                    .flatMap(option -> {
+                        UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
+                        uploadedUserSourceInfo.withRelativePath(option.relativePath());
+                        return uploadToStorageAsync(sourceCodeTarGz, option)
+                            .then(context.voidMono());
+                    })
+            );
+        }
         return this;
     }
 
     @Override
     public SpringAppDeploymentImpl withTargetModule(String moduleName) {
-        ensureSource(UserSourceType.SOURCE);
-        UserSourceInfo userSourceInfo = innerModel().properties().source();
-        if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
-            SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
-            sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
+        if (isEnterpriseTier()) {
+            ensureSource(UserSourceType.BUILD_RESULT);
+            this.buildServiceTask.module = moduleName;
+        } else {
+            ensureSource(UserSourceType.SOURCE);
+            UserSourceInfo userSourceInfo = innerModel().properties().source();
+            if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
+                SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
+                sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
+            }
         }
         return this;
     }
 
     @Override
     public SpringAppDeploymentImpl withSingleModule() {
-        ensureSource(UserSourceType.SOURCE);
-        UserSourceInfo userSourceInfo = innerModel().properties().source();
-        if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
-            SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
-            sourceUploadedUserSourceInfo.withArtifactSelector(null);
-        }
-        return this;
+        return withTargetModule(null);
     }
 
     @Override
     public SpringAppDeploymentImpl withInstance(int count) {
         if (innerModel().sku() == null) {
-            innerModel().withSku(parent().parent().sku());
+            innerModel().withSku(service().sku());
         }
         if (innerModel().sku() == null) {
             innerModel().withSku(new Sku().withName("B0"));
@@ -322,21 +431,25 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withCpu(int cpuCount) {
+        return withCpu((double) cpuCount);
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withCpu(double cpuCount) {
         ensureDeploySettings();
-        if (innerModel().properties().deploymentSettings().resourceRequests() == null) {
-            innerModel().properties().deploymentSettings().withResourceRequests(new ResourceRequests());
-        }
-        innerModel().properties().deploymentSettings().resourceRequests().withCpu(String.valueOf(cpuCount));
+        innerModel().properties().deploymentSettings().resourceRequests().withCpu(Utils.toCpuString(cpuCount));
         return this;
     }
 
     @Override
     public SpringAppDeploymentImpl withMemory(int sizeInGB) {
+        return withMemory((double) sizeInGB);
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withMemory(double sizeInGB) {
         ensureDeploySettings();
-        if (innerModel().properties().deploymentSettings().resourceRequests() == null) {
-            innerModel().properties().deploymentSettings().withResourceRequests(new ResourceRequests());
-        }
-        innerModel().properties().deploymentSettings().resourceRequests().withMemory(String.format("%dGi", sizeInGB));
+        innerModel().properties().deploymentSettings().resourceRequests().withMemory(Utils.toMemoryString(sizeInGB));
         return this;
     }
 
@@ -358,11 +471,15 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withJvmOptions(String jvmOptions) {
-        ensureSource(UserSourceType.JAR);
-        UserSourceInfo userSourceInfo = innerModel().properties().source();
-        if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
-            JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
-            uploadedUserSourceInfo.withJvmOptions(jvmOptions);
+        if (isEnterpriseTier()) {
+            withEnvironment(Constants.JAVA_OPTS, jvmOptions);
+        } else {
+            ensureSource(UserSourceType.JAR);
+            UserSourceInfo userSourceInfo = innerModel().properties().source();
+            if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+                JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
+                uploadedUserSourceInfo.withJvmOptions(jvmOptions);
+            }
         }
         return this;
     }
@@ -371,6 +488,13 @@ public class SpringAppDeploymentImpl
         ensureDeploySettings();
         if (innerModel().properties().deploymentSettings().environmentVariables() == null) {
             innerModel().properties().deploymentSettings().withEnvironmentVariables(new HashMap<>());
+        }
+    }
+
+    private void ensureAddonConfigs() {
+        ensureDeploySettings();
+        if (innerModel().properties().deploymentSettings().addonConfigs() == null) {
+            innerModel().properties().deploymentSettings().withAddonConfigs(new HashMap<>());
         }
     }
 
@@ -402,6 +526,29 @@ public class SpringAppDeploymentImpl
                 .map(Function.identity())
         );
         return this;
+    }
+
+    @Override
+    public SpringAppDeploymentImpl withConfigFilePatterns(List<String> configFilePatterns) {
+        ensureAddonConfigs();
+        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
+        addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, s -> {
+            Map<String, Object> config = new HashMap<>();
+            config.put(
+                Constants.CONFIG_FILE_PATTERNS_KEY,
+                CoreUtils.isNullOrEmpty(configFilePatterns) ? "" : String.join(",", configFilePatterns));
+            return config;
+        });
+        return this;
+    }
+
+    @Override
+    public void beforeGroupCreateOrUpdate() {
+        super.beforeGroupCreateOrUpdate();
+        if (this.buildServiceTask != null) {
+            this.addDependency(this.buildServiceTask);
+            this.buildServiceTask = null;
+        }
     }
 
     @Override
@@ -462,7 +609,162 @@ public class SpringAppDeploymentImpl
         return parent().addActiveDeployment(this);
     }
 
+    private SpringAppImpl app() {
+        return parent();
+    }
+
     private SpringServiceImpl service() {
         return parent().parent();
+    }
+
+    private class BuildServiceTask implements FunctionalTaskItem {
+        private final File file;
+        private final boolean sourceCodeTarGz;
+        private final List<String> configFilePatterns;
+        private String module;
+
+        BuildServiceTask(File file, List<String> configFilePatterns) {
+            this(file, configFilePatterns, false);
+        }
+
+        BuildServiceTask(File file, List<String> configFilePatterns, boolean sourceCodeTarGz) {
+            this.file = file;
+            this.configFilePatterns = configFilePatterns;
+            this.sourceCodeTarGz = sourceCodeTarGz;
+        }
+
+        @Override
+        public Mono<Indexable> apply(Context context) {
+            return app().getResourceUploadUrlAsync()
+                .flatMap(option ->
+                    uploadAndBuildAsync(file, option)
+                        .flatMap(buildId -> {
+                            BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
+                            userSourceInfo.withBuildResultId(buildId);
+                            withConfigFilePatterns(this.configFilePatterns);
+                            return Mono.empty();
+                        }).then(context.voidMono()));
+        }
+
+        private Mono<String> uploadAndBuildAsync(File source, ResourceUploadDefinition option) {
+            AtomicLong pollCount = new AtomicLong();
+            Duration pollDuration = manager().serviceClient().getDefaultPollInterval();
+            return uploadToStorageAsync(source, option)
+                .then(enqueueBuildAsync(option))
+                .flatMap(buildId ->
+                    manager().serviceClient().getBuildServices()
+                        .getBuildResultWithResponseAsync(
+                            service().resourceGroupName(),
+                            service().name(),
+                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                            parent().name(),
+                            ResourceUtils.nameFromResourceId(buildId))
+                        .flatMap(response -> {
+                            if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_BUILD_TIMEOUT) < 0) {
+                                BuildResultProvisioningState state = response.getValue().properties().provisioningState();
+                                if (state == BuildResultProvisioningState.SUCCEEDED) {
+                                    return Mono.just(buildId);
+                                } else if (state == BuildResultProvisioningState.QUEUING || state == BuildResultProvisioningState.BUILDING) {
+                                    return Mono.empty();
+                                } else {
+                                    AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
+                                    return Mono.error(new ManagementException(String.format("Build failed for file: %s, buildId: %s",
+                                        file.getName(), buildId),
+                                        new HttpResponseImpl<>(response, client.getSerializerAdapter())));
+                                }
+                            } else {
+                                return Mono.error(new ManagementException(String.format("Build timeout for file: %s, buildId: %s",
+                                    file.getName(), buildId), null));
+                            }
+                        }).repeatWhenEmpty(
+                            longFlux ->
+                                longFlux
+                                    .flatMap(
+                                        index -> {
+                                            pollCount.set(index);
+                                            return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
+                                        })));
+        }
+
+        private Mono<String> enqueueBuildAsync(ResourceUploadDefinition option) {
+            BuildProperties buildProperties = new BuildProperties()
+                .withBuilder(String.format("%s/buildservices/%s/builders/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
+                .withAgentPool(String.format("%s/buildservices/%s/agentPools/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
+                .withRelativePath(option.relativePath());
+            // source code
+            if (this.sourceCodeTarGz) {
+                Map<String, String> buildEnv = buildProperties.env() == null ? new HashMap<>() : buildProperties.env();
+                buildProperties.withEnv(buildEnv);
+                if (module != null) {
+                    // for now, only support maven project
+                    buildEnv.put("BP_MAVEN_BUILT_MODULE", module);
+                }
+            }
+            return manager().serviceClient().getBuildServices()
+                // This method enqueues the build request, response with provision state "Succeeded" only means the build is enqueued.
+                // Attempting to continue deploying without waiting for the build to complete will result in failure.
+                .createOrUpdateBuildAsync(
+                    service().resourceGroupName(),
+                    service().name(),
+                    Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                    app().name(),
+                    new BuildInner().withProperties(buildProperties))
+                .map(inner -> inner.properties().triggeredBuildResult().id());
+        }
+
+        @SuppressWarnings("BlockingMethodInNonBlockingContext")
+        private class HttpResponseImpl<T> extends HttpResponse {
+            private final Response<T> response;
+            private final SerializerAdapter serializerAdapter;
+
+            protected HttpResponseImpl(Response<T> response, SerializerAdapter serializerAdapter) {
+                super(response.getRequest());
+                this.response = response;
+                this.serializerAdapter = serializerAdapter;
+            }
+
+            @Override
+            public int getStatusCode() {
+                return response.getStatusCode();
+            }
+
+            @Override
+            public String getHeaderValue(String header) {
+                return response.getHeaders().getValue(header);
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return response.getHeaders();
+            }
+
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                try {
+                    return Flux.just(ByteBuffer.wrap(serializerAdapter.serializeToBytes(response.getValue(), SerializerEncoding.JSON)));
+                } catch (IOException e) {
+                    return Flux.empty();
+                }
+            }
+
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                try {
+                    return Mono.just(serializerAdapter.serializeToBytes(response.getValue(), SerializerEncoding.JSON));
+                } catch (IOException e) {
+                    return Mono.empty();
+                }
+            }
+
+            @Override
+            public Mono<String> getBodyAsString() {
+                return Mono.just(serializerAdapter.serializeRaw(response.getValue()));
+            }
+
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return getBodyAsString();
+            }
+        }
     }
 }

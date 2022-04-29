@@ -42,6 +42,7 @@ public class ServiceBusExtendedBindingProperties
      *
      * @return Bindings value
      */
+    @Override
     public Map<String, ServiceBusBindingProperties> getBindings() {
         return doGetBindings();
     }

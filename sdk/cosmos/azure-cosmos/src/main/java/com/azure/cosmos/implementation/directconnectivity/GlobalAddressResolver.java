@@ -157,7 +157,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.userAgentContainer,
                 this.httpClient,
                 this.tcpConnectionEndpointRediscoveryEnabled,
-                this.apiType);
+                this.apiType,
+                this.endpointManager);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

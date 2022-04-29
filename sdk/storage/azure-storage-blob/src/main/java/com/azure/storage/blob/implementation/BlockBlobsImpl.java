@@ -30,6 +30,7 @@ import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -435,7 +436,7 @@ public final class BlockBlobsImpl {
      * The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given
      * URL. This API is supported beginning with the 2020-04-08 version. Partial updates are not supported with Put Blob
      * from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial
-     * updates to a block blob’s contents using a source URL, use the Put Block from URL API in conjunction with Put
+     * updates to a block blobâ€™s contents using a source URL, use the Put Block from URL API in conjunction with Put
      * Block List.
      *
      * @param containerName The container name.

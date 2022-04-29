@@ -124,7 +124,7 @@ public final class ChangesManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-03-01-preview";
+        this.apiVersion = "2022-05-01";
         this.changes = new ChangesClientImpl(this);
     }
 }

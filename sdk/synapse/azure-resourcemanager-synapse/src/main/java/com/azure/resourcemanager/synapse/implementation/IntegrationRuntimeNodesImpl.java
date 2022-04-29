@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRunt
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeNodes;
 import com.azure.resourcemanager.synapse.models.SelfHostedIntegrationRuntimeNode;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNodes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeNodesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeNodesImpl.class);
 
     private final IntegrationRuntimeNodesClient innerClient;
 

@@ -30,7 +30,7 @@ context-client-method-parameter: true
 optional-constant-as-enum: true
 default-http-exception-type: com.azure.storage.blob.models.BlobStorageException
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode,FilterBlobsIncludeItem
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode,BlobCopySourceTags,FilterBlobsIncludeItem
 custom-types-subpackage: models
 customization-class: src/main/java/BlobStorageCustomization.java
 ```
@@ -573,6 +573,7 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
+<<<<<<< HEAD
 ### Delete PageBlob_GetPageRanges x-ms-pageable as autorest can't recognize the itemName for this
 ``` yaml
 directive:
@@ -589,6 +590,15 @@ directive:
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"].get
   transform: >
     delete $["x-ms-pageable"];
+=======
+### BlobCopySourceTags expandable string enum
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.CopySourceTags
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+>>>>>>> 4ccd406f3d2812db7f17d1e811a125c75423e681
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

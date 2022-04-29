@@ -58,7 +58,7 @@ public final class KeyVaultConnectionsImpl {
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "PurviewScanningClien")
-    private interface KeyVaultConnectionsService {
+    public interface KeyVaultConnectionsService {
         @Get("/azureKeyVaults/{keyVaultName}")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(

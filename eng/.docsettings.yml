@@ -9,6 +9,8 @@ omitted_paths:
   - sdk/boms/spring-cloud-azure-dependencies/*
   - sdk/spring/*
   - "sdk/spring/*/*"
+  - sdk/spring-experimental/*
+  - "sdk/spring-experimental/*/*"
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
