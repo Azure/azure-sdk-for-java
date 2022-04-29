@@ -8,7 +8,6 @@ import com.azure.core.implementation.JsonPatchDocumentHelper;
 import com.azure.core.implementation.JsonPatchOperation;
 import com.azure.core.implementation.JsonPatchOperationKind;
 import com.azure.core.implementation.Option;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.JsonUtils;
@@ -46,8 +45,6 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
 
     /**
      * Creates a new JSON Patch document.
-     * <p>
-     * If {@code serializer} isn't specified {@link JacksonAdapter} will be used.
      *
      * @param serializer The {@link JsonSerializer} that will be used to serialize patch operation values.
      */

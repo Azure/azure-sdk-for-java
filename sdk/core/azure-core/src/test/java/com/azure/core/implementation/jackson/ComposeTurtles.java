@@ -5,6 +5,8 @@ package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -96,5 +98,41 @@ public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
         }
 
         return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ComposeTurtles fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+            String description = null;
+            TurtleWithTypeIdContainingDot turtleSet1Lead = null;
+            List<TurtleWithTypeIdContainingDot> turtleSet1 = null;
+            NonEmptyAnimalWithTypeIdContainingDot turtleSet2Lead = null;
+            List<NonEmptyAnimalWithTypeIdContainingDot> turtleSet2 = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    description = reader.getStringValue();
+                } else if ("turtlesSet1Lead".equals(fieldName)) {
+                    turtleSet1Lead = TurtleWithTypeIdContainingDot.fromJson(reader);
+                } else if ("turtlesSet1".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
+                    turtleSet1 = JsonUtils.readArray(reader, (r, t) -> TurtleWithTypeIdContainingDot.fromJson(r));
+                } else if ("turtlesSet2Lead".equals(fieldName)) {
+                    turtleSet2Lead = NonEmptyAnimalWithTypeIdContainingDot.fromJson(jsonReader);
+                } else if ("turtlesSet2".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
+                    turtleSet2 = JsonUtils.readArray(reader,
+                        (r, t) -> NonEmptyAnimalWithTypeIdContainingDot.fromJson(r));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new ComposeTurtles().withDescription(description)
+                .withTurtlesSet1Lead(turtleSet1Lead)
+                .withTurtlesSet1(turtleSet1)
+                .withTurtlesSet2Lead(turtleSet2Lead)
+                .withTurtlesSet2(turtleSet2);
+        });
     }
 }

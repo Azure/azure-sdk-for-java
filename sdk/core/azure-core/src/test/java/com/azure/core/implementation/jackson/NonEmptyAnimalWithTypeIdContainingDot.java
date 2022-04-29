@@ -46,48 +46,40 @@ public class NonEmptyAnimalWithTypeIdContainingDot implements JsonCapable<NonEmp
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJsonBase(JsonReader jsonReader) {
+    public static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+        // Assumption time, super classes will have access to their subclasses and they'll be in the same package.
         return (T) JsonUtils.readObject(jsonReader, (reader, token) -> {
-            boolean canUseOptimizedPath = true;
-            String discriminator = null;
+            String odataType = null;
+            Integer age = null;
+            Integer size = null;
 
-            while ((token = reader.nextToken()) != null) {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("@odata.type".equals(fieldName)) {
-                    discriminator = jsonReader.getStringValue();
-                    if (canUseOptimizedPath) {
-                        if ("NonEmptyAnimalWithTypeIdContainingDot".equals(discriminator)) {
-                            return fromJsonInternal(jsonReader);
-                        } else if ("#Favourite.Pet.TurtleWithTypeIdContainingDot".equals(discriminator)) {
-                            return TurtleWithTypeIdContainingDot.fromJsonOptimized(jsonReader,
-                                "#Favourite.Pet.TurtleWithTypeIdContainingDot");
-                        }
-                    }
+                    odataType = jsonReader.getStringValue();
+                } else if ("age".equals(fieldName)) {
+                    age = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                } else if ("size".equals(fieldName)) {
+                    size = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                } else {
+                    reader.skipChildren();
                 }
-
-                canUseOptimizedPath = false;
             }
 
-            throw new IllegalStateException("Discriminator field '@odata.type' was either missing or didn't match one "
-                + "of the expected values 'NonEmptyAnimalWithTypeIdContainingDot', "
-                + "or '#Favourite.Pet.TurtleWithTypeIdContainingDot'.");
+            if ("#Favourite.Pet.TurtleWithTypeIdContainingDot".equals(odataType)) {
+                TurtleWithTypeIdContainingDot turtle = new TurtleWithTypeIdContainingDot().withSize(size);
+                turtle.withAge(age);
+
+                return turtle;
+            } else if (odataType == null || "NonEmptyAnimalWithTypeIdContainingDot".equals(odataType)) {
+                return new NonEmptyAnimalWithTypeIdContainingDot().withAge(age);
+            } else {
+                throw new IllegalStateException("Invalid discriminator value '" + reader.getStringValue()
+                    + "', expected: '#Favourite.Pet.TurtleWithTypeIdContainingDot' or "
+                    + "'NonEmptyAnimalWithTypeIdContainingDot'.");
+            }
         });
-    }
-
-    private static NonEmptyAnimalWithTypeIdContainingDot fromJsonInternal(JsonReader jsonReader) {
-        Integer age = null;
-
-        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-            String fieldName = jsonReader.getFieldName();
-            JsonToken token = jsonReader.nextToken();
-
-            if ("age".equals(fieldName)) {
-                age = (token == JsonToken.NULL) ? null : jsonReader.getIntValue();
-            }
-        }
-
-        return new NonEmptyAnimalWithTypeIdContainingDot().withAge(age);
     }
 }
