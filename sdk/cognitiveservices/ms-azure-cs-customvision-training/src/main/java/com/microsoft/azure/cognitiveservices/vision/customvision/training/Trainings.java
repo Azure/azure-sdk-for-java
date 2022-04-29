@@ -1294,14 +1294,14 @@ public interface Trainings {
          */
         interface WithAllOptions {
             /**
-             * The threshold used to determine true predictions.
+             * The threshold used to determine true predictions. Accepted values are between 1 and 0. Defaults to 0.8.
              *
              * @return next definition stage
              */
             TrainingsGetIterationPerformanceDefinitionStages.WithExecute withThreshold(Double threshold);
 
             /**
-             * If applicable, the bounding box overlap threshold used to determine true predictions.
+             * If applicable, the bounding box overlap threshold used to determine true predictions. Accepted values are between 1 and 0. Defaults to 0.5.
              *
              * @return next definition stage
              */
