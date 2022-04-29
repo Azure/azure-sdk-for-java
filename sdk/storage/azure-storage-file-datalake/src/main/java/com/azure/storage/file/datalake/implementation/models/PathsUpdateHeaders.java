@@ -135,7 +135,7 @@ public final class PathsUpdateHeaders {
         this.contentDisposition = rawHeaders.getValue("Content-Disposition");
         this.contentEncoding = rawHeaders.getValue("Content-Encoding");
         if (rawHeaders.getValue("Content-Length") != null) {
-            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.contentLanguage = rawHeaders.getValue("Content-Language");

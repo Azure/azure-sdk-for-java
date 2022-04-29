@@ -254,7 +254,7 @@ public final class FilesDownloadHeaders {
             this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
         }
         if (rawHeaders.getValue("Content-Length") != null) {
-            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.contentType = rawHeaders.getValue("Content-Type");
@@ -263,15 +263,15 @@ public final class FilesDownloadHeaders {
         this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
         this.xMsCopySource = rawHeaders.getValue("x-ms-copy-source");
         this.xMsCopyProgress = rawHeaders.getValue("x-ms-copy-progress");
-        Map<String, String> headerCollection = new HashMap<String, String>();
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             if (!header.getName().startsWith("x-ms-meta-")) {
                 continue;
             }
-            headerCollection.put(header.getName().substring(10), header.getValue());
+            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
         }
-        this.xMsMeta = headerCollection;
+        this.xMsMeta = xMsMetaHeaderCollection;
         if (rawHeaders.getValue("Date") != null) {
             this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
         }
@@ -283,7 +283,7 @@ public final class FilesDownloadHeaders {
             this.xMsCopyCompletionTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-copy-completion-time"));
         }
         if (rawHeaders.getValue("x-ms-server-encrypted") != null) {
-            this.xMsServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-server-encrypted"));
+            this.xMsServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-server-encrypted"));
         }
         this.cacheControl = rawHeaders.getValue("Cache-Control");
         this.eTag = rawHeaders.getValue("ETag");

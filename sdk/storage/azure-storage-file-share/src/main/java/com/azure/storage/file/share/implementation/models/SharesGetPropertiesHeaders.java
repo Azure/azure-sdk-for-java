@@ -151,7 +151,7 @@ public final class SharesGetPropertiesHeaders {
      */
     public SharesGetPropertiesHeaders(HttpHeaders rawHeaders) {
         if (rawHeaders.getValue("x-ms-share-provisioned-iops") != null) {
-            this.xMsShareProvisionedIops = Integer.valueOf(rawHeaders.getValue("x-ms-share-provisioned-iops"));
+            this.xMsShareProvisionedIops = Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-iops"));
         }
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         if (rawHeaders.getValue("x-ms-lease-status") != null) {
@@ -169,28 +169,28 @@ public final class SharesGetPropertiesHeaders {
         if (rawHeaders.getValue("x-ms-access-tier-change-time") != null) {
             this.xMsAccessTierChangeTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-access-tier-change-time"));
         }
-        Map<String, String> headerCollection = new HashMap<String, String>();
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             if (!header.getName().startsWith("x-ms-meta-")) {
                 continue;
             }
-            headerCollection.put(header.getName().substring(10), header.getValue());
+            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
         }
-        this.xMsMeta = headerCollection;
+        this.xMsMeta = xMsMetaHeaderCollection;
         if (rawHeaders.getValue("Date") != null) {
             this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
         }
         if (rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps") != null) {
             this.xMsShareProvisionedIngressMbps =
-                    Integer.valueOf(rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps"));
+                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps"));
         }
         if (rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps") != null) {
             this.xMsShareProvisionedBandwidthMibps =
-                    Integer.valueOf(rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps"));
+                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps"));
         }
         if (rawHeaders.getValue("x-ms-share-quota") != null) {
-            this.xMsShareQuota = Integer.valueOf(rawHeaders.getValue("x-ms-share-quota"));
+            this.xMsShareQuota = Integer.parseInt(rawHeaders.getValue("x-ms-share-quota"));
         }
         this.xMsAccessTier = rawHeaders.getValue("x-ms-access-tier");
         this.eTag = rawHeaders.getValue("ETag");
@@ -202,7 +202,7 @@ public final class SharesGetPropertiesHeaders {
         this.xMsAccessTierTransitionState = rawHeaders.getValue("x-ms-access-tier-transition-state");
         if (rawHeaders.getValue("x-ms-share-provisioned-egress-mbps") != null) {
             this.xMsShareProvisionedEgressMbps =
-                    Integer.valueOf(rawHeaders.getValue("x-ms-share-provisioned-egress-mbps"));
+                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-egress-mbps"));
         }
         if (rawHeaders.getValue("x-ms-share-next-allowed-quota-downgrade-time") != null) {
             this.xMsShareNextAllowedQuotaDowngradeTime =

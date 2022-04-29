@@ -183,7 +183,7 @@ public final class PathsGetPropertiesHeaders {
         this.xMsPermissions = rawHeaders.getValue("x-ms-permissions");
         this.xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
         if (rawHeaders.getValue("Content-Length") != null) {
-            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.contentLanguage = rawHeaders.getValue("Content-Language");

@@ -61,7 +61,7 @@ public final class FilesGetRangeListHeaders {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.eTag = rawHeaders.getValue("ETag");
         if (rawHeaders.getValue("x-ms-content-length") != null) {
-            this.xMsContentLength = Long.valueOf(rawHeaders.getValue("x-ms-content-length"));
+            this.xMsContentLength = Long.parseLong(rawHeaders.getValue("x-ms-content-length"));
         }
         if (rawHeaders.getValue("Last-Modified") != null) {
             this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));

@@ -58,17 +58,17 @@ public final class QueuesGetPropertiesHeaders {
     public QueuesGetPropertiesHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         if (rawHeaders.getValue("x-ms-approximate-messages-count") != null) {
-            this.xMsApproximateMessagesCount = Integer.valueOf(rawHeaders.getValue("x-ms-approximate-messages-count"));
+            this.xMsApproximateMessagesCount = Integer.parseInt(rawHeaders.getValue("x-ms-approximate-messages-count"));
         }
-        Map<String, String> headerCollection = new HashMap<String, String>();
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             if (!header.getName().startsWith("x-ms-meta-")) {
                 continue;
             }
-            headerCollection.put(header.getName().substring(10), header.getValue());
+            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
         }
-        this.xMsMeta = headerCollection;
+        this.xMsMeta = xMsMetaHeaderCollection;
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         if (rawHeaders.getValue("Date") != null) {
             this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));

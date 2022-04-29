@@ -61,10 +61,10 @@ public final class FilesForceCloseHandlesHeaders {
         this.xMsMarker = rawHeaders.getValue("x-ms-marker");
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         if (rawHeaders.getValue("x-ms-number-of-handles-closed") != null) {
-            this.xMsNumberOfHandlesClosed = Integer.valueOf(rawHeaders.getValue("x-ms-number-of-handles-closed"));
+            this.xMsNumberOfHandlesClosed = Integer.parseInt(rawHeaders.getValue("x-ms-number-of-handles-closed"));
         }
         if (rawHeaders.getValue("x-ms-number-of-handles-failed") != null) {
-            this.xMsNumberOfHandlesFailed = Integer.valueOf(rawHeaders.getValue("x-ms-number-of-handles-failed"));
+            this.xMsNumberOfHandlesFailed = Integer.parseInt(rawHeaders.getValue("x-ms-number-of-handles-failed"));
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         if (rawHeaders.getValue("Date") != null) {
