@@ -24,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedIdentitySqlControlSettingsClient;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
     implements WorkspaceManagedIdentitySqlControlSettingsClient {
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedIdentitySqlControlSettingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkspaceManagedIdentitySqlControlSettingsService service;
 
@@ -387,8 +384,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
@@ -419,8 +415,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
@@ -453,8 +448,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
@@ -477,8 +471,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<

@@ -137,7 +137,7 @@ public final class AccessTokenCache {
                         return Mono.just(cache);
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return sinksOne.asMono().switchIfEmpty(Mono.defer(() -> Mono.just(cache)));
+                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cache));
                     }
                 }
             } catch (Exception ex) {
@@ -168,7 +168,7 @@ public final class AccessTokenCache {
             } else if (signal.isOnError() && error != null) { // ERROR
                 LOGGER.error(refreshLog(cache, now, "Failed to acquire a new access token"));
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                return fallback.switchIfEmpty(Mono.defer(() -> Mono.error(error)));
+                return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
                 sinksOne.tryEmitEmpty();
                 return fallback;

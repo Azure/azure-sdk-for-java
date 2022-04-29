@@ -63,11 +63,11 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUE
  */
 class PartitionPumpManager {
     private static final int MAXIMUM_QUEUE_SIZE = 10000;
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionPumpManager.class);
 
     //TODO (conniey): Add a configurable scheduler size, at the moment we are creating a new elastic scheduler
     // for each partition pump that will have at most number of processors * 4.
     private final int schedulerSize = Runtime.getRuntime().availableProcessors() * 4;
-    private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
     private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
@@ -126,7 +126,7 @@ class PartitionPumpManager {
             try {
                 eventHubConsumer.close();
             } catch (Exception ex) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue(PARTITION_ID_KEY, partitionId)
                     .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex);
             } finally {
@@ -147,7 +147,7 @@ class PartitionPumpManager {
 
         if (partitionPump == null) {
 
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .addKeyValue(ENTITY_PATH_KEY, ownership.getEventHubName())
                 .log("No partition pump found for ownership record.");
@@ -156,7 +156,7 @@ class PartitionPumpManager {
 
         final EventHubConsumerAsyncClient consumerClient = partitionPump.getClient();
         if (consumerClient.isConnectionClosed()) {
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .addKeyValue(ENTITY_PATH_KEY, ownership.getEventHubName())
                 .log("Connection closed for partition. Removing the consumer.");
@@ -164,7 +164,7 @@ class PartitionPumpManager {
             try {
                 partitionPump.close();
             } catch (Exception ex) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue(PARTITION_ID_KEY, partitionId)
                     .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex);
             } finally {
@@ -181,7 +181,7 @@ class PartitionPumpManager {
      */
     void startPartitionPump(PartitionOwnership claimedOwnership, Checkpoint checkpoint) {
         if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .log("Consumer is already running.");
 
@@ -213,7 +213,7 @@ class PartitionPumpManager {
                 startFromEventPosition = EventPosition.latest();
             }
 
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .addKeyValue("eventPosition", startFromEventPosition)
                 .log("Starting event processing.");
@@ -234,8 +234,8 @@ class PartitionPumpManager {
             Flux<PartitionEvent> receiver = eventHubConsumer
                 .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
                 .doOnNext(partitionEvent -> {
-                    if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                        logger.atVerbose()
+                    if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                        LOGGER.atVerbose()
                             .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                             .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
                             .addKeyValue(SEQUENCE_NUMBER_KEY, partitionEvent.getData().getSequenceNumber())
@@ -270,7 +270,7 @@ class PartitionPumpManager {
                 cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));
             }
 
-            throw logger.atError()
+            throw LOGGER.atError()
                 .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .log(new PartitionProcessorException(
                     "Error occurred while starting partition pump for partition " + claimedOwnership.getPartitionId(),
@@ -291,17 +291,17 @@ class PartitionPumpManager {
             }
         }
         try {
-            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+            if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
 
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                     .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
                     .log("Processing event.");
             }
             partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
                 eventContext.getLastEnqueuedEventProperties()));
-            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                logger.atVerbose()
+            if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                LOGGER.atVerbose()
                     .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                     .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
                     .log("Completed processing event.");
@@ -310,7 +310,7 @@ class PartitionPumpManager {
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
             endProcessTracingSpan(processSpanContext, Signal.error(throwable));
-            throw logger.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
+            throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
                 throwable));
         }
     }
@@ -335,8 +335,8 @@ class PartitionPumpManager {
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
                     checkpointStore, enqueuedEventProperties);
 
-                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                    logger.atVerbose()
+                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                    LOGGER.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                         .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
                         .log("Processing event batch.");
@@ -344,8 +344,8 @@ class PartitionPumpManager {
 
                 partitionProcessor.processEventBatch(eventBatchContext);
 
-                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                    logger.atVerbose()
+                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                    LOGGER.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                         .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
                         .log("Completed processing event batch.");
@@ -367,7 +367,7 @@ class PartitionPumpManager {
             }
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
-            throw logger.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
+            throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
                 throwable));
         }
     }
@@ -383,7 +383,7 @@ class PartitionPumpManager {
             shouldRethrow = false;
             // If user code threw an exception in processEvent callback, bubble up the exception
 
-            logger.atWarning()
+            LOGGER.atWarning()
                 .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                 .log("Error receiving events from partition.", throwable);
 
@@ -396,20 +396,20 @@ class PartitionPumpManager {
         cleanup(claimedOwnership, partitionPump);
         if (shouldRethrow) {
             PartitionProcessorException exception = (PartitionProcessorException) throwable;
-            throw logger.logExceptionAsError(exception);
+            throw LOGGER.logExceptionAsError(exception);
         }
     }
 
     private void cleanup(PartitionOwnership claimedOwnership, PartitionPump partitionPump) {
         try {
             // close the consumer
-            logger.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
+            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .log("Closing consumer.");
 
             partitionPump.close();
         } finally {
             // finally, remove the partition from partitionPumps map
-            logger.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
+            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .log("Removing partition from list of processing partitions.");
             partitionPumps.remove(claimedOwnership.getPartitionId());
         }
@@ -455,11 +455,11 @@ class PartitionPumpManager {
             try {
                 close.close();
             } catch (Exception exception) {
-                logger.error(Messages.EVENT_PROCESSOR_RUN_END, exception);
+                LOGGER.error(Messages.EVENT_PROCESSOR_RUN_END, exception);
             }
 
         } else {
-            logger.verbose(String.format(Locale.US, Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR,
+            LOGGER.verbose(String.format(Locale.US, Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR,
                 spanObject != null ? spanObject.getClass() : "null"));
         }
         tracerProvider.endSpan(processSpanContext, signal);

@@ -32,9 +32,9 @@
 
 
 # PRLabel: %Attestation
-/sdk/attestation/                                   @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/                                   @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
@@ -166,6 +166,8 @@
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+# PRLabel: %azure-spring
+/sdk/spring-experimental/                           @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 # end to end tests
 # PRLabel: %Azure.Identity

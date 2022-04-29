@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in BmsPrepareDataMoveOperationResultsClient.
  */
 public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPrepareDataMoveOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(BmsPrepareDataMoveOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BmsPrepareDataMoveOperationResultsService service;
 

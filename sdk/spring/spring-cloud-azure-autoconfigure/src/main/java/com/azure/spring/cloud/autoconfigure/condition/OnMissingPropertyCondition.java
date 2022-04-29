@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.condition;
 
+import com.azure.spring.cloud.core.implementation.util.AzureStringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -44,11 +45,8 @@ class OnMissingPropertyCondition extends PropertyCondition {
         private final String[] names;
 
         Spec(AnnotationAttributes annotationAttributes) {
-            String prefix = annotationAttributes.getString("prefix").trim();
-            if (StringUtils.hasText(prefix) && !prefix.endsWith(".")) {
-                prefix = prefix + ".";
-            }
-            this.prefix = prefix;
+            String prefixAttr = annotationAttributes.getString("prefix");
+            this.prefix = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
             this.names = getNames(annotationAttributes);
         }
 

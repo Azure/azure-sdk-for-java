@@ -36,7 +36,11 @@ public final class SupportStatus extends ExpandableStringEnum<SupportStatus> {
         return fromString(name, SupportStatus.class);
     }
 
-    /** @return known SupportStatus values. */
+    /**
+     * Gets known SupportStatus values.
+     *
+     * @return known SupportStatus values.
+     */
     public static Collection<SupportStatus> values() {
         return values(SupportStatus.class);
     }

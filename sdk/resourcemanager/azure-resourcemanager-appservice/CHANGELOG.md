@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `checkNameAvailability` method for `WebApps`.
 
 ## 2.14.0 (2022-04-11)
 

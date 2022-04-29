@@ -109,7 +109,7 @@ class ServiceBusReceiverAsyncClientTest {
     private static final Duration CLEANUP_INTERVAL = Duration.ofSeconds(10);
     private static final String SESSION_ID = "my-session-id";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
@@ -154,7 +154,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
@@ -201,7 +201,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     @AfterEach
     void teardown(TestInfo testInfo) throws Exception {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         receiver.close();
         mocksCloseable.close();
@@ -1091,7 +1091,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(message, maxDuration))
             .thenAwait(totalSleepPeriod)
-            .then(() -> logger.info("Finished renewals for first sleep."))
+            .then(() -> LOGGER.info("Finished renewals for first sleep."))
             .expectComplete()
             .verify(Duration.ofSeconds(5));
 
@@ -1161,7 +1161,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))
             .thenAwait(totalSleepPeriod)
-            .then(() -> logger.info("Finished renewals for first sleep."))
+            .then(() -> LOGGER.info("Finished renewals for first sleep."))
             .expectComplete()
             .verify(Duration.ofSeconds(5));
 

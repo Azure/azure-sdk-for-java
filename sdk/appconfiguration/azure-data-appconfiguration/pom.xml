@@ -93,7 +93,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.14</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.16</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -111,13 +111,13 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
+          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support-netty</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
+          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>

@@ -117,7 +117,7 @@ public class ClientTelemetry {
                            List<String> preferredRegions
     ) {
         clientTelemetryInfo = new ClientTelemetryInfo(
-            getMachineId(diagnosticsClientContext),
+            getMachineId(diagnosticsClientContext.getConfig()),
             clientId,
             processId,
             userAgent,
@@ -139,22 +139,22 @@ public class ClientTelemetry {
         return clientTelemetryInfo;
     }
 
-    public static String getMachineId(DiagnosticsClientContext diagnosticsClientContext) {
+    public static String getMachineId(DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null && metadataSnapshot.getVmId() != null) {
             String machineId = "vmId:" + metadataSnapshot.getVmId();
-            if (diagnosticsClientContext != null) {
-                diagnosticsClientContext.getConfig().withMachineId(machineId);
+            if (diagnosticsClientConfig != null) {
+                diagnosticsClientConfig.withMachineId(machineId);
             }
             return machineId;
         }
 
-        if (diagnosticsClientContext == null) {
+        if (diagnosticsClientConfig == null) {
             return "";
         }
 
-        return diagnosticsClientContext.getConfig().getMachineId();
+        return diagnosticsClientConfig.getMachineId();
     }
 
     public static void recordValue(ConcurrentDoubleHistogram doubleHistogram, long value) {

@@ -198,7 +198,7 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.added",
+          "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
           "justification": "These are SDK metadata annotations and don't affect runtime behavior."

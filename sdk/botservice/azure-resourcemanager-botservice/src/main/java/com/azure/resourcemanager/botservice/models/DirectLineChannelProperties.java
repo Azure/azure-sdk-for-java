@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The parameters to provide for the Direct Line channel. */
 @Fluent
 public final class DirectLineChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectLineChannelProperties.class);
-
     /*
      * The list of Direct Line sites
      */

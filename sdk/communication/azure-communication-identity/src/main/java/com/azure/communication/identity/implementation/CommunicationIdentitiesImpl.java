@@ -55,7 +55,7 @@ public final class CommunicationIdentitiesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "CommunicationIdentit")
-    private interface CommunicationIdentitiesService {
+    public interface CommunicationIdentitiesService {
         @Post("/identities")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

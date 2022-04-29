@@ -43,7 +43,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * &#47;&#47; added to the instance. By default, this is false, so it will error if the schema is not found.
  * SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder&#40;&#41;
  *     .schemaRegistryAsyncClient&#40;schemaRegistryAsyncClient&#41;
- *     .autoRegisterSchema&#40;true&#41;
+ *     .autoRegisterSchemas&#40;true&#41;
  *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
  *     .buildSerializer&#40;&#41;;
  * </pre>
@@ -51,9 +51,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Serialize an object</strong></p>
  * Serializes an Avro generated object into {@link MessageContent}.
- * {@link #serializeMessageData(Object, TypeReference)} assumes that there is a no argument constructor used to
+ * {@link #serialize(Object, TypeReference)} assumes that there is a no argument constructor used to
  * instantiate the {@link MessageContent} type. If there is a different way to instantiate the concrete type, use
- * the overload which takes a message factory function, {@link #serializeMessageData(Object, TypeReference, Function)}.
+ * the overload which takes a message factory function, {@link #serialize(Object, TypeReference, Function)}.
  *
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
  * <pre>
@@ -165,11 +165,11 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     problem serializing the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
-     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> T serializeMessageData(Object object, TypeReference<T> typeReference) {
-        return serializeMessageDataAsync(object, typeReference).block();
+    public <T extends MessageContent> T serialize(Object object, TypeReference<T> typeReference) {
+        return serializeAsync(object, typeReference).block();
     }
 
     /**
@@ -188,12 +188,12 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryApacheAvroException if the object could not be serialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
-     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> T serializeMessageData(Object object, TypeReference<T> typeReference,
+    public <T extends MessageContent> T serialize(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
-        return serializeMessageDataAsync(object, typeReference, messageFactory).block();
+        return serializeAsync(object, typeReference, messageFactory).block();
     }
 
     /**
@@ -211,13 +211,13 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryApacheAvroException if the object could not be serialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
-     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> Mono<T> serializeMessageDataAsync(Object object,
+    public <T extends MessageContent> Mono<T> serializeAsync(Object object,
         TypeReference<T> typeReference) {
 
-        return serializeMessageDataAsync(object, typeReference, null);
+        return serializeAsync(object, typeReference, null);
     }
 
     /**
@@ -233,14 +233,16 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
      *     argument constructor. Or if the schema could not be fetched from {@code T}.
+     * @throws IllegalStateException if {@link SchemaRegistryApacheAvroSerializerBuilder#schemaGroup(String)
+     *     schemaGroup} is not set.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryApacheAvroException if the object could not be serialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
-     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T extends MessageContent> Mono<T> serializeMessageDataAsync(Object object,
+    public <T extends MessageContent> Mono<T> serializeAsync(Object object,
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
@@ -277,26 +279,44 @@ public final class SchemaRegistryApacheAvroSerializer {
 
         final String schemaFullName = schema.getFullName();
         final String schemaString = schema.toString();
+        final String schemaGroup = serializerOptions.getSchemaGroup();
 
-        return maybeRegisterSchema(serializerOptions.getSchemaGroup(), schemaFullName, schemaString)
-            .handle((schemaId, sink) -> {
-                try {
-                    final byte[] encoded = avroSerializer.serialize(object, schemaId);
-                    final T serializedMessage = messageFactoryToUse.apply(BinaryData.fromBytes(encoded));
+        // It is possible to create the serializer without setting the schema group. This is the case when
+        // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
+        if (CoreUtils.isNullOrEmpty(schemaGroup)) {
+            return monoError(logger, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
+                + "set in SchemaRegistryApacheAvroSerializer.schemaGroup when creating serializer."));
+        }
 
-                    serializedMessage.setContentType(AVRO_MIME_TYPE + "+" + schemaId);
+        final Mono<SchemaProperties> serviceCall;
+        if (serializerOptions.autoRegisterSchemas()) {
+            serviceCall = this.schemaRegistryClient
+                .registerSchema(schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
+        } else {
+            serviceCall = this.schemaRegistryClient.getSchemaProperties(
+                schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
+        }
 
-                    sink.next(serializedMessage);
-                    sink.complete();
-                } catch (SchemaRegistryApacheAvroException e) {
-                    // If an exception happens in the avro library while calling serializer.serialize(object, schemaId)
-                    // we already wrap in an exception, so we don't want to wrap it again.
-                    sink.error(e);
-                } catch (Exception e) {
-                    sink.error(new SchemaRegistryApacheAvroException(String.format(
-                        "Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e, schemaId));
-                }
-            });
+        return serviceCall.handle((properties, sink) -> {
+            final String schemaId = properties.getId();
+
+            try {
+                final byte[] encoded = avroSerializer.serialize(object, schemaId);
+                final T serializedMessage = messageFactoryToUse.apply(BinaryData.fromBytes(encoded));
+
+                serializedMessage.setContentType(AVRO_MIME_TYPE + "+" + schemaId);
+
+                sink.next(serializedMessage);
+                sink.complete();
+            } catch (SchemaRegistryApacheAvroException e) {
+                // If an exception happens in the avro library while calling serializer.serialize(object, schemaId)
+                // we already wrap in an exception, so we don't want to wrap it again.
+                sink.error(e);
+            } catch (Exception e) {
+                sink.error(new SchemaRegistryApacheAvroException(String.format(
+                    "Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e, schemaId));
+            }
+        });
     }
 
     /**
@@ -315,11 +335,11 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
      * @throws SchemaRegistryApacheAvroException if the message could not be deserialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
-     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T> T deserializeMessageData(MessageContent message, TypeReference<T> typeReference) {
-        return deserializeMessageDataAsync(message, typeReference).block();
+    public <T> T deserialize(MessageContent message, TypeReference<T> typeReference) {
+        return deserializeAsync(message, typeReference).block();
     }
 
     /**
@@ -339,10 +359,10 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
      * @throws SchemaRegistryApacheAvroException if the message could not be deserialized.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
-     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchema(boolean)} is false.
+     *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
      * @throws HttpResponseException if an error occurred while trying to fetch the schema from the service.
      */
-    public <T> Mono<T> deserializeMessageDataAsync(MessageContent message, TypeReference<T> typeReference) {
+    public <T> Mono<T> deserializeAsync(MessageContent message, TypeReference<T> typeReference) {
         if (message == null) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         } else if (typeReference == null) {
@@ -458,27 +478,6 @@ public final class SchemaRegistryApacheAvroSerializer {
                 "Constructed '%s' object was not an instanceof T '%s'.", newObject, typeReference.getJavaClass()));
         } else {
             return (T) newObject;
-        }
-    }
-
-    /**
-     * If auto-registering is enabled, register schema against Schema Registry. If auto-registering is disabled, fetch
-     * schema ID for provided schema. Requires pre-registering of schema against registry.
-     *
-     * @param schemaGroup Schema group where schema should be registered.
-     * @param schemaName name of schema
-     * @param schemaString string representation of schema being stored - must match group schema type
-     *
-     * @return string representation of schema ID
-     */
-    private Mono<String> maybeRegisterSchema(String schemaGroup, String schemaName, String schemaString) {
-        if (serializerOptions.autoRegisterSchemas()) {
-            return this.schemaRegistryClient
-                .registerSchema(schemaGroup, schemaName, schemaString, SchemaFormat.AVRO)
-                .map(SchemaProperties::getId);
-        } else {
-            return this.schemaRegistryClient.getSchemaProperties(
-                schemaGroup, schemaName, schemaString, SchemaFormat.AVRO).map(properties -> properties.getId());
         }
     }
 }
