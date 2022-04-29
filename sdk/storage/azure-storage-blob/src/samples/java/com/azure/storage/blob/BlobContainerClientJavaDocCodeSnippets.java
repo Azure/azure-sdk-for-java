@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -371,7 +372,8 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#FindBlobsOptions-Duration
         Context context = new Context("Key", "Value");
-        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10), timeout, context)
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10)
+                .addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS), timeout, context)
             .forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
         // END: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#FindBlobsOptions-Duration
     }

@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
@@ -115,7 +116,8 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String
 
         // BEGIN: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions
-        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10))
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10)
+                .addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS))
             .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
         // END: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions
     }

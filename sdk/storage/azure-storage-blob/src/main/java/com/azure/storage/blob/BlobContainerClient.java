@@ -990,7 +990,8 @@ public final class BlobContainerClient {
      * <!-- src_embed com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration -->
      * <pre>
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;, timeout, context&#41;
+     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;
+     *         .addFilterBlobsIncludeItems&#40;FilterBlobsIncludeItem.VERSIONS&#41;, timeout, context&#41;
      *     .forEach&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration -->

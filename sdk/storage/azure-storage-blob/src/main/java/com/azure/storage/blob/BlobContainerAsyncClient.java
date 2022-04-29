@@ -619,12 +619,12 @@ public final class BlobContainerAsyncClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions -->
      *
@@ -1407,7 +1407,8 @@ public final class BlobContainerAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions -->
      * <pre>
-     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;&#41;
+     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;
+     *         .addFilterBlobsIncludeItems&#40;FilterBlobsIncludeItem.VERSIONS&#41;&#41;
      *     .subscribe&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions -->

@@ -386,13 +386,13 @@ public final class BlobServiceAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      * <pre>
-     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      *
@@ -415,9 +415,13 @@ public final class BlobServiceAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
      * <pre>
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *     .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
      *
@@ -568,7 +572,8 @@ public final class BlobServiceAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions -->
      * <pre>
-     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;&#41;
+     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;
+     *         .addFilterBlobsIncludeItems&#40;FilterBlobsIncludeItem.VERSIONS&#41;&#41;
      *     .subscribe&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions -->
@@ -611,11 +616,11 @@ public final class BlobServiceAsyncClient {
         return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
-    private Mono<PagedResponse<TaggedBlobItem>> findBlobsByTags(
-        FindBlobsOptions options, String marker,
+    private Mono<PagedResponse<TaggedBlobItem>> findBlobsByTags(FindBlobsOptions options, String marker,
         Duration timeout, Context context) {
         throwOnAnonymousAccess();
         StorageImplUtils.assertNotNull("options", options);
+        context = context == null ? Context.NONE : context;
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getServices().filterBlobsWithResponseAsync(null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(), options.getFilterBlobsIncludeItems(),

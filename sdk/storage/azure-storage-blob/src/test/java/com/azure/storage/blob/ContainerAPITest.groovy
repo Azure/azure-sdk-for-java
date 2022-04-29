@@ -1978,7 +1978,6 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_08_06")
     def "Find blobs by tag blob versions"() {
         setup:
-        //def properties = System.getProperties()
         def blobClient = cc.getBlobClient(generateBlobName())
         def appendBlobClient = blobClient.getAppendBlobClient()
         def tagKey = "myTagKey"
@@ -1990,8 +1989,7 @@ class ContainerAPITest extends APISpec {
         appendBlobClient.createWithResponse(options, null, null)
         sleepIfRecord(10 * 1000) // To allow tags to index
         def query = String.format("\"%s\"='%s'", tagKey, tagValue)
-        List blobs = new ArrayList<FilterBlobsIncludeItem>()
-        def findBlobOptions = new FindBlobsOptions(query).setFilterBlobsIncludeItems(blobs).addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS)
+        def findBlobOptions = new FindBlobsOptions(query).addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS)
 
         when:
         def results = cc.findBlobsByTags(findBlobOptions, null, null)

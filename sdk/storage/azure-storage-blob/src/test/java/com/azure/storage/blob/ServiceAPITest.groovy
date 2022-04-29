@@ -532,8 +532,7 @@ class ServiceAPITest extends APISpec {
         appendBlobClient.createWithResponse(options, null, null)
         sleepIfRecord(10 * 1000) // To allow tags to index
         def query = String.format("\"%s\"='%s'", tagKey, tagValue)
-        List blobs = new ArrayList<FilterBlobsIncludeItem>()
-        def findBlobOptions = new FindBlobsOptions(query).setFilterBlobsIncludeItems(blobs).addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS)
+        def findBlobOptions = new FindBlobsOptions(query).addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS)
 
         when:
         def results = primaryBlobServiceClient.findBlobsByTags(findBlobOptions, null, null)
@@ -543,6 +542,9 @@ class ServiceAPITest extends APISpec {
         def resultTags = results.first().getTags()
         resultTags.size() == 1
         resultTags.get(tagKey) == tagValue
+
+        cleanup:
+        cc.delete()
     }
 
     def validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {

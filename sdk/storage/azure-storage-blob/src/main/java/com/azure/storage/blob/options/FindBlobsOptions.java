@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.FilterBlobsIncludeItem;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public class FindBlobsOptions {
     public FindBlobsOptions(String query) {
         StorageImplUtils.assertNotNull("query", query);
         this.query = query;
+        filterBlobsIncludeItems = new ArrayList<FilterBlobsIncludeItem>();
     }
 
     /**
@@ -65,15 +67,18 @@ public class FindBlobsOptions {
         return this;
     }
 
+    /**
+     * @return the list of {@link FilterBlobsIncludeItem}
+     */
     public List<FilterBlobsIncludeItem> getFilterBlobsIncludeItems() {
         return filterBlobsIncludeItems;
     }
 
-    public FindBlobsOptions setFilterBlobsIncludeItems(List<FilterBlobsIncludeItem> filterBlobsIncludeItems) {
-        this.filterBlobsIncludeItems = filterBlobsIncludeItems;
-        return this;
-    }
-
+    /**
+     *
+     * @param item {@link FilterBlobsIncludeItem} containing specific filter tags
+     * @return the updated FindBlobOptions object
+     */
     public FindBlobsOptions addFilterBlobsIncludeItems(FilterBlobsIncludeItem item) {
         filterBlobsIncludeItems.add(item);
         return this;
