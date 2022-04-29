@@ -67,7 +67,7 @@ public final class AppendBlobsSealHeaders {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.eTag = rawHeaders.getValue("ETag");
         if (rawHeaders.getValue("x-ms-blob-sealed") != null) {
-            this.xMsBlobSealed = Boolean.valueOf(rawHeaders.getValue("x-ms-blob-sealed"));
+            this.xMsBlobSealed = Boolean.parseBoolean(rawHeaders.getValue("x-ms-blob-sealed"));
         }
         if (rawHeaders.getValue("Last-Modified") != null) {
             this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));

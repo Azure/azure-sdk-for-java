@@ -99,7 +99,7 @@ public final class BlockBlobsUploadHeaders {
         this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
-            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
         }
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         if (rawHeaders.getValue("Date") != null) {

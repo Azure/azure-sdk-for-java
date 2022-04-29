@@ -67,7 +67,7 @@ public final class ContainersBreakLeaseHeaders {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.eTag = rawHeaders.getValue("ETag");
         if (rawHeaders.getValue("x-ms-lease-time") != null) {
-            this.xMsLeaseTime = Integer.valueOf(rawHeaders.getValue("x-ms-lease-time"));
+            this.xMsLeaseTime = Integer.parseInt(rawHeaders.getValue("x-ms-lease-time"));
         }
         if (rawHeaders.getValue("Last-Modified") != null) {
             this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));

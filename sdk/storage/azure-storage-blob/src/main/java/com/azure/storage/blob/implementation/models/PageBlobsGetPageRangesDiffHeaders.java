@@ -66,7 +66,7 @@ public final class PageBlobsGetPageRangesDiffHeaders {
     public PageBlobsGetPageRangesDiffHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         if (rawHeaders.getValue("x-ms-blob-content-length") != null) {
-            this.xMsBlobContentLength = Long.valueOf(rawHeaders.getValue("x-ms-blob-content-length"));
+            this.xMsBlobContentLength = Long.parseLong(rawHeaders.getValue("x-ms-blob-content-length"));
         }
         this.eTag = rawHeaders.getValue("ETag");
         if (rawHeaders.getValue("Last-Modified") != null) {

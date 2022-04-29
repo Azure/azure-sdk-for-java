@@ -67,7 +67,7 @@ public final class PageBlobsUpdateSequenceNumberHeaders {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.eTag = rawHeaders.getValue("ETag");
         if (rawHeaders.getValue("x-ms-blob-sequence-number") != null) {
-            this.xMsBlobSequenceNumber = Long.valueOf(rawHeaders.getValue("x-ms-blob-sequence-number"));
+            this.xMsBlobSequenceNumber = Long.parseLong(rawHeaders.getValue("x-ms-blob-sequence-number"));
         }
         if (rawHeaders.getValue("Last-Modified") != null) {
             this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));

@@ -55,7 +55,7 @@ public final class BlobsSetLegalHoldHeaders {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         if (rawHeaders.getValue("x-ms-legal-hold") != null) {
-            this.xMsLegalHold = Boolean.valueOf(rawHeaders.getValue("x-ms-legal-hold"));
+            this.xMsLegalHold = Boolean.parseBoolean(rawHeaders.getValue("x-ms-legal-hold"));
         }
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         if (rawHeaders.getValue("Date") != null) {

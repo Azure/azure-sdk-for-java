@@ -71,7 +71,7 @@ public final class ServicesGetAccountInfoHeaders {
             this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
         }
         if (rawHeaders.getValue("x-ms-is-hns-enabled") != null) {
-            this.xMsIsHnsEnabled = Boolean.valueOf(rawHeaders.getValue("x-ms-is-hns-enabled"));
+            this.xMsIsHnsEnabled = Boolean.parseBoolean(rawHeaders.getValue("x-ms-is-hns-enabled"));
         }
         if (rawHeaders.getValue("x-ms-sku-name") != null) {
             this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));

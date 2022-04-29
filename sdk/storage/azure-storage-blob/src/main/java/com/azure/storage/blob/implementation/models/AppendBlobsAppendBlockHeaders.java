@@ -107,14 +107,14 @@ public final class AppendBlobsAppendBlockHeaders {
             this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
         }
         if (rawHeaders.getValue("x-ms-blob-committed-block-count") != null) {
-            this.xMsBlobCommittedBlockCount = Integer.valueOf(rawHeaders.getValue("x-ms-blob-committed-block-count"));
+            this.xMsBlobCommittedBlockCount = Integer.parseInt(rawHeaders.getValue("x-ms-blob-committed-block-count"));
         }
         if (rawHeaders.getValue("Last-Modified") != null) {
             this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
         if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
-            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
         }
         if (rawHeaders.getValue("Date") != null) {
             this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
