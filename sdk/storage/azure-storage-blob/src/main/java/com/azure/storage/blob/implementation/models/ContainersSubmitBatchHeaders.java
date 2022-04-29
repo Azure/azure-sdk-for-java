@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -29,6 +30,18 @@ public final class ContainersSubmitBatchHeaders {
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ContainersSubmitBatchHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ContainersSubmitBatchHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentType = rawHeaders.getValue("Content-Type");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
