@@ -1,12 +1,4 @@
 {
-  "groups": [
-    {
-    "name": "spring.cloud.azure.keyvault.secret.property-sources",
-    "type": "java.util.List<com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties>",
-    "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties",
-    "description": "Azure Key Vault property sources."
-  }
-  ],
   "properties": [
     {
       "name": "azure.activedirectory.active-directory-groups",
@@ -987,6 +979,10 @@
     {
       "name": "spring.jms.servicebus.pool.time-between-expiration-check",
       "description": "Time to sleep between runs of the idle connection eviction thread. When negative, no idle connection eviction thread runs."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.use-anonymous-producers",
+      "description": "Whether to use only one anonymous 'MessageProducer' instance. Set it to false to create one 'MessageProducer' every time one is required."
     },
     {
       "name": "spring.cloud.azure.appconfiguration.client.headers[0].name",
