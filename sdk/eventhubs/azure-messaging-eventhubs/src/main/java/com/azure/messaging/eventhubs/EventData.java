@@ -5,7 +5,9 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
+import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.models.MessageContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -29,7 +31,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition can
- * be visualized as a stream of {@link EventData}.
+ * be visualized as a stream of {@link EventData}. This class is not thread-safe.
  *
  * <p>
  * Here's how AMQP message sections map to {@link EventData}. For reference, the specification can be found here:
@@ -73,6 +75,9 @@ public class EventData extends MessageContent {
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
 
+    /**
+     * Creates an event with an empty body.
+     */
     public EventData() {
         this.context = Context.NONE;
         this.annotatedMessage = EMPTY_MESSAGE;
@@ -232,11 +237,45 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * {@inheritDoc}
+     * Sets a new binary body and corresponding {@link AmqpAnnotatedMessage} on the event. Contents from
+     * {@link #getRawAmqpMessage()} are shallow copied to the new underlying message.
      */
     @Override
     public EventData setBodyAsBinaryData(BinaryData binaryData) {
+        final AmqpAnnotatedMessage current = this.annotatedMessage;
         this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(binaryData.toBytes()));
+
+        if (current == null) {
+            return this;
+        }
+
+        this.annotatedMessage.getApplicationProperties().putAll(current.getApplicationProperties());
+        this.annotatedMessage.getDeliveryAnnotations().putAll(current.getDeliveryAnnotations());
+        this.annotatedMessage.getFooter().putAll(current.getFooter());
+        this.annotatedMessage.getMessageAnnotations().putAll(current.getMessageAnnotations());
+
+        final AmqpMessageHeader header = this.annotatedMessage.getHeader();
+        header.setDeliveryCount(current.getHeader().getDeliveryCount())
+            .setDurable(current.getHeader().isDurable())
+            .setFirstAcquirer(current.getHeader().isFirstAcquirer())
+            .setPriority(current.getHeader().getPriority())
+            .setTimeToLive(current.getHeader().getTimeToLive());
+
+        final AmqpMessageProperties props = this.annotatedMessage.getProperties();
+        props.setAbsoluteExpiryTime(current.getProperties().getAbsoluteExpiryTime())
+            .setContentEncoding(current.getProperties().getContentEncoding())
+            .setContentType(current.getProperties().getContentType())
+            .setCorrelationId(current.getProperties().getCorrelationId())
+            .setCreationTime(current.getProperties().getCreationTime())
+            .setGroupId(current.getProperties().getGroupId())
+            .setGroupSequence(current.getProperties().getGroupSequence())
+            .setMessageId(current.getProperties().getMessageId())
+            .setReplyTo(current.getProperties().getReplyTo())
+            .setReplyToGroupId(current.getProperties().getReplyToGroupId())
+            .setSubject(current.getProperties().getSubject())
+            .setTo(current.getProperties().getTo())
+            .setUserId(current.getProperties().getUserId());
+
         return this;
     }
 
