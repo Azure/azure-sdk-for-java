@@ -17,6 +17,7 @@
 #### Dependency Updates
 - Update `azure-sdk-bom:1.2.1` [#28586](https://github.com/Azure/azure-sdk-for-java/pull/28586).
 - Use `azure-cosmos:4.29.1` instead of the version `4.28.1` in `azure-sdk-bom` [#28555](https://github.com/Azure/azure-sdk-for-java/pull/28555).
+- Upgrade `azure-resourcemanager` to 2.14.0.
 
 ## 4.0.0 (2022-03-28)
 - This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5. (Note: 2.5.x (x>11) and 2.6.y (y>5) should be supported, but they aren't tested with this release.)
