@@ -5,7 +5,6 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;

@@ -30,7 +30,6 @@ import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;

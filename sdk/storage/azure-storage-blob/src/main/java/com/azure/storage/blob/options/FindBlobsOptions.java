@@ -31,7 +31,6 @@ public class FindBlobsOptions {
     public FindBlobsOptions(String query) {
         StorageImplUtils.assertNotNull("query", query);
         this.query = query;
-        filterBlobsIncludeItems = new ArrayList<FilterBlobsIncludeItem>();
     }
 
     /**
@@ -80,6 +79,9 @@ public class FindBlobsOptions {
      * @return the updated FindBlobOptions object
      */
     public FindBlobsOptions addFilterBlobsIncludeItems(FilterBlobsIncludeItem item) {
+        if (this.filterBlobsIncludeItems == null) {
+            filterBlobsIncludeItems = new ArrayList<>();
+        }
         filterBlobsIncludeItems.add(item);
         return this;
     }
