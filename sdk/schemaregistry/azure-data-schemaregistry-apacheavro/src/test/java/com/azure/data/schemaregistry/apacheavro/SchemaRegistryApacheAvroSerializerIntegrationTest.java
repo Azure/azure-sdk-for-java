@@ -22,14 +22,24 @@ import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
+import com.azure.messaging.eventhubs.PartitionProperties;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.avro.Schema;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -154,8 +164,14 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         assertEquals(cards.getCards().size(), actual.getCards().size());
     }
 
+    /**
+     * Verifies that an event can be sent to Event Hubs and deserialized.
+     */
     @Test
     public void serializeAndDeserializeEventData() {
+        Assumptions.assumeFalse(interceptorManager.isPlaybackMode(),
+            "Cannot run this test in playback mode because it uses AMQP and Event Hubs calls.");
+
         // Arrange
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(schemaGroup)
@@ -168,10 +184,49 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
             .setPlayingCardSuit(PlayingCardSuit.SPADES)
             .setIsFaceCard(false)
             .build();
+        final String uuid = UUID.randomUUID().toString();
+        final String applicationKey = "SCHEMA_REGISTRY_KEY";
         final EventData event = serializer.serialize(playingCard, TypeReference.createInstance(EventData.class));
+        final String partitionId = "0";
+        event.getProperties().put(applicationKey, uuid);
 
-        final EventHubProducerClient client = new EventHubClientBuilder()
-            .credential(endpoint, eventHubName, tokenCredential)
-            .buildProducerClient();
+        EventHubProducerClient producer = null;
+        EventHubConsumerAsyncClient consumer = null;
+        try {
+            producer = new EventHubClientBuilder()
+                .credential(endpoint, eventHubName, tokenCredential)
+                .buildProducerClient();
+            consumer = new EventHubClientBuilder()
+                .credential(endpoint, eventHubName, tokenCredential)
+                .buildAsyncConsumerClient();
+
+            final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
+            final EventPosition last = EventPosition.fromSequenceNumber(partitionProperties.getLastEnqueuedSequenceNumber());
+
+            producer.send(Collections.singleton(event));
+
+            final Flux<PartitionEvent> receiveFlux = consumer.receiveFromPartition(partitionId, last)
+                .filter(e -> {
+                    final Object o = e.getData().getProperties().get(applicationKey);
+                    return o instanceof String && uuid.equals(o);
+                });
+
+            StepVerifier.create(receiveFlux)
+                .assertNext(partitionEvent -> {
+                    final PlayingCard deserialize = serializer.deserialize(partitionEvent.getData(),
+                        TypeReference.createInstance(PlayingCard.class));
+
+                    assertEquals(playingCard, deserialize);
+                })
+                .thenCancel()
+                .verify(Duration.ofMinutes(2));
+        } finally {
+            if (producer != null) {
+                producer.close();
+            }
+            if (consumer != null) {
+                consumer.close();
+            }
+        }
     }
 }
