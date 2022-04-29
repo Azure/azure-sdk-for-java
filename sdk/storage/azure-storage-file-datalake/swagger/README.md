@@ -33,6 +33,7 @@ models-subpackage: implementation.models
 custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType
 custom-types-subpackage: models
 customization-class: src/main/java/DataLakeStorageCustomization.java
+custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 ```
 
