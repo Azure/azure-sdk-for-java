@@ -14,13 +14,13 @@ package com.microsoft.azure.cognitiveservices.vision.customvision.training.model
  */
 public class GetIterationPerformanceOptionalParameter {
     /**
-     * The threshold used to determine true predictions.
+     * The threshold used to determine true predictions. Accepted values are between 1 and 0. Defaults to 0.8.
      */
     private Double threshold;
 
     /**
      * If applicable, the bounding box overlap threshold used to determine true
-     * predictions.
+     * predictions. Accepted values are between 1 and 0. Defaults to 0.5.
      */
     private Double overlapThreshold;
 
