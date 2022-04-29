@@ -76,7 +76,7 @@
       "name": "[concat(variables('baseName'), '/', parameters('eventHubName'))]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces', variables('baseName'))]"
+        "[resourceId('Microsoft.EventHub/namespaces', parameters('baseName'))]"
       ],
       "properties": {
         "messageRetentionInDays": 1,
