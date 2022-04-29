@@ -573,7 +573,6 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
-<<<<<<< HEAD
 ### Delete PageBlob_GetPageRanges x-ms-pageable as autorest can't recognize the itemName for this
 ``` yaml
 directive:
