@@ -29,7 +29,11 @@ public final class ServicesListBlobContainersSegmentNextResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public BlobContainersSegment getValue() {
         return super.getValue();
