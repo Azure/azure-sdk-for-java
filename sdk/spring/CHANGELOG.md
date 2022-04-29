@@ -1,16 +1,17 @@
 # Release History
 
 ## 4.1.0-beta.1 (Unreleased)
+- This release is compatible with Spring Boot 2.5.0-2.5.13, 2.6.0-2.6.7. (Note: 2.5.x (x>13) and 2.6.y (y>7) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.5, 2021.0.0-2021.0.2. (Note: 2020.0.x (x>5) and 2021.0.y (y>2) should be supported, but they aren't tested with this release.)
+- Upgrade Spring Cloud to 2021.0.2 to address [CVE-2022-22963](https://github.com/advisories/GHSA-6v73-fgf6-w5j7) [#28179](https://github.com/Azure/azure-sdk-for-java/issues/28179).
+- Upgrade Spring Boot to 2.6.7 to address [CVE-2022-22965](https://github.com/advisories/GHSA-36p3-wjmg-h94x) [#28520](https://github.com/Azure/azure-sdk-for-java/pull/28520).
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-keyvault-certificates`. This starter supports the auto-configuration of Azure Key Vault `CertificateClient` and `CertificateAsyncClient`. 
 
-### Breaking Changes
-
 ### Bugs Fixed
 - Fix the bean 'AzureTokenCredentialAutoConfiguration' initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
-
-### Other Changes
+- Fix incorrect bean name `staticStorageBlobConnectionStringProvider` in the auto-configuration of `AzureStorageFileShareAutoConfiguration` [#28464](https://github.com/Azure/azure-sdk-for-java/issues/28464).
 
 
 ## 4.0.0 (2022-03-28)
