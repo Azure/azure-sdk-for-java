@@ -573,7 +573,6 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
-<<<<<<< HEAD
 ### Delete PageBlob_GetPageRanges x-ms-pageable as autorest can't recognize the itemName for this
 ``` yaml
 directive:
@@ -590,7 +589,8 @@ directive:
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"].get
   transform: >
     delete $["x-ms-pageable"];
-=======
+```
+
 ### BlobCopySourceTags expandable string enum
 ``` yaml
 directive:
@@ -598,7 +598,6 @@ directive:
   where: $.parameters.CopySourceTags
   transform: >
     $["x-ms-enum"].modelAsString = true;
->>>>>>> upstream/main
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
