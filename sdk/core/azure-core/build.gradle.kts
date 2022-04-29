@@ -35,14 +35,14 @@ sourceSets {
     }
 }
 
-tasks.getByName<JavaCompile>("compileJava9Java") {
+var compileJava9Java = tasks.getByName<JavaCompile>("compileJava9Java") {
     classpath = sourceSets.main.get().output
     options.release.set(9)
 }
 
 tasks.getByName<Jar>("jar") {
-    into("META-INF/versions/9") {
-        from(sourceSets.getByName("java9").output)
+    from(compileJava9Java) {
+        into("META-INF/versions/9")
     }
 
     manifest.attributes(mapOf("Multi-Release" to "true"))

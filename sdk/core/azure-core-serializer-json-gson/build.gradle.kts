@@ -3,20 +3,21 @@
  */
 
 plugins {
-    id 'com.azure.java-conventions'
+    id("com.azure.java-conventions")
 }
 
 dependencies {
-    implementation project(':azure-core')
-    implementation 'com.google.code.gson:gson:2.8.9'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-    testImplementation 'org.mockito:mockito-core:4.0.0'
-    testImplementation 'io.projectreactor:reactor-test:3.4.16'
+    implementation(project(":sdk:core:azure-core"))
+    implementation(project(":sdk:core:azure-core", "archives"))
+    implementation("com.google.code.gson:gson:2.8.9")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("io.projectreactor:reactor-test:3.4.16")
 }
 
-description = 'Microsoft Azure Gson JSON Serializer Library'
+description = "Microsoft Azure Gson JSON Serializer Library"
 
 java {
     withJavadocJar()

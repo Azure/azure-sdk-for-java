@@ -293,7 +293,15 @@ public class InterceptorManager implements AutoCloseable {
      * Creates a File which is the session-records folder.
      */
     private File getRecordFolder() {
-        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
+        URL folderUrl = InterceptorManager.class.getClassLoader().getResource(RECORD_FOLDER);
+        File recordFolder = null;
+        if (folderUrl != null) {
+            recordFolder = new File(folderUrl.getPath());
+            if (recordFolder.exists()) {
+                return recordFolder;
+            }
+        }
+        folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
         return new File(folderUrl.getPath(), RECORD_FOLDER);
     }
 

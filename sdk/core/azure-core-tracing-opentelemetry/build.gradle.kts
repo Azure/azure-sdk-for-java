@@ -3,28 +3,29 @@
  */
 
 plugins {
-    id 'com.azure.java-conventions'
+    id("com.azure.java-conventions")
 }
 
 dependencies {
-    implementation 'io.opentelemetry:opentelemetry-api:1.11.0'
-    implementation project(':azure-core')
-    testImplementation 'io.opentelemetry:opentelemetry-sdk:1.11.0'
-    testImplementation project(':azure-core-test')
-    testImplementation project(':azure-core-http-netty')
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.mockito:mockito-core:4.0.0'
-    testImplementation project(':azure-data-appconfiguration')
-    testImplementation 'io.opentelemetry:opentelemetry-exporter-logging:1.11.0'
-    testImplementation 'io.opentelemetry:opentelemetry-exporter-jaeger:1.11.0'
-    testImplementation project(':azure-security-keyvault-secrets')
-    testImplementation project(':azure-identity')
-    testImplementation project(':azure-messaging-eventhubs')
-    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation("io.opentelemetry:opentelemetry-api:1.11.0")
+    implementation(project(":sdk:core:azure-core"))
+    implementation(project(":sdk:core:azure-core", "archives"))
+    testImplementation("io.opentelemetry:opentelemetry-sdk:1.11.0")
+    testImplementation(project(":sdk:core:azure-core-test"))
+    testImplementation(project(":sdk:core:azure-core-http-netty"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation(project(":sdk:appconfiguration:azure-data-appconfiguration"))
+    testImplementation("io.opentelemetry:opentelemetry-exporter-logging:1.11.0")
+    testImplementation("io.opentelemetry:opentelemetry-exporter-jaeger:1.11.0")
+    testImplementation(project(":sdk:keyvault:azure-security-keyvault-secrets"))
+    testImplementation(project(":sdk:identity:azure-identity"))
+    testImplementation(project(":sdk:eventhubs:azure-messaging-eventhubs"))
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 }
 
-description = 'Microsoft Azure OpenTelemetry tracing plugin'
+description = "Microsoft Azure OpenTelemetry tracing plugin"
 
 java {
     withJavadocJar()

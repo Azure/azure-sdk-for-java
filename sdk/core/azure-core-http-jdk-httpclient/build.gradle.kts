@@ -3,23 +3,23 @@
  */
 
 plugins {
-    id 'com.azure.java-conventions'
+    id("com.azure.java-conventions")
 }
 
 dependencies {
-    implementation project(':azure-core')
-    testImplementation project(':azure-core')
-    testImplementation project(':azure-core-test')
-    testImplementation project(':azure-core-test')
-    testImplementation 'io.projectreactor:reactor-test:3.4.16'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-    testImplementation 'com.github.tomakehurst:wiremock-standalone:2.24.1'
-    testImplementation 'org.mockito:mockito-core:4.0.0'
+    implementation(project(":azure-core"))
+    testImplementation(project(":azure-core"))
+    testImplementation(project(":azure-core-test"))
+    testImplementation(project(":azure-core-test"))
+    testImplementation("io.projectreactor:reactor-test:3.4.16")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    testImplementation("com.github.tomakehurst:wiremock-standalone:2.24.1")
+    testImplementation("org.mockito:mockito-core:4.0.0")
 }
 
-description = 'Microsoft Azure JDK HTTP Client Library'
+description = "Microsoft Azure JDK HTTP Client Library"
 
 java {
     withJavadocJar()

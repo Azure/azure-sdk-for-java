@@ -29,31 +29,58 @@ repositories {
 
 group = "com.azure"
 
-tasks.named<JavaCompile>("compileJava") {
-    exclude("module-info.java")
-    options.release.set(8)
-    modularity.inferModulePath.set(false)
-    options.encoding = "UTF-8"
-}
-
-tasks.named<JavaCompile>("compileTestJava") {
-    options.encoding = "UTF-8"
-}
-
-tasks.register<JavaCompile>("compileModuleInfoJava") {
-    dependsOn("compileJava")
-    classpath = files() // empty
-    source = fileTree("src/main/java/module-info.java")
-    destinationDirectory.set(tasks.named<JavaCompile>("compileJava").get().destinationDirectory) // same dir to see classes compiled by compileJava
-    options.release.set(9)
-    modularity.inferModulePath.set(false)
-    doFirst {
-        options.compilerArgs = listOf("--module-path", tasks.named<JavaCompile>("compileJava").get().classpath.asPath)
+sourceSets {
+    main {
+        java {
+            exclude("module-info.java")
+        }
+    }
+    test {
+        java {
+            setSrcDirs(listOf("src/test/java", "src/samples/java"))
+        }
+    }
+    create("moduleInfo") {
+        java {
+            setSrcDirs(listOf("src/main/java"))
+        }
     }
 }
 
-tasks.named("classes") {
-    dependsOn("compileModuleInfoJava")
+tasks.withType<JavaCompile> {
+    modularity.inferModulePath.set(false)
+    options.encoding = "UTF-8"
+}
+
+tasks.getByName<JavaCompile>("compileJava") {
+    options.release.set(8)
+}
+
+val compileModuleInfoJava = tasks.getByName<JavaCompile>("compileModuleInfoJava") {
+    options.release.set(9)
+    doFirst {
+        options.compilerArgs = listOf(
+            "--module-path", configurations.compileClasspath.get().asPath,
+            "-Xlint:-module",
+            "-Xlint:-requires-transitive-automatic"
+        )
+    }
+}
+
+tasks.getByName("spotbugsModuleInfo") {
+    enabled = false
+}
+
+val moduleInfoJar = tasks.register<Jar>("moduleInfoJar") {
+    from(compileModuleInfoJava)
+    include("module-info.class")
+}
+
+// https://melix.github.io/blog/2021/10/gradle-quickie-dependson.html
+tasks.getByName<Jar>("jar") {
+    from(compileModuleInfoJava) {
+        include("module-info.class")
+    }
 }
 
 tasks.named<Javadoc>("javadoc") {
@@ -129,7 +156,7 @@ tasks.withType<GenerateModuleMetadata> {
     enabled = false
 }
 
-tasks.named<Jar>("jar") {
+tasks.getByName<Jar>("jar") {
     into("META-INF/maven/${project.group}/${project.name}") {
         from(tasks.named("generatePomFileForMavenJavaPublication"))
         rename(".*", "pom.xml")
@@ -149,3 +176,4 @@ tasks.register<Copy>("stageArtifacts") {
 tasks.named("build") {
     dependsOn("stageArtifacts")
 }
+

@@ -29,6 +29,7 @@ dependencies {
     }
 
     api(project(":sdk:core:azure-core"))
+    api(project(":sdk:core:azure-core", "archives"))
     api("com.squareup.okhttp3:okhttp:4.9.2")
     testImplementation(project(":sdk:core:azure-core"))
     testImplementation(project(":sdk:core:azure-core-test"))

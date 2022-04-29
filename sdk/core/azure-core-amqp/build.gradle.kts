@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     api(project(":sdk:core:azure-core"))
+    api(project(":sdk:core:azure-core", "archives"))
     api("com.microsoft.azure:qpid-proton-j-extensions:1.2.4")
     api("org.apache.qpid:proton-j:0.33.8")
     testImplementation("io.projectreactor:reactor-test:3.4.16")

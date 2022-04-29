@@ -8,7 +8,8 @@ plugins {
 
 dependencies {
     api(project(":sdk:core:azure-core"))
-    implementation("io.projectreactor:reactor-test:3.4.16")
+    api(project(":sdk:core:azure-core", "archives"))
+    api("io.projectreactor:reactor-test:3.4.16")
     implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     implementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
