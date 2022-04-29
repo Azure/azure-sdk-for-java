@@ -18,6 +18,16 @@ public abstract class AzureContextUtils {
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
 
     /**
+     * Default credential task executory bean name.
+     */
+    public static final String DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME = "springCloudAzureCredentialTaskExecutor";
+
+    /**
+     * Default credential thread name prefix.
+     */
+    public static final String DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX = "az-identity-";
+
+    /**
      * Event Hubs client builder factory bean name.
      */
     public static final String EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME =

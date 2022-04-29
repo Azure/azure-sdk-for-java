@@ -3,6 +3,10 @@
 ## 12.13.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for the 2021-06-08 service version.
+- Added support for setting the change time on directory/file create, set properties, and rename
+- Added support for setting content type on file rename.
+- Added support for FileLastWrittenMode.
 
 ### Breaking Changes
 

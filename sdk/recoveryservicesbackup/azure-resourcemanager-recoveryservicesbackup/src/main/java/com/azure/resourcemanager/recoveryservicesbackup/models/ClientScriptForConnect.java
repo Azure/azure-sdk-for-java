@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Client script details for file / folder restore. */
 @Fluent
 public final class ClientScriptForConnect {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientScriptForConnect.class);
-
     /*
      * File content of the client script for file / folder restore.
      */

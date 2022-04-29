@@ -846,6 +846,7 @@
         <module>sdk/aot</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
+        <module>sdk/appcontainers</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
         <module>sdk/automanage</module>
@@ -955,6 +956,7 @@
         <module>sdk/resourcemanager</module>
         <module>sdk/resourcemover</module>
         <module>sdk/schemaregistry</module>
+        <module>sdk/scvmm</module>
         <module>sdk/search</module>
         <module>sdk/security</module>
         <module>sdk/securityinsights</module>

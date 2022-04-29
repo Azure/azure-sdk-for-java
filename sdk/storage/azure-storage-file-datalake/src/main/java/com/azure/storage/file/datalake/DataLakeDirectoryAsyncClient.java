@@ -27,6 +27,8 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsListPath
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -81,9 +83,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     DataLakeDirectoryAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String directoryName, BlockBlobAsyncClient blockBlobAsyncClient,
-        AzureSasCredential sasToken) {
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, directoryName, PathResourceType.DIRECTORY,
-            blockBlobAsyncClient, sasToken);
+            blockBlobAsyncClient, sasToken, customerProvidedKey);
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
@@ -91,7 +93,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
             dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient(),
-            dataLakePathAsyncClient.getSasToken());
+            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo());
     }
 
     /**
@@ -119,6 +121,26 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     public String getDirectoryName() {
         return getObjectName();
+    }
+
+    /**
+     * Creates a new {@link DataLakeDirectoryAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the directory,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakeDirectoryAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakeDirectoryAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(),
+            finalCustomerProvidedKey);
     }
 
     /**
@@ -283,7 +305,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
             getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
-            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken());
+            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken(), getCpkInfo());
     }
 
     /**
@@ -612,7 +634,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(),
             Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient,
-            this.getSasToken());
+            this.getSasToken(), getCpkInfo());
     }
 
     /**

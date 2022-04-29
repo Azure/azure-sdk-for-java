@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added support for 2021-06-08 service version.
+- Added support for Customer Provided Keys.
 - Added creationTime and expiryTime fields to `PathItem`.
 
 ### Breaking Changes

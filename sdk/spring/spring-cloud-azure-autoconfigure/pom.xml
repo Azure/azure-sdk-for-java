@@ -133,7 +133,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.29.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.29.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -308,7 +308,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
-      <version>3.1.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
+      <version>3.1.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

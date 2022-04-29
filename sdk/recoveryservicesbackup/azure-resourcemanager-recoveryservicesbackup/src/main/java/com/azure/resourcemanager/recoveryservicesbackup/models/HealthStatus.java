@@ -33,7 +33,11 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
         return fromString(name, HealthStatus.class);
     }
 
-    /** @return known HealthStatus values. */
+    /**
+     * Gets known HealthStatus values.
+     *
+     * @return known HealthStatus values.
+     */
     public static Collection<HealthStatus> values() {
         return values(HealthStatus.class);
     }

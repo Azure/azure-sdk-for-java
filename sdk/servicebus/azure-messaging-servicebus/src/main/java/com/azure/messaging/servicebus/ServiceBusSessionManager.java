@@ -54,7 +54,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusSessionManager.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionManager.class);
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
@@ -274,7 +274,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 .then(Mono.just(link))))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
-                logger.atInfo()
+                LOGGER.atInfo()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue("attempt", signal.totalRetriesInARow())
                     .log("Error occurred while getting unnamed session.", failure);
@@ -313,7 +313,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     maxSessionLockRenewDuration);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue(SESSION_ID_KEY, sessionReceiver.getSessionId())
                     .log("Closing session receiver.");
 
@@ -339,11 +339,11 @@ class ServiceBusSessionManager implements AutoCloseable {
      */
     private void onSessionRequest(long request) {
         if (isDisposed.get()) {
-            logger.info("Session manager is disposed. Not emitting more unnamed sessions.");
+            LOGGER.info("Session manager is disposed. Not emitting more unnamed sessions.");
             return;
         }
 
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
             .log("Requested unnamed sessions.");
 
@@ -354,7 +354,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             // expecting a free item. return an error.
             if (scheduler == null) {
                 if (request != Long.MAX_VALUE) {
-                    logger.atVerbose()
+                    LOGGER.atVerbose()
                         .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
                         .log("There are no available schedulers to fetch.");
                 }
@@ -370,12 +370,12 @@ class ServiceBusSessionManager implements AutoCloseable {
 
     private <T> Mono<Void> validateParameter(T parameter, String parameterName, String operation) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, operation)));
         } else if (parameter == null) {
-            return monoError(logger, new NullPointerException(String.format("'%s' cannot be null.", parameterName)));
+            return monoError(LOGGER, new NullPointerException(String.format("'%s' cannot be null.", parameterName)));
         } else if ((parameter instanceof String) && (((String) parameter).isEmpty())) {
-            return monoError(logger, new IllegalArgumentException(String.format("'%s' cannot be an empty string.",
+            return monoError(LOGGER, new IllegalArgumentException(String.format("'%s' cannot be an empty string.",
                 parameterName)));
         } else {
             return Mono.empty();
