@@ -33,7 +33,8 @@ import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAc
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
-import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveHeaders;
+import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
@@ -574,12 +575,12 @@ public class DataLakePathAsyncClient {
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
@@ -1301,8 +1302,9 @@ public class DataLakePathAsyncClient {
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
-        PathsSetAccessControlRecursiveResponse response, Integer maxBatches, AtomicInteger directoriesSuccessfulCount,
-        AtomicInteger filesSuccessfulCount, AtomicInteger failureCount, AtomicInteger batchesCount,
+        ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response,
+        Integer maxBatches, AtomicInteger directoriesSuccessfulCount, AtomicInteger filesSuccessfulCount,
+        AtomicInteger failureCount, AtomicInteger batchesCount,
         Consumer<Response<AccessControlChanges>> progressHandler, String accessControlStr,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Boolean continueOnFailure, String lastToken,
         List<AccessControlChangeFailure> batchFailures, Context context) {
