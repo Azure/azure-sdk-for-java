@@ -21,7 +21,7 @@ public class AzureCompatibilityVerifierProperties {
     /**
      * Comma-delimited list of Spring Boot versions that are compatible with current Spring Cloud Azure's version.
      */
-    private List<String> compatibleBootVersions = Arrays.asList("2.5.x", "2.6.x");
+    private List<String> compatibleBootVersions = Arrays.asList("2.5.x", "2.6.x", "2.7.x");
 
     /**
      * Whether to enable the Spring Cloud Azure compatibility verifier.
