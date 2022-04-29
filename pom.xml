@@ -931,6 +931,7 @@
         <module>sdk/mobilenetwork</module>
         <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
+        <module>sdk/msi</module>
         <module>sdk/mysql</module>
         <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
