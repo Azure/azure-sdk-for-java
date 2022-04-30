@@ -9,8 +9,6 @@ import com.azure.communication.rooms.implementation.models.RoomModel;
 import com.azure.communication.rooms.implementation.models.RoomParticipantInternal;
 import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
 import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
-import com.azure.communication.rooms.implementation.models.CreateRoomResponse;
-import com.azure.communication.rooms.implementation.models.UpdateRoomResponse;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.core.annotation.ReturnType;
@@ -61,8 +59,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .createRoomWithResponseAsync(toCreateRoomRequest(validFrom, validUntil, participants), context)
-            .flatMap((Response<CreateRoomResponse> response) -> {
-                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            .flatMap((Response<RoomModel> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -87,8 +85,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .createRoomWithResponseAsync(toCreateRoomRequest(validFrom, validUntil, participants), context)
-            .flatMap((Response<CreateRoomResponse> response) -> {
-                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+            .flatMap((Response<RoomModel> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
             });
         } catch (RuntimeException ex) {
@@ -114,8 +112,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(validFrom, validUntil, null, false), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            .flatMap((Response<RoomModel> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -141,8 +139,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(validFrom, validUntil, null, false), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+            .flatMap((Response<RoomModel> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
             });
         } catch (RuntimeException ex) {
@@ -169,7 +167,7 @@ public class RoomsAsyncClient {
             .getRoomWithResponseAsync(roomId, context)
             .flatMap(
                 (Response<RoomModel> response) -> {
-                    return Mono.just(getCommunicationRoomFromResponse(response.getValue(), null));
+                    return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
                 }
             );
         } catch (RuntimeException ex) {
@@ -196,7 +194,7 @@ public class RoomsAsyncClient {
             .getRoomWithResponseAsync(roomId, context)
             .flatMap(
                 (Response<RoomModel> response) -> {
-                    CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue(), null);
+                    CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                     return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
                 }
             );
@@ -247,8 +245,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants, false), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            .flatMap((Response<RoomModel> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -273,8 +271,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants, false), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+            .flatMap((Response<RoomModel> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
             });
         } catch (RuntimeException ex) {
@@ -299,8 +297,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants, false), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            .flatMap((Response<RoomModel> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -325,8 +323,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants, false), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+            .flatMap((Response<RoomModel> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
             });
         } catch (RuntimeException ex) {
@@ -351,8 +349,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants, true), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            .flatMap((Response<RoomModel> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -377,8 +375,8 @@ public class RoomsAsyncClient {
         try {
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants, true), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+            .flatMap((Response<RoomModel> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
             });
         } catch (RuntimeException ex) {
@@ -403,8 +401,8 @@ public class RoomsAsyncClient {
             Map<String, RoomParticipantInternal> participants = new HashMap<>();
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            .flatMap((Response<RoomModel> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -429,8 +427,8 @@ public class RoomsAsyncClient {
             Map<String, RoomParticipantInternal> participants = new HashMap<>();
             return this.roomsClient
             .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(null, null, participants), context)
-            .flatMap((Response<UpdateRoomResponse> response) -> {
-                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+            .flatMap((Response<RoomModel> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
             });
         } catch (RuntimeException ex) {
@@ -447,7 +445,7 @@ public class RoomsAsyncClient {
         return participantMap;
     }
 
-    private CommunicationRoom getCommunicationRoomFromResponse(RoomModel room, Map<String, RoomParticipantInternal> invalidParticipant) {
+    private CommunicationRoom getCommunicationRoomFromResponse(RoomModel room) {
         List<RoomParticipant> participants = new ArrayList<>();
         if (room.getParticipants() != null) {
             participants = room.getParticipants().entrySet().stream()
@@ -458,8 +456,7 @@ public class RoomsAsyncClient {
             room.getValidFrom(),
             room.getValidUntil(),
             room.getCreatedDateTime(),
-            participants,
-            invalidParticipant);
+            participants);
     }
 
     /**

@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RoomsTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
-    protected static final String LOCAL_STRING = "endpoint=https://rooms-ppe-us.ppe.communication.azure.net/;accesskey=J9gcDYLfopqKzHIKg7BI7+Qt/ZKTg0jeO/xvUF1JWxr8sHeA9Wq3DT+bjEIo3kRfjuj84CNm3s7B/zDrqkeLnA==";
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
             "COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
