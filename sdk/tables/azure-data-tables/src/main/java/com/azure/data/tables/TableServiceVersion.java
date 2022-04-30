@@ -16,7 +16,7 @@ public enum TableServiceVersion implements ServiceVersion {
     /**
      * API version 2020_12_06
      */
-    V2020_12_06("V2020_12_06");
+    V2020_12_06("2020-12-06");
 
     private final String version;
 

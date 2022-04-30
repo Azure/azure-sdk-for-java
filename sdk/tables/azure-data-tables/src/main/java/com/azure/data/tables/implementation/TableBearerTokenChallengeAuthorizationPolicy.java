@@ -60,7 +60,7 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
         authenticateHeader =
             authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
 
-        String[] attributes = authenticateHeader.split(", ");
+        String[] attributes = authenticateHeader.split(" ");
         Map<String, String> attributeMap = new HashMap<>();
 
         for (String pair : attributes) {
