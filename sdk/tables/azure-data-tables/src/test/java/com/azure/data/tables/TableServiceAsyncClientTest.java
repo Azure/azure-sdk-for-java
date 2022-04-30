@@ -57,8 +57,6 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     private TableServiceAsyncClient serviceClient;
-    private HttpPipelinePolicy recordPolicy;
-    private HttpClient playbackClient;
 
     @BeforeAll
     static void beforeAll() {

@@ -60,8 +60,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
     private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     private TableServiceClient serviceClient;
-    private HttpPipelinePolicy recordPolicy;
-    private HttpClient playbackClient;
 
     @Override
     protected void beforeTest() {
