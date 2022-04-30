@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceCorsRule;
@@ -100,14 +101,14 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
         final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(System.getenv("AZURE_TABLES_CLIENT_ID"))
-            .clientSecret(System.getenv("AZURE_TABLES_CLIENT_SECRET"))
+            .clientId(Configuration.getGlobalConfiguration().get("AZURE_TABLES_CLIENT_ID", "clientId"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
             .build();
 
         final TableServiceAsyncClient tableServiceAsyncClient =
-            getClientBuilder(System.getenv("AZURE_TABLES_ENDPOINT"), credential, true)
-                .buildAsyncClient();
+            getClientBuilder(Configuration.getGlobalConfiguration().get("AZURE_TABLES_ENDPOINT",
+                "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
 
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
