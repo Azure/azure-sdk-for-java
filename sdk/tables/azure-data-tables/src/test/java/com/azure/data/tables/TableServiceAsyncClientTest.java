@@ -23,6 +23,8 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -70,25 +72,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     @Override
     protected void beforeTest() {
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableServiceClientBuilder builder = new TableServiceClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (interceptorManager.isPlaybackMode()) {
-            playbackClient = interceptorManager.getPlaybackClient();
-
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(DEFAULT_HTTP_CLIENT);
-
-            if (!interceptorManager.isLiveMode()) {
-                recordPolicy = interceptorManager.getRecordPolicy();
-
-                builder.addPolicy(recordPolicy);
-            }
-        }
-
-        serviceClient = builder.buildAsyncClient();
+        serviceClient = getClientBuilder(connectionString).buildAsyncClient();
     }
 
     @Test
@@ -98,6 +83,43 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTable(tableName))
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
+            .verify();
+    }
+
+    /**
+     * Tests that a table and entity can be created while having a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @Test
+    public void serviceCreateTableWithMultipleTenants() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("tableName", 20);
+
+        // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
+        // contained in the response the server provides to a first "naive" unauthenticated request.
+        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId(System.getenv("AZURE_TABLES_CLIENT_ID"))
+            .clientSecret(System.getenv("AZURE_TABLES_CLIENT_SECRET"))
+            .tenantId(testResourceNamer.randomUuid())
+            .build();
+
+        final TableServiceAsyncClient tableServiceAsyncClient =
+            getClientBuilder(System.getenv("AZURE_TABLES_ENDPOINT"), credential, true)
+                .buildAsyncClient();
+
+        // Act & Assert
+        // This request will use the tenant ID extracted from the previous request.
+        StepVerifier.create(tableServiceAsyncClient.createTable(tableName))
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
+            .verify();
+
+        tableName = testResourceNamer.randomName("tableName", 20);
+
+        // All other requests will also use the tenant ID obtained from the auth challenge.
+        StepVerifier.create(tableServiceAsyncClient.createTable(tableName))
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify();

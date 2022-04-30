@@ -26,8 +26,12 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -70,6 +74,39 @@ public class TableClientTest extends TableClientTestBase {
 
         // Act & Assert
         assertNotNull(tableClient2.createTable());
+    }
+
+    /**
+     * Tests that a table and entity can be created while having a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @Test
+    public void createTableWithMultipleTenants() {
+        // Arrange
+        final String tableName2 = testResourceNamer.randomName("tableName", 20);
+
+        // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
+        // contained in the response the server provides to a first "naive" unauthenticated request.
+        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId(System.getenv("AZURE_TABLES_CLIENT_ID"))
+            .clientSecret(System.getenv("AZURE_TABLES_CLIENT_SECRET"))
+            .tenantId(testResourceNamer.randomUuid())
+            .build();
+
+        final TableClient tableClient2 =
+            getClientBuilder(tableName2, System.getenv("AZURE_TABLES_ENDPOINT"), credential, true)
+                .buildClient();
+
+        // Act & Assert
+        // This request will use the tenant ID extracted from the previous request.
+        assertNotNull(tableClient2.createTable());
+
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
+
+        // All other requests will also use the tenant ID obtained from the auth challenge.
+        assertDoesNotThrow(() -> tableClient2.createEntity(tableEntity));
     }
 
     @Test
