@@ -17,6 +17,13 @@ import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
+/**
+ * Use {@code downloadtofileshare} command to run this test.
+ * This test requires providing connection string in {@code STORAGE_CONNECTION_STRING} environment variable.
+ * It's recommended to use premium file share storage account.
+ * This test includes temporary file deletion as part of scenario. Please keep in mind that this adds
+ * constant component to the results.
+ */
 public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     protected final ShareFileClient shareFileClient;
