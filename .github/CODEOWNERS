@@ -6,7 +6,7 @@
 ################
 
 # Git Hub integration and bot rules
-/.github/                                       @AlexGhiondea @jsquire
+/.github/                                           @AlexGhiondea @jsquire
 
 ###########
 # SDK
@@ -19,11 +19,15 @@
 # PRLabel: %bom
 /sdk/boms/azure-sdk-bom/                            @pallavit @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/                    @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/boms/spring-cloud-azure-dependencies/          @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 ####
 # Service teams
 ####
+
+# PRLabel: %AOT
+/sdk/aot/                                           @srnagar @jonathangiles
+
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
