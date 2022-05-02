@@ -3,22 +3,16 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@JsonFlatten
 public class AnimalShelter implements JsonCapable<AnimalShelter> {
-    @JsonProperty(value = "properties.description")
     private String description;
-
-    @JsonProperty(value = "properties.animalsInfo", required = true)
     private List<FlattenableAnimalInfo> animalsInfo;
 
     public String description() {

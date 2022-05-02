@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Contains utility methods that aid in the serialization to JSON and deserialization from JSON.
@@ -92,10 +93,10 @@ public final class JsonUtils {
     /**
      * Handles basic logic for deserializing an object before passing it into the deserialization function.
      * <p>
-     * This will initialize the {@link JsonReader} for object reading and then check if the current token is {@link
-     * JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw an
-     * {@link IllegalStateException}. The {@link JsonToken} passed into the {@code deserializationFunc} will be {@link
-     * JsonToken#START_OBJECT} if the function is called.
+     * This will initialize the {@link JsonReader} for object reading and then check if the current token is
+     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw
+     * an {@link IllegalStateException}. The {@link JsonToken} passed into the {@code deserializationFunc} will be
+     * {@link JsonToken#START_OBJECT} if the function is called.
      * <p>
      * Use {@link #readArray(JsonReader, BiFunction)} if a JSON array is being deserialized.
      *
@@ -126,9 +127,9 @@ public final class JsonUtils {
     /**
      * Handles basic logic for deserializing an array before passing it into the deserialization function.
      * <p>
-     * This will initialize the {@link JsonReader} for array reading and then check if the current token is {@link
-     * JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw an {@link
-     * IllegalStateException}.
+     * This will initialize the {@link JsonReader} for array reading and then check if the current token is
+     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw an
+     * {@link IllegalStateException}.
      * <p>
      * Use {@link #readObject(JsonReader, BiFunction)} if a JSON object is being deserialized.
      *
@@ -224,7 +225,12 @@ public final class JsonUtils {
         } else if (token == JsonToken.BOOLEAN) {
             return jsonReader.getBooleanValue();
         } else if (token == JsonToken.NUMBER) {
-            return jsonReader.getTextValue();
+            String numberText = jsonReader.getTextValue();
+            if (numberText.contains(".")) {
+                return Double.parseDouble(numberText);
+            } else {
+                return Long.parseLong(numberText);
+            }
         } else if (token == JsonToken.STRING) {
             return jsonReader.getStringValue();
         } else if (token == JsonToken.START_ARRAY) {
@@ -286,6 +292,20 @@ public final class JsonUtils {
         } else {
             return jsonWriter.writeString(String.valueOf(value)).flush();
         }
+    }
+
+    /**
+     * Gets the nullable JSON property as null if the {@link JsonReader JsonReader's} {@link JsonReader#currentToken()}
+     * is {@link JsonToken#NULL} or as the non-null value if the current token isn't null.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @param nonNullGetter The non-null getter.
+     * @param <T> The type of the property.
+     * @return Either null if the current token is {@link JsonToken#NULL} or the value returned by the
+     * {@code nonNullGetter}.
+     */
+    public static <T> T getNullableProperty(JsonReader jsonReader, Function<JsonReader, T> nonNullGetter) {
+        return jsonReader.currentToken() == JsonToken.NULL ? null : nonNullGetter.apply(jsonReader);
     }
 
     private JsonUtils() {

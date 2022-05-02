@@ -3,20 +3,16 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Class for testing serialization.
  */
 public class FlattenDangling implements JsonCapable<FlattenDangling> {
-    @JsonProperty("a.flattened.property")
-    @JsonFlatten
     private String flattenedProperty;
 
     public String getFlattenedProperty() {

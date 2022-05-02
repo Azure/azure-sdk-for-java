@@ -75,7 +75,7 @@ public class FlatteningSerializerTests {
         assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}}}", serialized);
 
         // deserialization
-        Foo deserialized = readJson(serialized, Foo::fromJsonBase);
+        Foo deserialized = readJson(serialized, Foo::fromJson);
         assertEquals("hello.world", deserialized.bar());
         Assertions.assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz().toArray());
         assertNotNull(deserialized.qux());
@@ -101,7 +101,7 @@ public class FlatteningSerializerTests {
         String shelterSerialized = "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}},{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}}]}}";
 
         AnimalWithTypeIdContainingDot rabbitDeserialized = readJson(rabbitSerialized,
-            AnimalWithTypeIdContainingDot::fromJsonBase);
+            AnimalWithTypeIdContainingDot::fromJson);
         assertTrue(rabbitDeserialized instanceof RabbitWithTypeIdContainingDot);
         assertNotNull(rabbitDeserialized);
 
@@ -135,7 +135,7 @@ public class FlatteningSerializerTests {
         // De-Serialize
         //
         AnimalWithTypeIdContainingDot animalDeserialized = readJson(serialized,
-            AnimalWithTypeIdContainingDot::fromJsonBase);
+            AnimalWithTypeIdContainingDot::fromJson);
         assertTrue(animalDeserialized instanceof RabbitWithTypeIdContainingDot);
         RabbitWithTypeIdContainingDot rabbit = (RabbitWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(rabbit.meals());
@@ -163,7 +163,7 @@ public class FlatteningSerializerTests {
         // De-Serialize
         //
         RabbitWithTypeIdContainingDot rabbitDeserialized = readJson(serialized,
-            AnimalWithTypeIdContainingDot::fromJsonBase);
+            AnimalWithTypeIdContainingDot::fromJson);
         assertNotNull(rabbitDeserialized);
         assertNotNull(rabbitDeserialized.meals());
         assertEquals(rabbitDeserialized.meals().size(), 2);
@@ -195,7 +195,7 @@ public class FlatteningSerializerTests {
 
         // de-serialization
         AnimalWithTypeIdContainingDot animalDeserialized = readJson(serialized,
-            AnimalWithTypeIdContainingDot::fromJsonBase);
+            AnimalWithTypeIdContainingDot::fromJson);
         assertTrue(animalDeserialized instanceof DogWithTypeIdContainingDot);
         DogWithTypeIdContainingDot dogDeserialized = (DogWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(dogDeserialized);
@@ -225,14 +225,14 @@ public class FlatteningSerializerTests {
         assertTrue(Arrays.asList(results).contains(serialized));
 
         // de-serialization
-        DogWithTypeIdContainingDot dogDeserialized = readJson(serialized, AnimalWithTypeIdContainingDot::fromJsonBase);
+        DogWithTypeIdContainingDot dogDeserialized = readJson(serialized, AnimalWithTypeIdContainingDot::fromJson);
         assertNotNull(dogDeserialized);
         assertEquals(dogDeserialized.breed(), "AKITA");
         assertEquals(dogDeserialized.cuteLevel(), (Integer) 10);
     }
 
     /**
-     * Validates that decoding and encoding of a array of type with type id containing dot and can be done. For decoding
+     * Validates that decoding and encoding of an array of type with type id containing dot and can be done. For decoding
      * and encoding base type will be used.
      */
     @Test
@@ -253,7 +253,7 @@ public class FlatteningSerializerTests {
         // De-serialize
         //
         List<AnimalWithTypeIdContainingDot> animalsDeserialized = readJsons(serialized,
-            AnimalWithTypeIdContainingDot::fromJsonBase);
+            AnimalWithTypeIdContainingDot::fromJson);
         assertNotNull(animalsDeserialized);
         assertEquals(1, animalsDeserialized.size());
         AnimalWithTypeIdContainingDot animalDeserialized = animalsDeserialized.get(0);
@@ -264,7 +264,7 @@ public class FlatteningSerializerTests {
     }
 
     /**
-     * Validates that decoding and encoding of a array of type with type id containing dot and can be done. For decoding
+     * Validates that decoding and encoding of an array of type with type id containing dot and can be done. For decoding
      * and encoding concrete type will be used.
      */
     @Test
@@ -285,7 +285,7 @@ public class FlatteningSerializerTests {
         // De-serialize
         //
         List<RabbitWithTypeIdContainingDot> rabbitsDeserialized = readJsons(serialized,
-            AnimalWithTypeIdContainingDot::fromJsonBase);
+            AnimalWithTypeIdContainingDot::fromJson);
         assertNotNull(rabbitsDeserialized);
         assertEquals(1, rabbitsDeserialized.size());
         RabbitWithTypeIdContainingDot rabbitDeserialized = rabbitsDeserialized.get(0);
@@ -386,7 +386,8 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized.turtlesSet2Lead());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet2Lead().age());
         //
-        assertEquals(serializedScalarWithTypeId, writeJson(composedTurtleDeserialized));
+        assertEquals("{\"turtlesSet2Lead\":{\"@odata.type\":\"NonEmptyAnimalWithTypeIdContainingDot\",\"age\":100}}",
+            writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -394,15 +395,16 @@ public class FlatteningSerializerTests {
         //
         // -- Validate vector property
         //
-        String serializedCollectionWithTypeId = "{\"turtlesSet1\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20 }]}";
+        String serializedCollectionWithTypeId = "{\"turtlesSet2\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20 }]}";
         // de-serialization
         //
         ComposeTurtles composedTurtleDeserialized = readJson(serializedCollectionWithTypeId, ComposeTurtles::fromJson);
         assertNotNull(composedTurtleDeserialized);
-        assertNotNull(composedTurtleDeserialized.turtlesSet1());
-        assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
+        assertNotNull(composedTurtleDeserialized.turtlesSet2());
+        assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
         //
-        assertEquals(serializedCollectionWithTypeId, writeJson(composedTurtleDeserialized));
+        assertEquals("{\"turtlesSet2\":[{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":100,\"size\":10},{\"@odata.type\":\"NonEmptyAnimalWithTypeIdContainingDot\",\"age\":200}]}",
+            writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -436,7 +438,8 @@ public class FlatteningSerializerTests {
         assertEquals(10, (long) ((TurtleWithTypeIdContainingDot) composedTurtleDeserialized.turtlesSet2Lead()).size());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet2Lead().age());
         //
-        assertEquals(serializedScalarWithTypeId, writeJson(composedTurtleDeserialized));
+        assertEquals("{\"turtlesSet2Lead\":{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":100,\"size\":10}}",
+            writeJson(composedTurtleDeserialized));
     }
 
     @Test
@@ -785,7 +788,7 @@ public class FlatteningSerializerTests {
         Teacher teacher = new Teacher();
 
         // Use LinkedHashMap for testing as it retains insertion order. This allows for a static, well-known JSON to
-        // be produced instead of needing to inspect mutliple potential outputs based on Map insertion ordering.
+        // be produced instead of needing to inspect multiple potential outputs based on Map insertion ordering.
         Map<String, Student> students = new LinkedHashMap<>();
         students.put("af.B/C", new Student());
         students.put("af.B/D", new Student());

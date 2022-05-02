@@ -3,29 +3,13 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = AnimalWithTypeIdContainingDot.class)
-@JsonTypeName("AnimalWithTypeIdContainingDot")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Favourite.Pet.DogWithTypeIdContainingDot",
-        value = DogWithTypeIdContainingDot.class),
-    @JsonSubTypes.Type(name = "#Favourite.Pet.CatWithTypeIdContainingDot",
-        value = CatWithTypeIdContainingDot.class),
-    @JsonSubTypes.Type(name = "#Favourite.Pet.RabbitWithTypeIdContainingDot",
-        value = RabbitWithTypeIdContainingDot.class)
-})
+import java.util.List;
+
 public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<AnimalWithTypeIdContainingDot> {
     /**
      * Creates an instance of {@link AnimalWithTypeIdContainingDot} by reading the {@link JsonReader}.
@@ -37,7 +21,7 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<Anima
      * passed.
      */
     @SuppressWarnings("unchecked")
-    public static <T extends AnimalWithTypeIdContainingDot> T fromJsonBase(JsonReader jsonReader) {
+    public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
         // There are two paths that can be taken when dealing with inheritance.
         //
         // If we're lucky the discriminator field will be the first property in the JSON and no buffering will be
@@ -46,35 +30,66 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<Anima
         // If we're unlucky the discriminator field isn't the first property, so we'll want to buffer the entire object
         // and pass the buffered object as a new JsonReader into the subclass deserialization method.
         return (T) JsonUtils.readObject(jsonReader, (reader, token) -> {
-            boolean canUseOptimizedPath = true;
-            String discriminator = null;
+            String odataType = null;
+            String breed = null;
+            boolean hasBreed = false;
+            Integer cuteLevel = null;
+            Integer tailLength = null;
+            List<String> meals = null;
 
-            while ((token = reader.nextToken()) != null) {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("@odata.type".equals(fieldName)) {
-                    discriminator = jsonReader.getStringValue();
-                    if (canUseOptimizedPath) {
-                        if ("#Favourite.Pet.DogWithTypeIdContainingDot".equals(discriminator)) {
-                            return DogWithTypeIdContainingDot.fromJsonOptimized(jsonReader,
-                                "#Favourite.Pet.DogWithTypeIdContainingDot");
-                        } else if ("#Favourite.Pet.CatWithTypeIdContainingDot".equals(discriminator)) {
-                            return CatWithTypeIdContainingDot.fromJsonOptimized(jsonReader,
-                                "#Favourite.Pet.CatWithTypeIdContainingDot");
-                        } else if ("#Favourite.Pet.RabbitWithTypeIdContainingDot".equals(discriminator)) {
-                            return RabbitWithTypeIdContainingDot.fromJsonOptimized(jsonReader,
-                                "#Favourite.Pet.RabbitWithTypeIdContainingDot");
+                    odataType = reader.getStringValue();
+                } else if ("breed".equals(fieldName)) {
+                    hasBreed = true;
+                    breed = reader.getStringValue();
+                } else if ("tailLength".equals(fieldName)) {
+                    tailLength = JsonUtils.getNullableProperty(reader, JsonReader::getIntValue);
+                } else if ("meals".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
+                    meals = JsonUtils.readArray(reader,
+                        (r, t) -> JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
+                } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("cuteLevel".equals(fieldName)) {
+                            cuteLevel = JsonUtils.getNullableProperty(reader, JsonReader::getIntValue);
+                        } else {
+                            reader.skipChildren();
                         }
                     }
+                } else {
+                    reader.skipChildren();
                 }
-
-                canUseOptimizedPath = false;
             }
 
-            throw new IllegalStateException("Discriminator field '@odata.type' was either missing or didn't match one "
-                + "of the expected values '#Favourite.Pet.DogWithTypeIdContainingDot', "
-                + "'#Favourite.Pet.CatWithTypeIdContainingDot', or '#Favourite.Pet.RabbitWithTypeIdContainingDot'.");
+            if ("#Favourite.Pet.DogWithTypeIdContainingDot".equals(odataType)) {
+                return new DogWithTypeIdContainingDot()
+                    .withBreed(breed)
+                    .withCuteLevel(cuteLevel);
+            } else if ("#Favourite.Pet.CatWithTypeIdContainingDot".equals(odataType)) {
+                if (!hasBreed) {
+                    throw new IllegalStateException("'breed' is a required field for "
+                        + CatWithTypeIdContainingDot.class
+                        + ". The JSON source for the JsonReader didn't contain the expected 'breed' JSON property.");
+                }
+
+                return new CatWithTypeIdContainingDot()
+                    .withBreed(breed);
+            } else if ("#Favourite.Pet.RabbitWithTypeIdContainingDot".equals(odataType)) {
+                return new RabbitWithTypeIdContainingDot()
+                    .withTailLength(tailLength)
+                    .withMeals(meals);
+            } else {
+                throw new IllegalStateException("Discriminator field '@odata.type' was either missing or didn't match "
+                    + "one of the expected values '#Favourite.Pet.DogWithTypeIdContainingDot', "
+                    + "'#Favourite.Pet.CatWithTypeIdContainingDot', or "
+                    + "'#Favourite.Pet.RabbitWithTypeIdContainingDot'.");
+            }
         });
     }
 }

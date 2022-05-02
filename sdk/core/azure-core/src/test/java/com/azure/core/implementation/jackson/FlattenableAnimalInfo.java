@@ -76,7 +76,7 @@ public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo>
                     home = reader.getStringValue();
                 } else if ("animal".equals(fieldName)) {
                     hasAnimal = true;
-                    animal = AnimalWithTypeIdContainingDot.fromJsonBase(reader);
+                    animal = AnimalWithTypeIdContainingDot.fromJson(reader);
                 }
             }
 

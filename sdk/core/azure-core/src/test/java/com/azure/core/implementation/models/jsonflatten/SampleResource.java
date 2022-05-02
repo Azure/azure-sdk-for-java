@@ -4,25 +4,18 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing JSON flattening.
  */
 @Fluent
-@JsonFlatten
 public class SampleResource implements JsonCapable<SampleResource> {
-
-    @JsonProperty(value = "properties.name")
     private String namePropertiesName;
-
-    @JsonProperty(value = "properties.registrationTtl")
     private String registrationTtl;
 
     public SampleResource withNamePropertiesName(String namePropertiesName) {

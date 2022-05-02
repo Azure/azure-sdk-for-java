@@ -3,40 +3,25 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Class for testing serialization.
  */
-@JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
-@JsonTypeName("foo")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "foochild", value = FooChild.class)
-})
 public class Foo implements JsonCapable<Foo> {
-    @JsonProperty(value = "properties.bar")
     private String bar;
-    @JsonProperty(value = "properties.props.baz")
     private List<String> baz;
-    @JsonProperty(value = "properties.props.q.qux")
     private Map<String, String> qux;
-    @JsonProperty(value = "properties.more\\.props")
     private String moreProps;
-    @JsonProperty(value = "props.empty")
     private Integer empty;
-    @JsonProperty(value = "")
     private Map<String, Object> additionalProperties;
 
     public String bar() {
@@ -146,7 +131,116 @@ public class Foo implements JsonCapable<Foo> {
         return jsonWriter.writeEndObject().flush();
     }
 
-    public static <T extends Foo> T fromJsonBase(JsonReader jsonReader) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public static <T extends Foo> T fromJson(JsonReader jsonReader) {
+        return (T) JsonUtils.readObject(jsonReader, (reader, token) -> {
+            String type = null;
+            String bar = null;
+            List<String> baz = null;
+            Map<String, String> qux = null;
+            String moreProps = null;
+            Integer empty = null;
+            Map<String, Object> additionalProperties = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("$type".equals(fieldName)) {
+                    type = reader.getStringValue();
+                } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("bar".equals(fieldName)) {
+                            bar = reader.getStringValue();
+                        } else if ("more.props".equals(fieldName)) {
+                            moreProps = reader.getStringValue();
+                        } else if ("props".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                                fieldName = reader.getFieldName();
+                                reader.nextToken();
+
+                                if ("baz".equals(fieldName)) {
+                                    baz = JsonUtils.readArray(reader, (r, t) ->
+                                        JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
+                                } else if ("q".equals(fieldName)) {
+                                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                                        fieldName = reader.getFieldName();
+                                        reader.nextToken();
+
+                                        if ("qux".equals(fieldName)
+                                            && reader.currentToken() == JsonToken.START_OBJECT) {
+                                            if (qux == null) {
+                                                qux = new LinkedHashMap<>();
+                                            }
+
+                                            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                                                fieldName = reader.getFieldName();
+                                                reader.nextToken();
+
+                                                qux.put(fieldName,
+                                                    JsonUtils.getNullableProperty(reader, JsonReader::getStringValue));
+                                            }
+                                        } else {
+                                            reader.skipChildren();
+                                        }
+                                    }
+                                } else {
+                                    reader.skipChildren();
+                                }
+                            }
+                        } else {
+                            // TODO (alzimmer): Determine the question below.
+                            // This is a level down in the JSON from the root, does this count as additional properties?
+                            reader.skipChildren();
+                        }
+                    }
+                } else if ("props".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("empty".equals(fieldName)) {
+                            empty = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                }
+            }
+
+            if (type == null || "foo".equals(type)) {
+                Foo foo = new Foo();
+                foo.bar(bar);
+                foo.baz(baz);
+                foo.qux(qux);
+                foo.moreProps(moreProps);
+                foo.empty(empty);
+                foo.additionalProperties(additionalProperties);
+
+                return foo;
+            } else if ("foochild".equals(type)) {
+                FooChild fooChild = new FooChild();
+                fooChild.bar(bar);
+                fooChild.baz(baz);
+                fooChild.qux(qux);
+                fooChild.moreProps(moreProps);
+                fooChild.empty(empty);
+                fooChild.additionalProperties(additionalProperties);
+
+                return fooChild;
+            } else {
+                throw new IllegalStateException("Invalid discriminator value '" + reader.getStringValue()
+                    + "', expected: 'foo' or 'foochild'.");
+            }
+        });
     }
 }
