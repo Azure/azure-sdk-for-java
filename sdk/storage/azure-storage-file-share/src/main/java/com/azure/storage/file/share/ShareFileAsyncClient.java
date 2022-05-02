@@ -438,7 +438,7 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
 
         return azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, null, metadata, filePermission,
@@ -1637,7 +1637,7 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getFiles()
