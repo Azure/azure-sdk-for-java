@@ -133,7 +133,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
-            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest(globalEndpointManager);
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
             ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
             ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
@@ -235,7 +237,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
-            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest(globalEndpointManager);
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
             ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
             ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
@@ -278,8 +282,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-                GlobalEndpointManager globalEndpointManager =
-                    ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
                 Iterator<String> regionContactedIterator = ex.getDiagnostics().getContactedRegionNames().iterator();
                 if (operationType.isWriteOperation() || regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
                     assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
@@ -367,7 +369,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
-            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest(globalEndpointManager);
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
             ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
             ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
@@ -503,6 +507,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
     private class RntbdTransportClientTest extends TransportClient {
 
+        GlobalEndpointManager globalEndpointManager;
+        RntbdTransportClientTest(GlobalEndpointManager globalEndpointManager) {
+            this.globalEndpointManager = globalEndpointManager;
+        }
+
         @Override
         protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
             return Mono.empty();
@@ -515,6 +524,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
         @Override
         public void close() {
+        }
+
+        @Override
+        protected GlobalEndpointManager getGlobalEndpointManager() {
+            return this.globalEndpointManager;
         }
     }
 

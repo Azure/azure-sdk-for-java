@@ -203,6 +203,19 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Create change time"() {
+        setup:
+        def changeTime = namer.getUtcNow()
+
+        when:
+        primaryDirectoryClient.createWithResponse(new FileSmbProperties().setFileChangeTime(changeTime), null, null,
+            null, null)
+
+        then:
+        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+    }
+
     @Unroll
     def "Create directory permission and key error"() {
         when:
@@ -460,6 +473,22 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileChangeTime()
         resp.getValue().getSmbProperties().getParentId()
         resp.getValue().getSmbProperties().getFileId()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Set httpHeaders change time"() {
+        setup:
+        primaryDirectoryClient.create()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def changeTime = namer.getUtcNow()
+        smbProperties.setFileChangeTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+
+        when:
+        primaryDirectoryClient.setProperties(new FileSmbProperties().setFileChangeTime(changeTime), null)
+
+        then:
+        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
     }
 
     @Unroll
@@ -910,11 +939,13 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
         def permissionKey = shareClient.createPermission(filePermission)
+        def fileChangeTime = namer.getUtcNow()
         def smbProperties = new FileSmbProperties()
             .setFilePermissionKey(permissionKey)
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.DIRECTORY))
             .setFileCreationTime(namer.getUtcNow().minusDays(5))
             .setFileLastWriteTime(namer.getUtcNow().minusYears(2))
+            .setFileChangeTime(fileChangeTime)
 
         when:
         def destClient = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
@@ -925,6 +956,7 @@ class DirectoryAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.DIRECTORY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
+        destProperties.getSmbProperties().getFileChangeTime() == fileChangeTime
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")

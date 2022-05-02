@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
@@ -69,6 +70,7 @@ public class HttpTransportClient extends TransportClient {
     private final HttpClient httpClient;
     private final Map<String, String> defaultHeaders;
     private final Configs configs;
+    private final GlobalEndpointManager globalEndpointManager;
 
     HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
         // TODO: use one instance of SSL context everywhere
@@ -79,7 +81,8 @@ public class HttpTransportClient extends TransportClient {
         return HttpClient.createFixed(httpClientConfig);
     }
 
-    public HttpTransportClient(Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
+    public HttpTransportClient(Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent,
+                               GlobalEndpointManager globalEndpointManager) {
         this.configs = configs;
         this.httpClient = createHttpClient(connectionPolicy);
 
@@ -95,6 +98,7 @@ public class HttpTransportClient extends TransportClient {
 
         this.defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgent.getUserAgent());
         this.defaultHeaders.put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     @Override
@@ -231,6 +235,11 @@ public class HttpTransportClient extends TransportClient {
     @Override
     public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
         throw new NotImplementedException("openConnection is not supported in httpTransportClient");
+    }
+
+    @Override
+    protected GlobalEndpointManager getGlobalEndpointManager() {
+        return this.globalEndpointManager;
     }
 
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {

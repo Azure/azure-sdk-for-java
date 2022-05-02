@@ -131,7 +131,7 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true ' +
+                        ' --modelerfour.additional-checks=false --modelerfour.lenient-model-deduplication=true ' +
                         ' --generate-samples ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +

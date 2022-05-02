@@ -87,7 +87,7 @@ public final class ThroughputControlGroupConfig {
      * @return {@code true} request will continue on original request flow if throughput control controller failed on initialization. {@code false} otherwise.
      */
     @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public boolean isContinueOnInitError() {
+    public boolean continueOnInitError() {
         return continueOnInitError;
     }
 }

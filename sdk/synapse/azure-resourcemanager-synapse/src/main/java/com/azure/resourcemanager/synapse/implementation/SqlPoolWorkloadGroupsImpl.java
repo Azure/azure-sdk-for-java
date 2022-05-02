@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolWorkloadGroupsClient;
 import com.azure.resourcemanager.synapse.fluent.models.WorkloadGroupInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolWorkloadGroups;
 import com.azure.resourcemanager.synapse.models.WorkloadGroup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolWorkloadGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolWorkloadGroupsImpl.class);
 
     private final SqlPoolWorkloadGroupsClient innerClient;
 
@@ -81,7 +80,7 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
     public WorkloadGroup getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,21 +88,21 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
     public Response<WorkloadGroup> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,21 +124,21 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +150,7 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,21 +158,21 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -185,7 +184,7 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -193,21 +192,21 @@ public final class SqlPoolWorkloadGroupsImpl implements SqlPoolWorkloadGroups {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

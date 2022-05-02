@@ -3,6 +3,8 @@
 ## 12.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2021-04-10 service version.
+- Added the ability to list PageRanges and PageRangesDiff by page.
 
 ### Breaking Changes
 

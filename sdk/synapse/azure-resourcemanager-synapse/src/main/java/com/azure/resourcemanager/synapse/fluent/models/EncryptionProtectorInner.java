@@ -6,16 +6,12 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The server encryption protector. */
 @Fluent
 public final class EncryptionProtectorInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProtectorInner.class);
-
     /*
      * Kind of encryption protector. This is metadata used for the Azure portal
      * experience.

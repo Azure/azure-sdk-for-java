@@ -12,12 +12,15 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -38,8 +41,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
@@ -99,6 +100,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
 
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
+    private final GlobalEndpointManager globalEndpointManager;
     private IOpenConnectionsHandler openConnectionsHandler;
 
     public GatewayAddressCache(
@@ -111,6 +113,7 @@ public class GatewayAddressCache implements IAddressCache {
         long suboptimalPartitionForceRefreshIntervalInSeconds,
         boolean tcpConnectionEndpointRediscoveryEnabled,
         ApiType apiType,
+        GlobalEndpointManager globalEndpointManager,
         IOpenConnectionsHandler openConnectionsHandler) {
 
         this.clientContext = clientContext;
@@ -153,19 +156,21 @@ public class GatewayAddressCache implements IAddressCache {
         this.serverPartitionAddressToPkRangeIdMap = new ConcurrentHashMap<>();
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
+        this.globalEndpointManager = globalEndpointManager;
         this.openConnectionsHandler = openConnectionsHandler;
     }
 
     public GatewayAddressCache(
-            DiagnosticsClientContext clientContext,
-            URI serviceEndpoint,
-            Protocol protocol,
-            IAuthorizationTokenProvider tokenProvider,
-            UserAgentContainer userAgent,
-            HttpClient httpClient,
-            boolean tcpConnectionEndpointRediscoveryEnabled,
-            ApiType apiType,
-            IOpenConnectionsHandler openConnectionsHandler) {
+        DiagnosticsClientContext clientContext,
+        URI serviceEndpoint,
+        Protocol protocol,
+        IAuthorizationTokenProvider tokenProvider,
+        UserAgentContainer userAgent,
+        HttpClient httpClient,
+        boolean tcpConnectionEndpointRediscoveryEnabled,
+        ApiType apiType,
+        GlobalEndpointManager globalEndpointManager,
+        IOpenConnectionsHandler openConnectionsHandler) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -175,6 +180,7 @@ public class GatewayAddressCache implements IAddressCache {
                 DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
                 tcpConnectionEndpointRediscoveryEnabled,
                 apiType,
+                globalEndpointManager,
                 openConnectionsHandler);
     }
 
@@ -459,7 +465,7 @@ public class GatewayAddressCache implements IAddressCache {
 
             if (request.requestContext.cosmosDiagnostics != null) {
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
+                    dce, this.globalEndpointManager);
                 BridgeInternal.setCosmosDiagnostics(dce,
                     request.requestContext.cosmosDiagnostics);
             }
@@ -784,7 +790,7 @@ public class GatewayAddressCache implements IAddressCache {
 
             if (request.requestContext.cosmosDiagnostics != null) {
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
+                    dce, this.globalEndpointManager);
                 BridgeInternal.setCosmosDiagnostics(dce,
                     request.requestContext.cosmosDiagnostics);
             }
@@ -864,14 +870,14 @@ public class GatewayAddressCache implements IAddressCache {
 
             tasks.add(
                     this.getServerAddressesViaGatewayAsync(
-                        request,
-                        collection.getResourceId(),
-                        partitionKeyRangeIdentities
-                                .subList(i, endIndex)
-                                .stream()
-                                .map(PartitionKeyRangeIdentity::getPartitionKeyRangeId)
-                                .collect(Collectors.toList()),
-                        false).flux());
+                            request,
+                            collection.getResourceId(),
+                            partitionKeyRangeIdentities
+                                    .subList(i, endIndex)
+                                    .stream()
+                                    .map(PartitionKeyRangeIdentity::getPartitionKeyRangeId)
+                                    .collect(Collectors.toList()),
+                            false).flux());
         }
 
         return Flux.concat(tasks)
@@ -893,9 +899,9 @@ public class GatewayAddressCache implements IAddressCache {
                                 if (this.openConnectionsHandler != null) {
                                     return this.openConnectionsHandler.openConnections(
                                             Arrays
-                                                    .stream(addressInfo.getRight())
-                                                    .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                    .collect(Collectors.toList()));
+                                                .stream(addressInfo.getRight())
+                                                .map(addressInformation -> addressInformation.getPhysicalUri())
+                                                .collect(Collectors.toList()));
                                 }
 
                                 logger.info("OpenConnectionHandler is null, can not open connections");

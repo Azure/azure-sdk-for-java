@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of an inquired protectable item. */
 @Fluent
 public final class WorkloadInquiryDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadInquiryDetails.class);
-
     /*
      * Type of the Workload such as SQL, Oracle etc.
      */

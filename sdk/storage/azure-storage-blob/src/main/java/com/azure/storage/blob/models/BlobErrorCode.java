@@ -326,12 +326,6 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value SnapshotCountExceeded for BlobErrorCode. */
     public static final BlobErrorCode SNAPSHOT_COUNT_EXCEEDED = fromString("SnapshotCountExceeded");
 
-    /** Static value SnapshotOperationRateExceeded for BlobErrorCode.
-     * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
-     */
-    @Deprecated
-    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
-
     /** Static value SnapshotOperationRateExceeded for BlobErrorCode. */
     public static final BlobErrorCode SNAPSHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
 
@@ -375,6 +369,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH =
             fromString("AuthorizationResourceTypeMismatch");
 
+    /** Static value SnapshotOperationRateExceeded for BlobErrorCode.
+     * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
+     */
+    @Deprecated
+    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
     /**
      * Creates or finds a BlobErrorCode from its string representation.
      *
@@ -386,7 +385,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
         return fromString(name, BlobErrorCode.class);
     }
 
-    /** @return known BlobErrorCode values. */
+    /**
+     * Gets known BlobErrorCode values.
+     *
+     * @return known BlobErrorCode values.
+     */
     public static Collection<BlobErrorCode> values() {
         return values(BlobErrorCode.class);
     }

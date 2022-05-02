@@ -53,7 +53,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
@@ -457,12 +456,11 @@ public final class RestProxy implements InvocationHandler {
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 return response.getSourceResponse().getBody().ignoreElements()
-                    .then(createResponse(response, entityType, null));
+                    .then(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             } else {
                 return handleBodyReturnType(response, methodParser, bodyType)
-                    .flatMap(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> createResponse(response,
-                        entityType, null)));
+                    .map(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
+                    .switchIfEmpty(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             }
         } else {
             // For now, we're just throwing if the Maybe didn't emit a value.
@@ -470,8 +468,8 @@ public final class RestProxy implements InvocationHandler {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static Mono<Response<?>> createResponse(HttpDecodedResponse response, Type entityType,
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static Response createResponse(HttpDecodedResponse response, Type entityType,
         Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
@@ -487,8 +485,7 @@ public final class RestProxy implements InvocationHandler {
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
             // For Response return a new instance of ResponseBase cast to the class.
-            return Mono.defer(() -> Mono.just(cls.cast(new ResponseBase<>(request, statusCode, headers, bodyAsObject,
-                decodedHeaders))));
+            return cls.cast(new ResponseBase<>(request, statusCode, headers, bodyAsObject, decodedHeaders));
         } else if (cls.equals(PagedResponse.class)) {
             // For PagedResponse return a new instance of PagedResponseBase cast to the class.
             //
@@ -496,17 +493,14 @@ public final class RestProxy implements InvocationHandler {
             //
             // If the bodyAsObject is null use the constructor that take items and continuation token with null.
             // Otherwise, use the constructor that take Page.
-            return Mono.create(sink -> {
-                if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                    sink.error(LOGGER.logExceptionAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR)));
-                } else if (bodyAsObject == null) {
-                    sink.success(cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null,
-                        decodedHeaders)));
-                } else {
-                    sink.success(cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
-                        decodedHeaders)));
-                }
-            });
+            if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
+            } else if (bodyAsObject == null) {
+                return cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null, decodedHeaders));
+            } else {
+                return cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
+                    decodedHeaders));
+            }
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
@@ -514,10 +508,12 @@ public final class RestProxy implements InvocationHandler {
         // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
         // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the
         // body as an Object.
-        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))
-            .switchIfEmpty(Mono.defer(() ->
-                Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls))))
-            .map(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
+        MethodHandle constructorHandle = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
+        if (constructorHandle == null) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
+        } else {
+            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorHandle, response, bodyAsObject);
+        }
     }
 
     private static Mono<?> handleBodyReturnType(final HttpDecodedResponse response,

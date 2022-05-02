@@ -13,6 +13,8 @@ public class PathInfo {
 
     private final String eTag;
     private final OffsetDateTime lastModified;
+    private final boolean isServerEncrypted;
+    private final String encryptionKeySha256;
 
     /**
      * Constructs a {@link PathInfo}
@@ -20,8 +22,21 @@ public class PathInfo {
      * @param lastModified Datetime when the path was last modified.
      */
     public PathInfo(String eTag, OffsetDateTime lastModified) {
+        this(eTag, lastModified, false, null);
+    }
+
+    /**
+     * Constructs a {@link PathInfo}
+     * @param eTag ETag of the path.
+     * @param lastModified Datetime when the path was last modified.
+     * @param isServerEncrypted Indicates whether the path is encrypted using Cpk.
+     * @param encryptionKeySha256 An echo of the SHA256 of the key that was used to encrypt the data.
+     */
+    public PathInfo(String eTag, OffsetDateTime lastModified, boolean isServerEncrypted, String encryptionKeySha256) {
         this.eTag = eTag;
         this.lastModified = lastModified;
+        this.isServerEncrypted = isServerEncrypted;
+        this.encryptionKeySha256 = encryptionKeySha256;
     }
 
     /**
@@ -40,5 +55,19 @@ public class PathInfo {
      */
     public OffsetDateTime getLastModified() {
         return lastModified;
+    }
+
+    /**
+     * @return the encryption status of the block blob on the server
+     */
+    public Boolean isServerEncrypted() {
+        return isServerEncrypted;
+    }
+
+    /**
+     * @return the key used to encrypt the block blob
+     */
+    public String getEncryptionKeySha256() {
+        return encryptionKeySha256;
     }
 }

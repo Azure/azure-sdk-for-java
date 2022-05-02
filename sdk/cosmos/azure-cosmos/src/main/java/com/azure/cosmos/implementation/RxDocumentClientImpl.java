@@ -387,7 +387,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public CosmosDiagnostics createDiagnostics() {
-       return BridgeInternal.createCosmosDiagnostics(this, this.globalEndpointManager);
+       return BridgeInternal.createCosmosDiagnostics(this);
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -504,7 +504,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // this.maxConcurrentConnectionOpenRequests,
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled,
-            this.clientTelemetry
+            this.clientTelemetry,
+            this.globalEndpointManager
         );
 
         this.createStoreModel(true);
@@ -559,7 +560,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
         } else {
-            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig);
+            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig.toDiagnosticsString());
             return HttpClient.createFixed(httpClientConfig);
         }
     }
@@ -1011,7 +1012,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy, OperationContextAndListenerTuple operationContextAndListenerTuple) {
-        return populateHeaders(request, RequestVerb.DELETE)
+        return populateHeadersAsync(request, RequestVerb.DELETE)
             .flatMap(requestPopulated -> {
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
                     documentClientRetryPolicy.getRetryContext().updateEndTime();
@@ -1022,7 +1023,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> deleteAllItemsByPartitionKey(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy, OperationContextAndListenerTuple operationContextAndListenerTuple) {
-        return populateHeaders(request, RequestVerb.POST)
+        return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated -> {
                 RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
@@ -1034,7 +1035,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        return populateHeaders(request, RequestVerb.GET)
+        return populateHeadersAsync(request, RequestVerb.GET)
             .flatMap(requestPopulated -> {
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
                     documentClientRetryPolicy.getRetryContext().updateEndTime();
@@ -1045,12 +1046,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     Mono<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
-        return populateHeaders(request, RequestVerb.GET)
+        return populateHeadersAsync(request, RequestVerb.GET)
             .flatMap(requestPopulated -> getStoreProxy(requestPopulated).processMessage(requestPopulated));
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
-        return populateHeaders(request, RequestVerb.POST)
+        return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated ->
                 this.getStoreProxy(requestPopulated).processMessage(requestPopulated)
                     .map(response -> {
@@ -1518,7 +1519,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return request;
     }
 
-    private Mono<RxDocumentServiceRequest> populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+    /**
+     * NOTE: Caller needs to consume it by subscribing to this Mono in order for the request to populate headers
+     * @param request request to populate headers to
+     * @param httpMethod http method
+     * @return Mono, which on subscription will populate the headers in the request passed in the argument.
+     */
+    private Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
@@ -1665,7 +1672,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request,
                                                    DocumentClientRetryPolicy documentClientRetryPolicy,
                                                    OperationContextAndListenerTuple operationContextAndListenerTuple) {
-        return populateHeaders(request, RequestVerb.POST)
+        return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated -> {
                 RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
@@ -1680,7 +1687,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                    DocumentClientRetryPolicy documentClientRetryPolicy,
                                                    OperationContextAndListenerTuple operationContextAndListenerTuple) {
 
-        return populateHeaders(request, RequestVerb.POST)
+        return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated -> {
                 Map<String, String> headers = requestPopulated.getHeaders();
                 // headers can never be null, since it will be initialized even when no
@@ -1703,7 +1710,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        return populateHeaders(request, RequestVerb.PUT)
+        return populateHeadersAsync(request, RequestVerb.PUT)
             .flatMap(requestPopulated -> {
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
                     documentClientRetryPolicy.getRetryContext().updateEndTime();
@@ -1714,12 +1721,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
-        populateHeaders(request, RequestVerb.PATCH);
-        if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
-            documentClientRetryPolicy.getRetryContext().updateEndTime();
-        }
-
-        return getStoreProxy(request).processMessage(request);
+        return populateHeadersAsync(request, RequestVerb.PATCH)
+            .flatMap(requestPopulated -> {
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
+                }
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated);
+        });
     }
 
     @Override
@@ -3986,7 +3994,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
-            return this.populateHeaders(request, RequestVerb.GET)
+            return this.populateHeadersAsync(request, RequestVerb.GET)
                 .flatMap(requestPopulated -> {
 
                     requestPopulated.setEndpointOverride(endpoint);

@@ -30,6 +30,7 @@ import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -126,6 +127,18 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public String getFileName() {
         return getObjectName();
+    }
+
+    /**
+     * Creates a new {@link DataLakeFileClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakeFileClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakeFileClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new DataLakeFileClient(dataLakeFileAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey),
+            blockBlobClient.getCustomerProvidedKeyClient(Transforms.toBlobCustomerProvidedKey(customerProvidedKey)));
     }
 
     /**

@@ -211,7 +211,6 @@
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
-        <module>spring-cloud-azure-native-configuration</module>
         <module>spring-cloud-azure-starter-active-directory</module>
         <module>spring-cloud-azure-starter-active-directory-b2c</module>
         <module>spring-cloud-azure-starter-actuator</module>
@@ -239,6 +238,5 @@
         <module>spring-cloud-azure-trace-sleuth</module>
       </modules>
     </profile>
-
   </profiles>
 </project>

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.2 (2022-04-25)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-aot-graalvm-support` version to 1.0.0-beta.2
 
 ## 1.0.0-beta.1 (2022-04-08)
 
