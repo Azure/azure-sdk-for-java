@@ -28,6 +28,7 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [High CPU usage](#high-cpu-usage)
   - [Processor client stops receiving](#processor-client-stops-receiving)
   - [Migrate from legacy to new client library](#migrate-from-legacy-to-new-client-library)
+- [Get additional help](#get-additional-help)
 
 ## Handle Event Hubs exceptions
 
@@ -238,6 +239,10 @@ Often this is not enough information to determine why the exception occurred. Fo
 
 The migration guide is here [Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/migration-guide.md).  This includes steps on how to migrate checkpoints.
 
+## Get additional help
+
+Additional information on ways to reach out for support can be found in the [SUPPORT.md][SUPPORT] at the root of the repo.
+
 <!-- repo links -->
 [AmqpErrorCondition]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
 [AmqpErrorContext]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorContext.java
@@ -250,6 +255,7 @@ The migration guide is here [Migration Guide](https://github.com/Azure/azure-sdk
 [PublishEventsToSpecificPartition]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
 [PublishEventsWithAzureIdentity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
 [PublishEventsWithWebSocketsAndProxy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithWebSocketsAndProxy.java
+[SUPPORT]: https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md
 
 <!-- docs.microsoft.com links -->
 [GetConnectionString]: https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
