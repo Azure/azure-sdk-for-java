@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AsyncNonBlockingCacheTest {
-    private static final int TIMEOUT = 2000000;
+    private static final int TIMEOUT = 2000;
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void getAsync() {
