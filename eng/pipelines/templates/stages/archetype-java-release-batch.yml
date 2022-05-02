@@ -114,7 +114,7 @@ stages:
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                 python --version
                 foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
                 }
               displayName: 'Verify artifact versions for release'
 #              - script: |
