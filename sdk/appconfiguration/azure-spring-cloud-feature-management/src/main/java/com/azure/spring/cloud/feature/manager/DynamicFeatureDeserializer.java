@@ -59,7 +59,6 @@ class DynamicFeatureDeserializer extends FeatureDeserializer<DynamicFeature> {
 			JsonNode variants = variantNameMap.get("variants");
 			
 			variants.fieldNames().forEachRemaining(variant -> {
-				System.out.println(variant);
 				variantMap.put(variant, MAPPER.convertValue(variants.get(variant), FeatureVariant.class));
 			});
 		}

@@ -2,28 +2,38 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.method.HandlerMethod;
-import reactor.core.publisher.Mono;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.web.method.HandlerMethod;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Unit test for simple App.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class FeatureHandlerTest {
 
     @InjectMocks
@@ -49,6 +59,12 @@ public class FeatureHandlerTest {
 
     @Mock
     FeatureHandler featureHandler2;
+    
+    @BeforeEach
+    public void setup(TestInfo testInfo) {
+        MockitoAnnotations.openMocks(this);
+    }
+
 
     @Test
     public void preHandleNotHandler() {
