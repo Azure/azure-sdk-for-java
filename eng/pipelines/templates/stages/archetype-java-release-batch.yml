@@ -353,7 +353,7 @@ stages:
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: githubio
+          environment: maven
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml

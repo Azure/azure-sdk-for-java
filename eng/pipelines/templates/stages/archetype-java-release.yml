@@ -141,7 +141,7 @@ stages:
           - deployment: TagRepository
             displayName: "Create release tag"
             condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-            environment: github
+            environment: maven
             dependsOn: VerifyReleaseVersion
             variables:
               - template: /eng/pipelines/templates/variables/globals.yml
@@ -226,7 +226,7 @@ stages:
             - deployment: PublishDocsMs
               displayName: Docs.MS Release
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-              environment: githubio
+              environment: maven
               dependsOn: PublishPackage
 
               pool:
@@ -283,7 +283,7 @@ stages:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-              environment: githubio
+              environment: maven
               dependsOn: PublishPackage
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
@@ -317,7 +317,7 @@ stages:
             - deployment: UpdatePackageVersion
               displayName: "Update Package Version"
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-              environment: github
+              environment: maven
               dependsOn: PublishPackage
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
