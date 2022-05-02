@@ -146,7 +146,7 @@ stages:
         - deployment: TagRepository
           displayName: "Create release tag"
           condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-          environment: github
+          environment: maven
           dependsOn: VerifyReleaseVersion
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -235,7 +235,7 @@ stages:
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          environment: github
+          environment: maven
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -282,8 +282,6 @@ stages:
                       PRLabels: "auto-merge"
                       CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
-        # JRS - This needs to be updated with changes to batch up Docs.MS publishing otherwise
-        #       it'll take way too long and timeout for areas with large numbers of libraries.
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
