@@ -109,12 +109,20 @@ stages:
                 TestPipeline: ${{ parameters.TestPipeline }}
 
             # Do all the verifications for all the artifacts after the sparce-checkout
-            - ${{ each artifact in parameters.Artifacts }}:
-              - script: |
+              - pwsh: |
+                  $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+                  $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                   python --version
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-                displayName: 'Verify version for release of ${{ artifact.name }}'
+                  foreach($artifact in $ArtifactsList) {
+                    python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+                  }
+                displayName: 'Verify artifact versions for release'
+#              - script: |
+#                  python --version
+#                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+#                displayName: 'Verify version for release of ${{ artifact.name }}'
 
+            - ${{ each artifact in parameters.Artifacts }}:
               - pwsh: |
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 displayName: "Verify no unreleased dependencies for ${{ artifact.name }}"
@@ -285,7 +293,7 @@ stages:
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: githubio
+          environment: maven
           dependsOn: PublishPackage
 
           pool:
