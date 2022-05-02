@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.share.perf;
+package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareFileClient;
-import com.azure.storage.file.share.perf.core.DirectoryTest;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -17,18 +17,17 @@ import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
-public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
-
-    protected final ShareFileClient shareFileClient;
-    protected final ShareFileAsyncClient shareFileAsyncClient;
+public class DownloadBlobToFileTest extends ContainerTest<PerfStressOptions> {
+    private final BlobClient blobClient;
+    private final BlobAsyncClient blobAsyncClient;
 
     private final File tempDir;
 
-    public DownloadToFileShareTest(PerfStressOptions options) {
+    public DownloadBlobToFileTest(PerfStressOptions options) {
         super(options);
-        String fileName = "perfstressdfile" + UUID.randomUUID();
-        shareFileClient = shareDirectoryClient.getFileClient(fileName);
-        shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);
+        String blobName = "downloadToFileTest";
+        blobClient = blobContainerClient.getBlobClient(blobName);
+        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
 
         try {
             tempDir = Files.createTempDirectory("downloadToFileTest").toFile();
@@ -38,20 +37,17 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
         }
     }
 
-    // Required resource setup goes here, upload the file to be downloaded during tests.
-    public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(shareFileAsyncClient.create(options.getSize()))
-            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), options.getSize()))
+    public Mono<Void> globalSetupAsync() {
+        return super.globalSetupAsync()
+            .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
             .then();
     }
 
-    // Perform the API call to be tested here
     @Override
     public void run() {
         File file = new File(tempDir, UUID.randomUUID().toString());
         try {
-            shareFileClient.downloadToFile(file.getAbsolutePath());
+            blobClient.downloadToFile(file.getAbsolutePath());
         } finally {
             // We don't use File.deleteOnExit.
             // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
@@ -62,10 +58,11 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
         }
     }
 
+
     @Override
     public Mono<Void> runAsync() {
         File file = new File(tempDir, UUID.randomUUID().toString());
-        return shareFileAsyncClient.downloadToFile(file.getAbsolutePath())
+        return blobAsyncClient.downloadToFile(file.getAbsolutePath())
             .doFinally(ignored -> {
                 // We don't use File.deleteOnExit.
                 // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
