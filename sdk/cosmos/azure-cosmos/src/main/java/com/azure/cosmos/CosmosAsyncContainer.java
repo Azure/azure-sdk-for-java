@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Document;
@@ -25,7 +24,6 @@ import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
@@ -52,23 +50,18 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -440,80 +433,37 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
     }
 
-    /**
-     * Initializes the container by warming up the caches and connections for the current read region.
-     *
-     * <p><br>The execution of this method is expected to result in some RU charges to your account.
-     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
-     * item indexing, number of projections. For more information regarding RU considerations please visit
-     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
-     * </p>
-     *
-     * <p>
-     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
-     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
-     * </p>
-     *
-     * @return Mono of Void
-     */
-    @Deprecated
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Mono<Void> openConnectionsAndInitCaches() {
-        int retryCount = Configs.getOpenConnectionsRetriesCount();
-
-        if(isInitialized.compareAndSet(false, true)) {
-            return this.getFeedRanges().flatMap(feedRanges -> {
-                List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-                SqlQuerySpec querySpec = new SqlQuerySpec();
-                querySpec.setQueryText("select * from c where c.id = @id");
-                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
-                    UUID.randomUUID().toString())));
-
-                for (int i = 0; i < retryCount; i++) {
-                    for (FeedRange feedRange : feedRanges) {
-                        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                        options.setFeedRange(feedRange);
-                        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                            ObjectNode.class);
-                        fluxList.add(cosmosPagedFlux.byPage());
-                    }
-                }
-
-                Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
-                return listMono.flatMap(objects -> Mono.empty());
-            });
-        } else {
-            logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
-            return Mono.empty();
-        }
-    }
-
-
     /***
-     *  Initializes the container by warming up the caches and connections for the current read region.
+     *  Best effort to initializes the container by warming up the caches and connections for the current read region.
      *
      *  <p>
      *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
      *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
      *  </p>
-     *
-     * @return A String representative of open connections result.
      */
-    @Beta(value = Beta.SinceVersion.V4_29_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Mono<String> openConnectionsAndInitializeCaches() {
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<Void> openConnectionsAndInitCaches() {
 
         if(isInitialized.compareAndSet(false, true)) {
-            return withContext(context -> openConnectionsAndInitCachesInternal());
+            return withContext(context -> openConnectionsAndInitCachesInternal()
+                                            .flatMap(openResult -> {
+                                                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                                                return Mono.empty();
+                                            }));
         } else {
-            String message =
+            logger.warn(
                     String.format(
-                            "openConnectionsAndInitializeCaches is already called once on Container %s, no operation will take place in this call",
-                            this.getId());
-            logger.warn(message);
-            return Mono.just(message);
+                        "OpenConnectionsAndInitCaches is already called once on Container %s, no operation will take place in this call",
+                        this.getId()));
+            return Mono.empty();
         }
     }
 
+    /***
+     * Internal implementation to try to initialize the container by warming up the caches and connections for the current read region.
+     *
+     * @return a string represents the open result.
+     */
     private Mono<String> openConnectionsAndInitCachesInternal() {
         return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
                 .collectList()
