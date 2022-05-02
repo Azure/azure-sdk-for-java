@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/seanmcc-msft/azure-rest-api-specs/95d8b1a4c972eafa176dce585c45e7e0611fb04e/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-04-10/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-04-10/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -598,6 +598,15 @@ directive:
   where: $.parameters.CopySourceTags
   transform: >
     $["x-ms-enum"].modelAsString = true;
+```
+
+### GeoReplicationStatus LastSyncTimeOptional
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.GeoReplication
+  transform: >
+    $.required.splice(1,1)
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

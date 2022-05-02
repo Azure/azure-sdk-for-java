@@ -26,7 +26,7 @@ public final class GeoReplication {
      * secondary. Primary writes after this point in time may or may not be
      * available for reads.
      */
-    @JsonProperty(value = "LastSyncTime", required = true)
+    @JsonProperty(value = "LastSyncTime")
     private DateTimeRfc1123 lastSyncTime;
 
     /**
