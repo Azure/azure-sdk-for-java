@@ -9,6 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
+import java.util.Objects;
+
 public class NonEmptyAnimalWithTypeIdContainingDot implements JsonCapable<NonEmptyAnimalWithTypeIdContainingDot> {
     private Integer age;
 
@@ -30,10 +32,15 @@ public class NonEmptyAnimalWithTypeIdContainingDot implements JsonCapable<NonEmp
             .flush();
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJsonInternal(JsonReader jsonReader,
+        String expectedODataType) {
         // Assumption time, super classes will have access to their subclasses and they'll be in the same package.
-        return (T) JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return (T) JsonUtils.readObject(jsonReader, reader -> {
             String odataType = null;
             Integer age = null;
             Integer size = null;
@@ -53,17 +60,27 @@ public class NonEmptyAnimalWithTypeIdContainingDot implements JsonCapable<NonEmp
                 }
             }
 
-            if ("#Favourite.Pet.TurtleWithTypeIdContainingDot".equals(odataType)) {
+            // When called from a subtype, the expected @odata.type will be passed and verified, as long as the
+            // @odata.type in the JSON wasn't null or missing.
+            // TODO (alzimmer): Should this throw if it was present and null?
+            if (expectedODataType != null && odataType != null && !Objects.equals(expectedODataType, odataType)) {
+                throw new IllegalStateException("Discriminator field '@odata.type' didn't match expected value: "
+                    + "'" + expectedODataType + "'. It was: '" + odataType + "'.");
+            }
+
+            if ((expectedODataType == null && odataType == null)
+                || "NonEmptyAnimalWithTypeIdContainingDot".equals(odataType)) {
+                return new NonEmptyAnimalWithTypeIdContainingDot().withAge(age);
+            } else if ("#Favourite.Pet.TurtleWithTypeIdContainingDot".equals(odataType)
+                || "#Favourite.Pet.TurtleWithTypeIdContainingDot".equals(expectedODataType)) {
                 TurtleWithTypeIdContainingDot turtle = new TurtleWithTypeIdContainingDot().withSize(size);
                 turtle.withAge(age);
 
                 return turtle;
-            } else if (odataType == null || "NonEmptyAnimalWithTypeIdContainingDot".equals(odataType)) {
-                return new NonEmptyAnimalWithTypeIdContainingDot().withAge(age);
             } else {
-                throw new IllegalStateException("Invalid discriminator value '" + reader.getStringValue()
-                    + "', expected: '#Favourite.Pet.TurtleWithTypeIdContainingDot' or "
-                    + "'NonEmptyAnimalWithTypeIdContainingDot'.");
+                throw new IllegalStateException("Discriminator field '@odata.type' didn't match expected values: "
+                    + "'#Favourite.Pet.TurtleWithTypeIdContainingDot' or 'NonEmptyAnimalWithTypeIdContainingDot'. "
+                    + "It was: '" + odataType + "'.");
             }
         });
     }

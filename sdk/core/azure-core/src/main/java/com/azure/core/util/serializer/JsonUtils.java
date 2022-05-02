@@ -107,21 +107,19 @@ public final class JsonUtils {
      * @return The deserialized object, or null if the {@link JsonToken#NULL} represents the object.
      * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_OBJECT}.
      */
-    public static <T> T readObject(JsonReader jsonReader, BiFunction<JsonReader, JsonToken, T> deserializationFunc) {
-        JsonToken token = jsonReader.currentToken();
-
-        if (token == null) {
-            token = jsonReader.nextToken();
+    public static <T> T readObject(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
+        if (jsonReader.currentToken() == null) {
+            jsonReader.nextToken();
         }
 
-        if (token == JsonToken.NULL) {
+        if (jsonReader.currentToken() == JsonToken.NULL) {
             return null;
-        } else if (token != JsonToken.START_OBJECT) {
+        } else if (jsonReader.currentToken() != JsonToken.START_OBJECT) {
             // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + token);
+            throw new IllegalStateException("Unexpected token to begin deserialization: " + jsonReader.currentToken());
         }
 
-        return deserializationFunc.apply(jsonReader, token);
+        return deserializationFunc.apply(jsonReader);
     }
 
     /**
@@ -131,7 +129,7 @@ public final class JsonUtils {
      * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw an
      * {@link IllegalStateException}.
      * <p>
-     * Use {@link #readObject(JsonReader, BiFunction)} if a JSON object is being deserialized.
+     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param deserializationFunc The function that handles deserialization logic.

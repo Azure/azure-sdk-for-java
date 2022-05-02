@@ -4,6 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
 import java.util.List;
@@ -42,5 +43,9 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
         JsonUtils.writeArray(jsonWriter, "meals", meals, JsonWriter::writeString);
 
         return jsonWriter.writeEndObject().flush();
+    }
+
+    public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, "#Favourite.Pet.RabbitWithTypeIdContainingDot");
     }
 }

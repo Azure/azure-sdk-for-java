@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
 public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
@@ -24,5 +25,9 @@ public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
             .writeStringField("breed", breed)
             .writeEndObject()
             .flush();
+    }
+
+    public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, "#Favourite.Pet.CatWithTypeIdContainingDot");
     }
 }

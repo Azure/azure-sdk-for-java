@@ -42,29 +42,35 @@ public class FlattenDangling implements JsonCapable<FlattenDangling> {
     }
 
     public static FlattenDangling fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String flattenedProperty = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
-                token = reader.nextToken();
+                reader.nextToken();
 
-                if ("a".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                if ("a".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getStringValue();
-                        token = reader.nextToken();
+                        reader.nextToken();
 
-                        if ("flattened".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                        if ("flattened".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                             while (reader.nextToken() != JsonToken.END_OBJECT) {
                                 fieldName = reader.getStringValue();
                                 reader.nextToken();
 
                                 if ("property".equals(fieldName)) {
                                     flattenedProperty = reader.getStringValue();
+                                } else {
+                                    reader.skipChildren();
                                 }
                             }
+                        } else {
+                            reader.skipChildren();
                         }
                     }
+                } else {
+                    reader.skipChildren();
                 }
             }
 

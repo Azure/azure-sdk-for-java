@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<AnimalWithTypeIdContainingDot> {
     /**
@@ -22,14 +23,13 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<Anima
      */
     @SuppressWarnings("unchecked")
     public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
-        // There are two paths that can be taken when dealing with inheritance.
-        //
-        // If we're lucky the discriminator field will be the first property in the JSON and no buffering will be
-        // needed.
-        //
-        // If we're unlucky the discriminator field isn't the first property, so we'll want to buffer the entire object
-        // and pass the buffered object as a new JsonReader into the subclass deserialization method.
-        return (T) JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return fromJsonInternal(jsonReader, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T extends AnimalWithTypeIdContainingDot> T fromJsonInternal(JsonReader jsonReader,
+        String expectedODataType) {
+        return (T) JsonUtils.readObject(jsonReader, reader -> {
             String odataType = null;
             String breed = null;
             boolean hasBreed = false;
@@ -65,6 +65,14 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<Anima
                 } else {
                     reader.skipChildren();
                 }
+            }
+
+            // When called from a subtype, the expected @odata.type will be passed and verified, as long as the
+            // @odata.type in the JSON wasn't null or missing.
+            // TODO (alzimmer): Should this throw if it was present and null?
+            if (expectedODataType != null && odataType != null && !Objects.equals(expectedODataType, odataType)) {
+                throw new IllegalStateException("Discriminator field '@odata.type' didn't match expected value: "
+                    + "'" + expectedODataType + "'. It was: '" + odataType + "'.");
             }
 
             if ("#Favourite.Pet.DogWithTypeIdContainingDot".equals(odataType)) {

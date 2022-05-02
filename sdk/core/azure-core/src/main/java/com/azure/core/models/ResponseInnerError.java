@@ -85,23 +85,20 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
      * passed.
      */
     public static ResponseInnerError fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             ResponseInnerError innerError = new ResponseInnerError();
 
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = jsonReader.getFieldName();
+                reader.nextToken();
 
                 // Ignore unknown properties.
                 if ("code".equals(fieldName)) {
-                    jsonReader.nextToken();
                     innerError.setCode(jsonReader.getStringValue());
                 } else if ("innererror".equals(fieldName)) {
-                    token = jsonReader.nextToken();
-
-                    // If the next token isn't JsonToken#NULL that means there is an inner error.
-                    if (token != JsonToken.NULL) {
-                        innerError.setInnerError(ResponseInnerError.fromJson(jsonReader));
-                    }
+                    innerError.setInnerError(ResponseInnerError.fromJson(jsonReader));
+                } else {
+                    reader.skipChildren();
                 }
             }
 

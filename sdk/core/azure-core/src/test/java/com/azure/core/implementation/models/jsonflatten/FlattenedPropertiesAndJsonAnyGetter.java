@@ -64,7 +64,7 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonCapable<Fl
     }
 
     public static FlattenedPropertiesAndJsonAnyGetter fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String string = null;
             Map<String, Object> additionalProperties = null;
 

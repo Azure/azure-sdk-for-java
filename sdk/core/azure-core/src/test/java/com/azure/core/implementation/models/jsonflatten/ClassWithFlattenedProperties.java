@@ -48,7 +48,7 @@ public final class ClassWithFlattenedProperties implements JsonCapable<ClassWith
     }
 
     public static ClassWithFlattenedProperties fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String odataType = null;
             String odataEtag = null;
 

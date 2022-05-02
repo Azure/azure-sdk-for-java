@@ -155,7 +155,7 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
      * {@link JsonToken#START_OBJECT}.
      */
     public static JsonPatchOperation fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             JsonPatchOperationKind op = null;
             String from = null;
             String path = null;
@@ -163,35 +163,25 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
 
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = jsonReader.getFieldName();
-                token = jsonReader.nextToken();
+                jsonReader.nextToken();
 
-                switch (fieldName) {
-                    case "op":
-                        op = JsonPatchOperationKind.fromString(jsonReader.getStringValue());
-                        break;
-
-                    case "from":
-                        from = jsonReader.getStringValue();
-                        break;
-
-                    case "path":
-                        path = jsonReader.getStringValue();
-                        break;
-
-                    case "value":
-                        if (token == JsonToken.START_ARRAY || token == JsonToken.START_OBJECT) {
-                            // value is an arbitrary array or object, read the entire JSON sub-stream.
-                            value = Option.of(jsonReader.readChildren());
-                        } else if (token == JsonToken.NULL) {
-                            value = Option.empty();
-                        } else {
-                            value = Option.of(jsonReader.getTextValue());
-                        }
-
-                        break;
-
-                    default:
-                        break;
+                if ("op".equals(fieldName)) {
+                    op = JsonPatchOperationKind.fromString(jsonReader.getStringValue());
+                } else if ("from".equals(fieldName)) {
+                    from = jsonReader.getStringValue();
+                } else if ("path".equals(fieldName)) {
+                    path = jsonReader.getStringValue();
+                } else if ("value".equals(fieldName)) {
+                    if (reader.isStartArrayOrObject()) {
+                        // value is an arbitrary array or object, read the entire JSON sub-stream.
+                        value = Option.of(jsonReader.readChildren());
+                    } else if (reader.currentToken() == JsonToken.NULL) {
+                        value = Option.empty();
+                    } else {
+                        value = Option.of(jsonReader.getTextValue());
+                    }
+                } else {
+                    reader.skipChildren();
                 }
             }
 

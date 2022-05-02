@@ -54,7 +54,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         public static Foo fromJson(JsonReader jsonReader) {
-            return JsonUtils.readObject(jsonReader, (reader, token) -> {
+            return JsonUtils.readObject(jsonReader, reader -> {
                 String name = null;
 
                 while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -85,7 +85,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         public static FooHeader fromJson(JsonReader jsonReader) {
-            return JsonUtils.readObject(jsonReader, (reader, token) -> {
+            return JsonUtils.readObject(jsonReader, reader -> {
                 String customHdr = null;
 
                 while (jsonReader.nextToken() != JsonToken.END_OBJECT) {

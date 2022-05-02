@@ -42,7 +42,7 @@ public final class VirtualMachineScaleSetNetworkProfile implements JsonCapable<V
     }
 
     public static VirtualMachineScaleSetNetworkProfile fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

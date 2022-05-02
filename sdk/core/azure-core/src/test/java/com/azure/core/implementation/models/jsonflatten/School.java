@@ -65,18 +65,18 @@ public class School implements JsonCapable<School> {
     }
 
     public static School fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             Teacher teacher = null;
             String name = null;
             Map<String, String> tags = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
-                token = reader.nextToken();
+                reader.nextToken();
 
                 if ("teacher".equals(fieldName)) {
                     teacher = Teacher.fromJson(reader);
-                } else if ("properties".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -87,7 +87,7 @@ public class School implements JsonCapable<School> {
                             reader.skipChildren();
                         }
                     }
-                } else if ("tags".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                } else if ("tags".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     if (tags == null) {
                         tags = new LinkedHashMap<>();
                     }

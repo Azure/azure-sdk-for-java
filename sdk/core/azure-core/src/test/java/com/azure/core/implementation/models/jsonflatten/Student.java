@@ -19,7 +19,7 @@ public class Student implements JsonCapable<Student> {
     }
 
     public static Student fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 reader.nextToken();
                 reader.skipChildren();

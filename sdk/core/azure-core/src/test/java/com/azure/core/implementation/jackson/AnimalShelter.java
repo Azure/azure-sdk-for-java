@@ -59,7 +59,7 @@ public class AnimalShelter implements JsonCapable<AnimalShelter> {
      * passed.
      */
     public static AnimalShelter fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String description = null;
             List<FlattenableAnimalInfo> animalsInfo = null;
 
@@ -68,15 +68,9 @@ public class AnimalShelter implements JsonCapable<AnimalShelter> {
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
-                token = reader.nextToken();
+                reader.nextToken();
 
-                if ("properties".equals(fieldName)) {
-                    // This is a flattened property, so the next token must be a START_OBJECT.
-                    if (token != JsonToken.START_OBJECT) {
-                        throw new IllegalStateException("'properties' is flattened JSON with a required inner field,"
-                            + " START_OBJECT must be the token after the FIELD_NAME. Instead it was '" + token + "'.");
-                    }
-
+                if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     // Loop over the flattened properties.
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getFieldName();
@@ -88,6 +82,8 @@ public class AnimalShelter implements JsonCapable<AnimalShelter> {
                                 FlattenableAnimalInfo.fromJson(r));
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
                         }
                     }
                 }

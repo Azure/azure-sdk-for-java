@@ -54,7 +54,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
     }
 
     public static VirtualMachineScaleSetNetworkConfiguration fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String name = null;
             Boolean primary = null;
 

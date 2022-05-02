@@ -44,7 +44,7 @@ public final class JsonFlattenOnCollectionType implements JsonCapable<JsonFlatte
     }
 
     public static JsonFlattenOnCollectionType fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             List<String> jsonFlattenCollection = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

@@ -4,6 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
 public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdContainingDot {
@@ -27,5 +28,8 @@ public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdConta
 
         return jsonWriter.writeEndObject().flush();
     }
-}
 
+    public static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, "#Favourite.Pet.TurtleWithTypeIdContainingDot");
+    }
+}

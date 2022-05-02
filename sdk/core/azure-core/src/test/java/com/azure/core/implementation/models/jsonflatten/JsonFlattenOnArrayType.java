@@ -45,7 +45,7 @@ public final class JsonFlattenOnArrayType implements JsonCapable<JsonFlattenOnAr
     }
 
     public static JsonFlattenOnArrayType fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String[] jsonFlattenArray = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

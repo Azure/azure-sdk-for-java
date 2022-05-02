@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
 /**
@@ -12,5 +13,9 @@ public class FooChild extends Foo {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return toJsonInternal(jsonWriter, "foochild");
+    }
+
+    public static <T extends Foo> T fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, "foochild");
     }
 }

@@ -44,7 +44,7 @@ public final class JsonFlattenOnJsonIgnoredProperty implements JsonCapable<JsonF
     }
 
     public static JsonFlattenOnJsonIgnoredProperty fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String name = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

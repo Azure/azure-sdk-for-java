@@ -39,7 +39,7 @@ public final class JsonFlattenWithJsonInfoDiscriminator implements JsonCapable<J
     }
 
     public static JsonFlattenWithJsonInfoDiscriminator fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String discriminator = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

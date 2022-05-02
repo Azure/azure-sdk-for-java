@@ -4,6 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
 public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
@@ -43,5 +44,9 @@ public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
         }
 
         return jsonWriter.writeEndObject().flush();
+    }
+
+    public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, "#Favourite.Pet.DogWithTypeIdContainingDot");
     }
 }

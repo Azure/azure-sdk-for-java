@@ -43,14 +43,14 @@ public final class VirtualMachineScaleSet implements JsonCapable<VirtualMachineS
     }
 
     public static VirtualMachineScaleSet fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             VirtualMachineScaleSetVMProfile virtualMachineProfile = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
-                token = reader.nextToken();
+                reader.nextToken();
 
-                if ("properties".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getFieldName();
                         reader.nextToken();

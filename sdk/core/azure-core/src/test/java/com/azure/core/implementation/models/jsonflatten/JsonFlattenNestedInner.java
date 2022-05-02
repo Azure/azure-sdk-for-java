@@ -39,7 +39,7 @@ public class JsonFlattenNestedInner implements JsonCapable<JsonFlattenNestedInne
     }
 
     public static JsonFlattenNestedInner fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             VirtualMachineIdentity identity = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

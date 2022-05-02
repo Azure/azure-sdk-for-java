@@ -160,7 +160,7 @@ public class NewFoo implements JsonCapable<NewFoo> {
 
     @SuppressWarnings("unchecked")
     public static <T extends NewFoo> T fromJson(JsonReader jsonReader) {
-        return (T) JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return (T) JsonUtils.readObject(jsonReader, reader -> {
             String type = null;
             String bar = null;
             List<String> baz = null;

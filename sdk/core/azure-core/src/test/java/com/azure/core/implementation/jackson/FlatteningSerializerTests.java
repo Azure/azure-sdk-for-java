@@ -125,12 +125,7 @@ public class FlatteningSerializerTests {
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         String serialized = writeJson(animalToSerialize);
         //
-        String[] results = {
-            "{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}",
-            "{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}"
-        };
-
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}", serialized);
 
         // De-Serialize
         //
@@ -153,12 +148,7 @@ public class FlatteningSerializerTests {
         RabbitWithTypeIdContainingDot rabbitToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         String serialized = writeJson(rabbitToSerialize);
         //
-        String[] results = {
-            "{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}",
-            "{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}"
-        };
-
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}", serialized);
 
         // De-Serialize
         //
@@ -182,16 +172,9 @@ public class FlatteningSerializerTests {
 
         // serialization
         String serialized = writeJson(animalToSerialize);
-        String[] results = {
-            "{\"breed\":\"AKITA\",\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"properties\":{\"cuteLevel\":10}}",
-            "{\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10},\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\"}",
-            "{\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10}}",
-            "{\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"properties\":{\"cuteLevel\":10},\"breed\":\"AKITA\"}",
-            "{\"properties\":{\"cuteLevel\":10},\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"breed\":\"AKITA\"}",
-            "{\"properties\":{\"cuteLevel\":10},\"breed\":\"AKITA\",\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\"}",
-        };
 
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("{\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10}}",
+            serialized);
 
         // de-serialization
         AnimalWithTypeIdContainingDot animalDeserialized = readJson(serialized,
@@ -213,16 +196,9 @@ public class FlatteningSerializerTests {
 
         // serialization
         String serialized = writeJson(dogToSerialize);
-        String[] results = {
-            "{\"breed\":\"AKITA\",\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"properties\":{\"cuteLevel\":10}}",
-            "{\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10},\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\"}",
-            "{\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10}}",
-            "{\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"properties\":{\"cuteLevel\":10},\"breed\":\"AKITA\"}",
-            "{\"properties\":{\"cuteLevel\":10},\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"breed\":\"AKITA\"}",
-            "{\"properties\":{\"cuteLevel\":10},\"breed\":\"AKITA\",\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\"}",
-        };
 
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("{\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10}}",
+            serialized);
 
         // de-serialization
         DogWithTypeIdContainingDot dogDeserialized = readJson(serialized, AnimalWithTypeIdContainingDot::fromJson);
@@ -243,12 +219,8 @@ public class FlatteningSerializerTests {
         List<AnimalWithTypeIdContainingDot> animalsToSerialize = new ArrayList<>();
         animalsToSerialize.add(animalToSerialize);
         String serialized = writeJson(animalsToSerialize);
-        String[] results = {
-            "[{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}]",
-            "[{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}]",
-        };
-
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("[{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}]",
+            serialized);
 
         // De-serialize
         //
@@ -275,12 +247,8 @@ public class FlatteningSerializerTests {
         List<RabbitWithTypeIdContainingDot> rabbitsToSerialize = new ArrayList<>();
         rabbitsToSerialize.add(rabbitToSerialize);
         String serialized = writeJson(rabbitsToSerialize);
-        String[] results = {
-            "[{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}]",
-            "[{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}]",
-        };
-
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("[{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}]",
+            serialized);
 
         // De-serialize
         //
@@ -305,14 +273,8 @@ public class FlatteningSerializerTests {
         List<FlattenableAnimalInfo> animalsInfoSerialized = ImmutableList.of(animalInfoToSerialize);
         AnimalShelter animalShelterToSerialize = new AnimalShelter().withAnimalsInfo(animalsInfoSerialized);
         String serialized = writeJson(animalShelterToSerialize);
-        String[] results = {
-            "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}}]}}",
-            "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}}]}}",
-        };
-
-        assertTrue(Arrays.asList(results).contains(serialized),
-            () -> String.format("Expected serialized results to either be %n%n%s%n%n%s%n%n but got %n%n%s",
-                results[0], results[1], serialized));
+        assertEquals("{\"properties\":{\"animalsInfo\":[{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}}]}}",
+            serialized);
 
         // de-serialization
         //
@@ -365,28 +327,28 @@ public class FlatteningSerializerTests {
         //
         // -- Validate vector property
         //
-        String serializedCollectionWithTypeId = "{\"turtlesSet2\":[{\"age\":100,\"size\":10 },{\"age\":200,\"size\":20 }]}";
+        String serializedCollectionWithTypeId = "{\"turtlesSet1\":[{\"age\":100,\"size\":10 },{\"age\":200,\"size\":20 }]}";
         // de-serialization
         //
         ComposeTurtles composedTurtleDeserialized = readJson(serializedCollectionWithTypeId, ComposeTurtles::fromJson);
         assertNotNull(composedTurtleDeserialized);
-        assertNotNull(composedTurtleDeserialized.turtlesSet2());
-        assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
+        assertNotNull(composedTurtleDeserialized.turtlesSet1());
+        assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        assertEquals("{\"turtlesSet2\":[{\"@odata.type\":\"NonEmptyAnimalWithTypeIdContainingDot\",\"age\":100},{\"@odata.type\":\"NonEmptyAnimalWithTypeIdContainingDot\",\"age\":200}]}",
+        assertEquals("{\"turtlesSet1\":[{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":100,\"size\":10},{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":200,\"size\":20}]}",
             writeJson(composedTurtleDeserialized));
         //
         // -- Validate scalar property
         //
-        String serializedScalarWithTypeId = "{\"turtlesSet2Lead\":{\"age\":100,\"size\":10 }}";
+        String serializedScalarWithTypeId = "{\"turtlesSet1Lead\":{\"age\":100,\"size\":10 }}";
         // de-serialization
         //
         composedTurtleDeserialized = readJson(serializedScalarWithTypeId, ComposeTurtles::fromJson);
         assertNotNull(composedTurtleDeserialized);
-        assertNotNull(composedTurtleDeserialized.turtlesSet2Lead());
-        assertEquals(100, (long) composedTurtleDeserialized.turtlesSet2Lead().age());
+        assertNotNull(composedTurtleDeserialized.turtlesSet1Lead());
+        assertEquals(100, (long) composedTurtleDeserialized.turtlesSet1Lead().age());
         //
-        assertEquals("{\"turtlesSet2Lead\":{\"@odata.type\":\"NonEmptyAnimalWithTypeIdContainingDot\",\"age\":100}}",
+        assertEquals("{\"turtlesSet1Lead\":{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":100,\"size\":10}}",
             writeJson(composedTurtleDeserialized));
     }
 
@@ -395,15 +357,15 @@ public class FlatteningSerializerTests {
         //
         // -- Validate vector property
         //
-        String serializedCollectionWithTypeId = "{\"turtlesSet2\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20 }]}";
+        String serializedCollectionWithTypeId = "{\"turtlesSet1\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20 }]}";
         // de-serialization
         //
         ComposeTurtles composedTurtleDeserialized = readJson(serializedCollectionWithTypeId, ComposeTurtles::fromJson);
         assertNotNull(composedTurtleDeserialized);
-        assertNotNull(composedTurtleDeserialized.turtlesSet2());
-        assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
+        assertNotNull(composedTurtleDeserialized.turtlesSet1());
+        assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        assertEquals("{\"turtlesSet2\":[{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":100,\"size\":10},{\"@odata.type\":\"NonEmptyAnimalWithTypeIdContainingDot\",\"age\":200}]}",
+        assertEquals("{\"turtlesSet1\":[{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":100,\"size\":10},{\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\",\"age\":200,\"size\":20}]}",
             writeJson(composedTurtleDeserialized));
     }
 
@@ -503,12 +465,7 @@ public class FlatteningSerializerTests {
         // serialization
         //
         String serialized = writeJson(productToSerialize);
-        String[] results = {
-            "{\"properties\":{\"p.name\":\"drink\",\"type\":\"chai\"}}",
-            "{\"properties\":{\"type\":\"chai\",\"p.name\":\"drink\"}}",
-        };
-
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("{\"properties\":{\"p.name\":\"drink\",\"type\":\"chai\"}}", serialized);
 
         // de-serialization
         //
@@ -523,12 +480,7 @@ public class FlatteningSerializerTests {
         ClassWithFlattenedProperties classWithFlattenedProperties = new ClassWithFlattenedProperties("random", "E24JJxztP");
 
         String serialized = writeJson(classWithFlattenedProperties);
-        String[] results = {
-            "{\"@odata\":{\"type\":\"random\"},\"@odata.etag\":\"E24JJxztP\"}",
-            "{\"@odata.etag\":\"E24JJxztP\",\"@odata\":{\"type\":\"random\"}}"
-        };
-
-        assertTrue(Arrays.asList(results).contains(serialized));
+        assertEquals("{\"@odata\":{\"type\":\"random\"},\"@odata.etag\":\"E24JJxztP\"}", serialized);
 
         ClassWithFlattenedProperties deserialized = readJson(serialized, ClassWithFlattenedProperties::fromJson);
         assertNotNull(deserialized);

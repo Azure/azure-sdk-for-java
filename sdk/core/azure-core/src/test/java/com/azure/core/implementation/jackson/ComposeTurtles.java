@@ -91,7 +91,7 @@ public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
     }
 
     public static ComposeTurtles fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String description = null;
             TurtleWithTypeIdContainingDot turtleSet1Lead = null;
             List<TurtleWithTypeIdContainingDot> turtleSet1 = null;

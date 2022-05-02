@@ -39,7 +39,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonCapable<Virtua
     }
 
     public static VirtualMachineScaleSetVMProfile fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             VirtualMachineScaleSetNetworkProfile networkProfile = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

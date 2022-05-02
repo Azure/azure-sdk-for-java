@@ -8,13 +8,9 @@ import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo> {
-    @JsonProperty(value = "home")
     private String home;
-
-    @JsonProperty(value = "animal", required = true)
     private AnimalWithTypeIdContainingDot animal;
 
     public String home() {
@@ -61,7 +57,7 @@ public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo>
      * passed.
      */
     public static FlattenableAnimalInfo fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String home = null;
             AnimalWithTypeIdContainingDot animal = null;
 

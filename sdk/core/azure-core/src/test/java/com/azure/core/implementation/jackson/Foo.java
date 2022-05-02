@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class for testing serialization.
@@ -133,7 +134,12 @@ public class Foo implements JsonCapable<Foo> {
 
     @SuppressWarnings("unchecked")
     public static <T extends Foo> T fromJson(JsonReader jsonReader) {
-        return (T) JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return fromJsonInternal(jsonReader, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T extends Foo> T fromJsonInternal(JsonReader jsonReader, String expectedType) {
+        return (T) JsonUtils.readObject(jsonReader, reader -> {
             String type = null;
             String bar = null;
             List<String> baz = null;
@@ -217,7 +223,15 @@ public class Foo implements JsonCapable<Foo> {
                 }
             }
 
-            if (type == null || "foo".equals(type)) {
+            // When called from a subtype, the expected $type will be passed and verified, as long as the
+            // $type in the JSON wasn't null or missing.
+            // TODO (alzimmer): Should this throw if it was present and null?
+            if (expectedType != null && type != null && !Objects.equals(expectedType, type)) {
+                throw new IllegalStateException("Discriminator field '$type' didn't match expected value: "
+                    + "'" + expectedType + "'. It was: '" + type + "'.");
+            }
+
+            if ((expectedType == null && type == null) || "foo".equals(type)) {
                 Foo foo = new Foo();
                 foo.bar(bar);
                 foo.baz(baz);
@@ -227,7 +241,7 @@ public class Foo implements JsonCapable<Foo> {
                 foo.additionalProperties(additionalProperties);
 
                 return foo;
-            } else if ("foochild".equals(type)) {
+            } else if ("foochild".equals(expectedType) || "foochild".equals(type)) {
                 FooChild fooChild = new FooChild();
                 fooChild.bar(bar);
                 fooChild.baz(baz);

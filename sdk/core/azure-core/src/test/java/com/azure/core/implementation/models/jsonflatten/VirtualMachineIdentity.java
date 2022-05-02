@@ -63,7 +63,7 @@ public final class VirtualMachineIdentity implements JsonCapable<VirtualMachineI
     }
 
     public static VirtualMachineIdentity fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             List<String> type = null;
             Map<String, Object> userAssignedIdentities = null;
 

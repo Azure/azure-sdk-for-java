@@ -72,7 +72,7 @@ public final class JsonFlattenOnPrimitiveType implements JsonCapable<JsonFlatten
     }
 
     public static JsonFlattenOnPrimitiveType fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             boolean jsonFlattenBoolean = false;
             double jsonFlattenDecimal = 0;
             int jsonFlattenNumber = 0;

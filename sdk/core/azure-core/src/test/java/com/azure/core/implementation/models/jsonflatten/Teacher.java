@@ -43,14 +43,14 @@ public class Teacher implements JsonCapable<Teacher> {
     }
 
     public static Teacher fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             Map<String, Student> students = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
-                token = reader.nextToken();
+                reader.nextToken();
 
-                if ("students".equals(fieldName) && token == JsonToken.START_OBJECT) {
+                if ("students".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     if (students == null) {
                         students = new LinkedHashMap<>();
                     }
