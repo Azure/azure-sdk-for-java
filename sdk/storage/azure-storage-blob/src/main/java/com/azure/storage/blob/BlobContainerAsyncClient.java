@@ -602,7 +602,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(null).map(response -> response.getStatusCode() == 202);
     }
 
     /**

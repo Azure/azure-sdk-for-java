@@ -188,14 +188,13 @@ public class FileSmbProperties {
     }
 
     /**
-     * Determines the value of the file change time header.
+     * Gets the string representation of the file change time or null if no value is set
      *
-     * @param defaultValue The default change time header value.
      * @return The value of the file change time header
      */
-    String setFileChangeTime(String defaultValue) {
+    String getFileChangeTimeString() {
         return fileChangeTime == null
-            ? defaultValue
+            ? null
             : parseFileSMBDate(fileChangeTime);
     }
 
