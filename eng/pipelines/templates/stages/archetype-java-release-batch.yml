@@ -109,14 +109,14 @@ stages:
                 TestPipeline: ${{ parameters.TestPipeline }}
 
             # Do all the verifications for all the artifacts after the sparce-checkout
-              - pwsh: |
-                  $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
-                  $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                  python --version
-                  foreach($artifact in $ArtifactsList) {
-                    python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-                  }
-                displayName: 'Verify artifact versions for release'
+            - pwsh: |
+                $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                python --version
+                foreach($artifact in $ArtifactsList) {
+                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
+                }
+              displayName: 'Verify artifact versions for release'
 #              - script: |
 #                  python --version
 #                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
