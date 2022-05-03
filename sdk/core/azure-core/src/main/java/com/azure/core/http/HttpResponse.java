@@ -7,6 +7,7 @@ import com.azure.core.implementation.http.BufferedHttpResponse;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.StreamUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.Charset;
 
 /**
@@ -143,6 +145,17 @@ public abstract class HttpResponse implements Closeable {
         if (bodyAsBinaryData != null) {
             StreamUtils.INSTANCE.transfer(bodyAsBinaryData.toStream(), outputStream);
         }
+    }
+
+    /**
+     * Writes body content to {@link AsynchronousFileChannel}.
+     * @param asynchronousFileChannel {@link AsynchronousFileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @return A {@link Mono} which emits a completion status once the body content has been written to the {@link
+     * AsynchronousFileChannel}.
+     */
+    public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
+        return FluxUtil.writeFile(getBody(), asynchronousFileChannel, position);
     }
 
     /**

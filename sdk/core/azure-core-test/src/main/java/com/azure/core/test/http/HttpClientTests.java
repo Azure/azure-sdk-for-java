@@ -26,10 +26,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -320,6 +325,42 @@ public abstract class HttpClientTests {
         response.writeBodyTo(outputStream);
 
         byte[] receivedBytes = outputStream.toByteArray();
+        assertEquals(expectedString, new String(receivedBytes, StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Tests that a request is echoed back.
+     * @param size size.
+     * @throws Exception exception.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {10, 1024, 1024 * 1024, 1024 * 1024 * 10 + 13})
+    public void readResponseToFileAsync(int size) throws Exception {
+
+        byte[] bytes = new byte[size];
+        RANDOM.nextBytes(bytes);
+        String expectedString = new String(bytes, StandardCharsets.UTF_8);
+        BinaryData content = BinaryData.fromString(expectedString);
+
+        HttpResponse response = createHttpClient()
+            .sendSync(new HttpRequest(
+                HttpMethod.PUT,
+                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
+                new HttpHeaders(),
+                content), Context.NONE);
+
+        File destFile = Files.createTempFile(null, null).toFile();
+        destFile.deleteOnExit();
+        Set<OpenOption> openOptions = new HashSet<>();
+        openOptions.add(StandardOpenOption.WRITE);
+        openOptions.add(StandardOpenOption.READ);
+
+        try (AsynchronousFileChannel channel =
+                 AsynchronousFileChannel.open(destFile.toPath(), openOptions, null)) {
+            response.writeBodyTo(channel, 0).block();
+        }
+
+        byte[] receivedBytes = Files.readAllBytes(destFile.toPath());
         assertEquals(expectedString, new String(receivedBytes, StandardCharsets.UTF_8));
     }
 

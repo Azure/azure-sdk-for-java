@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -514,6 +515,15 @@ public final class ModelHelper {
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             BlobPropertiesConstructorProxy.create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+    }
+
+    public static Response<BlobProperties> buildBlobPropertiesResponse(StreamResponse response) {
+        BlobsDownloadHeaders blobsDownloadHeaders =
+            ModelHelper.transformBlobDownloadHeaders(response.getHeaders());
+        BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
+            blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BlobPropertiesConstructorProxy.create(new BlobPropertiesInternalDownload(blobDownloadHeaders)));
     }
 
     public static long getBlobLength(BlobDownloadHeaders headers) {

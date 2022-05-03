@@ -10,11 +10,13 @@ import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 
 /**
  * REST response with a streaming content.
@@ -85,6 +87,21 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
             response.writeBodyTo(outputStream);
         } else {
             FluxUtil.writeToOutputStream(getValue(), outputStream).block();
+        }
+    }
+
+    /**
+     * Writes body content to {@link AsynchronousFileChannel}.
+     * @param asynchronousFileChannel {@link AsynchronousFileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @return A {@link Mono} which emits a completion status once the body content has been written to the {@link
+     * AsynchronousFileChannel}.
+     */
+    public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
+        if (response != null) {
+            return response.writeBodyTo(asynchronousFileChannel, position);
+        } else {
+            return FluxUtil.writeFile(getValue(), asynchronousFileChannel, position);
         }
     }
 

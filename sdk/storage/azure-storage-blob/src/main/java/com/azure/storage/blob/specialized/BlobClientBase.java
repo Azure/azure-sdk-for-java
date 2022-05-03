@@ -1202,8 +1202,8 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
         Context context) {
-        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(options, context);
-        return blockWithOptionalTimeout(download, timeout);
+        // TODO (kasobol-msft) timeout
+        return client.downloadToFileWithResponseSync(options, context);
     }
 
     /**

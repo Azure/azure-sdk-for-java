@@ -8,6 +8,8 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.Charset;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
@@ -95,6 +98,16 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
             }
             return Mono.empty();
         }).blockLast();
+    }
+
+    @Override
+    public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
+        return FluxUtil.writeFile(
+            bodyIntern().doFinally(ignored -> close())
+                .map(ByteBuf::nioBuffer),
+            asynchronousFileChannel,
+            position
+        );
     }
 
     private ByteBufFlux bodyIntern() {
