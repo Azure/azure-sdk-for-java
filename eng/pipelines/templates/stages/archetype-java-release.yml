@@ -242,9 +242,6 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - download: current
-                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
-                        artifact: ${{parameters.ArtifactName}}
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           SkipDefaultCheckout: true
