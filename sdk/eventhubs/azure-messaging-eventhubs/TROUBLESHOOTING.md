@@ -32,7 +32,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Handle Event Hubs exceptions
 
-All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or non-retryable.  For retryable errors (ie. "amqp:connection:forced" or "amqp:link:detach-forced"), the client libraries will recover from these errors based on the [_retry options_][AmqpRetryOptions] set when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
+All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp:connection:forced" or "amqp:link:detach-forced"), the client libraries will attempt to recover from these errors based on the [_retry options_][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
@@ -52,7 +52,7 @@ An [AmqpException][AmqpException] contains 3 fields which describe the error.
 
 #### amqp:connection:forced and amqp:link:detach-forced
 
-When the connection to Service Bus or Event Hubs is idle, after a period of time, the service will disconnect the client.  This is not a problem as the clients will reestablish a connection with the service. More information: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-amqp-troubleshoot
+When the connection to Service Bus or Event Hubs is idle, after a period of time, the service will disconnect the client.  This is not a problem as the clients will reestablish a connection with the service. More information can be found in the [AMQP troubleshooting documentation](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-amqp-troubleshoot).
 
 ## Permission issues
 
@@ -67,8 +67,8 @@ Other possible solutions are listed in [Troubleshoot authentication and authoriz
 
 ### Timeout when connecting to service
 
-* Verify that your connection string is correct.
-* Check firewall and ports and that the AMQP port 5671 is open.
+* Verify that the connection string or fully qualified domain name specified when creating the client is correct.
+* Check the firewall and port permissions in your hosting environment and that the AMQP ports 5671 and 5762 are open.
   * Make sure that the endpoint is allowed through firewall.
 * Try using websockets, which connects on port 443. See [Configure web sockets](#configure-web-sockets).
 * See if your network is blocking specific IP addresses.
@@ -78,17 +78,17 @@ Other possible solutions are listed in [Troubleshoot authentication and authoriz
 
 ### SSL handshake failures
 
-This error can occur when the proxy is not configured properly.  Ask the customer to test their connection to Event Hubs without using a proxy.
+This error can occur when an intercepting proxy is in use when a proxy is not configured properly.  We recommend testing in your hosting environment with the proxy disabled to verify.
 
 ### Socket exhaustion errors
 
-Customers should keep an instance of their Event Hub client as long as possible because by default, the creation of a each client results in creating an AMQP connection which uses a socket.  Additionally, clients inherit from `java.io.Closeable`, so they should be calling `close()` when they are finished.
+Applications should prefer treating the Event Hubs clients as a singleton, creating and using a single instance through the lifetime of their application.  This is important as each client type manages its own connection; creating a client results in a new AMQP connection, which uses a socket.  Additionally, it is important to be aware that clients inherit from `java.io.Closeable`, so your application has responsibility for explicitly calling `close()` when it is finished using a client.
 
-To use the same AMQP connection when creating multiple clients, customers can use the `EventHubClientBuilder.shareConnection()` flag, hold a reference to that `EventHubClientBuilder`, and create new clients from that same builder instance.
+To use the same AMQP connection when creating multiple clients, you can use the `EventHubClientBuilder.shareConnection()` flag, hold a reference to that `EventHubClientBuilder`, and create new clients from that same builder instance.
 
 ### Connect using an IoT connection string
 
-This is not a supported scenario in our current library.  The sample describes how to acquire an IoT connection string which can then be used to instantiate the Event Hub clients: [IoTConnectionString.java][IoTConnectionString]
+Because translating a connection string requires querying the IoT Hub service, the Event Hubs client library cannot use it directly.  The [IoTConnectionString.java][IoTConnectionString] sample describes how to query IoT Hub for translation of an IoT connection string into one that can be used with Event Hubs. 
 
 Further reading:
 * https://docs.microsoft.com/azure/iot-hub/iot-hub-dev-guide-sas#security-tokens
@@ -96,7 +96,7 @@ Further reading:
 
 ### Cannot add "TransportType=AmqpWebSockets" to the connection string
 
-The legacy clients allowed customers to modify the connection string to enable capabilities.  In this case, use web sockets to connect to Event Hubs.  To achieve the same scenario, see [PublishEventsWithSocketsAndProxy.java][PublishEventsWithWebSocketsAndProxy].
+The previous generation of the Event Hubs client library supported extending connection strings using special tokens for certain scenarios.  The current generation supports connection strings only in the form published by the Azure portal.  To request using the `AmqpWebSockets` transport, it would be specified when building the client.  See [PublishEventsWithSocketsAndProxy.java][PublishEventsWithWebSocketsAndProxy] for more details.
 
 ### Cannot add "Authentication=Managed Identity" to the connection string
 
@@ -224,7 +224,7 @@ The full error message looks something like:
 
 ### Processor client stops receiving
 
-Often this is not enough information to determine why the exception occurred. For the team to determine the cause, we need to ask for the following information from the customer:
+Often this is not enough information to determine why the exception occurred. For the team to determine the cause, we need to ask for the following information:
 
 * Event Hub environment
   * How many partitions?
@@ -262,7 +262,7 @@ Additional information on ways to reach out for support can be found in the [SUP
 [AuthorizeSAS]: https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature
 [Epoch]: https://docs.microsoft.com/azure/event-hubs/event-hubs-event-processor-host#epoch
 [Logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
-[troubleshoot_authentication_authorization]: https://docs.microsoft.com/en-us/azure/event-hubs/troubleshoot-authentication-authorization
+[troubleshoot_authentication_authorization]: https://docs.microsoft.com/azure/event-hubs/troubleshoot-authentication-authorization
 
 <!-- external links -->
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
