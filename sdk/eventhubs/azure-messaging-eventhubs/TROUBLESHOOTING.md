@@ -32,10 +32,10 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Handle Event Hubs exceptions
 
-All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp:connection:forced" or "amqp:link:detach-forced"), the client libraries will attempt to recover from these errors based on the [_retry options_][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
+All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp:connection:forced" or "amqp:link:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
-[Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
+[Event Hubs Messaging Exceptions][EventHubsMessagingExceptions] guidance.
 
 ### Find relevant information in exception messages
 
@@ -74,7 +74,7 @@ Other possible solutions are listed in [Troubleshoot authentication and authoriz
 * See if your network is blocking specific IP addresses.
   * [What IP addresses do I need to allow?](https://docs.microsoft.com/azure/event-hubs/troubleshooting-guide#what-ip-addresses-do-i-need-to-allow)
 * For more information about troubleshooting network connectivity:
-  * https://docs.microsoft.com/en-us/azure/event-hubs/troubleshooting-guide
+  * https://docs.microsoft.com/azure/event-hubs/troubleshooting-guide
 
 ### SSL handshake failures
 
@@ -88,7 +88,7 @@ To use the same AMQP connection when creating multiple clients, you can use the 
 
 ### Connect using an IoT connection string
 
-Because translating a connection string requires querying the IoT Hub service, the Event Hubs client library cannot use it directly.  The [IoTConnectionString.java][IoTConnectionString] sample describes how to query IoT Hub for translation of an IoT connection string into one that can be used with Event Hubs. 
+Because translating a connection string requires querying the IoT Hub service, the Event Hubs client library cannot use it directly.  The [IoTConnectionString.java][IoTConnectionString] sample describes how to query IoT Hub for translation of an IoT connection string into one that can be used with Event Hubs.
 
 Further reading:
 * https://docs.microsoft.com/azure/iot-hub/iot-hub-dev-guide-sas#security-tokens
@@ -244,11 +244,6 @@ The [migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/
 Additional information on ways to reach out for support can be found in the [SUPPORT.md][SUPPORT] at the root of the repo.
 
 <!-- repo links -->
-[AmqpErrorCondition]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
-[AmqpErrorContext]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorContext.java
-[AmqpException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
-[SessionErrorContext]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/SessionErrorContext.java
-[LinkErrorContext]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/LinkErrorContext.java
 [IoTConnectionString]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/IoTHubConnectionSample.java
 [log4j2]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/log4j2.xml
 [logback]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/logback.xml
@@ -258,9 +253,16 @@ Additional information on ways to reach out for support can be found in the [SUP
 [SUPPORT]: https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md
 
 <!-- docs.microsoft.com links -->
+[AmqpErrorCondition]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.amqperrorcondition
+[AmqpErrorContext]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.amqperrorcontext
+[AmqpException]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.amqpexception
+[SessionErrorContext]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.sessionerrorcontext
+[LinkErrorContext]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.linkerrorcontext
+
 [GetConnectionString]: https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
 [AuthorizeSAS]: https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature
 [Epoch]: https://docs.microsoft.com/azure/event-hubs/event-hubs-event-processor-host#epoch
+[EventHubsMessagingExceptions]: https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions
 [Logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [troubleshoot_authentication_authorization]: https://docs.microsoft.com/azure/event-hubs/troubleshoot-authentication-authorization
 
