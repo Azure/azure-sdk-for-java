@@ -3010,6 +3010,9 @@ public class ShareFileAsyncClient {
 
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
 
+        ShareFileHttpHeaders headers = options.getContentType() == null ? null
+            : new ShareFileHttpHeaders().setContentType(options.getContentType());
+
         String renameSource = this.getFileUrl();
         // TODO (rickle-msft): when support added to core
 //        String sasToken = this.extractSasToken();
@@ -3019,7 +3022,7 @@ public class ShareFileAsyncClient {
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
-            destinationConditions, smbInfo, options.getHeaders(),
+            destinationConditions, smbInfo, headers,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }
