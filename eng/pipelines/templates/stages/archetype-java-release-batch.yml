@@ -204,12 +204,11 @@ stages:
                         - Name: Azure/azure-sdk-for-java
                           Commitish: $(Build.SourceVersion)
                           WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                  - download: current
+                    displayName: 'Download Artifacts'
+                    artifact: ${{parameters.ArtifactName}}-signed
                   - ${{ each artifact in parameters.Artifacts }}:
                     - ${{if ne(artifact.skipPublishPackage, 'true')}}:
-                      - download: current
-                        displayName: Download Artifacts
-                        artifact: ${{parameters.ArtifactName}}-signed
-                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                       - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
@@ -365,12 +364,11 @@ stages:
               deploy:
                 steps:
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                    artifact: ${{parameters.ArtifactName}}-signed
                   - ${{ each artifact in parameters.Artifacts }}:
                     - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
-                      - download: current
-                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-                        artifact: ${{parameters.ArtifactName}}-signed
-                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
