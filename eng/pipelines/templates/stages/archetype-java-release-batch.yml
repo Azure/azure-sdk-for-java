@@ -207,9 +207,9 @@ stages:
                   - download: current
                     displayName: 'Download Artifacts'
                     artifact: ${{parameters.ArtifactName}}-signed
+                  - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                   - ${{ each artifact in parameters.Artifacts }}:
                     - ${{if ne(artifact.skipPublishPackage, 'true')}}:
-                      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                       - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
                           ArtifactID: ${{artifact.name}}
