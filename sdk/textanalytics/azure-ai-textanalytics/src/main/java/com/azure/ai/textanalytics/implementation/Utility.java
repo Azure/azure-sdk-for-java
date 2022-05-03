@@ -11,7 +11,11 @@ import com.azure.ai.textanalytics.implementation.models.Conditionality;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomMultiClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.CustomMultiLabelClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.CustomMultiLabelClassificationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
@@ -43,7 +47,6 @@ import com.azure.ai.textanalytics.implementation.models.LanguageDetectionResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageDetectionTaskResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
-import com.azure.ai.textanalytics.implementation.models.MultiClassificationDocument;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
@@ -57,7 +60,6 @@ import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScore
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponseDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.SentimentTaskResult;
-import com.azure.ai.textanalytics.implementation.models.SingleClassificationDocument;
 import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
@@ -331,7 +333,7 @@ public final class Utility {
         if (!CoreUtils.isNullOrEmpty(operationLocation)) {
             int lastIndex = operationLocation.lastIndexOf('/');
             if (lastIndex != -1) {
-                return operationLocation.substring(lastIndex + 1);
+                return operationLocation.substring(lastIndex + 1, lastIndex + 37);
             }
         }
         throw LOGGER.logExceptionAsError(
@@ -1305,12 +1307,12 @@ public final class Utility {
      * @return A {@link SingleCategoryClassifyResultCollection}.
      */
     public static SingleCategoryClassifyResultCollection toSingleCategoryClassifyResultCollection(
-        CustomSingleClassificationResult customSingleClassificationResult) {
+        CustomSingleLabelClassificationResult customSingleClassificationResult) {
         final List<SingleCategoryClassifyResult> singleCategoryClassifyResults = new ArrayList<>();
-        final List<SingleClassificationDocument> singleClassificationDocuments =
+        final List<CustomSingleLabelClassificationResultDocumentsItem> singleClassificationDocuments =
             customSingleClassificationResult.getDocuments();
 
-        for (SingleClassificationDocument documentSummary : singleClassificationDocuments) {
+        for (CustomSingleLabelClassificationResultDocumentsItem documentSummary : singleClassificationDocuments) {
             singleCategoryClassifyResults.add(toSingleCategoryClassifyResult(documentSummary));
         }
 
@@ -1333,8 +1335,8 @@ public final class Utility {
     }
 
     private static SingleCategoryClassifyResult toSingleCategoryClassifyResult(
-        SingleClassificationDocument singleClassificationDocument) {
-        final ClassificationResult classificationResult = singleClassificationDocument.getClassification();
+        CustomSingleLabelClassificationResultDocumentsItem singleClassificationDocument) {
+        final ClassificationResult classificationResult = singleClassificationDocument.getClassProperty();
         // Warnings
         final List<TextAnalyticsWarning> warnings = singleClassificationDocument.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
@@ -1368,12 +1370,13 @@ public final class Utility {
      * @return A {@link SingleCategoryClassifyResultCollection}.
      */
     public static MultiCategoryClassifyResultCollection toMultiCategoryClassifyResultCollection(
-        CustomMultiClassificationResult customMultiClassificationResult) {
+        CustomMultiLabelClassificationResult customMultiClassificationResult) {
         final List<MultiCategoryClassifyResult> multiCategoryClassifyResults = new ArrayList<>();
-        final List<MultiClassificationDocument> multiClassificationDocuments =
+        final List<CustomMultiLabelClassificationResultDocumentsItem> multiClassificationDocuments =
             customMultiClassificationResult.getDocuments();
 
-        for (MultiClassificationDocument multiClassificationDocument : multiClassificationDocuments) {
+        for (CustomMultiLabelClassificationResultDocumentsItem multiClassificationDocument
+            : multiClassificationDocuments) {
             multiCategoryClassifyResults.add(toMultiCategoryClassifyResult(multiClassificationDocument));
         }
 
@@ -1396,10 +1399,10 @@ public final class Utility {
     }
 
     private static MultiCategoryClassifyResult toMultiCategoryClassifyResult(
-        MultiClassificationDocument multiClassificationDocument) {
+        CustomMultiLabelClassificationResultDocumentsItem multiClassificationDocument) {
         final List<ClassificationCategory> classificationCategories =
             multiClassificationDocument
-                .getClassifications()
+                .getClassProperty()
                 .stream()
                 .map(classificationResult -> toDocumentClassification(classificationResult))
                 .collect(Collectors.toList());

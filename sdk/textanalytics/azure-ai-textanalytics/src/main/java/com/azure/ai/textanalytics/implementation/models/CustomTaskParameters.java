@@ -13,13 +13,13 @@ public class CustomTaskParameters extends TaskParameters {
     /*
      * The projectName property.
      */
-    @JsonProperty(value = "projectName", required = true)
+    @JsonProperty(value = "project-name", required = true)
     private String projectName;
 
     /*
      * The deploymentName property.
      */
-    @JsonProperty(value = "deploymentName", required = true)
+    @JsonProperty(value = "deployment-name", required = true)
     private String deploymentName;
 
     /**

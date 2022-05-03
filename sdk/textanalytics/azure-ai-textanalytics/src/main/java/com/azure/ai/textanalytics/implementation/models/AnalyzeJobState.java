@@ -4,8 +4,10 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** The AnalyzeJobState model. */
@@ -15,13 +17,13 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * The tasks property.
      */
     @JsonProperty(value = "tasks", required = true)
-    private TasksStateTasks tasks;
+    private TasksStateTasksOld tasks;
 
     /*
      * The errors property.
      */
     @JsonProperty(value = "errors")
-    private List<DocumentWarning> errors;
+    private List<TextAnalyticsError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -41,7 +43,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      *
      * @return the tasks value.
      */
-    public TasksStateTasks getTasks() {
+    public TasksStateTasksOld getTasks() {
         return this.tasks;
     }
 
@@ -51,7 +53,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * @param tasks the tasks value to set.
      * @return the AnalyzeJobState object itself.
      */
-    public AnalyzeJobState setTasks(TasksStateTasks tasks) {
+    public AnalyzeJobState setTasks(TasksStateTasksOld tasks) {
         this.tasks = tasks;
         return this;
     }
@@ -61,7 +63,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      *
      * @return the errors value.
      */
-    public List<DocumentWarning> getErrors() {
+    public List<TextAnalyticsError> getErrors() {
         return this.errors;
     }
 
@@ -71,7 +73,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * @param errors the errors value to set.
      * @return the AnalyzeJobState object itself.
      */
-    public AnalyzeJobState setErrors(List<DocumentWarning> errors) {
+    public AnalyzeJobState setErrors(List<TextAnalyticsError> errors) {
         this.errors = errors;
         return this;
     }

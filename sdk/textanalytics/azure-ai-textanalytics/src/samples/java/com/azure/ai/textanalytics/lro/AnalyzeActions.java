@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -20,6 +21,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
@@ -40,12 +42,13 @@ public class AnalyzeActions {
      */
     public static void main(String[] args) {
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-                                         .credential(new AzureKeyCredential("{key}"))
-                                         .endpoint("{endpoint}")
+                                         .serviceVersion(TextAnalyticsServiceVersion.V3_1)
+                                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
+                                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
                                          .buildClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 1; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
                     + " the spot! They provide marvelous food and they have a great menu. The chief cook happens to be"

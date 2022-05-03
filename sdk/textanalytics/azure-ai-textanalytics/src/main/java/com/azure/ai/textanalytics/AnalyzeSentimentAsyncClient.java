@@ -112,16 +112,21 @@ class AnalyzeSentimentAsyncClient {
         options = options == null ? new AnalyzeSentimentOptions() : options;
 
         if (languageSyncApiService != null) {
-            SentimentAnalysisTaskParameters sentimentAnalysisTaskParameters = new SentimentAnalysisTaskParameters();
-            sentimentAnalysisTaskParameters = (SentimentAnalysisTaskParameters) sentimentAnalysisTaskParameters
-                                                                    .setModelVersion(options.getModelVersion())
-                                                                    .setLoggingOptOut(options.isServiceLogsDisabled());
-            final AnalyzeTextSentimentAnalysisInput keyPhraseInput =
-                new AnalyzeTextSentimentAnalysisInput()
-                    .setParameters(sentimentAnalysisTaskParameters)
-                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)));
             return languageSyncApiService
-                       .analyzeTextWithResponseAsync(keyPhraseInput, options.isIncludeStatistics(), context)
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextSentimentAnalysisInput()
+                               .setParameters(
+                                   (SentimentAnalysisTaskParameters)
+                                       new SentimentAnalysisTaskParameters()
+                                           .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                           .setOpinionMining(options.isIncludeOpinionMining())
+                                           .setModelVersion(options.getModelVersion())
+                                           .setLoggingOptOut(options.isServiceLogsDisabled()))
+                               .setAnalysisInput(
+                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                           options.isIncludeStatistics(),
+                           getNotNullContext(context)
+                               .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                        .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                            getDocumentCount(documents)))
                        .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}",

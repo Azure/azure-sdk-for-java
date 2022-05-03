@@ -27,6 +27,7 @@ import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
@@ -141,21 +142,22 @@ class ExtractKeyPhraseAsyncClient {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
 
         if (languageSyncApiService != null) {
-            KeyPhraseTaskParameters keyPhraseTaskParameters = new KeyPhraseTaskParameters();
-            keyPhraseTaskParameters = (KeyPhraseTaskParameters) keyPhraseTaskParameters
-                                                                  .setModelVersion(options.getModelVersion())
-                                                                  .setLoggingOptOut(options.isServiceLogsDisabled());
-            final AnalyzeTextKeyPhraseExtractionInput keyPhraseInput =
-                new AnalyzeTextKeyPhraseExtractionInput()
-                    .setParameters(keyPhraseTaskParameters)
-                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)));
             return languageSyncApiService
-                       .analyzeTextWithResponseAsync(keyPhraseInput, options.isIncludeStatistics(), context)
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextKeyPhraseExtractionInput()
+                               .setParameters(
+                                   (KeyPhraseTaskParameters) new KeyPhraseTaskParameters()
+                                                                 .setModelVersion(options.getModelVersion())
+                                                                 .setLoggingOptOut(options.isServiceLogsDisabled()))
+                               .setAnalysisInput(
+                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                           options.isIncludeStatistics(),
+                           getNotNullContext(context)
+                               .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                        .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                            getDocumentCount(documents)))
-                       .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
-                           response.getValue()))
-                       .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
+                       .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
+                       .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
                        .map(Utility::toExtractKeyPhrasesResultCollectionResponse2)
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
@@ -165,7 +167,7 @@ class ExtractKeyPhraseAsyncClient {
             options.getModelVersion(),
             options.isIncludeStatistics(),
             options.isServiceLogsDisabled(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))

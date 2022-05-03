@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextPiiEntitiesRe
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.PiiDomain;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -146,19 +147,31 @@ class RecognizePiiEntityAsyncClient {
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
+        final Context finalContext = getNotNullContext(context)
+            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
+        final String finalModelVersion = options.getModelVersion();
+        final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+        final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
+        final String finalDomainFilter = options.getDomainFilter() != null
+                                             ? options.getDomainFilter().toString() : null;
         if (languageSyncApiService != null) {
-            PiiTaskParameters piiTaskParameters = new PiiTaskParameters();
-            piiTaskParameters = (PiiTaskParameters) piiTaskParameters
-                                                                  .setModelVersion(options.getModelVersion())
-                                                                  .setLoggingOptOut(options.isServiceLogsDisabled());
-            final AnalyzeTextPiiEntitiesRecognitionInput piiEntitiesRecognitionInput =
-                new AnalyzeTextPiiEntitiesRecognitionInput()
-                    .setParameters(piiTaskParameters)
-                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)));
             return languageSyncApiService
-                       .analyzeTextWithResponseAsync(piiEntitiesRecognitionInput, options.isIncludeStatistics(),
-                           context)
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextPiiEntitiesRecognitionInput()
+                               .setParameters(
+                                   (PiiTaskParameters) new PiiTaskParameters()
+                                                           .setDomain(PiiDomain.fromString(finalDomainFilter))
+                                                           .setPiiCategories(
+                                                               toCategoriesFilter(options.getCategoriesFilter()))
+                                                           .setStringIndexType(finalStringIndexType)
+                                                           .setModelVersion(finalModelVersion)
+                                                           .setLoggingOptOut(finalLoggingOptOut))
+                               .setAnalysisInput(new MultiLanguageAnalysisInput()
+                                                     .setDocuments(toMultiLanguageInput(documents))),
+                           finalIncludeStatistics,
+                           finalContext)
                        .doOnSubscribe(ignoredValue -> logger.info(
                            "Start recognizing Personally Identifiable Information entities for a batch of documents."))
                        .doOnSuccess(response -> logger.info(
@@ -173,13 +186,13 @@ class RecognizePiiEntityAsyncClient {
 
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(),
-            options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
-            StringIndexType.UTF16CODE_UNIT,
+            finalModelVersion,
+            finalIncludeStatistics,
+            finalLoggingOptOut,
+            finalDomainFilter,
+            finalStringIndexType,
             toCategoriesFilter(options.getCategoriesFilter()),
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            finalContext)
                    .doOnSubscribe(ignoredValue -> logger.info(
                        "Start recognizing Personally Identifiable Information entities for a batch of documents."))
                    .doOnSuccess(response -> logger.info(

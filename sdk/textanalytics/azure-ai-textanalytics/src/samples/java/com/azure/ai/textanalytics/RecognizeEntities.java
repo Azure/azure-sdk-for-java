@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 
 /**
  * Sample demonstrates how to recognize the entities of document.
@@ -18,10 +17,9 @@ public class RecognizeEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-                                         .serviceVersion(TextAnalyticsServiceVersion.V2022_03_01)
-                                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
-                                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
-            .buildClient();
+                                         .credential(new AzureKeyCredential("{key}"))
+                                         .endpoint("{endpoint}")
+                                         .buildClient();
 
         // The document that needs be analyzed.
         String document = "Satya Nadella is the CEO of Microsoft";

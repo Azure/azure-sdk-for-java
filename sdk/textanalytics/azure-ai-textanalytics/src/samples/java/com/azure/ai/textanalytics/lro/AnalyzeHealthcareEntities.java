@@ -15,8 +15,8 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -34,11 +34,10 @@ public class AnalyzeHealthcareEntities {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsClient client =
-            new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
-                .buildClient();
+        TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+                                         .credential(new AzureKeyCredential("{key}"))
+                                         .endpoint("{endpoint}")
+                                         .buildClient();
 
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",

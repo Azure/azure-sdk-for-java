@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -101,16 +102,19 @@ class DetectLanguageAsyncClient {
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
         if (languageSyncApiService != null) {
-            LanguageDetectionTaskParameters languageDetectionTaskParameters = new LanguageDetectionTaskParameters();
-            languageDetectionTaskParameters = (LanguageDetectionTaskParameters) languageDetectionTaskParameters
-                                                                  .setModelVersion(options.getModelVersion())
-                                                                  .setLoggingOptOut(options.isServiceLogsDisabled());
-            final AnalyzeTextLanguageDetectionInput languageDetectionInput =
-                new AnalyzeTextLanguageDetectionInput()
-                    .setParameters(languageDetectionTaskParameters)
-                    .setAnalysisInput(new LanguageDetectionAnalysisInput().setDocuments(toLanguageInput(documents)));
             return languageSyncApiService
-                       .analyzeTextWithResponseAsync(languageDetectionInput, options.isIncludeStatistics(), context)
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextLanguageDetectionInput()
+                               .setParameters(
+                                   (LanguageDetectionTaskParameters) new LanguageDetectionTaskParameters()
+                                                                         .setModelVersion(options.getModelVersion())
+                                                                         .setLoggingOptOut(
+                                                                             options.isServiceLogsDisabled()))
+                               .setAnalysisInput(new LanguageDetectionAnalysisInput()
+                                                     .setDocuments(toLanguageInput(documents))),
+                           options.isIncludeStatistics(),
+                           getNotNullContext(context)
+                               .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                        .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                            getDocumentCount(documents)))
                        .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
@@ -125,7 +129,7 @@ class DetectLanguageAsyncClient {
             options.getModelVersion(),
             options.isIncludeStatistics(),
             options.isServiceLogsDisabled(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",

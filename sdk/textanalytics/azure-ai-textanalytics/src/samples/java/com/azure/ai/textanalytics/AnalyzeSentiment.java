@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 
 /**
  * Sample demonstrates how to analyze the sentiment of document.
@@ -20,9 +19,9 @@ public class AnalyzeSentiment {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-                                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
-                                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
-            .buildClient();
+                                         .credential(new AzureKeyCredential("{key}"))
+                                         .endpoint("{endpoint}")
+                                         .buildClient();
 
         // The text that needs be analyzed.
         String document = "The hotel was dark and unclean. I like Microsoft.";

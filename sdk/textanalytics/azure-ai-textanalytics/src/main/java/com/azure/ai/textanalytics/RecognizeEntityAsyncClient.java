@@ -140,18 +140,26 @@ class RecognizeEntityAsyncClient {
     private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
+        final Context finalContext = getNotNullContext(context)
+                                         .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
+        final String finalModelVersion = options.getModelVersion();
+        final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+        final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
         if (languageSyncApiService != null) {
-            EntitiesTaskParameters entitiesTaskParameters = new EntitiesTaskParameters();
-            entitiesTaskParameters = (EntitiesTaskParameters) entitiesTaskParameters
-                                                                  .setModelVersion(options.getModelVersion())
-                                                                  .setLoggingOptOut(options.isServiceLogsDisabled());
-            final AnalyzeTextEntityRecognitionInput entityRecognitionInput =
-                new AnalyzeTextEntityRecognitionInput()
-                    .setParameters(entitiesTaskParameters)
-                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)));
             return languageSyncApiService
-                       .analyzeTextWithResponseAsync(entityRecognitionInput, options.isIncludeStatistics(), context)
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextEntityRecognitionInput()
+                               .setParameters(
+                                   (EntitiesTaskParameters) new EntitiesTaskParameters()
+                                                                .setStringIndexType(finalStringIndexType)
+                                                                .setModelVersion(finalModelVersion)
+                                                                .setLoggingOptOut(finalLoggingOptOut))
+                               .setAnalysisInput(new MultiLanguageAnalysisInput()
+                                                     .setDocuments(toMultiLanguageInput(documents))),
+                           finalIncludeStatistics,
+                           finalContext)
                        .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                            getDocumentCount(documents)))
                        .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
@@ -163,10 +171,11 @@ class RecognizeEntityAsyncClient {
 
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(), options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            StringIndexType.UTF16CODE_UNIT,
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            finalModelVersion,
+            finalIncludeStatistics,
+            finalLoggingOptOut,
+            finalStringIndexType,
+            finalContext)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
