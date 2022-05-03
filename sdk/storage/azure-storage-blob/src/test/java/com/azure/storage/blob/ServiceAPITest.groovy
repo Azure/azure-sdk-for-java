@@ -768,9 +768,9 @@ class ServiceAPITest extends APISpec {
         // The LastSyncTime will return a DateTimeRfc1123 if the replication status is LIVE
         // but there are two other statuses, unavailable and bootstrap, which will return null.
         if (response.getValue().getGeoReplication().getStatus() == GeoReplicationStatus.LIVE) {
-            response.getValue().getGeoReplication().getLastSyncTime() != null
+            assert response.getValue().getGeoReplication().getLastSyncTime() != null
         } else {
-            response.getValue().getGeoReplication().getLastSyncTime() == null
+            assert response.getValue().getGeoReplication().getLastSyncTime() == null
         }
     }
 
