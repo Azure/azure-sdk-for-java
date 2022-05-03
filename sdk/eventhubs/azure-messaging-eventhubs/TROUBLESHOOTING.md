@@ -237,7 +237,7 @@ Often this is not enough information to determine why the exception occurred. Fo
 
 ### Migrate from legacy to new client library
 
-The migration guide is here [Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/migration-guide.md).  This includes steps on how to migrate checkpoints.
+The [migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/migration-guide.md) includes steps on how to migrate from the legacy client, and includes how to migrate checkpoints.
 
 ## Get additional help
 
