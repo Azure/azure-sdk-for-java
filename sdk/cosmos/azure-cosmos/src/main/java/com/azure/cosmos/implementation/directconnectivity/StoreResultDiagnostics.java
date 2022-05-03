@@ -47,10 +47,8 @@ public class StoreResultDiagnostics {
             return null;
         } else if (storeResult.getStoreResponse() != null) {
             return new StoreResultDiagnostics(storeResult, storeResult.getStoreResponse());
-        } else if (storeResult.getException() != null) {
-            return new StoreResultDiagnostics(storeResult, storeResult.getException());
         } else {
-            return new StoreResultDiagnostics(storeResult);
+            return new StoreResultDiagnostics(storeResult, storeResult.getException());
         }
     }
 
