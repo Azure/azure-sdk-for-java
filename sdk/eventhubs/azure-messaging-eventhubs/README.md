@@ -17,7 +17,7 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
   the transformed events to a new stream for consumers to observe.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
-documentation][event_hubs_product_docs] | [Samples][sample_examples]
+documentation][event_hubs_product_docs] | [Samples][sample_examples] | [Troubleshooting][troubleshooting]
 
 ## Table of contents
 
@@ -40,7 +40,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
     - [Consume events with EventHubConsumerAsyncClient](#consume-events-with-eventhubconsumerasyncclient)
     - [Consume events with EventHubConsumerClient](#consume-events-with-eventhubconsumerclient)
   - [Consume events using an EventProcessorClient](#consume-events-using-an-eventprocessorclient)
-- [Troubleshooting](#troubleshooting)
+- [Troubleshooting][troubleshooting]
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
 
@@ -358,10 +358,6 @@ TimeUnit.SECONDS.sleep(2);
 // This will stop processing events.
 eventProcessorClient.stop();
 ```
-
-## Troubleshooting
-
-See [TROUBLESHOOTING.md][troubleshooting] for ways to diagnose issues.
 
 ## Next steps
 
