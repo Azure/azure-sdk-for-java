@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/fluidrelay/ci.yml
+      - sdk/fluidrelay/azure-resourcemanager-fluidrelay/
+    exclude:
+      - sdk/fluidrelay/pom.xml
+      - sdk/fluidrelay/azure-resourcemanager-fluidrelay/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/fluidrelay/ci.yml
+      - sdk/fluidrelay/azure-resourcemanager-fluidrelay/
+    exclude:
+      - sdk/fluidrelay/pom.xml
+      - sdk/fluidrelay/azure-resourcemanager-fluidrelay/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: fluidrelay
+    Artifacts:
+      - name: azure-resourcemanager-fluidrelay
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerfluidrelay
