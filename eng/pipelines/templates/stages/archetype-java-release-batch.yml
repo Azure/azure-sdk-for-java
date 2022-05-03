@@ -129,7 +129,6 @@ stages:
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 }
               displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
-              condition: and(succeeded())
 
             - ${{ each artifact in parameters.Artifacts }}:
               - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
