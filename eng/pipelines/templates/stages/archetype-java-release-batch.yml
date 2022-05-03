@@ -117,20 +117,21 @@ stages:
                   python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
                 }
               displayName: 'Verify artifact versions for release'
-#              - script: |
-#                  python --version
-#                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai ${{artifact.name}} --gi ${{artifact.groupId}}
-#                displayName: 'Verify version for release of ${{ artifact.name }}'
+
+            # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
+            # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
+            # validation, so omit uberJars from the artifacts list to verify.
+            - pwsh: |
+                $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
+                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                python --version
+                foreach($artifact in $ArtifactsList) {
+                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                }
+              displayName: "Verify no unreleased dependencies for ${{ artifact.name }}"
+              condition: and(succeeded())
 
             - ${{ each artifact in parameters.Artifacts }}:
-              - pwsh: |
-                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                displayName: "Verify no unreleased dependencies for ${{ artifact.name }}"
-                # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
-                # need to list dependencies in the POM. The flattened POM is generated and won't comply with our
-                # versioning validation, so skip it.
-                condition: and(succeeded(), ne('${{ artifact.uberJar }}', 'true'))
-
               - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:
@@ -167,11 +168,11 @@ stages:
                 steps:
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                   - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                  # No pattern, just download everything that's been signed
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                    artifact: ${{parameters.ArtifactName}}-signed
                   - ${{ each artifact in parameters.Artifacts }}:
-                    - download: current
-                      displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-                      artifact: ${{parameters.ArtifactName}}-signed
-                      patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
