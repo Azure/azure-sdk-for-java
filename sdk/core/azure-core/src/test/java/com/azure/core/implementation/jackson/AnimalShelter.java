@@ -78,8 +78,7 @@ public class AnimalShelter implements JsonCapable<AnimalShelter> {
 
                         if ("animalsInfo".equals(fieldName)) {
                             hasAnimalsInfo = true;
-                            animalsInfo = JsonUtils.readArray(reader, (r, t) ->
-                                FlattenableAnimalInfo.fromJson(r));
+                            animalsInfo = JsonUtils.readArray(reader, FlattenableAnimalInfo::fromJson);
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
                         } else {

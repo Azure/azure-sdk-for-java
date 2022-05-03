@@ -43,38 +43,23 @@ public class FlattenDangling implements JsonCapable<FlattenDangling> {
 
     public static FlattenDangling fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            String flattenedProperty = null;
+            FlattenDangling dangling = new FlattenDangling();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("a".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getStringValue();
-                        reader.nextToken();
-
-                        if ("flattened".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                                fieldName = reader.getStringValue();
-                                reader.nextToken();
-
-                                if ("property".equals(fieldName)) {
-                                    flattenedProperty = reader.getStringValue();
-                                } else {
-                                    reader.skipChildren();
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("flattened".equals(fieldName2) && reader.currentToken() == JsonToken.START_OBJECT) {
+                            JsonUtils.readFields(reader, fieldName3 -> {
+                                if ("property".equals(fieldName3)) {
+                                    dangling.setFlattenedProperty(reader.getStringValue());
                                 }
-                            }
-                        } else {
-                            reader.skipChildren();
+                            });
                         }
-                    }
-                } else {
-                    reader.skipChildren();
+                    });
                 }
-            }
+            });
 
-            return new FlattenDangling().setFlattenedProperty(flattenedProperty);
+            return dangling;
         });
     }
 }

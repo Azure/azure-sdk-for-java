@@ -107,12 +107,11 @@ public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
                 } else if ("turtlesSet1Lead".equals(fieldName)) {
                     turtleSet1Lead = TurtleWithTypeIdContainingDot.fromJson(reader);
                 } else if ("turtlesSet1".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
-                    turtleSet1 = JsonUtils.readArray(reader, (r, t) -> TurtleWithTypeIdContainingDot.fromJson(r));
+                    turtleSet1 = JsonUtils.readArray(reader, TurtleWithTypeIdContainingDot::fromJson);
                 } else if ("turtlesSet2Lead".equals(fieldName)) {
                     turtleSet2Lead = NonEmptyAnimalWithTypeIdContainingDot.fromJson(jsonReader);
                 } else if ("turtlesSet2".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
-                    turtleSet2 = JsonUtils.readArray(reader,
-                        (r, t) -> NonEmptyAnimalWithTypeIdContainingDot.fromJson(r));
+                    turtleSet2 = JsonUtils.readArray(reader, NonEmptyAnimalWithTypeIdContainingDot::fromJson);
                 } else {
                     reader.skipChildren();
                 }

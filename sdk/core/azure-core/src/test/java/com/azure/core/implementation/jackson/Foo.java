@@ -132,7 +132,6 @@ public class Foo implements JsonCapable<Foo> {
         return jsonWriter.writeEndObject().flush();
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends Foo> T fromJson(JsonReader jsonReader) {
         return fromJsonInternal(jsonReader, null);
     }
@@ -169,8 +168,8 @@ public class Foo implements JsonCapable<Foo> {
                                 reader.nextToken();
 
                                 if ("baz".equals(fieldName)) {
-                                    baz = JsonUtils.readArray(reader, (r, t) ->
-                                        JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
+                                    baz = JsonUtils.readArray(reader,
+                                        r -> JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
                                 } else if ("q".equals(fieldName)) {
                                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                                         fieldName = reader.getFieldName();

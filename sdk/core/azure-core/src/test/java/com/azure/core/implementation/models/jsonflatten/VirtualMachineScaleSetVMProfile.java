@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 /**
@@ -40,20 +39,15 @@ public final class VirtualMachineScaleSetVMProfile implements JsonCapable<Virtua
 
     public static VirtualMachineScaleSetVMProfile fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            VirtualMachineScaleSetNetworkProfile networkProfile = null;
+            VirtualMachineScaleSetVMProfile profile = new VirtualMachineScaleSetVMProfile();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("networkProfile".equals(fieldName)) {
-                    networkProfile = VirtualMachineScaleSetNetworkProfile.fromJson(reader);
-                } else {
-                    reader.skipChildren();
+                    profile.setNetworkProfile(VirtualMachineScaleSetNetworkProfile.fromJson(reader));
                 }
-            }
+            });
 
-            return new VirtualMachineScaleSetVMProfile().setNetworkProfile(networkProfile);
+            return profile;
         });
     }
 }

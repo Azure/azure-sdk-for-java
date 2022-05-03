@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 /**
@@ -40,20 +39,15 @@ public class JsonFlattenNestedInner implements JsonCapable<JsonFlattenNestedInne
 
     public static JsonFlattenNestedInner fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            VirtualMachineIdentity identity = null;
+            JsonFlattenNestedInner nestedInner = new JsonFlattenNestedInner();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("identity".equals(fieldName)) {
-                    identity = VirtualMachineIdentity.fromJson(reader);
-                } else {
-                    reader.skipChildren();
+                    nestedInner.setIdentity(VirtualMachineIdentity.fromJson(reader));
                 }
-            }
+            });
 
-            return new JsonFlattenNestedInner().setIdentity(identity);
+            return nestedInner;
         });
     }
 }

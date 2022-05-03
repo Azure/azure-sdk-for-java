@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.util.List;
@@ -43,22 +42,16 @@ public final class VirtualMachineScaleSetNetworkProfile implements JsonCapable<V
 
     public static VirtualMachineScaleSetNetworkProfile fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations = null;
+            VirtualMachineScaleSetNetworkProfile profile = new VirtualMachineScaleSetNetworkProfile();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("networkInterfaceConfigurations".equals(fieldName)) {
-                    networkInterfaceConfigurations = JsonUtils.readArray(reader,
-                        (r, t) -> VirtualMachineScaleSetNetworkConfiguration.fromJson(r));
-                } else {
-                    reader.skipChildren();
+                    profile.setNetworkInterfaceConfigurations(JsonUtils.readArray(reader,
+                        VirtualMachineScaleSetNetworkConfiguration::fromJson));
                 }
-            }
+            });
 
-            return new VirtualMachineScaleSetNetworkProfile()
-                .setNetworkInterfaceConfigurations(networkInterfaceConfigurations);
+            return profile;
         });
     }
 }

@@ -509,15 +509,7 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
      * {@link JsonToken#START_ARRAY}.
      */
     public static JsonPatchDocument fromJson(JsonReader jsonReader) {
-        List<JsonPatchOperation> operations = JsonUtils.readArray(jsonReader, (reader, token) -> {
-            if (token == JsonToken.START_OBJECT) {
-                return JsonPatchOperation.fromJson(jsonReader);
-            } else if (token == JsonToken.NULL) {
-                return null;
-            } else {
-                throw new IllegalStateException("Array element should either be an object or null, received " + token);
-            }
-        });
+        List<JsonPatchOperation> operations = JsonUtils.readArray(jsonReader, JsonPatchOperation::fromJson);
 
         JsonPatchDocument document = new JsonPatchDocument();
 

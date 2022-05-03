@@ -46,32 +46,20 @@ public final class JsonFlattenOnArrayType implements JsonCapable<JsonFlattenOnAr
 
     public static JsonFlattenOnArrayType fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            String[] jsonFlattenArray = null;
+            JsonFlattenOnArrayType flatten = new JsonFlattenOnArrayType();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("jsonflatten".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("array".equals(fieldName)) {
-                            List<String> array = JsonUtils.readArray(reader,
-                                (r, t) -> r.isStartArrayOrObject() ? r.readChildren() : r.getStringValue());
-
-                            jsonFlattenArray = array == null ? null : array.toArray(new String[0]);
-                        } else {
-                            reader.skipChildren();
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("array".equals(fieldName2)) {
+                            List<String> array = JsonUtils.readArray(reader, JsonReader::getStringValue);
+                            flatten.setJsonFlattenArray(array == null ? null : array.toArray(new String[0]));
                         }
-                    }
-                } else {
-                    reader.skipChildren();
+                    });
                 }
-            }
+            });
 
-            return new JsonFlattenOnArrayType().setJsonFlattenArray(jsonFlattenArray);
+            return flatten;
         });
-    };
+    }
 }

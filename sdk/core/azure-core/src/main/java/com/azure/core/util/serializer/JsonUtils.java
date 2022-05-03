@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -98,7 +98,7 @@ public final class JsonUtils {
      * an {@link IllegalStateException}. The {@link JsonToken} passed into the {@code deserializationFunc} will be
      * {@link JsonToken#START_OBJECT} if the function is called.
      * <p>
-     * Use {@link #readArray(JsonReader, BiFunction)} if a JSON array is being deserialized.
+     * Use {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param deserializationFunc The function that handles deserialization logic, passing the reader and current
@@ -137,25 +137,22 @@ public final class JsonUtils {
      * @return The deserialized array, or null if the {@link JsonToken#NULL} represents the object.
      * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_ARRAY}.
      */
-    public static <T> List<T> readArray(JsonReader jsonReader,
-        BiFunction<JsonReader, JsonToken, T> deserializationFunc) {
-        JsonToken token = jsonReader.currentToken();
-
-        if (token == null) {
-            token = jsonReader.nextToken();
+    public static <T> List<T> readArray(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
+        if (jsonReader.currentToken() == null) {
+            jsonReader.nextToken();
         }
 
-        if (token == JsonToken.NULL) {
+        if (jsonReader.currentToken() == JsonToken.NULL) {
             return null;
-        } else if (token != JsonToken.START_ARRAY) {
+        } else if (jsonReader.currentToken() != JsonToken.START_ARRAY) {
             // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + token);
+            throw new IllegalStateException("Unexpected token to begin deserialization: " + jsonReader.currentToken());
         }
 
         List<T> array = new ArrayList<>();
 
-        while ((token = jsonReader.nextToken()) != JsonToken.END_ARRAY) {
-            array.add(deserializationFunc.apply(jsonReader, token));
+        while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+            array.add(deserializationFunc.apply(jsonReader));
         }
 
         return array;
@@ -304,6 +301,79 @@ public final class JsonUtils {
      */
     public static <T> T getNullableProperty(JsonReader jsonReader, Function<JsonReader, T> nonNullGetter) {
         return jsonReader.currentToken() == JsonToken.NULL ? null : nonNullGetter.apply(jsonReader);
+    }
+
+    /**
+     * Reads the fields of a JSON object until the end of the object is reached.
+     * <p>
+     * The passed {@link JsonReader} will point to the field value each time {@code fieldNameConsumer} is called.
+     * <p>
+     * An {@link IllegalStateException} will be thrown if the {@link JsonReader#currentToken()} isn't
+     * {@link JsonToken#START_OBJECT} or {@link JsonToken#NULL} when the method is called.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @param fieldNameConsumer The field name consumer function.
+     * @throws IllegalStateException If {@link JsonReader#currentToken()} isn't {@link JsonToken#START_OBJECT} or
+     * {@link JsonToken#NULL} when this method is called.
+     */
+    public static void readFields(JsonReader jsonReader, Consumer<String> fieldNameConsumer) {
+        readFields(jsonReader, false, fieldName -> {
+            fieldNameConsumer.accept(fieldName);
+            return false;
+        });
+    }
+
+    /**
+     * Reads the fields of a JSON object until the end of the object is reached.
+     * <p>
+     * The passed {@link JsonReader} will point to the field value each time {@code fieldNameConsumer} is called.
+     * <p>
+     * An {@link IllegalStateException} will be thrown if the {@link JsonReader#currentToken()} isn't
+     * {@link JsonToken#START_OBJECT} or {@link JsonToken#NULL} when the method is called.
+     * <p>
+     * If {@code readAdditionalProperties} is true and {@code fieldNameConsumer} returns false the JSON field value
+     * will be read as if it were an additional property. After the object completes reading the untyped additional
+     * properties mapping will be returned, this may be null if there were no additional properties in the JSON object.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @param readAdditionalProperties Whether additional properties should be read.
+     * @param fieldNameConsumer The field name consumer function.
+     * @return The additional property map if {@code readAdditionalProperties} is true and there were additional
+     * properties in the JSON object, otherwise null.
+     * @throws IllegalStateException If {@link JsonReader#currentToken()} isn't {@link JsonToken#START_OBJECT} or
+     * {@link JsonToken#NULL} when this method is called.
+     */
+    public static Map<String, Object> readFields(JsonReader jsonReader, boolean readAdditionalProperties,
+        Function<String, Boolean> fieldNameConsumer) {
+        if (jsonReader.currentToken() != JsonToken.START_OBJECT && jsonReader.currentToken() != JsonToken.NULL) {
+            throw new IllegalStateException("Expected the current token of the JsonReader to either be "
+                + "START_OBJECT or NULL. It was: " + jsonReader.currentToken());
+        }
+
+        if (jsonReader.currentToken() == JsonToken.NULL) {
+            return null;
+        }
+
+        Map<String, Object> additionalProperties = null;
+
+        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = jsonReader.getFieldName();
+            jsonReader.nextToken();
+
+            boolean consumed = fieldNameConsumer.apply(fieldName);
+
+            if (!consumed && readAdditionalProperties) {
+                if (additionalProperties == null) {
+                    additionalProperties = new LinkedHashMap<>();
+                }
+
+                additionalProperties.put(fieldName, readUntypedField(jsonReader));
+            } else if (!consumed) {
+                jsonReader.skipChildren();
+            }
+        }
+
+        return additionalProperties;
     }
 
     private JsonUtils() {

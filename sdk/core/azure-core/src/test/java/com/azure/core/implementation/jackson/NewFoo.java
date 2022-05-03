@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class for testing serialization.
@@ -158,8 +159,12 @@ public class NewFoo implements JsonCapable<NewFoo> {
         return jsonWriter.writeEndObject().flush();
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends NewFoo> T fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T extends NewFoo> T fromJsonInternal(JsonReader jsonReader, String expectedType) {
         return (T) JsonUtils.readObject(jsonReader, reader -> {
             String type = null;
             String bar = null;
@@ -191,8 +196,8 @@ public class NewFoo implements JsonCapable<NewFoo> {
                                 reader.nextToken();
 
                                 if ("baz".equals(fieldName)) {
-                                    baz = JsonUtils.readArray(reader, (r, t) ->
-                                        JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
+                                    baz = JsonUtils.readArray(reader,
+                                        r -> JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
                                 } else if ("q".equals(fieldName)) {
                                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                                         fieldName = reader.getFieldName();
@@ -257,7 +262,15 @@ public class NewFoo implements JsonCapable<NewFoo> {
                 }
             }
 
-            if (type == null || "newfoo".equals(type)) {
+            // When called from a subtype, the expected $type will be passed and verified, as long as the
+            // $type in the JSON wasn't null or missing.
+            // TODO (alzimmer): Should this throw if it was present and null?
+            if (expectedType != null && type != null && !Objects.equals(expectedType, type)) {
+                throw new IllegalStateException("Discriminator field '$type' didn't match expected value: "
+                    + "'" + expectedType + "'. It was: '" + type + "'.");
+            }
+
+            if ((type == null && expectedType == null) || "newfoo".equals(type)) {
                 NewFoo newFoo = new NewFoo();
                 newFoo.bar(bar);
                 newFoo.baz(baz);
@@ -268,7 +281,7 @@ public class NewFoo implements JsonCapable<NewFoo> {
                 newFoo.additionalPropertiesProperty(additionalPropertiesProperty);
 
                 return newFoo;
-            } else if ("newfoochild".equals(type)) {
+            } else if ("newfoochild".equals(expectedType) || "newfoochild".equals(type)) {
                 NewFooChild newFooChild = new NewFooChild();
                 newFooChild.bar(bar);
                 newFooChild.baz(baz);

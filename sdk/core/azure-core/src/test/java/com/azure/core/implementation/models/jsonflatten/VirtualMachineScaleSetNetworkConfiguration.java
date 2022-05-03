@@ -10,6 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
+import static com.azure.core.util.serializer.JsonUtils.getNullableProperty;
+
 /**
  * Model used for testing JSON flattening.
  */
@@ -55,32 +57,21 @@ public final class VirtualMachineScaleSetNetworkConfiguration
 
     public static VirtualMachineScaleSetNetworkConfiguration fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            String name = null;
-            Boolean primary = null;
+            VirtualMachineScaleSetNetworkConfiguration configuration = new VirtualMachineScaleSetNetworkConfiguration();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("name".equals(fieldName)) {
-                    name = reader.getStringValue();
+                    configuration.setName(jsonReader.getStringValue());
                 } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("primary".equals(fieldName)) {
-                            primary = reader.currentToken() == JsonToken.NULL ? null : reader.getBooleanValue();
-                        } else {
-                            reader.skipChildren();
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("primary".equals(fieldName2)) {
+                            configuration.setPrimary(getNullableProperty(reader, JsonReader::getBooleanValue));
                         }
-                    }
-                } else {
-                    reader.skipChildren();
+                    });
                 }
-            }
+            });
 
-            return new VirtualMachineScaleSetNetworkConfiguration().setName(name).setPrimary(primary);
+            return configuration;
         });
     }
 }

@@ -45,30 +45,17 @@ public final class JsonFlattenOnCollectionType implements JsonCapable<JsonFlatte
 
     public static JsonFlattenOnCollectionType fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            List<String> jsonFlattenCollection = null;
+            JsonFlattenOnCollectionType flatten = new JsonFlattenOnCollectionType();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("jsonflatten".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("collection".equals(fieldName)) {
-                            jsonFlattenCollection = JsonUtils.readArray(reader,
-                                (r, t) -> r.isStartArrayOrObject() ? r.readChildren() : r.getStringValue());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                } else {
-                    reader.skipChildren();
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        flatten.setJsonFlattenCollection(JsonUtils.readArray(reader, JsonReader::getStringValue));
+                    });
                 }
-            }
+            });
 
-            return new JsonFlattenOnCollectionType().setJsonFlattenCollection(jsonFlattenCollection);
+            return flatten;
         });
     }
 }

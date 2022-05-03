@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -65,38 +64,20 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonCapable<Fl
 
     public static FlattenedPropertiesAndJsonAnyGetter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            String string = null;
-            Map<String, Object> additionalProperties = null;
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            FlattenedPropertiesAndJsonAnyGetter properties = new FlattenedPropertiesAndJsonAnyGetter();
+            properties.additionalProperties = JsonUtils.readFields(reader, true, fieldName -> {
                 if ("flattened".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("string".equals(fieldName)) {
-                            string = reader.getStringValue();
-                        } else {
-                            reader.skipChildren();
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("string".equals(fieldName2)) {
+                            properties.setString(reader.getStringValue());
                         }
-                    }
-                } else {
-                    if (additionalProperties == null) {
-                        additionalProperties = new LinkedHashMap<>();
-                    }
-
-                    additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                    });
+                    return true;
                 }
-            }
+                return false;
+            });
 
-            FlattenedPropertiesAndJsonAnyGetter toReturn = new FlattenedPropertiesAndJsonAnyGetter()
-                .setString(string);
-            toReturn.additionalProperties = additionalProperties;
-
-            return toReturn;
+            return properties;
         });
     }
 }

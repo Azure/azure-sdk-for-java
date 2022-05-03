@@ -174,7 +174,7 @@ public final class ResponseError implements JsonCapable<ResponseError> {
                 } else if ("innererror".equals(fieldName)) {
                     innerError = ResponseInnerError.fromJson(jsonReader);
                 } else if ("details".equals(fieldName)) {
-                    errorDetails = JsonUtils.readArray(reader, (r, t) -> ResponseError.fromJson(r));
+                    errorDetails = JsonUtils.readArray(reader, ResponseError::fromJson);
                 } else {
                     reader.skipChildren();
                 }

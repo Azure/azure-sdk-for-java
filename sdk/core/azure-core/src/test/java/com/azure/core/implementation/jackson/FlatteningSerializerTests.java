@@ -720,8 +720,7 @@ public class FlatteningSerializerTests {
     }
 
     private static <T> List<T> readJsons(String json, Function<JsonReader, T> reader) {
-        return JsonUtils.readArray(DefaultJsonReader.fromString(json),
-            (jsonReader, token) -> reader.apply(jsonReader));
+        return JsonUtils.readArray(DefaultJsonReader.fromString(json), reader::apply);
     }
 
     private static Stream<Arguments> emptyDanglingNodeJsonSupplier() {

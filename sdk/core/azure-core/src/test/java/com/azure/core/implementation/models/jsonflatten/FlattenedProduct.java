@@ -54,30 +54,21 @@ public class FlattenedProduct implements JsonCapable<FlattenedProduct> {
 
     public static FlattenedProduct fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            String productName = null;
-            String productType = null;
+            FlattenedProduct product = new FlattenedProduct();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("p.name".equals(fieldName)) {
-                            productName = reader.getStringValue();
-                        } else if ("type".equals(fieldName)) {
-                            productType = reader.getStringValue();
-                        } else {
-                            reader.skipChildren();
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("p.name".equals(fieldName2)) {
+                            product.setProductName(reader.getStringValue());
+                        } else if ("type".equals(fieldName2)) {
+                            product.setProductType(reader.getStringValue());
                         }
-                    }
+                    });
                 }
-            }
+            });
 
-            return new FlattenedProduct().setProductName(productName).setProductType(productType);
+            return product;
         });
     }
 }

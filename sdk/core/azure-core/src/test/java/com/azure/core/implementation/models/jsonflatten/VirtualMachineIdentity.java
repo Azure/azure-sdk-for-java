@@ -64,34 +64,26 @@ public final class VirtualMachineIdentity implements JsonCapable<VirtualMachineI
 
     public static VirtualMachineIdentity fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            List<String> type = null;
-            Map<String, Object> userAssignedIdentities = null;
+            VirtualMachineIdentity identity = new VirtualMachineIdentity();
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
+            JsonUtils.readFields(reader, fieldName -> {
                 if ("type".equals(fieldName)) {
-                    type = JsonUtils.readArray(jsonReader,
-                        (r, t) -> r.isStartArrayOrObject() ? r.readChildren() : r.getStringValue());
+                    identity.setType(JsonUtils.readArray(jsonReader, JsonReader::getStringValue));
                 } else if ("userAssignedIdentities".equals(fieldName)
                     && reader.currentToken() == JsonToken.START_OBJECT) {
-                    if (userAssignedIdentities == null) {
-                        userAssignedIdentities = new LinkedHashMap<>();
-                    }
-
+                    Map<String, Object> userAssignedIdentities = new LinkedHashMap<>();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         userAssignedIdentities.put(fieldName, JsonUtils.readUntypedField(reader));
                     }
-                } else {
-                    reader.skipChildren();
-                }
-            }
 
-            return new VirtualMachineIdentity().setType(type).setUserAssignedIdentities(userAssignedIdentities);
+                    identity.setUserAssignedIdentities(userAssignedIdentities);
+                }
+            });
+
+            return identity;
         });
     }
 }

@@ -50,7 +50,7 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<Anima
                     tailLength = JsonUtils.getNullableProperty(reader, JsonReader::getIntValue);
                 } else if ("meals".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
                     meals = JsonUtils.readArray(reader,
-                        (r, t) -> JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
+                        r -> JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
                 } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getFieldName();
