@@ -1099,7 +1099,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     private void validateTransportRequestTimelineGateway(String diagnostics) {
         assertThat(diagnostics).contains("\"eventName\":\"connectionConfigured\"");
-        assertThat(diagnostics).contains("\"eventName\":\"connectionConfigured\"");
         assertThat(diagnostics).contains("\"eventName\":\"requestSent\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");

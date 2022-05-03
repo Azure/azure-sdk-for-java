@@ -29,8 +29,8 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
@@ -562,17 +562,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setGatewayRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                              RequestTimeline requestTimeline) {
-        cosmosDiagnostics.clientSideRequestStatistics().setGatewayRequestTimeline(requestTimeline);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordResponse(CosmosDiagnostics cosmosDiagnostics,
                                       RxDocumentServiceRequest request,
-                                      StoreResult storeResult,
+                                      StoreResultDiagnostics storeResultDiagnostics,
                                       GlobalEndpointManager globalEndpointManager) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult, globalEndpointManager);
+        cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResultDiagnostics, globalEndpointManager);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -601,10 +595,9 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
-                                             StoreResponse storeResponse,
-                                             CosmosException exception,
+                                             StoreResponseDiagnostics storeResponseDiagnostics,
                                              GlobalEndpointManager globalEndpointManager) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponse, exception, globalEndpointManager);
+        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponseDiagnostics, globalEndpointManager);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

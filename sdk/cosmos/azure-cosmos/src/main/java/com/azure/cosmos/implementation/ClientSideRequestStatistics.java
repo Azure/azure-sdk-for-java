@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -43,7 +41,6 @@ public class ClientSideRequestStatistics {
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
-    private RequestTimeline gatewayRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
@@ -93,13 +90,13 @@ public class ClientSideRequestStatistics {
         return diagnosticsClientConfig;
     }
 
-    public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult, GlobalEndpointManager globalEndpointManager) {
+    public void recordResponse(RxDocumentServiceRequest request, StoreResultDiagnostics storeResultDiagnostics, GlobalEndpointManager globalEndpointManager) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
-        storeResponseStatistics.storeResult = StoreResult.createSerializableStoreResult(storeResult);
+        storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
         activityId = request.getActivityId().toString();
@@ -117,8 +114,7 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            //  TODO (kuthapar): globalEndpointManager != null check is just for safety for hotfix. Remove it after further investigation
-            if (locationEndPoint != null && globalEndpointManager != null) {
+            if (locationEndPoint != null) {
                 this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
@@ -133,8 +129,7 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordGatewayResponse(
-        RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
-        CosmosException exception, GlobalEndpointManager globalEndpointManager) {
+        RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponseDiagnostics storeResponseDiagnostics, GlobalEndpointManager globalEndpointManager) {
         Instant responseTime = Instant.now();
 
         synchronized (this) {
@@ -148,8 +143,7 @@ public class ClientSideRequestStatistics {
             }
             this.recordRetryContextEndTime();
 
-            //  TODO (kuthapar): globalEndpointManager != null check is just for safety for hotfix. Remove it after further investigation
-            if (locationEndPoint != null && globalEndpointManager != null) {
+            if (locationEndPoint != null) {
                 this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
@@ -159,32 +153,14 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
             }
-            if (storeResponse != null) {
-                this.gatewayStatistics.statusCode = storeResponse.getStatus();
-                this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
-                this.gatewayStatistics.sessionToken = storeResponse
-                    .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
-                this.gatewayStatistics.requestCharge = storeResponse
-                    .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
-                this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
-                this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
-                this.activityId= storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
-            } else if (exception != null) {
-                this.gatewayStatistics.statusCode = exception.getStatusCode();
-                this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
-                this.gatewayStatistics.requestTimeline = this.gatewayRequestTimeline;
-                this.gatewayStatistics.requestCharge= String.valueOf(exception.getRequestCharge());
-                this.activityId=exception.getActivityId();
-            }
+            this.gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
+            this.gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
+            this.gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
+            this.gatewayStatistics.requestCharge = storeResponseDiagnostics.getRequestCharge();
+            this.gatewayStatistics.requestTimeline = storeResponseDiagnostics.getRequestTimeline();
+            this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
+            this.activityId = storeResponseDiagnostics.getActivityId();
         }
-    }
-
-    public void setGatewayRequestTimeline(RequestTimeline transportRequestTimeline) {
-        this.gatewayRequestTimeline = transportRequestTimeline;
-    }
-
-    public RequestTimeline getGatewayRequestTimeline() {
-        return this.gatewayRequestTimeline;
     }
 
     public String recordAddressResolutionStart(
@@ -297,8 +273,8 @@ public class ClientSideRequestStatistics {
     }
 
     public static class StoreResponseStatistics {
-        @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
-        private StoreResult storeResult;
+        @JsonSerialize(using = StoreResultDiagnostics.StoreResultDiagnosticsSerializer.class)
+        private StoreResultDiagnostics storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private Instant requestResponseTimeUTC;
         @JsonSerialize
@@ -306,7 +282,7 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private OperationType requestOperationType;
 
-        public StoreResult getStoreResult() {
+        public StoreResultDiagnostics getStoreResult() {
             return storeResult;
         }
 
@@ -456,7 +432,7 @@ public class ClientSideRequestStatistics {
         private ResourceType resourceType;
         private int statusCode;
         private int subStatusCode;
-        private String requestCharge;
+        private double requestCharge;
         private RequestTimeline requestTimeline;
         private String partitionKeyRangeId;
 
@@ -476,7 +452,7 @@ public class ClientSideRequestStatistics {
             return subStatusCode;
         }
 
-        public String getRequestCharge() {
+        public double getRequestCharge() {
             return requestCharge;
         }
 
