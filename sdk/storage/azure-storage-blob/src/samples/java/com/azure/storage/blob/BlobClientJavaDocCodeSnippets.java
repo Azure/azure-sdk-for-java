@@ -21,9 +21,7 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.implementation.Constants;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -75,16 +73,6 @@ public class BlobClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobClient.copyFromUrl#String
         System.out.printf("Copy identifier: %s%n", client.copyFromUrl(url));
         // END: com.azure.storage.blob.BlobClient.copyFromUrl#String
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#download(OutputStream)}
-     */
-    public void download() {
-        // BEGIN: com.azure.storage.blob.BlobClient.download#OutputStream
-        client.download(new ByteArrayOutputStream());
-        System.out.println("Download completed.");
-        // END: com.azure.storage.blob.BlobClient.download#OutputStream
     }
 
     /**
@@ -238,23 +226,6 @@ public class BlobClientJavaDocCodeSnippets {
                 blobRequestConditions, timeout,
                 new Context(key1, value1)).getValue());
         // END: com.azure.storage.blob.BlobClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#downloadWithResponse(OutputStream, BlobRange, DownloadRetryOptions,
-     * BlobRequestConditions, boolean, Duration, Context)}
-     * @throws UncheckedIOException If an I/O error occurs
-     */
-    public void downloadWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
-        BlobRange range = new BlobRange(1024, 2048L);
-        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
-
-        System.out.printf("Download completed with status %d%n",
-            client.downloadWithResponse(new ByteArrayOutputStream(), range, options, null, false,
-                timeout, new Context(key2, value2)).getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
-
     }
 
     /**

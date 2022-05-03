@@ -1040,29 +1040,10 @@ public class BlobAsyncClientBase {
      * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
      * {@link AppendBlobClient}.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.download -->
-     * <pre>
-     * ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
-     * client.download&#40;&#41;.subscribe&#40;piece -&gt; &#123;
-     *     try &#123;
-     *         downloadData.write&#40;piece.array&#40;&#41;&#41;;
-     *     &#125; catch &#40;IOException ex&#41; &#123;
-     *         throw new UncheckedIOException&#40;ex&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.download -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * <p>This method will be deprecated in the future. Use {@link #downloadStream()} instead.
-     *
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStream()} instead.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Deprecated
     public Flux<ByteBuffer> download() {
         return downloadStream();
     }
@@ -1130,37 +1111,14 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
-     * <pre>
-     * BlobRange range = new BlobRange&#40;1024, &#40;long&#41; 2048&#41;;
-     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
-     *
-     * client.downloadWithResponse&#40;range, options, null, false&#41;.subscribe&#40;response -&gt; &#123;
-     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
-     *     response.getValue&#40;&#41;.subscribe&#40;piece -&gt; &#123;
-     *         try &#123;
-     *             downloadData.write&#40;piece.array&#40;&#41;&#41;;
-     *         &#125; catch &#40;IOException ex&#41; &#123;
-     *             throw new UncheckedIOException&#40;ex&#41;;
-     *         &#125;
-     *     &#125;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * <p>This method will be deprecated in the future.
-     * Use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)}  instead.
-     *
      * @param range {@link BlobRange}
      * @param options {@link DownloadRetryOptions}
      * @param requestConditions {@link BlobRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)} instead.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);

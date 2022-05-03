@@ -711,25 +711,12 @@ public class BlobClientBase {
      * Downloads the entire blob into an output stream. Uploading data must be done from the {@link BlockBlobClient},
      * {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.download#OutputStream -->
-     * <pre>
-     * client.download&#40;new ByteArrayOutputStream&#40;&#41;&#41;;
-     * System.out.println&#40;&quot;Download completed.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.download#OutputStream -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * <p>This method will be deprecated in the future. Use {@link #downloadStream(OutputStream)} instead.
-     *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStream(OutputStream)} instead.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public void download(OutputStream stream) {
         downloadStream(stream);
     }
@@ -790,26 +777,6 @@ public class BlobClientBase {
      * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
      * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context -->
-     * <pre>
-     * BlobRange range = new BlobRange&#40;1024, 2048L&#41;;
-     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
-     *
-     * System.out.printf&#40;&quot;Download completed with status %d%n&quot;,
-     *     client.downloadWithResponse&#40;new ByteArrayOutputStream&#40;&#41;, range, options, null, false,
-     *         timeout, new Context&#40;key2, value2&#41;&#41;.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * <p>This method will be deprecated in the future.
-     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions,
-     * BlobRequestConditions, boolean, Duration, Context)} instead.
-     *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
      * @param options {@link DownloadRetryOptions}
@@ -820,8 +787,9 @@ public class BlobClientBase {
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)} instead.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
