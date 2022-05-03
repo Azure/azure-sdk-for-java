@@ -128,7 +128,7 @@ stages:
                 foreach($artifact in $ArtifactsList) {
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 }
-              displayName: "Verify no unreleased dependencies for ${{ artifact.name }}"
+              displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
               condition: and(succeeded())
 
             - ${{ each artifact in parameters.Artifacts }}:
@@ -310,9 +310,6 @@ stages:
             runOnce:
               deploy:
                 steps:
-                  - download: current
-                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
-                    artifact: ${{parameters.ArtifactName}}
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
                       SkipDefaultCheckout: true
