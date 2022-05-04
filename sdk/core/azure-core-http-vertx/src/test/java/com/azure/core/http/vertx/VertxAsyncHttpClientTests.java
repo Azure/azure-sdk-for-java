@@ -9,9 +9,11 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import io.vertx.core.VertxException;
+import io.vertx.core.http.HttpClosedException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,10 +47,8 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 
 public class VertxAsyncHttpClientTests {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
-
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
-
     private static WireMockServer server;
 
     @BeforeAll
@@ -65,7 +65,7 @@ public class VertxAsyncHttpClientTests {
         server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
         server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
             .withTransformers(VertxAsyncHttpClientResponseTransformer.NAME)));
-
+        server.stubFor(get("/empty").willReturn(aResponse().withBody(new byte[0])));
         server.start();
     }
 
@@ -84,6 +84,14 @@ public class VertxAsyncHttpClientTests {
     @Test
     public void testFlowableResponseLongBodyAsByteArrayAsync() {
         checkBodyReceived(LONG_BODY, "/long");
+    }
+
+    @Test
+    public void responseBodyAsStringAsyncWithCharset() {
+        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        StepVerifier.create(doRequest(client, "/short").getBodyAsString(StandardCharsets.UTF_8))
+            .assertNext(result -> assertEquals(SHORT_BODY, result))
+            .verifyComplete();
     }
 
     @Test
@@ -178,8 +186,11 @@ public class VertxAsyncHttpClientTests {
                 HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/ioException"));
 
-                StepVerifier.create(client.send(request))
-                    .verifyError(VertxException.class);
+                StepVerifier.create(client.send(request)
+                        .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())
+                            .zipWith(Mono.just(response.getStatusCode()))))
+                    .expectError(HttpClosedException.class)
+                    .verify(Duration.ofSeconds(5));
             }
         });
     }
@@ -194,7 +205,7 @@ public class VertxAsyncHttpClientTests {
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(10)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
+            .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long", Context.NONE)).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
                     .doOnNext(buffer -> md.update(buffer.duplicate()))
@@ -243,11 +254,44 @@ public class VertxAsyncHttpClientTests {
     }
 
     @Test
-    public void leadingSlashSeparatorAppliedBeforeQueryString() {
-        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "?foo=bar"));
-        String expectedRequestUrl = String.format("http://localhost:%d/?foo=bar", server.port());
-        Assertions.assertEquals(expectedRequestUrl, httpClient.getRequestUrlAsString(request));
+    public void testBufferedResponse() {
+        Context context = new Context("azure-eagerly-read-response", true);
+        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        HttpResponse response = getResponse(client, "/short", context);
+
+        StepVerifier.create(response.getBody())
+            .assertNext(buffer -> {
+                assertEquals(SHORT_BODY, new String(buffer.array()));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void testEmptyBufferResponse() {
+        HttpResponse response = getResponse("/empty");
+
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
+        stepVerifierOptions.initialRequest(0);
+
+        StepVerifier.create(response.getBody(), stepVerifierOptions)
+            .expectNextCount(0)
+            .thenRequest(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testEmptyBufferedResponse() {
+        Context context = new Context("azure-eagerly-read-response", true);
+        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        HttpResponse response = getResponse(client, "/empty", context);
+
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
+        stepVerifierOptions.initialRequest(0);
+
+        StepVerifier.create(response.getBody(), stepVerifierOptions)
+            .expectNextCount(0)
+            .thenRequest(1)
+            .verifyComplete();
     }
 
     private static MessageDigest md5Digest() {
@@ -266,12 +310,12 @@ public class VertxAsyncHttpClientTests {
 
     private static HttpResponse getResponse(String path) {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
-        return getResponse(client, path);
+        return getResponse(client, path, Context.NONE);
     }
 
-    private static HttpResponse getResponse(HttpClient client, String path) {
+    private static HttpResponse getResponse(HttpClient client, String path, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request).block();
+        return client.send(request, context).block();
     }
 
     static URL url(WireMockServer server, String path) {

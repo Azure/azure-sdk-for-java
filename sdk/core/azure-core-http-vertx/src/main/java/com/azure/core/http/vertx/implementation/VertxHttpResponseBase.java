@@ -8,20 +8,20 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 import io.vertx.core.MultiMap;
-import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClientResponse;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
 
 abstract class VertxHttpResponseBase extends HttpResponse {
 
-    private final io.vertx.ext.web.client.HttpResponse<Buffer> response;
+    private final HttpClientResponse vertxHttpResponse;
     private final HttpHeaders headers;
 
-    VertxHttpResponseBase(HttpRequest request, io.vertx.ext.web.client.HttpResponse<Buffer> response) {
-        super(request);
-        this.response = response;
-        this.headers = fromVertxHttpHeaders(response.headers());
+    VertxHttpResponseBase(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
+        super(azureHttpRequest);
+        this.vertxHttpResponse = vertxHttpResponse;
+        this.headers = fromVertxHttpHeaders(vertxHttpResponse.headers());
     }
 
     private HttpHeaders fromVertxHttpHeaders(MultiMap headers) {
@@ -30,13 +30,13 @@ abstract class VertxHttpResponseBase extends HttpResponse {
         return azureHeaders;
     }
 
-    protected io.vertx.ext.web.client.HttpResponse<Buffer> getVertxHttpResponse() {
-        return this.response;
+    protected HttpClientResponse getVertxHttpResponse() {
+        return this.vertxHttpResponse;
     }
 
     @Override
     public int getStatusCode() {
-        return response.statusCode();
+        return this.vertxHttpResponse.statusCode();
     }
 
     @Override
@@ -56,10 +56,6 @@ abstract class VertxHttpResponseBase extends HttpResponse {
 
     @Override
     public final Mono<String> getBodyAsString(Charset charset) {
-        return Mono.fromCallable(() -> this.response.bodyAsString(charset.toString()));
-    }
-
-    boolean isEmptyResponse(Buffer responseBody) {
-        return responseBody == null || responseBody.length() == 0;
+        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes, charset.toString()));
     }
 }

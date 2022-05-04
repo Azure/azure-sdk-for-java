@@ -5,34 +5,35 @@ package com.azure.core.http.vertx.implementation;
 
 import com.azure.core.http.HttpRequest;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClientResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
+public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
 
     private final Buffer body;
 
-    BufferedVertxHttpResponse(HttpRequest request, io.vertx.ext.web.client.HttpResponse<Buffer> response, Buffer body) {
-        super(request, response);
+    public BufferedVertxHttpResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse, Buffer body) {
+        super(azureHttpRequest, vertxHttpResponse);
         this.body = body;
     }
 
     @Override
     public Flux<ByteBuffer> getBody() {
         return Flux.defer(() -> {
-            if (isEmptyResponse(this.body)) {
+            if (this.body.length() == 0) {
                 return Flux.empty();
             }
-            return Flux.just(this.body.getByteBuf().nioBuffer());
+            return Flux.just(ByteBuffer.wrap(this.body.getBytes()));
         });
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.defer(() -> {
-            if (isEmptyResponse(this.body)) {
+            if (this.body.length() == 0) {
                 return Mono.empty();
             }
             return Mono.just(this.body.getBytes());

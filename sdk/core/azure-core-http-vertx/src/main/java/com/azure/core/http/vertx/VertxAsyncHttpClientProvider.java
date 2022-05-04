@@ -7,10 +7,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
-import io.vertx.ext.web.client.WebClient;
 
 /**
- * {@link HttpClientProvider} backed by the Vert.x {@link WebClient}
+ * {@link HttpClientProvider} backed by the Vert.x {@link io.vertx.core.http.HttpClient}
  */
 public class VertxAsyncHttpClientProvider implements HttpClientProvider {
     private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =

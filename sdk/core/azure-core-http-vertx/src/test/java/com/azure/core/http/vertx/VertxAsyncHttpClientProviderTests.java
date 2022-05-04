@@ -24,7 +24,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-import static com.azure.core.http.vertx.VertxAsyncClientTestHelper.getVertxInternalHttpClient;
 import static com.azure.core.http.vertx.VertxAsyncClientTestHelper.getVertxInternalProxyFilter;
 import static io.vertx.core.net.SocketAddress.inetSocketAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,8 +48,7 @@ public class VertxAsyncHttpClientProviderTests {
             .createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        HttpClientImpl vertxHttpClient = getVertxInternalHttpClient(httpClient);
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClient.getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
         io.vertx.core.net.ProxyOptions proxyOptions = options.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -66,8 +64,7 @@ public class VertxAsyncHttpClientProviderTests {
             .createInstance(new HttpClientOptions());
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        HttpClientImpl vertxHttpClient = getVertxInternalHttpClient(httpClient);
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClient.getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
         io.vertx.core.net.ProxyOptions proxyOptions = options.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -87,8 +84,7 @@ public class VertxAsyncHttpClientProviderTests {
         VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
-        HttpClientImpl vertxHttpClient = getVertxInternalHttpClient(httpClient);
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClient.getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
 
         io.vertx.core.net.ProxyOptions vertxProxyOptions = options.getProxyOptions();
         assertNotNull(vertxProxyOptions);
@@ -96,7 +92,7 @@ public class VertxAsyncHttpClientProviderTests {
         assertEquals(proxyOptions.getAddress().getPort(), vertxProxyOptions.getPort());
         assertEquals(proxyOptions.getType().name(), vertxProxyOptions.getType().name());
 
-        Predicate<SocketAddress> proxyFilter = getVertxInternalProxyFilter(vertxHttpClient);
+        Predicate<SocketAddress> proxyFilter = getVertxInternalProxyFilter((HttpClientImpl) httpClient.client);
         assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.com")));
         assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.bar.com")));
         assertFalse(proxyFilter.test(inetSocketAddress(80, "bar.com")));
@@ -117,8 +113,7 @@ public class VertxAsyncHttpClientProviderTests {
         VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
-        HttpClientImpl vertxHttpClient = getVertxInternalHttpClient(httpClient);
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClient.getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
 
         assertEquals(timeout.toMillis(), options.getConnectTimeout());
         assertEquals(timeout.getSeconds(), options.getIdleTimeout());

@@ -3,10 +3,8 @@
 
 package com.azure.core.http.vertx;
 
-import com.azure.core.http.HttpClient;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
-import io.vertx.ext.web.client.impl.WebClientBase;
 
 import java.lang.reflect.Field;
 import java.util.function.Predicate;
@@ -21,17 +19,6 @@ final class VertxAsyncClientTestHelper {
 
     private VertxAsyncClientTestHelper() {
         // Utility class
-    }
-
-    static HttpClientImpl getVertxInternalHttpClient(HttpClient client) {
-        try {
-            VertxAsyncHttpClient vertxAsyncHttpClient = (VertxAsyncHttpClient) client;
-            Field field = WebClientBase.class.getDeclaredField("client");
-            field.setAccessible(true);
-            return  (HttpClientImpl) field.get(vertxAsyncHttpClient.client);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @SuppressWarnings("unchecked")

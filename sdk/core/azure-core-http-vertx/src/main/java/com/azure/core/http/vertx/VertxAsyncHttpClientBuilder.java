@@ -9,9 +9,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.net.ProxyType;
-import io.vertx.ext.web.client.WebClient;
-import io.vertx.ext.web.client.WebClientOptions;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -55,7 +54,7 @@ public class VertxAsyncHttpClientBuilder {
     private Duration idleTimeout = Duration.ofSeconds(60);
     private ProxyOptions proxyOptions;
     private Configuration configuration;
-    private WebClientOptions webClientOptions;
+    private HttpClientOptions httpClientOptions;
     private Vertx vertx;
 
     /**
@@ -136,18 +135,18 @@ public class VertxAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets custom {@link WebClientOptions} for the constructed {@link WebClient}.
+     * Sets custom {@link HttpClientOptions} for the constructed {@link io.vertx.core.http.HttpClient}.
      *
-     * @param webClientOptions The options of the web client.
+     * @param httpClientOptions The options of the web client.
      * @return The updated VertxAsyncHttpClientBuilder object
      */
-    public VertxAsyncHttpClientBuilder webClientOptions(WebClientOptions webClientOptions) {
-        this.webClientOptions = webClientOptions;
+    public VertxAsyncHttpClientBuilder httpClientOptions(HttpClientOptions httpClientOptions) {
+        this.httpClientOptions = httpClientOptions;
         return this;
     }
 
     /**
-     * Sets a custom {@link Vertx} instance that the constructed {@link WebClient} will be created with.
+     * Sets a custom {@link Vertx} instance that the constructed {@link io.vertx.core.http.HttpClient} will be created with.
      *
      * @param vertx The vertx instance.
      * @return The updated VertxAsyncHttpClientBuilder object
@@ -184,28 +183,28 @@ public class VertxAsyncHttpClientBuilder {
             }
         }
 
-        if (this.webClientOptions == null) {
-            this.webClientOptions = new WebClientOptions();
+        if (this.httpClientOptions == null) {
+            this.httpClientOptions = new HttpClientOptions();
 
             if (this.connectTimeout != null) {
-                this.webClientOptions.setConnectTimeout((int) this.connectTimeout.toMillis());
+                this.httpClientOptions.setConnectTimeout((int) this.connectTimeout.toMillis());
             } else {
-                this.webClientOptions.setConnectTimeout((int) DEFAULT_CONNECT_TIMEOUT);
+                this.httpClientOptions.setConnectTimeout((int) DEFAULT_CONNECT_TIMEOUT);
             }
 
             if (this.readIdleTimeout != null) {
-                this.webClientOptions.setReadIdleTimeout((int) this.readIdleTimeout.getSeconds());
+                this.httpClientOptions.setReadIdleTimeout((int) this.readIdleTimeout.getSeconds());
             } else {
-                this.webClientOptions.setReadIdleTimeout((int) DEFAULT_READ_TIMEOUT);
+                this.httpClientOptions.setReadIdleTimeout((int) DEFAULT_READ_TIMEOUT);
             }
 
             if (this.writeIdleTimeout != null) {
-                this.webClientOptions.setWriteIdleTimeout((int) this.writeIdleTimeout.getSeconds());
+                this.httpClientOptions.setWriteIdleTimeout((int) this.writeIdleTimeout.getSeconds());
             } else {
-                this.webClientOptions.setWriteIdleTimeout((int) DEFAULT_WRITE_TIMEOUT);
+                this.httpClientOptions.setWriteIdleTimeout((int) DEFAULT_WRITE_TIMEOUT);
             }
 
-            this.webClientOptions.setIdleTimeout((int) this.idleTimeout.getSeconds());
+            this.httpClientOptions.setIdleTimeout((int) this.idleTimeout.getSeconds());
 
             Configuration buildConfiguration = (this.configuration == null)
                 ? Configuration.getGlobalConfiguration()
@@ -244,11 +243,11 @@ public class VertxAsyncHttpClientBuilder {
                 String nonProxyHosts = buildProxyOptions.getNonProxyHosts();
                 if (!CoreUtils.isNullOrEmpty(nonProxyHosts)) {
                     for (String nonProxyHost : desanitizedNonProxyHosts(nonProxyHosts)) {
-                        this.webClientOptions.addNonProxyHost(nonProxyHost);
+                        this.httpClientOptions.addNonProxyHost(nonProxyHost);
                     }
                 }
 
-                this.webClientOptions.setProxyOptions(vertxProxyOptions);
+                this.httpClientOptions.setProxyOptions(vertxProxyOptions);
             }
         }
 
@@ -256,7 +255,7 @@ public class VertxAsyncHttpClientBuilder {
             Runtime.getRuntime().addShutdownHook(new Thread(getVertxCloseRunnable()));
         }
 
-        WebClient client = WebClient.create(this.vertx, this.webClientOptions);
+        io.vertx.core.http.HttpClient client = this.vertx.createHttpClient(this.httpClientOptions);
         return new VertxAsyncHttpClient(client);
     }
 
@@ -288,10 +287,10 @@ public class VertxAsyncHttpClientBuilder {
             CountDownLatch latch = new CountDownLatch(1);
             if (vertx != null) {
                 vertx.close(event -> {
-                    latch.countDown();
                     if (event.failed() && event.cause() != null) {
                         LOGGER.logThrowableAsError(event.cause());
                     }
+                    latch.countDown();
                 });
             }
 
@@ -300,7 +299,7 @@ public class VertxAsyncHttpClientBuilder {
                     LOGGER.warning("Timeout closing Vertx");
                 }
             } catch (InterruptedException e) {
-                LOGGER.logThrowableAsWarning(e);
+                Thread.currentThread().interrupt();
             }
         };
     }

@@ -15,22 +15,22 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
-import io.vertx.ext.web.client.WebClientOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-import static com.azure.core.http.vertx.VertxAsyncClientTestHelper.getVertxInternalHttpClient;
 import static com.azure.core.http.vertx.VertxAsyncClientTestHelper.getVertxInternalProxyFilter;
 import static io.vertx.core.net.SocketAddress.inetSocketAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,8 +77,8 @@ public class VertxAsyncHttpClientBuilderTests {
         VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder();
         HttpClient httpClient = builder.build();
 
-        HttpClientImpl vertxHttpClient = getVertxInternalHttpClient(httpClient);
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClient.getOptions();
+        io.vertx.core.http.HttpClient client = ((VertxAsyncHttpClient) httpClient).client;
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) client).getOptions();
 
         String defaultPath = "/default";
         WireMockServer server
@@ -105,14 +105,13 @@ public class VertxAsyncHttpClientBuilderTests {
     @Test
     public void buildWithConnectionOptions() {
         VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder();
-        HttpClient httpClient = builder.connectTimeout(Duration.ofSeconds(10))
+        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) builder.connectTimeout(Duration.ofSeconds(10))
             .idleTimeout(Duration.ofSeconds(20))
             .readIdleTimeout(Duration.ofSeconds(30))
             .writeIdleTimeout(Duration.ofSeconds(40))
             .build();
 
-        HttpClientImpl vertxHttpClient = getVertxInternalHttpClient(httpClient);
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClient.getOptions();
+        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).getOptions();
 
         String defaultPath = "/default";
         WireMockServer server
@@ -151,12 +150,12 @@ public class VertxAsyncHttpClientBuilderTests {
         proxyOptions.setCredentials("user", "secret");
         proxyOptions.setNonProxyHosts("foo.*|*bar.com|microsoft.com");
 
-        HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientBuilder()
             .proxy(proxyOptions)
             .build();
 
-        HttpClientImpl vertxHttpClient = getVertxInternalHttpClient(httpClient);
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClient.getOptions();
+        HttpClientImpl vertxHttpClientImpl = (HttpClientImpl) httpClient.client;
+        io.vertx.core.http.HttpClientOptions options = vertxHttpClientImpl.getOptions();
 
         io.vertx.core.net.ProxyOptions vertxProxyOptions = options.getProxyOptions();
         assertNotNull(vertxProxyOptions);
@@ -166,7 +165,7 @@ public class VertxAsyncHttpClientBuilderTests {
         assertEquals(proxyUser, vertxProxyOptions.getUsername());
         assertEquals(proxyPassword, vertxProxyOptions.getPassword());
 
-        Predicate<SocketAddress> proxyFilter = getVertxInternalProxyFilter(vertxHttpClient);
+        Predicate<SocketAddress> proxyFilter = getVertxInternalProxyFilter(vertxHttpClientImpl);
         assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.com")));
         assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.bar.com")));
         assertFalse(proxyFilter.test(inetSocketAddress(80, "test.bar.com")));
@@ -286,8 +285,8 @@ public class VertxAsyncHttpClientBuilderTests {
     }
 
     @Test
-    public void buildWithCustomWebClientOptions() {
-        WebClientOptions options = new WebClientOptions();
+    public void buildWithCustomHttpClientOptions() {
+        HttpClientOptions options = new HttpClientOptions();
         options.setConnectTimeout(30000);
         options.setIdleTimeout(50);
         options.setReadIdleTimeout(60);
@@ -298,7 +297,7 @@ public class VertxAsyncHttpClientBuilderTests {
             .idleTimeout(Duration.ofSeconds(20))
             .readIdleTimeout(Duration.ofSeconds(30))
             .writeIdleTimeout(Duration.ofSeconds(40))
-            .webClientOptions(options)
+            .httpClientOptions(options)
             .build();
 
         // Verify the original configuration was preserved and not overwritten
@@ -325,6 +324,31 @@ public class VertxAsyncHttpClientBuilderTests {
     }
 
     @Test
+    public void buildWithNullProxyAddress() {
+        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
+            PROXY_PASSWORD,
+            new String[] {SERVICE_ENDPOINT});
+
+        try {
+            proxyServer.start();
+
+            ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
+            Mockito.when(mockPoxyOptions.getType()).thenReturn(ProxyOptions.Type.HTTP);
+            Mockito.when(mockPoxyOptions.getAddress()).thenReturn(null);
+
+            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+                .proxy(mockPoxyOptions)
+                .build();
+
+            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+                .verifyError(ConnectException.class);
+        } finally {
+            proxyServer.shutdown();
+        }
+    }
+
+    @Test
     public void buildWithInvalidProxyType() {
         ProxyOptions.Type mockProxyType = Mockito.mock(ProxyOptions.Type.class);
         Mockito.when(mockProxyType.name()).thenReturn("INVALID");
@@ -337,5 +361,56 @@ public class VertxAsyncHttpClientBuilderTests {
                 .proxy(clientProxyOptions)
                 .build();
         });
+    }
+
+    @Test
+    public void buildWithNullProxyType() {
+        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
+            PROXY_PASSWORD,
+            new String[] {SERVICE_ENDPOINT});
+
+        try {
+            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+
+            ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
+            Mockito.when(mockPoxyOptions.getType()).thenReturn(null);
+            Mockito.when(mockPoxyOptions.getAddress()).thenReturn(new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
+
+            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+                .proxy(mockPoxyOptions)
+                .build();
+
+            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+                .expectNextCount(1)
+                .verifyComplete();
+        } finally {
+            proxyServer.shutdown();
+        }
+    }
+
+    @Test
+    public void buildWithoutProxyAuthentication() {
+        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
+            PROXY_PASSWORD,
+            new String[] {SERVICE_ENDPOINT});
+
+        try {
+            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+
+            ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
+                new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
+
+            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+                .proxy(clientProxyOptions)
+                .build();
+
+            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+                .expectNextCount(1)
+                .verifyComplete();
+        } finally {
+            proxyServer.shutdown();
+        }
     }
 }
