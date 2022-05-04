@@ -754,6 +754,7 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats"() {
         setup:
         def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
