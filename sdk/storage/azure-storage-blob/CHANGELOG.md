@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output stream.
 
 ## 12.16.0 (2022-04-07)
 
