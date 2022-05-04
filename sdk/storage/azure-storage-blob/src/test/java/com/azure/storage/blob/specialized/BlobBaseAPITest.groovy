@@ -10,6 +10,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.Exceptions
+import spock.lang.Ignore
 import spock.lang.Retry
 import spock.lang.Unroll
 
@@ -426,6 +427,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
+    @Ignore // There is a bug in the service that is causing this test to constantly fail
     def "Query Input csv Output arrow"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
