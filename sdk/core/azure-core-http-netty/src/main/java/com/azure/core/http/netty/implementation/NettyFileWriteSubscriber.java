@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a file.
  */
+// TODO (kasobol-msft) this class is a copy of FileWriteSubscriber with extra ByteBuf handling. Find better solution.
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class NettyFileWriteSubscriber implements Subscriber<ByteBuf> {
 
@@ -56,10 +57,10 @@ public final class NettyFileWriteSubscriber implements Subscriber<ByteBuf> {
     @Override
     public void onNext(ByteBuf bytes) {
         try {
+            bytes = bytes.retain();
             if (isWriting) {
                 onError(new IllegalStateException("Received onNext while processing another write operation."));
             } else {
-                bytes = bytes.retain();
                 write(bytes, bytes.nioBuffer());
             }
         } catch (Throwable throwable) {

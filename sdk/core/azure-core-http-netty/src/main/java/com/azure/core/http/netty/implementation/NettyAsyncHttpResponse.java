@@ -100,6 +100,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
+        // The code below uses ByteBuff.retain/release internally to make sure that buffers are not reclaimed
+        // before AsynchronousFileChannel finishes async writes.
         return Utility.writeFile(
             bodyIntern().doFinally(ignored -> close()),
             asynchronousFileChannel,
