@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -361,7 +362,8 @@ public abstract class HttpClientTests {
         }
 
         byte[] receivedBytes = Files.readAllBytes(destFile.toPath());
-        assertEquals(expectedString, new String(receivedBytes, StandardCharsets.UTF_8));
+        assertEquals(content.toBytes().length, receivedBytes.length);
+        assertArrayEquals(content.toBytes(), receivedBytes);
     }
 
     /**
