@@ -92,7 +92,7 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           {
             "matcher": "java-package",
-            "match": "/org\\.apache\\.avro(\\..*)?/"
+            "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
           },
           {
             "matcher": "java-package",
@@ -100,19 +100,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/org\\.junit(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.apache.commons(..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.slf4j(..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.springframework(..*)?/"
+            "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
           }
         ]
       }
