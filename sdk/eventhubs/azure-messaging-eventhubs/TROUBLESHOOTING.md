@@ -77,7 +77,7 @@ An `AmqpException` with an [`AmqpErrorCondition`][AmqpErrorCondition] of "amqp:u
 
 ### SSL handshake failures
 
-This error can occur when an intercepting proxy is used, and the proxy is not configured correctly.  We recommend testing in your hosting environment with the proxy disabled to verify.
+This error can occur when an intercepting proxy is used and the proxy is not configured correctly.  We recommend testing in your hosting environment with the proxy disabled to verify.
 
 ### Socket exhaustion errors
 
@@ -87,7 +87,7 @@ To use the same AMQP connection when creating multiple clients, you can use the 
 
 ### Connect using an IoT connection string
 
-Because translating a connection string requires querying the IoT Hub service, the Event Hubs client library cannot use it directly.  The [IoTConnectionString.java][IoTConnectionString] sample describes how to query IoT Hub for translation of an IoT connection string into one that can be used with Event Hubs.
+Because translating a connection string requires querying the IoT Hub service, the Event Hubs client library cannot use it directly.  The [IoTConnectionString.java][IoTConnectionString] sample describes how to query IoT Hub to translate an IoT connection string into one that can be used with Event Hubs.
 
 Further reading:
 * [Control access to IoT Hub using Shared Access Signatures][IoTHubSAS]
@@ -107,10 +107,10 @@ For more information about our identity library, check out our [Authentication a
 
 ## Enable and configure logging
 
-Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution.  The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue.  View the [logging][Logging] wiki for guidance about enabling logging.
+Azure SDK for Java offers a consistent logging story to help troubleshoot application errors and expedite their resolution.  The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue.  View the [logging][Logging] wiki for guidance about enabling logging.
 
-In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` provides insights into the library's state.  Below are sample log4j2 and logback configurations to reduce excessive
-log messages when verbose logging is enabled.
+In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` provides insights into the library's state.  Below are sample log4j2 and logback configurations to reduce the excessive
+messages when verbose logging is enabled.
 
 ### Configuring Log4J 2
 
@@ -154,13 +154,13 @@ One way to decrease logging is to change the verbosity.  Another is to add filte
 
 ### Cannot set multiple partition keys for events in EventDataBatch
 
-When publishing messages, Event Hubs service supports a single partition key for each EventDataBatch.  Customers can consider using the buffered producer client `EventHubBufferedProducerClient` if they want that capability.  Otherwise, they'll have to manage their own batches.
+When publishing messages, the Event Hubs service supports a single partition key for each EventDataBatch.  Customers can consider using the buffered producer client `EventHubBufferedProducerClient` if they want that capability.  Otherwise, they'll have to manage their batches.
 
 ### Setting partition key on EventData is not set in Kafka consumer
 
 The partition key of the EventHubs event is available in the Kafka record headers, the protocol specific key being "x-opt-partition-key" in the header.
 
-It is by design that we don't promote the Kafka message key to be the Event Hubs partition key and nor the reverse because with the same value, the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross-protocol communication case.  Exposing the properties with a protocol specific key to the other protocol client should be good enough.
+By design, we don't promote the Kafka message key to be the Event Hubs partition key and nor the reverse because with the same value, the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross-protocol communication case.  Exposing the properties with a protocol specific key to the other protocol client should be good enough.
 
 ## Troubleshoot EventProcessorClient issues
 
