@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.implementation.models.DocumentResult;
 import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentiment;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponseDocumentsItem;
@@ -93,7 +92,8 @@ public class ReferencePointerParseTest {
     private List<SentimentResponseDocumentsItem> getDocumentSentiments() {
         List<SentimentResponseDocumentsItem> documentSentiments = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            final SentimentResponseDocumentsItem documentsItem = (SentimentResponseDocumentsItem) new DocumentResult().setId(Integer.toString(i));
+            final SentimentResponseDocumentsItem documentsItem =
+                (SentimentResponseDocumentsItem) new SentimentResponseDocumentsItem().setId(Integer.toString(i));
             documentsItem.setSentences(getSentenceSentiments());
             documentSentiments.add(documentsItem);
         }

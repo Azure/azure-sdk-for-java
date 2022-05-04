@@ -323,14 +323,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @Disabled("Recognized '%' character as a Quantity category and Percentage subcategory but the input is a faulty text")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         faultyTextRunner(input ->
             StepVerifier.create(client.recognizeEntities(input))
-                .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
+                .assertNext(result -> assertTrue(result.iterator().hasNext()))
                 .verifyComplete()
         );
     }
@@ -942,7 +941,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         faultyTextRunner(input ->
             StepVerifier.create(client.recognizeLinkedEntities(input))
-                .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
+                .assertNext(result -> assertFalse(result.iterator().hasNext()))
                 .verifyComplete());
     }
 
@@ -1221,7 +1220,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         faultyTextRunner(input ->
             StepVerifier.create(client.extractKeyPhrases(input))
-                .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
+                .assertNext(result -> assertFalse(result.iterator().hasNext()))
                 .verifyComplete());
     }
 

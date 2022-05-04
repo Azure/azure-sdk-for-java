@@ -297,12 +297,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("Recognized '%' character as a Quantity category and Percentage subcategory but the input is a faulty text")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        faultyTextRunner(input -> assertFalse(client.recognizeEntities(input).iterator().hasNext()));
+        faultyTextRunner(input -> assertTrue(client.recognizeEntities(input).iterator().hasNext()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
