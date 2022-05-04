@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -141,6 +142,16 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
                 }
             }
         ).doFinally(ignored -> close());
+    }
+
+    @Override
+    public void writeBodyTo(FileChannel fileChannel, long position) throws IOException {
+        long maxTransferSize = responseBody.contentLength();
+        if (maxTransferSize < 0) {
+            // unknown body length fallback to Long.MAX
+            maxTransferSize = Long.MAX_VALUE;
+        }
+        fileChannel.transferFrom(responseBody.source(), position, maxTransferSize);
     }
 
     private void writeToChannel(

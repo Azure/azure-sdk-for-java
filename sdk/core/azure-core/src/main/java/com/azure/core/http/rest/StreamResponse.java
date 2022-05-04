@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 
 /**
  * REST response with a streaming content.
@@ -102,6 +103,20 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
             return response.writeBodyTo(asynchronousFileChannel, position);
         } else {
             return FluxUtil.writeFile(getValue(), asynchronousFileChannel, position);
+        }
+    }
+
+    /**
+     * Writes body content to {@link FileChannel}.
+     * @param fileChannel {@link FileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @throws IOException if an I/O error occurs when reading or writing.
+     */
+    public void writeBodyTo(FileChannel fileChannel, long position)  throws IOException {
+        if (response != null) {
+            response.writeBodyTo(fileChannel, position);
+        } else {
+            FluxUtil.writeFile(getValue(), fileChannel, position).block();
         }
     }
 

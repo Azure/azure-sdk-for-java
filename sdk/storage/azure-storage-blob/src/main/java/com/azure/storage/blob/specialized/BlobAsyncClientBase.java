@@ -95,6 +95,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -1649,7 +1650,7 @@ public class BlobAsyncClientBase {
         }
 
         boolean finished = false;
-        AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
+        FileChannel channel = downloadToFileResourceSupplierSync(options.getFilePath(), openOptions);
         try {
             Response<BlobProperties> blobPropertiesResponse = this.downloadToFileImplSync(
                 channel, finalRange, finalParallelTransferOptions,
@@ -1664,6 +1665,14 @@ public class BlobAsyncClientBase {
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath, Set<OpenOption> openOptions) {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), openOptions, null);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    private FileChannel downloadToFileResourceSupplierSync(String filePath, Set<OpenOption> openOptions) {
+        try {
+            return FileChannel.open(Paths.get(filePath), openOptions);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -1719,7 +1728,7 @@ public class BlobAsyncClientBase {
     });
 
     private Response<BlobProperties> downloadToFileImplSync(
-        AsynchronousFileChannel file, BlobRange finalRange,
+        FileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
         Context context) {
@@ -1821,11 +1830,12 @@ public class BlobAsyncClientBase {
             totalProgress);
 
         // Write to the file.
+        // TODO (kasobol-msft) this should some day use StreamResponse.writeTo(AsynchronousFileChannel).
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
     }
 
     private static void writeBodyToFileSync(
-        StreamResponse response, AsynchronousFileChannel file,
+        StreamResponse response, FileChannel file,
         long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
         AtomicLong totalProgress) {
 
@@ -1836,8 +1846,11 @@ public class BlobAsyncClientBase {
         //    totalProgress);
 
         // Write to the file.
-        response.writeBodyTo(file, chunkNum * finalParallelTransferOptions.getBlockSizeLong())
-            .block(); // TODO (kasobol-msft) timeout
+        try {
+            response.writeBodyTo(file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
@@ -1852,7 +1865,7 @@ public class BlobAsyncClientBase {
         }
     }
 
-    private void downloadToFileCleanupSync(AsynchronousFileChannel channel, String filePath, boolean finished) {
+    private void downloadToFileCleanupSync(FileChannel channel, String filePath, boolean finished) {
         try {
             channel.close();
             if (!finished) {
