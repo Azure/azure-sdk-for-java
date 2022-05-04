@@ -157,7 +157,7 @@ directive:
   transform: >
     if (!$.TypingNotificationOptions) {
       $.TypingNotificationOptions = $.SendTypingNotificationRequest;
-      delete $.TypingNotificationRequest;
+      delete $.SendTypingNotificationRequest;
     }
 - from: swagger-document
   where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]
