@@ -543,12 +543,12 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse -->
      * <pre>
      * shareDirectoryAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse -->
      *
@@ -1531,12 +1531,12 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string -->
      * <pre>
      * shareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse&#40;&quot;mysubdirectory&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string -->
      *
@@ -1863,12 +1863,12 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string -->
      * <pre>
      * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string -->
      *
@@ -1901,12 +1901,12 @@ public class ShareDirectoryAsyncClient {
      * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
      * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions -->
      *

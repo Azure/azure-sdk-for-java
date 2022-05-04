@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.test.shared
 
+import com.azure.core.client.traits.HttpTrait
 import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
@@ -19,6 +20,7 @@ import com.azure.storage.common.test.shared.policy.NoOpHttpPipelinePolicy
 import okhttp3.ConnectionPool
 import spock.lang.Specification
 
+import java.lang.reflect.Method
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 import java.util.function.Predicate
@@ -39,9 +41,11 @@ class StorageSpec extends Specification {
     private StorageResourceNamer namer
 
     def setup() {
-        def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
-        interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-        namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+        def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration())
+        def testContextManager = new StorageTestContextManager((Method) specificationContext.getCurrentFeature().getFeatureMethod().getReflection(),
+            ENVIRONMENT.testMode, testName)
+        interceptorManager = new InterceptorManager(testContextManager)
+        namer = new StorageResourceNamer(testContextManager, interceptorManager.getRecordedData())
         LOGGER.info("Test {} will use {} resource prefix.", testName, namer.resourcePrefix)
     }
 
@@ -62,7 +66,7 @@ class StorageSpec extends Specification {
         return TestDataFactory.getInstance();
     }
 
-    protected <T> T instrument(T builder) {
+    protected <T extends HttpTrait<T>> T instrument(T builder) {
         // Groovy style reflection. All our builders follow this pattern.
         builder."httpClient"(getHttpClient())
         if (ENVIRONMENT.testMode == TestMode.RECORD) {
