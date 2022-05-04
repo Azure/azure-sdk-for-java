@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/06956282006956282c8119922643a2b396fb846c1917?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ff513737-78e0-45f6-b375-50dc121bd29e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA2E0D49B081AA",
+      "Last-Modified" : "Wed, 04 May 2022 20:33:03 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e9ff4a68-801e-008e-3cf6-5f9b16000000",
+      "x-ms-client-request-id" : "ff513737-78e0-45f6-b375-50dc121bd29e",
+      "Date" : "Wed, 04 May 2022 20:33:03 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/06956282006956282c8119922643a2b396fb846c1917/06956282106956282c8116740f6cd227542564abe897?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-06-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7699a494-a820-4bb6-9645-b7a4b25caf07"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-06-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA2E0D4A1CE97F",
+      "Last-Modified" : "Wed, 04 May 2022 20:33:03 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "0b443070-a01f-0089-60f6-5ff775000000",
+      "x-ms-client-request-id" : "7699a494-a820-4bb6-9645-b7a4b25caf07",
+      "Date" : "Wed, 04 May 2022 20:33:03 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "06956282006956282c8119922643a2b396fb846c1917", "06956282106956282c8116740f6cd227542564abe897", "06956282206956282c81219397873284dabb9456e919" ]
+}

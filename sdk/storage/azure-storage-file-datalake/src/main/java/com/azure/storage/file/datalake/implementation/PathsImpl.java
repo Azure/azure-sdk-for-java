@@ -48,7 +48,7 @@ import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryRespo
 import com.azure.storage.file.datalake.implementation.models.PathsUndeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
 import com.azure.storage.file.datalake.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import java.nio.ByteBuffer;
@@ -83,7 +83,7 @@ public final class PathsImpl {
     public interface PathsService {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -128,7 +128,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsUpdateResponse> update(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -167,7 +167,7 @@ public final class PathsImpl {
 
         @Post("/{filesystem}/{path}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsLeaseResponse> lease(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -189,7 +189,7 @@ public final class PathsImpl {
 
         @Get("/{filesystem}/{path}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<StreamResponse> read(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -212,7 +212,7 @@ public final class PathsImpl {
 
         @Head("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -232,7 +232,7 @@ public final class PathsImpl {
 
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -252,7 +252,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsSetAccessControlResponse> setAccessControl(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -275,7 +275,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -294,7 +294,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsFlushDataResponse> flushData(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -326,7 +326,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsAppendDataResponse> appendData(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -349,7 +349,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsSetExpiryResponse> setExpiry(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -365,7 +365,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsUndeleteResponse> undelete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -439,9 +439,9 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsCreateResponse> createWithResponseAsync(
@@ -680,9 +680,9 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsUpdateResponse> updateWithResponseAsync(
@@ -832,9 +832,9 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsLeaseResponse> leaseWithResponseAsync(
@@ -917,9 +917,9 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> readWithResponseAsync(
@@ -1020,10 +1020,9 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties returns all system and user defined properties for a path on successful completion of {@link
-     *     Mono}.
+     * @return properties returns all system and user defined properties for a path.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -1101,9 +1100,9 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsDeleteResponse> deleteWithResponseAsync(
@@ -1183,9 +1182,9 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetAccessControlResponse> setAccessControlWithResponseAsync(
@@ -1276,9 +1275,9 @@ public final class PathsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursiveWithResponseAsync(
@@ -1344,9 +1343,9 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsFlushDataResponse> flushDataWithResponseAsync(
@@ -1491,9 +1490,9 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsAppendDataResponse> appendDataWithResponseAsync(
@@ -1569,9 +1568,9 @@ public final class PathsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetExpiryResponse> setExpiryWithResponseAsync(
@@ -1604,9 +1603,9 @@ public final class PathsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsUndeleteResponse> undeleteWithResponseAsync(

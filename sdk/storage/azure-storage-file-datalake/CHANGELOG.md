@@ -3,7 +3,10 @@
 ## 12.10.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Added ability to set permission, umask, owner, group, ACL, lease, and expiry time to the following: 
+  DataLakePathClient.createWithResponse, DataLakeDirectoryClient.createFileWithResponse, 
+  DataLakeDirectoryClient.createSubdirectoryWithResponse DataLakeFile.createWithResponse, 
+  DataLakeFileSystemClient.createFileWithResponse, and DataLakeFileSystemClient.createDirectoryWithResponse.
 ### Breaking Changes
 
 ### Bugs Fixed

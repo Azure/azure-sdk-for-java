@@ -28,7 +28,6 @@ public class DataLakePathCreateOptions {
     private List<PathAccessControlEntry> accessControlEntryList;
     private String owner;
     private String group;
-    private String continuation;
     private String sourceLeaseId;
     private String proposedLeaseId;
     private Long leaseDuration;
@@ -201,23 +200,6 @@ public class DataLakePathCreateOptions {
      */
     public DataLakePathCreateOptions setGroup(String group) {
         this.group = group;
-        return this;
-    }
-
-    /**
-     * @return the continuation token
-     */
-    public String getContinuation() {
-        return continuation;
-    }
-
-    /**
-     * Sets the continuation token for the resource.
-     * @param cont the continuation token.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setContinuation(String cont) {
-        continuation = cont;
         return this;
     }
 

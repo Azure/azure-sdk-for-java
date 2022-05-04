@@ -20,7 +20,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.implementation.models.FileSystem;
 import com.azure.storage.file.datalake.implementation.models.ServicesListFileSystemsResponse;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Services. */
@@ -50,7 +50,7 @@ public final class ServicesImpl {
     public interface ServicesService {
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesListFileSystemsResponse> listFileSystems(
                 @HostParam("url") String url,
                 @QueryParam("resource") String resource,
@@ -81,9 +81,9 @@ public final class ServicesImpl {
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FileSystem>> listFileSystemsSinglePageAsync(

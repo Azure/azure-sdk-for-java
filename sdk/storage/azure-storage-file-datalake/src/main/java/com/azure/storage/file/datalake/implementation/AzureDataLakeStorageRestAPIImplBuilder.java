@@ -4,14 +4,10 @@
 
 package com.azure.storage.file.datalake.implementation;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -19,28 +15,24 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AzureDataLakeStorageRestAPI type. */
 @ServiceClientBuilder(serviceClients = {AzureDataLakeStorageRestAPIImpl.class})
 public final class AzureDataLakeStorageRestAPIImplBuilder {
-    @Generated private static final String SDK_NAME = "name";
+    private static final String SDK_NAME = "name";
 
-    @Generated private static final String SDK_VERSION = "version";
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final Map<String, String> properties = new HashMap<>();
+    private final Map<String, String> properties = new HashMap<>();
 
     /** Create an instance of the AzureDataLakeStorageRestAPIImplBuilder. */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -49,7 +41,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * The URL of the service account, container, or blob that is the target of
      * the desired operation.
      */
-    @Generated private String url;
+    private String url;
 
     /**
      * Sets The URL of the service account, container, or blob that is the target of the desired operation.
@@ -57,7 +49,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param url the url value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder url(String url) {
         this.url = url;
         return this;
@@ -66,7 +57,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The value must be "filesystem" for all filesystem operations.
      */
-    @Generated private String resource;
+    private String resource;
 
     /**
      * Sets The value must be "filesystem" for all filesystem operations.
@@ -74,7 +65,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param resource the resource value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder resource(String resource) {
         this.resource = resource;
         return this;
@@ -83,7 +73,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * Specifies the version of the operation to use for this request.
      */
-    @Generated private String version;
+    private String version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -91,7 +81,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param version the version value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder version(String version) {
         this.version = version;
         return this;
@@ -102,7 +91,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * duration of the lease in seconds.  The lease duration must be between 15
      * and 60 seconds or -1 for infinite lease.
      */
-    @Generated private int xMsLeaseDuration;
+    private int xMsLeaseDuration;
 
     /**
      * Sets The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The
@@ -111,7 +100,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param xMsLeaseDuration the xMsLeaseDuration value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder xMsLeaseDuration(int xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
@@ -120,7 +108,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The filesystem identifier.
      */
-    @Generated private String fileSystem;
+    private String fileSystem;
 
     /**
      * Sets The filesystem identifier.
@@ -128,7 +116,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param fileSystem the fileSystem value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder fileSystem(String fileSystem) {
         this.fileSystem = fileSystem;
         return this;
@@ -137,7 +124,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The file or directory path.
      */
-    @Generated private String path;
+    private String path;
 
     /**
      * Sets The file or directory path.
@@ -145,7 +132,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param path the path value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder path(String path) {
         this.path = path;
         return this;
@@ -154,7 +140,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The HTTP pipeline to send requests through
      */
-    @Generated private HttpPipeline pipeline;
+    private HttpPipeline pipeline;
 
     /**
      * Sets The HTTP pipeline to send requests through.
@@ -162,7 +148,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param pipeline the pipeline value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -171,7 +156,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The serializer to serialize an object into a string
      */
-    @Generated private SerializerAdapter serializerAdapter;
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -179,7 +164,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
@@ -188,7 +172,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    private HttpClient httpClient;
 
     /**
      * Sets The HTTP client used to send the request.
@@ -196,7 +180,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param httpClient the httpClient value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -206,7 +189,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * The configuration store that is used during construction of the service
      * client.
      */
-    @Generated private Configuration configuration;
+    private Configuration configuration;
 
     /**
      * Sets The configuration store that is used during construction of the service client.
@@ -214,7 +197,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param configuration the configuration value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -223,7 +205,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    private HttpLogOptions httpLogOptions;
 
     /**
      * Sets The logging configuration for HTTP requests and responses.
@@ -231,7 +213,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param httpLogOptions the httpLogOptions value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -241,7 +222,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -249,7 +230,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param retryPolicy the retryPolicy value.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
@@ -258,25 +238,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
-
-    /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
-     */
-    @Generated private ClientOptions clientOptions;
-
-    /**
-     * Sets The client options such as application ID and custom headers to set on a request.
-     *
-     * @param clientOptions the clientOptions value.
-     * @return the AzureDataLakeStorageRestAPIImplBuilder.
-     */
-    @Generated
-    public AzureDataLakeStorageRestAPIImplBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
-        return this;
-    }
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -284,7 +246,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the AzureDataLakeStorageRestAPIImplBuilder.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
@@ -295,7 +256,6 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
      *
      * @return an instance of AzureDataLakeStorageRestAPIImpl.
      */
-    @Generated
     public AzureDataLakeStorageRestAPIImpl buildClient() {
         if (resource == null) {
             this.resource = "filesystem";
@@ -315,44 +275,27 @@ public final class AzureDataLakeStorageRestAPIImplBuilder {
         return client;
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
-            policies.add(new AddHeadersPolicy(headers));
-        }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        policies.add(
+                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
                         .build();
         return httpPipeline;
     }

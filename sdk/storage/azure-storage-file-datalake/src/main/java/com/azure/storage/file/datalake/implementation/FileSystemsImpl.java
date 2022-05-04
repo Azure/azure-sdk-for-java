@@ -33,7 +33,7 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPrope
 import com.azure.storage.file.datalake.implementation.models.ListBlobsIncludeItem;
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -66,7 +66,7 @@ public final class FileSystemsImpl {
     public interface FileSystemsService {
         @Put("/{filesystem}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FileSystemsCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -80,7 +80,7 @@ public final class FileSystemsImpl {
 
         @Patch("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FileSystemsSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -96,7 +96,7 @@ public final class FileSystemsImpl {
 
         @Head("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FileSystemsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -109,7 +109,7 @@ public final class FileSystemsImpl {
 
         @Delete("/{filesystem}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FileSystemsDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -124,7 +124,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FileSystemsListPathsResponse> listPaths(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -142,7 +142,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegment(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -178,9 +178,9 @@ public final class FileSystemsImpl {
      *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsCreateResponse> createWithResponseAsync(
@@ -217,9 +217,9 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithResponseAsync(
@@ -267,9 +267,9 @@ public final class FileSystemsImpl {
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -304,9 +304,9 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsDeleteResponse> deleteWithResponseAsync(
@@ -363,9 +363,9 @@ public final class FileSystemsImpl {
      *     not translated because they do not have unique friendly names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsListPathsResponse> listPathsWithResponseAsync(
@@ -417,9 +417,9 @@ public final class FileSystemsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of blobs on successful completion of {@link Mono}.
+     * @return an enumeration of blobs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithResponseAsync(

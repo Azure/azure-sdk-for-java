@@ -345,17 +345,18 @@ class FileAPITest extends APISpec {
         def result = fc.createWithResponse(options, null, null)
 
         expect:
-        result.getStatusCode() == statusCode
+        result.getStatusCode() == 201
+        def properties = fsc.getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            fsc.getProperties().getMetadata().containsKey(k)
-            fsc.getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create options with permissions and umask"() {
@@ -627,17 +628,18 @@ class FileAPITest extends APISpec {
         def result = fc.createIfNotExistsWithResponse(options, null, null)
 
         expect:
-        result.getStatusCode() == statusCode
+        result.getStatusCode() == 201
+        def properties = fsc.getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            fsc.getProperties().getMetadata().containsKey(k)
-            fsc.getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create if not exists options with permissions and umask"() {

@@ -326,10 +326,11 @@ class DirectoryAPITest extends APISpec {
 
         expect:
         dc.createWithResponse(options, null, null).getStatusCode() == statusCode
+        def properties = dc.getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            dc.getProperties().getMetadata().containsKey(k)
-            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
@@ -354,56 +355,29 @@ class DirectoryAPITest extends APISpec {
 
     }
 
-    def "Create options with lease id"() {
-        when:
-        def leaseId = UUID.randomUUID().toString()
+    def "Create options with error"() {
+        setup:
         dc = fsc.getDirectoryClient(generatePathName())
-        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
-        def response = dc.createWithResponse(options, null, null)
+        def options = new DataLakePathCreateOptions()
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(leaseDuration)
+            .setExpiresOn(expiresOn)
+            .setExpiryOptions(expiryOptions)
+            .setTimeToExpire(timeToExpire)
 
-        then:
-        // assert lease id not supported for directory
-        thrown(IllegalArgumentException)
-    }
-
-    def "Create options with lease duration"() {
         when:
-        dc = fsc.getDirectoryClient(generatePathName())
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        def response = dc.createWithResponse(options, null, null)
-
-        then:
-        // assert lease duration not supported for directory
-        thrown(IllegalArgumentException)
-    }
-
-    def "Create options with time expires on"() {
-        when:
-        dc = fsc.getDirectoryClient(generatePathName())
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setExpiresOn(OffsetDateTime.now())
-            .setProposedLeaseId(leaseId).setExpiryOptions(PathExpiryOptions.ABSOLUTE)
         dc.createWithResponse(options, null, null)
 
         then:
-        // assert expires on not supported for directory
+        // assert not supported for directory
         thrown(IllegalArgumentException)
 
-    }
-
-    def "Create options with time to expire"() {
-        when:
-        dc = fsc.getDirectoryClient(generatePathName())
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
-            .setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW).setTimeToExpire(Duration.ofDays(6))
-        dc.createWithResponse(options, null, null)
-
-        then:
-        // assert time to expire not supported for directory
-        thrown(IllegalArgumentException)
-
+        where:
+        leaseId                         | leaseDuration | expiresOn            | expiryOptions                     | timeToExpire
+        UUID.randomUUID().toString()    | null          | null                 | null                              | null
+        UUID.randomUUID().toString()    | 15            | null                 | null                              | null
+        UUID.randomUUID().toString()    | null          | OffsetDateTime.now() | PathExpiryOptions.ABSOLUTE        | null
+        UUID.randomUUID().toString()    | null          | null                 | PathExpiryOptions.RELATIVE_TO_NOW | Duration.ofDays(6)
     }
 
     def "Create if not exists min"() {
@@ -493,17 +467,18 @@ class DirectoryAPITest extends APISpec {
         def options = new DataLakePathCreateOptions().setMetadata(metadata)
 
         expect:
-        dc.createIfNotExistsWithResponse(options, null, null).getStatusCode() == statusCode
+        dc.createIfNotExistsWithResponse(options, null, null).getStatusCode() == 201
+        def properties = dc.getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            dc.getProperties().getMetadata().containsKey(k)
-            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create if not exists permissions and umask"() {
@@ -595,17 +570,18 @@ class DirectoryAPITest extends APISpec {
         def options = new DataLakePathCreateOptions().setMetadata(metadata)
 
         expect:
-        dc.createIfNotExistsWithResponse(options, null, null).getStatusCode() == statusCode
+        dc.createIfNotExistsWithResponse(options, null, null).getStatusCode() == 201
+        def properties = dc.getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            dc.getProperties().getMetadata().containsKey(k)
-            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create if not exists options with permissions and umask"() {
@@ -3087,17 +3063,18 @@ class DirectoryAPITest extends APISpec {
         def result = dc.createFileWithResponse(generatePathName(), options, null, null)
 
         expect:
-        result.getStatusCode() == statusCode
+        result.getStatusCode() == 201
+        def properties = fsc.getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            fsc.getProperties().getMetadata().containsKey(k)
-            fsc.getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create file options with permissions and umask"() {
@@ -3345,17 +3322,18 @@ class DirectoryAPITest extends APISpec {
         def response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
 
         expect:
-        response.getStatusCode() == statusCode
+        response.getStatusCode() == 201
+        def properties = response.getValue().getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            response.getValue().getProperties().getMetadata().containsKey(k)
-            response.getValue().getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create if not exists file options with permissions and umask"() {
@@ -3830,17 +3808,18 @@ class DirectoryAPITest extends APISpec {
         def result = dc.createSubdirectoryWithResponse(generatePathName(), options, null, null)
 
         expect:
-        result.getStatusCode() == statusCode
+        result.getStatusCode() == 201
+        def properties = fsc.getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            fsc.getProperties().getMetadata().containsKey(k)
-            fsc.getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create sub dir options with permissions and umask"() {
@@ -4093,17 +4072,18 @@ class DirectoryAPITest extends APISpec {
         def response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
 
         expect:
-        response.getStatusCode() == statusCode
+        response.getStatusCode() == 201
+        def properties = response.getValue().getProperties()
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            response.getValue().getProperties().getMetadata().containsKey(k)
-            response.getValue().getProperties().getMetadata().get(k) == metadata.get(k)
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
         }
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 201
-        "foo" | "bar"  | "fizz" | "buzz" || 201
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     def "Create if not exists sub dir options with permissions and umask"() {

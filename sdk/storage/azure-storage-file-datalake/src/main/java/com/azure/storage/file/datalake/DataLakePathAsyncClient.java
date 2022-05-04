@@ -403,12 +403,8 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options) {
-        if (options == null) {
-            options = new DataLakePathCreateOptions();
-        }
         try {
-            DataLakePathCreateOptions finalOptions = options;
-            return withContext(context -> createWithResponse(finalOptions, context));
+            return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -416,27 +412,25 @@ public class DataLakePathAsyncClient {
 
     Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options, Context context) {
         options = options == null ? new DataLakePathCreateOptions() : options;
-        if (options.getRequestConditions() == null) {
-            options.setRequestConditions(new DataLakeRequestConditions());
-        }
-        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(options.getRequestConditions().getLeaseId());
+        DataLakeRequestConditions requestConditions = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(options.getRequestConditions().getIfMatch())
-            .setIfNoneMatch(options.getRequestConditions().getIfNoneMatch())
-            .setIfModifiedSince(options.getRequestConditions().getIfModifiedSince())
-            .setIfUnmodifiedSince(options.getRequestConditions().getIfUnmodifiedSince());
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         String acl = options.getAccessControlList() != null ? PathAccessControlEntry
             .serializeList(options.getAccessControlList()) : null;
         String expiresOnString = setFieldsIfNull(options);
 
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType,
-                options.getContinuation(), null, null, options.getSourceLeaseId(),
-                buildMetadataString(options.getMetadata()), options.getPermissions(), options.getUmask(),
-                options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(), options.getLeaseDuration(),
-                options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(), lac, mac, null,
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
+                options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
+                options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
+                options.getLeaseDuration(), options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(),
+                lac, mac, null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
