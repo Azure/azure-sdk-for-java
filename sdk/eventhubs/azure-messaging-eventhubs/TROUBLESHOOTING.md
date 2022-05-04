@@ -11,8 +11,7 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [SSL handshake failures](#ssl-handshake-failures)
   - [Socket exhaustion errors](#socket-exhaustion-errors)
   - [Connect using an IoT connection string](#connect-using-an-iot-connection-string)
-  - [Cannot add "TransportType=AmqpWebSockets" to the connection string](#cannot-add-transporttypeamqpwebsockets-to-the-connection-string)
-  - [Cannot add "Authentication=Managed Identity" to the connection string](#cannot-add-authenticationmanaged-identity-to-the-connection-string)
+  - [Cannot add components to the connection string](#cannot-add-components-to-the-connection-string)
 - [Enable and configure logging](#enable-and-configure-logging)
   - [Configuring Log4J 2](#configuring-log4j-2)
   - [Configuring logback](#configuring-logback)
@@ -39,7 +38,7 @@ The recommended way to solve the specific exception the AMQP exception represent
 
 ### Find relevant information in exception messages
 
-An [AmqpException][AmqpException] contains 3 fields which describe the error.
+An [AmqpException][AmqpException] contains three fields which describe the error.
 
 * **getErrorCondition**: The underlying AMQP error. A description of the errors can be found in the [AmqpErrorCondition][AmqpErrorCondition] javadocs or the OASIS AMQP 1.0 spec.
 * **isTransient**: Whether or not trying to perform the same operation is possible.  SDK clients apply the retry policy when the error is transient.
@@ -52,7 +51,7 @@ An [AmqpException][AmqpException] contains 3 fields which describe the error.
 
 #### amqp:connection:forced and amqp:link:detach-forced
 
-When the connection to Service Bus or Event Hubs is idle, after a period of time, the service will disconnect the client.  This is not a problem as the clients will reestablish a connection with the service. More information can be found in the [AMQP troubleshooting documentation](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-amqp-troubleshoot).
+When the connection to Event Hubs is idle, the service will disconnect the client after some time.  This is not a problem as the clients will re-establish a connection with the service.  More information for users is in the [AMQP troubleshooting documentation][AmqpTroubleshooting].
 
 ## Permission issues
 
@@ -61,7 +60,7 @@ An `AmqpException` with an [`AmqpErrorCondition`][AmqpErrorCondition] of "amqp:u
 * [Double check you have the correct connection string][GetConnectionString]
 * [Ensure your SAS token is generated correctly][AuthorizeSAS]
 
-Other possible solutions are listed in [Troubleshoot authentication and authorization issues with Event Hubs][troubleshoot_authentication_authorization]
+[Troubleshoot authentication and authorization issues with Event Hubs][troubleshoot_authentication_authorization] lists other possible solutions.
 
 ## Connectivity issues
 
@@ -69,20 +68,20 @@ Other possible solutions are listed in [Troubleshoot authentication and authoriz
 
 * Verify that the connection string or fully qualified domain name specified when creating the client is correct.
 * Check the firewall and port permissions in your hosting environment and that the AMQP ports 5671 and 5762 are open.
-  * Make sure that the endpoint is allowed through firewall.
-* Try using websockets, which connects on port 443. See [Configure web sockets](#configure-web-sockets).
+  * Make sure that the endpoint is allowed through the firewall.
+* Try using WebSockets, which connects on port 443.  See [configure web sockets][PublishEventsWithWebSocketsAndProxy] sample.
 * See if your network is blocking specific IP addresses.
-  * [What IP addresses do I need to allow?](https://docs.microsoft.com/azure/event-hubs/troubleshooting-guide#what-ip-addresses-do-i-need-to-allow)
-* For more information about troubleshooting network connectivity:
-  * https://docs.microsoft.com/azure/event-hubs/troubleshooting-guide
+  * [What IP addresses do I need to allow?][EventHubsIPAddresses]
+* If applicable, check the proxy configuration.  See [configure proxy][PublishEventsWithWebSocketsAndProxy] sample.
+* For more information about troubleshooting network connectivity is at [Event Hubs troubleshooting][EventHubsTroubleshooting]
 
 ### SSL handshake failures
 
-This error can occur when an intercepting proxy is in use when a proxy is not configured properly.  We recommend testing in your hosting environment with the proxy disabled to verify.
+This error can occur when an intercepting proxy is used, and the proxy is not configured correctly.  We recommend testing in your hosting environment with the proxy disabled to verify.
 
 ### Socket exhaustion errors
 
-Applications should prefer treating the Event Hubs clients as a singleton, creating and using a single instance through the lifetime of their application.  This is important as each client type manages its own connection; creating a client results in a new AMQP connection, which uses a socket.  Additionally, it is important to be aware that clients inherit from `java.io.Closeable`, so your application has responsibility for explicitly calling `close()` when it is finished using a client.
+Applications should prefer treating the Event Hubs clients as a singleton, creating and using a single instance through the lifetime of their application.  This is important as each client type manages its connection; creating a new Event Hub client results in a new AMQP connection, which uses a socket.  Additionally, it is essential to be aware that clients inherit from `java.io.Closeable`, so your application is responsible for calling `close()` when it is finished using a client.
 
 To use the same AMQP connection when creating multiple clients, you can use the `EventHubClientBuilder.shareConnection()` flag, hold a reference to that `EventHubClientBuilder`, and create new clients from that same builder instance.
 
@@ -91,29 +90,31 @@ To use the same AMQP connection when creating multiple clients, you can use the 
 Because translating a connection string requires querying the IoT Hub service, the Event Hubs client library cannot use it directly.  The [IoTConnectionString.java][IoTConnectionString] sample describes how to query IoT Hub for translation of an IoT connection string into one that can be used with Event Hubs.
 
 Further reading:
-* https://docs.microsoft.com/azure/iot-hub/iot-hub-dev-guide-sas#security-tokens
-* https://docs.microsoft.com/samples/azure/azure-sdk-for-net/iothub-connect-to-eventhubs
+* [Control access to IoT Hub using Shared Access Signatures][IoTHubSAS]
+* [Read device-to-cloud messages from the built-in endpoint][IoTEventHubEndpoint]
 
-### Cannot add "TransportType=AmqpWebSockets" to the connection string
+### Cannot add components to the connection string
+
+#### Adding "TransportType=AmqpWebSockets"
 
 The previous generation of the Event Hubs client library supported extending connection strings using special tokens for certain scenarios.  The current generation supports connection strings only in the form published by the Azure portal.  To request using the `AmqpWebSockets` transport, it would be specified when building the client.  See [PublishEventsWithSocketsAndProxy.java][PublishEventsWithWebSocketsAndProxy] for more details.
 
-### Cannot add "Authentication=Managed Identity" to the connection string
+#### Adding "Authentication=Managed Identity"
 
 The legacy clients allowed customers to modify the connection string to enable capabilities.  In this case, connect to Event Hubs using managed identity rather than a connection string.  To achieve the same scenario, see [PublishEventsWithAzureIdentity.java][PublishEventsWithAzureIdentity].
 
-For more information about our identity library see: https://devblogs.microsoft.com/azure-sdk/authentication-and-the-azure-sdk/
+For more information about our identity library, check out our [Authentication and the Azure SDK][AuthenticationAndTheAzureSDK] blog post.
 
 ## Enable and configure logging
 
-Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][Logging] wiki for guidance about enabling logging.
+Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution.  The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue.  View the [logging][Logging] wiki for guidance about enabling logging.
 
 In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` provides insights into the library's state.  Below are sample log4j2 and logback configurations to reduce excessive
 log messages when verbose logging is enabled.
 
 ### Configuring Log4J 2
 
-1. Add the following dependencies in your pom.xml.
+1.  Add the following dependencies in your pom.xml.
     ```xml
     <dependency>
         <groupId>org.apache.logging.log4j</groupId>
@@ -141,7 +142,7 @@ log messages when verbose logging is enabled.
 
 ### Configuring logback
 
-1. Add the following dependencies in your pom.xml.
+1.  Add the following dependencies in your pom.xml.
     ```xml
     <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -160,7 +161,7 @@ log messages when verbose logging is enabled.
 
 If enabling client logging is not enough to diagnose your issues.  You can enable logging to a file in the underlying
 AMQP library, [Qpid Proton-J][qpid_proton_j_apache].  Qpid Proton-J uses `java.util.logging`. You can enable logging by
-create a configuration file with the contents below.  Or set `proton.trace.level=ALL` and whichever configuration options
+creating a configuration file with the contents below.  Or set `proton.trace.level=ALL` and whichever configuration options
 you want for the `java.util.logging.Handler` implementation.  Implementation classes and their options can be found in
 [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
@@ -182,7 +183,7 @@ java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 
 ### Reduce logging
 
-One way to decrease logging is to change the verbosity.  Another is to add filters that exclude logs from logger names like `com.azure.messaging.eventhubs` or `com.azure.core.amqp`.  Examples of this can be found in the xml files in [Configuring Log4J 2](#configuring-log4j-2) and [Configure logback](#configuring-logback).
+One way to decrease logging is to change the verbosity.  Another is to add filters that exclude logs from logger names like `com.azure.messaging.eventhubs` or `com.azure.core.amqp`.  Examples of this can be found in the XML files in [Configuring Log4J 2](#configuring-log4j-2) and [Configure logback](#configuring-logback).
 
 ## Troubleshoot EventProducerAsyncClient/EventProducerClient issues
 
@@ -192,15 +193,15 @@ When publishing messages, Event Hubs service supports a single partition key for
 
 ### Setting partition key on EventData is not set in Kafka consumer
 
-The partition key of the EventHubs event is available in the kafka record headers, the protocol specific key being "x-opt-partition-key" in the header.
+The partition key of the EventHubs event is available in the Kafka record headers, the protocol specific key being "x-opt-partition-key" in the header.
 
-It is by-design that we don't promote the Kafka message key to be the Event Hubs partition key and nor the reverse because with the same value the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross protocol communication case. Exposing the properties with a protocol specific key to the other protocol client should be good enough.
+It is by design that we don't promote the Kafka message key to be the Event Hubs partition key and nor the reverse because with the same value, the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross-protocol communication case.  Exposing the properties with a protocol specific key to the other protocol client should be good enough.
 
 ## Troubleshoot EventProcessorClient issues
 
 ### 412 precondition failures when checkpointing
 
-412 precondition errors occur when the customer tries to perform checkpointing but the local version of the checkpoint is outdated.  This occurs when partition ownership is stolen by another instance. See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for more information.
+412 precondition errors occur when the customer tries to perform checkpointing but the local version of the checkpoint is outdated.  This occurs when partition ownership is stolen by another instance.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for more information.
 
 ### Partition ownership changes a lot
 
@@ -208,7 +209,7 @@ This can occur in situations where the network latency is high between storage a
 
 ### "...current receiver 'nil' with epoch '0' is getting disconnected"
 
-This error is expected when load balancing occurs. Load balancing is indeed an ongoing process.  When using the BlobCheckpointStore with your consumer, every ~30 seconds (by default) the consumer will check to see which consumers have a claim for each partition, then run some logic to determine whether it needs to 'steal' a partition from another consumer.  The service side mechanism used to 'steal' partitions is [Epoch][Epoch].
+This error is expected when load balancing occurs.  Load balancing is indeed an ongoing process.  When using the BlobCheckpointStore with your consumer, every ~30 seconds (by default) the consumer will check to see which consumers have a claim for each partition, then run some logic to determine whether it needs to 'steal' a partition from another consumer.  The service side mechanism used to 'steal' partitions is [Epoch][Epoch].
 
 The full error message looks something like:
 
@@ -224,7 +225,7 @@ The full error message looks something like:
 
 ### Processor client stops receiving
 
-Often this is not enough information to determine why the exception occurred. For the team to determine the cause, we need to ask for the following information:
+Often this is not enough information to determine why the exception occurred.  For the team to determine the cause, we need to ask for the following information:
 
 * Event Hub environment
   * How many partitions?
@@ -233,20 +234,21 @@ Often this is not enough information to determine why the exception occurred. Fo
   * How many instances are running?
 * Repro code and steps
   * This is important as many times we cannot reproduce the issue in our own environment.
-* Logs. We need DEBUG logs, but if that is not possible, INFO at least. Error and warning level logs do not provide enough information. Timespan of at least +/- 10 minutes from when the issue occurred.
+* Logs.  We need DEBUG logs, but if that is not possible, INFO at least.  Error and warning level logs do not provide enough information.  Timespan of at least +/- 10 minutes from when the issue occurred.
 
 ### Migrate from legacy to new client library
 
-The [migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/migration-guide.md) includes steps on how to migrate from the legacy client, and includes how to migrate checkpoints.
+The [migration guide][MigrationGuide] includes steps on how to migrate from the legacy client, and includes how to migrate checkpoints.
 
 ## Get additional help
 
-Additional information on ways to reach out for support can be found in the [SUPPORT.md][SUPPORT] at the root of the repo.
+Additional information on ways to reach out for support can be found in the [SUPPORT.md][SUPPORT] at the repo's root.
 
 <!-- repo links -->
 [IoTConnectionString]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/IoTHubConnectionSample.java
 [log4j2]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/log4j2.xml
 [logback]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/logback.xml
+[MigrationGuide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/migration-guide.md
 [PublishEventsToSpecificPartition]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
 [PublishEventsWithAzureIdentity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
 [PublishEventsWithWebSocketsAndProxy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithWebSocketsAndProxy.java
@@ -259,13 +261,19 @@ Additional information on ways to reach out for support can be found in the [SUP
 [SessionErrorContext]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.sessionerrorcontext
 [LinkErrorContext]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.linkerrorcontext
 
-[GetConnectionString]: https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
+[AmqpTroubleshooting]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-amqp-troubleshoot
 [AuthorizeSAS]: https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature
 [Epoch]: https://docs.microsoft.com/azure/event-hubs/event-hubs-event-processor-host#epoch
+[EventHubsIPAddresses]: https://docs.microsoft.com/azure/event-hubs/troubleshooting-guide#what-ip-addresses-do-i-need-to-allow
 [EventHubsMessagingExceptions]: https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions
+[EventHubsTroubleshooting]: https://docs.microsoft.com/azure/event-hubs/troubleshooting-guide
+[GetConnectionString]: https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
+[IoTEventHubEndpoint]: https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-read-builtin
+[IoTHubSAS]: https://docs.microsoft.com/azure/iot-hub/iot-hub-dev-guide-sas#security-tokens
 [Logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [troubleshoot_authentication_authorization]: https://docs.microsoft.com/azure/event-hubs/troubleshoot-authentication-authorization
 
 <!-- external links -->
+[AuthenticationAndTheAzureSDK]: https://devblogs.microsoft.com/azure-sdk/authentication-and-the-azure-sdk
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [qpid_proton_j_apache]: https://qpid.apache.org/proton/
