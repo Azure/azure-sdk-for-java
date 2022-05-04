@@ -28,7 +28,7 @@
             <version>3.4.16</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
         </dependency>
 
-        <!-- Dependencies required for Log4j2 support -->
+        <!-- Dependencies required for Log4j2 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -51,7 +51,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Dependencies required for logback-classic. -->
+        <!-- Dependencies required for logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
