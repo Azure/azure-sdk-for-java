@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("AzureFileShareRecoveryPoint")
 @Fluent
 public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileShareRecoveryPoint.class);
-
     /*
      * Type of the backup copy. Specifies whether it is a crash consistent
      * backup or app consistent.

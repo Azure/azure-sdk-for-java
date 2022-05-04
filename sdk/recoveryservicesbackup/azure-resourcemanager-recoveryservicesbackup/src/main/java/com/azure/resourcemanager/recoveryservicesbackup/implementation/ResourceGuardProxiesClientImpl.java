@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProxiesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ResourceGuardProxyBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResourceList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceGuardProxiesClient. */
 public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxiesClient {
-    private final ClientLogger logger = new ClientLogger(ResourceGuardProxiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceGuardProxiesService service;
 

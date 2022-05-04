@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceSto
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceStorageConfigsNonCrrs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupResourceStorageConfigsNonCrrs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceStorageConfigsNonCrrsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupResourceStorageConfigsNonCrrsImpl.class);
 
     private final BackupResourceStorageConfigsNonCrrsClient innerClient;
 

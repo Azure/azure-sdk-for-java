@@ -46,7 +46,7 @@ public final class SchemaGroupsOperationsImpl {
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "AzureSchemaRegistryS")
-    private interface SchemaGroupsService {
+    public interface SchemaGroupsService {
         @Get("/$schemaGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)

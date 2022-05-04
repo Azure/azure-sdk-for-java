@@ -9,6 +9,8 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.ListPageRangesDiffOptions;
+import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -263,6 +265,29 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link PageBlobAsyncClient#listPageRanges(BlobRange)} and
+     * {@link PageBlobAsyncClient#listPageRanges(ListPageRangesOptions)}
+     */
+    public void listPageRangesCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#BlobRange
+        BlobRange blobRange = new BlobRange(offset);
+
+        System.out.println("Valid Page Ranges are:");
+        client.listPageRanges(blobRange).subscribe(rangeItem -> System.out.printf("Offset: %s, Length: %s%n",
+            rangeItem.getRange().getOffset(), rangeItem.getRange().getLength()));
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#BlobRange
+
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions
+        ListPageRangesOptions options = new ListPageRangesOptions(new BlobRange(offset))
+            .setMaxResultsPerPage(1000).setRequestConditions(new BlobRequestConditions().setLeaseId(leaseId));
+
+        client.listPageRanges(options)
+            .subscribe(rangeItem -> System.out.printf("Offset: %s, Length: %s%n", rangeItem.getRange().getOffset(),
+                rangeItem.getRange().getLength()));
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions
+    }
+
+    /**
      * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiff(BlobRange, String)}
      */
     public void getPageRangesDiffCodeSnippet() {
@@ -297,6 +322,32 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#listPageRangesDiff(BlobRange, String)} and
+     * {@link PageBlobAsyncClient#listPageRangesDiff(ListPageRangesDiffOptions)}
+     */
+    public void listPageRangesDiffCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String
+        BlobRange blobRange = new BlobRange(offset);
+        String prevSnapshot = "previous snapshot";
+
+        System.out.println("Valid Page Ranges are:");
+        client.listPageRangesDiff(blobRange, prevSnapshot).subscribe(rangeItem ->
+            System.out.printf("Offset: %s, Length: %s, isClear: %s%n",
+            rangeItem.getRange().getOffset(), rangeItem.getRange().getLength(), rangeItem.isClear()));
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String
+
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions
+        ListPageRangesDiffOptions options = new ListPageRangesDiffOptions(new BlobRange(offset), "previous snapshot")
+            .setRequestConditions(new BlobRequestConditions().setLeaseId(leaseId))
+            .setMaxResultsPerPage(1000);
+
+        client.listPageRangesDiff(options)
+            .subscribe(rangeItem -> System.out.printf("Offset: %s, Length: %s, isClear: %s%n",
+                rangeItem.getRange().getOffset(), rangeItem.getRange().getLength(), rangeItem.isClear()));
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions
     }
 
     /**

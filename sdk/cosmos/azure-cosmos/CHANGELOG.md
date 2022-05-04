@@ -1,6 +1,20 @@
 ## Release History
 
-### 4.29.0-beta.1 (Unreleased)
+### 4.30.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.29.1 (2022-04-27)
+#### Bugs Fixed
+* Fixed AAD authentication for `CosmosPatchOperations` - See [PR 28537](https://github.com/Azure/azure-sdk-for-java/pull/28537)
+
+### 4.29.0 (2022-04-22)
 #### Features Added
 * Added Beta API `continueOnInitError` in `ThroughputControlGroupConfigBuilder` - See [PR 27702](https://github.com/Azure/azure-sdk-for-java/pull/27702)
 

@@ -55,7 +55,7 @@ public final class SystemScanRulesetsImpl {
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "PurviewScanningClien")
-    private interface SystemScanRulesetsService {
+    public interface SystemScanRulesetsService {
         @Get("/systemScanRulesets")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> listAll(

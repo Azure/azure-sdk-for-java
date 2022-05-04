@@ -7,6 +7,10 @@
   DataLakePathClient.createWithResponse, DataLakeDirectoryClient.createFileWithResponse, 
   DataLakeDirectoryClient.createSubdirectoryWithResponse DataLakeFile.createWithResponse, 
   DataLakeFileSystemClient.createFileWithResponse, and DataLakeFileSystemClient.createDirectoryWithResponse.
+- Added support for 2021-06-08 service version.
+- Added support for Customer Provided Keys.
+- Added creationTime and expiryTime fields to `PathItem`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

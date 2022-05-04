@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.29.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -73,7 +73,7 @@ Licensed under the MIT License.
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
-      <version>2.7</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
+      <version>2.11.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".

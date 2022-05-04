@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ItemLevelRecoveryConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecoveryConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ItemLevelRecoveryConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ItemLevelRecoveryConnectionsImpl.class);
 
     private final ItemLevelRecoveryConnectionsClient innerClient;
 

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Spark pool library version requirements Library requirements for a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class LibraryRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LibraryRequirements.class);
-
     /*
      * The last update time of the library requirements file.
      */

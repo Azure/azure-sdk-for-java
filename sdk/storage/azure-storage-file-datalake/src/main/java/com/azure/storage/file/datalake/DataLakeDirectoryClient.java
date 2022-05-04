@@ -14,6 +14,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -82,6 +83,19 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      */
     public String getDirectoryName() {
         return getObjectName();
+    }
+
+    /**
+     * Creates a new {@link DataLakeDirectoryClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the directory,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakeDirectoryClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakeDirectoryClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new DataLakeDirectoryClient(
+            dataLakeDirectoryAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey),
+            blockBlobClient.getCustomerProvidedKeyClient(Transforms.toBlobCustomerProvidedKey(customerProvidedKey)));
     }
 
     /**

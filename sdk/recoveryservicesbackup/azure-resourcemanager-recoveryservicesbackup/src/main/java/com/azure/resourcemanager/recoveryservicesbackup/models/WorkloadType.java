@@ -66,7 +66,11 @@ public final class WorkloadType extends ExpandableStringEnum<WorkloadType> {
         return fromString(name, WorkloadType.class);
     }
 
-    /** @return known WorkloadType values. */
+    /**
+     * Gets known WorkloadType values.
+     *
+     * @return known WorkloadType values.
+     */
     public static Collection<WorkloadType> values() {
         return values(WorkloadType.class);
     }

@@ -141,7 +141,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.storage.fileshare.connection-string")
-    StaticConnectionStringProvider<AzureServiceType.StorageFileShare> staticStorageBlobConnectionStringProvider(
+    StaticConnectionStringProvider<AzureServiceType.StorageFileShare> staticStorageFileShareConnectionStringProvider(
         AzureStorageFileShareProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_FILE_SHARE, properties.getConnectionString());
     }
