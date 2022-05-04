@@ -339,7 +339,7 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = properties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = properties.getFileChangeTimeString();
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getDirectories()
@@ -720,7 +720,7 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = properties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = properties.getFileChangeTimeString();
 
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()

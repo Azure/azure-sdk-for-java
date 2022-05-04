@@ -1,6 +1,6 @@
 {
   "displayNames": {
-    "2.9.10": "jackson2_9"
+    "2.9.0": "jackson2_9"
   },
   "matrix": {
     "Agent": {
@@ -10,7 +10,7 @@
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
     "AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION": [
-        "2.9.10"
+        "2.9.0"
     ],
     "TestFromSource": true
   }

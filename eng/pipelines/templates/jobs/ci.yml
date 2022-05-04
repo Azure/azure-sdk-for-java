@@ -126,6 +126,18 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-two"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-three"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
@@ -274,6 +286,18 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
           PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-two"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-three"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 

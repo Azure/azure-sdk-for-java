@@ -438,7 +438,7 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
 
         return azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, null, metadata, filePermission,
@@ -1637,7 +1637,7 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getFiles()
@@ -3010,6 +3010,9 @@ public class ShareFileAsyncClient {
 
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
 
+        ShareFileHttpHeaders headers = options.getContentType() == null ? null
+            : new ShareFileHttpHeaders().setContentType(options.getContentType());
+
         String renameSource = this.getFileUrl();
         // TODO (rickle-msft): when support added to core
 //        String sasToken = this.extractSasToken();
@@ -3019,7 +3022,7 @@ public class ShareFileAsyncClient {
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
-            destinationConditions, smbInfo, options.getHeaders(),
+            destinationConditions, smbInfo, headers,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }
