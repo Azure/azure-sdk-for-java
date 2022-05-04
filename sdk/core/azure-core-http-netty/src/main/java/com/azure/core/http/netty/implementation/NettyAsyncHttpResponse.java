@@ -8,8 +8,6 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -102,9 +100,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
-        return FluxUtil.writeFile(
-            bodyIntern().doFinally(ignored -> close())
-                .map(ByteBuf::nioBuffer),
+        return Utility.writeFile(
+            bodyIntern().doFinally(ignored -> close()),
             asynchronousFileChannel,
             position
         );
