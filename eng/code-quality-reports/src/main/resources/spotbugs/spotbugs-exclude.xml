@@ -2634,4 +2634,20 @@
     <Method name="propertyOnlyFlattenSerialize"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
+  <Match>
+    <Or>
+      <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
+      <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+      <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
+      <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
+      <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
+      <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
+      <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
+      <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
 </FindBugsFilter>

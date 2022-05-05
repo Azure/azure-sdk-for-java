@@ -35,8 +35,9 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class DetectLanguageAsyncClient {
     private final ClientLogger logger = new ClientLogger(DetectLanguageAsyncClient.class);
-    private TextAnalyticsClientImpl service;
-    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl service;
+    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+
     /**
      * Create a {@link DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
      * endpoint.
@@ -45,9 +46,11 @@ class DetectLanguageAsyncClient {
      */
     DetectLanguageAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+        this.languageSyncApiService = null;
     }
 
     DetectLanguageAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.service = null;
         this.languageSyncApiService = service;
     }
 

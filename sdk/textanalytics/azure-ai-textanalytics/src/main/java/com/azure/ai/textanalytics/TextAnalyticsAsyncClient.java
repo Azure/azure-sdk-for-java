@@ -76,8 +76,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
-    private TextAnalyticsClientImpl service;
-    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl service;
+    private final MicrosoftCognitiveLanguageServiceImpl languageService;
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
@@ -106,6 +106,7 @@ public final class TextAnalyticsAsyncClient {
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
         String defaultCountryHint, String defaultLanguage) {
         this.service = service;
+        this.languageService = null;
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;
@@ -121,7 +122,8 @@ public final class TextAnalyticsAsyncClient {
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceImpl service, TextAnalyticsServiceVersion serviceVersion,
         String defaultCountryHint, String defaultLanguage) {
-        this.languageSyncApiService = service;
+        this.service = null;
+        this.languageService = service;
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;

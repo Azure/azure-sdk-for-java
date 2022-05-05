@@ -26,7 +26,6 @@ import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
-import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -60,15 +59,15 @@ import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContex
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeHealthcareEntitiesResults;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class AnalyzeHealthcareEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeHealthcareEntityAsyncClient.class);
-    private TextAnalyticsClientImpl service;
-    private AnalyzeTextsImpl languageAsyncApiService;
+    private final TextAnalyticsClientImpl service;
+    private final AnalyzeTextsImpl languageAsyncApiService;
 
     /**
      * Create an {@link AnalyzeHealthcareEntityAsyncClient} that sends requests to the Text Analytics service's
@@ -78,9 +77,11 @@ class AnalyzeHealthcareEntityAsyncClient {
      */
     AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+        this.languageAsyncApiService = null;
     }
 
     AnalyzeHealthcareEntityAsyncClient(AnalyzeTextsImpl service) {
+        this.service = null;
         this.languageAsyncApiService = service;
     }
 
@@ -276,10 +277,8 @@ class AnalyzeHealthcareEntityAsyncClient {
         Response<HealthcareJobState> response) {
         final HealthcareJobState healthcareJobState = response.getValue();
         final HealthcareResult healthcareResult = healthcareJobState.getResults();
-        final IterableStream<AnalyzeHealthcareEntitiesResult> recognizeHealthcareEntitiesResults
-            = toRecognizeHealthcareEntitiesResults(healthcareResult);
         final AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection =
-            new AnalyzeHealthcareEntitiesResultCollection(recognizeHealthcareEntitiesResults);
+            toAnalyzeHealthcareEntitiesResultCollection(healthcareResult);
         AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setModelVersion(
             analyzeHealthcareEntitiesResultCollection, healthcareResult.getModelVersion());
         final RequestStatistics requestStatistics = healthcareResult.getStatistics();
@@ -320,10 +319,8 @@ class AnalyzeHealthcareEntityAsyncClient {
 
         HealthcareLROResult healthcareLROResult = (HealthcareLROResult) lroResults.get(0);
         final HealthcareResult healthcareResult = healthcareLROResult.getResults();
-        final IterableStream<AnalyzeHealthcareEntitiesResult> recognizeHealthcareEntitiesResults
-            = toRecognizeHealthcareEntitiesResults(healthcareResult);
         final AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection =
-            new AnalyzeHealthcareEntitiesResultCollection(recognizeHealthcareEntitiesResults);
+            toAnalyzeHealthcareEntitiesResultCollection(healthcareResult);
         AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setModelVersion(
             analyzeHealthcareEntitiesResultCollection, healthcareResult.getModelVersion());
         final RequestStatistics requestStatistics = healthcareResult.getStatistics();
@@ -389,7 +386,7 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
                         Mono<PollResponse<AnalyzeHealthcareEntitiesOperationDetail>>>
-    pollingOperationTextJob(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
+        pollingOperationTextJob(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
                 final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse =
@@ -421,7 +418,7 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
                         Mono<AnalyzeHealthcareEntitiesPagedFlux>>
-    fetchingOperationTextJob(Function<UUID, Mono<AnalyzeHealthcareEntitiesPagedFlux>> fetchingFunction) {
+        fetchingOperationTextJob(Function<UUID, Mono<AnalyzeHealthcareEntitiesPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
@@ -479,19 +476,6 @@ class AnalyzeHealthcareEntityAsyncClient {
     private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
         Mono<AnalyzeHealthcareEntitiesPagedIterable>> fetchingOperationIterable(
             final Function<UUID, Mono<AnalyzeHealthcareEntitiesPagedIterable>> fetchingFunction) {
-        return pollingContext -> {
-            try {
-                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
-                return fetchingFunction.apply(resultUuid);
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-                        Mono<AnalyzeHealthcareEntitiesPagedIterable>> fetchingTextJobOperationIterable(
-        final Function<UUID, Mono<AnalyzeHealthcareEntitiesPagedIterable>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());

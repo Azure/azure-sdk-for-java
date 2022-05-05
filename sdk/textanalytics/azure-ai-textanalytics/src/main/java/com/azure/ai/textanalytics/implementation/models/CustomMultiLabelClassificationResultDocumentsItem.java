@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The CustomMultiLabelClassificationResultDocumentsItem model. */
 @Immutable
-public final class CustomMultiLabelClassificationResultDocumentsItem extends MultiClassificationDocumentResult {}
+public final class CustomMultiLabelClassificationResultDocumentsItem extends MultiClassificationDocumentResult {
+
+}

@@ -40,8 +40,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class ExtractKeyPhraseAsyncClient {
     private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
-    private TextAnalyticsClientImpl service;
-    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl service;
+    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
 
     /**
      * Create an {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
@@ -51,9 +51,11 @@ class ExtractKeyPhraseAsyncClient {
      */
     ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+        this.languageSyncApiService = null;
     }
 
     ExtractKeyPhraseAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.service = null;
         this.languageSyncApiService = service;
     }
 

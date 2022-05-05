@@ -42,8 +42,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
-    private TextAnalyticsClientImpl service;
-    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl service;
+    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
 
     /**
      * Create a {@link RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
@@ -53,9 +53,11 @@ class RecognizePiiEntityAsyncClient {
      */
     RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+        this.languageSyncApiService = null;
     }
 
     RecognizePiiEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.service = null;
         this.languageSyncApiService = service;
     }
 

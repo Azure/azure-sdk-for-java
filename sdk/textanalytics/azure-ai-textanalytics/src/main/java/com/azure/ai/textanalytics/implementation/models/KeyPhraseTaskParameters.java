@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** Supported parameters for a Key Phrase Extraction task. */
 @Immutable
-public final class KeyPhraseTaskParameters extends PreBuiltTaskParameters {}
+public final class KeyPhraseTaskParameters extends PreBuiltTaskParameters {
+
+}

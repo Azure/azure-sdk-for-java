@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
@@ -57,6 +58,9 @@ import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationS
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTask;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
+import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
+import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
+import com.azure.ai.textanalytics.implementation.models.HealthcareTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.JobManifestTasks;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseExtractionLROResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseLROTask;
@@ -87,6 +91,8 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksSentiment
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
@@ -139,6 +145,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INT
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
@@ -171,8 +178,8 @@ class AnalyzeActionsAsyncClient {
             CUSTOM_MULTI_CLASSIFICATION_TASKS);
 
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
-    private TextAnalyticsClientImpl service;
-    private AnalyzeTextsImpl languageAsyncApiService;
+    private final TextAnalyticsClientImpl service;
+    private final AnalyzeTextsImpl languageAsyncApiService;
     private static final Pattern PATTERN;
     static {
         PATTERN = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
@@ -180,9 +187,11 @@ class AnalyzeActionsAsyncClient {
 
     AnalyzeActionsAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+        this.languageAsyncApiService = null;
     }
 
     AnalyzeActionsAsyncClient(AnalyzeTextsImpl service) {
+        this.service = null;
         this.languageAsyncApiService = service;
     }
 
@@ -216,7 +225,7 @@ class AnalyzeActionsAsyncClient {
                                             analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                                 return textAnalyticsOperationResult;
                             })),
-                    pollingOperation2(operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
+                    pollingOperationLanguageApi(operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
                         finalIncludeStatistics, null, null, finalContext)),
                     (pollingContext, pollResponse) -> Mono.just(pollingContext.getLatestResponse().getValue()),
                     fetchingOperation(
@@ -286,7 +295,7 @@ class AnalyzeActionsAsyncClient {
                                     parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                                 return operationDetail;
                             })),
-                    pollingOperation2(operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
+                    pollingOperationLanguageApi(operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
                         finalIncludeStatistics, null, null, finalContext)),
                     (activationResponse, pollingContext) ->
                         Mono.error(new RuntimeException("Cancellation is not supported.")),
@@ -332,6 +341,8 @@ class AnalyzeActionsAsyncClient {
         final Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions = actions.getExtractKeyPhrasesActions();
         final Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions =
             actions.getRecognizeLinkedEntitiesActions();
+        final Iterable<AnalyzeHealthcareEntitiesAction> analyzeHealthcareEntitiesActions =
+            actions.getAnalyzeHealthcareEntitiesActions();
         final Iterable<AnalyzeSentimentAction> analyzeSentimentActions = actions.getAnalyzeSentimentActions();
         final Iterable<ExtractSummaryAction> extractSummaryActions = actions.getExtractSummaryActions();
         final Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions =
@@ -347,6 +358,10 @@ class AnalyzeActionsAsyncClient {
 
         if (recognizePiiEntitiesActions != null) {
             recognizePiiEntitiesActions.forEach(action -> tasks.add(toPiiLROTask(action)));
+        }
+
+        if (analyzeHealthcareEntitiesActions != null) {
+            analyzeHealthcareEntitiesActions.forEach(action -> tasks.add(toHealthcareLROTask(action)));
         }
 
         if (extractKeyPhrasesActions != null) {
@@ -486,6 +501,22 @@ class AnalyzeActionsAsyncClient {
                                        .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
                                        .setModelVersion(action.getModelVersion())
                                        .setLoggingOptOut(action.isServiceLogsDisabled());
+    }
+
+    private HealthcareLROTask toHealthcareLROTask(AnalyzeHealthcareEntitiesAction action) {
+        if (action == null) {
+            return null;
+        }
+        final HealthcareLROTask task = new HealthcareLROTask();
+        task.setParameters(getHealthcareTaskParameters(action)).setTaskName(action.getActionName());
+        return task;
+    }
+
+    private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
+        return (HealthcareTaskParameters) new HealthcareTaskParameters()
+                                              .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                              .setModelVersion(action.getModelVersion())
+                                              .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private KeyPhraseLROTask toKeyPhraseLROTask(ExtractKeyPhrasesAction action) {
@@ -732,14 +763,15 @@ class AnalyzeActionsAsyncClient {
     }
 
     private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<PollResponse<AnalyzeActionsOperationDetail>>>
-    pollingOperation2(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
+        pollingOperationLanguageApi(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
                 final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                           .flatMap(modelResponse -> processAnalyzedModelResponse2(modelResponse, operationResultPollResponse))
+                           .flatMap(modelResponse -> processAnalyzedModelResponseLanguageApi(
+                               modelResponse, operationResultPollResponse))
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -789,7 +821,7 @@ class AnalyzeActionsAsyncClient {
             if (languageAsyncApiService != null) {
                 return languageAsyncApiService.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
                     context)
-                    .map(this::toAnalyzeActionsResultPagedResponse2)
+                    .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }
             return service.analyzeStatusWithResponseAsync(operationId.toString(), showStatsValue, topValue, skipValue,
@@ -799,7 +831,7 @@ class AnalyzeActionsAsyncClient {
         } else {
             if (languageAsyncApiService != null) {
                 return languageAsyncApiService.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                    .map(this::toAnalyzeActionsResultPagedResponse2)
+                    .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }
             return service.analyzeStatusWithResponseAsync(operationId.toString(), showStats, top, skip, context)
@@ -819,13 +851,13 @@ class AnalyzeActionsAsyncClient {
             null);
     }
 
-    private PagedResponse<AnalyzeActionsResult> toAnalyzeActionsResultPagedResponse2(Response<AnalyzeTextJobState> response) {
+    private PagedResponse<AnalyzeActionsResult> toAnalyzeActionsResultPagedResponseLanguageApi(Response<AnalyzeTextJobState> response) {
         final AnalyzeTextJobState analyzeJobState = response.getValue();
         return new PagedResponseBase<Void, AnalyzeActionsResult>(
             response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
-            Arrays.asList(toAnalyzeActionsResult2(analyzeJobState)),
+            Arrays.asList(toAnalyzeActionsResultLanguageApi(analyzeJobState)),
             analyzeJobState.getNextLink(),
             null);
     }
@@ -996,7 +1028,7 @@ class AnalyzeActionsAsyncClient {
         return analyzeActionsResult;
     }
 
-    private AnalyzeActionsResult toAnalyzeActionsResult2(AnalyzeTextJobState analyzeJobState) {
+    private AnalyzeActionsResult toAnalyzeActionsResultLanguageApi(AnalyzeTextJobState analyzeJobState) {
         final TasksStateTasks tasksStateTasks = analyzeJobState.getTasks();
         final List<AnalyzeTextLROResult> tasksResults = tasksStateTasks.getItems();
 
@@ -1004,6 +1036,7 @@ class AnalyzeActionsAsyncClient {
         final List<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults = new ArrayList<>();
         final List<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults = new ArrayList<>();
         final List<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults = new ArrayList<>();
+        final List<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults = new ArrayList<>();
         final List<AnalyzeSentimentActionResult> analyzeSentimentActionResults = new ArrayList<>();
         final List<ExtractSummaryActionResult> extractSummaryActionResults = new ArrayList<>();
         final List<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesActionResults = new ArrayList<>();
@@ -1045,7 +1078,7 @@ class AnalyzeActionsAsyncClient {
                     final CustomSingleLabelClassificationLROResult customSingleLabelClassificationResult =
                         (CustomSingleLabelClassificationLROResult) taskResult;
                     final SingleCategoryClassifyActionResult actionResult =
-                    new SingleCategoryClassifyActionResult();
+                        new SingleCategoryClassifyActionResult();
                     final CustomSingleLabelClassificationResult results =
                         customSingleLabelClassificationResult.getResults();
                     if (results != null) {
@@ -1114,7 +1147,19 @@ class AnalyzeActionsAsyncClient {
                         extractiveSummarizationLROResult.getLastUpdateDateTime());
                     extractSummaryActionResults.add(actionResult);
                 } else if (taskResult instanceof HealthcareLROResult) {
-
+                    final HealthcareLROResult healthcareLROResult = (HealthcareLROResult) taskResult;
+                    final AnalyzeHealthcareEntitiesActionResult actionResult =
+                        new AnalyzeHealthcareEntitiesActionResult();
+                    final HealthcareResult results = healthcareLROResult.getResults();
+                    if (results != null) {
+                        AnalyzeHealthcareEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                            toAnalyzeHealthcareEntitiesResultCollection(results));
+                    }
+                    TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
+                        healthcareLROResult.getTaskName());
+                    TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                        healthcareLROResult.getLastUpdateDateTime());
+                    analyzeHealthcareEntitiesActionResults.add(actionResult);
                 } else if (taskResult instanceof SentimentLROResult) {
                     final SentimentLROResult sentimentLROResult = (SentimentLROResult) taskResult;
                     final AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
@@ -1143,11 +1188,13 @@ class AnalyzeActionsAsyncClient {
                         keyPhraseExtractionLROResult.getLastUpdateDateTime());
                     extractKeyPhrasesActionResults.add(actionResult);
                 } else {
-                    // TODO: Throws error
+                    throw logger.logExceptionAsError(new RuntimeException(
+                        "Invalid Long running operation task result: " + taskResult.getClass()));
                 }
             }
         }
 
+        //TODO: In Language REST API, there is no such task names. It might be a different way to parse the Error Target
         final List<Error> errors = analyzeJobState.getErrors();
         if (!CoreUtils.isNullOrEmpty(errors)) {
             for (Error error : errors) {
@@ -1192,6 +1239,8 @@ class AnalyzeActionsAsyncClient {
             IterableStream.of(recognizeEntitiesActionResults));
         AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesResults(analyzeActionsResult,
             IterableStream.of(recognizePiiEntitiesActionResults));
+        AnalyzeActionsResultPropertiesHelper.setAnalyzeHealthcareEntitiesResults(analyzeActionsResult,
+            IterableStream.of(analyzeHealthcareEntitiesActionResults));
         AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesResults(analyzeActionsResult,
             IterableStream.of(extractKeyPhrasesActionResults));
         AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesResults(analyzeActionsResult,
@@ -1252,7 +1301,7 @@ class AnalyzeActionsAsyncClient {
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
 
-    private Mono<PollResponse<AnalyzeActionsOperationDetail>> processAnalyzedModelResponse2(
+    private Mono<PollResponse<AnalyzeActionsOperationDetail>> processAnalyzedModelResponseLanguageApi(
         Response<AnalyzeTextJobState> analyzeJobStateResponse,
         PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse) {
 

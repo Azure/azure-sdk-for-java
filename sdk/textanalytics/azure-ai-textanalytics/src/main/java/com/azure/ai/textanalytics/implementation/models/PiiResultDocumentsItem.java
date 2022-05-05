@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The PiiResultDocumentsItem model. */
 @Immutable
-public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {}
+public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
+
+}

@@ -29,4 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = KeyPhraseLROTask.class)
 })
 @Immutable
-public class AnalyzeTextLROTask extends TaskIdentifier {}
+public class AnalyzeTextLROTask extends TaskIdentifier {
+
+}

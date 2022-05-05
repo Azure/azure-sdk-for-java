@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The ExtractiveSummarizationResultDocumentsItem model. */
 @Immutable
-public final class ExtractiveSummarizationResultDocumentsItem extends ExtractedSummaryDocumentResult {}
+public final class ExtractiveSummarizationResultDocumentsItem extends ExtractedSummaryDocumentResult {
+
+}

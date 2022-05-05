@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** Supported parameters for a Custom Single Classification task. */
 @Immutable
-public final class CustomSingleLabelClassificationTaskParameters extends CustomTaskParameters {}
+public final class CustomSingleLabelClassificationTaskParameters extends CustomTaskParameters {
+
+}

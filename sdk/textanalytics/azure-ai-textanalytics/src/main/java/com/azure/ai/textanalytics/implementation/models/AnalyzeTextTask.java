@@ -25,4 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SentimentAnalysis", value = AnalyzeTextSentimentAnalysisInput.class)
 })
 @Immutable
-public class AnalyzeTextTask {}
+public class AnalyzeTextTask {
+
+}

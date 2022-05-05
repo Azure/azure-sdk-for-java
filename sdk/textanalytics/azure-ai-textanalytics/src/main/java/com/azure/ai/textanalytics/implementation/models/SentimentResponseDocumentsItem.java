@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The SentimentResponseDocumentsItem model. */
 @Immutable
-public final class SentimentResponseDocumentsItem extends SentimentDocumentResult {}
+public final class SentimentResponseDocumentsItem extends SentimentDocumentResult {
+
+}

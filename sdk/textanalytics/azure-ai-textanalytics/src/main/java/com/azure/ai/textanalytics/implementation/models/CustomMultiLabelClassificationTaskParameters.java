@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** Supported parameters for a Custom Multi Classification task. */
 @Immutable
-public final class CustomMultiLabelClassificationTaskParameters extends CustomTaskParameters {}
+public final class CustomMultiLabelClassificationTaskParameters extends CustomTaskParameters {
+
+}

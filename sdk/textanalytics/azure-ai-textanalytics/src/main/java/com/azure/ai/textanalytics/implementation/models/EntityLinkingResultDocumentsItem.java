@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The EntityLinkingResultDocumentsItem model. */
 @Immutable
-public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocumentResult {}
+public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocumentResult {
+
+}

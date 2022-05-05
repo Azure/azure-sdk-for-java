@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The HealthcareResultDocumentsItem model. */
 @Immutable
-public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocumentResult {}
+public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocumentResult {
+
+}

@@ -113,6 +113,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
@@ -378,7 +379,7 @@ public final class Utility {
     public static Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse2(
         Response<AnalyzeTextTaskResult> response) {
         return new SimpleResponse<>(response,
-            toAnalyzeSentimentResultCollection(((SentimentTaskResult)response.getValue()).getResults()));
+            toAnalyzeSentimentResultCollection(((SentimentTaskResult) response.getValue()).getResults()));
     }
 
 
@@ -888,13 +889,13 @@ public final class Utility {
     }
 
     /**
-     * Transfer {@link HealthcareResult} into {@link IterableStream} of {@link AnalyzeHealthcareEntitiesResult}.
+     * Transfer {@link HealthcareResult} into {@link AnalyzeHealthcareEntitiesResultCollection}.
      *
      * @param healthcareResult the service side raw data, HealthcareResult.
      *
-     * @return the client side explored model, RecognizeHealthcareEntitiesResultCollection.
+     * @return the client side explored model, AnalyzeHealthcareEntitiesResultCollection.
      */
-    public static IterableStream<AnalyzeHealthcareEntitiesResult> toRecognizeHealthcareEntitiesResults(
+    public static AnalyzeHealthcareEntitiesResultCollection toAnalyzeHealthcareEntitiesResultCollection(
         HealthcareResult healthcareResult) {
         // List of document results
         List<AnalyzeHealthcareEntitiesResult> analyzeHealthcareEntitiesResults = new ArrayList<>();
@@ -993,7 +994,7 @@ public final class Utility {
             analyzeHealthcareEntitiesResults.add(new AnalyzeHealthcareEntitiesResult(
                 documentError.getId(), null, toTextAnalyticsError(documentError.getError())))
         );
-        return IterableStream.of(analyzeHealthcareEntitiesResults);
+        return new AnalyzeHealthcareEntitiesResultCollection(IterableStream.of(analyzeHealthcareEntitiesResults));
     }
 
     public static HealthcareEntityAssertion toHealthcareEntityAssertion(HealthcareAssertion healthcareAssertion) {

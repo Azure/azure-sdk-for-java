@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The CustomSingleLabelClassificationResultDocumentsItem model. */
 @Immutable
-public final class CustomSingleLabelClassificationResultDocumentsItem extends SingleClassificationDocumentResult {}
+public final class CustomSingleLabelClassificationResultDocumentsItem extends SingleClassificationDocumentResult {
+
+}

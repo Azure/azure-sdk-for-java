@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** Supported parameters for a Language Detection task. */
 @Immutable
-public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameters {}
+public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameters {
+
+}

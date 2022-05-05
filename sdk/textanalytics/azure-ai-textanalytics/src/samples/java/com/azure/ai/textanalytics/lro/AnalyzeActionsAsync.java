@@ -58,7 +58,7 @@ public class AnalyzeActionsAsync {
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions()
                 .setDisplayName("{tasks_display_name}")
-                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setModelVersion("bad")),
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
             new AnalyzeActionsOptions())
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();

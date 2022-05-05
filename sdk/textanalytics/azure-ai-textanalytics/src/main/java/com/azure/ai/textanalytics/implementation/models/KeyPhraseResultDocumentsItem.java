@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The KeyPhraseResultDocumentsItem model. */
 @Immutable
-public final class KeyPhraseResultDocumentsItem extends KeyPhrasesDocumentResult {}
+public final class KeyPhraseResultDocumentsItem extends KeyPhrasesDocumentResult {
+
+}

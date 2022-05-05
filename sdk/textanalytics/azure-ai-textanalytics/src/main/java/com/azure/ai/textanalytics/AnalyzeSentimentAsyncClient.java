@@ -35,8 +35,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class AnalyzeSentimentAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeSentimentAsyncClient.class);
-    private TextAnalyticsClientImpl service;
-    private MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl service;
+    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
 
     /**
      * Create an {@link AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
@@ -46,9 +46,11 @@ class AnalyzeSentimentAsyncClient {
      */
     AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
+        this.languageSyncApiService = null;
     }
 
     AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.service = null;
         this.languageSyncApiService = service;
     }
 
