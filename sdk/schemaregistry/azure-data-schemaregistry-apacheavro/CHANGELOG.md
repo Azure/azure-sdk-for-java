@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Renamed `autoRegisterSchema` to `autoRegisterSchemas` in `SchemaRegistryApacheAvroSerializerBuilder`.
+- Removed "MessageData" from `serializeMessageData`, `deserializeMessageData`, `serializeMessageDataAsync`, `deserializeMessageDataAsync`.
+
 ### Bugs Fixed
 
 ### Other Changes

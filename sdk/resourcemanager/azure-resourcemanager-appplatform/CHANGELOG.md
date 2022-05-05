@@ -7,6 +7,10 @@
 - Supported Enterprise Tier `Configuration Service`.
 - Supported Enterprise Tier `Build Service`.
 - Supported Enterprise Tier binding `Spring App` to `Configuration Service`.
+- Supported Enterprise Tier `Spring App Deployment` with `Jar` and `Maven Source Code`.
+- Supported `Java_17` runtime for all tiers.
+- Supported `jvmOptions()` in `SpringAppDeployment` for all tiers.
+- Supported Enterprise Tier `runtimeVersion()` in `SpringAppDeployment`.
 
 ### Breaking Changes
 

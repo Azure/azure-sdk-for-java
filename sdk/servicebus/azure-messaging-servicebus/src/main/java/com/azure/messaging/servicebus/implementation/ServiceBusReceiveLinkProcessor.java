@@ -47,7 +47,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusReceiveLink, Message>
     implements Subscription {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiveLinkProcessor.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiveLinkProcessor.class);
     private final Object lock = new Object();
     private final Object queueLock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
@@ -96,7 +96,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
 
         if (prefetch < 0) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'prefetch' cannot be less than 0."));
         }
 
@@ -112,7 +112,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         if (isDisposed()) {
-            return monoError(logger.atError()
+            return monoError(LOGGER.atError()
                     .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                     .addKeyValue(DELIVERY_STATE_KEY, deliveryState),
                 new IllegalStateException(String.format(
@@ -121,7 +121,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
         final ServiceBusReceiveLink link = currentLink;
         if (link == null) {
-            return monoError(logger.atError()
+            return monoError(LOGGER.atError()
                     .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                     .addKeyValue(DELIVERY_STATE_KEY, deliveryState),
                 new IllegalStateException(String.format(
@@ -174,7 +174,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         Objects.requireNonNull(subscription, "'subscription' cannot be null");
 
         if (!Operators.setOnce(UPSTREAM, this, subscription)) {
-            throw logger.logExceptionAsError(new IllegalStateException("Cannot set upstream twice."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Cannot set upstream twice."));
         }
 
         requestUpstream();
@@ -190,7 +190,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         Objects.requireNonNull(next, "'next' cannot be null.");
 
         if (isTerminated()) {
-            logger.atWarning()
+            LOGGER.atWarning()
                 .addKeyValue(LINK_NAME_KEY, next.getLinkName())
                 .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
                 .log("Got another link when we have already terminated processor.");
@@ -202,7 +202,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         final String linkName = next.getLinkName();
         final String entityPath = next.getEntityPath();
 
-        logger.atInfo()
+        LOGGER.atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("Setting next AMQP receive link.");
@@ -230,7 +230,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                         // When the receive on AmqpReceiveLink (e.g., ServiceBusReactorReceiver) terminates
                         // with an error, we expect the recovery to happen in response to the terminal events
                         // in link EndpointState Flux.
-                        logger.atVerbose()
+                        LOGGER.atVerbose()
                             .addKeyValue(LINK_NAME_KEY, linkName)
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .log("Receiver is terminated.", error);
@@ -248,13 +248,13 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     },
                     () -> {
                         if (isTerminated()) {
-                            logger.info("Processor is terminated. Disposing of link processor.");
+                            LOGGER.info("Processor is terminated. Disposing of link processor.");
                             dispose();
                         } else if (upstream == Operators.cancelledSubscription()) {
-                            logger.info("Upstream has completed. Disposing of link processor.");
+                            LOGGER.info("Upstream has completed. Disposing of link processor.");
                             dispose();
                         } else {
-                            logger.info("Receive link endpoint states are closed. Requesting another.");
+                            LOGGER.info("Receive link endpoint states are closed. Requesting another.");
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
@@ -291,12 +291,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             final String linkName = link != null ? link.getLinkName() : "n/a";
             final String entityPath = link != null ? link.getEntityPath() : "n/a";
 
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("AmqpReceiveLink is already terminated.");
         } else if (currentLink == null && upstream == Operators.cancelledSubscription()) {
-            logger.info("There is no current link and upstream is terminated.");
+            LOGGER.info("There is no current link and upstream is terminated.");
         }
 
         if (terminateSubscriber) {
@@ -314,7 +314,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             actual.onSubscribe(this);
             drain();
         } else {
-            Operators.error(actual, logger.logExceptionAsError(new IllegalStateException(
+            Operators.error(actual, LOGGER.logExceptionAsError(new IllegalStateException(
                 "There is already one downstream subscriber.'")));
         }
     }
@@ -330,7 +330,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
         if (isTerminated()) {
-            logger.info("AmqpReceiveLinkProcessor is terminated. Not reopening on error.");
+            LOGGER.info("AmqpReceiveLinkProcessor is terminated. Not reopening on error.");
             return;
         }
 
@@ -342,7 +342,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         final String entityPath = link != null ? link.getEntityPath() : "n/a";
 
         if (retryInterval != null && upstream != Operators.cancelledSubscription()) {
-            logger.atWarning()
+            LOGGER.atWarning()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue("attempt", attempt)
@@ -354,7 +354,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             return;
         }
 
-        logger.atWarning()
+        LOGGER.atWarning()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("Non-retryable error occurred in AMQP receive link.", throwable);
@@ -395,7 +395,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     @Override
     public void request(long request) {
         if (!Operators.validate(request)) {
-            logger.atWarning()
+            LOGGER.atWarning()
                 .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
                 .log("Invalid request");
             return;
@@ -430,24 +430,24 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      */
     private void requestUpstream() {
         if (isTerminated()) {
-            logger.info("Processor is terminated. Not requesting another link.");
+            LOGGER.info("Processor is terminated. Not requesting another link.");
             return;
         } else if (upstream == null) {
-            logger.info("There is no upstream. Not requesting another link.");
+            LOGGER.info("There is no upstream. Not requesting another link.");
             return;
         } else if (upstream == Operators.cancelledSubscription()) {
-            logger.info("Upstream is cancelled or complete. Not requesting another link.");
+            LOGGER.info("Upstream is cancelled or complete. Not requesting another link.");
             return;
         }
 
         synchronized (lock) {
             if (currentLink != null) {
-                logger.info("Current link exists. Not requesting another link.");
+                LOGGER.info("Current link exists. Not requesting another link.");
                 return;
             }
         }
 
-        logger.info("Requesting a new AmqpReceiveLink from upstream.");
+        LOGGER.info("Requesting a new AmqpReceiveLink from upstream.");
         upstream.request(1L);
     }
 
@@ -523,8 +523,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                         checkAndAddCredits(currentLink);
                     }
                 } catch (Exception e) {
-                    logger.error("Exception occurred while handling downstream onNext operation.", e);
-                    throw logger.logExceptionAsError(Exceptions.propagate(
+                    LOGGER.error("Exception occurred while handling downstream onNext operation.", e);
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(
                         Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 }
 
@@ -581,7 +581,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         final boolean hasBackpressure = r != Long.MAX_VALUE;
 
         if (subscriber == null || r == 0) {
-            logger.info("Not adding credits. No downstream subscribers or items requested.");
+            LOGGER.info("Not adding credits. No downstream subscribers or items requested.");
             return 0;
         }
 
@@ -617,7 +617,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     : 0;
             }
 
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue("prefetch", getPrefetch())
                 .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, r)
                 .addKeyValue("linkCredits", linkCredits)
@@ -639,7 +639,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         try {
             ((AsyncCloseable) link).closeAsync().subscribe();
         } catch (Exception error) {
-            logger.atWarning()
+            LOGGER.atWarning()
                 .addKeyValue(LINK_NAME_KEY, link.getLinkName())
                 .addKeyValue(ENTITY_PATH_KEY, link.getEntityPath())
                 .log("Unable to dispose of link.", error);

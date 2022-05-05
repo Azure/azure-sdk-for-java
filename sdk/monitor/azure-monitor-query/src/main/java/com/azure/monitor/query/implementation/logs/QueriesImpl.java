@@ -54,7 +54,7 @@ public final class QueriesImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureLogAnalyticsQue")
-    private interface QueriesService {
+    public interface QueriesService {
         @Get("workspaces/{workspaceId}/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

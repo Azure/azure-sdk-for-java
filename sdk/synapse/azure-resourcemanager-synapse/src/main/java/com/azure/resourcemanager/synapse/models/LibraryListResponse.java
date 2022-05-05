@@ -7,15 +7,12 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of Library resources. */
 @Fluent
 public final class LibraryListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LibraryListResponse.class);
-
     /*
      * List of Library.
      */
@@ -75,11 +72,13 @@ public final class LibraryListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model LibraryListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LibraryListResponse.class);
 }

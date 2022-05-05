@@ -59,11 +59,11 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link PartitionBasedLoadBalancer}.
  */
 public class PartitionBasedLoadBalancerTest {
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionBasedLoadBalancerTest.class);
 
     private final String fqNamespace = "fq-namespace";
     private final String eventHubName = "test-event-hub";
     private final String consumerGroupName = "test-consumer-group";
-    private final ClientLogger logger = new ClientLogger(PartitionBasedLoadBalancerTest.class);
     private final boolean batchReceiveMode = false;
 
     private List<EventData> eventDataList;
@@ -603,7 +603,7 @@ public class PartitionBasedLoadBalancerTest {
             () -> new PartitionProcessor() {
                 @Override
                 public void processEvent(EventContext eventContext) {
-                    logger.info(
+                    LOGGER.info(
                         "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
                         eventContext.getPartitionContext().getEventHubName(),
                         eventContext.getPartitionContext().getConsumerGroup(),
@@ -614,7 +614,7 @@ public class PartitionBasedLoadBalancerTest {
 
                 @Override
                 public void processError(ErrorContext eventProcessingErrorContext) {
-                    logger.warning("Error occurred in partition processor for partition {}",
+                    LOGGER.warning("Error occurred in partition processor for partition {}",
                         eventProcessingErrorContext.getPartitionContext().getPartitionId(),
                         eventProcessingErrorContext.getThrowable());
                 }

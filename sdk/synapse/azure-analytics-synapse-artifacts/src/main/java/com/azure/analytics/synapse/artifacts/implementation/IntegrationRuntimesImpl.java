@@ -50,7 +50,7 @@ public final class IntegrationRuntimesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientInteg")
-    private interface IntegrationRuntimesService {
+    public interface IntegrationRuntimesService {
         @Get("/integrationRuntimes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

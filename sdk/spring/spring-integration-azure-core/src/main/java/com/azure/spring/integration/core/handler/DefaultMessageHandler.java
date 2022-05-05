@@ -78,12 +78,12 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     @Override
     protected void handleMessageInternal(Message<?> message) {
-        String destination = toDestination(message);
+        String dest = toDestination(message);
 
         Map<String, String> partitionHeaders = getPartitionFromExpression(message);
         Message<?> messageToSend = createMutableMessage(message, partitionHeaders);
 
-        final Mono<Void> mono = this.sendOperation.sendAsync(destination, messageToSend);
+        final Mono<Void> mono = this.sendOperation.sendAsync(dest, messageToSend);
 
         if (this.sync) {
             waitingSendResponse(mono, message);

@@ -5,15 +5,19 @@
 ### Features Added
 - Updated checking checkpoint store available before starting processor client. Changed the behavior of starting processor client from __started but not working__ to __log error and stop__.
 
+- `EventData.setBodyAsBinaryData` is exposed.
+
 ### Breaking Changes
+
+- `EventData` extends from `MessageContent`.
 
 ### Bugs Fixed
 
 ### Other Changes
 
-## 5.11.2 (2022-04-11)
+#### Dependency Updates
 
-### Other Changes
+## 5.11.2 (2022-04-11)
 
 ### Other Changes
 

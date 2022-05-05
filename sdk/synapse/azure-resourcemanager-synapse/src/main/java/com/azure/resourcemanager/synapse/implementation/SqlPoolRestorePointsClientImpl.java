@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolRestorePointsClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient. */
 public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePointsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolRestorePointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolRestorePointsService service;
 
@@ -279,7 +276,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorePointInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -298,7 +295,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorePointInner> listAsync(
@@ -317,7 +314,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorePointInner> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -334,7 +331,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorePointInner> list(
@@ -479,7 +476,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
@@ -510,7 +507,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
@@ -538,7 +535,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
@@ -560,7 +557,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(

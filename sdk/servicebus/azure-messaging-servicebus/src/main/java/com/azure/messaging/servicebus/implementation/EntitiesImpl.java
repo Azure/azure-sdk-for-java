@@ -48,7 +48,7 @@ public final class EntitiesImpl {
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface EntitiesService {
+    public interface EntitiesService {
         @Get("/{entityName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)

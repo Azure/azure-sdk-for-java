@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.ExtendedSqlPoolBlobAuditingPolic
 import com.azure.resourcemanager.synapse.fluent.models.ExtendedSqlPoolBlobAuditingPolicyInner;
 import com.azure.resourcemanager.synapse.models.ExtendedSqlPoolBlobAuditingPolicies;
 import com.azure.resourcemanager.synapse.models.ExtendedSqlPoolBlobAuditingPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSqlPoolBlobAuditingPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedSqlPoolBlobAuditingPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExtendedSqlPoolBlobAuditingPoliciesImpl.class);
 
     private final ExtendedSqlPoolBlobAuditingPoliciesClient innerClient;
 
@@ -71,7 +70,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
     public ExtendedSqlPoolBlobAuditingPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -79,14 +78,14 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -97,7 +96,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
     public Response<ExtendedSqlPoolBlobAuditingPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,14 +104,14 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));

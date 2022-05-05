@@ -51,7 +51,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR
         + ":transfer-destination-address");
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSession.class);
     private final AmqpRetryPolicy retryPolicy;
     private final TokenManagerProvider tokenManagerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
@@ -122,7 +122,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         if (!CoreUtils.isNullOrEmpty(transferEntityPath)) {
             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferEntityPath);
 
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue("transferEntityPath", transferEntityPath)
@@ -135,7 +135,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 .doFinally(signalType -> tokenManager.close())
                 .then(createProducer(linkName, entityPath, timeout, retry, linkProperties));
         } else {
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Get or create sender link.");

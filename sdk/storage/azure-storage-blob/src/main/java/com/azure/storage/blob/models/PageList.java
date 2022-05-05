@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -16,6 +17,20 @@ import java.util.List;
 @Fluent
 @JsonDeserialize(using = PageListDeserializer.class)
 public final class PageList {
+    static {
+        PageListHelper.setAccessor(
+                new PageListHelper.PageListAccessor() {
+                    @Override
+                    public String getNextMarker(PageList pageList) {
+                        return pageList.getNextMarker();
+                    }
+
+                    @Override
+                    public PageList setNextMarker(PageList pageList, String marker) {
+                        return pageList.setNextMarker(marker);
+                    }
+                });
+    }
     /*
      * The PageRange property.
      */
@@ -27,6 +42,12 @@ public final class PageList {
      */
     @JsonProperty("ClearRange")
     private List<ClearRange> clearRange = new ArrayList<>();
+
+    /*
+     * The NextMarker property.
+     */
+    @JsonProperty(value = "NextMarker")
+    private String nextMarker;
 
     /**
      * Get the pageRange property: The PageRange property.
@@ -65,6 +86,26 @@ public final class PageList {
      */
     public PageList setClearRange(List<ClearRange> clearRange) {
         this.clearRange = clearRange;
+        return this;
+    }
+
+    /**
+     * Get the nextMarker property: The NextMarker property.
+     *
+     * @return the nextMarker value.
+     */
+    private String getNextMarker() {
+        return this.nextMarker;
+    }
+
+    /**
+     * Set the nextMarker property: The NextMarker property.
+     *
+     * @param nextMarker the nextMarker value to set.
+     * @return the PageList object itself.
+     */
+    private PageList setNextMarker(String nextMarker) {
+        this.nextMarker = nextMarker;
         return this;
     }
 }

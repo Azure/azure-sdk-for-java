@@ -107,7 +107,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
     @Override
     protected void onInit() {
-        Assert.state(ListenerMode.RECORD.equals(this.listenerMode), "Only record mode is supported!");
+        Assert.state(ListenerMode.RECORD == this.listenerMode, "Only record mode is supported!");
 
         this.listenerContainer.setupMessageListener(this.recordListener);
 

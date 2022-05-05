@@ -29,7 +29,7 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private final DiagnosticsClientContext diagnosticsClientContext;
+    private final DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig;
     private String activityId;
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
@@ -46,10 +46,9 @@ public class ClientSideRequestStatistics {
     private RequestTimeline gatewayRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
-    private GlobalEndpointManager globalEndpointManager;
 
-    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
-        this.diagnosticsClientContext = diagnosticsClientContext;
+    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
+        this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
@@ -62,11 +61,10 @@ public class ClientSideRequestStatistics {
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
-        this.globalEndpointManager = globalEndpointManager;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
-        this.diagnosticsClientContext = toBeCloned.diagnosticsClientContext;
+        this.diagnosticsClientConfig = toBeCloned.diagnosticsClientConfig;
         this.requestStartTimeUTC = toBeCloned.requestStartTimeUTC;
         this.requestEndTimeUTC = toBeCloned.requestEndTimeUTC;
         this.responseStatisticsList = new ArrayList<>(toBeCloned.responseStatisticsList);
@@ -81,7 +79,6 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext =
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
-        this.globalEndpointManager = toBeCloned.globalEndpointManager;
     }
 
     public Duration getDuration() {
@@ -92,17 +89,17 @@ public class ClientSideRequestStatistics {
         return requestStartTimeUTC;
     }
 
-    public DiagnosticsClientContext getDiagnosticsClientContext() {
-        return diagnosticsClientContext;
+    public DiagnosticsClientContext.DiagnosticsClientConfig getDiagnosticsClientConfig() {
+        return diagnosticsClientConfig;
     }
 
-    public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
+    public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult, GlobalEndpointManager globalEndpointManager) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
-        storeResponseStatistics.storeResult = storeResult;
+        storeResponseStatistics.storeResult = StoreResult.createSerializableStoreResult(storeResult);
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
         activityId = request.getActivityId().toString();
@@ -120,8 +117,9 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            if (locationEndPoint != null) {
-                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
+            //  TODO (kuthapar): globalEndpointManager != null check is just for safety for hotfix. Remove it after further investigation
+            if (locationEndPoint != null && globalEndpointManager != null) {
+                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
@@ -136,7 +134,7 @@ public class ClientSideRequestStatistics {
 
     public void recordGatewayResponse(
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
-        CosmosException exception) {
+        CosmosException exception, GlobalEndpointManager globalEndpointManager) {
         Instant responseTime = Instant.now();
 
         synchronized (this) {
@@ -150,8 +148,9 @@ public class ClientSideRequestStatistics {
             }
             this.recordRetryContextEndTime();
 
-            if (locationEndPoint != null) {
-                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+            //  TODO (kuthapar): globalEndpointManager != null check is just for safety for hotfix. Remove it after further investigation
+            if (locationEndPoint != null && globalEndpointManager != null) {
+                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
@@ -384,7 +383,7 @@ public class ClientSideRequestStatistics {
                 // Error while evaluating system information, do nothing
             }
 
-            generator.writeObjectField("clientCfgs", statistics.diagnosticsClientContext);
+            generator.writeObjectField("clientCfgs", statistics.diagnosticsClientConfig);
             generator.writeEndObject();
         }
     }
