@@ -99,6 +99,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
+     * Gets the SessionId of the session if this receiver is a session receiver.
+     *
+     * @return The SessionId or null if this is not a session receiver.
+     */
+    public String getSessionId() {
+        return asyncClient.getSessionId();
+    }
+
+    /**
      * Abandons a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
      * Abandoning a message will increase the delivery count on the message.
      *
