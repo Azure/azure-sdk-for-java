@@ -191,7 +191,7 @@ public final class MicrosoftCognitiveLanguageServiceImplBuilder {
      */
     public MicrosoftCognitiveLanguageServiceImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2022-03-01-preview";
+            this.apiVersion = "2022-04-01-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
