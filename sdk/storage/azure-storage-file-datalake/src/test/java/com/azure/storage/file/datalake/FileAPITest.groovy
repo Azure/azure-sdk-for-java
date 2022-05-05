@@ -58,6 +58,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
@@ -3608,6 +3609,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
+    @Ignore // There is a bug in the service that is causing this test to constantly fail
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
