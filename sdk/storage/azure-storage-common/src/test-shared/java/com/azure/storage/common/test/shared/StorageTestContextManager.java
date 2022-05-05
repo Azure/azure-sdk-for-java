@@ -31,4 +31,9 @@ public final class StorageTestContextManager extends TestContextManager {
     public String getTestName() {
         return testName;
     }
+
+    @Override
+    public String getTestPlaybackRecordingName() {
+        return testName;
+    }
 }
