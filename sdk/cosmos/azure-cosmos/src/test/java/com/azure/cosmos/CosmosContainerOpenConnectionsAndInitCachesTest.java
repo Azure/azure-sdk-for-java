@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
@@ -244,16 +245,16 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     private ConcurrentHashMap<String, ?> getRoutingMap(RxDocumentClientImpl rxDocumentClient) {
         RxPartitionKeyRangeCache partitionKeyRangeCache =
             ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
-        AsyncCache<String, CollectionRoutingMap> routingMapAsyncCache =
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapAsyncCache =
             ReflectionUtils.getRoutingMapAsyncCache(partitionKeyRangeCache);
 
-        return ReflectionUtils.getValueMap(routingMapAsyncCache);
+        return ReflectionUtils.getValueMapNonBlockingCache(routingMapAsyncCache);
     }
 
     @SuppressWarnings("unchecked")
     private CollectionRoutingMap getCollectionRoutingMap(ConcurrentHashMap<String, ?> routingMap) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        Class<?> AsynLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
-        Field collectionRoutingMapField = AsynLazyClass.getDeclaredField("single");
+        Class<?> AsynLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking$AsyncLazyWithRefresh");
+        Field collectionRoutingMapField = AsynLazyClass.getDeclaredField("value");
         collectionRoutingMapField.setAccessible(true);
         CollectionRoutingMap collectionRoutingMap =
             ((Mono<CollectionRoutingMap>) collectionRoutingMapField.get(routingMap.values().toArray()[0])).block();

@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -303,12 +304,17 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static AsyncCache<String, CollectionRoutingMap> getRoutingMapAsyncCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
-        return get(AsyncCache.class, partitionKeyRangeCache, "routingMapCache");
+    public static AsyncCacheNonBlocking<String, CollectionRoutingMap> getRoutingMapAsyncCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        return get(AsyncCacheNonBlocking.class, partitionKeyRangeCache, "routingMapCache");
     }
 
     @SuppressWarnings("unchecked")
     public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
+        return get(ConcurrentHashMap.class, asyncCache, "values");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> ConcurrentHashMap<String, ?> getValueMapNonBlockingCache(AsyncCacheNonBlocking<String, T> asyncCache) {
         return get(ConcurrentHashMap.class, asyncCache, "values");
     }
 

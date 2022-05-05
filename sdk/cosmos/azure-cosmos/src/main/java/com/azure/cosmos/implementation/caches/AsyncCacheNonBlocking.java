@@ -168,6 +168,10 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             }
         }
 
+        public Mono<TValue> value() {
+            return value;
+        }
+
         public Mono<TValue> createAndWaitForBackgroundRefreshTaskAsync(Function<TValue, Mono<TValue>> createRefreshFunction) {
             Mono<TValue> valueMono = this.value;
             AtomicReference<TValue> originalValue = new AtomicReference<>();
