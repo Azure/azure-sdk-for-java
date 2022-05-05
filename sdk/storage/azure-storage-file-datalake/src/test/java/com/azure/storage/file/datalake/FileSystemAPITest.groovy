@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.common.Utility
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
@@ -497,6 +498,8 @@ class FileSystemAPITest extends APISpec {
         !fsc.getBlobContainerClient().exists()
     }
 
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
     def "Delete if exists file system that was already deleted"() {
         setup:
         def fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
