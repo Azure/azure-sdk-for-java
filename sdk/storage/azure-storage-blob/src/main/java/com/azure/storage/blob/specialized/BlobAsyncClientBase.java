@@ -130,7 +130,6 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public class BlobAsyncClientBase {
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
-    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     /**
      * Backing REST client for the blob client.
@@ -1280,8 +1279,7 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
-                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
-                    () -> response.getValue().timeout(TIMEOUT_VALUE),
+                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(() -> response.getValue(),
                     (throwable, offset) -> {
                         if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                             return Flux.error(throwable);
@@ -1305,7 +1303,7 @@ public class BlobAsyncClientBase {
                         try {
                             return downloadRange(
                                 new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context)
-                                .flatMapMany(r -> r.getValue().timeout(TIMEOUT_VALUE));
+                                .flatMapMany(StreamResponse::getValue);
                         } catch (Exception e) {
                             return Flux.error(e);
                         }

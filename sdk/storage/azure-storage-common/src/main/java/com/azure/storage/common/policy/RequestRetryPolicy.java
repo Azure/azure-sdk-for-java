@@ -70,8 +70,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * {@code maxTries} was exceeded or retries will not mitigate the issue.
      */
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
-                                            final HttpRequest originalRequest, final boolean considerSecondary,
-                                            final int primaryTry, final int attempt) {
+        final HttpRequest originalRequest, final boolean considerSecondary,
+        final int primaryTry, final int attempt) {
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
         final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
@@ -86,12 +86,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         }
 
         /*
-         Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
-         simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
-         stream, the buffers that were emitted will have already been consumed (their position set to their limit),
-         so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-         ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
-         duplicates the ByteBuffer object, not the underlying data.
+         * Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
+         * simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
+         * stream, the buffers that were emitted will have already been consumed (their position set to their limit),
+         * so it is not a true reset. By adding the map function, we ensure that anything which consumes the
+         * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
+         * duplicates the ByteBuffer object, not the underlying data.
          */
         context.setHttpRequest(originalRequest.copy());
         Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
@@ -108,100 +108,100 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             }
         }
         /*
-        Update the RETRY_COUNT_CONTEXT to log retries.
+         * Update the RETRY_COUNT_CONTEXT to log retries.
          */
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
 
         /*
-         We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
-         until after the retry backoff delay, so we call delaySubscription.
+         * We want to send the request with a given timeout, but we don't want to kick off that timeout-bound operation
+         * until after the retry backoff delay, so we call delaySubscription.
          */
-        return next.clone().process()
-            .timeout(this.requestRetryOptions.getTryTimeoutDuration())
-            .delaySubscription(Duration.ofMillis(delayMs))
-            .flatMap(response -> {
-                boolean newConsiderSecondary = considerSecondary;
-                String action;
-                int statusCode = response.getStatusCode();
 
-                    /*
-                    If attempt was against the secondary & it returned a StatusNotFound (404), then the
-                    resource was not found. This may be due to replication delay. So, in this case,
-                    we'll never try the secondary again for this operation.
-                     */
-                if (!tryingPrimary && statusCode == 404) {
-                    newConsiderSecondary = false;
-                    action = "Retry: Secondary URL returned 404";
-                } else if (statusCode == 503 || statusCode == 500) {
-                    action = "Retry: Temporary error or server timeout";
+        // Only apply the try timeout if it isn't Integer.MAX_VALUE seconds
+        Mono<HttpResponse> responseMono = next.clone().process();
+
+        if (requestRetryOptions.getTryTimeoutDuration().getSeconds() < Integer.MAX_VALUE) {
+            responseMono = responseMono.timeout(requestRetryOptions.getTryTimeoutDuration());
+        }
+
+        // Only delay subscription if the delay isn't 0 milliseconds.
+        if (delayMs > 0) {
+            responseMono = responseMono.delaySubscription(Duration.ofMillis(delayMs));
+        }
+
+        return responseMono.flatMap(response -> {
+            boolean newConsiderSecondary = considerSecondary;
+            int statusCode = response.getStatusCode();
+
+            /*
+             * If attempt was against the secondary & it returned a StatusNotFound (404), then the resource was not
+             * found. This may be due to replication delay. So, in this case, we'll never try the secondary again for
+             * this operation.
+             */
+            boolean shouldRetry = false;
+            if (!tryingPrimary && statusCode == 404) {
+                newConsiderSecondary = false;
+                shouldRetry = true;
+            } else if (statusCode == 503 || statusCode == 500) {
+                shouldRetry = true;
+            }
+
+            if (shouldRetry && attempt < requestRetryOptions.getMaxTries()) {
+                /*
+                 * We increment primaryTry if we are about to try the primary again (which is when we consider the
+                 * secondary and tried the secondary this time (tryingPrimary==false) or we do not consider the
+                 * secondary at all (considerSecondary==false)). This will ensure primaryTry is correct when passed to
+                 * calculate the delay.
+                 */
+                int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
+
+                Flux<ByteBuffer> responseBody = response.getBody();
+                if (responseBody == null) {
+                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                        attempt + 1);
                 } else {
-                    action = "NoRetry: Successful HTTP request";
+                    return response.getBody()
+                        .ignoreElements()
+                        .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                            attempt + 1));
                 }
 
-                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
-                        /*
-                        We increment primaryTry if we are about to try the primary again (which is when we
-                        consider the secondary and tried the secondary this time (tryingPrimary==false) or
-                        we do not consider the secondary at all (considerSecondary==false)). This will
-                        ensure primaryTry is correct when passed to calculate the delay.
-                         */
-                    int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
+            }
+            return Mono.just(response);
+        }).onErrorResume(throwable -> {
+            /*
+             * It is likely that many users will not realize that their Flux must be replayable and get an error upon
+             * retries when the provided data length does not match the length of the exact data. We cannot enforce the
+             * desired Flux behavior, so we provide a hint when this is likely the root cause.
+             */
+            if (throwable instanceof IllegalStateException && attempt > 1) {
+                return Mono.error(new IllegalStateException("The request failed because the size of the contents of "
+                    + "the provided Flux did not match the provided data size upon attempting to retry. This is likely "
+                    + "caused by the Flux not being replayable. To support retries, all Fluxes must produce the same "
+                    + "data for each subscriber. Please ensure this behavior.", throwable));
+            }
 
-                    Flux<ByteBuffer> responseBody = response.getBody();
-                    if (responseBody == null) {
-                        return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                            attempt + 1);
-                    } else {
-                        return response.getBody()
-                            .ignoreElements()
-                            .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                                attempt + 1));
-                    }
+            /*
+             * IOException is a catch-all for IO related errors. Technically it includes many types which may not be
+             * network exceptions, but we should not hit those unless there is a bug in our logic. In either case, it is
+             * better to optimistically retry instead of failing too soon. A Timeout Exception is a client-side timeout
+             * coming from Rx.
+             */
+            Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+            boolean shouldRetry = (unwrappedThrowable instanceof IOException
+                || unwrappedThrowable instanceof TimeoutException);
 
-                }
-                return Mono.just(response);
-            }).onErrorResume(throwable -> {
-                    /*
-                    It is likely that many users will not realize that their Flux must be replayable and
-                    get an error upon retries when the provided data length does not match the length of the exact
-                    data. We cannot enforce the desired Flux behavior, so we provide a hint when this is likely
-                    the root cause.
-                     */
-                if (throwable instanceof IllegalStateException && attempt > 1) {
-                    return Mono.error(new IllegalStateException("The request failed because the "
-                        + "size of the contents of the provided Flux did not match the provided "
-                        + "data size upon attempting to retry. This is likely caused by the Flux "
-                        + "not being replayable. To support retries, all Fluxes must produce the "
-                        + "same data for each subscriber. Please ensure this behavior.", throwable));
-                }
-
-                    /*
-                    IOException is a catch-all for IO related errors. Technically it includes many types which may
-                    not be network exceptions, but we should not hit those unless there is a bug in our logic. In
-                    either case, it is better to optimistically retry instead of failing too soon.
-                    A Timeout Exception is a client-side timeout coming from Rx.
-                     */
-                String action;
-                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-                if (unwrappedThrowable instanceof IOException) {
-                    action = "Retry: Network error";
-                } else if (unwrappedThrowable instanceof TimeoutException) {
-                    action = "Retry: Client timeout";
-                } else {
-                    action = "NoRetry: Unknown error";
-                }
-
-                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
-                        /*
-                        We increment primaryTry if we are about to try the primary again (which is when we
-                        consider the secondary and tried the secondary this time (tryingPrimary==false) or
-                        we do not consider the secondary at all (considerSecondary==false)). This will
-                        ensure primaryTry is correct when passed to calculate the delay.
-                         */
-                    int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1);
-                }
-                return Mono.error(throwable);
-            });
+            if (shouldRetry && attempt < requestRetryOptions.getMaxTries()) {
+                /*
+                 * We increment primaryTry if we are about to try the primary again (which is when we consider the
+                 * secondary and tried the secondary this time (tryingPrimary==false) or we do not consider the
+                 * secondary at all (considerSecondary==false)). This will ensure primaryTry is correct when passed to
+                 * calculate the delay.
+                 */
+                int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
+                return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1);
+            }
+            return Mono.error(throwable);
+        });
     }
 }

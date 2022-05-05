@@ -149,7 +149,6 @@ public class ShareFileAsyncClient {
     static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
     static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
     private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
-    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -900,10 +899,10 @@ public class ShareFileAsyncClient {
                 downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk).setRangeContentMd5Requested(false)
                     .setRequestConditions(requestConditions), context)
                 .map(ShareFileDownloadAsyncResponse::getValue)
-                .subscribeOn(Schedulers.elastic())
+                .subscribeOn(Schedulers.boundedElastic())
                 .flatMap(fbb -> FluxUtil
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                    .subscribeOn(Schedulers.elastic())
+                    .subscribeOn(Schedulers.boundedElastic())
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                         || throwable instanceof TimeoutException))))
@@ -1075,8 +1074,7 @@ public class ShareFileAsyncClient {
                     finalEnd = range.getEnd();
                 }
 
-                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
-                    () -> response.getValue().timeout(TIMEOUT_VALUE),
+                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(response::getValue,
                     (throwable, offset) -> {
                         if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                             return Flux.error(throwable);
@@ -1103,9 +1101,9 @@ public class ShareFileAsyncClient {
                                 requestConditions, context).flatMapMany(r -> {
                                     String receivedETag = ModelHelper.getETag(r.getHeaders());
                                     if (eTag != null && eTag.equals(receivedETag)) {
-                                        return r.getValue().timeout(TIMEOUT_VALUE);
+                                        return r.getValue();
                                     } else {
-                                        return Flux.<ByteBuffer>error(
+                                        return Flux.error(
                                             new ConcurrentModificationException(String.format("File has been modified "
                                                 + "concurrently. Expected eTag: %s, Received eTag: %s", eTag,
                                                 receivedETag)));
@@ -1117,7 +1115,7 @@ public class ShareFileAsyncClient {
                     },
                     retryOptions.getMaxRetryRequests(),
                     range.getStart()
-                ).switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
+                ).switchIfEmpty(Mono.fromSupplier(() -> ByteBuffer.wrap(new byte[0])));
 
                 return new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), bufferFlux, headers);
@@ -2936,8 +2934,7 @@ public class ShareFileAsyncClient {
     /**
      * Moves the file to another location within the share.
      * For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-file">Azure
-     * Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-file">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
