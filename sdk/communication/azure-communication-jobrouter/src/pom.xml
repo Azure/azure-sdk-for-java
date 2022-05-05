@@ -14,9 +14,9 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-jobrouter</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-jobrouter;current} -->
 
-  <name>Microsoft Azure client library for chat application</name>
+  <name>Microsoft Azure client library for JobRouter application</name>
   <description>
     This package contains a Java SDK for JobRouter Azure Communication Service.
     For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-jobrouter/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-jobrouter/CHANGELOG.md.
@@ -108,7 +108,7 @@
         <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <includes>
-            <include>com/azure/communication/chat/*.class</include>
+            <include>com/azure/communication/jobrouter/*.class</include>
           </includes>
         </configuration>
         <executions>
