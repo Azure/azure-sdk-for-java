@@ -44,6 +44,9 @@ public class CosmosSample {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSample.class);
 
+    /**
+     * The method to run the cosmos sample.
+     */
     public static void runSample() {
         System.out.println("\n================================================================");
         System.out.println(" Starting Cosmos Sample");
