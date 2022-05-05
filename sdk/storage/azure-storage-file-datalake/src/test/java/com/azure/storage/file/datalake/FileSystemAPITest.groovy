@@ -1,12 +1,11 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.util.Context
-import com.azure.core.util.DateTimeRfc1123
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.common.Utility
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
@@ -1505,9 +1504,24 @@ class FileSystemAPITest extends APISpec {
 //        filePath.getContentLength() // known issue with service
         !filePath.isDirectory()
         filePath.getCreationTime()
-        filePath.getExpiryTime()
 
         !response.hasNext()
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    def "List paths expiry"() {
+        setup:
+        def fileName = generatePathName()
+        def fileClient = fsc.getFileClient(fileName)
+        fileClient.create()
+        fileClient.scheduleDeletion(new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(2)))
+
+        when:
+        def response = fsc.listPaths().iterator()
+
+        then:
+        def filePath = response.next()
+        assert filePath.getExpiryTime()
     }
 
     def "List paths recursive"() {
