@@ -357,6 +357,7 @@ class ServiceAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs min"() {
         when:
         primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext()
@@ -366,6 +367,7 @@ class ServiceAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs query"() {
         setup:
         def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
@@ -395,6 +397,7 @@ class ServiceAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs marker"() {
         setup:
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
@@ -425,6 +428,7 @@ class ServiceAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs maxResults"() {
         setup:
         def NUM_BLOBS = 7
@@ -450,6 +454,7 @@ class ServiceAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs maxResults by page"() {
         setup:
         def NUM_BLOBS = 7
@@ -474,6 +479,7 @@ class ServiceAPITest extends APISpec {
         cc.delete()
     }
 
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs error"() {
         when:
         primaryBlobServiceClient.findBlobsByTags("garbageTag").streamByPage().count()
@@ -482,6 +488,7 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs anonymous"() {
         when:
         // Invalid query, but the anonymous check will fail before hitting the wire
@@ -492,6 +499,7 @@ class ServiceAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs with timeout still backed by PagedFlux"() {
         setup:
         def NUM_BLOBS = 5
@@ -754,6 +762,7 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats"() {
         setup:
         def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
@@ -774,6 +783,7 @@ class ServiceAPITest extends APISpec {
         }
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats min"() {
         setup:
         def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
@@ -782,6 +792,7 @@ class ServiceAPITest extends APISpec {
         serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats error"() {
         when:
         primaryBlobServiceClient.getStatistics()
@@ -790,6 +801,7 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats anonymous"() {
         when:
         anonymousClient.getStatistics()

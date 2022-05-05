@@ -1,17 +1,11 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.10.0-beta.1 (2022-05-06)
 
 ### Features Added
 - Added support for 2021-06-08 service version.
 - Added support for Customer Provided Keys.
 - Added creationTime and expiryTime fields to `PathItem`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 12.9.0 (2022-04-07)
 
