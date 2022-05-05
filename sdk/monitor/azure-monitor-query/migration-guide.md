@@ -82,15 +82,15 @@ In `azure-loganalytics`, logs can be queried synchronously as shown below:
 
 ```java
 String query = "Heartbeat | take 1";
-String workspaceId = "cab864ad-d0c1-496b-bc5e-4418315621bf";
+String workspaceId = "<workspace-id>";
 QueryResults queryResults = logAnalyticsClient.query(workspaceId, new QueryBody().withQuery(query));
 ```
 
 In `azure-monitor-query`, logs can be queried synchronously using the sync client as shown below:
 ```java
 String query = "Heartbeat | take 1";
-String workspaceId = "cab864ad-d0c1-496b-bc5e-4418315621bf";
-LogsQueryResult queryResults = client.queryWorkspace(workspaceId, query, QueryTimeInterval.ALL);
+String workspaceId = "<workspace-id>";
+LogsQueryResult queryResults = logsQueryClient.queryWorkspace(workspaceId, query, QueryTimeInterval.ALL);
 ```
 
 #### Query logs asynchronously
@@ -98,23 +98,23 @@ In `azure-loganalytics`, logs can be queried asynchronously as shown below:
 
 ```java
 String query = "Heartbeat | take 1";
-String workspaceId = "cab864ad-d0c1-496b-bc5e-4418315621bf";
+String workspaceId = "<workspace-id>";
 Observable<QueryResults> queryResultsObservable = logAnalyticsClient.queryAsync(workspaceId, new QueryBody().withQuery(query));
 queryResultsObservable.subscribe(queryResults -> {
             // process results
             queryResults.tables();
-        })
+        });
 ```
 
 In `azure-monitor-query`, logs can be queried synchronously using the sync client as shown below:
 ```java
 String query = "Heartbeat | take 1";
-String workspaceId = "cab864ad-d0c1-496b-bc5e-4418315621bf";
-Mono<LogsQueryResult> queryResultsMono = asyncClient.queryWorkspace(workspaceId, query, QueryTimeInterval.ALL);
+String workspaceId = "<workspace-id>";
+Mono<LogsQueryResult> queryResultsMono = logsQueryAsyncClient.queryWorkspace(workspaceId, query, QueryTimeInterval.ALL);
 queryResultsMono.subscribe(queryResult -> {
             // process results
             queryResult.getAllTables();
-        })
+        });
 ```
 
 ## Additional samples
