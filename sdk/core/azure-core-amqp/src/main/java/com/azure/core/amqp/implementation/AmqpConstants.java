@@ -19,5 +19,7 @@ public final class AmqpConstants {
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 
-    public static final Symbol CLIENT_IDENTIFIER = Symbol.getSymbol(AmqpConstants.VENDOR + ":receiver-name");
+    public static final Symbol CLIENT_IDENTIFIER = Symbol.getSymbol(VENDOR + ":client-identifier");
+
+    public static final Symbol CLIENT_RECEIVER_IDENTIFIER = Symbol.getSymbol(VENDOR + ":receiver-name");
 }

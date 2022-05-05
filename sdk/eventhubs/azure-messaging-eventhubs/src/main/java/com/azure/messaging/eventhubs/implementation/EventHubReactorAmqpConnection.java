@@ -30,7 +30,7 @@ import reactor.core.scheduler.Scheduler;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.CLIENT_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CLIENT_IDENTIFIER_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.ENTITY_PATH_KEY;
 
@@ -111,7 +111,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             .flatMap(session -> {
                 logger.atVerbose()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(CLIENT_ID_KEY, clientIdentifier)
+                    .addKeyValue(CLIENT_IDENTIFIER_KEY, clientIdentifier)
                     .log("Get or create producer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
                 return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy, clientIdentifier);
@@ -136,7 +136,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             .flatMap(session -> {
                 logger.atVerbose()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(CLIENT_ID_KEY, clientIdentifier)
+                    .addKeyValue(CLIENT_IDENTIFIER_KEY, clientIdentifier)
                     .log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 

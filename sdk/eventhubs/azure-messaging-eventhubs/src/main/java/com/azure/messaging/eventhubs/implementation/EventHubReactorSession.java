@@ -37,6 +37,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_RECEIVER_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 
 /**
@@ -106,7 +107,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         if (options.getOwnerLevel() != null) {
             properties.put(EPOCH, options.getOwnerLevel());
         }
-        properties.put(CLIENT_IDENTIFIER, clientIdentifier);
+        properties.put(CLIENT_RECEIVER_IDENTIFIER, clientIdentifier);
 
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
             ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}

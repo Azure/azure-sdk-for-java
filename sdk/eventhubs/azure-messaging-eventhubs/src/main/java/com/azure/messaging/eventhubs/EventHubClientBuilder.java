@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -24,7 +25,6 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.IdentifierTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -53,7 +53,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -149,8 +148,7 @@ public class EventHubClientBuilder implements
     ConnectionStringTrait<EventHubClientBuilder>,
     AzureSasCredentialTrait<EventHubClientBuilder>,
     AmqpTrait<EventHubClientBuilder>,
-    ConfigurationTrait<EventHubClientBuilder>,
-    IdentifierTrait<EventHubClientBuilder> {
+    ConfigurationTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -199,7 +197,7 @@ public class EventHubClientBuilder implements
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
     private URL customEndpointAddress;
-    private String identifier;
+    private AmqpClientOptions amqpClientOptions = new AmqpClientOptions();
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -269,11 +267,12 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the amqp client options.
+     * @param amqpClientOptions The amqp client options.
+     * @return The updated {@link EventHubClientBuilder} object.
      */
-    @Override
-    public EventHubClientBuilder identifier(String identifier) {
-        this.identifier =  Objects.requireNonNull(identifier, "'identifier' cannot be null.");
+    public EventHubClientBuilder amqpClientOptions(AmqpClientOptions amqpClientOptions) {
+        this.amqpClientOptions =  Objects.requireNonNull(amqpClientOptions, "'identifier' cannot be null.");
         return this;
     }
 
@@ -827,7 +826,7 @@ public class EventHubClientBuilder implements
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose,
-            Objects.isNull(this.identifier) ? UUID.randomUUID().toString() : this.identifier);
+            this.amqpClientOptions.getIdentifier());
     }
 
     /**

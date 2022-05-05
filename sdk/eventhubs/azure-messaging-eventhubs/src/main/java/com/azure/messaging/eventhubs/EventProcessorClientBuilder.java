@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
@@ -13,7 +14,6 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.IdentifierTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -109,8 +109,7 @@ public class EventProcessorClientBuilder implements
     ConnectionStringTrait<EventProcessorClientBuilder>,
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
     AmqpTrait<EventProcessorClientBuilder>,
-    ConfigurationTrait<EventProcessorClientBuilder>,
-    IdentifierTrait<EventProcessorClientBuilder> {
+    ConfigurationTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval. Balancing interval should account for latency between the client
      * and the storage account.
@@ -240,11 +239,12 @@ public class EventProcessorClientBuilder implements
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the amqp client options.
+     * @param amqpClientOptions The amqp client options.
+     * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    @Override
-    public EventProcessorClientBuilder identifier(String identifier) {
-        this.eventHubClientBuilder.identifier(identifier);
+    public EventProcessorClientBuilder amqpClientOptions(AmqpClientOptions amqpClientOptions) {
+        this.eventHubClientBuilder.amqpClientOptions(amqpClientOptions);
         return this;
     }
 

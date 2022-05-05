@@ -54,6 +54,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_RECEIVER_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -596,7 +597,7 @@ public class ReactorSession implements AmqpSession {
         final Target target = new Target();
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
-            final String clientIdentifier = (String) receiverProperties.get(CLIENT_IDENTIFIER);
+            final String clientIdentifier = (String) receiverProperties.get(CLIENT_RECEIVER_IDENTIFIER);
             if (!CoreUtils.isNullOrEmpty(clientIdentifier)) {
                 target.setAddress(clientIdentifier);
             }
