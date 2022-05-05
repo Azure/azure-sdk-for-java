@@ -436,6 +436,11 @@ public class CosmosAsyncContainer {
     /***
      *  Best effort to initializes the container by warming up the caches and connections for the current read region.
      *
+     *  Depending on how many partitions the container has, the total time needed will also change. But generally you can use the following formula
+     *  to get an estimated time:
+     *  If it took 200ms to establish a connection, and you have 100 partitions in your container
+     *  then it will take around (100 * 4 / CPUCores) * 200ms to open all connections after get the address list
+     *
      *  <p>
      *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
      *  <br>In case of any transient error, caller should consume the error and continue the regular workload.

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConfigsBuilder;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -109,6 +110,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 false,
                 null,
                 null,
+                ConnectionPolicy.getDefaultPolicy(),
                 null);
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
@@ -146,6 +148,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             false,
                                                             null,
                                                             null,
+                                                            ConnectionPolicy.getDefaultPolicy(),
                                                             null);
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
@@ -194,6 +197,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             false,
                                                             null,
                                                             null,
+                                                            ConnectionPolicy.getDefaultPolicy(),
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -235,6 +239,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             true,
             null,
             null,
+            ConnectionPolicy.getDefaultPolicy(),
             null);
 
         RxDocumentServiceRequest req =
@@ -308,6 +313,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             false,
                                                             null,
                                                             null,
+                                                            ConnectionPolicy.getDefaultPolicy(),
                                                             openConnectionsHandler);
 
         String collectionRid = createdCollection.getResourceId();
@@ -372,6 +378,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             false,
                                                             null,
                                                             null,
+                                                            ConnectionPolicy.getDefaultPolicy(),
                                                             openConnectionsHandler);
 
         String collectionRid = createdCollection.getResourceId();
@@ -440,6 +447,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 false,
                                                                 null,
                                                                 null,
+                                                                 ConnectionPolicy.getDefaultPolicy(),
                                                                  openConnectionsHandler);
 
         String collectionRid = createdCollection.getResourceId();
@@ -553,6 +561,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             false,
                                                             null,
                                                             null,
+                                                            ConnectionPolicy.getDefaultPolicy(),
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -604,6 +613,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             false,
                                                             null,
                                                             null,
+                                                            ConnectionPolicy.getDefaultPolicy(),
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -654,6 +664,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             false,
                                                             null,
                                                             null,
+                                                            ConnectionPolicy.getDefaultPolicy(),
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -711,6 +722,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 false,
                                                                 ApiType.SQL,
                                                                 null,
+                                                                ConnectionPolicy.getDefaultPolicy(),
                                                                 null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
@@ -808,6 +820,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 false,
                                                                 null,
                                                                 null,
+                                                                ConnectionPolicy.getDefaultPolicy(),
                                                                 null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);

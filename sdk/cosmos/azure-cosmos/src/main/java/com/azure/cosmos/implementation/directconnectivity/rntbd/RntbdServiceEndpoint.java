@@ -683,7 +683,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         synchronized void logAllPools() {
             try {
-                logger.debug("Total number of RntbdClientChannelPool [{}].", provider.endpoints.size());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Total number of RntbdClientChannelPool [{}].", provider.endpoints.size());
+                }
+
                 for (RntbdEndpoint endpoint : provider.endpoints.values()) {
                     logEndpoint(endpoint);
                 }

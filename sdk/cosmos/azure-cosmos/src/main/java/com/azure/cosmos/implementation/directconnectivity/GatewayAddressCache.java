@@ -7,7 +7,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -77,10 +79,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final static int DefaultSuboptimalPartitionForceRefreshIntervalInSeconds = 600;
     private final DiagnosticsClientContext clientContext;
-    private final ServiceConfig serviceConfig = ServiceConfig.getInstance();
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
-    private final URI serviceEndpoint;
     private final URI addressEndpoint;
 
     private final AsyncCache<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
@@ -102,6 +102,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
     private final GlobalEndpointManager globalEndpointManager;
     private IOpenConnectionsHandler openConnectionsHandler;
+    private final ConnectionPolicy connectionPolicy;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -114,6 +115,7 @@ public class GatewayAddressCache implements IAddressCache {
         boolean tcpConnectionEndpointRediscoveryEnabled,
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
+        ConnectionPolicy connectionPolicy,
         IOpenConnectionsHandler openConnectionsHandler) {
 
         this.clientContext = clientContext;
@@ -125,7 +127,6 @@ public class GatewayAddressCache implements IAddressCache {
             throw new IllegalStateException(e);
         }
         this.tokenProvider = tokenProvider;
-        this.serviceEndpoint = serviceEndpoint;
         this.serverPartitionAddressCache = new AsyncCache<>();
         this.suboptimalServerPartitionTimestamps = new ConcurrentHashMap<>();
         this.suboptimalMasterPartitionTimestamp = Instant.MAX;
@@ -158,6 +159,7 @@ public class GatewayAddressCache implements IAddressCache {
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
         this.openConnectionsHandler = openConnectionsHandler;
+        this.connectionPolicy = connectionPolicy;
     }
 
     public GatewayAddressCache(
@@ -170,6 +172,7 @@ public class GatewayAddressCache implements IAddressCache {
         boolean tcpConnectionEndpointRediscoveryEnabled,
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
+        ConnectionPolicy connectionPolicy,
         IOpenConnectionsHandler openConnectionsHandler) {
         this(clientContext,
                 serviceEndpoint,
@@ -181,6 +184,7 @@ public class GatewayAddressCache implements IAddressCache {
                 tcpConnectionEndpointRediscoveryEnabled,
                 apiType,
                 globalEndpointManager,
+                connectionPolicy,
                 openConnectionsHandler);
     }
 
@@ -869,7 +873,7 @@ public class GatewayAddressCache implements IAddressCache {
             endIndex = Math.min(endIndex, partitionKeyRangeIdentities.size());
 
             tasks.add(
-                    this.getServerAddressesViaGatewayAsync(
+                    this.getServerAddressesViaGatewayWithRetry(
                             request,
                             collection.getResourceId(),
                             partitionKeyRangeIdentities
@@ -908,6 +912,21 @@ public class GatewayAddressCache implements IAddressCache {
                                 return Flux.empty();
                             });
                 });
+    }
+
+    private Mono<List<Address>> getServerAddressesViaGatewayWithRetry(
+            RxDocumentServiceRequest request,
+            String collectionRid,
+            List<String> partitionKeyRangeIds,
+            boolean forceRefresh) {
+
+        OpenConnectionAndInitCachesRetryPolicy openConnectionAndInitCachesRetryPolicy =
+                new OpenConnectionAndInitCachesRetryPolicy(this.connectionPolicy.getThrottlingRetryOptions());
+
+        return BackoffRetryUtility.executeRetry(
+                () -> this.getServerAddressesViaGatewayAsync(request, collectionRid, partitionKeyRangeIds, forceRefresh),
+                openConnectionAndInitCachesRetryPolicy);
+
     }
 
     private boolean notAllReplicasAvailable(AddressInformation[] addressInformations) {

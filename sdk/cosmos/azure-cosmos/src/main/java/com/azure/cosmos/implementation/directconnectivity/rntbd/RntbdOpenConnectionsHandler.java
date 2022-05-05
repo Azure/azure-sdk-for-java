@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
@@ -50,7 +50,11 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                         if (this.openConnectionsSemaphore.tryAcquire(DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES, TimeUnit.MINUTES)) {
                             return this.transportClient.openConnection(addressUri)
                                     .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
-                                    .doOnNext(response -> logger.info("{} for address {}", response.isConnected(), response.getUri()))
+                                    .doOnNext(response -> {
+                                        if (logger.isDebugEnabled()) {
+                                            logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
+                                        }
+                                    })
                                     .doOnTerminate(() -> this.openConnectionsSemaphore.release());
                         }
 
