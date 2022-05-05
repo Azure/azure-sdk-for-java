@@ -28,6 +28,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Retry
 import spock.lang.Unroll
@@ -410,6 +411,7 @@ class SasClientTests extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "container sas filter blobs"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -440,6 +442,7 @@ class SasClientTests extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "container sas filter blobs fail"() {
         setup:
         def permissions = new BlobContainerSasPermission()

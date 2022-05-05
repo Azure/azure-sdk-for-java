@@ -1825,6 +1825,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs min"() {
         when:
         cc.findBlobsByTags("\"key\"='value'").iterator().hasNext()
@@ -1834,6 +1835,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs query"() {
         setup:
         def blobClient = cc.getBlobClient(generateBlobName())
@@ -1859,6 +1861,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs marker"() {
         setup:
         def tags = Collections.singletonMap(tagKey, tagValue)
@@ -1885,6 +1888,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs maxResults"() {
         setup:
         def NUM_BLOBS = 7
@@ -1906,6 +1910,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs maxResults by page"() {
         setup:
         def NUM_BLOBS = 7
@@ -1926,6 +1931,7 @@ class ContainerAPITest extends APISpec {
         }
     }
 
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs error"() {
         when:
         cc.findBlobsByTags("garbageTag").streamByPage().count()
@@ -1935,6 +1941,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly // There is a service bug that will cause this test to fail
     def "Find blobs with timeout still backed by PagedFlux"() {
         setup:
         def NUM_BLOBS = 5
