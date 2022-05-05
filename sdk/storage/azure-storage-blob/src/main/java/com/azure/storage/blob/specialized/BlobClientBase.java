@@ -728,8 +728,10 @@ public class BlobClientBase {
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStream(OutputStream)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public void download(OutputStream stream) {
         downloadStream(stream);
     }
@@ -820,8 +822,10 @@ public class BlobClientBase {
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
