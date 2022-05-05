@@ -783,6 +783,7 @@ class ServiceAPITest extends APISpec {
         }
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats min"() {
         setup:
         def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
@@ -791,6 +792,7 @@ class ServiceAPITest extends APISpec {
         serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats error"() {
         when:
         primaryBlobServiceClient.getStatistics()
@@ -799,6 +801,7 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @PlaybackOnly // There is a fix in core that will be picked up with the next patch release
     def "Get stats anonymous"() {
         when:
         anonymousClient.getStatistics()
