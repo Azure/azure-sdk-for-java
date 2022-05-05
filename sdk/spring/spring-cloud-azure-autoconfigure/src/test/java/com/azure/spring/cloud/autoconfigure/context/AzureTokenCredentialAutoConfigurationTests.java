@@ -40,7 +40,6 @@ import java.time.Duration;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -279,7 +278,7 @@ class AzureTokenCredentialAutoConfigurationTests {
                 assertThat(context).hasSingleBean(TokenCredential.class);
 
                 TokenCredential tokenCredential = context.getBean(TokenCredential.class);
-                assertInstanceOf(DefaultAzureCredential.class, tokenCredential);
+                assertTrue(tokenCredential instanceof DefaultAzureCredential);
                 assertEquals(builderFactory.getDefaultTokenCredential(), tokenCredential);
             });
     }
