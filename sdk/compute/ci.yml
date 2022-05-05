@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/compute/ci.yml
+      - sdk/compute/azure-resourcemanager-compute-generated/
+    exclude:
+      - sdk/compute/pom.xml
+      - sdk/compute/azure-resourcemanager-compute-generated/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/compute/ci.yml
+      - sdk/compute/azure-resourcemanager-compute-generated/
+    exclude:
+      - sdk/compute/pom.xml
+      - sdk/compute/azure-resourcemanager-compute-generated/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: compute
+    Artifacts:
+      - name: azure-resourcemanager-compute-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercomputegenerated
