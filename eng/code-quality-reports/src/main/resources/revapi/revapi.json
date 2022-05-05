@@ -241,6 +241,12 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
+        },
+        {
+          "regex": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "new": "field com.google.gson.FieldNamingPolicy.(LOWER_CASE_WITH_DASHES|LOWER_CASE_WITH_DOTS|LOWER_CASE_WITH_UNDERSCORES)",
+          "justification": "Fix core-ci"
         }
       ]
     }
