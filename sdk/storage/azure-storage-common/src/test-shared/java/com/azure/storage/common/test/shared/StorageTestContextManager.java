@@ -17,7 +17,7 @@ public final class StorageTestContextManager extends TestContextManager {
     /**
      * Constructs a {@link TestContextManager} based on the test method.
      *
-     * @param testMethod Test method being ran.
+     * @param testMethod Test method being run.
      * @param testMode The {@link TestMode} the test is running in.
      * @param testName Name of the test.
      */
@@ -29,11 +29,6 @@ public final class StorageTestContextManager extends TestContextManager {
 
     @Override
     public String getTestName() {
-        return testName;
-    }
-
-    @Override
-    public String getTestPlaybackRecordingName() {
         return testName;
     }
 }

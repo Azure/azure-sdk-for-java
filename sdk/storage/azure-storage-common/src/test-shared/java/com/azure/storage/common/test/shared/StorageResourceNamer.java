@@ -3,10 +3,11 @@
 
 package com.azure.storage.common.test.shared;
 
-import com.azure.core.test.TestContextManager;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.utils.TestResourceNamer;
 
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Locale;
@@ -17,11 +18,12 @@ public class StorageResourceNamer {
     private final TestResourceNamer testResourceNamer;
     private final String resourcePrefix;
 
-    public StorageResourceNamer(TestContextManager testContextManager, RecordedData recordedData) {
-        Objects.requireNonNull(testContextManager.getTestName());
-        Objects.requireNonNull(testContextManager.getTestMode());
-        resourcePrefix = getCrc32(testContextManager.getTestName());
-        testResourceNamer = new TestResourceNamer(testContextManager, recordedData);
+    public StorageResourceNamer(String testName, TestMode testMode, Method testMethod, RecordedData recordedData) {
+        Objects.requireNonNull(testName);
+        Objects.requireNonNull(testMethod);
+        resourcePrefix = getCrc32(testName);
+        testResourceNamer = new TestResourceNamer(new StorageTestContextManager(testMethod, testMode, resourcePrefix),
+            recordedData);
     }
 
     public String getResourcePrefix() {

@@ -42,10 +42,11 @@ class StorageSpec extends Specification {
 
     def setup() {
         def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration())
-        def testContextManager = new StorageTestContextManager((Method) specificationContext.getCurrentFeature().getFeatureMethod().getReflection(),
-            ENVIRONMENT.testMode, testName)
+        def testMethod = specificationContext.getCurrentFeature().getFeatureMethod().getReflection() as Method
+        def testContextManager = new StorageTestContextManager(testMethod, ENVIRONMENT.testMode, testName)
         interceptorManager = new InterceptorManager(testContextManager)
-        namer = new StorageResourceNamer(testContextManager, interceptorManager.getRecordedData())
+        namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, testMethod,
+            interceptorManager.getRecordedData())
         LOGGER.info("Test {} will use {} resource prefix.", testName, namer.resourcePrefix)
     }
 
