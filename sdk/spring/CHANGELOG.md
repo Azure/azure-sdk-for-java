@@ -10,8 +10,9 @@
 - GA the `spring-cloud-azure-starter-keyvault-certificates`. This starter supports the auto-configuration of Azure Key Vault `CertificateClient` and `CertificateAsyncClient`. 
 
 ### Bugs Fixed
-- Fix the bean 'AzureTokenCredentialAutoConfiguration' initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
+- Fix the bean `AzureTokenCredentialAutoConfiguration` initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
 - Fix incorrect bean name `staticStorageBlobConnectionStringProvider` in the auto-configuration of `AzureStorageFileShareAutoConfiguration` [#28464](https://github.com/Azure/azure-sdk-for-java/issues/28464).
+- Fix application startup issue by changing property names in configuration metadata from camel-case to kebab-case [#28312](https://github.com/Azure/azure-sdk-for-java/issues/28312).
 
 ### Spring Cloud Azure Dependencies (BOM)
 #### Dependency Updates
