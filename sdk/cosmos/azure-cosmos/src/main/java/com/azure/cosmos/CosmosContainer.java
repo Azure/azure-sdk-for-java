@@ -816,17 +816,4 @@ public class CosmosContainer {
             }
         }
     }
-
-    private String blockOpenConnectionResponse(Mono<String> openConnectionMono) {
-        try {
-            return openConnectionMono.block();
-        } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw Exceptions.propagate(ex);
-            }
-        }
-    }
 }
