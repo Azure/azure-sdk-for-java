@@ -194,7 +194,7 @@ class ServiceBusReceiverAsyncClientTest {
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, "Some-Session",
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID,
                 null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
@@ -315,7 +315,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxLockRenewDuration = Duration.ofMinutes(1);
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
-                false, "Some-Session", null), connectionProcessor,
+                false, SESSION_ID, null), connectionProcessor,
             CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
@@ -568,7 +568,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AzureException("some error occurred.")));
 
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, "Some-Session",
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID,
             null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
@@ -1036,6 +1036,16 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Get null session id for non-session receiver and gets valid session id for a session receiver.
+     */
+    @Test
+    void getSessionIdTests() {
+        // Act & Assert
+        Assertions.assertNull(receiver.getSessionId(), "Non-null session Id for a non-session receiver");
+        Assertions.assertEquals(SESSION_ID, sessionReceiver.getSessionId());
+    }
+
+    /**
      * Verifies that we can renew a session state.
      */
     @Test
@@ -1249,7 +1259,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken3 = "token3";
 
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
-            true, "Some-Session", null);
+            true, SESSION_ID, null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
