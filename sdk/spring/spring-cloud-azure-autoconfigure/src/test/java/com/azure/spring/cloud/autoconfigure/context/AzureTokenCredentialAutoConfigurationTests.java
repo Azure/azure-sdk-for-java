@@ -355,7 +355,7 @@ class AzureTokenCredentialAutoConfigurationTests {
         private TokenCredential defaultTokenCredential;
         private AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver;
 
-        public CosmosClientBuilderFactoryExt(CosmosClientProperties cosmosClientProperties) {
+        CosmosClientBuilderFactoryExt(CosmosClientProperties cosmosClientProperties) {
             super(cosmosClientProperties);
         }
 
