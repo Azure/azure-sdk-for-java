@@ -53,7 +53,7 @@ public final class PipelineRunsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientPipel")
-    private interface PipelineRunsService {
+    public interface PipelineRunsService {
         @Post("/queryPipelineRuns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

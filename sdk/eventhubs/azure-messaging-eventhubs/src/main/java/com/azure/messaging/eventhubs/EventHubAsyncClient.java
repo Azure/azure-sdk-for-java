@@ -25,7 +25,7 @@ import java.util.Objects;
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 class EventHubAsyncClient implements Closeable {
-    private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
     private final EventHubConnectionProcessor connectionProcessor;
     private final Scheduler scheduler;
@@ -127,7 +127,7 @@ class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
 
         if (consumerGroup.isEmpty()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
 

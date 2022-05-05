@@ -27,7 +27,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * context of a specific consumer group.
  */
 class EventHubPartitionAsyncConsumer implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final AmqpReceiveLinkProcessor amqpReceiveLinkProcessor;
@@ -75,7 +75,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 if (offset != null) {
                     currentOffset = offset;
                 } else {
-                    logger.atWarning()
+                    LOGGER.atWarning()
                         .addKeyValue(PARTITION_ID_KEY,  event.getPartitionContext().getPartitionId())
                         .addKeyValue(CONSUMER_GROUP_KEY, event.getPartitionContext().getConsumerGroup())
                         .addKeyValue("data", () -> event.getData().getBodyAsString())
@@ -94,7 +94,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 // cancel only if the processor is not already terminated.
                 amqpReceiveLinkProcessor.cancel();
             }
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue(PARTITION_ID_KEY, this.partitionId)
                 .log("Closed consumer.");
         }

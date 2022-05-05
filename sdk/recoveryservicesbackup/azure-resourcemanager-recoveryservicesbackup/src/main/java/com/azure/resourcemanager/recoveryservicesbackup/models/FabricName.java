@@ -27,7 +27,11 @@ public final class FabricName extends ExpandableStringEnum<FabricName> {
         return fromString(name, FabricName.class);
     }
 
-    /** @return known FabricName values. */
+    /**
+     * Gets known FabricName values.
+     *
+     * @return known FabricName values.
+     */
     public static Collection<FabricName> values() {
         return values(FabricName.class);
     }

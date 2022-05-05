@@ -53,7 +53,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusReceiverClient implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClient.class);
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
@@ -357,7 +357,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
@@ -404,7 +404,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
@@ -452,13 +452,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         } else if (Objects.isNull(maxWaitTime)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new NullPointerException("'maxWaitTime' cannot be null."));
         } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
@@ -577,12 +577,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final String lockToken = message != null ? message.getLockToken() : "null";
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> logger.atWarning().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Exception occurred while renewing lock token.", error);
+            : error -> LOGGER.atWarning().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Exception occurred while renewing lock token.", error);
 
         asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
-            v -> logger.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
+            v -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
             throwableConsumer,
-            () -> logger.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Auto message lock renewal operation completed"));
+            () -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Auto message lock renewal operation completed"));
     }
 
     /**
@@ -754,7 +754,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             messageSubscriber.queueWork(work);
         }
 
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(WORK_ID_KEY, work.getId())
             .log("Receive request queued up.");
     }
@@ -762,12 +762,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> logger.atWarning().addKeyValue(SESSION_ID_KEY, sessionId).log("Exception occurred while renewing session.", error);
+            : error -> LOGGER.atWarning().addKeyValue(SESSION_ID_KEY, sessionId).log("Exception occurred while renewing session.", error);
 
         asyncClient.renewSessionLock(maxLockRenewalDuration).subscribe(
-            v -> logger.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
+            v -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
             throwableConsumer,
-            () -> logger.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
+            () -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
     }
 
     void setSessionState(String sessionId, byte[] sessionState) {

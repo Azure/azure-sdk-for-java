@@ -121,7 +121,7 @@ public class EventProcessorClientBuilder implements
      */
     public static final Duration DEFAULT_OWNERSHIP_EXPIRATION_INTERVAL = Duration.ofMinutes(2);
 
-    private final ClientLogger logger = new ClientLogger(EventProcessorClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventProcessorClientBuilder.class);
 
     private final EventHubClientBuilder eventHubClientBuilder;
     private String consumerGroup;
@@ -484,7 +484,7 @@ public class EventProcessorClientBuilder implements
     public EventProcessorClientBuilder loadBalancingUpdateInterval(Duration loadBalancingUpdateInterval) {
         Objects.requireNonNull(loadBalancingUpdateInterval, "'loadBalancingUpdateInterval' cannot be null");
         if (loadBalancingUpdateInterval.isZero() || loadBalancingUpdateInterval.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'loadBalancingUpdateInterval' "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'loadBalancingUpdateInterval' "
                 + "should be a positive duration"));
         }
         this.loadBalancingUpdateInterval = loadBalancingUpdateInterval;
@@ -506,7 +506,7 @@ public class EventProcessorClientBuilder implements
         Objects.requireNonNull(partitionOwnershipExpirationInterval, "'partitionOwnershipExpirationInterval' cannot "
             + "be null");
         if (partitionOwnershipExpirationInterval.isZero() || partitionOwnershipExpirationInterval.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionOwnershipExpirationInterval' "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionOwnershipExpirationInterval' "
                 + "should be a positive duration"));
         }
         this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
@@ -567,7 +567,7 @@ public class EventProcessorClientBuilder implements
     public EventProcessorClientBuilder processEvent(Consumer<EventContext> processEvent, Duration maxWaitTime) {
         this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         if (maxWaitTime != null && maxWaitTime.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
         }
         this.maxWaitTime = maxWaitTime;
         return this;
@@ -627,10 +627,10 @@ public class EventProcessorClientBuilder implements
     public EventProcessorClientBuilder processEventBatch(Consumer<EventBatchContext> processEventBatch,
         int maxBatchSize, Duration maxWaitTime) {
         if (maxBatchSize <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'maxBatchSize' should be greater than 0"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxBatchSize' should be greater than 0"));
         }
         if (maxWaitTime != null && maxWaitTime.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
         }
         this.processEventBatch = Objects.requireNonNull(processEventBatch, "'processEventBatch' cannot be null");
         this.maxBatchSize = maxBatchSize;
@@ -735,12 +735,12 @@ public class EventProcessorClientBuilder implements
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
 
         if (processEvent == null && processEventBatch == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Either processEvent or processEventBatch "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Either processEvent or processEventBatch "
                 + "has to be set"));
         }
 
         if (processEvent != null && processEventBatch != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Both processEvent and processEventBatch "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both processEvent and processEventBatch "
                 + "cannot be set"));
         }
 

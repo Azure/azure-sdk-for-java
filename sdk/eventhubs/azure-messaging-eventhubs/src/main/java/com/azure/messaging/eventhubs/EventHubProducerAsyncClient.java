@@ -184,7 +184,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS = new CreateBatchOptions();
 
-    private final ClientLogger logger = new ClientLogger(EventHubProducerAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
@@ -297,7 +297,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         final String partitionKey = options.getPartitionKey();
@@ -306,13 +306,13 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         if (!CoreUtils.isNullOrEmpty(partitionKey)
             && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
                 "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
                     + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
                 partitionKey, partitionId)));
         } else if (!CoreUtils.isNullOrEmpty(partitionKey)
             && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
                 "Partition key '%s' exceeds the maximum allowed length: '%s'.", partitionKey,
                 MAX_PARTITION_KEY_LENGTH)));
         }
@@ -325,7 +325,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         : MAX_MESSAGE_LENGTH_BYTES;
 
                     if (batchMaxSize > maximumLinkSize) {
-                        return monoError(logger,
+                        return monoError(LOGGER,
                             new IllegalArgumentException(String.format(Locale.US,
                                 "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
                                 batchMaxSize, maximumLinkSize)));
@@ -355,7 +355,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     Mono<Void> send(EventData event) {
         if (event == null) {
-            return monoError(logger, new NullPointerException("'event' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'event' cannot be null."));
         }
 
         return send(Flux.just(event));
@@ -377,9 +377,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     Mono<Void> send(EventData event, SendOptions options) {
         if (event == null) {
-            return monoError(logger, new NullPointerException("'event' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'event' cannot be null."));
         } else if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         return send(Flux.just(event), options);
@@ -415,7 +415,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(Iterable<EventData> events) {
         if (events == null) {
-            return monoError(logger, new NullPointerException("'events' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'events' cannot be null."));
         }
 
         return send(Flux.fromIterable(events));
@@ -453,9 +453,9 @@ public class EventHubProducerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
-            return monoError(logger, new NullPointerException("'events' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         return send(Flux.fromIterable(events), options);
@@ -471,7 +471,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     Mono<Void> send(Flux<EventData> events) {
         if (events == null) {
-            return monoError(logger, new NullPointerException("'events' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'events' cannot be null."));
         }
 
         return send(events, DEFAULT_SEND_OPTIONS);
@@ -488,9 +488,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     Mono<Void> send(Flux<EventData> events, SendOptions options) {
         if (events == null) {
-            return monoError(logger, new NullPointerException("'events' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'events' cannot be null."));
         } else if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         return sendInternal(events, options).publishOn(scheduler);
@@ -508,24 +508,24 @@ public class EventHubProducerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(EventDataBatch batch) {
         if (batch == null) {
-            return monoError(logger, new NullPointerException("'batch' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {
-            logger.warning(Messages.CANNOT_SEND_EVENT_BATCH_EMPTY);
+            LOGGER.warning(Messages.CANNOT_SEND_EVENT_BATCH_EMPTY);
             return Mono.empty();
         }
 
         if (!CoreUtils.isNullOrEmpty(batch.getPartitionId())) {
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue("size", batch.getCount())
                 .addKeyValue(PARTITION_ID_KEY, batch.getPartitionId())
                 .log("Sending batch.");
         } else if (!CoreUtils.isNullOrEmpty(batch.getPartitionKey())) {
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue("size", batch.getCount())
                 .addKeyValue(PARTITION_KEY_KEY, batch.getPartitionKey())
                 .log("Sending batch.");
         } else {
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue("size", batch.getCount())
                 .log("Sending batch to be distributed round-robin in service.");
         }
@@ -593,7 +593,7 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         if (!CoreUtils.isNullOrEmpty(partitionKey)
             && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
                 "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
                     + " other can be used. partitionKey: '%s'. partitionId: '%s'",
                 partitionKey, partitionId)));
@@ -618,7 +618,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             .flatMap(this::send)
             .then()
             .doOnError(error -> {
-                logger.error(Messages.ERROR_SENDING_BATCH, error);
+                LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
             });
     }
 

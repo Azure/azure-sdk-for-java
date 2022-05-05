@@ -89,6 +89,7 @@ class EventHubProducerAsyncClientTest {
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final String ENTITY_PATH = HOSTNAME + Configuration.getGlobalConfiguration()
         .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
 
     @Mock
     private AmqpSendLink sendLink;
@@ -113,7 +114,6 @@ class EventHubProducerAsyncClientTest {
     @Captor
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
-    private final ClientLogger logger = new ClientLogger(EventHubProducerAsyncClient.class);
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
@@ -242,7 +242,7 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         final Mono<Instant> saveAction = Mono.delay(Duration.ofMillis(500))
             .then(Mono.fromCallable(() -> {
-                logger.info("This is saved.");
+                LOGGER.info("This is saved.");
                 return Instant.now();
             }));
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
@@ -264,13 +264,13 @@ class EventHubProducerAsyncClientTest {
         final Mono<Instant> sendMono = flexibleProducer.send(testData, options).thenReturn(Instant.now());
 
         sendMono.subscribe(e -> {
-            logger.info("Saving message: {}", e);
+            LOGGER.info("Saving message: {}", e);
 
             // This block here should throw an IllegalStateException if we aren't publishing correctly.
             final Instant result = saveAction.block(Duration.ofSeconds(3));
 
             Assertions.assertNotNull(result);
-            logger.info("Message saved: {}", result);
+            LOGGER.info("Message saved: {}", result);
             semaphore.release();
         });
 

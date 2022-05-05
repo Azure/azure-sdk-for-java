@@ -30,7 +30,11 @@ public final class RetentionScheduleFormat extends ExpandableStringEnum<Retentio
         return fromString(name, RetentionScheduleFormat.class);
     }
 
-    /** @return known RetentionScheduleFormat values. */
+    /**
+     * Gets known RetentionScheduleFormat values.
+     *
+     * @return known RetentionScheduleFormat values.
+     */
     public static Collection<RetentionScheduleFormat> values() {
         return values(RetentionScheduleFormat.class);
     }

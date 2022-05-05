@@ -5,15 +5,19 @@
 ### Features Added
 - Added identifier to client. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
 
+- `EventData.setBodyAsBinaryData` is exposed.
+
 ### Breaking Changes
+
+- `EventData` extends from `MessageContent`.
 
 ### Bugs Fixed
 
 ### Other Changes
 
-## 5.11.2 (2022-04-11)
+#### Dependency Updates
 
-### Other Changes
+## 5.11.2 (2022-04-11)
 
 ### Other Changes
 

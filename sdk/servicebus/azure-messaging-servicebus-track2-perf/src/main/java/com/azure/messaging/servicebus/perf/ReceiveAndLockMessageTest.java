@@ -20,7 +20,7 @@ import java.util.UUID;
  * Performance test.
  */
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
     private final String messageContent;
 
@@ -62,7 +62,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         }
 
         if (count <= 0) {
-            throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
+            throw LOGGER.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
         }
     }
 

@@ -339,11 +339,12 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = properties.getFileChangeTimeString();
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getDirectories()
-            .createWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
-                null, metadata, filePermission, filePermissionKey,
+            .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareDirectoryAsyncClient::createWithRestResponse);
     }
@@ -719,11 +720,12 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = properties.getFileChangeTimeString();
 
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, filePermission, filePermissionKey,
+            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareDirectoryAsyncClient::setPropertiesResponse);
     }
@@ -1210,10 +1212,12 @@ public class ShareDirectoryAsyncClient {
             String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
             String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
             String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+            String fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
             smbInfo = new CopyFileSmbInfo()
                 .setFileAttributes(fileAttributes)
                 .setFileCreationTime(fileCreationTime)
                 .setFileLastWriteTime(fileLastWriteTime)
+                .setFileChangeTime(fileChangeTime)
                 .setIgnoreReadOnly(options.isIgnoreReadOnly());
         }
 
