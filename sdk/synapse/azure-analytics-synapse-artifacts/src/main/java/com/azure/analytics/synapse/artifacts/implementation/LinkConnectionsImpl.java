@@ -63,7 +63,7 @@ public final class LinkConnectionsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientLinkC")
-    private interface LinkConnectionsService {
+    public interface LinkConnectionsService {
         @Get("/linkconnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

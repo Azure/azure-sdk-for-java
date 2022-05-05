@@ -57,7 +57,7 @@ public final class CallConnectionsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCa")
-    private interface CallConnectionsService {
+    public interface CallConnectionsService {
         @Post("/calling/callConnections")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

@@ -198,7 +198,7 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.added",
+          "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
           "justification": "These are SDK metadata annotations and don't affect runtime behavior."
@@ -247,6 +247,13 @@
           "code": "java.field.enumConstantOrderChanged",
           "new": "field com.google.gson.FieldNamingPolicy.(LOWER_CASE_WITH_DASHES|LOWER_CASE_WITH_DOTS|LOWER_CASE_WITH_UNDERSCORES)",
           "justification": "Fix core-ci"
+         },
+        {
+          "code": "java.class.nonFinalClassInheritsFromNewClass",
+          "old": "class com.azure.messaging.eventhubs.EventData",
+          "new": "class com.azure.messaging.eventhubs.EventData",
+          "superClass": "com.azure.core.models.MessageContent",
+          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
         }
       ]
     }

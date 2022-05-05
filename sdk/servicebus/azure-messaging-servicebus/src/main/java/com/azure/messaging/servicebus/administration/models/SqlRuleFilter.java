@@ -24,6 +24,8 @@ import java.util.Objects;
  * @see RuleProperties#setFilter(RuleFilter)
  */
 public class SqlRuleFilter extends RuleFilter {
+    private static final ClientLogger LOGGER = new ClientLogger(SqlRuleFilter.class);
+
     private final Map<String, Object> properties = new HashMap<>();
     private final String sqlExpression;
     private final String compatibilityLevel;
@@ -38,12 +40,10 @@ public class SqlRuleFilter extends RuleFilter {
      * @throws IllegalArgumentException if {@code sqlExpression} is an empty string.
      */
     public SqlRuleFilter(String sqlExpression) {
-        final ClientLogger logger = new ClientLogger(SqlRuleFilter.class);
-
         if (sqlExpression == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'sqlExpression' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'sqlExpression' cannot be null."));
         } else if (sqlExpression.isEmpty()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'sqlExpression' cannot be an empty string."));
         }
 

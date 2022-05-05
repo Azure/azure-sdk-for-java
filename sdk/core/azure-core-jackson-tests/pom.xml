@@ -47,10 +47,6 @@
     </developer>
   </developers>
 
-  <properties>
-    <jackson.version>2.12.4</jackson.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

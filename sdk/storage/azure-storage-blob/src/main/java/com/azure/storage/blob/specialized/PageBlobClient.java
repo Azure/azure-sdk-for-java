@@ -8,6 +8,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
@@ -18,13 +20,16 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.PageRangeItem;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
-import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.ListPageRangesDiffOptions;
+import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -637,8 +642,10 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * @param blobRange {@link BlobRange}
      * @return The information of the cleared pages.
+     * @deprecated See {@link #listPageRanges(BlobRange)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public PageList getPageRanges(BlobRange blobRange) {
         return getPageRangesWithResponse(blobRange, null, null, Context.NONE).getValue();
     }
@@ -670,12 +677,84 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the page ranges.
+     * @deprecated See {@link #listPageRanges(ListPageRangesOptions,Duration,Context)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
             .getPageRangesWithResponse(blobRange, requestConditions, context), timeout);
+    }
+
+    /**
+     * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.listPageRanges#BlobRange -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * String prevSnapshot = &quot;previous snapshot&quot;;
+     * PagedIterable&lt;PageRangeItem&gt; iterable = client.listPageRanges&#40;blobRange&#41;;
+     *
+     * for &#40;PageRangeItem item : iterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.listPageRanges#BlobRange -->
+     *
+     * @param blobRange {@link BlobRange}
+     *
+     * @return A reactive response containing the information of the cleared pages.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedIterable<PageRangeItem> listPageRanges(BlobRange blobRange) {
+        return listPageRanges(new ListPageRangesOptions(blobRange), null, null);
+    }
+
+    /**
+     * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#ListPageRangesOptions-Duration-Context -->
+     * <pre>
+     * ListPageRangesOptions options = new ListPageRangesOptions&#40;new BlobRange&#40;offset&#41;&#41;
+     *     .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setMaxResultsPerPage&#40;1000&#41;;
+     *
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PagedIterable&lt;PageRangeItem&gt; iter = client
+     *     .listPageRanges&#40;options, timeout, context&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRangeItem item : iter&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#ListPageRangesOptions-Duration-Context -->
+     *
+     * @param options {@link ListPageRangesOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting all the page ranges.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedIterable<PageRangeItem> listPageRanges(ListPageRangesOptions options, Duration timeout,
+        Context context) {
+        return new PagedIterable<>(
+            // pull timeout out of options
+            new PagedFlux<>(
+                pageSize -> pageBlobAsyncClient.listPageRangesWithOptionalTimeout(
+                    options, timeout, context).apply(null, pageSize),
+                (continuationToken, pageSize) -> pageBlobAsyncClient.listPageRangesWithOptionalTimeout(
+                    options, timeout, context).apply(continuationToken, pageSize)));
     }
 
     /**
@@ -703,8 +782,10 @@ public final class PageBlobClient extends BlobClientBase {
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
      * @return All the different page ranges.
+     * @deprecated See {@link #listPageRangesDiff(BlobRange, String)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public PageList getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, null, Context.NONE).getValue();
     }
@@ -742,13 +823,92 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
+     * @deprecated See {@link #listPageRanges(ListPageRangesOptions,Duration,Context)} )}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient
                 .getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, requestConditions, context),
             timeout);
+    }
+
+    /**
+     * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.listPageRangesDiff#BlobRange-String -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * String prevSnapshot = &quot;previous snapshot&quot;;
+     * PagedIterable&lt;PageRangeItem&gt; iterable = client.listPageRangesDiff&#40;blobRange, prevSnapshot&#41;;
+     *
+     * for &#40;PageRangeItem item : iterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.listPageRangesDiff#BlobRange-String -->
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
+     * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
+     * long as the snapshot specified by prevsnapshot is the older of the two.
+     *
+     * @return A reactive response emitting all the different page ranges.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedIterable<PageRangeItem> listPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+        return listPageRangesDiff(new ListPageRangesDiffOptions(blobRange, prevSnapshot), null, null);
+    }
+
+    /**
+     * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#ListPageRangesDiffOptions-Duration-Context -->
+     * <pre>
+     * ListPageRangesDiffOptions options = new ListPageRangesDiffOptions&#40;new BlobRange&#40;offset&#41;, &quot;previous snapshot&quot;&#41;
+     *     .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setMaxResultsPerPage&#40;1000&#41;;
+     *
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PagedIterable&lt;PageRangeItem&gt; iter = client
+     *     .listPageRangesDiff&#40;options, timeout, context&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRangeItem item : iter&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#ListPageRangesDiffOptions-Duration-Context -->
+     *
+     * @param options {@link ListPageRangesDiffOptions}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response emitting all the different page ranges.
+     *
+     * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedIterable<PageRangeItem> listPageRangesDiff(ListPageRangesDiffOptions options, Duration timeout,
+        Context context) {
+        return new PagedIterable<>(
+            // pull timeout out of options
+            new PagedFlux<>(
+                pageSize -> pageBlobAsyncClient.listPageRangesDiffWithOptionalTimeout(
+                    options, timeout, context).apply(null, pageSize),
+                (continuationToken, pageSize) -> pageBlobAsyncClient.listPageRangesDiffWithOptionalTimeout(
+                    options, timeout, context).apply(continuationToken, pageSize)));
     }
 
     /**
