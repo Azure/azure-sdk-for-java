@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContain
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectionContainersImpl implements ProtectionContainers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionContainersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectionContainersImpl.class);
 
     private final ProtectionContainersClient innerClient;
 
@@ -93,14 +92,14 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
     public ProtectionContainerResource getById(String id) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,14 +107,14 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,14 +128,14 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
     public Response<ProtectionContainerResource> getByIdWithResponse(String id, Context context) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,14 +143,14 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

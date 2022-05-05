@@ -45,7 +45,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
-    private final ClientLogger logger = new ClientLogger(EventHubReactorSession.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubReactorSession.class);
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -125,7 +125,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             try {
                 ms = Long.toString(eventPosition.getEnqueuedDateTime().toEpochMilli());
             } catch (ArithmeticException ex) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
                     "Event position for enqueued DateTime could not be parsed. Value: '%s'",
                     eventPosition.getEnqueuedDateTime()), ex));
             }
@@ -134,6 +134,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
                 ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
         }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException("No starting position was set."));
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("No starting position was set."));
     }
 }

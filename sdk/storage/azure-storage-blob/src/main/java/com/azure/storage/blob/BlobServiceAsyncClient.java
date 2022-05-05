@@ -386,13 +386,13 @@ public final class BlobServiceAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      * <pre>
-     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      *
@@ -415,9 +415,13 @@ public final class BlobServiceAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
      * <pre>
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *     .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
      *

@@ -45,7 +45,7 @@ public final class MetadataConfigurationsImpl {
      */
     @Host("{instanceUrl}")
     @ServiceInterface(name = "AttestationClientMet")
-    private interface MetadataConfigurationsService {
+    public interface MetadataConfigurationsService {
         @Get("/.well-known/openid-configuration")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

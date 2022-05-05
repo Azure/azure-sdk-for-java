@@ -60,7 +60,7 @@ public final class SparkJobDefinitionsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSpark")
-    private interface SparkJobDefinitionsService {
+    public interface SparkJobDefinitionsService {
         @Get("/sparkJobDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

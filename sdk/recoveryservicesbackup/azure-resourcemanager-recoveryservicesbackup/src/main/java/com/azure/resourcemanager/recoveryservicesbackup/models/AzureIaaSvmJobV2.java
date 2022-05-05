@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AzureIaaSVMJobV2")
 @Fluent
 public final class AzureIaaSvmJobV2 extends Job {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSvmJobV2.class);
-
     /*
      * Gets or sets the state/actions applicable on this job like cancel/retry.
      */
