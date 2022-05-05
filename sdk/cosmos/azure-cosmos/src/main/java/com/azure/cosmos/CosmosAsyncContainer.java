@@ -1646,8 +1646,8 @@ public class CosmosAsyncContainer {
      * <pre>
      * ThroughputControlGroupConfig groupConfig =
      *     new ThroughputControlGroupConfigBuilder&#40;&#41;
-     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
-     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .targetThroughputThreshold&#40;0.1&#41;
      *         .build&#40;&#41;;
      *
      * container.enableLocalThroughputControlGroup&#40;groupConfig&#41;;
@@ -1670,8 +1670,8 @@ public class CosmosAsyncContainer {
      * <pre>
      * ThroughputControlGroupConfig groupConfig =
      *     new ThroughputControlGroupConfigBuilder&#40;&#41;
-     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
-     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .targetThroughputThreshold&#40;0.1&#41;
      *         .build&#40;&#41;;
      *
      * GlobalThroughputControlConfig globalControlConfig =
