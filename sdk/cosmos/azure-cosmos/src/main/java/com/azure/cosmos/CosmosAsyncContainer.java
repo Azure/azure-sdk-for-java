@@ -445,6 +445,8 @@ public class CosmosAsyncContainer {
      *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
      *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
      *  </p>
+     *
+     *  @return Mono of Void.
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
