@@ -1,8 +1,6 @@
 # Guide for migrating to `azure-monitor-query` from `azure-loganalytics`
 
-This guide is intended to assist in migrating from `azure-loganalytics` to `azure-monitor-query`. It will focus on side-by-side comparisons for similar operations between the two packages.
-
-We assume that you are familiar with the old SDK `azure-loganalytics`. If not, please refer to the new SDK README for [azure-monitor-query][README] directly rather than this migration guide.
+This guide assists in migrating from `azure-loganalytics` to `azure-monitor-query`. 
 
 ## Migration benefits
 
@@ -21,7 +19,7 @@ In addition to the improved development experience, the new `azure-monitor-query
 both logs and metrics while the `azure-loganalytics` library only supported querying logs. The new library also includes additional capabilities for querying logs like executing a batch of queries, 
 setting the server timeout, getting the visualization information and statistics for a query.
 
-Another key difference is that `azure-loganalytics` only has a preview release which is not recommended to be used in production environment.
+Another key difference is that `azure-loganalytics` only has a preview release which is not recommended for use in production environment.
 The `azure-monitor-query` has a stable version release and the latest stable version can be found in the [README][README]. 
 
 ### Cross Service SDK improvements
