@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 import java.util.List;
 
+/** An immutable client-side representation of an Azure Spring Service Registry. */
 @Fluent
 public interface SpringServiceRegistry
     extends ExternalChildResource<SpringServiceRegistry, SpringService>,

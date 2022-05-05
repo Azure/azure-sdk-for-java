@@ -273,11 +273,11 @@ public class SpringServiceImpl
             this.addPostRunDependent(monitoringSettingTask);
         }
         if (isEnterpriseTier()) {
+            if (configurationServiceConfig.needCreateOrUpdate()) {
+                prepareCreateOrUpdateConfigurationService();
+                configurationServiceConfig.clearUpdate();
+            }
             if (isInCreateMode()) {
-                if (configurationServiceConfig.needUpdate()) {
-                    prepareCreateOrUpdateConfigurationService();
-                    configurationServiceConfig.clearUpdate();
-                }
                 prepareCreateServiceRegistry();
             }
         }
@@ -444,7 +444,7 @@ public class SpringServiceImpl
         private boolean update;
         private boolean clearRepositories;
 
-        boolean needUpdate() {
+        boolean needCreateOrUpdate() {
             return update;
         }
 

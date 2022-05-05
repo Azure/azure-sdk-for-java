@@ -72,6 +72,23 @@ public class EnterpriseTierTest extends AppPlatformTest {
 
         // config2 is cleared
         Assertions.assertNull(springService.getDefaultConfigurationService().getGitRepository("config2"));
+
+        // begin with no default configuration service, then create it
+        String serviceName2 = generateRandomResourceName("springsvc", 15);
+        SpringService springService2 = appPlatformManager.springServices()
+            .define(serviceName2)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withEnterpriseTierSku()
+            .create();
+        Assertions.assertNull(springService2.getDefaultConfigurationService());
+
+        springService2.update()
+            .withGitRepository("config2", GIT_CONFIG_URI, "master", filePatterns)
+            .apply();
+
+        Assertions.assertNotNull(springService2.getDefaultConfigurationService());
+        Assertions.assertNotNull(springService2.getDefaultConfigurationService().getGitRepository("config2"));
     }
 
     @Test

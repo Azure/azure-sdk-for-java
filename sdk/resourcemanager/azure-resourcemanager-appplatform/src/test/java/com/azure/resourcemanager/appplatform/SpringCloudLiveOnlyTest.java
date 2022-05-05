@@ -249,12 +249,10 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         Region region = Region.US_EAST;
 
-        List<String> configFilePatterns = Arrays.asList("api-gateway", "customers-service");
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEnterpriseTierSku()
-            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns)
             .create();
 
         String deploymentName = generateRandomResourceName("deploy", 15);
@@ -278,6 +276,11 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
         String jvmOptions = deployment.jvmOptions();
         Assertions.assertEquals(jvmOptions, "-DskipTests=true");
+
+        List<String> configFilePatterns = Arrays.asList("api-gateway", "customers-service");
+        service.update()
+            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns)
+            .apply();
 
         deployment.update()
             .withConfigFilePatterns(apiGatewayConfigFilePatterns)
