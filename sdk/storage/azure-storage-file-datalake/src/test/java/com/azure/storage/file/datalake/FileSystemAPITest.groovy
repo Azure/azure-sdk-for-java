@@ -1492,8 +1492,6 @@ class FileSystemAPITest extends APISpec {
         dirPath.getPermissions()
 //        dirPath.getContentLength() // known issue with service
         dirPath.isDirectory()
-        dirPath.getCreationTime()
-        !dirPath.getExpiryTime()
 
         response.hasNext()
         def filePath = response.next()
@@ -1505,14 +1503,16 @@ class FileSystemAPITest extends APISpec {
         filePath.getPermissions()
 //        filePath.getContentLength() // known issue with service
         !filePath.isDirectory()
-        filePath.getCreationTime()
 
         !response.hasNext()
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    def "List paths expiry"() {
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "List paths expiry and creation"() {
         setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
         def fileName = generatePathName()
         def fileClient = fsc.getFileClient(fileName)
         fileClient.create()
@@ -1522,8 +1522,14 @@ class FileSystemAPITest extends APISpec {
         def response = fsc.listPaths().iterator()
 
         then:
+        def dirPath = response.next()
+        dirPath.getName() == dirName
+        dirPath.getCreationTime()
+        !dirPath.getExpiryTime()
+
         def filePath = response.next()
-        assert filePath.getExpiryTime()
+        filePath.getExpiryTime()
+        filePath.getCreationTime()
     }
 
     def "List paths recursive"() {
