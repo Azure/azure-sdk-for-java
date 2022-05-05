@@ -20,8 +20,6 @@ import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import reactor.core.publisher.Flux;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -75,24 +73,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#download()}
-     *
-     * @throws UncheckedIOException If an I/O error occurs
-     */
-    public void downloadCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.download
-        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-        client.download().subscribe(piece -> {
-            try {
-                downloadData.write(piece.array());
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        });
-        // END: com.azure.storage.blob.BlobAsyncClient.download
-    }
-
-    /**
      * Code snippets for {@link BlobAsyncClient#downloadContent()}
      *
      * @throws UncheckedIOException If an I/O error occurs
@@ -103,30 +83,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             System.out.printf("Downloaded %s", data.toString());
         });
         // END: com.azure.storage.blob.BlobAsyncClient.downloadContent
-    }
-
-    /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, DownloadRetryOptions,
-     * BlobRequestConditions, boolean)}
-     *
-     * @throws UncheckedIOException If an I/O error occurs
-     */
-    public void downloadWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean
-        BlobRange range = new BlobRange(1024, 2048L);
-        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
-
-        client.downloadWithResponse(range, options, null, false).subscribe(response -> {
-            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.getValue().subscribe(piece -> {
-                try {
-                    downloadData.write(piece.array());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            });
-        });
-        // END: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean
     }
 
     /**
@@ -261,30 +217,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedRequestConditions, blobRequestConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromUrlWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions
-    }
-
-    /**
-     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, DownloadRetryOptions,
-     * BlobRequestConditions, boolean)}
-     *
-     * @throws UncheckedIOException If an I/O error occurs
-     */
-    public void downloadWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean
-        BlobRange range = new BlobRange(1024, (long) 2048);
-        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
-
-        client.downloadWithResponse(range, options, null, false).subscribe(response -> {
-            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.getValue().subscribe(piece -> {
-                try {
-                    downloadData.write(piece.array());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            });
-        });
-        // END: com.azure.storage.blob.BlobAsyncClient.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean
     }
 
     /**
