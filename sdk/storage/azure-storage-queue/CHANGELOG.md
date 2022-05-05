@@ -3,6 +3,7 @@
 ## 12.13.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2021-06-08 service version.
 
 ### Breaking Changes
 
