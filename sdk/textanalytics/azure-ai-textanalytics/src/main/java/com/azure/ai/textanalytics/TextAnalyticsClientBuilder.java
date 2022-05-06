@@ -262,14 +262,14 @@ public final class TextAnalyticsClientBuilder implements
 
             return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
         } else {
-            final MicrosoftCognitiveLanguageServiceImpl syncApiTextAnalyticsClient =
+            final MicrosoftCognitiveLanguageServiceImpl batchApiTextAnalyticsClient =
                 new MicrosoftCognitiveLanguageServiceImplBuilder()
                     .endpoint(endpoint)
                     .apiVersion(serviceVersion.getVersion())
                     .pipeline(pipeline)
                     .buildClient();
 
-            return new TextAnalyticsAsyncClient(syncApiTextAnalyticsClient, serviceVersion,
+            return new TextAnalyticsAsyncClient(batchApiTextAnalyticsClient, serviceVersion,
                 defaultCountryHint, defaultLanguage);
         }
     }
@@ -549,7 +549,6 @@ public final class TextAnalyticsClientBuilder implements
         this.version = version;
         return this;
     }
-
 
     private boolean isConsolidatedServiceVersion(TextAnalyticsServiceVersion serviceVersion) {
         if (serviceVersion == null) {

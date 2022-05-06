@@ -91,6 +91,11 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
         return this.entityRelations;
     }
 
+    /**
+     * Gets the value of FHIR Bundle. See more information in https://www.hl7.org/fhir/overview.html.
+     *
+     * @return The value of FHIR Bundle.
+     */
     public Map<String, Object> getFhirBundle() {
         return this.fhirBundle;
     }

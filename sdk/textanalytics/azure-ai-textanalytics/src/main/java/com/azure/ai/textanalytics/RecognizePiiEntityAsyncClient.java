@@ -42,23 +42,17 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create a {@link RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
-     * recognize Personally Identifiable Information entity endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl service) {
-        this.service = service;
-        this.languageSyncApiService = null;
+    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
     }
 
     RecognizePiiEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
-        this.service = null;
-        this.languageSyncApiService = service;
+        this.legacyService = null;
+        this.service = service;
     }
 
     /**
@@ -158,8 +152,8 @@ class RecognizePiiEntityAsyncClient {
 
         final String finalDomainFilter = options.getDomainFilter() != null
                                              ? options.getDomainFilter().toString() : null;
-        if (languageSyncApiService != null) {
-            return languageSyncApiService
+        if (service != null) {
+            return service
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextPiiEntitiesRecognitionInput()
                                .setParameters(
@@ -186,7 +180,7 @@ class RecognizePiiEntityAsyncClient {
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return service.entitiesRecognitionPiiWithResponseAsync(
+        return legacyService.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             finalModelVersion,
             finalIncludeStatistics,

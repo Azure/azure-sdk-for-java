@@ -41,23 +41,17 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizeLinkedEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizeLinkedEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create a {@link RecognizeLinkedEntityAsyncClient} that sends requests to the Text Analytics services's recognize
-     * linked entity endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl service) {
-        this.service = service;
-        this.languageSyncApiService = null;
+    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
     }
 
     RecognizeLinkedEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
-        this.service = null;
-        this.languageSyncApiService = service;
+        this.legacyService = null;
+        this.service = service;
     }
 
     /**
@@ -149,8 +143,8 @@ class RecognizeLinkedEntityAsyncClient {
         final String finalModelVersion = options.getModelVersion();
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
-        if (languageSyncApiService != null) {
-            return languageSyncApiService
+        if (service != null) {
+            return service
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextEntityLinkingInput()
                                .setParameters(
@@ -171,7 +165,7 @@ class RecognizeLinkedEntityAsyncClient {
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return service.entitiesLinkingWithResponseAsync(
+        return legacyService.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             finalModelVersion,
             finalIncludeStatistics,

@@ -178,21 +178,21 @@ class AnalyzeActionsAsyncClient {
             CUSTOM_MULTI_CLASSIFICATION_TASKS);
 
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final AnalyzeTextsImpl languageAsyncApiService;
+    private final TextAnalyticsClientImpl legacyService;
+    private final AnalyzeTextsImpl service;
     private static final Pattern PATTERN;
     static {
         PATTERN = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
     }
 
-    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl service) {
-        this.service = service;
-        this.languageAsyncApiService = null;
+    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
     }
 
     AnalyzeActionsAsyncClient(AnalyzeTextsImpl service) {
-        this.service = null;
-        this.languageAsyncApiService = service;
+        this.legacyService = null;
+        this.service = service;
     }
 
     PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
@@ -205,7 +205,7 @@ class AnalyzeActionsAsyncClient {
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
-            if (languageAsyncApiService != null) {
+            if (service != null) {
                 final AnalyzeTextJobsInput analyzeTextJobsInput =
                     new AnalyzeTextJobsInput()
                         .setDisplayName(actions.getDisplayName())
@@ -215,7 +215,7 @@ class AnalyzeActionsAsyncClient {
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
-                        languageAsyncApiService.submitJobWithResponseAsync(analyzeTextJobsInput, finalContext)
+                        service.submitJobWithResponseAsync(analyzeTextJobsInput, finalContext)
                             .map(analyzeResponse -> {
                                 final AnalyzeActionsOperationDetail textAnalyticsOperationResult =
                                     new AnalyzeActionsOperationDetail();
@@ -225,7 +225,7 @@ class AnalyzeActionsAsyncClient {
                                             analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                                 return textAnalyticsOperationResult;
                             })),
-                    pollingOperationLanguageApi(operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
+                    pollingOperationLanguageApi(operationId -> service.jobStatusWithResponseAsync(operationId,
                         finalIncludeStatistics, null, null, finalContext)),
                     (pollingContext, pollResponse) -> Mono.just(pollingContext.getLatestResponse().getValue()),
                     fetchingOperation(
@@ -242,7 +242,7 @@ class AnalyzeActionsAsyncClient {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
-                    service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
+                    legacyService.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
                         .map(analyzeResponse -> {
                             final AnalyzeActionsOperationDetail textAnalyticsOperationResult =
                                 new AnalyzeActionsOperationDetail();
@@ -251,7 +251,7 @@ class AnalyzeActionsAsyncClient {
                                     parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
                         })),
-                pollingOperation(operationId -> service.analyzeStatusWithResponseAsync(operationId.toString(),
+                pollingOperation(operationId -> legacyService.analyzeStatusWithResponseAsync(operationId.toString(),
                     finalIncludeStatistics, null, null, finalContext)),
                 (pollingContext, activationResponse) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
@@ -278,11 +278,11 @@ class AnalyzeActionsAsyncClient {
             analyzeBatchInput.setDisplayName(actions.getDisplayName());
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
-            if (languageAsyncApiService != null) {
+            if (service != null) {
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
-                        languageAsyncApiService.submitJobWithResponseAsync(
+                        service.submitJobWithResponseAsync(
                             new AnalyzeTextJobsInput()
                                 .setDisplayName(actions.getDisplayName())
                                 .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
@@ -295,7 +295,7 @@ class AnalyzeActionsAsyncClient {
                                     parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                                 return operationDetail;
                             })),
-                    pollingOperationLanguageApi(operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
+                    pollingOperationLanguageApi(operationId -> service.jobStatusWithResponseAsync(operationId,
                         finalIncludeStatistics, null, null, finalContext)),
                     (activationResponse, pollingContext) ->
                         Mono.error(new RuntimeException("Cancellation is not supported.")),
@@ -308,7 +308,7 @@ class AnalyzeActionsAsyncClient {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
-                    service.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
+                    legacyService.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
                         .map(analyzeResponse -> {
                             final AnalyzeActionsOperationDetail operationDetail =
                                 new AnalyzeActionsOperationDetail();
@@ -316,7 +316,7 @@ class AnalyzeActionsAsyncClient {
                                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return operationDetail;
                         })),
-                pollingOperation(operationId -> service.analyzeStatusWithResponseAsync(operationId.toString(),
+                pollingOperation(operationId -> legacyService.analyzeStatusWithResponseAsync(operationId.toString(),
                     finalIncludeStatistics, null, null, finalContext)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
@@ -818,23 +818,23 @@ class AnalyzeActionsAsyncClient {
             final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
             final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
 
-            if (languageAsyncApiService != null) {
-                return languageAsyncApiService.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
+            if (service != null) {
+                return service.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
                     context)
                     .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }
-            return service.analyzeStatusWithResponseAsync(operationId.toString(), showStatsValue, topValue, skipValue,
+            return legacyService.analyzeStatusWithResponseAsync(operationId.toString(), showStatsValue, topValue, skipValue,
                 context)
                 .map(this::toAnalyzeActionsResultPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } else {
-            if (languageAsyncApiService != null) {
-                return languageAsyncApiService.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
+            if (service != null) {
+                return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
                     .map(this::toAnalyzeActionsResultPagedResponseLanguageApi)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }
-            return service.analyzeStatusWithResponseAsync(operationId.toString(), showStats, top, skip, context)
+            return legacyService.analyzeStatusWithResponseAsync(operationId.toString(), showStats, top, skip, context)
                 .map(this::toAnalyzeActionsResultPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }

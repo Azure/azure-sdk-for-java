@@ -66,23 +66,17 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class AnalyzeHealthcareEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeHealthcareEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final AnalyzeTextsImpl languageAsyncApiService;
+    private final TextAnalyticsClientImpl legacyService;
+    private final AnalyzeTextsImpl service;
 
-    /**
-     * Create an {@link AnalyzeHealthcareEntityAsyncClient} that sends requests to the Text Analytics service's
-     * healthcare LRO endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl service) {
-        this.service = service;
-        this.languageAsyncApiService = null;
+    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
     }
 
     AnalyzeHealthcareEntityAsyncClient(AnalyzeTextsImpl service) {
-        this.service = null;
-        this.languageAsyncApiService = service;
+        this.legacyService = null;
+        this.service = service;
     }
 
     PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
@@ -98,11 +92,11 @@ class AnalyzeHealthcareEntityAsyncClient {
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
 
-            if (languageAsyncApiService != null) {
+            if (service != null) {
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
-                        languageAsyncApiService.submitJobWithResponseAsync(
+                        service.submitJobWithResponseAsync(
                             new AnalyzeTextJobsInput()
                                 .setAnalysisInput(
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
@@ -121,10 +115,10 @@ class AnalyzeHealthcareEntityAsyncClient {
                                 return operationDetail;
                             })),
                     pollingOperationTextJob(
-                        operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
+                        operationId -> service.jobStatusWithResponseAsync(operationId,
                             finalIncludeStatistics, null, null, finalContext)),
                     cancelOperationTextJob(
-                        operationId -> languageAsyncApiService.cancelJobWithResponseAsync(operationId, finalContext)),
+                        operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
                     fetchingOperationTextJob(
                         operationId -> Mono.just(getHealthcareEntitiesPagedFlux(operationId, null, null,
                             finalIncludeStatistics, finalContext)))
@@ -134,7 +128,7 @@ class AnalyzeHealthcareEntityAsyncClient {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
-                    service.healthWithResponseAsync(
+                    legacyService.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                         finalModelVersion,
                         finalStringIndexType,
@@ -147,9 +141,9 @@ class AnalyzeHealthcareEntityAsyncClient {
                                 parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                             return operationDetail;
                         })),
-                pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId,
+                pollingOperation(operationId -> legacyService.healthStatusWithResponseAsync(operationId,
                     null, null, finalIncludeStatistics, finalContext)),
-                cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
+                cancelOperation(operationId -> legacyService.cancelHealthJobWithResponseAsync(operationId, finalContext)),
                 fetchingOperation(operationId -> Mono.just(getHealthcareEntitiesPagedFlux(operationId,
                     null, null, finalIncludeStatistics, finalContext)))
             );
@@ -171,11 +165,11 @@ class AnalyzeHealthcareEntityAsyncClient {
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
 
-            if (languageAsyncApiService != null) {
+            if (service != null) {
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
-                        languageAsyncApiService.submitJobWithResponseAsync(
+                        service.submitJobWithResponseAsync(
                             new AnalyzeTextJobsInput()
                                 .setAnalysisInput(
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
@@ -194,10 +188,10 @@ class AnalyzeHealthcareEntityAsyncClient {
                                 return operationDetail;
                             })),
                     pollingOperationTextJob(
-                        operationId -> languageAsyncApiService.jobStatusWithResponseAsync(operationId,
+                        operationId -> service.jobStatusWithResponseAsync(operationId,
                             finalIncludeStatistics, null, null, finalContext)),
                     cancelOperationTextJob(
-                        operationId -> languageAsyncApiService.cancelJobWithResponseAsync(operationId, finalContext)),
+                        operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
                     fetchingOperationIterable(
                         operationId -> Mono.just(new AnalyzeHealthcareEntitiesPagedIterable(
                             getHealthcareEntitiesPagedFlux(operationId, null, null,
@@ -208,7 +202,7 @@ class AnalyzeHealthcareEntityAsyncClient {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
-                    service.healthWithResponseAsync(
+                    legacyService.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                         finalModelVersion,
                         finalStringIndexType,
@@ -221,9 +215,9 @@ class AnalyzeHealthcareEntityAsyncClient {
                                 parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                             return operationDetail;
                         })),
-                pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId, null,
+                pollingOperation(operationId -> legacyService.healthStatusWithResponseAsync(operationId, null,
                     null, finalIncludeStatistics, finalContext)),
-                cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
+                cancelOperation(operationId -> legacyService.cancelHealthJobWithResponseAsync(operationId, finalContext)),
                 fetchingOperationIterable(operationId -> Mono.just(new AnalyzeHealthcareEntitiesPagedIterable(
                     getHealthcareEntitiesPagedFlux(operationId, null, null, finalIncludeStatistics,
                         finalContext))))
@@ -248,23 +242,23 @@ class AnalyzeHealthcareEntityAsyncClient {
                 final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
                 final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
                 final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-                if (languageAsyncApiService != null) {
-                    return languageAsyncApiService.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
+                if (service != null) {
+                    return service.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
                         context)
                                .map(this::toHealthcarePagedResponse)
                                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
                 }
 
-                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStatsValue, context)
+                return legacyService.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStatsValue, context)
                            .map(this::toTextAnalyticsPagedResponse)
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } else {
-                if (languageAsyncApiService != null) {
-                    return languageAsyncApiService.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
+                if (service != null) {
+                    return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
                                .map(this::toHealthcarePagedResponse)
                                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
                 }
-                return service.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
+                return legacyService.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
                            .map(this::toTextAnalyticsPagedResponse)
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }

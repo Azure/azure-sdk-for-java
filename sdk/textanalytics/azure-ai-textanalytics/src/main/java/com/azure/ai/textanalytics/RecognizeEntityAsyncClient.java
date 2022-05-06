@@ -41,23 +41,17 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizeEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizeEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create a {@link RecognizeEntityAsyncClient} that sends requests to the Text Analytics services's
-     * recognize entity endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    RecognizeEntityAsyncClient(TextAnalyticsClientImpl service) {
-        this.service = service;
-        this.languageSyncApiService = null;
+    RecognizeEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
     }
 
     RecognizeEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
-        this.service = null;
-        this.languageSyncApiService = service;
+        this.legacyService = null;
+        this.service = service;
     }
 
     /**
@@ -149,8 +143,8 @@ class RecognizeEntityAsyncClient {
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
-        if (languageSyncApiService != null) {
-            return languageSyncApiService
+        if (service != null) {
+            return service
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextEntityRecognitionInput()
                                .setParameters(
@@ -171,7 +165,7 @@ class RecognizeEntityAsyncClient {
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return service.entitiesRecognitionGeneralWithResponseAsync(
+        return legacyService.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             finalModelVersion,
             finalIncludeStatistics,

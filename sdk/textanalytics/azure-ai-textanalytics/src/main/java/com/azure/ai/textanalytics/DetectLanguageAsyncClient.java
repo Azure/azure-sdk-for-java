@@ -35,23 +35,17 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class DetectLanguageAsyncClient {
     private final ClientLogger logger = new ClientLogger(DetectLanguageAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create a {@link DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
-     * endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    DetectLanguageAsyncClient(TextAnalyticsClientImpl service) {
-        this.service = service;
-        this.languageSyncApiService = null;
+    DetectLanguageAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
     }
 
     DetectLanguageAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
-        this.service = null;
-        this.languageSyncApiService = service;
+        this.legacyService = null;
+        this.service = service;
     }
 
     /**
@@ -104,8 +98,8 @@ class DetectLanguageAsyncClient {
     private Mono<Response<DetectLanguageResultCollection>> getDetectedLanguageResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        if (languageSyncApiService != null) {
-            return languageSyncApiService
+        if (service != null) {
+            return service
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextLanguageDetectionInput()
                                .setParameters(
@@ -127,7 +121,7 @@ class DetectLanguageAsyncClient {
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return service.languagesWithResponseAsync(
+        return legacyService.languagesWithResponseAsync(
             new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
             options.getModelVersion(),
             options.isIncludeStatistics(),

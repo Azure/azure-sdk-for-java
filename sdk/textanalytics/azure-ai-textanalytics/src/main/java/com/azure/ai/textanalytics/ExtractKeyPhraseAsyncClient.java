@@ -40,23 +40,17 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class ExtractKeyPhraseAsyncClient {
     private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final MicrosoftCognitiveLanguageServiceImpl languageSyncApiService;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create an {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
-     * keyphrase endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl service) {
-        this.service = service;
-        this.languageSyncApiService = null;
+    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
     }
 
     ExtractKeyPhraseAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
-        this.service = null;
-        this.languageSyncApiService = service;
+        this.legacyService = null;
+        this.service = service;
     }
 
     /**
@@ -143,8 +137,8 @@ class ExtractKeyPhraseAsyncClient {
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
 
-        if (languageSyncApiService != null) {
-            return languageSyncApiService
+        if (service != null) {
+            return service
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextKeyPhraseExtractionInput()
                                .setParameters(
@@ -164,7 +158,7 @@ class ExtractKeyPhraseAsyncClient {
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return service.keyPhrasesWithResponseAsync(
+        return legacyService.keyPhrasesWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),
             options.isIncludeStatistics(),
