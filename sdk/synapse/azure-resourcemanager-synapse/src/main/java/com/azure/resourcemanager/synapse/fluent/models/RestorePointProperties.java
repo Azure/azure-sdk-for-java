@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.RestorePointType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of a database restore point. */
 @Immutable
 public final class RestorePointProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointProperties.class);
-
     /*
      * The type of restore point
      */

@@ -23,7 +23,7 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool geo backup policies.
+     * @return list of SQL pool geo backup policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GeoBackupPolicyInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
@@ -38,7 +38,7 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool geo backup policies.
+     * @return list of SQL pool geo backup policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GeoBackupPolicyInner> list(

@@ -1,16 +1,16 @@
 # Release History
 
-## 1.0.0-beta.27 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.27 (2022-05-06)
 
 ### Breaking Changes
 
-- Move `MessageWithMetadata` to `com.azure` package as `com.azure.core.models.MessageContent`.
-
-### Bugs Fixed
+- Move `MessageWithMetadata` to `com.azure.core` package as `com.azure.core.models.MessageContent`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
 
 ## 1.0.0-beta.26 (2022-04-01)
 

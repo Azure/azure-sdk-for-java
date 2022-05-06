@@ -6,15 +6,12 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A site for the Direct Line channel. */
 @Fluent
 public class DirectLineSite {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectLineSite.class);
-
     /*
      * Site Id
      */
@@ -256,9 +253,11 @@ public class DirectLineSite {
      */
     public void validate() {
         if (siteName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property siteName in model DirectLineSite"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DirectLineSite.class);
 }

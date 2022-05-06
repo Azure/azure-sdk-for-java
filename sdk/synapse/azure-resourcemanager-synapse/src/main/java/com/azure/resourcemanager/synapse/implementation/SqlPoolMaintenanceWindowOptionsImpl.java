@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowOptionsC
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowOptionsInner;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowOptions;
 import com.azure.resourcemanager.synapse.models.SqlPoolMaintenanceWindowOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolMaintenanceWindowOptionsImpl implements SqlPoolMaintenanceWindowOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolMaintenanceWindowOptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolMaintenanceWindowOptionsImpl.class);
 
     private final SqlPoolMaintenanceWindowOptionsClient innerClient;
 

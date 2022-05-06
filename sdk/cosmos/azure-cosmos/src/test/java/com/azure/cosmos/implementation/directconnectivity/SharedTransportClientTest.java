@@ -17,8 +17,8 @@ public class SharedTransportClientTest {
         TransportClient transportClient1 = null;
         TransportClient transportClient2 = null;
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
 
             assertThat(transportClient2).isSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
@@ -33,8 +33,8 @@ public class SharedTransportClientTest {
         TransportClient transportClient1 = null;
         TransportClient transportClient2 = null;
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
 
             assertThat(transportClient2).isSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
@@ -51,12 +51,12 @@ public class SharedTransportClientTest {
         TransportClient transportClient3 = null;
 
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
             transportClient2.close();
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(1);
 
-            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
+            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
             assertThat(transportClient3).isSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
         } finally {
@@ -72,13 +72,13 @@ public class SharedTransportClientTest {
         TransportClient transportClient3 = null;
 
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
             transportClient1.close();
             transportClient2.close();
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(0);
 
-            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null);
+            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), ConnectionPolicy.getDefaultPolicy(), new UserAgentContainer(), new DiagnosticsClientContext.DiagnosticsClientConfig(), null, null, null);
             assertThat(transportClient3).isNotSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient3).getReferenceCounter()).isEqualTo(1);
         } finally {

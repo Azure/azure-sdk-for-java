@@ -30,6 +30,6 @@ class ManualCheckpointManager extends EventCheckpointManager {
 
     @Override
     public void checkpoint(EventContext context) {
-
+        // Do nothing.
     }
 }

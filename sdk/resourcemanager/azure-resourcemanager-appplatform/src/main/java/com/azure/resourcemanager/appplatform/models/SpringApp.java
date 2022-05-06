@@ -66,6 +66,12 @@ public interface SpringApp
     /** @return the blob url to upload deployment */
     ResourceUploadDefinition getResourceUploadUrl();
 
+    /**
+     * (Enterprise Tier Only)
+     * @return whether this app has binding to the default Configuration Service
+     */
+    boolean hasConfigurationServiceBinding();
+
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -146,22 +152,43 @@ public interface SpringApp
             WithCreate withPersistentDisk(int sizeInGB, String mountPath);
         }
 
-        /** The stage of a spring app update allowing to specify the service binding. */
+        /** The stage of a spring app definition allowing to specify the service binding. */
         interface WithServiceBinding {
             /**
              * Specifies a service binding for the spring app.
              * @param name the service binding name
              * @param bindingProperties the property for the service binding
-             * @return the next stage of spring app update
+             * @return the next stage of spring app definition
              */
             WithCreate withServiceBinding(String name, BindingResourceProperties bindingProperties);
 
             /**
              * Removes a service binding for the spring app.
              * @param name the service binding name
-             * @return the next stage of spring app update
+             * @return the next stage of spring app definition
              */
             WithCreate withoutServiceBinding(String name);
+        }
+
+        /**
+         * (Enterprise Tier Only)
+         * The stage of spring app definition allowing to bind it to default configuration service.
+         */
+        interface WithConfigurationServiceBinding {
+            /**
+             * Specifies a binding to the default configuration service.
+             * To use the centralized configurations, you must bind the app to Application Configuration Service for Tanzu.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
+             * @return the next stage of spring app definition
+             */
+            WithCreate withConfigurationServiceBinding();
+
+            /**
+             * Removes a binding to the default configuration service.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
+             * @return the next stage of spring app definition
+             */
+            WithCreate withoutConfigurationServiceBinding();
         }
 
         /**
@@ -173,7 +200,8 @@ public interface SpringApp
                 DefinitionStages.WithEndpoint,
                 DefinitionStages.WithDisk,
                 DefinitionStages.WithDeployment,
-                DefinitionStages.WithServiceBinding { }
+                DefinitionStages.WithServiceBinding,
+                DefinitionStages.WithConfigurationServiceBinding { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -182,7 +210,8 @@ public interface SpringApp
         UpdateStages.WithEndpoint,
         UpdateStages.WithDisk,
         UpdateStages.WithDeployment,
-        UpdateStages.WithServiceBinding { }
+        UpdateStages.WithServiceBinding,
+        UpdateStages.WithConfigurationServiceBinding { }
 
     /** Grouping of spring app update stages. */
     interface UpdateStages {
@@ -283,6 +312,27 @@ public interface SpringApp
              * @return the next stage of spring app update
              */
             Update withoutServiceBinding(String name);
+        }
+
+        /**
+         * (Enterprise Tier Only)
+         * The stage of a spring app update allowing to bind it to the default configuration service.
+         */
+        interface WithConfigurationServiceBinding {
+            /**
+             * Specifies a binding to the default configuration service.
+             * To use the centralized configurations, you must bind the app to Application Configuration Service for Tanzu.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
+             * @return the next stage of spring app update
+             */
+            Update withConfigurationServiceBinding();
+
+            /**
+             * Removes a binding to the default configuration service.
+             * When you change the bind/unbind status, you must restart or redeploy the app to for the binding to take effect.
+             * @return the next stage of spring app update
+             */
+            Update withoutConfigurationServiceBinding();
         }
     }
 }

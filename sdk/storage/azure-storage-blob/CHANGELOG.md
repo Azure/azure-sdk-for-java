@@ -3,13 +3,16 @@
 ## 12.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2021-04-10 service version.
+- Added the ability to list PageRanges and PageRangesDiff by page.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
-
+- Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output
+  stream. Use BlobClientBase.downloadStream and BlobClientBase.downloadStreamWithResponse instead.
 ## 12.16.0 (2022-04-07)
 
 ### Bugs Fixed

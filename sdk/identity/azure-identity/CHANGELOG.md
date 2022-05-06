@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Update msal4j to 1.12.0.
 
 ## 1.5.0 (2022-04-05)
 

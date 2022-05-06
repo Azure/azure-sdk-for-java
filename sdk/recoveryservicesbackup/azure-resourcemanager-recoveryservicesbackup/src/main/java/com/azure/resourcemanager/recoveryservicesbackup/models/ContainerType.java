@@ -77,7 +77,11 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
         return fromString(name, ContainerType.class);
     }
 
-    /** @return known ContainerType values. */
+    /**
+     * Gets known ContainerType values.
+     *
+     * @return known ContainerType values.
+     */
     public static Collection<ContainerType> values() {
         return values(ContainerType.class);
     }

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupManagementUsageInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementUsage;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummaries;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupUsageSummariesImpl implements BackupUsageSummaries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupUsageSummariesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupUsageSummariesImpl.class);
 
     private final BackupUsageSummariesClient innerClient;
 
