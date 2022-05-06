@@ -3,16 +3,24 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
 import reactor.netty.channel.ChannelOperations;
 
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 
 /**
  * Helper class containing utility methods.
  */
 public final class Utility {
+
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
      * <p>
@@ -51,6 +59,20 @@ public final class Utility {
         } else if (!reactorNettyConnection.isDisposed()) {
             reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
         }
+    }
+
+    public static Mono<Void> writeFile(Flux<ByteBuf> content, AsynchronousFileChannel outFile, long position) {
+        if (content == null && outFile == null) {
+            return FluxUtil.monoError(LOGGER, new NullPointerException("'content' and 'outFile' cannot be null."));
+        } else if (content == null) {
+            return FluxUtil.monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (outFile == null) {
+            return FluxUtil.monoError(LOGGER, new NullPointerException("'outFile' cannot be null."));
+        } else if (position < 0) {
+            return FluxUtil.monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
+        }
+
+        return Mono.create(emitter -> content.subscribe(new NettyFileWriteSubscriber(outFile, position, emitter)));
     }
 
     private Utility() {

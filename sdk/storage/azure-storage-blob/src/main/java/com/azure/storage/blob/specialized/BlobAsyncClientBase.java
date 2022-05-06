@@ -84,6 +84,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.util.function.Tuple3;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -94,6 +95,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -109,8 +111,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
@@ -1623,9 +1631,48 @@ public class BlobAsyncClientBase {
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
+    Response<BlobProperties> downloadToFileWithResponseSync(BlobDownloadToFileOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+
+        BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        BlobRequestConditions finalConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
+
+        // Default behavior is not to overwrite
+        Set<OpenOption> openOptions = options.getOpenOptions();
+        if (openOptions == null) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE_NEW);
+            openOptions.add(StandardOpenOption.WRITE);
+            openOptions.add(StandardOpenOption.READ);
+        }
+
+        boolean finished = false;
+        FileChannel channel = downloadToFileResourceSupplierSync(options.getFilePath(), openOptions);
+        try {
+            Response<BlobProperties> blobPropertiesResponse = this.downloadToFileImplSync(
+                channel, finalRange, finalParallelTransferOptions,
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context);
+            finished = true;
+            return blobPropertiesResponse;
+        } finally {
+            this.downloadToFileCleanupSync(channel, options.getFilePath(), finished);
+        }
+    }
+
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath, Set<OpenOption> openOptions) {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), openOptions, null);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    private FileChannel downloadToFileResourceSupplierSync(String filePath, Set<OpenOption> openOptions) {
+        try {
+            return FileChannel.open(Paths.get(filePath), openOptions);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -1670,6 +1717,106 @@ public class BlobAsyncClientBase {
             });
     }
 
+    private static final ExecutorService SHARED_BLOB_EXECUTOR = Executors.newCachedThreadPool(new ThreadFactory() {
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            thread.setName("BlobExecutor");
+            return thread;
+        }
+    });
+
+    private Response<BlobProperties> downloadToFileImplSync(
+        FileChannel file, BlobRange finalRange,
+        com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
+        DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
+        Context context) {
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        Lock progressLock = new ReentrantLock();
+        AtomicLong totalProgress = new AtomicLong(0);
+
+        /*
+         * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
+         */
+        // TODO (kasobol-msft) how do we retry
+        BiFunction<BlobRange, BlobRequestConditions, StreamResponse> downloadFunc =
+            (range, conditions) -> this.downloadRangeSync(range, conditions, conditions.getIfMatch(),
+                rangeGetContentMd5, context);
+
+        Tuple3<Long, BlobRequestConditions, StreamResponse> setupTuple3 =
+            ChunkedDownloadUtils.downloadFirstChunkSync(finalRange, finalParallelTransferOptions, requestConditions,
+            downloadFunc, true);
+        long newCount = setupTuple3.getT1();
+        BlobRequestConditions finalConditions = setupTuple3.getT2();
+
+        int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
+            finalParallelTransferOptions.getBlockSizeLong());
+
+        // In case it is an empty blob, this ensures we still actually perform a download operation.
+        numChunks = numChunks == 0 ? 1 : numChunks;
+
+        StreamResponse initialResponse = setupTuple3.getT3();
+
+        Semaphore semaphore = new Semaphore(finalParallelTransferOptions.getMaxConcurrency());
+        CountDownLatch countDownLatch = new CountDownLatch(numChunks);
+        AtomicReference<RuntimeException> downloadException = new AtomicReference<>();
+
+        if (numChunks > 1) {
+            Thread schedulingThread = Thread.currentThread();
+            for (int chunkNum = 0; chunkNum < numChunks; chunkNum++) {
+                if (downloadException.get() != null) {
+                    throw LOGGER.logExceptionAsError(downloadException.get());
+                }
+                int finalChunkNum = chunkNum;
+                try {
+                    semaphore.acquire(); // TODO (kasobol-msft) timeout
+                } catch (InterruptedException e) {
+                    if (downloadException.get() != null) {
+                        throw LOGGER.logExceptionAsError(downloadException.get());
+                    }
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                }
+                SHARED_BLOB_EXECUTOR.submit(() -> {
+                    try {
+                        // TODO (kasobol-msft) add retry logic similarly to outputstream download
+                        ChunkedDownloadUtils.downloadChunkSync(finalChunkNum, initialResponse,
+                            finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
+                            response -> writeBodyToFileSync(response, file, finalChunkNum, finalParallelTransferOptions,
+                                progressLock, totalProgress));
+                    } catch (RuntimeException e) {
+                        downloadException.set(e);
+                        schedulingThread.interrupt();
+                    } finally {
+                        semaphore.release();
+                        countDownLatch.countDown();
+                    }
+                });
+            }
+
+            if (downloadException.get() != null) {
+                throw LOGGER.logExceptionAsError(downloadException.get());
+            }
+            try {
+                countDownLatch.await(); // TODO (kasobol-msft) timeout ?
+            } catch (InterruptedException e) {
+                if (downloadException.get() != null) {
+                    throw LOGGER.logExceptionAsError(downloadException.get());
+                }
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        } else {
+            // TODO (kasobol-msft) add retry logic similarly to outputstream download
+            // TODO (kasobol-msft) this could use sync FileChannel.
+            ChunkedDownloadUtils.downloadChunkSync(0, initialResponse,
+                finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
+                response -> writeBodyToFileSync(response, file, 0, finalParallelTransferOptions,
+                    progressLock, totalProgress));
+        }
+
+        return ModelHelper.buildBlobPropertiesResponse(initialResponse);
+    }
+
     private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
         long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
         AtomicLong totalProgress) {
@@ -1683,13 +1830,45 @@ public class BlobAsyncClientBase {
             totalProgress);
 
         // Write to the file.
+        // TODO (kasobol-msft) this should some day use StreamResponse.writeTo(AsynchronousFileChannel).
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+    }
+
+    private static void writeBodyToFileSync(
+        StreamResponse response, FileChannel file,
+        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
+        AtomicLong totalProgress) {
+
+        // Report progress as necessary.
+        // TODO (kasobol-msft) this should be hooked up into channel.
+        //data = ProgressReporter.addParallelProgressReporting(data,
+        //    ModelHelper.wrapCommonReceiver(finalParallelTransferOptions.getProgressReceiver()), progressLock,
+        //    totalProgress);
+
+        // Write to the file.
+        try {
+            response.writeBodyTo(file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
         try {
             channel.close();
             if (!signalType.equals(SignalType.ON_COMPLETE)) {
+                Files.deleteIfExists(Paths.get(filePath));
+                LOGGER.verbose("Downloading to file failed. Cleaning up resources.");
+            }
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    private void downloadToFileCleanupSync(FileChannel channel, String filePath, boolean finished) {
+        try {
+            channel.close();
+            if (!finished) {
                 Files.deleteIfExists(Paths.get(filePath));
                 LOGGER.verbose("Downloading to file failed. Cleaning up resources.");
             }
