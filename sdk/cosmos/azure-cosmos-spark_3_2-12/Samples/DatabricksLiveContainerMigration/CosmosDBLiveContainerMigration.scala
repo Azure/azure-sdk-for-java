@@ -1,12 +1,12 @@
 // Databricks notebook source
-  val cosmosEndpoint_cf = "" //enter your Cosmos DB Account URI
-  val cosmosMasterKey_cf = "" //enter your Cosmos DB Account PRIMARY KEY
+  val cosmosEndpoint_cf = "" //enter the Cosmos DB Account URI of the source account
+  val cosmosMasterKey_cf = "" //enter the Cosmos DB Account PRIMARY KEY of the source account
   val cosmosDatabaseName_cf = "database-v4" //replace database-v4 with the name of your source database
   val cosmosContainerName_cf = "customer" //replace customer with the name of the container you want to migrate
-  val cosmosContainerName_throughputControl = "ThroughputControl"
+  val cosmosContainerName_throughputControl = "0.95" //targetThroughputThreshold defines target percentage (here it is 95%) of available throughput you want the migration to use
 
-  val cosmosEndpoint_write = "" //enter your Cosmos DB Account URI
-  val cosmosMasterKey_write = "" //enter your Cosmos DB Account PRIMARY KEY
+  val cosmosEndpoint_write = "" //enter the Cosmos DB Account URI of the target account
+  val cosmosMasterKey_write = "" //enter the Cosmos DB Account PRIMARY KEY of the target account
   val cosmosDatabaseName_write = "database-v4" //replace this with the name of your target database
   val cosmosContainerName_write = "customer_v2" //replace this with what you want to name your target container
 
@@ -44,8 +44,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
     "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "50000", 
     "spark.cosmos.throughputControl.enabled" -> "true",
     "spark.cosmos.throughputControl.name" -> "SourceContainerThroughputControl",
-    //targetThroughputThreshold defines target percentage (here it is 95%) of available throughput you want the migration to use
-    "spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.95", 
+    "spark.cosmos.throughputControl.targetThroughputThreshold" -> cosmosContainerName_throughputControl, 
     "spark.cosmos.throughputControl.globalControl.database" -> "database-v4", //replace database-v4 with the name of your source database
     "spark.cosmos.throughputControl.globalControl.container" -> "ThroughputControl",
     "spark.cosmos.preferredRegionsList" -> "[UK South]" //replace this with comma separate list of regions appropriate for your source container
@@ -55,7 +54,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
   //if you want to start from beginning, delete this folder or change checkpointLocation value
   val checkpointLocation = "/tmp/LiveMigration_checkpoint"
 
-  val writeCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint_cf,
+  val writeCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint_write,
     "spark.cosmos.accountKey" -> cosmosMasterKey_write,
     "spark.cosmos.applicationName" -> "LivemigrationWrite_",                     
     "spark.cosmos.database" -> cosmosDatabaseName_write,
