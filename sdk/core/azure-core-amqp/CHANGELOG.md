@@ -1,5 +1,15 @@
 # Release History
 
+## 2.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.5.0 (2022-05-06)
 
 ### Features Added
