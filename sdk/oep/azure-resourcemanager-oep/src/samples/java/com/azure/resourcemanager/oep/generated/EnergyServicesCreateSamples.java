@@ -7,7 +7,7 @@ package com.azure.resourcemanager.oep.generated;
 /** Samples for EnergyServices Create. */
 public final class EnergyServicesCreateSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Create.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Create.json
      */
     /**
      * Sample code: OepResource_Create.

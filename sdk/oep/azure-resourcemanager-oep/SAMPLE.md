@@ -3,11 +3,14 @@
 
 ## EnergyServices
 
+- [AddPartition](#energyservices_addpartition)
 - [Create](#energyservices_create)
 - [Delete](#energyservices_delete)
 - [GetByResourceGroup](#energyservices_getbyresourcegroup)
 - [List](#energyservices_list)
 - [ListByResourceGroup](#energyservices_listbyresourcegroup)
+- [ListPartitions](#energyservices_listpartitions)
+- [RemovePartition](#energyservices_removepartition)
 - [Update](#energyservices_update)
 
 ## Locations
@@ -17,13 +20,38 @@
 ## Operations
 
 - [List](#operations_list)
+### EnergyServices_AddPartition
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.oep.models.DataPartitionAddOrRemoveRequest;
+
+/** Samples for EnergyServices AddPartition. */
+public final class EnergyServicesAddPartitionSamples {
+    /*
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/EnergyServices_AddPartition_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EnergyServices_AddPartition_MaximumSet_Gen.
+     *
+     * @param manager Entry point to OepManager.
+     */
+    public static void energyServicesAddPartitionMaximumSetGen(com.azure.resourcemanager.oep.OepManager manager) {
+        manager
+            .energyServices()
+            .addPartition(
+                "rgoep", "a", new DataPartitionAddOrRemoveRequest().withName("aaaaaaaaaaaaaaaaaa"), Context.NONE);
+    }
+}
+```
+
 ### EnergyServices_Create
 
 ```java
 /** Samples for EnergyServices Create. */
 public final class EnergyServicesCreateSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Create.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Create.json
      */
     /**
      * Sample code: OepResource_Create.
@@ -49,7 +77,7 @@ import com.azure.core.util.Context;
 /** Samples for EnergyServices Delete. */
 public final class EnergyServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Delete.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Delete.json
      */
     /**
      * Sample code: OepResource_Delete.
@@ -70,7 +98,7 @@ import com.azure.core.util.Context;
 /** Samples for EnergyServices GetByResourceGroup. */
 public final class EnergyServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Get.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Get.json
      */
     /**
      * Sample code: OepResource_Get.
@@ -93,7 +121,7 @@ import com.azure.core.util.Context;
 /** Samples for EnergyServices List. */
 public final class EnergyServicesListSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_ListBySubscriptionId.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_ListBySubscriptionId.json
      */
     /**
      * Sample code: OepResource_ListBySubscriptionId.
@@ -114,7 +142,7 @@ import com.azure.core.util.Context;
 /** Samples for EnergyServices ListByResourceGroup. */
 public final class EnergyServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_ListByResourceGroup.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_ListByResourceGroup.json
      */
     /**
      * Sample code: OepResource_ListByResourceGroup.
@@ -123,6 +151,52 @@ public final class EnergyServicesListByResourceGroupSamples {
      */
     public static void oepResourceListByResourceGroup(com.azure.resourcemanager.oep.OepManager manager) {
         manager.energyServices().listByResourceGroup("DummyResourceGroupName", Context.NONE);
+    }
+}
+```
+
+### EnergyServices_ListPartitions
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for EnergyServices ListPartitions. */
+public final class EnergyServicesListPartitionsSamples {
+    /*
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/EnergyServices_ListPartitions_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EnergyServices_ListPartitions_MaximumSet_Gen.
+     *
+     * @param manager Entry point to OepManager.
+     */
+    public static void energyServicesListPartitionsMaximumSetGen(com.azure.resourcemanager.oep.OepManager manager) {
+        manager.energyServices().listPartitionsWithResponse("rgoep", "aaaaaaaaaaaaaaaaaaa", Context.NONE);
+    }
+}
+```
+
+### EnergyServices_RemovePartition
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.oep.models.DataPartitionAddOrRemoveRequest;
+
+/** Samples for EnergyServices RemovePartition. */
+public final class EnergyServicesRemovePartitionSamples {
+    /*
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/EnergyServices_RemovePartition_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EnergyServices_RemovePartition_MaximumSet_Gen.
+     *
+     * @param manager Entry point to OepManager.
+     */
+    public static void energyServicesRemovePartitionMaximumSetGen(com.azure.resourcemanager.oep.OepManager manager) {
+        manager
+            .energyServices()
+            .removePartition(
+                "rgoep", "aaaaaaa", new DataPartitionAddOrRemoveRequest().withName("aaaaaaaaaaaaaaaaaa"), Context.NONE);
     }
 }
 ```
@@ -136,7 +210,7 @@ import com.azure.resourcemanager.oep.models.EnergyService;
 /** Samples for EnergyServices Update. */
 public final class EnergyServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Update.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Update.json
      */
     /**
      * Sample code: OepResource_Update.
@@ -163,7 +237,7 @@ import com.azure.resourcemanager.oep.models.CheckNameAvailabilityRequest;
 /** Samples for Locations CheckNameAvailability. */
 public final class LocationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/Locations_CheckNameAvailability.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/Locations_CheckNameAvailability.json
      */
     /**
      * Sample code: Locations_CheckNameAvailability.
@@ -188,7 +262,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

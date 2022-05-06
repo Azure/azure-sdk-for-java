@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.oep.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -214,4 +215,82 @@ public interface EnergyService {
      * @return the refreshed resource.
      */
     EnergyService refresh(Context context);
+
+    /**
+     * Method that gets called if new partition is to be added in a resource.
+     *
+     * @param body add partition action payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addPartition(DataPartitionAddOrRemoveRequest body);
+
+    /**
+     * Method that gets called if new partition is to be added in a resource.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addPartition();
+
+    /**
+     * Method that gets called if new partition is to be added in a resource.
+     *
+     * @param body add partition action payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addPartition(DataPartitionAddOrRemoveRequest body, Context context);
+
+    /**
+     * Method that gets called if new partition is to be removed from a resource.
+     *
+     * @param body remove partition action payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removePartition(DataPartitionAddOrRemoveRequest body);
+
+    /**
+     * Method that gets called if new partition is to be removed from a resource.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removePartition();
+
+    /**
+     * Method that gets called if new partition is to be removed from a resource.
+     *
+     * @param body remove partition action payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removePartition(DataPartitionAddOrRemoveRequest body, Context context);
+
+    /**
+     * Method that gets called when list of partitions is requested.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of data partitions.
+     */
+    DataPartitionsListResult listPartitions();
+
+    /**
+     * Method that gets called when list of partitions is requested.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of data partitions along with {@link Response}.
+     */
+    Response<DataPartitionsListResult> listPartitionsWithResponse(Context context);
 }

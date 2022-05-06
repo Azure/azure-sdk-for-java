@@ -10,7 +10,7 @@ import com.azure.resourcemanager.oep.models.EnergyService;
 /** Samples for EnergyServices Update. */
 public final class EnergyServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Update.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Update.json
      */
     /**
      * Sample code: OepResource_Update.

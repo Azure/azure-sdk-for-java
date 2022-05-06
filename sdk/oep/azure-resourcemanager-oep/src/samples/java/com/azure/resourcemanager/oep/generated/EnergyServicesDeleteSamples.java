@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnergyServices Delete. */
 public final class EnergyServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Delete.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Delete.json
      */
     /**
      * Sample code: OepResource_Delete.

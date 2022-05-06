@@ -9,7 +9,6 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oep.models.EnergyServiceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** The EnergyService model. */
 @Fluent
 public final class EnergyServiceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnergyServiceInner.class);
-
     /*
      * The properties property.
      */
@@ -124,9 +121,11 @@ public final class EnergyServiceInner extends ProxyResource {
             properties().validate();
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model EnergyServiceInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnergyServiceInner.class);
 }

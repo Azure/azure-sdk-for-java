@@ -17,7 +17,7 @@ public interface EnergyServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of oep resources.
+     * @return the list of oep resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnergyService> listByResourceGroup(String resourceGroupName);
 
@@ -29,7 +29,7 @@ public interface EnergyServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of oep resources.
+     * @return the list of oep resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnergyService> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -38,7 +38,7 @@ public interface EnergyServices {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of oep resources.
+     * @return the list of oep resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnergyService> list();
 
@@ -49,7 +49,7 @@ public interface EnergyServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of oep resources.
+     * @return the list of oep resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnergyService> list(Context context);
 
@@ -101,6 +101,106 @@ public interface EnergyServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Method that gets called if new partition is to be added in a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @param body add partition action payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addPartition(String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body);
+
+    /**
+     * Method that gets called if new partition is to be added in a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addPartition(String resourceGroupName, String resourceName);
+
+    /**
+     * Method that gets called if new partition is to be added in a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @param body add partition action payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addPartition(
+        String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body, Context context);
+
+    /**
+     * Method that gets called if new partition is to be removed from a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @param body remove partition action payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removePartition(String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body);
+
+    /**
+     * Method that gets called if new partition is to be removed from a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removePartition(String resourceGroupName, String resourceName);
+
+    /**
+     * Method that gets called if new partition is to be removed from a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @param body remove partition action payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removePartition(
+        String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body, Context context);
+
+    /**
+     * Method that gets called when list of partitions is requested.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of data partitions.
+     */
+    DataPartitionsListResult listPartitions(String resourceGroupName, String resourceName);
+
+    /**
+     * Method that gets called when list of partitions is requested.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of data partitions along with {@link Response}.
+     */
+    Response<DataPartitionsListResult> listPartitionsWithResponse(
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Returns oep resource for a given name.

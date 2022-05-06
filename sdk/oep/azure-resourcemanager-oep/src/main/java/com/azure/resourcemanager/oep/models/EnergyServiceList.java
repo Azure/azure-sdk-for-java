@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.oep.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oep.fluent.models.EnergyServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of oep resources. */
 @Fluent
 public final class EnergyServiceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnergyServiceList.class);
-
     /*
      * The link used to get the next page of oep resources list.
      */

@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.oep.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.oep.fluent.models.EnergyServiceInner;
+import com.azure.resourcemanager.oep.models.DataPartitionAddOrRemoveRequest;
+import com.azure.resourcemanager.oep.models.DataPartitionsListResult;
 import com.azure.resourcemanager.oep.models.EnergyResourceUpdate;
 import com.azure.resourcemanager.oep.models.EnergyService;
 import com.azure.resourcemanager.oep.models.EnergyServiceProperties;
@@ -153,6 +156,38 @@ public final class EnergyServiceImpl implements EnergyService, EnergyService.Def
                 .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
                 .getValue();
         return this;
+    }
+
+    public void addPartition(DataPartitionAddOrRemoveRequest body) {
+        serviceManager.energyServices().addPartition(resourceGroupName, resourceName, body);
+    }
+
+    public void addPartition() {
+        serviceManager.energyServices().addPartition(resourceGroupName, resourceName);
+    }
+
+    public void addPartition(DataPartitionAddOrRemoveRequest body, Context context) {
+        serviceManager.energyServices().addPartition(resourceGroupName, resourceName, body, context);
+    }
+
+    public void removePartition(DataPartitionAddOrRemoveRequest body) {
+        serviceManager.energyServices().removePartition(resourceGroupName, resourceName, body);
+    }
+
+    public void removePartition() {
+        serviceManager.energyServices().removePartition(resourceGroupName, resourceName);
+    }
+
+    public void removePartition(DataPartitionAddOrRemoveRequest body, Context context) {
+        serviceManager.energyServices().removePartition(resourceGroupName, resourceName, body, context);
+    }
+
+    public DataPartitionsListResult listPartitions() {
+        return serviceManager.energyServices().listPartitions(resourceGroupName, resourceName);
+    }
+
+    public Response<DataPartitionsListResult> listPartitionsWithResponse(Context context) {
+        return serviceManager.energyServices().listPartitionsWithResponse(resourceGroupName, resourceName, context);
     }
 
     public EnergyServiceImpl withRegion(Region location) {
