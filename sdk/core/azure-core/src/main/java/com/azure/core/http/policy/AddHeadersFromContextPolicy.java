@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
@@ -65,7 +66,7 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return INNER.processSync(context, next);
     }
 }

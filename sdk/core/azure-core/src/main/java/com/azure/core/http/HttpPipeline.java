@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
@@ -98,8 +99,8 @@ public final class HttpPipeline {
      * upon completion.
      */
     public HttpResponse sendSync(HttpRequest request, Context data) {
-        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(
-            this, new HttpPipelineCallContext(request, data), true);
+        HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy(
+            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
         return next.processSync();
     }
 
@@ -113,7 +114,8 @@ public final class HttpPipeline {
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.
         return Mono.defer(() -> {
-            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context, false);
+            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(
+                new HttpPipelineCallState(this, context));
             return next.process();
         });
     }
