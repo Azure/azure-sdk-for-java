@@ -33,7 +33,11 @@ public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatu
         return fromString(name, LastBackupStatus.class);
     }
 
-    /** @return known LastBackupStatus values. */
+    /**
+     * Gets known LastBackupStatus values.
+     *
+     * @return known LastBackupStatus values.
+     */
     public static Collection<LastBackupStatus> values() {
         return values(LastBackupStatus.class);
     }

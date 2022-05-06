@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Binding resource properties payload. */
 @Fluent
 public final class BindingResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BindingResourceProperties.class);
-
     /*
      * The name of the bound resource
      */
@@ -43,6 +40,7 @@ public final class BindingResourceProperties {
      * Binding parameters of the Binding resource
      */
     @JsonProperty(value = "bindingParameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> bindingParameters;
 
     /*

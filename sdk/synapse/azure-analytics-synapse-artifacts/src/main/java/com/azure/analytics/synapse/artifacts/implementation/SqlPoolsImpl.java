@@ -48,7 +48,7 @@ public final class SqlPoolsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSqlPo")
-    private interface SqlPoolsService {
+    public interface SqlPoolsService {
         @Get("/sqlPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeAuthKeysOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeAuthKeysInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyParameters;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     implements IntegrationRuntimeAuthKeysOperationsClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeAuthKeysOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimeAuthKeysOperationsService service;
 

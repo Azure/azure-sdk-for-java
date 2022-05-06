@@ -6,17 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Base class for container with backup items. Containers with specific workloads are derived from this class. */
 @Fluent
 public final class ProtectionContainerResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionContainerResourceInner.class);
-
     /*
      * ProtectionContainerResource properties
      */

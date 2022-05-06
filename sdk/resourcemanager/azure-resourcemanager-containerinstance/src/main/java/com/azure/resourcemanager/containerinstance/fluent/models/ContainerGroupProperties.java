@@ -19,15 +19,12 @@ import com.azure.resourcemanager.containerinstance.models.InitContainerDefinitio
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
 import com.azure.resourcemanager.containerinstance.models.Volume;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The container group properties. */
 @Fluent
 public final class ContainerGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupProperties.class);
-
     /*
      * The provisioning state of the container group. This only appears in the
      * response.
@@ -391,7 +388,7 @@ public final class ContainerGroupProperties {
      */
     public void validate() {
         if (containers() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property containers in model ContainerGroupProperties"));
@@ -405,7 +402,7 @@ public final class ContainerGroupProperties {
             ipAddress().validate();
         }
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osType in model ContainerGroupProperties"));
         }
@@ -431,4 +428,6 @@ public final class ContainerGroupProperties {
             initContainers().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerGroupProperties.class);
 }

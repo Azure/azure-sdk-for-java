@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeConnectionInfo
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeConnectionInfo;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeConnectionInfos;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeConnectionInfosImpl implements IntegrationRuntimeConnectionInfos {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeConnectionInfosImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeConnectionInfosImpl.class);
 
     private final IntegrationRuntimeConnectionInfosClient innerClient;
 

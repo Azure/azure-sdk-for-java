@@ -10,6 +10,9 @@ import org.springframework.boot.actuate.health.Status;
  */
 final class StorageHealthConstants {
 
+    private StorageHealthConstants() {
+    }
+
     static final String URL_FIELD = "URL";
 
     static final Status NOT_CONFIGURED_STATUS = new Status("Not configured");

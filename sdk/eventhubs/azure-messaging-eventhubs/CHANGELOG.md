@@ -4,11 +4,26 @@
 
 ### Features Added
 
+- `EventData.setBodyAsBinaryData` is exposed.
+
 ### Breaking Changes
+
+- `EventData` extends from `MessageContent`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+## 5.11.2 (2022-04-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.27.0`.
+- Upgraded `azure-core-amqp` to `2.4.2`.
 
 ## 5.11.1 (2022-03-17)
 

@@ -25,15 +25,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProtectionContainersClient. */
 public final class ProtectionContainersClientImpl implements ProtectionContainersClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionContainersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionContainersService service;
 

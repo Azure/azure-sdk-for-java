@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response contract for enable backup validation request. */
 @Fluent
 public final class PreValidateEnableBackupResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreValidateEnableBackupResponseInner.class);
-
     /*
      * Validation Status
      */

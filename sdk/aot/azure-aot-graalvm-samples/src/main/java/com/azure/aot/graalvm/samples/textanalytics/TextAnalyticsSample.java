@@ -16,6 +16,9 @@ public class TextAnalyticsSample {
     private static final String AZURE_TEXT_ANALYTICS_KEY = System.getenv("AZURE_TEXT_ANALYTICS_KEY");
     private static final String AZURE_TEXT_ANALYTICS_ENDPOINT = System.getenv("AZURE_TEXT_ANALYTICS_ENDPOINT");
 
+    /**
+     * The method to run the text analytics sample.
+     */
     public static void runSample() {
         System.out.println("\n================================================================");
         System.out.println(" Starting Text Analytics Sample");
