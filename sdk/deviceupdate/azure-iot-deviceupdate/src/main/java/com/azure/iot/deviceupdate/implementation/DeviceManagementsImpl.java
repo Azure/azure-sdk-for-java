@@ -1023,9 +1023,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeviceClassesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeviceClassesSinglePageAsync(requestOptions),
-                nextLink -> listDeviceClassesNextSinglePageAsync(nextLink, null));
+                nextLink -> listDeviceClassesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1072,9 +1077,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeviceClassesAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeviceClassesSinglePageAsync(requestOptions, context),
-                nextLink -> listDeviceClassesNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listDeviceClassesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1412,9 +1422,15 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listInstallableUpdatesForDeviceClassAsync(
             String deviceClassId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listInstallableUpdatesForDeviceClassSinglePageAsync(deviceClassId, requestOptions),
-                nextLink -> listInstallableUpdatesForDeviceClassNextSinglePageAsync(nextLink, null));
+                nextLink ->
+                        listInstallableUpdatesForDeviceClassNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1455,9 +1471,16 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listInstallableUpdatesForDeviceClassAsync(
             String deviceClassId, RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listInstallableUpdatesForDeviceClassSinglePageAsync(deviceClassId, requestOptions, context),
-                nextLink -> listInstallableUpdatesForDeviceClassNextSinglePageAsync(nextLink, null, context));
+                nextLink ->
+                        listInstallableUpdatesForDeviceClassNextSinglePageAsync(
+                                nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1725,9 +1748,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDevicesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDevicesSinglePageAsync(requestOptions),
-                nextLink -> listDevicesNextSinglePageAsync(nextLink, null));
+                nextLink -> listDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1793,9 +1821,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDevicesAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDevicesSinglePageAsync(requestOptions, context),
-                nextLink -> listDevicesNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1974,7 +2007,12 @@ public final class DeviceManagementsImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importDevicesWithResponseAsync(importType, requestOptions),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
                 new TypeReferenceBinaryData(),
                 new TypeReferenceBinaryData());
     }
@@ -2012,7 +2050,12 @@ public final class DeviceManagementsImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importDevicesWithResponseAsync(importType, requestOptions, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
                 new TypeReferenceBinaryData(),
                 new TypeReferenceBinaryData());
     }
@@ -2721,9 +2764,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeviceTagsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeviceTagsSinglePageAsync(requestOptions),
-                nextLink -> listDeviceTagsNextSinglePageAsync(nextLink, null));
+                nextLink -> listDeviceTagsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2762,9 +2810,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeviceTagsAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeviceTagsSinglePageAsync(requestOptions, context),
-                nextLink -> listDeviceTagsNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listDeviceTagsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -3082,9 +3135,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listGroupsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listGroupsSinglePageAsync(requestOptions),
-                nextLink -> listGroupsNextSinglePageAsync(nextLink, null));
+                nextLink -> listGroupsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3129,9 +3187,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listGroupsAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listGroupsSinglePageAsync(requestOptions, context),
-                nextLink -> listGroupsNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listGroupsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -3887,9 +3950,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listBestUpdatesForGroupAsync(String groupId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listBestUpdatesForGroupSinglePageAsync(groupId, requestOptions),
-                nextLink -> listBestUpdatesForGroupNextSinglePageAsync(nextLink, null));
+                nextLink -> listBestUpdatesForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3935,9 +4003,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listBestUpdatesForGroupAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listBestUpdatesForGroupSinglePageAsync(groupId, requestOptions, context),
-                nextLink -> listBestUpdatesForGroupNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listBestUpdatesForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -4159,9 +4232,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeploymentsForGroupAsync(String groupId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeploymentsForGroupSinglePageAsync(groupId, requestOptions),
-                nextLink -> listDeploymentsForGroupNextSinglePageAsync(nextLink, null));
+                nextLink -> listDeploymentsForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4210,9 +4288,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeploymentsForGroupAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeploymentsForGroupSinglePageAsync(groupId, requestOptions, context),
-                nextLink -> listDeploymentsForGroupNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listDeploymentsForGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -5015,9 +5098,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeploymentDevicesAsync(
             String groupId, String deploymentId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeploymentDevicesSinglePageAsync(groupId, deploymentId, requestOptions),
-                nextLink -> listDeploymentDevicesNextSinglePageAsync(nextLink, null));
+                nextLink -> listDeploymentDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5062,9 +5150,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDeploymentDevicesAsync(
             String groupId, String deploymentId, RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listDeploymentDevicesSinglePageAsync(groupId, deploymentId, requestOptions, context),
-                nextLink -> listDeploymentDevicesNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listDeploymentDevicesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -5513,9 +5606,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listOperationsSinglePageAsync(requestOptions),
-                nextLink -> listOperationsNextSinglePageAsync(nextLink, null));
+                nextLink -> listOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5574,9 +5672,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listOperationsSinglePageAsync(requestOptions, context),
-                nextLink -> listOperationsNextSinglePageAsync(nextLink, null, context));
+                nextLink -> listOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -6155,9 +6258,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listLogCollectionOperationsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listLogCollectionOperationsSinglePageAsync(requestOptions),
-                nextLink -> listLogCollectionOperationsNextSinglePageAsync(nextLink, null));
+                nextLink -> listLogCollectionOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -6204,9 +6312,15 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listLogCollectionOperationsAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedFlux<>(
                 () -> listLogCollectionOperationsSinglePageAsync(requestOptions, context),
-                nextLink -> listLogCollectionOperationsNextSinglePageAsync(nextLink, null, context));
+                nextLink ->
+                        listLogCollectionOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**

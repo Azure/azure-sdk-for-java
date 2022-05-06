@@ -13,16 +13,16 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementGetOperation {
     public static void main(String[] args) {
-        // BEGIN: com.azure.iot.deviceupdate.generated.devicemanagementgetoperation.devicemanagementgetoperation
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetoperation.devicemanagementgetoperation
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 deviceManagementClient.getOperationWithResponse("e4491c54-916f-443d-9094-bcca546ace2f", requestOptions);
-        // END: com.azure.iot.deviceupdate.generated.devicemanagementgetoperation.devicemanagementgetoperation
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetoperation.devicemanagementgetoperation
     }
 }

@@ -26,7 +26,7 @@ public final class DeviceManagementAsyncClient {
     @Generated private final DeviceManagementsImpl serviceClient;
 
     /**
-     * Initializes an instance of DeviceManagements client.
+     * Initializes an instance of DeviceManagementAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */

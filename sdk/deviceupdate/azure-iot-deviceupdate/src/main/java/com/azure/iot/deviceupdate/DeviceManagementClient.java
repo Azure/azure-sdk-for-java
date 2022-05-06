@@ -17,21 +17,20 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.iot.deviceupdate.implementation.DeviceManagementsImpl;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceManagementClientBuilder.class)
 public final class DeviceManagementClient {
-    @Generated private final DeviceManagementsImpl serviceClient;
+    @Generated private final DeviceManagementAsyncClient client;
 
     /**
-     * Initializes an instance of DeviceManagements client.
+     * Initializes an instance of DeviceManagementClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    DeviceManagementClient(DeviceManagementsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    DeviceManagementClient(DeviceManagementAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -78,7 +77,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceClasses(RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceClasses(requestOptions);
+        return new PagedIterable<>(this.client.listDeviceClasses(requestOptions));
     }
 
     /**
@@ -119,7 +118,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceClassWithResponse(deviceClassId, requestOptions);
+        return this.client.getDeviceClassWithResponse(deviceClassId, requestOptions).block();
     }
 
     /**
@@ -160,7 +159,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listInstallableUpdatesForDeviceClass(
             String deviceClassId, RequestOptions requestOptions) {
-        return this.serviceClient.listInstallableUpdatesForDeviceClass(deviceClassId, requestOptions);
+        return new PagedIterable<>(this.client.listInstallableUpdatesForDeviceClass(deviceClassId, requestOptions));
     }
 
     /**
@@ -227,7 +226,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDevices(RequestOptions requestOptions) {
-        return this.serviceClient.listDevices(requestOptions);
+        return new PagedIterable<>(this.client.listDevices(requestOptions));
     }
 
     /**
@@ -259,7 +258,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportDevices(BinaryData importType, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportDevices(importType, requestOptions);
+        return this.client.beginImportDevices(importType, requestOptions).getSyncPoller();
     }
 
     /**
@@ -321,7 +320,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceWithResponse(String deviceId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceWithResponse(deviceId, requestOptions);
+        return this.client.getDeviceWithResponse(deviceId, requestOptions).block();
     }
 
     /**
@@ -386,7 +385,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceModuleWithResponse(
             String deviceId, String moduleId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceModuleWithResponse(deviceId, moduleId, requestOptions);
+        return this.client.getDeviceModuleWithResponse(deviceId, moduleId, requestOptions).block();
     }
 
     /**
@@ -423,7 +422,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getUpdateComplianceWithResponse(requestOptions);
+        return this.client.getUpdateComplianceWithResponse(requestOptions).block();
     }
 
     /**
@@ -462,7 +461,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceTags(RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceTags(requestOptions);
+        return new PagedIterable<>(this.client.listDeviceTags(requestOptions));
     }
 
     /**
@@ -496,7 +495,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceTagWithResponse(String tagName, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceTagWithResponse(tagName, requestOptions);
+        return this.client.getDeviceTagWithResponse(tagName, requestOptions).block();
     }
 
     /**
@@ -541,7 +540,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listGroups(RequestOptions requestOptions) {
-        return this.serviceClient.listGroups(requestOptions);
+        return new PagedIterable<>(this.client.listGroups(requestOptions));
     }
 
     /**
@@ -582,7 +581,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.getGroupWithResponse(groupId, requestOptions);
+        return this.client.getGroupWithResponse(groupId, requestOptions).block();
     }
 
     /**
@@ -641,7 +640,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateGroupWithResponse(
             String groupId, BinaryData group, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateGroupWithResponse(groupId, group, requestOptions);
+        return this.client.createOrUpdateGroupWithResponse(groupId, group, requestOptions).block();
     }
 
     /**
@@ -666,7 +665,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteGroupWithResponse(groupId, requestOptions);
+        return this.client.deleteGroupWithResponse(groupId, requestOptions).block();
     }
 
     /**
@@ -704,7 +703,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGroupUpdateComplianceWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.getGroupUpdateComplianceWithResponse(groupId, requestOptions);
+        return this.client.getGroupUpdateComplianceWithResponse(groupId, requestOptions).block();
     }
 
     /**
@@ -749,7 +748,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listBestUpdatesForGroup(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.listBestUpdatesForGroup(groupId, requestOptions);
+        return new PagedIterable<>(this.client.listBestUpdatesForGroup(groupId, requestOptions));
     }
 
     /**
@@ -797,7 +796,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentsForGroup(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.listDeploymentsForGroup(groupId, requestOptions);
+        return new PagedIterable<>(this.client.listDeploymentsForGroup(groupId, requestOptions));
     }
 
     /**
@@ -841,7 +840,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeploymentWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.getDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -903,8 +902,9 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateDeploymentWithResponse(
             String deploymentId, String groupId, BinaryData deployment, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDeploymentWithResponse(
-                deploymentId, groupId, deployment, requestOptions);
+        return this.client
+                .createOrUpdateDeploymentWithResponse(deploymentId, groupId, deployment, requestOptions)
+                .block();
     }
 
     /**
@@ -931,7 +931,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteDeploymentWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.deleteDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -973,7 +973,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentStatusWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeploymentStatusWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.getDeploymentStatusWithResponse(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -1019,7 +1019,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentDevices(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.listDeploymentDevices(groupId, deploymentId, requestOptions);
+        return new PagedIterable<>(this.client.listDeploymentDevices(groupId, deploymentId, requestOptions));
     }
 
     /**
@@ -1080,7 +1080,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponse(operationId, requestOptions);
+        return this.client.getOperationWithResponse(operationId, requestOptions).block();
     }
 
     /**
@@ -1139,7 +1139,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperations(requestOptions);
+        return new PagedIterable<>(this.client.listOperations(requestOptions));
     }
 
     /**
@@ -1202,7 +1202,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> collectLogsWithResponse(
             String operationId, BinaryData logCollectionRequest, RequestOptions requestOptions) {
-        return this.serviceClient.collectLogsWithResponse(operationId, logCollectionRequest, requestOptions);
+        return this.client.collectLogsWithResponse(operationId, logCollectionRequest, requestOptions).block();
     }
 
     /**
@@ -1246,7 +1246,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionOperationWithResponse(
             String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getLogCollectionOperationWithResponse(operationId, requestOptions);
+        return this.client.getLogCollectionOperationWithResponse(operationId, requestOptions).block();
     }
 
     /**
@@ -1293,7 +1293,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listLogCollectionOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listLogCollectionOperations(requestOptions);
+        return new PagedIterable<>(this.client.listLogCollectionOperations(requestOptions));
     }
 
     /**
@@ -1341,7 +1341,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionOperationDetailedStatusWithResponse(
             String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getLogCollectionOperationDetailedStatusWithResponse(operationId, requestOptions);
+        return this.client.getLogCollectionOperationDetailedStatusWithResponse(operationId, requestOptions).block();
     }
 
     /**
@@ -1386,7 +1386,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.stopDeploymentWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.stopDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -1431,6 +1431,6 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retryDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.retryDeploymentWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.retryDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
     }
 }

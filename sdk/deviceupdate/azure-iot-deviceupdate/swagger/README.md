@@ -34,6 +34,7 @@ artifact-id: azure-iot-deviceupdate
 data-plane: true
 sync-methods: all
 generate-samples: true
+generate-tests: true
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.iot.deviceupdate
 service-name: DeviceUpdate

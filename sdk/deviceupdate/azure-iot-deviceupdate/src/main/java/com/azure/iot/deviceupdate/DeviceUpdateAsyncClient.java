@@ -26,7 +26,7 @@ public final class DeviceUpdateAsyncClient {
     @Generated private final DeviceUpdatesImpl serviceClient;
 
     /**
-     * Initializes an instance of DeviceUpdates client.
+     * Initializes an instance of DeviceUpdateAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
