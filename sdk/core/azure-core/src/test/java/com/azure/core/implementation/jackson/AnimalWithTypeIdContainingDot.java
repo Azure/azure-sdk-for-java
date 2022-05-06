@@ -21,15 +21,13 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<Anima
      * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to the correct {@link JsonToken} when
      * passed.
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+    public static AnimalWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
         return fromJsonInternal(jsonReader, null);
     }
 
-    @SuppressWarnings("unchecked")
-    static <T extends AnimalWithTypeIdContainingDot> T fromJsonInternal(JsonReader jsonReader,
+    static AnimalWithTypeIdContainingDot fromJsonInternal(JsonReader jsonReader,
         String expectedODataType) {
-        return (T) JsonUtils.readObject(jsonReader, reader -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String odataType = null;
             String breed = null;
             boolean hasBreed = false;

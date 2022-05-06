@@ -159,13 +159,12 @@ public class NewFoo implements JsonCapable<NewFoo> {
         return jsonWriter.writeEndObject().flush();
     }
 
-    public static <T extends NewFoo> T fromJson(JsonReader jsonReader) {
+    public static NewFoo fromJson(JsonReader jsonReader) {
         return fromJsonInternal(jsonReader, null);
     }
 
-    @SuppressWarnings("unchecked")
-    static <T extends NewFoo> T fromJsonInternal(JsonReader jsonReader, String expectedType) {
-        return (T) JsonUtils.readObject(jsonReader, reader -> {
+    static NewFoo fromJsonInternal(JsonReader jsonReader, String expectedType) {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String type = null;
             String bar = null;
             List<String> baz = null;

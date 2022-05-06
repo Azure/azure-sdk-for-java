@@ -29,7 +29,8 @@ public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdConta
         return jsonWriter.writeEndObject().flush();
     }
 
-    public static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
-        return fromJsonInternal(jsonReader, "#Favourite.Pet.TurtleWithTypeIdContainingDot");
+    public static TurtleWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return (TurtleWithTypeIdContainingDot) fromJsonInternal(jsonReader,
+            "#Favourite.Pet.TurtleWithTypeIdContainingDot");
     }
 }

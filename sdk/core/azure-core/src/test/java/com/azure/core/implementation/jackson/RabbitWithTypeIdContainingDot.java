@@ -45,7 +45,8 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
         return jsonWriter.writeEndObject().flush();
     }
 
-    public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
-        return fromJsonInternal(jsonReader, "#Favourite.Pet.RabbitWithTypeIdContainingDot");
+    public static RabbitWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return (RabbitWithTypeIdContainingDot) fromJsonInternal(jsonReader,
+            "#Favourite.Pet.RabbitWithTypeIdContainingDot");
     }
 }

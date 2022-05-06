@@ -153,7 +153,7 @@ public class FlatteningSerializerTests {
         // De-Serialize
         //
         RabbitWithTypeIdContainingDot rabbitDeserialized = readJson(serialized,
-            AnimalWithTypeIdContainingDot::fromJson);
+            RabbitWithTypeIdContainingDot::fromJson);
         assertNotNull(rabbitDeserialized);
         assertNotNull(rabbitDeserialized.meals());
         assertEquals(rabbitDeserialized.meals().size(), 2);
@@ -201,7 +201,7 @@ public class FlatteningSerializerTests {
             serialized);
 
         // de-serialization
-        DogWithTypeIdContainingDot dogDeserialized = readJson(serialized, AnimalWithTypeIdContainingDot::fromJson);
+        DogWithTypeIdContainingDot dogDeserialized = readJson(serialized, DogWithTypeIdContainingDot::fromJson);
         assertNotNull(dogDeserialized);
         assertEquals(dogDeserialized.breed(), "AKITA");
         assertEquals(dogDeserialized.cuteLevel(), (Integer) 10);
@@ -253,7 +253,7 @@ public class FlatteningSerializerTests {
         // De-serialize
         //
         List<RabbitWithTypeIdContainingDot> rabbitsDeserialized = readJsons(serialized,
-            AnimalWithTypeIdContainingDot::fromJson);
+            RabbitWithTypeIdContainingDot::fromJson);
         assertNotNull(rabbitsDeserialized);
         assertEquals(1, rabbitsDeserialized.size());
         RabbitWithTypeIdContainingDot rabbitDeserialized = rabbitsDeserialized.get(0);

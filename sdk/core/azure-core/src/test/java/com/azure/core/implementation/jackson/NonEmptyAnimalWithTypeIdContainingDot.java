@@ -32,15 +32,14 @@ public class NonEmptyAnimalWithTypeIdContainingDot implements JsonCapable<NonEmp
             .flush();
     }
 
-    public static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
+    public static NonEmptyAnimalWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
         return fromJsonInternal(jsonReader, null);
     }
 
-    @SuppressWarnings("unchecked")
-    static <T extends NonEmptyAnimalWithTypeIdContainingDot> T fromJsonInternal(JsonReader jsonReader,
+    static NonEmptyAnimalWithTypeIdContainingDot fromJsonInternal(JsonReader jsonReader,
         String expectedODataType) {
         // Assumption time, super classes will have access to their subclasses and they'll be in the same package.
-        return (T) JsonUtils.readObject(jsonReader, reader -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             String odataType = null;
             Integer age = null;
             Integer size = null;

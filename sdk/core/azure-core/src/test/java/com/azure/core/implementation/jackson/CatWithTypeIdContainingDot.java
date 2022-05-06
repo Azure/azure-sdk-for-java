@@ -27,7 +27,7 @@ public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
             .flush();
     }
 
-    public static <T extends AnimalWithTypeIdContainingDot> T fromJson(JsonReader jsonReader) {
-        return fromJsonInternal(jsonReader, "#Favourite.Pet.CatWithTypeIdContainingDot");
+    public static CatWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return (CatWithTypeIdContainingDot) fromJsonInternal(jsonReader, "#Favourite.Pet.CatWithTypeIdContainingDot");
     }
 }

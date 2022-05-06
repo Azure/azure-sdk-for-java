@@ -29,4 +29,18 @@ public interface JsonCapable<T extends JsonCapable<T>> {
      * @return The {@link JsonWriter} where the JSON was written.
      */
     JsonWriter toJson(JsonWriter jsonWriter);
+
+    /**
+     * Reads a JSON stream into an object.
+     * <p>
+     * Implementations of {@link JsonCapable} must define this method, otherwise an
+     * {@link UnsupportedOperationException} will be thrown.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The object that the JSON stream represented, may return null.
+     * @param <T> THe type of the object.
+     */
+    static <T extends JsonCapable<T>> T fromJson(JsonReader jsonReader) {
+        throw new UnsupportedOperationException("Subclass of JsonCapable must define this factory method.");
+    }
 }

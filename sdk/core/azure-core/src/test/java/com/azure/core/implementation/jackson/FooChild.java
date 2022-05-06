@@ -15,7 +15,7 @@ public class FooChild extends Foo {
         return toJsonInternal(jsonWriter, "foochild");
     }
 
-    public static <T extends Foo> T fromJson(JsonReader jsonReader) {
-        return fromJsonInternal(jsonReader, "foochild");
+    public static FooChild fromJson(JsonReader jsonReader) {
+        return (FooChild) fromJsonInternal(jsonReader, "foochild");
     }
 }

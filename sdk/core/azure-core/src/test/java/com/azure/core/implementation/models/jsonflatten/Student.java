@@ -6,7 +6,6 @@ package com.azure.core.implementation.models.jsonflatten;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 /**
@@ -20,11 +19,7 @@ public class Student implements JsonCapable<Student> {
 
     public static Student fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                reader.nextToken();
-                reader.skipChildren();
-            }
-
+            JsonUtils.readFields(reader, ignored -> { });
             return new Student();
         });
     }
