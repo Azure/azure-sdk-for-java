@@ -3,7 +3,6 @@
 
 package com.azure.spring.messaging.servicebus.core;
 
-import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +31,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
 
     @Test
     void testCreateServiceBusSenderClient() {
-        ServiceBusSenderAsyncClient producer = producerFactory.createProducer(entityName);
+        ServiceBusProducer producer = producerFactory.createProducer(entityName);
         assertNotNull(producer);
         assertEquals(1, producerAddedTimes);
     }
@@ -45,7 +44,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
         producerAddedTimes = 0;
         this.producerFactory.addListener((name, client) -> producerAddedTimes++);
 
-        ServiceBusSenderAsyncClient producer = producerFactory.createProducer(entityName, ServiceBusEntityType.QUEUE);
+        ServiceBusProducer producer = producerFactory.createProducer(entityName, ServiceBusEntityType.QUEUE);
 
         assertNotNull(producer);
         assertEquals(1, producerAddedTimes);
@@ -53,7 +52,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
 
     @Test
     void testCreateServiceBusSenderClientTwice() {
-        ServiceBusSenderAsyncClient producer = producerFactory.createProducer(entityName);
+        ServiceBusProducer producer = producerFactory.createProducer(entityName);
         assertNotNull(producer);
 
         producerFactory.createProducer(entityName);
@@ -62,11 +61,11 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
 
     @Test
     void testRecreateServiceBusSenderClient() {
-        final ServiceBusSenderAsyncClient producer = producerFactory.createProducer(entityName);
+        final ServiceBusProducer producer = producerFactory.createProducer(entityName);
         assertNotNull(producer);
 
         String anotherEntityName = "serviceBus2";
-        final ServiceBusSenderAsyncClient anotherProducer = producerFactory.createProducer(anotherEntityName);
+        final ServiceBusProducer anotherProducer = producerFactory.createProducer(anotherEntityName);
         assertNotNull(anotherProducer);
         assertEquals(2, producerAddedTimes);
     }
