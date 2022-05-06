@@ -48,7 +48,7 @@ public final class MonitoringsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "MonitoringClientMoni")
-    private interface MonitoringsService {
+    public interface MonitoringsService {
         @Get("/monitoring/workloadTypes/spark/Applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

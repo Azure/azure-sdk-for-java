@@ -57,6 +57,12 @@ public final class FilesUploadRangeFromURLHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
 
+    /*
+     * The x-ms-file-last-write-time property.
+     */
+    @JsonProperty(value = "x-ms-file-last-write-time")
+    private OffsetDateTime xMsFileLastWriteTime;
+
     /**
      * Get the xMsVersion property: The x-ms-version property.
      *
@@ -208,6 +214,26 @@ public final class FilesUploadRangeFromURLHeaders {
         } else {
             this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
+     *
+     * @return the xMsFileLastWriteTime value.
+     */
+    public OffsetDateTime getXMsFileLastWriteTime() {
+        return this.xMsFileLastWriteTime;
+    }
+
+    /**
+     * Set the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
+     *
+     * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
+     * @return the FilesUploadRangeFromURLHeaders object itself.
+     */
+    public FilesUploadRangeFromURLHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
+        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
     }
 }

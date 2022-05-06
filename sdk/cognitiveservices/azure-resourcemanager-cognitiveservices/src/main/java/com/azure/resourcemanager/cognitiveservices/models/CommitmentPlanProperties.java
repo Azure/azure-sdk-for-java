@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Cognitive Services account commitment plan. */
 @Fluent
 public final class CommitmentPlanProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentPlanProperties.class);
-
     /*
      * Account hosting model.
      */

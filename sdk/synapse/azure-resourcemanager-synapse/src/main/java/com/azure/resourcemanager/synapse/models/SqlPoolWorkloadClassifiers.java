@@ -102,7 +102,8 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkloadClassifier> list(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
@@ -118,7 +119,8 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkloadClassifier> list(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);

@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.19.0</version>
+    <version>3.20.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -484,6 +484,8 @@ public class MyItem {
     String _etag;
 }
 ```
+- Read more about Optimistic Locking [here](https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
+
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
 - Example, find operation, e.g., `findByAFieldAndBField`
@@ -528,7 +530,7 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
 ```
 
 ### Spring Boot Starter Data Rest
-- Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
+- Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://spring.io/projects/spring-data-rest).
 - Supports List and nested type in domain class.
 - Configurable ObjectMapper bean with unique name `cosmosObjectMapper`, only configure customized ObjectMapper if you really need to. e.g.,
 ```java readme-sample-objectMapper

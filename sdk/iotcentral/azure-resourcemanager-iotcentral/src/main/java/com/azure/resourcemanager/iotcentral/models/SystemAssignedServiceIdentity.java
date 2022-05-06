@@ -6,15 +6,12 @@ package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Managed service identity (either system assigned, or none). */
 @Fluent
 public class SystemAssignedServiceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemAssignedServiceIdentity.class);
-
     /*
      * The service principal ID of the system assigned identity. This property
      * will only be provided for a system assigned identity.
@@ -82,10 +79,12 @@ public class SystemAssignedServiceIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property type in model SystemAssignedServiceIdentity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SystemAssignedServiceIdentity.class);
 }

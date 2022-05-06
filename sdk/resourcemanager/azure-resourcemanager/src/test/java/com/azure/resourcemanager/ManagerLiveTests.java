@@ -35,6 +35,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
@@ -99,5 +100,8 @@ public class ManagerLiveTests extends ResourceManagerTestBase {
         SqlServerManager.authenticate(httpPipeline, profile()).sqlServers().list().stream().count();
         StorageManager.authenticate(httpPipeline, profile()).storageAccounts().list().stream().count();
         TrafficManager.authenticate(httpPipeline, profile()).profiles().list().stream().count();
+
+        Assertions.assertNotNull(AzureResourceManager.authenticate(httpPipeline, profile()).withDefaultSubscription()
+            .genericResources().manager().httpPipeline());
     }
 }

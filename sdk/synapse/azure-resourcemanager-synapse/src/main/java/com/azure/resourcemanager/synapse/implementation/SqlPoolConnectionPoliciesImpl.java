@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolConnectionPolicyIn
 import com.azure.resourcemanager.synapse.models.ConnectionPolicyName;
 import com.azure.resourcemanager.synapse.models.SqlPoolConnectionPolicies;
 import com.azure.resourcemanager.synapse.models.SqlPoolConnectionPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolConnectionPoliciesImpl implements SqlPoolConnectionPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolConnectionPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolConnectionPoliciesImpl.class);
 
     private final SqlPoolConnectionPoliciesClient innerClient;
 

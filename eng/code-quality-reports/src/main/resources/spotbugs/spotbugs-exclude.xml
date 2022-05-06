@@ -417,7 +417,10 @@
 
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
-    <Class name="com.azure.core.implementation.TypeUtil"/>
+    <Or>
+      <Class name="com.azure.core.implementation.TypeUtil"/>
+      <Class name="com.azure.core.implementation.ReflectionUtils"/>
+    </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
@@ -581,7 +584,7 @@
       <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.SecretKey"/>
+      <Class name="com.azure.security.keyvault.keys.cryptography.implementation.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>

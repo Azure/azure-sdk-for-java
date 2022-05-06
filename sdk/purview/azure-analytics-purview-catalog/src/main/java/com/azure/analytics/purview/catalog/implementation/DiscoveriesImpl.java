@@ -51,7 +51,7 @@ public final class DiscoveriesImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface DiscoveriesService {
+    public interface DiscoveriesService {
         @Post("/search/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

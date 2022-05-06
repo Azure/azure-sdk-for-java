@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,12 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** configuration Manager client enabled features. */
+/** configurationManagerClientEnabledFeatures configuration Manager client enabled features. */
 @Fluent
 public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphConfigurationManagerClientEnabledFeatures.class);
-
     /*
      * Whether compliance policy is managed by Intune
      */

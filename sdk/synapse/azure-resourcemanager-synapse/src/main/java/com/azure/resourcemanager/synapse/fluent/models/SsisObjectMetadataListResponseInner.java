@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SsisObjectMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of SSIS object metadata. */
 @Fluent
 public final class SsisObjectMetadataListResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisObjectMetadataListResponseInner.class);
-
     /*
      * List of SSIS object metadata.
      */

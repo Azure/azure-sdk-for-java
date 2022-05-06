@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.DataMaskingRulesClient;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingRuleInner;
 import com.azure.resourcemanager.synapse.models.DataMaskingRule;
 import com.azure.resourcemanager.synapse.models.DataMaskingRules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataMaskingRulesImpl implements DataMaskingRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataMaskingRulesImpl.class);
 
     private final DataMaskingRulesClient innerClient;
 
@@ -77,7 +76,7 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
     public DataMaskingRule getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,21 +84,21 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String dataMaskingRuleName = Utils.getValueFromIdByName(id, "rules");
         if (dataMaskingRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));
@@ -112,7 +111,7 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
     public Response<DataMaskingRule> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,21 +119,21 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String dataMaskingRuleName = Utils.getValueFromIdByName(id, "rules");
         if (dataMaskingRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));

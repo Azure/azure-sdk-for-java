@@ -31,7 +31,11 @@ public final class ContainersGetAccessPolicyResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public List<BlobSignedIdentifier> getValue() {
         return super.getValue();

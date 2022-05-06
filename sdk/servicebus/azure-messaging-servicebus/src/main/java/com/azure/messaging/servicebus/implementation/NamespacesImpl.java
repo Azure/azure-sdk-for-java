@@ -45,7 +45,7 @@ public final class NamespacesImpl {
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface NamespacesService {
+    public interface NamespacesService {
         @Get("/$namespaceinfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)

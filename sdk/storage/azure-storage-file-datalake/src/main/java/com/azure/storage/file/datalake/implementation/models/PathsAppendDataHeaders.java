@@ -34,6 +34,12 @@ public final class PathsAppendDataHeaders {
     private byte[] xMsContentCrc64;
 
     /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    @JsonProperty(value = "x-ms-encryption-key-sha256")
+    private String xMsEncryptionKeySha256;
+
+    /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
@@ -120,6 +126,26 @@ public final class PathsAppendDataHeaders {
      */
     public PathsAppendDataHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @return the xMsEncryptionKeySha256 value.
+     */
+    public String getXMsEncryptionKeySha256() {
+        return this.xMsEncryptionKeySha256;
+    }
+
+    /**
+     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
+     * @return the PathsAppendDataHeaders object itself.
+     */
+    public PathsAppendDataHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
+        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
     }
 

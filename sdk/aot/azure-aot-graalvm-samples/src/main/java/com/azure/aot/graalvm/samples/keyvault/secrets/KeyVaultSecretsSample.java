@@ -20,6 +20,9 @@ import java.time.OffsetDateTime;
 public class KeyVaultSecretsSample {
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");
 
+    /**
+     * The method to run the Key Vault secrets sample.
+     */
     public static void runSample() {
         System.out.println("\n================================================================");
         System.out.println(" Starting Key Vault Secrets Sample");

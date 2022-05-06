@@ -49,6 +49,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.identity
 generate-client-as-impl: true
+service-interface-as-public: true
 custom-types-subpackage: models
 sync-methods: all
 context-client-method-parameter: true

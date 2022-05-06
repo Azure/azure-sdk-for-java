@@ -12,4 +12,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileServerWriteSettings")
 @Fluent
-public final class FileServerWriteSettings extends StoreWriteSettings {}
+public final class FileServerWriteSettings extends StoreWriteSettings {
+    /** {@inheritDoc} */
+    @Override
+    public FileServerWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileServerWriteSettings setCopyBehavior(Object copyBehavior) {
+        super.setCopyBehavior(copyBehavior);
+        return this;
+    }
+}

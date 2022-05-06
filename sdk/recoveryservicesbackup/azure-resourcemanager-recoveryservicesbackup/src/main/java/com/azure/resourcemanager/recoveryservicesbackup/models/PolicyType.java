@@ -39,7 +39,11 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
         return fromString(name, PolicyType.class);
     }
 
-    /** @return known PolicyType values. */
+    /**
+     * Gets known PolicyType values.
+     *
+     * @return known PolicyType values.
+     */
     public static Collection<PolicyType> values() {
         return values(PolicyType.class);
     }
