@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import com.azure.spring.cloud.feature.manager.entities.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * Text
@@ -40,10 +39,10 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
     private transient Map<String, DynamicFeature> dynamicFeatures;
     
-    public FeatureManagementProperties() {
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(DynamicFeature.class, new DynamicFeatureDeserializer());
-        MAPPER.registerModule(module);
+    public FeatureManagementProperties() {   
+        featureManagement = new HashMap<>();
+        onOff = new HashMap<>();
+        dynamicFeatures = new HashMap<>();
     }
 
     @Override

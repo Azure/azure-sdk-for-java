@@ -40,13 +40,16 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.feature.management.entity.DynamicFeature;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
+import com.azure.spring.cloud.config.feature.management.entity.FeatureVariant;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 import com.azure.spring.cloud.config.stores.KeyVaultClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -268,13 +271,11 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 FeatureFlagConfigurationSetting featureSetting = (FeatureFlagConfigurationSetting) setting;
                 Object feature = createFeature(featureSetting);
                 featureSet.addFeature(featureSetting.getFeatureId(), feature);
-            } else if (DYNAMIC_FEATURE_CONTENT_TYPE.equalsIgnoreCase(setting.getContentType()) && getFeatureSchemaVersion() >= 2) {
-                DynamicFeature dynamicFeature = CASE_INSENSITIVE_MAPPER.readValue(setting.getValue(),
-                    DynamicFeature.class);
-
+            } else if (DYNAMIC_FEATURE_CONTENT_TYPE.equalsIgnoreCase(setting.getContentType())
+                && getFeatureSchemaVersion() >= 2) {
                 properties.put(
                     DYNAMIC_FEATURE_KEY + "." + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()),
-                    FEATURE_MAPPER.convertValue(dynamicFeature, LinkedHashMap.class));
+                    FEATURE_MAPPER.convertValue(createDynamicFeature(setting), LinkedHashMap.class));
             }
         }
         return featureSet;
@@ -310,7 +311,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * @param item Used to create Features before being converted to be set into properties.
      * @return Feature created from KeyValueItem
      */
-    @SuppressWarnings("unchecked")
     private Object createFeature(FeatureFlagConfigurationSetting item) {
         String key = item.getFeatureId();
         Feature feature = new Feature(key, item);
@@ -327,7 +327,27 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         } else if (!item.isEnabled()) {
             return false;
         }
-        for (int filter = 0; filter < feature.getEnabledFor().size(); filter++) {
+
+        feature.setEnabledFor(convertMap(featureEnabledFor));
+
+        return feature;
+    }
+
+    private DynamicFeature createDynamicFeature(ConfigurationSetting item)
+        throws JsonMappingException, JsonProcessingException {
+        DynamicFeature dynamicFeature = FEATURE_MAPPER.readValue(item.getValue(), DynamicFeature.class);
+
+        for (FeatureVariant variant : dynamicFeature.getVariants().values()) {
+
+            variant.setAssignmentParameters(convertTargeting(variant.getAssignmentParameters()));
+        }
+
+        return dynamicFeature;
+
+    }
+
+    private Map<Integer, FeatureFlagFilter> convertMap(Map<Integer, FeatureFlagFilter> featureEnabledFor) {
+        for (int filter = 0; filter < featureEnabledFor.size(); filter++) {
             FeatureFlagFilter featureFilterEvaluationContext = featureEnabledFor.get(filter);
             Map<String, Object> parameters = featureFilterEvaluationContext.getParameters();
 
@@ -335,24 +355,29 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 continue;
             }
 
-            Object audienceObject = parameters.get(AUDIENCE);
-            if (audienceObject != null) {
-                parameters = (Map<String, Object>) audienceObject;
-            }
-
-            List<Object> users = convertToListOrEmptyList(parameters, USERS_CAPS);
-            List<Object> groupRollouts = convertToListOrEmptyList(parameters, GROUPS_CAPS);
-
-            switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
-            switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
-            switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
-                parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
-
-            featureFilterEvaluationContext.setParameters(parameters);
+            featureFilterEvaluationContext.setParameters(convertTargeting(parameters));
             featureEnabledFor.put(filter, featureFilterEvaluationContext);
-            feature.setEnabledFor(featureEnabledFor);
         }
-        return feature;
+        return featureEnabledFor;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> convertTargeting(Map<String, Object> target) {
+
+        Object audienceObject = target.get(AUDIENCE);
+        if (audienceObject != null) {
+            target = (Map<String, Object>) audienceObject;
+        }
+
+        List<Object> users = convertToListOrEmptyList(target, USERS_CAPS);
+        List<Object> groupRollouts = convertToListOrEmptyList(target, GROUPS_CAPS);
+
+        switchKeyValues(target, USERS_CAPS, USERS, mapValuesByIndex(users));
+        switchKeyValues(target, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
+        switchKeyValues(target, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
+            target.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
+
+        return target;
     }
 
     private Map<String, Object> mapValuesByIndex(List<Object> users) {

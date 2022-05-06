@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.feature.management.entity;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,10 +30,12 @@ public class FeatureVariant {
 
     @NotBlank
     @JsonProperty("configuration-reference")
+    @JsonAlias("configuration_reference")
     private String configurationReference;
 
     @JsonProperty("assignment-parameters")
-    private LinkedHashMap<String, Object> assignmentParameters;
+    @JsonAlias("assignment_parameters")
+    private Map<String, Object> assignmentParameters;
 
     /**
      * @return the name
@@ -79,14 +82,14 @@ public class FeatureVariant {
     /**
      * @return the assignmentParameters
      */
-    public LinkedHashMap<String, Object> getAssignmentParameters() {
+    public Map<String, Object> getAssignmentParameters() {
         return assignmentParameters;
     }
 
     /**
-     * @param assignmentParameters the assignmentParameters to set
+     * @param map the assignmentParameters to set
      */
-    public void setAssignmentParameters(LinkedHashMap<String, Object> assignmentParameters) {
-        this.assignmentParameters = assignmentParameters;
+    public void setAssignmentParameters(Map<String, Object> map) {
+        this.assignmentParameters = map;
     }
 }

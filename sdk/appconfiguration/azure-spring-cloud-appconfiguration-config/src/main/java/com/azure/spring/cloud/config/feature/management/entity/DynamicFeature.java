@@ -14,7 +14,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Defines the assigner and variants of a Dynamic Feature
@@ -24,10 +26,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class DynamicFeature {
 
     @NotBlank
+    @JsonProperty("id")
+    private String name;
+
+    @NotBlank
+    @JsonProperty("assigner")
+    @JsonAlias("client_assigner")
     private String assigner;
-    
+
     @NotNull
     private Map<String, FeatureVariant> variants = new HashMap<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * @return the assigner
@@ -54,13 +70,14 @@ public class DynamicFeature {
      * @param variants the variants to set
      */
     public void setVariants(List<FeatureVariant> variants) {
-        @NotNull Map<String, FeatureVariant> map = new LinkedHashMap<>();
+        @NotNull
+        Map<String, FeatureVariant> map = new LinkedHashMap<>();
         for (int i = 0; i < variants.size(); i++) {
             map.put(String.valueOf(i), variants.get(i));
         }
         this.variants = map;
     }
-    
+
     /**
      * Validates Feature Definition on construction
      */
