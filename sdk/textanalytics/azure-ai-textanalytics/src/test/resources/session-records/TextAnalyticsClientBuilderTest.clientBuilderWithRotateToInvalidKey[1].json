@@ -1,19 +1,19 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/languages?showStats=false&loggingOptOut=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bb8ca334-a137-44aa-9458-5b8d17c3c82a",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "24ce32d6-9357-4918-afb0-88faaa516df9",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "224",
-      "apim-request-id" : "e1390df6-4034-4594-97bd-7c60ea244617",
+      "apim-request-id" : "da514011-6f04-44e6-b082-eff6e1e023cf",
       "retry-after" : "0",
       "StatusCode" : "401",
       "Body" : "{\"error\":{\"code\":\"401\",\"message\":\"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.\"}}",
-      "Date" : "Tue, 19 Oct 2021 20:23:18 GMT",
+      "Date" : "Fri, 06 May 2022 18:00:07 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
