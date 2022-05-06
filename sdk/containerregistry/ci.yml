@@ -41,3 +41,6 @@ extends:
       - name: azure-containers-containerregistry
         groupId: com.azure
         safeName: azurecontainerscontainerregistry
+      - name: azure-resourcemanager-containerregistry-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerregistrygenerated
