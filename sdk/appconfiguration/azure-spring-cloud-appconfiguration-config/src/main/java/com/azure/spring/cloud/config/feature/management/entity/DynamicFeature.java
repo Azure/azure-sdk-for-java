@@ -37,10 +37,16 @@ public class DynamicFeature {
     @NotNull
     private Map<String, FeatureVariant> variants = new HashMap<>();
 
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
