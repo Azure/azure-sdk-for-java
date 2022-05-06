@@ -37,7 +37,7 @@ com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.4;3.0.0-beta.5
-com.azure:azure-ai-formrecognizer;3.1.10;4.0.0-beta.5
+com.azure:azure-ai-formrecognizer;4.0.0-beta.4;4.0.0-beta.5
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-metricsadvisor;1.1.2;1.2.0-beta.1
@@ -350,7 +350,6 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-aot-graalvm-perf;1.0.0-beta.1
 unreleased_com.azure:azure-messaging-eventhubs;5.12.0-beta.1
 unreleased_com.azure.spring:spring-cloud-azure-autoconfigure;4.1.0-beta.1
 unreleased_com.azure.spring:spring-cloud-azure-resourcemanager;4.1.0-beta.1
@@ -364,4 +363,3 @@ unreleased_com.azure.spring:spring-integration-azure-storage-queue;4.1.0-beta.1
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
-beta_com.azure:azure-ai-formrecognizer;4.0.0-beta.4
