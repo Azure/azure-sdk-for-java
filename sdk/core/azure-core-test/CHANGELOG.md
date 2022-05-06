@@ -1,6 +1,10 @@
 # Release History
 
-## 1.7.11 (2022-05-06)
+## 1.8.0 (2022-05-06)
+
+### Features Added
+
+- Added `TestConfigurationSource` to enable mocking of a `ConfigurationSource`.
 
 ### Other Changes
 
