@@ -23,24 +23,25 @@ import java.util.Map;
  * "Authorization" header value.
  *
  * @see TokenCredential
+ * @see BearerTokenAuthenticationPolicy
  */
 public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private String[] scopes;
-    private String tenantId;
-    private boolean enabledTenantDiscovery;
+    private volatile String tenantId;
+    private boolean enableTenantDiscovery;
 
     /**
      * Creates a {@link TableBearerTokenChallengeAuthorizationPolicy}.
      *
      * @param credential The token credential to authenticate the request.
      */
-    public TableBearerTokenChallengeAuthorizationPolicy(TokenCredential credential, boolean enabledTenantDiscovery,
+    public TableBearerTokenChallengeAuthorizationPolicy(TokenCredential credential, boolean enableTenantDiscovery,
                                                         String... scopes) {
         super(credential, scopes);
         this.scopes = scopes;
-        this.enabledTenantDiscovery = enabledTenantDiscovery;
+        this.enableTenantDiscovery = enableTenantDiscovery;
     }
 
     /**
@@ -88,7 +89,7 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
-            if (this.tenantId != null || !enabledTenantDiscovery) {
+            if (this.tenantId != null || !enableTenantDiscovery) {
                 TokenRequestContext tokenRequestContext = new TokenRequestContext()
                     .addScopes(this.scopes)
                     .setTenantId(this.tenantId);

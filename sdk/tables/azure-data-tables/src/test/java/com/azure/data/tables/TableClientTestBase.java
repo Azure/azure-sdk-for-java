@@ -29,8 +29,11 @@ public abstract class TableClientTestBase extends TestBase {
                                                   boolean enableTenantDiscovery) {
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
             .credential(tokenCredential)
-            .endpoint(endpoint)
-            .enableTenantDiscovery(enableTenantDiscovery);
+            .endpoint(endpoint);
+
+        if (enableTenantDiscovery) {
+            tableClientBuilder.enableTenantDiscovery();
+        }
 
         return configureTestClientBuilder(tableClientBuilder, tableName);
     }

@@ -30,8 +30,11 @@ public abstract class TableServiceClientTestBase extends TestBase {
                                                          boolean enableTenantDiscovery) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
             .credential(tokenCredential)
-            .endpoint(endpoint)
-            .enableTenantDiscovery(enableTenantDiscovery);
+            .endpoint(endpoint);
+
+        if (enableTenantDiscovery) {
+            tableServiceClientBuilder.enableTenantDiscovery();
+        }
 
         return configureTestClientBuilder(tableServiceClientBuilder);
     }

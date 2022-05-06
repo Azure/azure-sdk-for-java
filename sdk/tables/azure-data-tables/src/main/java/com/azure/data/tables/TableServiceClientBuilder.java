@@ -30,6 +30,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageEndpoint;
+import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -99,7 +100,7 @@ public final class TableServiceClientBuilder implements
     private String sasToken;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
-    private boolean enableTenantDiscovery = false;
+    private boolean enableTenantDiscovery;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -546,15 +547,19 @@ public final class TableServiceClientBuilder implements
     }
 
     /**
-     * Sets a flag indicating if tenant discovery should be enabled when authenticating with the Storage Table Service.
-     * This is set to {@code false} by default.
-     *
-     * @param enabled Value indicating whether tenant discovery is enabled or not.
+     * Enabled tenant discovery when authenticating with the Storage Table Service. This is disabled by default.
+     * <p>
+     * Enable this if there is a chance for your application and the Storage account it communicates with to reside in
+     * different tenants. If this is enabled, clients created using this builder will make an unauthorized initial
+     * service request that will be met with a {@code 401} response containing an authentication challenge, which
+     * will be subsequently used to retrieve an access token to authorize all further requests with.
      *
      * @return The updated {@link TableServiceClientBuilder}.
+     *
+     * @see TableBearerTokenChallengeAuthorizationPolicy
      */
-    public TableServiceClientBuilder enableTenantDiscovery(boolean enabled) {
-        this.enableTenantDiscovery = enabled;
+    public TableServiceClientBuilder enableTenantDiscovery() {
+        this.enableTenantDiscovery = true;
 
         return this;
     }
