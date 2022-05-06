@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationStores List. */
 public final class ConfigurationStoresListSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresList.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresList.json
      */
     /**
      * Sample code: ConfigurationStores_List.

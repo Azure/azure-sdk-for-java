@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for ConfigurationStores Create. */
 public final class ConfigurationStoresCreateSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresCreate.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresCreate.json
      */
     /**
      * Sample code: ConfigurationStores_Create.
@@ -34,7 +34,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresCreateWithIdentity.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresCreateWithIdentity.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Identity.
@@ -61,7 +61,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresCreateWithLocalAuthDisabled.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresCreateWithLocalAuthDisabled.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Local_Auth_Disabled.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appconfiguration.models.RegenerateKeyParameters
 /** Samples for ConfigurationStores RegenerateKey. */
 public final class ConfigurationStoresRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresRegenerateKey.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresRegenerateKey.json
      */
     /**
      * Sample code: ConfigurationStores_RegenerateKey.

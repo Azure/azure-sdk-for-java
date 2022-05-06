@@ -27,7 +27,11 @@ public final class ActionsRequired extends ExpandableStringEnum<ActionsRequired>
         return fromString(name, ActionsRequired.class);
     }
 
-    /** @return known ActionsRequired values. */
+    /**
+     * Gets known ActionsRequired values.
+     *
+     * @return known ActionsRequired values.
+     */
     public static Collection<ActionsRequired> values() {
         return values(ActionsRequired.class);
     }

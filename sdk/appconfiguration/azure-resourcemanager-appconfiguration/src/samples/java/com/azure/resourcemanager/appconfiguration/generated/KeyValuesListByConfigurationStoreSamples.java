@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for KeyValues ListByConfigurationStore. */
 public final class KeyValuesListByConfigurationStoreSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresListKeyValues.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresListKeyValues.json
      */
     /**
      * Sample code: KeyValues_ListByConfigurationStore.

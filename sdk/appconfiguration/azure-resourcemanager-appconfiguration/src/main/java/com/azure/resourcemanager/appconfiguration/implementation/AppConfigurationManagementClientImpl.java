@@ -40,8 +40,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the AppConfigurationManagementClientImpl type. */
 @ServiceClient(builder = AppConfigurationManagementClientBuilder.class)
 public final class AppConfigurationManagementClientImpl implements AppConfigurationManagementClient {
-    private final ClientLogger logger = new ClientLogger(AppConfigurationManagementClientImpl.class);
-
     /** The Microsoft Azure subscription ID. */
     private final String subscriptionId;
 
@@ -196,7 +194,7 @@ public final class AppConfigurationManagementClientImpl implements AppConfigurat
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-01-preview";
+        this.apiVersion = "2022-05-01";
         this.configurationStores = new ConfigurationStoresClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
@@ -287,7 +285,7 @@ public final class AppConfigurationManagementClientImpl implements AppConfigurat
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -346,4 +344,6 @@ public final class AppConfigurationManagementClientImpl implements AppConfigurat
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppConfigurationManagementClientImpl.class);
 }

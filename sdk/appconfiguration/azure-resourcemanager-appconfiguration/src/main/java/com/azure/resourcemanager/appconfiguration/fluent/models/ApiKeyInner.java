@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An API key used for authenticating with a configuration store endpoint. */
 @Immutable
 public final class ApiKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKeyInner.class);
-
     /*
      * The key ID.
      */

@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.models.CreateMode;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnectionReference;
 import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.appconfiguration.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.List;
 /** The properties of a configuration store. */
 @Fluent
 public final class ConfigurationStoreProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoreProperties.class);
-
     /*
      * The provisioning state of the configuration store.
      */

@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for updating a configuration store. */
 @Fluent
 public final class ConfigurationStorePropertiesUpdateParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConfigurationStorePropertiesUpdateParameters.class);
-
     /*
      * The encryption settings of the configuration store.
      */

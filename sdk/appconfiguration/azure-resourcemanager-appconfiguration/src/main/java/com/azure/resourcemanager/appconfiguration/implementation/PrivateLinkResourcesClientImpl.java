@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.appconfiguration.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.appconfiguration.models.PrivateLinkResourceListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkResourcesService service;
 
