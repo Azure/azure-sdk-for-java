@@ -231,7 +231,7 @@ public class TargetingFilter implements FeatureFilter {
     }
 
     /**
-     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used for updating 
+     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used for updating
      * fields in the targeting filter.
      * @param <T> Type of object inside of parameters for the given key
      * @param parameters map of generic objects

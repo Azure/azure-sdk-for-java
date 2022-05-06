@@ -40,7 +40,8 @@ public class DynamicFeatureManagerSnapshotTest {
 
     @Test
     public void initialLoad() throws InterruptedException, ExecutionException {
-    	when(dynamicFeatureManager.getVariantAsync(Mockito.matches("myVariant"), Mockito.any())).thenReturn(Mono.just(new Object()));
+        when(dynamicFeatureManager.getVariantAsync(Mockito.matches("myVariant"), Mockito.any()))
+            .thenReturn(Mono.just(new Object()));
 
         Object returnValue = dynamicFeatureManagerSnapshot.getVariantAsync("myVariant", Object.class).block();
         assertNotNull(returnValue);
@@ -49,20 +50,22 @@ public class DynamicFeatureManagerSnapshotTest {
 
     @Test
     public void initialAlreadyExists() throws InterruptedException, ExecutionException {
-    	when(dynamicFeatureManager.getVariantAsync(Mockito.matches("exitingVariant"), Mockito.any())).thenReturn(Mono.just(new Object()));
+        when(dynamicFeatureManager.getVariantAsync(Mockito.matches("exitingVariant"), Mockito.any()))
+            .thenReturn(Mono.just(new Object()));
 
         Object returnValue = dynamicFeatureManagerSnapshot.getVariantAsync("exitingVariant", Object.class).block();
         assertNotNull(returnValue);
         verify(dynamicFeatureManager, times(1)).getVariantAsync("exitingVariant", Object.class);
-        
+
         returnValue = dynamicFeatureManagerSnapshot.getVariantAsync("exitingVariant", Object.class).block();
         assertNotNull(returnValue);
         verify(dynamicFeatureManager, times(1)).getVariantAsync("exitingVariant", Object.class);
     }
-    
+
     @Test
     public void invalidType() throws InterruptedException, ExecutionException {
-    	when(dynamicFeatureManager.getVariantAsync(Mockito.matches("exitingVariant"), Mockito.any())).thenReturn(Mono.just("A"));
+        when(dynamicFeatureManager.getVariantAsync(Mockito.matches("exitingVariant"), Mockito.any()))
+            .thenReturn(Mono.just("A"));
 
         Object returnValue = dynamicFeatureManagerSnapshot.getVariantAsync("exitingVariant", Integer.class).block();
         assertNull(returnValue);
