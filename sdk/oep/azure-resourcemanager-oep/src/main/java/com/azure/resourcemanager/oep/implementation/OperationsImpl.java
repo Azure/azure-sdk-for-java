@@ -12,10 +12,9 @@ import com.azure.resourcemanager.oep.fluent.OperationsClient;
 import com.azure.resourcemanager.oep.fluent.models.OperationListResultInner;
 import com.azure.resourcemanager.oep.models.OperationListResult;
 import com.azure.resourcemanager.oep.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 

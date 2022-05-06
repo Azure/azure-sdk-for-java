@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnergyServices GetByResourceGroup. */
 public final class EnergyServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Get.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_Get.json
      */
     /**
      * Sample code: OepResource_Get.

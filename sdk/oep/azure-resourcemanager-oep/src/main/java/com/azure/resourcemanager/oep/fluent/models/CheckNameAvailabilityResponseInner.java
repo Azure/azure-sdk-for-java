@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.oep.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oep.models.CheckNameAvailabilityReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The check availability result. */
 @Fluent
 public final class CheckNameAvailabilityResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResponseInner.class);
-
     /*
      * Indicates if the resource name is available.
      */

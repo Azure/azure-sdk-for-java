@@ -7,17 +7,17 @@ package com.azure.resourcemanager.oep.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The list of Energy services resource's Data Partition Names. */
+/** Defines the partition add/ delete action properties. */
 @Fluent
-public final class DataPartitionNames {
+public final class DataPartitionAddOrRemoveRequest {
     /*
-     * The name property.
+     * Name of the data partition
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: Name of the data partition.
      *
      * @return the name value.
      */
@@ -26,12 +26,12 @@ public final class DataPartitionNames {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: Name of the data partition.
      *
      * @param name the name value to set.
-     * @return the DataPartitionNames object itself.
+     * @return the DataPartitionAddOrRemoveRequest object itself.
      */
-    public DataPartitionNames withName(String name) {
+    public DataPartitionAddOrRemoveRequest withName(String name) {
         this.name = name;
         return this;
     }

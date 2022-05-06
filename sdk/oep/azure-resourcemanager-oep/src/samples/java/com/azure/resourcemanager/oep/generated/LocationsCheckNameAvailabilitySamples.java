@@ -10,7 +10,7 @@ import com.azure.resourcemanager.oep.models.CheckNameAvailabilityRequest;
 /** Samples for Locations CheckNameAvailability. */
 public final class LocationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/Locations_CheckNameAvailability.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/Locations_CheckNameAvailability.json
      */
     /**
      * Sample code: Locations_CheckNameAvailability.

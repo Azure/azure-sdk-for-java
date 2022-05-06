@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnergyServices List. */
 public final class EnergyServicesListSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_ListBySubscriptionId.json
+     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2022-04-04-preview/examples/OepResource_ListBySubscriptionId.json
      */
     /**
      * Sample code: OepResource_ListBySubscriptionId.

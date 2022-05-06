@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.oep.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** REST API Operation Details of a REST API operation, returned from the Resource Provider Operations API. */
 @Fluent
 public final class Operation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
-
     /*
      * The name of the operation, as per Resource-Based Access Control (RBAC).
      * Examples: "Microsoft.Compute/virtualMachines/write",

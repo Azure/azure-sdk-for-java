@@ -10,13 +10,15 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oep.fluent.EnergyServicesClient;
+import com.azure.resourcemanager.oep.fluent.models.DataPartitionsListResultInner;
 import com.azure.resourcemanager.oep.fluent.models.EnergyServiceInner;
+import com.azure.resourcemanager.oep.models.DataPartitionAddOrRemoveRequest;
+import com.azure.resourcemanager.oep.models.DataPartitionsListResult;
 import com.azure.resourcemanager.oep.models.EnergyService;
 import com.azure.resourcemanager.oep.models.EnergyServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EnergyServicesImpl implements EnergyServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnergyServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EnergyServicesImpl.class);
 
     private final EnergyServicesClient innerClient;
 
@@ -80,10 +82,60 @@ public final class EnergyServicesImpl implements EnergyServices {
         this.serviceClient().delete(resourceGroupName, resourceName, context);
     }
 
+    public void addPartition(String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body) {
+        this.serviceClient().addPartition(resourceGroupName, resourceName, body);
+    }
+
+    public void addPartition(String resourceGroupName, String resourceName) {
+        this.serviceClient().addPartition(resourceGroupName, resourceName);
+    }
+
+    public void addPartition(
+        String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body, Context context) {
+        this.serviceClient().addPartition(resourceGroupName, resourceName, body, context);
+    }
+
+    public void removePartition(String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body) {
+        this.serviceClient().removePartition(resourceGroupName, resourceName, body);
+    }
+
+    public void removePartition(String resourceGroupName, String resourceName) {
+        this.serviceClient().removePartition(resourceGroupName, resourceName);
+    }
+
+    public void removePartition(
+        String resourceGroupName, String resourceName, DataPartitionAddOrRemoveRequest body, Context context) {
+        this.serviceClient().removePartition(resourceGroupName, resourceName, body, context);
+    }
+
+    public DataPartitionsListResult listPartitions(String resourceGroupName, String resourceName) {
+        DataPartitionsListResultInner inner = this.serviceClient().listPartitions(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new DataPartitionsListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<DataPartitionsListResult> listPartitionsWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        Response<DataPartitionsListResultInner> inner =
+            this.serviceClient().listPartitionsWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new DataPartitionsListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public EnergyService getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,7 +143,7 @@ public final class EnergyServicesImpl implements EnergyServices {
         }
         String resourceName = Utils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +155,7 @@ public final class EnergyServicesImpl implements EnergyServices {
     public Response<EnergyService> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +163,7 @@ public final class EnergyServicesImpl implements EnergyServices {
         }
         String resourceName = Utils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,7 +175,7 @@ public final class EnergyServicesImpl implements EnergyServices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +183,7 @@ public final class EnergyServicesImpl implements EnergyServices {
         }
         String resourceName = Utils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +195,7 @@ public final class EnergyServicesImpl implements EnergyServices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +203,7 @@ public final class EnergyServicesImpl implements EnergyServices {
         }
         String resourceName = Utils.getValueFromIdByName(id, "energyServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

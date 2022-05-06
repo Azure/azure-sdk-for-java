@@ -13,10 +13,9 @@ import com.azure.resourcemanager.oep.fluent.models.CheckNameAvailabilityResponse
 import com.azure.resourcemanager.oep.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.oep.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.oep.models.Locations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 
