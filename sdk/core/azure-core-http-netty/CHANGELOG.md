@@ -13,9 +13,9 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.27.0` to `1.28.0`.
-- - Upgraded Netty from `4.1.73.Final` to `4.1.76.Final`.
+- Upgraded Netty from `4.1.73.Final` to `4.1.76.Final`.
 - Upgraded Reactor Netty from `1.0.15` to `1.0.18`.
-- 
+
 ## 1.11.9 (2022-04-01)
 
 ### Other Changes
