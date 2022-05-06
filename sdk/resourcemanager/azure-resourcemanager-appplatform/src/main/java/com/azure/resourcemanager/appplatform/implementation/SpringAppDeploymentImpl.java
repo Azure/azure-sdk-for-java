@@ -175,6 +175,56 @@ public class SpringAppDeploymentImpl
         }
     }
 
+    @Override
+    public Double cpu() {
+        return Utils.fromCpuString(innerModel().properties().deploymentSettings().resourceRequests().cpu());
+    }
+
+    @Override
+    public Double memoryInGB() {
+        return Utils.fromMemoryString(innerModel().properties().deploymentSettings().resourceRequests().memory());
+    }
+
+    @Override
+    public RuntimeVersion runtimeVersion() {
+        if (isEnterpriseTier() || innerModel().properties() == null) {
+            return null;
+        }
+        UserSourceInfo userSourceInfo = innerModel().properties().source();
+        if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+            JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
+            return RuntimeVersion.fromString(uploadedUserSourceInfo.runtimeVersion());
+        } else if (userSourceInfo instanceof NetCoreZipUploadedUserSourceInfo) {
+            NetCoreZipUploadedUserSourceInfo uploadedUserSourceInfo = (NetCoreZipUploadedUserSourceInfo) userSourceInfo;
+            return RuntimeVersion.fromString(uploadedUserSourceInfo.runtimeVersion());
+        } else if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
+            SourceUploadedUserSourceInfo uploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
+            return RuntimeVersion.fromString(uploadedUserSourceInfo.runtimeVersion());
+        }
+        return null;
+    }
+
+    @Override
+    public String jvmOptions() {
+        if (innerModel().properties() == null) {
+            return null;
+        }
+        String jvmOptions = null;
+        if (isEnterpriseTier() && innerModel().properties().deploymentSettings() != null) {
+            Map<String, String> environment = innerModel().properties().deploymentSettings().environmentVariables();
+            if (environment != null) {
+                jvmOptions = environment.get(Constants.JAVA_OPTS);
+            }
+        } else if (innerModel().properties().source() != null) {
+            UserSourceInfo userSourceInfo = innerModel().properties().source();
+            if (userSourceInfo instanceof JarUploadedUserSourceInfo) {
+                JarUploadedUserSourceInfo uploadedUserSourceInfo = (JarUploadedUserSourceInfo) userSourceInfo;
+                jvmOptions = uploadedUserSourceInfo.jvmOptions();
+            }
+        }
+        return jvmOptions;
+    }
+
     private void ensureDeploySettings() {
         if (innerModel().properties() == null) {
             innerModel().withProperties(new DeploymentResourceProperties());
@@ -381,27 +431,25 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withCpu(int cpuCount) {
-        return withCpu(String.valueOf(cpuCount));
+        return withCpu((double) cpuCount);
     }
 
     @Override
-    public SpringAppDeploymentImpl withCpu(String cpuCount) {
+    public SpringAppDeploymentImpl withCpu(double cpuCount) {
         ensureDeploySettings();
-        innerModel().properties().deploymentSettings().resourceRequests().withCpu(cpuCount);
+        innerModel().properties().deploymentSettings().resourceRequests().withCpu(Utils.toCpuString(cpuCount));
         return this;
     }
 
     @Override
     public SpringAppDeploymentImpl withMemory(int sizeInGB) {
-        ensureDeploySettings();
-        innerModel().properties().deploymentSettings().resourceRequests().withMemory(String.format("%dGi", sizeInGB));
-        return this;
+        return withMemory((double) sizeInGB);
     }
 
     @Override
-    public SpringAppDeploymentImpl withMemory(String size) {
+    public SpringAppDeploymentImpl withMemory(double sizeInGB) {
         ensureDeploySettings();
-        innerModel().properties().deploymentSettings().resourceRequests().withMemory(size);
+        innerModel().properties().deploymentSettings().resourceRequests().withMemory(Utils.toMemoryString(sizeInGB));
         return this;
     }
 
@@ -424,7 +472,7 @@ public class SpringAppDeploymentImpl
     @Override
     public SpringAppDeploymentImpl withJvmOptions(String jvmOptions) {
         if (isEnterpriseTier()) {
-            withEnvironment("JAVA_OPTS", jvmOptions);
+            withEnvironment(Constants.JAVA_OPTS, jvmOptions);
         } else {
             ensureSource(UserSourceType.JAR);
             UserSourceInfo userSourceInfo = innerModel().properties().source();

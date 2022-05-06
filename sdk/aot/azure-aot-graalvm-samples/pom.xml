@@ -43,6 +43,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- This sample package is not released to maven and revapi checks are not required -->
+        <revapi.skip>true</revapi.skip>
         <legal>
             <![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
     </properties>
@@ -96,7 +98,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.29.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.29.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>

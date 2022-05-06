@@ -15,10 +15,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProx
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UnlockDeleteRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UnlockDeleteResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProxyOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardProxyOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGuardProxyOperationsImpl.class);
 
     private final ResourceGuardProxyOperationsClient innerClient;
 

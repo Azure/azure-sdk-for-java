@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class IaaSvmProtectableItem extends WorkloadProtectableItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaaSvmProtectableItem.class);
-
     /*
      * Fully qualified ARM ID of the virtual machine.
      */

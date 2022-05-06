@@ -289,10 +289,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
             return Flux.empty();
         } else {
             return pageRetriever.get(state.getLastContinuationToken(), pageSize)
-                .switchIfEmpty(Flux.defer(() -> {
-                    state.setLastContinuationToken(null);
-                    return Mono.empty();
-                }));
+                .switchIfEmpty(Mono.fromRunnable(() -> state.setLastContinuationToken(null)));
         }
     }
 }

@@ -31,9 +31,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * Represents an session that is received when "any" session is accepted from the service.
+ * Represents a session that is received when "any" session is accepted from the service.
  */
 class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiver.class);
+
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     // Each session-specific receiver tracks the lock of the received messages via lock-container.
     // When the app uses SessionManager (multiplexing session receivers) and wants to perform message
@@ -44,7 +46,6 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
-    private final ClientLogger logger = new ClientLogger(ServiceBusSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusMessageContext> receivedMessages;
@@ -81,7 +82,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
             .receive()
             .publishOn(scheduler)
             .doOnSubscribe(subscription -> {
-                logger.verbose("Adding prefetch to receive link.");
+                LOGGER.verbose("Adding prefetch to receive link.");
                 if (prefetch > 0) {
                     receiveLink.addCredits(prefetch).subscribe();
                 }
@@ -103,7 +104,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                     lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
                         deserialized.getLockedUntil());
                 } else {
-                    logger.atInfo()
+                    LOGGER.atInfo()
                         .addKeyValue(SESSION_ID_KEY, deserialized.getSessionId())
                         .addKeyValue(MESSAGE_ID_LOGGING_KEY, deserialized.getMessageId())
                         .log("There is no lock token.");
@@ -112,7 +113,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 return new ServiceBusMessageContext(deserialized);
             })
             .onErrorResume(error -> {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue(SESSION_ID_KEY, sessionId)
                     .log("Error occurred. Ending session.", error);
 
@@ -128,7 +129,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                     ? message.getLockToken()
                     : "";
 
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue(SESSION_ID_KEY, context.getSessionId())
                     .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
                     .log("Received message.");
@@ -145,7 +146,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
                 .map((String lockToken) -> Mono.delay(this.retryOptions.getTryTimeout())))
                 .subscribe(item -> {
-                    logger.atInfo()
+                    LOGGER.atInfo()
                         .addKeyValue(ENTITY_PATH_KEY,  receiveLink.getEntityPath())
                         .addKeyValue(SESSION_ID_KEY, sessionId.get())
                         .addKeyValue("timeout", retryOptions.getTryTimeout())
@@ -156,7 +157,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
 
         this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> {
             if (!sessionId.compareAndSet(null, id)) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue("existingSessionId", sessionId.get())
                     .addKeyValue("returnedSessionId", id)
                     .log("Another method set sessionId.");
@@ -164,7 +165,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
         }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
-                logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
+                LOGGER.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
                 return;
             }
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
@@ -184,9 +185,9 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      */
     boolean containsLockToken(String lockToken) {
         if (lockToken == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'lockToken' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'lockToken' cannot be null."));
         } else if (lockToken.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'lockToken' cannot be an empty string."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'lockToken' cannot be an empty string."));
         }
 
         return lockContainer.containsUnexpired(lockToken);

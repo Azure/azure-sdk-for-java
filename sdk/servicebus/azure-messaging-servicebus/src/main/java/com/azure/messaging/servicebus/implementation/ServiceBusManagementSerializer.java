@@ -36,7 +36,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
     private static final String RULE_VALUE_ATTRIBUTE_XML = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusManagementSerializer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusManagementSerializer.class);
 
     @Override
     public String serialize(Object object, SerializerEncoding encoding) throws IOException {
@@ -54,7 +54,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         // xmlns:ns0="foo", and then prefixing all elements with ns0:AuthorizationRule will break.
         final Matcher namespaceMatcher = NAMESPACE_PATTERN.matcher(contents);
         if (!namespaceMatcher.find()) {
-            logger.warning("Could not find {} in {}", NAMESPACE_PATTERN.pattern(), contents);
+            LOGGER.warning("Could not find {} in {}", NAMESPACE_PATTERN.pattern(), contents);
             return contents;
         }
 
@@ -73,7 +73,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
             if (filterValue.find()) {
                 replaced = filterValue.replaceAll(RULE_VALUE_ATTRIBUTE_XML);
             } else {
-                logger.warning("Could not find filter name pattern '{}' in {}.", FILTER_VALUE_PATTERN.pattern(),
+                LOGGER.warning("Could not find filter name pattern '{}' in {}.", FILTER_VALUE_PATTERN.pattern(),
                     contents);
             }
         }
@@ -83,7 +83,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         if (filterType.find()) {
             return filterType.replaceAll("<$1 xmlns:ns0=\"http://www.w3.org/2001/XMLSchema-instance\" ns0:type=");
         } else {
-            logger.warning("Could not find filter name pattern '{}' in {}.", FILTER_ACTION_PATTERN.pattern(),
+            LOGGER.warning("Could not find filter name pattern '{}' in {}.", FILTER_ACTION_PATTERN.pattern(),
                 contents);
             return replaced;
         }
@@ -106,7 +106,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         // We have to replace matches because service returns a format that is not parsable from OffsetDateTime when
         // entities are created.
         if (matcher.find(0)) {
-            logger.verbose("Found instances of '{}' to replace. Value: {}", MINIMUM_DATETIME_PATTERN.pattern(), value);
+            LOGGER.verbose("Found instances of '{}' to replace. Value: {}", MINIMUM_DATETIME_PATTERN.pattern(), value);
             serializedString = matcher.replaceAll(MINIMUM_DATETIME_FORMATTED);
         } else {
             serializedString = value;

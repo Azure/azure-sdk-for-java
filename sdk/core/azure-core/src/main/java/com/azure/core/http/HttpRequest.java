@@ -5,6 +5,7 @@ package com.azure.core.http;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -183,7 +184,7 @@ public class HttpRequest {
      */
     public HttpRequest setBody(byte[] content) {
         setContentLength(content.length);
-        return setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
+        return setBody(Mono.fromSupplier(() -> ByteBuffer.wrap(content)).flux());
     }
 
     /**
