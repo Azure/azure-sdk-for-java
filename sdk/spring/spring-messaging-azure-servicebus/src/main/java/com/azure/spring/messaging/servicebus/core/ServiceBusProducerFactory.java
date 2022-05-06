@@ -4,29 +4,28 @@
 package com.azure.spring.messaging.servicebus.core;
 
 
-import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
 /**
- * The strategy to produce {@link ServiceBusSenderAsyncClient} instance.
+ * The strategy to produce {@link ServiceBusProducer} instance.
  */
 public interface ServiceBusProducerFactory {
 
     /**
-     * Create {@link ServiceBusSenderAsyncClient} to send events to the Service Bus queue/topic entity.
+     * Create {@link ServiceBusProducer} to send events to the Service Bus queue/topic entity.
      * @param name the destination entity name
      * @return the producer.
      */
-    ServiceBusSenderAsyncClient createProducer(String name);
+    ServiceBusProducer createProducer(String name);
 
     /**
-     * Create {@link ServiceBusSenderAsyncClient} to send events to the Service Bus queue/topic entity with
+     * Create {@link ServiceBusProducer} to send events to the Service Bus queue/topic entity with
      * explicit {@link ServiceBusEntityType}.
      * @param name the destination entity name.
      * @param entityType the Service Bus entity type.
      * @return the producer.
      */
-    ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType);
+    ServiceBusProducer createProducer(String name, ServiceBusEntityType entityType);
 
     /**
      * Add a listener for this factory.
@@ -56,14 +55,14 @@ public interface ServiceBusProducerFactory {
          * @param name the name for the producer.
          * @param client the client for the producer.
          */
-        void producerAdded(String name, ServiceBusSenderAsyncClient client);
+        void producerAdded(String name, ServiceBusProducer client);
 
         /**
          * The default callback method that the producer has been removed.
          * @param name the name for the producer.
          * @param client the client for the producer.
          */
-        default void producerRemoved(String name, ServiceBusSenderAsyncClient client) {
+        default void producerRemoved(String name, ServiceBusProducer client) {
         }
 
     }

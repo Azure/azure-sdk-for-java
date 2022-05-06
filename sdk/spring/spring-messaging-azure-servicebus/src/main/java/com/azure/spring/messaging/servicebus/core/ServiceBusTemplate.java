@@ -4,10 +4,9 @@
 package com.azure.spring.messaging.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.core.SendOperation;
-import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.lang.NonNull;
@@ -41,10 +40,10 @@ public class ServiceBusTemplate implements SendOperation {
     @Override
     public <U> Mono<Void> sendAsync(String destination, Message<U> message) {
         Assert.hasText(destination, "destination can't be null or empty");
-        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, defaultEntityType);
+        ServiceBusProducer producer = this.producerFactory.createProducer(destination, defaultEntityType);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
-        return senderAsyncClient.sendMessage(serviceBusMessage);
+        return producer.sendMessage(serviceBusMessage);
     }
 
     /**

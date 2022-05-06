@@ -41,7 +41,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
-    private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
+    private final Map<String, ServiceBusProducer> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers = new HashMap<>();
@@ -68,12 +68,12 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     }
 
     @Override
-    public ServiceBusSenderAsyncClient createProducer(String name) {
+    public ServiceBusProducer createProducer(String name) {
         return createProducer(name, null);
     }
 
     @Override
-    public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
+    public ServiceBusProducer createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
             ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
         if (entityType != null) {
@@ -102,7 +102,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
         this.listeners.clear();
     }
 
-    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ProducerProperties properties) {
+    private ServiceBusProducer doCreateProducer(String name, @Nullable ProducerProperties properties) {
         return clients.computeIfAbsent(name, entityName -> {
             ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
@@ -115,10 +115,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
 
             ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = factory.build();
             customizeBuilder(name, builder);
-            ServiceBusSenderAsyncClient producerClient = builder.buildAsyncClient();
-
-            this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
-            return producerClient;
+            ServiceBusSenderAsyncClient senderClient = builder.buildAsyncClient();
+            ServiceBusProducer producer = new ServiceBusProducer(senderClient);
+            this.listeners.forEach(l -> l.producerAdded(entityName, producer));
+            return producer;
         });
     }
 
