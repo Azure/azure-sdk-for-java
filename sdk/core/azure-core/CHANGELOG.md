@@ -23,6 +23,7 @@
 
 #### Dependency Updates
 
+- Upgraded Reactor from `3.4.14` to `3.4.17`.
 - Upgraded Jackson from `2.13.2.1` to `2.13.2.2`.
 
 ## 1.27.0 (2022-04-01)
@@ -40,7 +41,6 @@
 
 #### Dependency Updates
 
-- Upgraded Reactor from `3.4.14` to `3.4.17`.
 - Upgraded Jackson from `2.13.2` to `2.13.2.1`.
 
 ## 1.26.0 (2022-03-04)
