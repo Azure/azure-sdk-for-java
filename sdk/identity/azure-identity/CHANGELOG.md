@@ -5,7 +5,7 @@
 ### Other Changes
 #### Dependency Updates
 - Upgraded `msal4j` dependency to 1.12.0
-- Upgrade `azure-core` dependency to 1.28.0
+- Upgraded `azure-core` dependency to 1.28.0
 
 ## 1.5.0 (2022-04-05)
 
