@@ -27,7 +27,11 @@ public final class NetworkAction extends ExpandableStringEnum<NetworkAction> {
         return fromString(name, NetworkAction.class);
     }
 
-    /** @return known NetworkAction values. */
+    /**
+     * Gets known NetworkAction values.
+     *
+     * @return known NetworkAction values.
+     */
     public static Collection<NetworkAction> values() {
         return values(NetworkAction.class);
     }

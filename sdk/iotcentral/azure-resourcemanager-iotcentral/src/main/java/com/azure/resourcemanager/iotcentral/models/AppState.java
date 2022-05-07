@@ -27,7 +27,11 @@ public final class AppState extends ExpandableStringEnum<AppState> {
         return fromString(name, AppState.class);
     }
 
-    /** @return known AppState values. */
+    /**
+     * Gets known AppState values.
+     *
+     * @return known AppState values.
+     */
     public static Collection<AppState> values() {
         return values(AppState.class);
     }

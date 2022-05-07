@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NetworkRuleSetIpRule {
     /*
+     * The network action for the IP mask.
+     */
+    @JsonProperty(value = "action", access = JsonProperty.Access.WRITE_ONLY)
+    private IpRuleAction action;
+
+    /*
      * The readable name of the IP rule.
      */
     @JsonProperty(value = "filterName")
@@ -21,6 +27,15 @@ public final class NetworkRuleSetIpRule {
      */
     @JsonProperty(value = "ipMask")
     private String ipMask;
+
+    /**
+     * Get the action property: The network action for the IP mask.
+     *
+     * @return the action value.
+     */
+    public IpRuleAction action() {
+        return this.action;
+    }
 
     /**
      * Get the filterName property: The readable name of the IP rule.

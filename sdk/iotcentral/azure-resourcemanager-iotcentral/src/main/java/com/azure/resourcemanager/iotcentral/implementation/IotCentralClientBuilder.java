@@ -119,9 +119,6 @@ public final class IotCentralClientBuilder {
      * @return an instance of IotCentralClientImpl.
      */
     public IotCentralClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }

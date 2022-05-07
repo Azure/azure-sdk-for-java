@@ -27,7 +27,11 @@ public final class SystemAssignedServiceIdentityType extends ExpandableStringEnu
         return fromString(name, SystemAssignedServiceIdentityType.class);
     }
 
-    /** @return known SystemAssignedServiceIdentityType values. */
+    /**
+     * Gets known SystemAssignedServiceIdentityType values.
+     *
+     * @return known SystemAssignedServiceIdentityType values.
+     */
     public static Collection<SystemAssignedServiceIdentityType> values() {
         return values(SystemAssignedServiceIdentityType.class);
     }

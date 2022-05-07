@@ -215,7 +215,7 @@ public final class IotCentralManager {
                 .append("-")
                 .append("com.azure.resourcemanager.iotcentral")
                 .append("/")
-                .append("1.1.0-beta.1");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -272,7 +272,11 @@ public final class IotCentralManager {
         }
     }
 
-    /** @return Resource collection API of Apps. */
+    /**
+     * Gets the resource collection API of Apps.
+     *
+     * @return Resource collection API of Apps.
+     */
     public Apps apps() {
         if (this.apps == null) {
             this.apps = new AppsImpl(clientObject.getApps(), this);
@@ -280,7 +284,11 @@ public final class IotCentralManager {
         return apps;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -289,7 +297,11 @@ public final class IotCentralManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinks. */
+    /**
+     * Gets the resource collection API of PrivateLinks.
+     *
+     * @return Resource collection API of PrivateLinks.
+     */
     public PrivateLinks privateLinks() {
         if (this.privateLinks == null) {
             this.privateLinks = new PrivateLinksImpl(clientObject.getPrivateLinks(), this);
@@ -297,7 +309,11 @@ public final class IotCentralManager {
         return privateLinks;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);

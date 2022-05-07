@@ -30,7 +30,11 @@ public final class AppSku extends ExpandableStringEnum<AppSku> {
         return fromString(name, AppSku.class);
     }
 
-    /** @return known AppSku values. */
+    /**
+     * Gets known AppSku values.
+     *
+     * @return known AppSku values.
+     */
     public static Collection<AppSku> values() {
         return values(AppSku.class);
     }
