@@ -114,7 +114,6 @@ public class EnterpriseTierTest extends AppPlatformTest {
             .withServiceRegistryBinding()
             .withHttpsOnly()
             .withDefaultPublicEndpoint()
-            .withConfigurationServiceBinding()
             .create();
 
         Assertions.assertNotNull(app.url());
@@ -130,7 +129,6 @@ public class EnterpriseTierTest extends AppPlatformTest {
             .withoutConfigurationServiceBinding()
             .withoutServiceRegistryBinding()
             .withoutDefaultPublicEndpoint()
-            .withoutConfigurationServiceBinding()
             .apply();
 
         Assertions.assertFalse(app.isHttpsOnly());

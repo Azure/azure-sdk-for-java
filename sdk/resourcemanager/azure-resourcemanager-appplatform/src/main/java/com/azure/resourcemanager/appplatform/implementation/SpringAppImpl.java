@@ -31,7 +31,6 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 public class SpringAppImpl
@@ -161,10 +160,7 @@ public class SpringAppImpl
             return false;
         }
         return addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY) != null
-            && Objects.equals(
-            addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY).get(Constants.BINDING_RESOURCE_ID),
-            configurationService.id()
-        );
+            && configurationService.id().equalsIgnoreCase((String) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY).get(Constants.BINDING_RESOURCE_ID));
     }
 
     @Override
@@ -178,10 +174,7 @@ public class SpringAppImpl
             return false;
         }
         return addonConfigs.get(Constants.SERVICE_REGISTRY_KEY) != null
-            && Objects.equals(
-            addonConfigs.get(Constants.SERVICE_REGISTRY_KEY).get(Constants.BINDING_RESOURCE_ID),
-            serviceRegistry.id()
-        );
+            && serviceRegistry.id().equalsIgnoreCase((String) addonConfigs.get(Constants.SERVICE_REGISTRY_KEY).get(Constants.BINDING_RESOURCE_ID));
     }
 
     @Override
