@@ -103,6 +103,15 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    void sessionIdCheck() {
+        // Arrange
+        when(asyncClient.getSessionId()).thenReturn(SESSION_ID);
+
+        // Assert
+        assertEquals(SESSION_ID, client.getSessionId());
+    }
+
+    @Test
     void abandonMessageWithTransaction() {
         AbandonOptions options = new AbandonOptions().setTransactionContext(transactionContext);
         // Arrange
