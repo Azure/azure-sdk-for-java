@@ -51,6 +51,8 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.CopyableFileSmbProperties;
+import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.LeaseDurationType;
@@ -75,6 +77,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -481,7 +484,8 @@ public class ShareFileAsyncClient {
      */
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
-        return beginCopy(sourceUrl, null, null, null, null, null, metadata, pollInterval, null);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata).setPollInterval(pollInterval);
+        return beginCopy(sourceUrl, options);
     }
 
     /**
@@ -537,42 +541,139 @@ public class ShareFileAsyncClient {
         String filePermission, PermissionCopyModeType filePermissionCopyMode, Boolean ignoreReadOnly,
         Boolean setArchiveAttribute, Map<String, String> metadata, Duration pollInterval,
         ShareRequestConditions destinationRequestConditions) {
+        ShareFileCopyOptions options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(filePermission)
+            .setPermissionCopyModeType(filePermissionCopyMode)
+            .setIgnoreReadOnly(ignoreReadOnly)
+            .setSetArchiveAttribute(setArchiveAttribute)
+            .setMetadata(metadata)
+            .setPollInterval(pollInterval)
+            .setDestinationRequestConditions(destinationRequestConditions);
+
+        return beginCopy(sourceUrl, options);
+    }
+
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Copy file from source url to the {@code resourcePath} </p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
+     * boolean ignoreReadOnly = false; &#47;&#47; Default value
+     * boolean setArchiveAttribute = true; &#47;&#47; Default value
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * PollerFlux&lt;ShareFileCopyInfo, Void&gt; poller = shareFileAsyncClient.beginCopy&#40;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;,
+     *     smbProperties, filePermission, PermissionCopyModeType.SOURCE, ignoreReadOnly, setArchiveAttribute,
+     *     Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;, Duration.ofSeconds&#40;2&#41;, requestConditions&#41;;
+     *
+     * poller.subscribe&#40;response -&gt; &#123;
+     *     final ShareFileCopyInfo value = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Copy source: %s. Status: %s.%n&quot;, value.getCopySourceUrl&#40;&#41;, value.getCopyStatus&#40;&#41;&#41;;
+     * &#125;, error -&gt; System.err.println&#40;&quot;Error: &quot; + error&#41;, &#40;&#41; -&gt; System.out.println&#40;&quot;Complete copying the file.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
+     *
+     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param options {@link ShareFileCopyOptions}
+     * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
+     * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
+     */
+    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options) {
 
         final ShareRequestConditions finalRequestConditions =
-            destinationRequestConditions == null ? new ShareRequestConditions() : destinationRequestConditions;
+            options.getDestinationRequestConditions() == null ? new ShareRequestConditions() : options.getDestinationRequestConditions();
         final AtomicReference<String> copyId = new AtomicReference<>();
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+        final Duration interval = options.getPollInterval() != null ? options.getPollInterval() : Duration.ofSeconds(1);
 
-        FileSmbProperties tempSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        FileSmbProperties tempSmbProperties = options.getSmbProperties() == null ? new FileSmbProperties() : options.getSmbProperties();
 
         String filePermissionKey = tempSmbProperties.getFilePermissionKey();
 
-        String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-        String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-        String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+//        String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+//        String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+//        String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+//        String fileChangedOnTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
 
-        if (filePermissionCopyMode == null || filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
-            if (filePermission != null || filePermissionKey != null) {
+        if (options.getFilePermission() == null || options.getPermissionCopyModeType() == PermissionCopyModeType.SOURCE) {
+            if ((options.getFilePermission() != null || filePermissionKey != null) && options.getPermissionCopyModeType() != PermissionCopyModeType.OVERRIDE) {
                 return PollerFlux.error(LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "File permission and file permission key can not be set when PermissionCopyModeType is source or "
                         + "null")));
             }
-        } else if (filePermissionCopyMode == PermissionCopyModeType.OVERRIDE) {
+        } else if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
             // Checks that file permission and file permission key are valid
             try {
-                validateFilePermissionAndKey(filePermission, tempSmbProperties.getFilePermissionKey());
+                validateFilePermissionAndKey(options.getFilePermission(), tempSmbProperties.getFilePermissionKey());
             } catch (RuntimeException ex) {
                 return PollerFlux.error(LOGGER.logExceptionAsError(ex));
             }
         }
 
+        CopyableFileSmbProperties propertiesToCopy = options.getSmbPropertiesToCopy();
+        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopyList()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopyList();
+
+        String fileAttributesSecond = null;
+        if (list.getFileAttributes()) {
+            fileAttributesSecond = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+        }
+//        } else {
+//            fileAttributesSecond = "Source";
+//        }
+        String fileCreationTimeSecond = null;
+        if (list.getCreatedOn()) {
+            fileCreationTimeSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+        }
+//        } else {
+//            fileCreationTimeSecond = "Source";
+//        }
+        String lastWriteSecond = null;
+        if (list.getFileAttributes()) {
+            lastWriteSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+        }
+//        } else {
+//            lastWriteSecond = "Source";
+//        }
+        String fileChangedSecond = null;
+        if (list.getFileAttributes()) {
+            fileChangedSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
+        }
+//        } else {
+//            fileChangedSecond = "Source";
+//        }
+
+//        final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
+//            .setFilePermissionCopyMode(options.getPermissionCopyModeType())
+//            .setFileAttributes(fileAttributes)
+//            .setFileCreationTime(fileCreationTime)
+//            .setFileLastWriteTime(fileLastWriteTime)
+//            .setFileChangeTime(fileChangedOnTime)
+//            .setIgnoreReadOnly(options.getIgnoreReadOnly())
+//            .setSetArchiveAttribute(options.getSetArchiveAttribute());
+
         final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
-            .setFilePermissionCopyMode(filePermissionCopyMode)
-            .setFileAttributes(fileAttributes)
-            .setFileCreationTime(fileCreationTime)
-            .setFileLastWriteTime(fileLastWriteTime)
-            .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute);
+            .setFilePermissionCopyMode(options.getPermissionCopyModeType())
+            .setFileAttributes(fileAttributesSecond)
+            .setFileCreationTime(fileCreationTimeSecond)
+            .setFileLastWriteTime(lastWriteSecond)
+            .setFileChangeTime(fileChangedSecond)
+            .setIgnoreReadOnly(options.getIgnoreReadOnly())
+            .setSetArchiveAttribute(options.getSetArchiveAttribute());
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 
@@ -580,17 +681,17 @@ public class ShareFileAsyncClient {
             (pollingContext) -> {
                 try {
                     return withContext(context -> azureFileStorageClient.getFiles()
-                            .startCopyWithResponseAsync(shareName, filePath, copySource, null,
-                                metadata, filePermission, tempSmbProperties.getFilePermissionKey(),
-                                finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
-                            .map(response -> {
-                                final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
-                                copyId.set(headers.getXMsCopyId());
+                        .startCopyWithResponseAsync(shareName, filePath, copySource, null,
+                            options.getMetadata(), options.getFilePermission(), tempSmbProperties.getFilePermissionKey(),
+                            finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
+                        .map(response -> {
+                            final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
+                            copyId.set(headers.getXMsCopyId());
 
-                                return new ShareFileCopyInfo(sourceUrl, headers.getXMsCopyId(), headers.getXMsCopyStatus(),
-                                        headers.getETag(), headers.getLastModified(),
-                                    response.getHeaders().getValue("x-ms-error-code"));
-                            });
+                            return new ShareFileCopyInfo(sourceUrl, headers.getXMsCopyId(), headers.getXMsCopyStatus(),
+                                headers.getETag(), headers.getLastModified(),
+                                response.getHeaders().getValue("x-ms-error-code"));
+                        });
                 } catch (RuntimeException ex) {
                     return monoError(LOGGER, ex);
                 }
@@ -605,7 +706,7 @@ public class ShareFileAsyncClient {
             (pollingContext, firstResponse) -> {
                 if (firstResponse == null || firstResponse.getValue() == null) {
                     return Mono.error(LOGGER.logExceptionAsError(
-                            new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
                 }
                 final String copyIdentifier = firstResponse.getValue().getCopyId();
                 if (!CoreUtils.isNullOrEmpty(copyIdentifier)) {
@@ -1265,12 +1366,12 @@ public class ShareFileAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
      * <pre>
      * shareFileAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
      *
@@ -1300,12 +1401,12 @@ public class ShareFileAsyncClient {
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
      * shareFileAsyncClient.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions -->
      *
