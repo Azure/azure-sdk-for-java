@@ -31,7 +31,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Handle Event Hubs exceptions
 
-All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp:connection:forced" or "amqp:link:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
+All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp:connection:forced" or "amqp\:link\:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][EventHubsMessagingExceptions] guidance.
@@ -49,7 +49,7 @@ An [AmqpException][AmqpException] contains three fields which describe the error
 
 ### Commonly encountered exceptions
 
-#### amqp:connection:forced and amqp:link:detach-forced
+#### amqp\:connection\:forced and amqp\:link\:detach-forced
 
 When the connection to Event Hubs is idle, the service will disconnect the client after some time.  This is not a problem as the clients will re-establish a connection with the service.  More information for users is in the [AMQP troubleshooting documentation][AmqpTroubleshooting].
 
@@ -66,7 +66,7 @@ An `AmqpException` with an [`AmqpErrorCondition`][AmqpErrorCondition] of "amqp:u
 
 ### Timeout when connecting to service
 
-* Verify that the connection string or fully qualified domain name specified when creating the client is correct.
+* Verify that the connection string or fully qualified domain name specified when creating the client is correct.  [Get an Event Hubs connection string][GetConnectionString] demonstrates how to acquire a connection string.
 * Check the firewall and port permissions in your hosting environment and that the AMQP ports 5671 and 5762 are open.
   * Make sure that the endpoint is allowed through the firewall.
 * Try using WebSockets, which connects on port 443.  See [configure web sockets][PublishEventsWithWebSocketsAndProxy] sample.
@@ -95,6 +95,8 @@ Further reading:
 
 ### Cannot add components to the connection string
 
+The legacy Event Hub clients allowed customers to add components to the connection string retrieved from the portal.  The legacy clients are in packages [com.microsoft.azure:azure-eventhubs][MavenAzureEventHubs] and [com.microsoft.azure:azure-eventhubs-eph][MavenAzureEventHubsEPH].
+
 #### Adding "TransportType=AmqpWebSockets"
 
 The previous generation of the Event Hubs client library supported extending connection strings using special tokens for certain scenarios.  The current generation supports connection strings only in the form published by the Azure portal.  To request using the `AmqpWebSockets` transport, it would be specified when building the client.  See [PublishEventsWithSocketsAndProxy.java][PublishEventsWithWebSocketsAndProxy] for more details.
@@ -114,12 +116,12 @@ messages when verbose logging is enabled.
 
 ### Configuring Log4J 2
 
-1. Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for Log4j2" section.
-2. Add [log4j2.xml][log4j2] to your `src/main/resources`.
+1.  Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for Log4j2" section.
+2.Add [log4j2.xml][log4j2] to your `src/main/resources`.
 
 ### Configuring logback
 
-1. Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for logback" section.
+1.  Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for logback" section.
 2. Add [logback.xml][logback] to your `src/main/resources`.
 
 ### Enable AMQP transport logging
@@ -127,14 +129,14 @@ messages when verbose logging is enabled.
 If enabling client logging is not enough to diagnose your issues.  You can enable logging to a file in the underlying
 AMQP library, [Qpid Proton-J][qpid_proton_j_apache].  Qpid Proton-J uses `java.util.logging`. You can enable logging by
 creating a configuration file with the contents below.  Or set `proton.trace.level=ALL` and whichever configuration options
-you want for the `java.util.logging.Handler` implementation.  Implementation classes and their options can be found in
+you want for the `java.util.logging.Handler` implementation.  The implementation classes and their options can be found in
 [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
 To trace the AMQP transport frames, set the environment variable: `PN_TRACE_FRM=1`.
 
 #### Sample "logging.properties" file
 
-The configuration file below logs trace output from proton-j to the file "proton-trace.log".
+The configuration file below logs TRACE level output from proton-j to the file "proton-trace.log".
 
 ```
 handlers=java.util.logging.FileHandler
@@ -160,50 +162,52 @@ When publishing messages, the Event Hubs service supports a single partition key
 
 The partition key of the EventHubs event is available in the Kafka record headers, the protocol specific key being "x-opt-partition-key" in the header.
 
-By design, we don't promote the Kafka message key to be the Event Hubs partition key and nor the reverse because with the same value, the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross-protocol communication case.  Exposing the properties with a protocol specific key to the other protocol client should be good enough.
+By design, we don't promote the Kafka message key to be the Event Hubs partition key nor the reverse because with the same value, the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross-protocol communication case.  Exposing the properties with a protocol specific key to the other protocol client should be good enough.
 
 ## Troubleshoot EventProcessorClient issues
 
 ### 412 precondition failures when checkpointing
 
-412 precondition errors occur when the customer tries to perform checkpointing but the local version of the checkpoint is outdated.  This occurs when partition ownership is stolen by another instance.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for more information.
+412 precondition errors occur when the client tries to take or renew ownership of a partition, but the local version of the checkpoint is outdated.  This occurs when another processor instance steals partition ownership.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for more information.
 
 ### Partition ownership changes a lot
 
-This can occur in situations where the network latency is high between storage and the client and ownership is lost to another processor instance because the `PartitionOwnershipExpirationInterval` has elapsed.  Each load balancing interval, the EventProcessorClient looks for ownership records where the expiration interval has elapsed.  If it has, it believes no one is currently processing that partition, so it will take ownership of it and start processing events from the last checkpoint.  In this scenario, it is possible to process events more than once.  One way to mitigate this is to increase `LoadBalancingUpdateInterval` and increase `PartitionOwnershipExpirationInterval`.
+Ownership changes can happen due to several reasons.  When the number of EventProcessorClient instances change (i.e. added or removed), the running instances try to load-balance partitions between themselves.
+When the network latency is high between the storage account and the client and ownership is lost to another processor instance because the `PartitionOwnershipExpirationInterval` has elapsed.  The EventProcessorClient looks for ownership records where the expiration interval has elapsed at each load balancing interval.  If it has, it believes no one is currently processing that partition, so it will take ownership of it and start processing events from the last checkpoint.  In this scenario, it is possible to process events more than once.  One way to mitigate this is to increase `LoadBalancingUpdateInterval` and increase `PartitionOwnershipExpirationInterval`.
 
 ### "...current receiver 'nil' with epoch '0' is getting disconnected"
 
-This error is expected when load balancing occurs.  Load balancing is indeed an ongoing process.  When using the BlobCheckpointStore with your consumer, every ~30 seconds (by default) the consumer will check to see which consumers have a claim for each partition, then run some logic to determine whether it needs to 'steal' a partition from another consumer.  The service side mechanism used to 'steal' partitions is [Epoch][Epoch].
-
-The full error message looks something like:
+The entire error message looks something like this:
 
 > New receiver 'nil' with higher epoch of '0' is created hence current receiver 'nil' with epoch '0'
 > is getting disconnected. If you are recreating the receiver, make sure a higher epoch is used.
 > TrackingId:<GUID>, SystemTracker:<NAMESPACE>:eventhub:<EVENT_HUB_NAME>|<CONSUMER_GROUP>,
 > Timestamp:2022-01-01T12:00:00}"}
 
+This error is expected when load balancing occurs after EventProcessorClient instances are added or removed.  Load balancing is an ongoing process.  When using the BlobCheckpointStore with your consumer, every ~30 seconds (by default), the consumer will check to see which consumers have a claim for each partition, then run some logic to determine whether it needs to 'steal' a partition from another consumer.  The service side mechanism used to 'steal' partitions is [Epoch][Epoch].
+
+However, if no instances are being added or removed, there is an underlying issue that should be addressed.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for additional information.
+
 ### High CPU usage
 
-* Usually because too many partitions are owned.
-* Recommend no more than 3 partitions to every 1 CPU core; better to start with 1.5 partitions to each core and test increasing
+High CPU usage is usually because an instance owns too many partitions.  We recommend no more than three partitions for every 1 CPU core; better to start with 1.5 partitions for each CPU core and test increasing the number of partitions owned.
 
 ### Processor client stops receiving
 
-Often this is not enough information to determine why the exception occurred.  For the team to determine the cause, we need to ask for the following information:
+Customers often run the processor client for days on end.  Sometimes, they notice that EventProcessorClient is not processing one or more partitions.  Usually, this is not enough information to determine why the exception occurred.  The EventProcessorClient stopping is the symptom of an underlying cause (i.e. race condition) that occurred while trying to recover from a transient error.  For the team to determine the reason, we need to ask for the following details:
 
 * Event Hub environment
   * How many partitions?
 * EventProcessorClient environment
-  * What are the specs of the machine(s) processing your Event Hub?
+  * What is the machine(s) specs processing your Event Hub?
   * How many instances are running?
 * Repro code and steps
-  * This is important as many times we cannot reproduce the issue in our own environment.
-* Logs.  We need DEBUG logs, but if that is not possible, INFO at least.  Error and warning level logs do not provide enough information.  Timespan of at least +/- 10 minutes from when the issue occurred.
+  * This is important as we often cannot reproduce the issue in our environment.
+* Logs.  We need DEBUG logs, but if that is not possible, INFO at least.  Error and warning level logs do not provide enough information.  The period of at least +/- 10 minutes from when the issue occurred.
 
 ### Migrate from legacy to new client library
 
-The [migration guide][MigrationGuide] includes steps on how to migrate from the legacy client, and includes how to migrate checkpoints.
+The [migration guide][MigrationGuide] includes steps on migrating from the legacy client and migrating legacy checkpoints.
 
 ## Get additional help
 
@@ -241,5 +245,7 @@ Additional information on ways to reach out for support can be found in the [SUP
 
 <!-- external links -->
 [AuthenticationAndTheAzureSDK]: https://devblogs.microsoft.com/azure-sdk/authentication-and-the-azure-sdk
+[MavenAzureEventHubs]: https://search.maven.org/artifact/com.microsoft.azure/azure-eventhubs/
+[MavenAzureEventHubsEPH]: https://search.maven.org/artifact/com.microsoft.azure/azure-eventhubs-eph
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [qpid_proton_j_apache]: https://qpid.apache.org/proton/
