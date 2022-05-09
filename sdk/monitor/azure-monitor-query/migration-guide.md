@@ -21,7 +21,7 @@ setting the server timeout, getting the visualization information and statistics
 
 Another key difference is that `azure-loganalytics` only has a preview release. It's not recommended for use in a production environment. The `azure-monitor-query` package has a stable release. The latest stable version can be found in the [README][README]. 
 
-### Cross Service SDK improvements
+### Cross-service SDK improvements
 
 The modern Azure Monitor Query client library also provides the ability to share in some of the cross-service improvements made to the Azure development experience, such as
 
