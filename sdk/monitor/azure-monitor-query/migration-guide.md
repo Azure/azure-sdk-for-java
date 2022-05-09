@@ -54,9 +54,10 @@ ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
 LogAnalyticsDataClient client = new LogAnalyticsDataClientImpl(credentials);
 ```
 
-In `azure-monitor-query`, the creation of the client is done through the [LogsQueryClientBuilder][LogsQueryClientBuilder]. The sync and async operations are separated to [LogsQueryClient] and [LogsQueryAsyncClient].
-The authentication is done through `TokenCredential`. There are several `TokenCredential` types implemented in `azure-identity` library that supports AAD auth. For more details on `azure-identity` please refer to 
-the [Azure Identity README][azure-identity-readme].
+In `azure-monitor-query`:
+
+- The creation of the client is done through the [LogsQueryClientBuilder][LogsQueryClientBuilder]. The sync and async operations are separated to [LogsQueryClient] and [LogsQueryAsyncClient].
+- The authentication is done through `TokenCredential`. There are several `TokenCredential` types implemented in the `azure-identity` library that support Azure AD auth. For more details on `azure-identity`, see the [Azure Identity README][azure-identity-readme].
 
 ***Create a sync client***
 ```java
