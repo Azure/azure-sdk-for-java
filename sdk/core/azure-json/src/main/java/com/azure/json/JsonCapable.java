@@ -8,11 +8,11 @@ package com.azure.json;
  * <p>
  * Since deserialization needs to work without an instance of the class, implementing this interface it's assumed the
  * class has a static method {@code fromJson(JsonReader)} that deserializes an instance of that class. The contract for
- * reading JSON from {@link JsonReader} is that the initial state of the reader on call will either be a null {@link
- * JsonToken} or be the {@link JsonToken} after the {@link JsonToken#FIELD_NAME} for the object. So, for objects calling
- * out to other {@link JsonCapable} objects for deserialization, they'll pass the reader pointing to the token after the
- * {@link JsonToken#FIELD_NAME}. This way objects reading JSON will be self-encapsulated for reading properly formatted
- * JSON. And, if an error occurs during deserialization an {@link IllegalStateException} should be thrown.
+ * reading JSON from {@link JsonReader} is that the initial state of the reader on call will either be a null
+ * {@link JsonToken} or be the {@link JsonToken} after the {@link JsonToken#FIELD_NAME} for the object. So, for objects
+ * calling out to other {@link JsonCapable} objects for deserialization, they'll pass the reader pointing to the token
+ * after the {@link JsonToken#FIELD_NAME}. This way objects reading JSON will be self-encapsulated for reading properly
+ * formatted JSON. And, if an error occurs during deserialization an {@link IllegalStateException} should be thrown.
  *
  * @param <T> The type of the object that is JSON capable.
  */
@@ -37,8 +37,8 @@ public interface JsonCapable<T extends JsonCapable<T>> {
      * {@link UnsupportedOperationException} will be thrown.
      *
      * @param jsonReader The {@link JsonReader} being read.
+     * @param <T> The type of the object.
      * @return The object that the JSON stream represented, may return null.
-     * @param <T> THe type of the object.
      */
     static <T extends JsonCapable<T>> T fromJson(JsonReader jsonReader) {
         throw new UnsupportedOperationException("Subclass of JsonCapable must define this factory method.");

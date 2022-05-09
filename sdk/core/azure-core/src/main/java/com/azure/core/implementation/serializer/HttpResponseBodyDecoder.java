@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.implementation.FromJsonCache;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
@@ -19,14 +20,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.DefaultJsonReader;
-import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -226,10 +225,9 @@ public final class HttpResponseBodyDecoder {
 
     private static Object deserializeWithJsonCapableCheck(byte[] data, Type deserializationType,
         Callable<Object> serializerAdapterDeserialization) throws Exception {
-        if (TypeUtil.typeImplementsInterface(deserializationType, JsonCapable.class)) {
+        if (FromJsonCache.isJsonCapable(deserializationType)) {
             JsonReader jsonReader = DefaultJsonReader.fromBytes(data);
-            Method method = deserializationType.getClass().getMethod("fromJson", JsonReader.class);
-            return method.invoke(null, jsonReader);
+            return FromJsonCache.fromJson(deserializationType.getClass(), jsonReader);
         } else {
             return serializerAdapterDeserialization.call();
         }
