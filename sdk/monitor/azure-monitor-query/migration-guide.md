@@ -119,9 +119,7 @@ queryResultsMono.subscribe(queryResult -> {
 
 ## Additional samples
 
-More examples can be found at:
-
-- [Azure Monitor Query samples][README-Samples]
+More examples can be found at [Azure Monitor Query samples][README-Samples].
 
 <!-- Links -->
 [LogsQueryClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-monitor-query/latest/com/azure/monitor/query/LogsQueryClientBuilder.html
