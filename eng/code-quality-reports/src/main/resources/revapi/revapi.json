@@ -263,6 +263,24 @@
           "old": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\..*",
           "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\..*",
           "justification": "Part of a new major release, this is moved to another location to enabled clarity and was a non-documented public api."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.DynamicFeatureManager",
+          "justification": "Public API from another library, not sure why it is flagged."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.FilterNotFoundException",
+          "justification": "Public API from another library, not sure why it is flagged."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.entities\\.FeatureFilterEvaluationContext",
+          "justification": "Public API from another library, not sure why it is flagged."
         }
       ]
     }
