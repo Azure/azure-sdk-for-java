@@ -207,7 +207,7 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
 ```
 
 
-##### Authenicate with AAD Handle Re Authentication.
+##### Authenticate with AAD Handle Re Authentication.
 This sample is intended to assist in authenticating with AAD via Lettuce client library. It focuses on displaying the logic required to fetch an AAD Access token and to use it as password when setting up the Lettuce Redis Clientt instance. It Further shows how to recreate and authenticate the Lettuce Redis Client instance when its connection is broken in Error/Exception scenarios.
 
 Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
@@ -229,44 +229,6 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
 ```
 
 ```java
-    public static void main(String[] args) {
-
-        //Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-        ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-                .clientId("YOUR-CLIENT-ID")
-                .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
-                .tenantId("YOUR-TENANT-ID")
-                .build();
-
-        // Fetch an AAD token to be used for authentication. This token will be used as the password.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-        AccessToken accessToken = getAccessToken(clientCertificateCredential, trc);
-
-        RedisClient client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", accessToken);
-        StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
-
-        // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-        RedisStringCommands sync = connection.sync();
-        try {
-            sync.set("Az:testKey", "testVal");
-            System.out.println(sync.get("Az:testKey").toString());
-        } catch (RedisException e) {
-            // Handle the Exception as required in your application.
-            e.printStackTrace();
-
-            if (accessToken.isExpired()) {
-                // Recreate the client with a fresh token non-expired token as password for authentication.
-                client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", getAccessToken(clientCertificateCredential, trc));
-                connection = client.connect(StringCodec.UTF8);
-                sync = connection.sync();
-            } else if (!connection.isOpen()) {
-                // Recreate the connection
-                connection = client.connect(StringCodec.UTF8);
-                sync = connection.sync();
-            }
-        }
-    }
-
     private static RedisClient createLettuceRedisClient(String hostName, int port, String username, AccessToken accessToken) {
 
         // Build Redis URI with host and authentication details.

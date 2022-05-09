@@ -5,7 +5,7 @@
 - [Jedis Library](#jedis-library)
     - [Dependency Requirements](#dependency-requirements-jedis)
     - [Authenticate with AAD - Hello World](#authenticate-with-aad-jedis-hello-world)
-    - [Authenticate with AAD - Handle Re-Authentication](#authenticate-with-aad-jedis-handle-re-authentication)
+    - [Authenticate with AAD - Handle Re-Authentication](#authenticate-with-aad-handle-re-authentication)
     - [Authenticate with AAD - Azure Jedis Wrapper](#authenticate-with-aad-azure-jedis-wrapper)
 
 ### Jedis Library
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.5.0-beta.3</version>
+            <version>1.5.0</version>
         </dependency>
 
         <dependency>
@@ -74,7 +74,7 @@ public static void main(String[] args) throws IOException {
 }
 ```
 
-#### Authenticate with AAD Jedis Handle Re Authentication
+#### Authenticate with AAD Handle Re Authentication
 This sample is intended to assist in authenticating with AAD via Jedis client library. It focuses on displaying the logic required to fetch an AAD Access token and to use it as password when setting up the Jedis instance. It Further shows how to recreate and authenticate the Jedis instance when its connection is broken in Error/Exception scenarios.
 
 Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
