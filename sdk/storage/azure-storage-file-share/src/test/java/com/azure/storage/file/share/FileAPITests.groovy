@@ -1174,7 +1174,7 @@ class FileAPITests extends APISpec {
         System.out.println(primaryFileClient.getProperties().smbProperties.fileChangeTime)
         System.out.println(smbProperties.getFileChangeTime())
         System.out.println(client.smbProperties.getFileChangeTime())
-        System.out.println(smbProperties.getFileChangeTime().isEqual(client.smbProperties.getFileChangeTime())) // figure out why this is failing
+        System.out.println(smbProperties.getFileChangeTime() == client.getSmbProperties().getFileChangeTime()) // figure out why this is failing
     }
 
     def "Start copy with options copy smbFileProperties permission key"() {

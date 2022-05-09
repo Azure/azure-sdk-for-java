@@ -643,14 +643,14 @@ public class ShareFileAsyncClient {
 //            fileCreationTimeSecond = "Source";
 //        }
         String lastWriteSecond = null;
-        if (list.getFileAttributes()) {
+        if (list.getLastWrittenOn()) {
             lastWriteSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
         }
 //        } else {
 //            lastWriteSecond = "Source";
 //        }
         String fileChangedSecond = null;
-        if (list.getFileAttributes()) {
+        if (list.getChangedOn()) {
             fileChangedSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
         }
 //        } else {
