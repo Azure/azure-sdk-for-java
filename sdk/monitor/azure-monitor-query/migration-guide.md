@@ -85,6 +85,7 @@ QueryResults queryResults = logAnalyticsClient.query(workspaceId, new QueryBody(
 ```
 
 In `azure-monitor-query`, logs can be queried synchronously using the sync client as shown below:
+
 ```java
 String query = "Heartbeat | take 1";
 String workspaceId = "<workspace-id>";
