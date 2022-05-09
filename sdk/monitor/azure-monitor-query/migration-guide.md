@@ -19,8 +19,7 @@ In addition to the improved development experience, the new `azure-monitor-query
 both logs and metrics while the `azure-loganalytics` library only supported querying logs. The new library also includes additional capabilities for querying logs like executing a batch of queries, 
 setting the server timeout, getting the visualization information and statistics for a query.
 
-Another key difference is that `azure-loganalytics` only has a preview release which is not recommended for use in production environment.
-The `azure-monitor-query` has a stable version release and the latest stable version can be found in the [README][README]. 
+Another key difference is that `azure-loganalytics` only has a preview release. It's not recommended for use in a production environment. The `azure-monitor-query` package has a stable release. The latest stable version can be found in the [README][README]. 
 
 ### Cross Service SDK improvements
 
