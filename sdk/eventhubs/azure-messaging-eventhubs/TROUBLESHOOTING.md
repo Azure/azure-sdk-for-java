@@ -31,7 +31,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Handle Event Hubs exceptions
 
-All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp:connection:forced" or "amqp\:link\:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
+All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp\:connection\:forced" or "amqp\:link\:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][EventHubsMessagingExceptions] guidance.
@@ -150,7 +150,14 @@ java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 
 ### Reduce logging
 
-One way to decrease logging is to change the verbosity.  Another is to add filters that exclude logs from logger names like `com.azure.messaging.eventhubs` or `com.azure.core.amqp`.  Examples of this can be found in the XML files in [Configuring Log4J 2](#configuring-log4j-2) and [Configure logback](#configuring-logback).
+One way to decrease logging is to change the verbosity.  Another is to add filters that exclude logs from logger names packages like `com.azure.messaging.eventhubs` or `com.azure.core.amqp`.  Examples of this can be found in the XML files in [Configuring Log4J 2](#configuring-log4j-2) and [Configure logback](#configuring-logback).
+
+When submitting a bug, log messages from classes in the following packages are interesting:
+
+* `com.azure.core.amqp.implementation`
+* `com.azure.core.amqp.implementation.handler`
+   * The exception is that the onDelivery message in ReceiveLinkHandler can be ignored.
+* `com.azure.messaging.eventhubs.implementation`
 
 ## Troubleshoot EventProducerAsyncClient/EventProducerClient issues
 
@@ -201,6 +208,9 @@ Customers often run the processor client for days on end.  Sometimes, they notic
 * EventProcessorClient environment
   * What is the machine(s) specs processing your Event Hub?
   * How many instances are running?
+  * What is the max heap set (i.e. -Xmx)?
+* What is the average size of each EventData?
+* What is the traffic pattern like in your Event Hub? (i.e. # messages/minute and if the EventProcessorClient is always busy or there are slow traffic periods.)
 * Repro code and steps
   * This is important as we often cannot reproduce the issue in our environment.
 * Logs.  We need DEBUG logs, but if that is not possible, INFO at least.  Error and warning level logs do not provide enough information.  The period of at least +/- 10 minutes from when the issue occurred.
