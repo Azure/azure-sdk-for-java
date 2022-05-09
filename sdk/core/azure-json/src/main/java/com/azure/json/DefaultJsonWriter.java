@@ -34,7 +34,7 @@ public final class DefaultJsonWriter extends JsonWriter {
      * @throws UncheckedIOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the
      * {@link OutputStream}.
      */
-    public static DefaultJsonWriter toStream(OutputStream stream) {
+    public static DefaultJsonWriter fromStream(OutputStream stream) {
         return callWithWrappedIoException(() -> new DefaultJsonWriter(FACTORY.createGenerator(stream)));
     }
 

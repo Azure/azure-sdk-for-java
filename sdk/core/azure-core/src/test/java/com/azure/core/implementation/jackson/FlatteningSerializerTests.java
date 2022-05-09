@@ -698,7 +698,7 @@ public class FlatteningSerializerTests {
 
     private static String writeJson(JsonCapable<?> jsonCapable) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        JsonWriter writer = DefaultJsonWriter.toStream(outputStream);
+        JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
         jsonCapable.toJson(writer);
 
         return outputStream.toString(StandardCharsets.UTF_8);
@@ -706,7 +706,7 @@ public class FlatteningSerializerTests {
 
     private static String writeJson(List<? extends JsonCapable<?>> jsonCapables) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        JsonWriter writer = DefaultJsonWriter.toStream(outputStream);
+        JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
 
         writer.writeStartArray();
         jsonCapables.forEach(jsonCapable -> jsonCapable.toJson(writer));

@@ -30,7 +30,7 @@ public class JsonPatchDocumentTests {
     @MethodSource("toJsonSupplier")
     public void toJsonJsonWriter(JsonPatchDocument document, String expected) throws IOException {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        try (JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream)) {
+        try (JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream)) {
             document.toJson(jsonWriter);
         }
 

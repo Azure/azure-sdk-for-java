@@ -479,7 +479,7 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
     @Override
     public String toString() {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        JsonWriter writer = DefaultJsonWriter.toStream(outputStream);
+        JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
         toJson(writer);
 
         return outputStream.toString(StandardCharsets.UTF_8);

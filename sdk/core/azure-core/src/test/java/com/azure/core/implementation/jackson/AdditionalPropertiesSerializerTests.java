@@ -127,7 +127,7 @@ public class AdditionalPropertiesSerializerTests {
 
     private static String writeJson(JsonCapable<?> jsonCapable) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        JsonWriter writer = DefaultJsonWriter.toStream(outputStream);
+        JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
         jsonCapable.toJson(writer);
 
         return outputStream.toString(StandardCharsets.UTF_8);

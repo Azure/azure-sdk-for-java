@@ -26,7 +26,7 @@ public class ResponseInnerErrorTests {
     @MethodSource("toJsonSupplier")
     public void toJsonJsonWriter(ResponseInnerError innerError, String expectedJson) {
         AccessibleByteArrayOutputStream os = new AccessibleByteArrayOutputStream();
-        JsonWriter writer = DefaultJsonWriter.toStream(os);
+        JsonWriter writer = DefaultJsonWriter.fromStream(os);
         innerError.toJson(writer);
 
         assertEquals(expectedJson, os.toString(StandardCharsets.UTF_8));

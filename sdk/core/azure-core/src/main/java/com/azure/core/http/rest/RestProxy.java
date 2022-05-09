@@ -37,12 +37,16 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProxy;
+import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonWriter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.ContextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationHandler;
@@ -335,7 +339,14 @@ public final class RestProxy implements InvocationHandler {
                 }
             }
 
-            if (isJson) {
+            if (bodyContentObject instanceof JsonCapable<?>) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                try (JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream)) {
+                    ((JsonCapable<?>) bodyContentObject).toJson(jsonWriter);
+                }
+
+                request.setBody(outputStream.toByteArray());
+            } else if (isJson) {
                 request.setBody(serializer.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a

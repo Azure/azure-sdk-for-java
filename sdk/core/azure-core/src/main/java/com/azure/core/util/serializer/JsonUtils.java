@@ -208,6 +208,15 @@ public final class JsonUtils {
      * {@link JsonToken#END_OBJECT}, or {@link JsonToken#FIELD_NAME}.
      */
     public static Object readUntypedField(JsonReader jsonReader) {
+        return readUntypedField(jsonReader, 0);
+    }
+
+    private static Object readUntypedField(JsonReader jsonReader, int depth) {
+        // Keep track of array and object nested depth to prevent a StackOverflowError from occurring.
+        if (depth >= 1000) {
+            throw new IllegalStateException("Untyped object exceeded allowed object nested depth of 1000.");
+        }
+
         JsonToken token = jsonReader.currentToken();
 
         // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
@@ -232,7 +241,7 @@ public final class JsonUtils {
             List<Object> array = new ArrayList<>();
 
             while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
-                array.add(readUntypedField(jsonReader));
+                array.add(readUntypedField(jsonReader, depth + 1));
             }
 
             return array;
@@ -242,7 +251,7 @@ public final class JsonUtils {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = jsonReader.getFieldName();
                 jsonReader.nextToken();
-                Object value = readUntypedField(jsonReader);
+                Object value = readUntypedField(jsonReader, depth + 1);
 
                 object.put(fieldName, value);
             }

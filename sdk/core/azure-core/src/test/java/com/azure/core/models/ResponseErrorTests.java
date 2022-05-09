@@ -30,7 +30,7 @@ public class ResponseErrorTests {
     @MethodSource("toJsonSupplier")
     public void toJsonJsonWriter(ResponseError error, String expectedJson) {
         AccessibleByteArrayOutputStream os = new AccessibleByteArrayOutputStream();
-        JsonWriter writer = DefaultJsonWriter.toStream(os);
+        JsonWriter writer = DefaultJsonWriter.fromStream(os);
         error.toJson(writer);
 
         assertEquals(expectedJson, os.toString(StandardCharsets.UTF_8));

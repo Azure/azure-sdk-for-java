@@ -24,7 +24,7 @@ public class JsonPatchOperationTests {
     @MethodSource("toJsonSupplier")
     public void toJsonJsonWriter(JsonPatchOperation operation, String expectedJson) throws IOException {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        try (JsonWriter writer = DefaultJsonWriter.toStream(outputStream)) {
+        try (JsonWriter writer = DefaultJsonWriter.fromStream(outputStream)) {
             operation.toJson(writer);
         }
 
