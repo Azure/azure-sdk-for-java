@@ -15,6 +15,10 @@ public class Feature {
     @JsonProperty("key")
     private String key;
 
+    // TODO at some point I removed this, not sure why. Adding back until I find out why.
+    @JsonProperty("evaluate")
+    private Boolean evaluate = true;
+
     @JsonProperty("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
 
@@ -30,6 +34,20 @@ public class Feature {
      */
     public void setKey(String key) {
         this.key = key;
+    }
+
+    /**
+     * @return the evaluate
+     */
+    public Boolean getEvaluate() {
+        return evaluate;
+    }
+
+    /**
+     * @param evaluate the evaluate to set
+     */
+    public void setEvaluate(Boolean evaluate) {
+        this.evaluate = evaluate;
     }
 
     /**

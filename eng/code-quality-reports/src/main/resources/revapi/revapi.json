@@ -91,6 +91,7 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationConstants",
+          "class com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.FeatureManager",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
@@ -255,6 +256,13 @@
           "new": "class com.azure.messaging.eventhubs.EventData",
           "superClass": "com.azure.core.models.MessageContent",
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
+        },
+        {
+          "regex": true,
+          "code": "java.annotation.attributeValueChanged",
+          "old": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\..*",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\..*",
+          "justification": "Part of a new major release, this is moved to another location to enabled clarity and was a non-documented public api."
         }
       ]
     }
