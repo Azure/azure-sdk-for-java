@@ -313,21 +313,46 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
   </dependency>
 ```
 ```java
-
     public static void main(String[] args) {
 
         //Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-        ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-                .clientId("YOUR-CLIENT-ID")
-                .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
-                .tenantId("YOUR-TENANT-ID")
-                .build();
+        ClientCertificateCredential clientCertificateCredential = getClientCertificateCredential();
+
+        RedisClient client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", clientCertificateCredential);
+        StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
+
+        int maxTries = 3;
+        int i = 0;
+        while (i < maxTries) {
+            // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
+            RedisStringCommands sync = connection.sync();
+            try {
+                sync.set("Az:testKey", "testVal");
+                System.out.println(sync.get("Az:testKey").toString());
+            } catch (RedisException e) {
+                // Handle the Exception as required in your application.
+                e.printStackTrace();
+
+                if (!connection.isOpen()) {
+                    // Recreate the connection
+                    connection = client.connect(StringCodec.UTF8);
+                    sync = connection.sync();
+                }
+            } catch (Exception e) {
+                // Handle the Exception as required in your application.
+                e.printStackTrace();
+            }
+            i++;
+        }
+    }
+    
+    private static RedisClient createLettuceRedisClient(String hostName, int port, String username, TokenCredential tokenCredential) {
 
         // Build Redis URI with host and authentication details.
-        RedisURI redisURI = RedisURI.Builder.redis("YOUR_HOST_NAME.cache.windows.net")
-                .withPort(6379)
+        RedisURI redisURI = RedisURI.Builder.redis(hostName)
+                .withPort(port)
                 .withSsl(false) // Targeting Non-SSL 6379 port.
-                .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", clientCertificateCredential)))
+                .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", tokenCredential)))
                 .withClientName("LettuceClient")
                 .build();
 
@@ -342,26 +367,18 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
                 .protocolVersion(ProtocolVersion.RESP2) // Use RESP2 Protocol to ensure AUTH command is used for handshake.
                 .build());
 
-        StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
-
-        // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-        RedisStringCommands sync = connection.sync();
-        try {
-            sync.set("Az:testKey", "testVal");
-            System.out.println(sync.get("Az:testKey").toString());
-        } catch (RedisException e) {
-            // Handle the Exception as required in your application.
-            e.printStackTrace();
-            
-            if (!connection.isOpen()) {
-                // Recreate the connection
-                connection = client.connect(StringCodec.UTF8);
-                sync = connection.sync();
-            }
-        }
+        return client;
+    }
+    
+    private static ClientCertificateCredential getClientCertificateCredential() {
+        return new ClientCertificateCredentialBuilder()
+                .clientId("YOUR-CLIENT-ID")
+                .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
+                .tenantId("YOUR-TENANT-ID")
+                .build();
     }
 
-  /**
+    /**
      * Redis Credential Implementation for Azure Redis for Cache
      */
     public static class AzureRedisCredentials implements RedisCredentials {
