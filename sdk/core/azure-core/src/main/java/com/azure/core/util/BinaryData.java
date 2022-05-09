@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -243,6 +244,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
+     * <p>This method aggregates data into single byte array.</p>
+     *
      * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -268,11 +271,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
-        if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
-        }
-        return FluxUtil.collectBytesInByteBufferStream(data)
-                .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        return fromFlux(data, null);
     }
 
     /**
@@ -280,12 +279,15 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <p>This method aggregates data into single byte array.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final long length = data.length;
      * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
      *
-     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux&#41;;
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux, length&#41;;
      *
      * Disposable subscriber = binaryDataMono
      *     .map&#40;binaryData -&gt; &#123;
@@ -298,7 +300,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -307,18 +309,61 @@ public final class BinaryData {
      * @throws NullPointerException if {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length) {
+        return fromFlux(data, length, true);
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     *
+     * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final long length = data.length;
+     * final boolean shouldAggregateData = false;
+     * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
+     *
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux, length, shouldAggregateData&#41;;
+     *
+     * Disposable subscriber = binaryDataMono
+     *     .map&#40;binaryData -&gt; &#123;
+     *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     *         return true;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     *
+     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @param length The length of {@code data} in bytes.
+     * @param aggregate A flag indicating whether {@link Flux} should be aggregated (buffered) eagerly or
+     *                  consumption deferred.
+     * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
+     * @throws IllegalArgumentException if the length is less than zero.
+     * @throws NullPointerException if {@code data} is null.
+     */
+    public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length, boolean aggregate) {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
         }
         if (length != null && length < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
         }
-        if (length != null) {
-            return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
+        if (aggregate) {
+            if (length != null) {
+                return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
                     .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
-        }
-        return FluxUtil.collectBytesInByteBufferStream(data)
+            }
+            return FluxUtil.collectBytesInByteBufferStream(data)
                 .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        } else {
+            return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
+        }
     }
 
     /**
