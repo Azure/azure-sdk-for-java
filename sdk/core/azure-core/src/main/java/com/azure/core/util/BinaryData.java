@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
@@ -175,6 +176,20 @@ public final class BinaryData {
 
     BinaryData(BinaryDataContent content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    }
+
+    static {
+        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
+            @Override
+            public BinaryData createBinaryData(BinaryDataContent content) {
+                return new BinaryData(content);
+            }
+
+            @Override
+            public BinaryDataContent getContent(BinaryData binaryData) {
+                return binaryData.content;
+            }
+        });
     }
 
     /**
