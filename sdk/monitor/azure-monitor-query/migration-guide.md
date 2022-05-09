@@ -31,9 +31,9 @@ The modern Azure Monitor Query client library also provides the ability to share
 
 ## Important changes
 
-### Group id, artifact id, and package names
+### Group ID, artifact ID, and package names
 
-Group ids, artifact ids, and package names for the modern Azure client libraries for Java have changed. They follow the [Java SDK naming guidelines][GuidelinesJavaDesign]. Each will have the group id `com.azure`, an artifact id following the pattern `azure-[area]-[service]`, and the root package name `com.azure.[area].[Service]`. The legacy clients have a group id `com.microsoft.azure` and their package names followed the pattern `com.microsoft. Azure.[service]`. This provides a quick and accessible means to help understand, at a glance, whether you are using modern or legacy clients.
+Group IDs, artifact IDs, and package names for the modern Azure client libraries for Java have changed. They follow the [Java SDK naming guidelines][GuidelinesJavaDesign]. Each will have the group ID `com.azure`, an artifact ID following the pattern `azure-[area]-[service]`, and the root package name `com.azure.[area].[Service]`. The legacy clients have a group ID of `com.microsoft.azure`, and their package names followed the pattern `com.microsoft. Azure.[service]`. This provides a quick and accessible means to help understand, at a glance, whether you're using modern or legacy clients.
 
 In Azure Monitor Query, the modern client libraries have packages and namespaces that begin with `com.azure.monitor.query` and were released starting with 1.0.0. The legacy client library had package name starting with `com.microsoft.azure.loganalytics` and a version of 1.0.0-beta.1.
 
