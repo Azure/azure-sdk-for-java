@@ -23,7 +23,7 @@ Another key difference is that `azure-loganalytics` only has a preview release. 
 
 ### Cross-service SDK improvements
 
-The modern Azure Monitor Query client library also provides the ability to share in some of the cross-service improvements made to the Azure development experience, such as
+The modern Azure Monitor Query client library also provides the ability to share in some of the cross-service improvements made to the Azure development experience. Some improvements include:
 
 - A unified logging and diagnostics pipeline offering a common view of the activities across each of the client libraries.
 - A unified asynchronous programming model using [Project Reactor][project-reactor].
