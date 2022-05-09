@@ -179,8 +179,7 @@ By design, we don't promote the Kafka message key to be the Event Hubs partition
 
 ### Partition ownership changes a lot
 
-Ownership changes can happen due to several reasons.  When the number of EventProcessorClient instances change (i.e. added or removed), the running instances try to load-balance partitions between themselves.
-When the network latency is high between the storage account and the client and ownership is lost to another processor instance because the `PartitionOwnershipExpirationInterval` has elapsed.  The EventProcessorClient looks for ownership records where the expiration interval has elapsed at each load balancing interval.  If it has, it believes no one is currently processing that partition, so it will take ownership of it and start processing events from the last checkpoint.  In this scenario, it is possible to process events more than once.  One way to mitigate this is to increase `LoadBalancingUpdateInterval` and increase `PartitionOwnershipExpirationInterval`.
+When the number of EventProcessorClient instances changes (i.e. added or removed), the running instances try to load-balance partitions between themselves.  The default balancing is greedy, so an EventProcessorClient will take as many partitions at once to reach a balanced state.  As additional nodes are added, they may steal these partitions to balance themselves out.  If this is not the case, a GitHub issue with logs and a repro should be filed.
 
 ### "...current receiver 'nil' with epoch '0' is getting disconnected"
 
