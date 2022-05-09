@@ -229,6 +229,51 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
 ```
 
 ```java
+
+        public static void main(String[] args) {
+
+        //Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+        ClientCertificateCredential clientCertificateCredential = getClientCertificateCredential();
+
+        // Fetch an AAD token to be used for authentication. This token will be used as the password.
+        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        AccessToken accessToken = getAccessToken(clientCertificateCredential, trc);
+
+        RedisClient client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", accessToken);
+        StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
+
+        int maxTries = 3;
+        int i = 0;
+        
+        while (i < maxTries) {
+            // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
+            RedisStringCommands sync = connection.sync();
+            try {
+                sync.set("Az:testKey", "testVal");
+                System.out.println(sync.get("Az:testKey").toString());
+                break;
+            } catch (RedisException e) {
+                // Handle the Exception as required in your application.
+                e.printStackTrace();
+
+                if (accessToken.isExpired()) {
+                    // Recreate the client with a fresh token non-expired token as password for authentication.
+                    client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", getAccessToken(clientCertificateCredential, trc));
+                    connection = client.connect(StringCodec.UTF8);
+                    sync = connection.sync();
+                } else if (!connection.isOpen()) {
+                    // Recreate the connection
+                    connection = client.connect(StringCodec.UTF8);
+                    sync = connection.sync();
+                }
+            } catch (Exception e) {
+                // Handle the Exception as required in your application.
+                e.printStackTrace();
+            }
+            i++;
+        }
+    }
+    
     private static RedisClient createLettuceRedisClient(String hostName, int port, String username, AccessToken accessToken) {
 
         // Build Redis URI with host and authentication details.
