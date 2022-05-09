@@ -37,7 +37,7 @@ Group IDs, artifact IDs, and package names for the modern Azure client libraries
 
 The Azure Monitor Query client library's package and namespaces begin with `com.azure.monitor.query` and were released starting with version 1.0.0. The legacy client library had a package name starting with `com.microsoft.azure.loganalytics` and a version of 1.0.0-beta.1.
 
-#### Instantiating clients
+#### Instantiate clients
 
 In `azure-loganalytics`, the `LogAnalyticsDataClient` is instantiated via the `LogAnalyticsDataClientImpl` constructor. The client contains both sync and async methods.
 
