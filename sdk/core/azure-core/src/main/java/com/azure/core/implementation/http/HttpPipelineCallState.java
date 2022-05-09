@@ -11,12 +11,12 @@ import com.azure.core.util.logging.ClientLogger;
 public class HttpPipelineCallState {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineCallState.class);
     private final HttpPipeline pipeline;
-    private final HttpPipelineCallContext context;
+    private final HttpPipelineCallContext callContext;
     private int currentPolicyIndex;
 
-    public HttpPipelineCallState(HttpPipeline pipeline, HttpPipelineCallContext context) {
+    public HttpPipelineCallState(HttpPipeline pipeline, HttpPipelineCallContext callContext) {
         this.pipeline = pipeline;
-        this.context = context;
+        this.callContext = callContext;
         this.currentPolicyIndex = -1;
     }
 
@@ -38,13 +38,13 @@ public class HttpPipelineCallState {
         return pipeline;
     }
 
-    public HttpPipelineCallContext getContext() {
-        return context;
+    public HttpPipelineCallContext getCallContext() {
+        return callContext;
     }
 
     @Override
     public HttpPipelineCallState clone() {
-        HttpPipelineCallState cloned = new HttpPipelineCallState(this.pipeline, this.context);
+        HttpPipelineCallState cloned = new HttpPipelineCallState(this.pipeline, this.callContext);
         cloned.currentPolicyIndex = this.currentPolicyIndex;
         return cloned;
     }
