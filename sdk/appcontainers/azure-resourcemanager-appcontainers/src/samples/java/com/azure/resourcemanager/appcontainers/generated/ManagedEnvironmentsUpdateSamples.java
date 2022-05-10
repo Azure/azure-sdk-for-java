@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
+import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ManagedEnvironments Update. */
 public final class ManagedEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-01-01-preview/examples/ManagedEnvironments_Patch.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_Patch.json
      */
     /**
      * Sample code: Patch Managed Environment.
@@ -21,12 +21,15 @@ public final class ManagedEnvironmentsUpdateSamples {
      */
     public static void patchManagedEnvironment(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        ManagedEnvironment resource =
-            manager
-                .managedEnvironments()
-                .getByResourceGroupWithResponse("examplerg", "testcontainerenv", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+        manager
+            .managedEnvironments()
+            .update(
+                "examplerg",
+                "testcontainerenv",
+                new ManagedEnvironmentInner()
+                    .withLocation("East US")
+                    .withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                Context.NONE);
     }
 
     @SuppressWarnings("unchecked")
