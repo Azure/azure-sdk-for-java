@@ -32,7 +32,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Handle Event Hubs exceptions
 
-All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp\:connection\:forced" or "amqp\:link\:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that the customer needs to resolve.
+All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp\:connection\:forced" or "amqp\:link\:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that needs to be resolved.
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][EventHubsMessagingExceptions] guidance.
