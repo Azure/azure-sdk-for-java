@@ -1,6 +1,13 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+<# Patch releases script does the following
+    1. Identify all the artifacts under maven 'com.azure' group that have misaligned dependencies.
+    PS - This analysis is only done for the GA libraries.
+    2. Create patched sources for each of these artifacts in a branch.
+    3. Release patches from this branch.
+    4. Generate the forward looking BOM file and create a branch for the BOM release.
+#>
 param(
     [string]$GroupId = "com.azure"
 )
@@ -49,6 +56,7 @@ function ConvertToPatchInfo([ArtifactInfo]$ArInfo) {
     return $patchInfo    
 }
 
+# Get version info for all the maven artifacts under the groupId = 'com.azure'
 function GetVersionInfoForAllMavenArtifacts([string]$GroupId = "com.azure") {
     $artifactInfos = @{}
     $azComArtifactIds = GetAllAzComClientArtifactsFromMaven -GroupId $GroupId
@@ -64,6 +72,7 @@ function GetVersionInfoForAllMavenArtifacts([string]$GroupId = "com.azure") {
     return $artifactInfos
 }
 
+# Parse the dependency information for each of the artifact from maven.
 function UpdateDependencies($ArtifactInfos) {
     foreach ($artifactId in $ArtifactInfos.Keys) {
         $deps = @{}
@@ -78,6 +87,7 @@ function UpdateDependencies($ArtifactInfos) {
     return
 }
 
+# Update CII information for the artifacts.
 function UpdateCIInformation($ArtifactInfos) {
     foreach ($artifactId in $ArtifactInfos.Keys) {
         $arInfo = [ArtifactInfo]$ArtifactInfos[$artifactId]
@@ -96,6 +106,7 @@ function UpdateCIInformation($ArtifactInfos) {
     }
 }
 
+# Create the forward looking graph for once the artifacts have been patched.
 function CreateForwardLookingVersions($ArtifactInfos) {
     $allDependenciesWithVersion = @{}
     foreach ($arId in $ArtifactInfos.Keys) {
@@ -123,6 +134,7 @@ function CreateForwardLookingVersions($ArtifactInfos) {
     return $allDependenciesWithVersion
 }
 
+# Find all the artifacts that will need to be patched based on the dependency analysis.
 function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVersion) {
     foreach($arId in $ArtifactInfos.Keys) {
         $arInfo = $ArtifactInfos[$arId]
@@ -143,6 +155,7 @@ function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVe
     }
 }
 
+# Helper class that analyzes all the artifacts that need to be patched if a given artifact is patched.
 function ArtifactsToPatchUtil([String] $DependencyId, [hashtable]$ArtifactInfos, $AllDependenciesWithVersion) {
     $arInfo = $ArtifactInfos[$DependencyId]
     $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
@@ -159,6 +172,7 @@ function ArtifactsToPatchUtil([String] $DependencyId, [hashtable]$ArtifactInfos,
     }
 }
 
+# Update dependencies in the version client file.
 function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos, [string]$GroupId = "com.azure") {
     ## We need to update the version_client.txt to have the correct versions in place.
     foreach ($artifactId in $ArtifactInfos.Keys) {
@@ -177,6 +191,7 @@ function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos, [string]$G
     }
 }
 
+# Get the release version for the next bom artifact.
 function GetNextBomVersion() {
     $pkgProperties = [PackageProps](Get-PkgProperties -PackageName "azure-sdk-bom")
     $currentVersion = $pkgProperties.Version
@@ -185,6 +200,7 @@ function GetNextBomVersion() {
     return $patchVersion
 }
 
+# Find the correct order in which all the artifacts need to be released.
 function TopologicalSortUtil($ArtifactId, $ArtifactInfos, $ArtifactIds, $Visited, $Order) {
     $Visited[$ArtifactId] = $true
 
@@ -241,6 +257,7 @@ function GetTopologicalSort($ArtifactIds, $ArtifactInfos) {
     return $pipelineOrdered
 }
 
+# Create the dependency section for the BOM artifact.
 function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
     $xmlns = $Doc.Project.xmlns
     $xsi = $Doc.Project.xsi
@@ -260,6 +277,7 @@ function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
     $cmdOutput = $dependencies.AppendChild($dependency)
 }
 
+# Generate BOM file for the given artifacts.
 function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
     $gaArtifacts = @()
 
@@ -297,19 +315,24 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
+        Write-Host "git checkout -b $BomFileBranchName $remoteName/main "
         $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main 
         $bomFileContent.Save($BomFilePath)
+        Write-Host "git add $BomFilePath"
         git add $BomFilePath
         $content = GetChangeLogContentFromMessage -ContentMessage '- Updated Azure SDK dependency versions to the latest releases.'
         UpdateChangeLogEntry -ChangeLogPath $BomChangeLogPath -PatchVersion $patchVersion -ArtifactId "azure-sdk-bom" -Content $content
         GitCommit -Message "Prepare BOM for release version $releaseVersion"
+        Write-Host 'git push -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" -f $remoteName $BomFileBranchName'
         git push -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" -f $remoteName $BomFileBranchName
     }
     finally {
+        Write-Host 'git checkout $currentBranchName'
         git checkout $currentBranchName
     }
 }
 
+# Generate json report for all the artifacts that need to be patched.
 function GenerateJsonReport($ArtifactPatchInfos, $PatchBranchName, $BomFileBranchName) {
     $patchReport = @{
         PathBranchName = $PatchBranchName
@@ -324,6 +347,7 @@ function GenerateJsonReport($ArtifactPatchInfos, $PatchBranchName, $BomFileBranc
     $jsonReport | ConvertTo-Json -Depth 5 | Out-File $PatchReportFile
 }
 
+# This is an HTML report for all the artifacts that are being patched.
 function GenerateHtmlReport($Artifacts, $PatchBranchName, $BomFileBranchName) {
     $count = $Artifacts.Count
     $index = 0
@@ -403,6 +427,7 @@ $ArtifactPatchInfos = @()
 Write-Output "Preparing patch releases for BOM updates."
 try {
     $patchBranchName = "PatchSet_$bomPatchVersion"
+    Write-Host 'git checkout -b $patchBranchName $RemoteName/main'
     git checkout -b $patchBranchName $RemoteName/main
     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
@@ -414,6 +439,7 @@ try {
         GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 
+    Write-Host 'git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $RemoteName $patchBranchName'
     $cmdOutput = git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $RemoteName $patchBranchName
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not push the changes to $RemoteName/$BranchName. Exiting..."
@@ -422,6 +448,7 @@ try {
     Write-Output "Pushed the changes to remote:$RemoteName, Branch:$BranchName"
 }
 finally {
+    Write-Host 'git checkout $CurrentBranchName'
     $cmdOutput = git checkout $CurrentBranchName
 }
 
@@ -429,7 +456,3 @@ GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
 GenerateJsonReport -ArtifactPatchInfos $ArtifactPatchInfos -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
 #$orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 #GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
-
-# TODO:
-# 1. Add comments to the patch.
-# 2. echo the git commands from the script/

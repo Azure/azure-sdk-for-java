@@ -19,6 +19,7 @@ $RepoRoot = Resolve-Path "${PSScriptRoot}../../.."
 $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1"
 . $CommonScriptFilePath
 
+# Set the dependency version of an artifact in the version_client.txt file.
 function SetDependencyVersion($GroupId = "com.azure", $ArtifactId, $Version) {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
@@ -26,24 +27,28 @@ function SetDependencyVersion($GroupId = "com.azure", $ArtifactId, $Version) {
   $cmdOutput = python $setVersionFilePath --bt client --ar $ArtifactId --gi $GroupId --increment-version
 }
 
+# Set the current version of an artifact in the version_client.txt file
 function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
   $cmdOutput = python $setVersionFilePath --bt client --new-version $Version --ar $ArtifactId --gi $GroupId
 }
 
+# Update dependencies of the artifact.
 function UpdateDependencyOfClientSDK() {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $updateVersionFilePath = Join-Path $repoRoot "eng" "versioning" "update_versions.py"
   $cmdOutput = python $updateVersionFilePath --ut all --bt client --sr
 }
 
+# Get all azure com client artifacts from maven.
 function GetAllAzComClientArtifactsFromMaven() {
   $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/com/azure"
   $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
   return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
 }
 
+# Get version info for an artifact.
 function GetVersionInfoForAnArtifactId([String]$ArtifactId) {
   $mavenMetadataUrl = "https://repo1.maven.org/maven2/com/azure/$($ArtifactId)/maven-metadata.xml"
   $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl
@@ -58,6 +63,7 @@ function GetVersionInfoForAnArtifactId([String]$ArtifactId) {
   return $mavenArtifactInfo
 }
 
+# Get patch version for a given release version.
 function GetPatchVersion([String]$ReleaseVersion) {
   $ParsedSemver = [AzureEngSemanticVersion]::new($ReleaseVersion)
   if (!$ParsedSemver) {
@@ -68,10 +74,14 @@ function GetPatchVersion([String]$ReleaseVersion) {
   return "$($ParsedSemver.Major).$($ParsedSemver.Minor).$($ParsedSemver.Patch + 1)"
 }
 
+# Get remote name
 function GetRemoteName() {
   $mainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java'
   $remoteName = 'origin'
-  foreach ($rem in git remote show) {
+  Write-Host 'git remote show'
+  $remoteNames = git remote show
+  foreach ($rem in $remoteNames) {
+    Write-Host 'git remote get-url $rem'
     $remoteUrl = git remote get-url $rem
     $remoteString = [string]$remoteUrl
     if ($remoteString -Match $mainRemoteUrl) {
@@ -82,6 +92,7 @@ function GetRemoteName() {
   return $remoteName
 }
 
+# Find the pipeline name for a given artifact by parsing the ci.yml file.
 function GetPipelineName([string]$ArtifactId, [string]$ArtifactDirPath) {
   $ciYmlFilePath = Join-Path $ArtifactDirPath "ci.yml"
   if (Test-Path $ciYmlFilePath) {
@@ -109,6 +120,7 @@ function TriggerPipeline($PatchInfos, $BranchName) {
   # }
 }
 
+# Create a unique branch name.
 function GetBranchName($ArtifactId) {
   $artifactNameToLower = $ArtifactId.ToLower()
   $guid = [guid]::NewGuid().Guid
@@ -127,6 +139,7 @@ class ArtifactPatchInfo {
   [string]$PipelineName
 }
   
+# Parse dependencies from a given pom file.
 function GetDependencyToVersion($PomFilePath) {
   $dependencyNameToVersion = @{}
   $pomFileContent = [xml](Get-Content -Path $PomFilePath)
@@ -140,6 +153,7 @@ function GetDependencyToVersion($PomFilePath) {
   return $dependencyNameToVersion
 }
 
+# Create the changelog content from a message.
 function GetChangeLogContentFromMessage($ContentMessage) {
   $content = @()
   $content += ""
@@ -154,6 +168,7 @@ function GetChangeLogContentFromMessage($ContentMessage) {
   return $content
 }
 
+# Get change log entry for a patch.
 function GetChangeLogEntryForPatch($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
   $content = GetDependencyUpgradeChangeLogMessage -NewDependencyNameToVersion $NewDependencyNameToVersion -OldDependencyNameToVersion $OldDependencyNameToVersion
 
@@ -161,6 +176,7 @@ function GetChangeLogEntryForPatch($NewDependencyNameToVersion, $OldDependencyNa
   return $content
 }
 
+# Get a dependency upgrade changelog message.
 function GetDependencyUpgradeChangeLogMessage($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
   $content = @() 
   foreach ($key in $OldDependencyNameToVersion.Keys) {
@@ -175,6 +191,7 @@ function GetDependencyUpgradeChangeLogMessage($NewDependencyNameToVersion, $OldD
   return $content
 }
 
+# Update the change log entry for a given changelog.
 function UpdateChangeLogEntry($ChangeLogPath, $PatchVersion, $ArtifactId, $Content) {
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
   $releaseStatus = "($releaseStatus)"
@@ -194,8 +211,9 @@ function UpdateChangeLogEntry($ChangeLogPath, $PatchVersion, $ArtifactId, $Conte
     exit $LASTEXITCODE
   }
 }
-  
+
 function GitCommit($Message) {
+  Write-Host 'git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -am $Message'
   $cmdOutput = git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -am $Message
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not commit the changes locally.Exiting..."
@@ -203,6 +221,7 @@ function GitCommit($Message) {
   }
 }
   
+# Generate patches for given artifact patch infos.
 function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
   foreach ($patchInfo in $ArtifactPatchInfos) {
     GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
@@ -211,10 +230,18 @@ function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$Remo
   TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
 }
 
+
 function GetCurrentBranchName() {
+  Write-Host 'git rev-parse --abbrev-ref HEAD'
   return git rev-parse --abbrev-ref HEAD
 }
   
+<# This method generates the patch for a given artifact by doing the following
+   1. Reset the sources to the last release version for the given artifact.
+   2. Updating the dependencies of the artifact to what they should be in the current set.
+   3. Updating the changelog and readme's to update the dependency information.
+   4. Committing these changes. 
+#>
 function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
   $artifactId = $PatchInfo.ArtifactId
   $releaseVersion = $PatchInfo.LatestGAOrPatchVersion
@@ -242,6 +269,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $currentBranchName = GetCurrentBranchName
   
   if ($currentBranchName -ne $BranchName) {
+    Write-Host 'git checkout -b $BranchName $RemoteName/main'
     $cmdOutput = git checkout -b $BranchName $RemoteName/main 
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
@@ -289,13 +317,15 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   if ($currentPomFileVersion -ne $releaseVersion) {
     Write-Output "Hard reseting the sources for $artifactId to version $releaseVersion using release tag: $releaseTag." 
     Write-Output "Fetching all the tags from $RemoteName"
+    Write-Host 'git fetch $RemoteName $releaseTag'
     $cmdOutput = git fetch $RemoteName $releaseTag
         
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not restore the tags for release tag $releaseTag"
       exit $LASTEXITCODE
     }
-      
+    
+    Write-Host 'git restore --source $releaseTag -W -S $artifactDirPath'
     $cmdOutput = git restore --source $releaseTag -W -S $artifactDirPath
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not reset sources for $artifactId) to the release version $releaseVersion"
@@ -316,7 +346,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
       
   $cmdOutput = UpdateDependencyOfClientSDK
   if ($LASTEXITCODE -ne 0) {
-    LogError  LogError "Could not update all references for for $artifactId"
+    LogError "Could not update all references for for $artifactId"
     exit $LASTEXITCODE
   }
   
