@@ -1,5 +1,15 @@
 # Release History
 
+## 11.5.0-beta.10 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 11.5.0-beta.9 (2022-05-10)
 
 ### Other Changes
