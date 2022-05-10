@@ -7,6 +7,7 @@ package com.azure.storage.common.policy;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -53,7 +54,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         boolean considerSecondary = (this.requestRetryOptions.getSecondaryHost() != null)
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
             || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
@@ -224,7 +225,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * @return A single containing either the successful response or an error that was not retryable because either the
      * {@code maxTries} was exceeded or retries will not mitigate the issue.
      */
-    private HttpResponse attemptSync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
+    private HttpResponse attemptSync(final HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
                                             final HttpRequest originalRequest, final boolean considerSecondary,
                                             final int primaryTry, final int attempt) {
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.

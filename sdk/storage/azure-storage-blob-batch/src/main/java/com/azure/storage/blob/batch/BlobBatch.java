@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
@@ -450,7 +451,7 @@ public final class BlobBatch {
         }
 
         @Override
-        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
             buildBatchOperation(context);
             return null;
         }
