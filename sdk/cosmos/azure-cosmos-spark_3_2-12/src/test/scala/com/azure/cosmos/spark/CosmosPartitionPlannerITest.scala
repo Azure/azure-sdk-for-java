@@ -290,7 +290,8 @@ class CosmosPartitionPlannerITest
       clientConfig,
       None,
       containerConfig,
-      partitioningConfig
+      partitioningConfig,
+      false
     )
 
     val partitionMetadata = if (startLsn.isDefined) {
@@ -313,7 +314,8 @@ class CosmosPartitionPlannerITest
           partitionMetadata: Array[PartitionMetadata],
           defaultMinimalPartitionCount,
           defaultMaxPartitionSizeInMB,
-          ReadLimit.allAvailable()
+          ReadLimit.allAvailable(),
+          false
         )
     })
   }
