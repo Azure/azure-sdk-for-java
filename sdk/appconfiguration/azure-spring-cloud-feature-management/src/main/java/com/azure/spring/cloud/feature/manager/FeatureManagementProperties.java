@@ -22,8 +22,6 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManagementProperties.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    
-    
 
     private static final long serialVersionUID = -1642032123104805346L;
 
@@ -38,8 +36,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     private Map<String, Boolean> onOff;
 
     private transient Map<String, DynamicFeature> dynamicFeatures;
-    
-    public FeatureManagementProperties() {   
+
+    public FeatureManagementProperties() {
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
         dynamicFeatures = new HashMap<>();

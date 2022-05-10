@@ -40,7 +40,6 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.feature.management.entity.DynamicFeature;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
-import com.azure.spring.cloud.config.feature.management.entity.FeatureVariant;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
@@ -274,7 +273,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             } else if (DYNAMIC_FEATURE_CONTENT_TYPE.equalsIgnoreCase(setting.getContentType())
                 && getFeatureSchemaVersion() >= 2) {
                 properties.put(
-                    DYNAMIC_FEATURE_KEY + "." + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()),
+                    DYNAMIC_FEATURE_KEY + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()),
                     FEATURE_MAPPER.convertValue(createDynamicFeature(setting), LinkedHashMap.class));
             }
         }
@@ -337,10 +336,8 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         throws JsonMappingException, JsonProcessingException {
         DynamicFeature dynamicFeature = FEATURE_MAPPER.readValue(item.getValue(), DynamicFeature.class);
 
-        for (FeatureVariant variant : dynamicFeature.getVariants().values()) {
-
-            variant.setAssignmentParameters(convertTargeting(variant.getAssignmentParameters()));
-        }
+        dynamicFeature.getVariants().values()
+            .forEach(variant -> variant.setAssignmentParameters(convertTargeting(variant.getAssignmentParameters())));
 
         return dynamicFeature;
 

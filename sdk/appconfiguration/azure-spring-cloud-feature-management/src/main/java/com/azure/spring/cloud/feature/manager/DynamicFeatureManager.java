@@ -60,11 +60,9 @@ public class DynamicFeatureManager {
             throw new IllegalArgumentException("Feature Variant name can not be empty or null.");
         }
 
-        
         if (!featureManagementConfigurations.getDynamicFeatures().containsKey(featureName)) {
             throw new FeatureManagementException("The Dynamic Feature " + featureName + " can not be found.");
         }
-        
 
         FeatureVariant variant = null;
 

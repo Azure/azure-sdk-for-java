@@ -76,10 +76,11 @@ public class DynamicFeature {
      * @param variants the variants to set
      */
     public void setVariants(List<FeatureVariant> variants) {
-        @NotNull
         Map<String, FeatureVariant> map = new LinkedHashMap<>();
-        for (int i = 0; i < variants.size(); i++) {
-            map.put(String.valueOf(i), variants.get(i));
+        if (variants != null) {
+            for (int i = 0; i < variants.size(); i++) {
+                map.put(String.valueOf(i), variants.get(i));
+            }
         }
         this.variants = map;
     }
