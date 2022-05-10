@@ -6,8 +6,10 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.http.HttpPipelineNextSyncPolicyHelper;
 import reactor.core.publisher.Mono;
 
 /**
@@ -33,8 +35,8 @@ public interface HttpPipelinePolicy {
      * @param next The next policy to invoke.
      * @return A publisher that initiates the request upon subscription and emits a response on completion.
      */
-    default HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return this.process(context, next).block();
+    default HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return process(context, HttpPipelineNextSyncPolicyHelper.toAsyncPolicy(next)).block();
     }
 
     /**
