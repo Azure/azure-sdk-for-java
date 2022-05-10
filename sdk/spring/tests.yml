@@ -1,19 +1,26 @@
 trigger: none
 pr: none
 
-pool:
-  vmImage: "ubuntu-latest"
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
-steps:
-  - task: Maven@3
-    displayName: 'Run tests'
-    inputs:
-      mavenPomFile: sdk/spring/pom.xml
-      options: ' -Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true'
-      mavenOptions: '$(MemoryOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      goals: 'clean install -Pdev -T 4 -ntp'
+
+stages:
+  - stage:
+    jobs:
+      - job:
+
+        pool:
+          vmImage: "ubuntu-latest"
+
+        steps:
+        - task: Maven@3
+          displayName: 'Run tests'
+          inputs:
+            mavenPomFile: sdk/spring/pom.xml
+            options: ' -Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true'
+            mavenOptions: '$(MemoryOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaTestVersion)
+            jdkArchitectureOption: 'x64'
+            goals: 'clean install -Pdev -T 4 -ntp'
 
