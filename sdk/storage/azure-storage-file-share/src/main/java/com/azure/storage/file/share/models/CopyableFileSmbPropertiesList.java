@@ -15,7 +15,7 @@ public final class CopyableFileSmbPropertiesList {
     private boolean isSetLastWrittenOn;
     private boolean isSetChangedOn;
     private boolean isSetAll;
-    
+
     /***
      * @return a flag indicating if no smb properties should be copied from source file.
      */
