@@ -338,7 +338,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
         final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(PLAYBACK_TEST_GROUP)
-            .schemaRegistryAsyncClient(client)
+            .schemaRegistryClient(client)
             .avroSpecificReader(true)
             .buildSerializer();
         final String expectedContentType = AVRO_MIME_TYPE + "+64fc737160ff41bdb8a0b8af028e6827";
@@ -364,7 +364,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
         final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(PLAYBACK_TEST_GROUP)
-            .schemaRegistryAsyncClient(client)
+            .schemaRegistryClient(client)
             .avroSpecificReader(true)
             .buildSerializer();
         final String expectedContentType = AVRO_MIME_TYPE + "+f047cfa64b374167b3a1d101370c1483";
