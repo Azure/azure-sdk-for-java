@@ -170,9 +170,6 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
 	 */
 	@SuppressWarnings("unchecked")
 	protected void validateVariantSettings(List<FeatureVariant> variantSettings) throws TargetingException {
-		String paramName = "";
-		String reason = "";
-
 		Map<String, Double> groupUsed = new HashMap<>();
 
 		for (FeatureVariant variant : variantSettings) {
@@ -198,18 +195,15 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
 			List<GroupRollout> groups = audience.getGroups();
 
 			if (groups != null) {
-				for (int index = 0; index < groups.size(); index++) {
-					GroupRollout groupRollout = groups.get(index);
-					Double currentSize = groupUsed.getOrDefault(groupRollout.getName(), (double) 0);
-					currentSize += groupRollout.getRolloutPercentage();
-					if (currentSize > 100) {
-						paramName = groupRollout.getName();
-						reason = OUT_OF_RANGE;
-
-						throw new TargetingException(paramName + " : " + reason);
-					}
-					groupUsed.put(groupRollout.getName(), currentSize);
-				}
+			    
+			    groups.forEach(groupRollout -> {
+			        Double currentSize = groupUsed.getOrDefault(groupRollout.getName(), (double) 0);
+                    currentSize += groupRollout.getRolloutPercentage();
+                    if (currentSize > 100) {
+                        throw new TargetingException(groupRollout.getName() + " : " + OUT_OF_RANGE);
+                    }
+                    groupUsed.put(groupRollout.getName(), currentSize);
+			    });
 			}
 		}
 	}

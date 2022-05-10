@@ -256,7 +256,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     void initFeatures(FeatureSet featureSet) {
         properties.put(getFeatureSchema(),
             FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
-
     }
 
     private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features)
@@ -340,7 +339,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             .forEach(variant -> variant.setAssignmentParameters(convertTargeting(variant.getAssignmentParameters())));
 
         return dynamicFeature;
-
     }
 
     private Map<Integer, FeatureFlagFilter> convertMap(Map<Integer, FeatureFlagFilter> featureEnabledFor) {

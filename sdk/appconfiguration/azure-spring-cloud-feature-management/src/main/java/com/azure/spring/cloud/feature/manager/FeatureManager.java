@@ -37,8 +37,7 @@ public class FeatureManager {
     private transient FeatureManagementConfigProperties properties;
 
     /**
-     * Manages Feature Flags and Dynamic Features. Can be called to check if a feature is enabled or disabled. Can be
-     * called to get a Dynamic Feature.
+     * Can be called to check if a feature is enabled or disabled.
      * @param properties FeatureManagementConfigProperties
      */
     public FeatureManager(FeatureManagementConfigProperties properties) {

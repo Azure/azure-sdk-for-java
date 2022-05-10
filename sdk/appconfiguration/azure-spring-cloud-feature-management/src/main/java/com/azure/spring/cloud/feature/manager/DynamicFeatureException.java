@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.feature.manager;
 
 /**
- * Test
+ * Error thrown when an issue is found while generating a Feature Variant.
  */
 public class DynamicFeatureException extends RuntimeException {
 
@@ -13,7 +13,7 @@ public class DynamicFeatureException extends RuntimeException {
      * Creates a new instance of the DynamicFeatureException
      *
      * @param message the error message.
-     * @param cause test
+     * @param cause original issue caught
      */
     public DynamicFeatureException(String message, Throwable cause) {
         super(message, cause);
