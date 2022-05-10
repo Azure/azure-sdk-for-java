@@ -101,8 +101,8 @@ playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-MessageWithMetadata message = serializer.serializeMessageData(playingCard,
-    TypeReference.createInstance(MessageWithMetadata.class));
+MessageContent message = serializer.serializeMessageData(playingCard,
+    TypeReference.createInstance(MessageContent.class));
 ```
 
 The avro type `PlayingCard` is available in samples package
@@ -113,7 +113,7 @@ Deserialize a Schema Registry-compatible avro payload into a strongly-type objec
 
 ```java readme-sample-deserializeSample
 SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
-MessageWithMetadata message = getSchemaRegistryAvroMessage();
+MessageContent message = getSchemaRegistryAvroMessage();
 PlayingCard playingCard = serializer.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
 ```
 

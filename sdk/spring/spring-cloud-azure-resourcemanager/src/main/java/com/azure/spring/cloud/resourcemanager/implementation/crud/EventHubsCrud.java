@@ -36,7 +36,7 @@ public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String,
                                                   namespaceAndName.getT1(),
                                                   namespaceAndName.getT2());
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

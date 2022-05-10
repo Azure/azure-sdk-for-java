@@ -32,6 +32,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -495,6 +496,22 @@ public class DataLakeFileSystemClientBuilder implements
     public DataLakeFileSystemClientBuilder serviceVersion(DataLakeServiceVersion version) {
         blobContainerClientBuilder.serviceVersion(TransformUtils.toBlobServiceVersion(version));
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt file contents on the server.
+     *
+     * @param customerProvidedKey Customer provided key containing the encryption key information.
+     * @return the updated DataLakeFileSystemClientBuilder object
+     */
+    public DataLakeFileSystemClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
+        if (customerProvidedKey == null) {
+            blobContainerClientBuilder.customerProvidedKey(null);
+        } else {
+            blobContainerClientBuilder.customerProvidedKey(Transforms.toBlobCustomerProvidedKey(customerProvidedKey));
+        }
+
         return this;
     }
 }

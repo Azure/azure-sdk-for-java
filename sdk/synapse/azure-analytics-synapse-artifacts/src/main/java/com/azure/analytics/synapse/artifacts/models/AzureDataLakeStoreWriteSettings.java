@@ -45,4 +45,18 @@ public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
         this.expiryDateTime = expiryDateTime;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreWriteSettings setCopyBehavior(Object copyBehavior) {
+        super.setCopyBehavior(copyBehavior);
+        return this;
+    }
 }

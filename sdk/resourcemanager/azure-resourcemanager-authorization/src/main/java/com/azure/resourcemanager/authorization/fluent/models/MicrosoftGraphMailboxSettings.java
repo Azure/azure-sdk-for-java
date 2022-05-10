@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** mailboxSettings. */
 @Fluent
 public final class MicrosoftGraphMailboxSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphMailboxSettings.class);
-
     /*
      * Folder ID of an archive folder for the user.
      */
@@ -37,7 +34,7 @@ public final class MicrosoftGraphMailboxSettings {
     private String dateFormat;
 
     /*
-     * The delegateMeetingMessageDeliveryOptions property.
+     * delegateMeetingMessageDeliveryOptions
      */
     @JsonProperty(value = "delegateMeetingMessageDeliveryOptions")
     private MicrosoftGraphDelegateMeetingMessageDeliveryOptions delegateMeetingMessageDeliveryOptions;
@@ -133,7 +130,7 @@ public final class MicrosoftGraphMailboxSettings {
     }
 
     /**
-     * Get the delegateMeetingMessageDeliveryOptions property: The delegateMeetingMessageDeliveryOptions property.
+     * Get the delegateMeetingMessageDeliveryOptions property: delegateMeetingMessageDeliveryOptions.
      *
      * @return the delegateMeetingMessageDeliveryOptions value.
      */
@@ -142,7 +139,7 @@ public final class MicrosoftGraphMailboxSettings {
     }
 
     /**
-     * Set the delegateMeetingMessageDeliveryOptions property: The delegateMeetingMessageDeliveryOptions property.
+     * Set the delegateMeetingMessageDeliveryOptions property: delegateMeetingMessageDeliveryOptions.
      *
      * @param delegateMeetingMessageDeliveryOptions the delegateMeetingMessageDeliveryOptions value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.

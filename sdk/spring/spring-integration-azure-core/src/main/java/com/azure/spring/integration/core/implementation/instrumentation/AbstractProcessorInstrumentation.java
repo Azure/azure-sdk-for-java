@@ -21,7 +21,7 @@ public abstract class AbstractProcessorInstrumentation<T> implements Instrumenta
 
     private volatile long lastErrorTimestamp = Long.MIN_VALUE;
 
-    private volatile T errorContext;
+    private T errorContext;
 
     /**
      * Construct a {@link AbstractProcessorInstrumentation} with the specified name, {@link Type} and the period of a none error window.

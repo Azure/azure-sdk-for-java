@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectable
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.WorkloadProtectableItemResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectableItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadProtectableItemResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupProtectableItemsImpl implements BackupProtectableItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupProtectableItemsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupProtectableItemsImpl.class);
 
     private final BackupProtectableItemsClient innerClient;
 

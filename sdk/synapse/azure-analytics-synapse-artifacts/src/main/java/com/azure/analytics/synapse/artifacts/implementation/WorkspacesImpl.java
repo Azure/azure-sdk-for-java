@@ -47,7 +47,7 @@ public final class WorkspacesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientWorks")
-    private interface WorkspacesService {
+    public interface WorkspacesService {
         @Get("/workspace")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

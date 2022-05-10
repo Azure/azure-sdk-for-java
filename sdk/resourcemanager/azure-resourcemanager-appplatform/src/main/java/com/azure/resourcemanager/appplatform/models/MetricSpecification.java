@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifications of the Metrics for Azure Monitoring. */
 @Fluent
 public final class MetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
-
     /*
      * Name of the metric
      */
@@ -77,6 +73,12 @@ public final class MetricSpecification {
      */
     @JsonProperty(value = "dimensions")
     private List<MetricDimension> dimensions;
+
+    /*
+     * Name of the MDM namespace. Optional.
+     */
+    @JsonProperty(value = "sourceMdmNamespace")
+    private String sourceMdmNamespace;
 
     /**
      * Get the name property: Name of the metric.
@@ -281,6 +283,26 @@ public final class MetricSpecification {
      */
     public MetricSpecification withDimensions(List<MetricDimension> dimensions) {
         this.dimensions = dimensions;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmNamespace property: Name of the MDM namespace. Optional.
+     *
+     * @return the sourceMdmNamespace value.
+     */
+    public String sourceMdmNamespace() {
+        return this.sourceMdmNamespace;
+    }
+
+    /**
+     * Set the sourceMdmNamespace property: Name of the MDM namespace. Optional.
+     *
+     * @param sourceMdmNamespace the sourceMdmNamespace value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSourceMdmNamespace(String sourceMdmNamespace) {
+        this.sourceMdmNamespace = sourceMdmNamespace;
         return this;
     }
 

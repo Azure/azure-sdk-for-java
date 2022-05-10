@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupEngineBaseResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of BackupEngineBase resources. */
 @Fluent
 public final class BackupEngineBaseResourceList extends ResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupEngineBaseResourceList.class);
-
     /*
      * List of resources.
      */

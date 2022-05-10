@@ -54,7 +54,7 @@ public final class RelationshipsImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface RelationshipsService {
+    public interface RelationshipsService {
         @Post("/atlas/v2/relationship")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

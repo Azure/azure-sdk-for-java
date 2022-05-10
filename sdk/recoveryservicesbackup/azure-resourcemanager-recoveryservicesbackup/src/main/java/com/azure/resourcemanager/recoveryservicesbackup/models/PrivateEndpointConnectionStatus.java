@@ -33,7 +33,11 @@ public final class PrivateEndpointConnectionStatus extends ExpandableStringEnum<
         return fromString(name, PrivateEndpointConnectionStatus.class);
     }
 
-    /** @return known PrivateEndpointConnectionStatus values. */
+    /**
+     * Gets known PrivateEndpointConnectionStatus values.
+     *
+     * @return known PrivateEndpointConnectionStatus values.
+     */
     public static Collection<PrivateEndpointConnectionStatus> values() {
         return values(PrivateEndpointConnectionStatus.class);
     }

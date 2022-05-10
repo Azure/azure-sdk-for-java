@@ -1,0 +1,91 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/df2f9c980df2f9c9812d0566045663c7b44334a21943?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cfc0dadf-5286-44c4-af1c-78b279941461"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F2B0A09B39F",
+      "Last-Modified" : "Fri, 15 Apr 2022 21:58:13 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e4566c14-f01e-004f-7b13-513cf4000000",
+      "x-ms-client-request-id" : "cfc0dadf-5286-44c4-af1c-78b279941461",
+      "Date" : "Fri, 15 Apr 2022 21:58:13 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/df2f9c980df2f9c9812d0566045663c7b44334a21943/df2f9c981df2f9c9812d148216d2138f764104755966?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a28c06a3-e0e5-4b67-8213-c6162079d3a8"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F2B0A764D7A",
+      "Last-Modified" : "Fri, 15 Apr 2022 21:58:14 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "5df87d65-001f-0090-5913-5177ce000000",
+      "x-ms-client-request-id" : "a28c06a3-e0e5-4b67-8213-c6162079d3a8",
+      "Date" : "Fri, 15 Apr 2022 21:58:14 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/df2f9c980df2f9c9812d0566045663c7b44334a21943/df2f9c981df2f9c9812d148216d2138f764104755966?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c53bc97c-5a3f-42f9-a77f-26f9bc00ed20"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-id" : "6b30770a-8d53-42a5-88fa-6ea8e3c20ca0",
+      "eTag" : "0x8DA1F2B0A764D7A",
+      "Last-Modified" : "Fri, 15 Apr 2022 21:58:14 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3d2c9106-601e-005d-2e13-514724000000",
+      "x-ms-client-request-id" : "c53bc97c-5a3f-42f9-a77f-26f9bc00ed20",
+      "Date" : "Fri, 15 Apr 2022 21:58:13 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/df2f9c980df2f9c9812d0566045663c7b44334a21943/df2f9c981df2f9c9812d148216d2138f764104755966?recursive=false",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3d4f1c82-2d92-4851-a273-229e3e743a28"
+    },
+    "Response" : {
+      "content-length" : "199",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseIdMismatch",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "20a28ab6-f01f-0084-3b13-513fa1000000",
+      "Body" : "{\"error\":{\"code\":\"LeaseIdMismatch\",\"message\":\"The lease ID specified did not match the lease ID for the resource.\\nRequestId:20a28ab6-f01f-0084-3b13-513fa1000000\\nTime:2022-04-15T21:58:15.1708493Z\"}}",
+      "x-ms-client-request-id" : "3d4f1c82-2d92-4851-a273-229e3e743a28",
+      "Date" : "Fri, 15 Apr 2022 21:58:14 GMT",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "df2f9c980df2f9c9812d0566045663c7b44334a21943", "df2f9c981df2f9c9812d148216d2138f764104755966" ]
+}

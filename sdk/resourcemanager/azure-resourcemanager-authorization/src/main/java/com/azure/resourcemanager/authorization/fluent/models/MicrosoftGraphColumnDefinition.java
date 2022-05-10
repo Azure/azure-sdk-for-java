@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,12 +16,11 @@ import java.util.Map;
 /** columnDefinition. */
 @Fluent
 public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphColumnDefinition.class);
-
     /*
      * booleanColumn
      */
     @JsonProperty(value = "boolean")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> booleanProperty;
 
     /*
@@ -83,6 +82,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
      * geolocationColumn
      */
     @JsonProperty(value = "geolocation")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> geolocation;
 
     /*
