@@ -5,13 +5,11 @@ package com.azure.aot.graalvm.samples;
 
 import com.azure.aot.graalvm.samples.appconfiguration.AppConfigurationSample;
 import com.azure.aot.graalvm.samples.eventhubs.EventHubsSample;
-import com.azure.aot.graalvm.samples.formrecognizer.FormRecognizerSample;
 import com.azure.aot.graalvm.samples.keyvault.certificates.KeyVaultCertificatesSample;
 import com.azure.aot.graalvm.samples.keyvault.keys.KeyVaultKeysSample;
 import com.azure.aot.graalvm.samples.keyvault.secrets.KeyVaultSecretsSample;
 import com.azure.aot.graalvm.samples.storage.blob.StorageBlobSample;
 import com.azure.aot.graalvm.samples.textanalytics.TextAnalyticsSample;
-import java.io.IOException;
 
 /**
  * Main class to run Azure client samples using GraalVM.
@@ -21,10 +19,10 @@ public class AzureGraalVmSamples {
      * Main method to run the samples.
      * @param args args to samples.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         AppConfigurationSample.runSample();
         EventHubsSample.runSample();
-        FormRecognizerSample.runSample();
+        // FormRecognizerSample.runSample();
         KeyVaultCertificatesSample.runSample();
         KeyVaultKeysSample.runSample();
         KeyVaultSecretsSample.runSample();
