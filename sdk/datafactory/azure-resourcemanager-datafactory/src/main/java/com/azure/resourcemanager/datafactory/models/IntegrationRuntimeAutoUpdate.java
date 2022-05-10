@@ -27,7 +27,11 @@ public final class IntegrationRuntimeAutoUpdate extends ExpandableStringEnum<Int
         return fromString(name, IntegrationRuntimeAutoUpdate.class);
     }
 
-    /** @return known IntegrationRuntimeAutoUpdate values. */
+    /**
+     * Gets known IntegrationRuntimeAutoUpdate values.
+     *
+     * @return known IntegrationRuntimeAutoUpdate values.
+     */
     public static Collection<IntegrationRuntimeAutoUpdate> values() {
         return values(IntegrationRuntimeAutoUpdate.class);
     }

@@ -31,7 +31,11 @@ public final class IntegrationRuntimeInternalChannelEncryptionMode
         return fromString(name, IntegrationRuntimeInternalChannelEncryptionMode.class);
     }
 
-    /** @return known IntegrationRuntimeInternalChannelEncryptionMode values. */
+    /**
+     * Gets known IntegrationRuntimeInternalChannelEncryptionMode values.
+     *
+     * @return known IntegrationRuntimeInternalChannelEncryptionMode values.
+     */
     public static Collection<IntegrationRuntimeInternalChannelEncryptionMode> values() {
         return values(IntegrationRuntimeInternalChannelEncryptionMode.class);
     }
