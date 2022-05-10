@@ -1,5 +1,7 @@
-package com.azure.storage.file.share.models;// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
+package com.azure.storage.file.share.models;
 
 import java.util.ArrayList;
 
@@ -13,10 +15,7 @@ public final class CopyableFileSmbPropertiesList {
     private boolean isSetLastWrittenOn;
     private boolean isSetChangedOn;
     private boolean isSetAll;
-
-    public CopyableFileSmbPropertiesList() {
-    }
-
+    
     /***
      * @return a flag indicating if no smb properties should be copied from source file.
      */
@@ -38,6 +37,7 @@ public final class CopyableFileSmbPropertiesList {
      */
     public boolean getFileAttributes() {
         return isSetFileAttributes;
+
     }
 
     /**
