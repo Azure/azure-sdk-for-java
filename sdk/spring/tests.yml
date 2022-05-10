@@ -3,10 +3,9 @@ pr: none
 
 pool:
   vmImage: "ubuntu-latest"
-
+variables:
+  - template: ../../eng/pipelines/templates/variables/globals.yml
 steps:
-  - variables:
-      - template: ../../eng/pipelines/templates/variables/globals.yml
   - task: Maven@3
     displayName: 'Run tests'
     inputs:
