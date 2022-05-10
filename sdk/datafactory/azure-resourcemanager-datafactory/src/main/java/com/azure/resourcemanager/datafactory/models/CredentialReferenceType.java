@@ -24,7 +24,11 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
         return fromString(name, CredentialReferenceType.class);
     }
 
-    /** @return known CredentialReferenceType values. */
+    /**
+     * Gets known CredentialReferenceType values.
+     *
+     * @return known CredentialReferenceType values.
+     */
     public static Collection<CredentialReferenceType> values() {
         return values(CredentialReferenceType.class);
     }

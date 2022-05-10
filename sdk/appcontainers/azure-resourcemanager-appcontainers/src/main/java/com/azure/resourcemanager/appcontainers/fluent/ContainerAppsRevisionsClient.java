@@ -32,6 +32,7 @@ public interface ContainerAppsRevisionsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App for which Revisions are needed.
+     * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -40,7 +41,8 @@ public interface ContainerAppsRevisionsClient {
      * @return the Revisions for a given Container App as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RevisionInner> listRevisions(String resourceGroupName, String containerAppName, Context context);
+    PagedIterable<RevisionInner> listRevisions(
+        String resourceGroupName, String containerAppName, String filter, Context context);
 
     /**
      * Get a revision of a Container App.

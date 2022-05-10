@@ -99,6 +99,7 @@ public final class TableServiceClientBuilder implements
     private String sasToken;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
+    private boolean enableTenantDiscovery;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -192,7 +193,7 @@ public final class TableServiceClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
             tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
-            perCallPolicies, perRetryPolicies, configuration, logger);
+            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
@@ -540,6 +541,22 @@ public final class TableServiceClientBuilder implements
     @Override
     public TableServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /**
+     * Enabled tenant discovery when authenticating with the Storage Table Service. This is disabled by default.
+     * <p>
+     * Enable this if there is a chance for your application and the Storage account it communicates with to reside in
+     * different tenants. If this is enabled, clients created using this builder will make an unauthorized initial
+     * service request that will be met with a {@code 401} response containing an authentication challenge, which
+     * will be subsequently used to retrieve an access token to authorize all further requests with.
+     *
+     * @return The updated {@link TableServiceClientBuilder}.
+     */
+    public TableServiceClientBuilder enableTenantDiscovery() {
+        this.enableTenantDiscovery = true;
 
         return this;
     }

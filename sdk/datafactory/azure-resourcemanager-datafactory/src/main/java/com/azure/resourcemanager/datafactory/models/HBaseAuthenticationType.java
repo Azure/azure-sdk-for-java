@@ -27,7 +27,11 @@ public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAut
         return fromString(name, HBaseAuthenticationType.class);
     }
 
-    /** @return known HBaseAuthenticationType values. */
+    /**
+     * Gets known HBaseAuthenticationType values.
+     *
+     * @return known HBaseAuthenticationType values.
+     */
     public static Collection<HBaseAuthenticationType> values() {
         return values(HBaseAuthenticationType.class);
     }

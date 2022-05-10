@@ -10,14 +10,14 @@ import java.util.Collection;
 
 /** Defines values for Type. */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value liveness for Type. */
-    public static final Type LIVENESS = fromString("liveness");
+    /** Static value Liveness for Type. */
+    public static final Type LIVENESS = fromString("Liveness");
 
-    /** Static value readiness for Type. */
-    public static final Type READINESS = fromString("readiness");
+    /** Static value Readiness for Type. */
+    public static final Type READINESS = fromString("Readiness");
 
-    /** Static value startup for Type. */
-    public static final Type STARTUP = fromString("startup");
+    /** Static value Startup for Type. */
+    public static final Type STARTUP = fromString("Startup");
 
     /**
      * Creates or finds a Type from its string representation.
