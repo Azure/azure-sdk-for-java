@@ -412,3 +412,10 @@ finally {
 GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
 $orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
+
+# TODO:
+# 1. Should we tag the BOM?
+# 2. Should we run the tests.
+# 3. Json file for the artifacts.
+# 4. Add comments to the patch.
+# 5. echo the git commands from the script/
