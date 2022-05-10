@@ -35,4 +35,5 @@ variables:
   AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true
+  DisableDockerDetector: true
   Package.EnableSBOMSigning: true
