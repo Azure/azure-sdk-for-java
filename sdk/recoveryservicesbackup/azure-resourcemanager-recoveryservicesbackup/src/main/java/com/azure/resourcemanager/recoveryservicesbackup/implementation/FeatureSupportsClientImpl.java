@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.FeatureSupportsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AzureVMResourceFeatureSupportResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupportRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FeatureSupportsClient. */
 public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
-    private final ClientLogger logger = new ClientLogger(FeatureSupportsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FeatureSupportsService service;
 

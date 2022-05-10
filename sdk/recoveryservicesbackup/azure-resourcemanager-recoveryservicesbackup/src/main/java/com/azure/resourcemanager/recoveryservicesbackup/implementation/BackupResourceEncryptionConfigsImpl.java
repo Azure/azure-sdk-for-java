@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupReso
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigExtendedResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupResourceEncryptionConfigsImpl implements BackupResourceEncryptionConfigs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceEncryptionConfigsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupResourceEncryptionConfigsImpl.class);
 
     private final BackupResourceEncryptionConfigsClient innerClient;
 

@@ -4,15 +4,19 @@
 
 ### Features Added
 
+- `EventData.setBodyAsBinaryData` is exposed.
+
 ### Breaking Changes
+
+- `EventData` extends from `MessageContent`.
 
 ### Bugs Fixed
 
 ### Other Changes
 
-## 5.11.2 (2022-04-11)
+#### Dependency Updates
 
-### Other Changes
+## 5.11.2 (2022-04-11)
 
 ### Other Changes
 

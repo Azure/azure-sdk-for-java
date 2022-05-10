@@ -33,7 +33,11 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
         return fromString(name, WebActivityMethod.class);
     }
 
-    /** @return known WebActivityMethod values. */
+    /**
+     * Gets known WebActivityMethod values.
+     *
+     * @return known WebActivityMethod values.
+     */
     public static Collection<WebActivityMethod> values() {
         return values(WebActivityMethod.class);
     }

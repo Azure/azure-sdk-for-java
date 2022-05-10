@@ -66,7 +66,7 @@ public final class RemoteRenderingsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "MixedRealityRemoteRe")
-    private interface RemoteRenderingsService {
+    public interface RemoteRenderingsService {
         @Put("/accounts/{account_id}/conversions/{conversion_id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
