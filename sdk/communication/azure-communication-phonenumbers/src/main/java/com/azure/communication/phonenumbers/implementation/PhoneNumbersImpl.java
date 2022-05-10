@@ -66,7 +66,7 @@ public final class PhoneNumbersImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "PhoneNumberAdminClie")
-    private interface PhoneNumbersService {
+    public interface PhoneNumbersService {
         @Post("/availablePhoneNumbers/countries/{countryCode}/:search")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

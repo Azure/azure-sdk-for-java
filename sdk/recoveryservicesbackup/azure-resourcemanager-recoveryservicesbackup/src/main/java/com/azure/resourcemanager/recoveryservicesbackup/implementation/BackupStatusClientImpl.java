@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupStatusClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStatusResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupStatusClient. */
 public final class BackupStatusClientImpl implements BackupStatusClient {
-    private final ClientLogger logger = new ClientLogger(BackupStatusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupStatusService service;
 

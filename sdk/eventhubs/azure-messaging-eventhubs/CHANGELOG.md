@@ -1,8 +1,22 @@
 # Release History
 
-## 5.11.2 (2022-04-11)
+## 5.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+- `EventData.setBodyAsBinaryData` is exposed.
+
+### Breaking Changes
+
+- `EventData` extends from `MessageContent`.
+
+### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+## 5.11.2 (2022-04-11)
 
 ### Other Changes
 

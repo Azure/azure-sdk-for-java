@@ -49,7 +49,7 @@ public final class BigDataPoolsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientBigDa")
-    private interface BigDataPoolsService {
+    public interface BigDataPoolsService {
         @Get("/bigDataPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

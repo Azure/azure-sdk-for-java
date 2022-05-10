@@ -30,7 +30,11 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
         return fromString(name, TriggerRuntimeState.class);
     }
 
-    /** @return known TriggerRuntimeState values. */
+    /**
+     * Gets known TriggerRuntimeState values.
+     *
+     * @return known TriggerRuntimeState values.
+     */
     public static Collection<TriggerRuntimeState> values() {
         return values(TriggerRuntimeState.class);
     }

@@ -11,7 +11,6 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,8 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EventHubClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
-
+    private static final String ENDPOINT_SUFFIX = Configuration.getGlobalConfiguration()
+        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
+    private static final String DEFAULT_DOMAIN_NAME = ENDPOINT_SUFFIX.substring(1) + "/";
     private static final String EVENT_HUB_NAME = "eventHubName";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
@@ -46,7 +46,6 @@ public class EventHubClientBuilderTest {
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
     public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
-    private ClientLogger logger = new ClientLogger(EventHubClientBuilderTest.class);
 
     @Test
     public void missingConnectionString() {
@@ -99,10 +98,10 @@ public class EventHubClientBuilderTest {
     @Test
     public void testConnectionStringWithSas() {
 
-        String connectionStringWithNoEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
-            + "SharedAccessSignature=SharedAccessSignature test-value";
-        String connectionStringWithEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
-            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name";
+        String connectionStringWithNoEntityPath = String.format("Endpoint=sb://eh-name%s/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value", ENDPOINT_SUFFIX);
+        String connectionStringWithEntityPath = String.format("Endpoint=sb://eh-name%s/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name", ENDPOINT_SUFFIX);
 
         assertNotNull(new EventHubClientBuilder()
             .connectionString(connectionStringWithNoEntityPath, "eh-name"));
@@ -137,7 +136,7 @@ public class EventHubClientBuilderTest {
 
     @Test
     public void testConnectionWithAzureNameKeyCredential() {
-        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String fullyQualifiedNamespace = String.format("sb-name%s", ENDPOINT_SUFFIX);
         String sharedAccessKeyName = "SharedAccessKeyName test-value";
         String sharedAccessKey = "SharedAccessKey test-value";
         String eventHubName = "test-event-hub-name";
@@ -165,7 +164,7 @@ public class EventHubClientBuilderTest {
 
     @Test
     public void testConnectionWithAzureSasCredential() {
-        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String fullyQualifiedNamespace = String.format("sb-name%s", ENDPOINT_SUFFIX);
         String sharedAccessSignature = "SharedAccessSignature test-value";
         String eventHubName = "test-event-hub-name";
 

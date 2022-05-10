@@ -3,10 +3,14 @@
 The Azure GraalVM Netty Support client library provides support for applications using 
 [Azure client libraries](https://azure.github.io/azure-sdk/releases/latest/java.html) that take a dependency on 
 [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) to be 
-built as [GraalVM nativeimages](https://www.graalvm.org/22.0/reference-manual/native-image/). The library contains all the necessary
+built as [GraalVM native images](https://www.graalvm.org/22.0/reference-manual/native-image/). The library contains all the necessary
 [configuration files](https://www.graalvm.org/22.0/reference-manual/native-image/BuildConfiguration/) and [GraalVM
 features](https://www.graalvm.org/sdk/javadoc/index.html?org/graalvm/nativeimage/hosted/Feature.html) required to build
 a native image of an application that uses Azure client libraries.
+
+**NOTE:**: This library is a preview and is intended to enable applications using Azure client libraries to quickly
+build and validate native images. However, this is not a stable, GA version and is not officially supported to use in production
+environments.
 
 ## Getting started
 
@@ -15,18 +19,25 @@ a native image of an application that uses Azure client libraries.
 - [Azure Subscription][azure_subscription]
 - [GraalVM](https://www.graalvm.org/downloads/) version 22 or later.
 - [GraalVM Native Image](https://www.graalvm.org/22.0/reference-manual/native-image/)
-- 
+
 ### Include the package
 
-This package should be included in addition to `azure-aot-graalvm-support` library when using Azure client libraries 
-that take a dependency on `azure-core-http-netty`.
+Include both the packages below:
 
+[//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-aot-graalvm-support</artifactId>
+    <version>1.0.0-beta.2</version>
+</dependency>
+```
 [//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support-netty;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support-netty</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 ## Key concepts

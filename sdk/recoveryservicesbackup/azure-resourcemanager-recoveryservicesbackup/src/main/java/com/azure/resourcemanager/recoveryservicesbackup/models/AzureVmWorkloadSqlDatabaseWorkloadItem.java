@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SQLDataBase")
 @Fluent
 public final class AzureVmWorkloadSqlDatabaseWorkloadItem extends AzureVmWorkloadItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSqlDatabaseWorkloadItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withParentName(String parentName) {

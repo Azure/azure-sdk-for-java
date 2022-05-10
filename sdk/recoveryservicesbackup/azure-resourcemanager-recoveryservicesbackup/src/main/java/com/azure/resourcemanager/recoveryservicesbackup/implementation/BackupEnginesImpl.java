@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupEnginesClie
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupEngineBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngineBaseResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupEnginesImpl implements BackupEngines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupEnginesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupEnginesImpl.class);
 
     private final BackupEnginesClient innerClient;
 

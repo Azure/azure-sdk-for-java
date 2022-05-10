@@ -28,6 +28,10 @@ public class FormRecognizerSample {
     private static final String AZURE_FORM_RECOGNIZER_ENDPOINT = System.getenv("AZURE_FORM_RECOGNIZER_ENDPOINT");
     private static final String AZURE_FORM_RECOGNIZER_KEY = System.getenv("AZURE_FORM_RECOGNIZER_KEY");
 
+    /**
+     * The method to run the formrecognizer sample.
+     * @throws IOException if the input image cannot be read.
+     */
     public static void runSample() throws IOException {
         System.out.println("\n================================================================");
         System.out.println(" Starting Form Recognizer Sample");

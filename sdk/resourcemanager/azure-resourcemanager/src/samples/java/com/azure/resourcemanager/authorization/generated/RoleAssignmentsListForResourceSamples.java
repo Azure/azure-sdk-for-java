@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for RoleAssignments ListForResource. */
 public final class RoleAssignmentsListForResourceSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-08-01-preview/examples/RoleAssignments_ListForResource.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetRoleAssignmentsForResource.json
      */
     /**
-     * Sample code: List role assignments for a resource.
+     * Sample code: List role assignments for resource.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listRoleAssignmentsForAResource(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void listRoleAssignmentsForResource(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .accessManagement()
             .roleAssignments()
@@ -24,6 +24,12 @@ public final class RoleAssignmentsListForResourceSamples {
             .roleServiceClient()
             .getRoleAssignments()
             .listForResource(
-                "testrg", "Microsoft.DocumentDb", "databaseAccounts", "test-db-account", null, null, Context.NONE);
+                "rgname",
+                "resourceProviderNamespace",
+                "parentResourcePath",
+                "resourceType",
+                "resourceName",
+                null,
+                Context.NONE);
     }
 }

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
@@ -110,23 +111,23 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public void updateAddresses(final RxDocumentServiceRequest request, final URI serverKey) {
+    public int updateAddresses(final URI serverKey) {
 
-        Objects.requireNonNull(request, "expected non-null request");
         Objects.requireNonNull(serverKey, "expected non-null serverKey");
 
+        AtomicInteger updatedCount = new AtomicInteger(0);
+
         if (this.tcpConnectionEndpointRediscoveryEnabled) {
-            URI serviceEndpoint = this.endpointManager.resolveServiceEndpoint(request);
-            this.addressCacheByEndpoint.computeIfPresent(serviceEndpoint, (ignored, endpointCache) -> {
-
+            for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
                 final GatewayAddressCache addressCache = endpointCache.addressCache;
-                addressCache.updateAddresses(serverKey);
 
-                return endpointCache;
-            });
+                updatedCount.accumulateAndGet(addressCache.updateAddresses(serverKey), (oldValue, newValue) -> oldValue + newValue);
+            }
         } else {
             logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
         }
+
+        return updatedCount.get();
     }
 
     @Override
@@ -156,7 +157,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.userAgentContainer,
                 this.httpClient,
                 this.tcpConnectionEndpointRediscoveryEnabled,
-                this.apiType);
+                this.apiType,
+                this.endpointManager);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

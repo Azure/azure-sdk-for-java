@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Renamed `autoRegisterSchema` to `autoRegisterSchemas` in `SchemaRegistryApacheAvroSerializerBuilder`.
+- Removed "MessageData" from `serializeMessageData`, `deserializeMessageData`, `serializeMessageDataAsync`, `deserializeMessageDataAsync`.
+
 ### Bugs Fixed
 
 ### Other Changes
@@ -42,7 +45,7 @@
 
 ### Features Added
 
-- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageWithMetadata` rather than tied to a binary format
+- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageContent` rather than tied to a binary format
   with preamble. Backwards compatibility with preamble format supported for this release. See issue #26449.
 
 ### Breaking Changes
