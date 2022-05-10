@@ -250,28 +250,9 @@
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter T com.azure.core.amqp.client.traits.AmqpTrait<T extends com.azure.core.amqp.client.traits.AmqpTrait<T>>::clientOptions(===com.azure.core.util.ClientOptions===)",
-          "new": "parameter T com.azure.core.amqp.client.traits.AmqpTrait<T extends com.azure.core.amqp.client.traits.AmqpTrait<T>>::clientOptions(===com.azure.core.amqp.AmqpClientOptions===)",
-          "justification": "Use AmqpClientOptions which extend ClientOptions instead of ClientOptions for AMQP SDK builder."
-        },
-        {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.messaging.eventhubs.EventHubClientBuilder com.azure.messaging.eventhubs.EventHubClientBuilder::clientOptions(===com.azure.core.util.ClientOptions===)",
-          "new": "parameter com.azure.messaging.eventhubs.EventHubClientBuilder com.azure.messaging.eventhubs.EventHubClientBuilder::clientOptions(===com.azure.core.amqp.AmqpClientOptions===)",
-          "justification": "Use AmqpClientOptions which extend ClientOptions instead of ClientOptions in EventHubClientBuilder."
-        },
-        {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.messaging.eventhubs.EventProcessorClientBuilder com.azure.messaging.eventhubs.EventProcessorClientBuilder::clientOptions(===com.azure.core.util.ClientOptions===)",
-          "new": "parameter com.azure.messaging.eventhubs.EventProcessorClientBuilder com.azure.messaging.eventhubs.EventProcessorClientBuilder::clientOptions(===com.azure.core.amqp.AmqpClientOptions===)",
-          "justification": "Use AmqpClientOptions which extend ClientOptions instead of ClientOptions in EventProcessorClientBuilder."
-        },
-        {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.messaging.servicebus.ServiceBusClientBuilder com.azure.messaging.servicebus.ServiceBusClientBuilder::clientOptions(===com.azure.core.util.ClientOptions===)",
-          "new": "parameter com.azure.messaging.servicebus.ServiceBusClientBuilder com.azure.messaging.servicebus.ServiceBusClientBuilder::clientOptions(===com.azure.core.amqp.AmqpClientOptions===)",
-          "justification": "Use AmqpClientOptions which extend ClientOptions instead of ClientOptions in ServiceBusClientBuilder."
+          "code": "java.method.addedToInterface",
+          "new": "method T com.azure.core.amqp.client.traits.AmqpTrait<T extends com.azure.core.amqp.client.traits.AmqpTrait<T>>::clientOptions(com.azure.core.amqp.AmqpClientOptions)",
+          "justification": "Add a new method for AMQP SDK builder to set identifier."
         }
       ]
     }

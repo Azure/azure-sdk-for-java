@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 
 /**
  * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for configuration
@@ -53,7 +54,16 @@ public interface AmqpTrait<T extends AmqpTrait<T>> {
     /**
      * Allows for setting common properties such as application ID, headers, etc.
      *
-     * @param clientOptions A configured instance of {@link com.azure.core.amqp.AmqpClientOptions}.
+     * @param clientOptions A configured instance of {@link ClientOptions}.
+     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
+     *      operations.
+     */
+    T clientOptions(ClientOptions clientOptions);
+
+    /**
+     * Allows for setting identifier.
+     *
+     * @param clientOptions A configured instance of {@link AmqpClientOptions}.
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      *      operations.
      */

@@ -194,9 +194,10 @@ public class EventHubClientBuilder implements
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private Integer prefetchCount;
-    private AmqpClientOptions clientOptions = new AmqpClientOptions();
+    private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
     private URL customEndpointAddress;
+    private AmqpClientOptions amqpClientOptions = new AmqpClientOptions();
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -260,8 +261,20 @@ public class EventHubClientBuilder implements
      * @return The updated {@link EventHubClientBuilder} object.
      */
     @Override
-    public EventHubClientBuilder clientOptions(AmqpClientOptions clientOptions) {
+    public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * Sets the amqp client options.
+     *
+     * @param clientOptions The amqp client options.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    @Override
+    public EventHubClientBuilder clientOptions(AmqpClientOptions clientOptions) {
+        this.amqpClientOptions = clientOptions;
         return this;
     }
 
@@ -815,7 +828,7 @@ public class EventHubClientBuilder implements
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose,
-            this.clientOptions.getIdentifier());
+            this.amqpClientOptions.getIdentifier());
     }
 
     /**

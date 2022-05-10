@@ -19,6 +19,7 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -423,6 +424,20 @@ public class EventProcessorClientBuilder implements
      * to add to AMQP message.
      *
      * @param clientOptions The client options.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     */
+    @Override
+    public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
+        eventHubClientBuilder.clientOptions(clientOptions);
+        return this;
+    }
+
+    /**
+     * Sets the amqp client options for the processor client. The identifier set on amqp client options will be used
+     * for tracing and setting on wire. The identifier set on {@code AmqpClientOptions} are currently not used but can
+     * be used in build async client.
+     *
+     * @param clientOptions The amqp client options.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
     @Override
