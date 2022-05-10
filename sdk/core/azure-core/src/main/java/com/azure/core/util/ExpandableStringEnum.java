@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -72,6 +74,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     }
 
     @Override
+    @JsonValue
     public String toString() {
         return this.name;
     }
