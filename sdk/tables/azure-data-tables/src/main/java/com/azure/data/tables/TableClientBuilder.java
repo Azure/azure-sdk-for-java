@@ -29,7 +29,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageEndpoint;
-import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 import com.azure.data.tables.implementation.TablesJacksonSerializer;
 import com.azure.data.tables.implementation.TablesMultipartSerializer;
 
@@ -585,8 +584,6 @@ public final class TableClientBuilder implements
      * will be subsequently used to retrieve an access token to authorize all further requests with.
      *
      * @return The updated {@link TableClientBuilder}.
-     *
-     * @see TableBearerTokenChallengeAuthorizationPolicy
      */
     public TableClientBuilder enableTenantDiscovery() {
         this.enableTenantDiscovery = true;

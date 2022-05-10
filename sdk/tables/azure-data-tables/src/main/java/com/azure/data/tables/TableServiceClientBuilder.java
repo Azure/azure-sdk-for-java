@@ -30,7 +30,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageEndpoint;
-import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -555,8 +554,6 @@ public final class TableServiceClientBuilder implements
      * will be subsequently used to retrieve an access token to authorize all further requests with.
      *
      * @return The updated {@link TableServiceClientBuilder}.
-     *
-     * @see TableBearerTokenChallengeAuthorizationPolicy
      */
     public TableServiceClientBuilder enableTenantDiscovery() {
         this.enableTenantDiscovery = true;
