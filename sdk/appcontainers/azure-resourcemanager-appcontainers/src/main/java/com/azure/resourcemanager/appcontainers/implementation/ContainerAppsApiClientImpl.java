@@ -31,6 +31,7 @@ import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsSourceControl
 import com.azure.resourcemanager.appcontainers.fluent.DaprComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsStoragesClient;
+import com.azure.resourcemanager.appcontainers.fluent.NamespacesClient;
 import com.azure.resourcemanager.appcontainers.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -117,6 +118,18 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         return this.defaultPollInterval;
     }
 
+    /** The ContainerAppsAuthConfigsClient object to access its operations. */
+    private final ContainerAppsAuthConfigsClient containerAppsAuthConfigs;
+
+    /**
+     * Gets the ContainerAppsAuthConfigsClient object to access its operations.
+     *
+     * @return the ContainerAppsAuthConfigsClient object.
+     */
+    public ContainerAppsAuthConfigsClient getContainerAppsAuthConfigs() {
+        return this.containerAppsAuthConfigs;
+    }
+
     /** The ContainerAppsClient object to access its operations. */
     private final ContainerAppsClient containerApps;
 
@@ -153,6 +166,30 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         return this.containerAppsRevisionReplicas;
     }
 
+    /** The DaprComponentsClient object to access its operations. */
+    private final DaprComponentsClient daprComponents;
+
+    /**
+     * Gets the DaprComponentsClient object to access its operations.
+     *
+     * @return the DaprComponentsClient object.
+     */
+    public DaprComponentsClient getDaprComponents() {
+        return this.daprComponents;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
     /** The ManagedEnvironmentsClient object to access its operations. */
     private final ManagedEnvironmentsClient managedEnvironments;
 
@@ -177,52 +214,16 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         return this.certificates;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The NamespacesClient object to access its operations. */
+    private final NamespacesClient namespaces;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the NamespacesClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the NamespacesClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The ContainerAppsSourceControlsClient object to access its operations. */
-    private final ContainerAppsSourceControlsClient containerAppsSourceControls;
-
-    /**
-     * Gets the ContainerAppsSourceControlsClient object to access its operations.
-     *
-     * @return the ContainerAppsSourceControlsClient object.
-     */
-    public ContainerAppsSourceControlsClient getContainerAppsSourceControls() {
-        return this.containerAppsSourceControls;
-    }
-
-    /** The DaprComponentsClient object to access its operations. */
-    private final DaprComponentsClient daprComponents;
-
-    /**
-     * Gets the DaprComponentsClient object to access its operations.
-     *
-     * @return the DaprComponentsClient object.
-     */
-    public DaprComponentsClient getDaprComponents() {
-        return this.daprComponents;
-    }
-
-    /** The ContainerAppsAuthConfigsClient object to access its operations. */
-    private final ContainerAppsAuthConfigsClient containerAppsAuthConfigs;
-
-    /**
-     * Gets the ContainerAppsAuthConfigsClient object to access its operations.
-     *
-     * @return the ContainerAppsAuthConfigsClient object.
-     */
-    public ContainerAppsAuthConfigsClient getContainerAppsAuthConfigs() {
-        return this.containerAppsAuthConfigs;
+    public NamespacesClient getNamespaces() {
+        return this.namespaces;
     }
 
     /** The ManagedEnvironmentsStoragesClient object to access its operations. */
@@ -235,6 +236,18 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
      */
     public ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages() {
         return this.managedEnvironmentsStorages;
+    }
+
+    /** The ContainerAppsSourceControlsClient object to access its operations. */
+    private final ContainerAppsSourceControlsClient containerAppsSourceControls;
+
+    /**
+     * Gets the ContainerAppsSourceControlsClient object to access its operations.
+     *
+     * @return the ContainerAppsSourceControlsClient object.
+     */
+    public ContainerAppsSourceControlsClient getContainerAppsSourceControls() {
+        return this.containerAppsSourceControls;
     }
 
     /**
@@ -259,17 +272,18 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-01-01-preview";
+        this.apiVersion = "2022-03-01";
+        this.containerAppsAuthConfigs = new ContainerAppsAuthConfigsClientImpl(this);
         this.containerApps = new ContainerAppsClientImpl(this);
         this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
         this.containerAppsRevisionReplicas = new ContainerAppsRevisionReplicasClientImpl(this);
+        this.daprComponents = new DaprComponentsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
         this.managedEnvironments = new ManagedEnvironmentsClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
-        this.containerAppsSourceControls = new ContainerAppsSourceControlsClientImpl(this);
-        this.daprComponents = new DaprComponentsClientImpl(this);
-        this.containerAppsAuthConfigs = new ContainerAppsAuthConfigsClientImpl(this);
+        this.namespaces = new NamespacesClientImpl(this);
         this.managedEnvironmentsStorages = new ManagedEnvironmentsStoragesClientImpl(this);
+        this.containerAppsSourceControls = new ContainerAppsSourceControlsClientImpl(this);
     }
 
     /**
