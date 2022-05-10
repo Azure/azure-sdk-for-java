@@ -1,11 +1,11 @@
 param(
   [Parameter(Mandatory=$true)][string]$ArtifactDirectory,
-  [Parameter(Mandatory=$true)][string]$RepositoryUrl,
-  [Parameter(Mandatory=$true)][string]$RepositoryUsername,
-  [Parameter(Mandatory=$true)][string]$RepositoryPassword,
+  [Parameter(Mandatory=$true, ParameterSetName = "Remote")][string]$RepositoryUrl,
+  [Parameter(Mandatory=$true, ParameterSetName = "Remote")][string]$RepositoryUsername,
+  [Parameter(Mandatory=$true, ParameterSetName = "Remote")][string]$RepositoryPassword,
   [Parameter(Mandatory=$true)][string]$GPGExecutablePath,
-  [Parameter(Mandatory=$false)][switch]$StageOnly,
-  [Parameter(Mandatory=$false)][switch]$ShouldPublish,
+  [Parameter(Mandatory=$false, ParameterSetName = "Remote")][switch]$StageOnly,
+  [Parameter(Mandatory=$false, ParameterSetName = "Remote")][switch]$ShouldPublish,
   [Parameter(Mandatory=$false)][AllowEmptyString()][string]$GroupIDFilter,
   [Parameter(Mandatory=$false)][AllowEmptyString()][string]$ArtifactIDFilter
 )
@@ -31,14 +31,17 @@ function Get-RandomRepositoryDirectory() {
 
 Write-Information "PS Script Root is: $PSScriptRoot"
 Write-Information "ArtifactDirectory is: $ArtifactDirectory"
-Write-Information "Repository URL is: $RepositoryUrl"
-Write-Information "Repository Username is: $RepositoryUsername"
-Write-Information "Repository Password is: [redacted]"
+if ($RepositoryUrl) {
+  Write-Information "Repository URL is: $RepositoryUrl"
+  Write-Information "Repository Username is: $RepositoryUsername"
+  Write-Information "Repository Password is: [redacted]"
+  Write-Information "Stage Only is: $StageOnly"
+  Write-Information "Should Publish is: $ShouldPublish"
+}
 Write-Information "GPG Executable Path is: $GPGExecutablePath"
 Write-Information "Group ID Filter is: $GroupIDFilter"
 Write-Information "Artifact ID Filter is: $ArtifactIDFilter"
-Write-Information "Stage Only is: $StageOnly"
-Write-Information "Should Publish is: $ShouldPublish"
+
 
 Write-Information "Getting filtered package details."
 $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDirectory -GroupIDFilter $GroupIDFilter -ArtifactIDFilter $ArtifactIDFilter
@@ -121,29 +124,35 @@ foreach ($packageDetail in $packageDetails) {
     $typesOption = "-Dtypes=$($commaDelimitedTypes.Substring(1))"
   }
 
-  $shouldPublishPackage = $ShouldPublish
-  $packageReposityUrl = $RepositoryUrl
+  if (-not $RepositoryUrl) {
+    # Local sign and hash only
+    $releaseType = 'LocalSignAndHash'
+    $shouldPublishPackage = $false
+  } else {
+    $shouldPublishPackage = $ShouldPublish
+    $packageReposityUrl = $RepositoryUrl
 
-  if ($packageReposityUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
-    # Azure DevOps feeds don't support staging
-    $shouldPublishPackage = $ShouldPublish -and !$StageOnly
-    $releaseType = 'AzureDevOps'
-  }
-  elseif ($packageReposityUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-    if ($packageDetail.IsSnapshot) {
-      # Snapshots don't go to the standard maven central url
-      $packageReposityUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-      $releaseType = 'MavenCentralSnapshot'
+    if ($packageReposityUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
+      # Azure DevOps feeds don't support staging
+      $shouldPublishPackage = $ShouldPublish -and !$StageOnly
+      $releaseType = 'AzureDevOps'
     }
-    elseif ($StageOnly) {
-      $releaseType = 'MavenCentralStaging'
+    elseif ($packageReposityUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+      if ($packageDetail.IsSnapshot) {
+        # Snapshots don't go to the standard maven central url
+        $packageReposityUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+        $releaseType = 'MavenCentralSnapshot'
+      }
+      elseif ($StageOnly) {
+        $releaseType = 'MavenCentralStaging'
+      }
+      else {
+        $releaseType = 'MavenCentral'
+      }
     }
     else {
-      $releaseType = 'MavenCentral'
+      throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
     }
-  }
-  else {
-    throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
   }
 
   #Local GPG deployment is required when we're not going to publish a package, or when we're publishing to maven central
@@ -174,8 +183,17 @@ foreach ($packageDetail in $packageDetails) {
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
 
-  if(!$shouldPublishPackage)
-  {
+  if ($releaseType -eq 'LocalSignAndHash') {
+    # Add sha256 hashes to all files in $ArtifactDirectory
+    $allFiles = Get-ChildItem -Path $ArtifactDirectory -File -Recurse
+    foreach ($file in $allFiles) {
+      $filePath = $file.FullName
+      $hash = Get-FileHash -Path $filePath -Algorithm SHA256
+      Set-Content -Path "$filePath.sha256" -Value $hash.Hash
+    }
+  }
+
+  if (!$shouldPublishPackage) {
     Write-Information "Skipping deployment because Should Publish Package == false."
     continue
   }

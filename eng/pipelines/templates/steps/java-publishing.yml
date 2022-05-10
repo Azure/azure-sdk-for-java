@@ -81,3 +81,18 @@ steps:
           -StageOnly:$${{parameters.StageOnly}}
           -ShouldPublish:$${{parameters.ShouldPublish}}
           -InformationAction Continue
+
+  - ${{if eq(parameters.Target, 'EsrpRelease')}}:
+    - task: PowerShell@2
+      displayName: 'Gpg sign and hash packages'
+      inputs:
+        pwsh: true
+        workingDirectory: $(Agent.BuildDirectory)
+        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
+        arguments: >
+          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
+          -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+          -InformationAction Continue
+
