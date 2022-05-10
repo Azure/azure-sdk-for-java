@@ -9,7 +9,7 @@ Write-Information "PS Script Root is: $PSScriptRoot"
 $RepoRoot = Resolve-Path "${PSScriptRoot}../../.."
 $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1"
 $BomHelpersFilePath = Join-Path $PSScriptRoot "bomhelpers.ps1"
-$PatchReportFile = Join-Path $PSScriptRoot "patchreport.html"
+$PatchReportFile = Join-Path $PSScriptRoot "patchreport.json"
 $BomFilePath = Join-Path $RepoRoot "sdk" "boms" "azure-sdk-bom" "pom.xml"
 $BomChangeLogPath = Join-Path $RepoRoot "sdk" "boms" "azure-sdk-bom" "changelog.md"
 . $CommonScriptFilePath
@@ -310,8 +310,22 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
     }
 }
 
+function GenerateJsonReport($ArtifactPatchInfos, $PatchBranchName, $BomFileBranchName) {
+    $patchReport = @{
+        PathBranchName = $PatchBranchName
+        ArtifactsToPatch = $ArtifactPatchInfos
+    }
+
+    $jsonReport = @{
+        BomBranchName = $BomFileBranchName
+        PatchReport = $patchReport
+    }
+
+    $jsonReport | ConvertTo-Json -Depth 5 | Out-File $PatchReportFile
+}
+
 function GenerateHtmlReport($Artifacts, $PatchBranchName, $BomFileBranchName) {
-    $count = $ArtifactsToPatch.Count
+    $count = $Artifacts.Count
     $index = 0
     $html = @()
     $html += "<head><title>Patch Report</title></head><body><table border='1'><tr><th>Artifact</th><th>PipelineName</th><th>Release Branch</th><tr>"
@@ -385,6 +399,7 @@ UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $Art
 
 $bomPatchVersion = GetNextBomVersion
 $bomBranchName = "bom_$bomPatchVersion"
+$ArtifactPatchInfos = @()
 Write-Output "Preparing patch releases for BOM updates."
 try {
     $patchBranchName = "PatchSet_$bomPatchVersion"
@@ -395,6 +410,7 @@ try {
         $arInfo = $ArtifactInfos[$artifactId]
         $patchInfo = [ArtifactPatchInfo]::new()
         $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
+        $ArtifactPatchInfos += $patchInfo
         GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 
@@ -410,12 +426,10 @@ finally {
 }
 
 GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
-$orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
-GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
+GenerateJsonReport -ArtifactPatchInfos $ArtifactPatchInfos -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
+#$orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
+#GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
 
 # TODO:
-# 1. Should we tag the BOM?
-# 2. Should we run the tests.
-# 3. Json file for the artifacts.
-# 4. Add comments to the patch.
-# 5. echo the git commands from the script/
+# 1. Add comments to the patch.
+# 2. echo the git commands from the script/
