@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -244,7 +245,7 @@ public final class ServiceBusClientBuilder implements
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
     @Override
-    public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
+    public ServiceBusClientBuilder clientOptions(AmqpClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }

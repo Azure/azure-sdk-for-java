@@ -19,7 +19,6 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -239,16 +238,6 @@ public class EventProcessorClientBuilder implements
     }
 
     /**
-     * Sets the amqp client options.
-     * @param amqpClientOptions The amqp client options.
-     * @return The updated {@link EventProcessorClientBuilder} object.
-     */
-    public EventProcessorClientBuilder amqpClientOptions(AmqpClientOptions amqpClientOptions) {
-        this.eventHubClientBuilder.amqpClientOptions(amqpClientOptions);
-        return this;
-    }
-
-    /**
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
      * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
@@ -437,7 +426,7 @@ public class EventProcessorClientBuilder implements
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
     @Override
-    public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
+    public EventProcessorClientBuilder clientOptions(AmqpClientOptions clientOptions) {
         eventHubClientBuilder.clientOptions(clientOptions);
         return this;
     }
