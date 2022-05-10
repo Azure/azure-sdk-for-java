@@ -171,7 +171,7 @@ public class HttpRequest {
     /**
      * Get the request content.
      *
-     * @return the content to be send
+     * @return the content to be sent
      */
     public Flux<ByteBuffer> getBody() {
         return body == null ? null : body.toFluxByteBuffer();
@@ -180,7 +180,7 @@ public class HttpRequest {
     /**
      * Get the request content.
      *
-     * @return the content to be send
+     * @return the content to be sent
      */
     public BinaryData getBodyAsBinaryData() {
         return body;
@@ -195,9 +195,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(String content) {
-        this.body = BinaryData.fromString(content);
-        setContentLength(this.body.getLength());
-        return this;
+        return setBody(BinaryData.fromString(content));
     }
 
     /**
@@ -209,9 +207,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(byte[] content) {
-        setContentLength(content.length);
-        this.body = BinaryData.fromBytes(content);
-        return this;
+        return setBody(BinaryData.fromBytes(content));
     }
 
     /**
@@ -225,7 +221,7 @@ public class HttpRequest {
      */
     public HttpRequest setBody(Flux<ByteBuffer> content) {
         if (content != null) {
-            setBody(BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content)));
+            this.body = BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
         } else  {
             this.body = null;
         }

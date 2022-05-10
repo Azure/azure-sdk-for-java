@@ -65,6 +65,11 @@ public final class BinaryDataHelper {
         return accessor.getContent(binaryData);
     }
 
+    /**
+     * The success of setting up accessor depends on the order in which classes are loaded.
+     * This method ensures that if accessor hasn't been set we force-load BinaryData class
+     * which in turns populates the accessor.
+     */
     private static void ensureAccessorSet() {
         if (accessor == null) {
             BinaryData.fromString("");
