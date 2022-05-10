@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.LogAnalyticsConfiguration;
 /** Samples for ManagedEnvironments CreateOrUpdate. */
 public final class ManagedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-01-01-preview/examples/ManagedEnvironments_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create environments.
@@ -23,10 +23,13 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
             .define("testcontainerenv")
             .withRegion("East US")
             .withExistingResourceGroup("examplerg")
+            .withDaprAIConnectionString(
+                "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/")
             .withAppLogsConfiguration(
                 new AppLogsConfiguration()
                     .withLogAnalyticsConfiguration(
                         new LogAnalyticsConfiguration().withCustomerId("string").withSharedKey("string")))
+            .withZoneRedundant(true)
             .create();
     }
 }
