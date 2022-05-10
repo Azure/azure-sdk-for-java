@@ -3,13 +3,13 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2dcfc06c-79b9-4d9d-bedf-ef137af9e577",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "177e5e36-18bd-4ea9-af50-5539e3807a9b",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "7d68b575-9ee6-4052-9918-fadd750db91e",
+      "X-Ms-Correlation-Request-Id" : "c15d8d26-706d-4f7e-ac10-f10da69d75cb",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
@@ -17,7 +17,7 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Fri, 01 Apr 2022 18:16:23 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:58:27 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -25,8 +25,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "abd66cba-7483-46fc-9dde-377e537227a2"
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9f27db20-184d-472a-b40b-33e4ed437ec2"
     },
     "Response" : {
       "content-length" : "41",
@@ -35,9 +35,9 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 01 Apr 2022 18:16:23 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:58:27 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "76db9b90-3fab-4e2c-8f40-9b3a6b4e59d6",
+      "X-Ms-Correlation-Request-Id" : "7b281a29-443d-4860-a02b-6723c70c5e6c",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Body" : "{\"repositories\":[\"library/hello-world\"]}\n",
