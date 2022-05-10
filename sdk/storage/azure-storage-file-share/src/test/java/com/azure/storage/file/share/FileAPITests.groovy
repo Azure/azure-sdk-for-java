@@ -15,7 +15,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
-import com.azure.storage.file.share.models.CopyableFileSmbProperties
+import com.azure.storage.file.share.implementation.models.StorageErrorException
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList
 import com.azure.storage.file.share.models.DownloadRetryOptions
 import com.azure.storage.file.share.models.FileLastWrittenMode
@@ -26,13 +26,11 @@ import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareFileUploadOptions
-import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareFileCopyOptions
-import com.azure.storage.file.share.options.ShareFileCreateOptions
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
@@ -1082,6 +1080,7 @@ class FileAPITests extends APISpec {
 
         then:
         pollResponse.getValue().getCopyId() != null
+        pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
         setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType
@@ -1089,11 +1088,6 @@ class FileAPITests extends APISpec {
         false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
         false                | false             | true           | false               | PermissionCopyModeType.SOURCE
         false                | false             | false          | true                | PermissionCopyModeType.SOURCE
-    }
-
-    @Ignore
-    def "Abort copy"() {
-        //TODO: Need to find a way of mocking pending copy status
     }
 
     def "Start copy with options IgnoreReadOnly and SetArchive"() {
@@ -1118,9 +1112,8 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.create(1024)
         def sourceURL = primaryFileClient.getFileUrl()
-        def filePermissionKey = shareClient.createPermission(filePermission)
         def ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE)
-        def list = new CopyableFileSmbPropertiesList().setCreatedOn(true).setFileAttributes(true).setLastWrittenOn(true)
+
         // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
         smbProperties
             .setFileCreationTime(namer.getUtcNow())
@@ -1131,37 +1124,32 @@ class FileAPITests extends APISpec {
             .setSmbProperties(smbProperties)
             .setFilePermission(filePermission)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
-            .setSmbPropertiesToCopyList(list)
 
         when:
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options)
 
         def pollResponse = poller.poll()
+        def properties = primaryFileClient.getProperties().getSmbProperties()
 
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        primaryFileClient.getProperties().smbProperties.fileCreationTime == smbProperties.fileCreationTime
-        primaryFileClient.getProperties().smbProperties.fileLastWriteTime == smbProperties.fileLastWriteTime
-        primaryFileClient.getProperties().smbProperties.ntfsFileAttributes == smbProperties.ntfsFileAttributes
-
+        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
+        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
     def "Start copy with options change time"() {
         given:
         def client = primaryFileClient.create(1024)
         def sourceURL = primaryFileClient.getFileUrl()
-        def filePermissionKey = shareClient.createPermission(filePermission)
-        //def ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE)
         // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
         smbProperties.setFileChangeTime(namer.getUtcNow())
-        def list = new CopyableFileSmbPropertiesList().setChangedOn(true)
 
         def options = new ShareFileCopyOptions()
             .setSmbProperties(smbProperties)
             .setFilePermission(filePermission)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
-            .setSmbPropertiesToCopyList(list)
 
         when:
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options)
@@ -1171,10 +1159,7 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        System.out.println(primaryFileClient.getProperties().smbProperties.fileChangeTime)
-        System.out.println(smbProperties.getFileChangeTime())
-        System.out.println(client.smbProperties.getFileChangeTime())
-        System.out.println(smbProperties.getFileChangeTime() == client.getSmbProperties().getFileChangeTime()) // figure out why this is failing
+        smbProperties.getFileChangeTime() == primaryFileClient.getProperties().getSmbProperties().getFileChangeTime()
     }
 
     def "Start copy with options copy smbFileProperties permission key"() {
@@ -1183,7 +1168,6 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
         def filePermissionKey = shareClient.createPermission(filePermission)
         def ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE)
-        def list = new CopyableFileSmbPropertiesList().setFileAttributes(true).setCreatedOn(true).setLastWrittenOn(true)
         // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
         smbProperties
             .setFileCreationTime(namer.getUtcNow())
@@ -1194,19 +1178,19 @@ class FileAPITests extends APISpec {
         def options = new ShareFileCopyOptions()
             .setSmbProperties(smbProperties)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
-            .setSmbPropertiesToCopyList(list)
 
         when:
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options)
 
         def pollResponse = poller.poll()
+        def properties = primaryFileClient.getProperties().getSmbProperties()
 
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        primaryFileClient.getProperties().smbProperties.fileCreationTime == smbProperties.fileCreationTime
-        primaryFileClient.getProperties().smbProperties.fileLastWriteTime == smbProperties.fileLastWriteTime
-        primaryFileClient.getProperties().smbProperties.ntfsFileAttributes == smbProperties.ntfsFileAttributes
+        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
+        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
     def "Start copy with options lease"() {
@@ -1244,7 +1228,7 @@ class FileAPITests extends APISpec {
 
         then:
         // exception: LeaseNotPresentWithFileOperation
-        thrown(ShareStorageException)
+        thrown(StorageErrorException)
     }
 
     def "Start copy with options metadata"() {
@@ -1263,57 +1247,85 @@ class FileAPITests extends APISpec {
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
     }
 
-    def "Start copy with options copy source file created on error"() {
+    def "Start copy with options with original smb properties"() {
         given:
         primaryFileClient.create(1024)
+        def initialProperties = primaryFileClient.getProperties()
+        def creationTime = initialProperties.getSmbProperties().getFileCreationTime()
+        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime()
+        def changedTime = initialProperties.getSmbProperties().getFileChangeTime()
+        def fileAttributes = initialProperties.getSmbProperties().getNtfsFileAttributes()
+
         def sourceURL = primaryFileClient.getFileUrl()
-        smbProperties.setFileCreationTime(namer.getUtcNow())
+        def leaseId = createLeaseClient(primaryFileClient).acquireLease()
+        def conditions = new ShareRequestConditions().setLeaseId(leaseId)
+        def list = new CopyableFileSmbPropertiesList()
+            .setCreatedOn(true)
+            .setLastWrittenOn(true)
+            .setChangedOn(true)
+            .setFileAttributes(true)
 
         def options = new ShareFileCopyOptions()
-            .setMetadata(testMetadata)
+            .setDestinationRequestConditions(conditions)
+            .setSmbPropertiesToCopy(list)
 
         when:
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options)
+
         def pollResponse = poller.poll()
+        def resultProperties = primaryFileClient.getProperties()
 
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+        creationTime == resultProperties.getSmbProperties().getFileCreationTime()
+        lastWrittenTime == resultProperties.getSmbProperties().getFileLastWriteTime()
+        changedTime == resultProperties.getSmbProperties().getFileChangeTime()
+        fileAttributes == resultProperties.getSmbProperties().getNtfsFileAttributes()
     }
 
-    def "Start copy with options copy smb properties"() {
+    def "Start copy with options copy source file error"() {
         given:
         primaryFileClient.create(1024)
         def sourceURL = primaryFileClient.getFileUrl()
-        def filePermissionKey = shareClient.createPermission(filePermission)
         def ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE)
-        def list = new CopyableFileSmbPropertiesList().setCreatedOn(true).setFileAttributes(true).setLastWrittenOn(true)
-        // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
+        def list = new CopyableFileSmbPropertiesList()
+            .setCreatedOn(createdOn)
+            .setLastWrittenOn(lastWrittenOn)
+            .setChangedOn(changedOn)
+            .setFileAttributes(fileAttributes)
+
+
         smbProperties
             .setFileCreationTime(namer.getUtcNow())
             .setFileLastWriteTime(namer.getUtcNow())
+            .setFileChangeTime(namer.getUtcNow())
             .setNtfsFileAttributes(ntfs)
 
         def options = new ShareFileCopyOptions()
             .setSmbProperties(smbProperties)
             .setFilePermission(filePermission)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
-            .setSmbPropertiesToCopyList(list)
+            .setSmbPropertiesToCopy(list)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options)
-
-        def pollResponse = poller.poll()
+        primaryFileClient.beginCopy(sourceURL, options)
 
         then:
-        pollResponse.getValue().getCopyId() != null
-        pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        primaryFileClient.getProperties().smbProperties.fileCreationTime == smbProperties.fileCreationTime
-        primaryFileClient.getProperties().smbProperties.fileLastWriteTime == smbProperties.fileLastWriteTime
-        primaryFileClient.getProperties().smbProperties.ntfsFileAttributes == smbProperties.ntfsFileAttributes
+        thrown(IllegalArgumentException)
+
+        where:
+        createdOn    | lastWrittenOn | changedOn | fileAttributes
+        true         | false         | false     | false
+        false        | true          | false     | false
+        false        | false         | true      | false
+        false        | false         | false     | true
     }
 
-
+    @Ignore
+    def "Abort copy"() {
+        //TODO: Need to find a way of mocking pending copy status
+    }
 
     def "Delete file"() {
         given:

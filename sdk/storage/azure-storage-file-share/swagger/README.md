@@ -379,16 +379,6 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
-### Remove CopyFileSmbInfoChangeTime from file copy
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    const op = $["/{shareName}/{fileName}?comp=copy"];
-    op.put.parameters.splice(11,1);
-```
-
 ### Change PutRange response file-last-write-time to ISO8601
 ``` yaml
 directive:

@@ -5,11 +5,8 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
-import com.azure.storage.file.share.models.CopyableFileSmbProperties;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 import java.time.Duration;
@@ -29,8 +26,7 @@ public class ShareFileCopyOptions {
     private Map<String, String> metadata;
     private Duration pollInterval;
     private ShareRequestConditions destinationRequestConditions;
-    private CopyableFileSmbProperties smbPropertiesToCopy;
-    private CopyableFileSmbPropertiesList smbPropertiesToCopyList;
+    private CopyableFileSmbPropertiesList smbPropertiesToCopy;
 
     /**
      * @return The file's permission key.
@@ -180,21 +176,19 @@ public class ShareFileCopyOptions {
         return this;
     }
 
-    public CopyableFileSmbProperties getSmbPropertiesToCopy() {
+    /**
+     * @return SMB properties to copy from the source file.
+     */
+    public CopyableFileSmbPropertiesList getSmbPropertiesToCopy() {
         return smbPropertiesToCopy;
     }
 
-    public ShareFileCopyOptions setSmbPropertiesToCopy(CopyableFileSmbProperties smbProperties) {
+    /**
+     * @param smbProperties list of SMB properties to copy from the source file.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setSmbPropertiesToCopy(CopyableFileSmbPropertiesList smbProperties) {
         smbPropertiesToCopy = smbProperties;
-        return this;
-    }
-
-    public CopyableFileSmbPropertiesList getSmbPropertiesToCopyList() {
-        return smbPropertiesToCopyList;
-    }
-
-    public ShareFileCopyOptions setSmbPropertiesToCopyList(CopyableFileSmbPropertiesList smbProperties) {
-        smbPropertiesToCopyList = smbProperties;
         return this;
     }
 }

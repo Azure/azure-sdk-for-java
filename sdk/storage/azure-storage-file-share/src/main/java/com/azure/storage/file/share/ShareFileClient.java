@@ -446,7 +446,7 @@ public class ShareFileClient {
      *
      * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.beginCopy#String-ShareFileCopyOptions -->
      * <pre>
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
      *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
@@ -458,17 +458,28 @@ public class ShareFileClient {
      * boolean ignoreReadOnly = false; &#47;&#47; Default value
      * boolean setArchiveAttribute = true; &#47;&#47; Default value
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList&#40;&#41;.setCreatedOn&#40;true&#41;.setLastWrittenOn&#40;true&#41;;
+     * &#47;&#47; NOTE: FileSmbProperties and CopyableFileSmbPropertiesList should never be both set
+     *
+     * ShareFileCopyOptions options = new ShareFileCopyOptions&#40;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;
+     *     .setIgnoreReadOnly&#40;ignoreReadOnly&#41;
+     *     .setSetArchiveAttribute&#40;setArchiveAttribute&#41;
+     *     .setDestinationRequestConditions&#40;requestConditions&#41;
+     *     .setSmbPropertiesToCopy&#40;list&#41;
+     *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;2&#41;&#41;;
      *
      * SyncPoller&lt;ShareFileCopyInfo, Void&gt; poller = fileClient.beginCopy&#40;
-     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, smbProperties, filePermission,
-     *     PermissionCopyModeType.SOURCE, ignoreReadOnly, setArchiveAttribute,
-     *     Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;, Duration.ofSeconds&#40;2&#41;, requestConditions&#41;;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options&#41;;
      *
      * final PollResponse&lt;ShareFileCopyInfo&gt; pollResponse = poller.poll&#40;&#41;;
      * final ShareFileCopyInfo value = pollResponse.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Copy source: %s. Status: %s.%n&quot;, value.getCopySourceUrl&#40;&#41;, value.getCopyStatus&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions -->
+     * <!-- end com.azure.storage.file.share.ShareFileClient.beginCopy#String-ShareFileCopyOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-file">Azure Docs</a>.</p>

@@ -19,6 +19,12 @@ public enum CopyableFileSmbProperties {
         this.value = value;
     }
 
+    /**
+     * Parses a serialized value to a CopyableFileSmbProperties instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed CopyableFileSmbProperties object, or null if unable to parse.
+     */
     @JsonCreator
     public static CopyableFileSmbProperties fromString(String value) {
         CopyableFileSmbProperties[] items = CopyableFileSmbProperties.values();

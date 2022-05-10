@@ -44,10 +44,10 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.models.StorageErrorException;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -81,7 +81,7 @@ public final class FilesImpl {
     public interface FilesService {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -109,7 +109,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<StreamResponse> download(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -124,7 +124,7 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -138,7 +138,7 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -151,7 +151,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesSetHttpHeadersResponse> setHttpHeaders(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -178,7 +178,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesUploadRangeResponse> uploadRange(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -198,7 +198,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -213,7 +213,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesAcquireLeaseResponse> acquireLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -230,7 +230,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesReleaseLeaseResponse> releaseLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -246,7 +246,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesChangeLeaseResponse> changeLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -263,7 +263,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesBreakLeaseResponse> breakLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -279,7 +279,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -303,7 +303,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesGetRangeListResponse> getRangeList(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -320,7 +320,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesStartCopyResponse> startCopy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -336,6 +336,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-file-copy-set-archive") Boolean setArchiveAttribute,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("Accept") String accept,
@@ -343,7 +344,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesAbortCopyResponse> abortCopy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -359,7 +360,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesListHandlesResponse> listHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -375,7 +376,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesForceCloseHandlesResponse> forceCloseHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -391,7 +392,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<FilesRenameResponse> rename(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
@@ -441,9 +442,9 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesCreateResponse> createWithResponseAsync(
@@ -534,9 +535,9 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> downloadWithResponseAsync(
@@ -575,9 +576,9 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -606,9 +607,9 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesDeleteResponse> deleteWithResponseAsync(
@@ -643,9 +644,9 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesSetHttpHeadersResponse> setHttpHeadersWithResponseAsync(
@@ -748,9 +749,9 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesUploadRangeResponse> uploadRangeWithResponseAsync(
@@ -798,9 +799,9 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesSetMetadataResponse> setMetadataWithResponseAsync(
@@ -843,9 +844,9 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesAcquireLeaseResponse> acquireLeaseWithResponseAsync(
@@ -887,9 +888,9 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesReleaseLeaseResponse> releaseLeaseWithResponseAsync(
@@ -927,9 +928,9 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesChangeLeaseResponse> changeLeaseWithResponseAsync(
@@ -971,9 +972,9 @@ public final class FilesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesBreakLeaseResponse> breakLeaseWithResponseAsync(
@@ -1022,9 +1023,9 @@ public final class FilesImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithResponseAsync(
@@ -1095,9 +1096,9 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges on successful completion of {@link Mono}.
+     * @return the list of file ranges.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesGetRangeListResponse> getRangeListWithResponseAsync(
@@ -1151,9 +1152,9 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesStartCopyResponse> startCopyWithResponseAsync(
@@ -1193,6 +1194,11 @@ public final class FilesImpl {
             fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
         }
         String fileLastWriteTime = fileLastWriteTimeInternal;
+        String fileChangeTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+        }
+        String fileChangeTime = fileChangeTimeInternal;
         Boolean setArchiveAttributeInternal = null;
         if (copyFileSmbInfo != null) {
             setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
@@ -1213,6 +1219,7 @@ public final class FilesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
+                fileChangeTime,
                 setArchiveAttribute,
                 leaseId,
                 accept,
@@ -1231,9 +1238,9 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesAbortCopyResponse> abortCopyWithResponseAsync(
@@ -1273,9 +1280,9 @@ public final class FilesImpl {
      *     snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of handles on successful completion of {@link Mono}.
+     * @return an enumeration of handles.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesListHandlesResponse> listHandlesWithResponseAsync(
@@ -1320,9 +1327,9 @@ public final class FilesImpl {
      *     snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithResponseAsync(
@@ -1379,9 +1386,9 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesRenameResponse> renameWithResponseAsync(

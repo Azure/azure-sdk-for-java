@@ -51,7 +51,6 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
-import com.azure.storage.file.share.models.CopyableFileSmbProperties;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.HandleItem;
@@ -561,7 +560,7 @@ public class ShareFileAsyncClient {
      *
      * <p>Copy file from source url to the {@code resourcePath} </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#String-ShareFileCopyOptions -->
      * <pre>
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
      *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
@@ -573,18 +572,29 @@ public class ShareFileAsyncClient {
      * boolean ignoreReadOnly = false; &#47;&#47; Default value
      * boolean setArchiveAttribute = true; &#47;&#47; Default value
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList&#40;&#41;.setCreatedOn&#40;true&#41;.setLastWrittenOn&#40;true&#41;;
+     * &#47;&#47; NOTE: FileSmbProperties and CopyableFileSmbPropertiesList should never be both set
+     *
+     * ShareFileCopyOptions options = new ShareFileCopyOptions&#40;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;
+     *     .setIgnoreReadOnly&#40;ignoreReadOnly&#41;
+     *     .setSetArchiveAttribute&#40;setArchiveAttribute&#41;
+     *     .setDestinationRequestConditions&#40;requestConditions&#41;
+     *     .setSmbPropertiesToCopy&#40;list&#41;
+     *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;2&#41;&#41;;
      *
      * PollerFlux&lt;ShareFileCopyInfo, Void&gt; poller = shareFileAsyncClient.beginCopy&#40;
-     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;,
-     *     smbProperties, filePermission, PermissionCopyModeType.SOURCE, ignoreReadOnly, setArchiveAttribute,
-     *     Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;, Duration.ofSeconds&#40;2&#41;, requestConditions&#41;;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options&#41;;
      *
      * poller.subscribe&#40;response -&gt; &#123;
      *     final ShareFileCopyInfo value = response.getValue&#40;&#41;;
      *     System.out.printf&#40;&quot;Copy source: %s. Status: %s.%n&quot;, value.getCopySourceUrl&#40;&#41;, value.getCopyStatus&#40;&#41;&#41;;
      * &#125;, error -&gt; System.err.println&#40;&quot;Error: &quot; + error&#41;, &#40;&#41; -&gt; System.out.println&#40;&quot;Complete copying the file.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#string-filesmbproperties-string-permissioncopymodetype-boolean-boolean-map-duration-ShareRequestConditions -->
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#String-ShareFileCopyOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
@@ -605,11 +615,6 @@ public class ShareFileAsyncClient {
 
         String filePermissionKey = tempSmbProperties.getFilePermissionKey();
 
-//        String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-//        String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-//        String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-//        String fileChangedOnTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
-
         if (options.getFilePermission() == null || options.getPermissionCopyModeType() == PermissionCopyModeType.SOURCE) {
             if ((options.getFilePermission() != null || filePermissionKey != null) && options.getPermissionCopyModeType() != PermissionCopyModeType.OVERRIDE) {
                 return PollerFlux.error(LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -625,53 +630,32 @@ public class ShareFileAsyncClient {
             }
         }
 
-        CopyableFileSmbProperties propertiesToCopy = options.getSmbPropertiesToCopy();
-        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopyList()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopyList();
+        // check if only copy flag or smb properties are set (not both)
+        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopy();
+        if (list.getFileAttributes() && tempSmbProperties.getNtfsFileAttributes() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetFileAttributes and smbProperties.ntfsFileAttributes cannot be set."));
+        }
+        if (list.getCreatedOn() && tempSmbProperties.getFileCreationTime() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetCreatedOn and smbProperties.fileCreationTime cannot be set."));
+        }
+        if (list.getLastWrittenOn() && tempSmbProperties.getFileLastWriteTime() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetLastWrittenOn and smbProperties.fileLastWriteTime cannot be set."));
+        }
+        if (list.getChangedOn() && tempSmbProperties.getFileChangeTime() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
+        }
 
-        String fileAttributesSecond = null;
-        if (list.getFileAttributes()) {
-            fileAttributesSecond = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-        }
-//        } else {
-//            fileAttributesSecond = "Source";
-//        }
-        String fileCreationTimeSecond = null;
-        if (list.getCreatedOn()) {
-            fileCreationTimeSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-        }
-//        } else {
-//            fileCreationTimeSecond = "Source";
-//        }
-        String lastWriteSecond = null;
-        if (list.getLastWrittenOn()) {
-            lastWriteSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-        }
-//        } else {
-//            lastWriteSecond = "Source";
-//        }
-        String fileChangedSecond = null;
-        if (list.getChangedOn()) {
-            fileChangedSecond = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
-        }
-//        } else {
-//            fileChangedSecond = "Source";
-//        }
-
-//        final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
-//            .setFilePermissionCopyMode(options.getPermissionCopyModeType())
-//            .setFileAttributes(fileAttributes)
-//            .setFileCreationTime(fileCreationTime)
-//            .setFileLastWriteTime(fileLastWriteTime)
-//            .setFileChangeTime(fileChangedOnTime)
-//            .setIgnoreReadOnly(options.getIgnoreReadOnly())
-//            .setSetArchiveAttribute(options.getSetArchiveAttribute());
+        String fileAttributes = list.getFileAttributes() ? FileConstants.COPY_SOURCE : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+        String fileCreationTime = list.getCreatedOn()  ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+        String fileLastWriteTime = list.getLastWrittenOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+        String fileChangedOnTime = list.getChangedOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
 
         final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
             .setFilePermissionCopyMode(options.getPermissionCopyModeType())
-            .setFileAttributes(fileAttributesSecond)
-            .setFileCreationTime(fileCreationTimeSecond)
-            .setFileLastWriteTime(lastWriteSecond)
-            .setFileChangeTime(fileChangedSecond)
+            .setFileAttributes(fileAttributes)
+            .setFileCreationTime(fileCreationTime)
+            .setFileLastWriteTime(fileLastWriteTime)
+            .setFileChangeTime(fileChangedOnTime)
             .setIgnoreReadOnly(options.getIgnoreReadOnly())
             .setSetArchiveAttribute(options.getSetArchiveAttribute());
 

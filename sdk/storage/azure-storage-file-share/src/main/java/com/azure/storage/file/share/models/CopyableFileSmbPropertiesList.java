@@ -1,8 +1,6 @@
 package com.azure.storage.file.share.models;// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.storage.file.share.models.CopyableFileSmbProperties;
-
 import java.util.ArrayList;
 
 /**
