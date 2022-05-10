@@ -1,18 +1,19 @@
 trigger: none
 pr: none
 
+pool:
+  vmImage: "ubuntu-latest"
+
 steps:
+  - variables:
+      - template: ../../eng/pipelines/templates/variables/globals.yml
   - task: Maven@3
     displayName: 'Run tests'
     inputs:
       mavenPomFile: sdk/spring/pom.xml
-      options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      options: ' -Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true'
+      mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      goals: ${{ parameters.TestGoals }}
-    env: ${{ parameters.TestEnvVars }}
-    # we want to run this when TestFromSource isn't true
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+      goals: 'clean install -Pdev -T 4 -ntp'
