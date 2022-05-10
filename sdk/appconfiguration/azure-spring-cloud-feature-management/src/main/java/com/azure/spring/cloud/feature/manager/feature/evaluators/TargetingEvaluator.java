@@ -34,23 +34,6 @@ public class TargetingEvaluator extends TargetingFilter implements IFeatureVaria
 	private static final Logger LOGGER = LoggerFactory.getLogger(TargetingEvaluator.class);
 
 	/**
-	 * users field in the filter
-	 */
-	protected static final String USERS = "users";
-
-	/**
-	 * groups field in the filter
-	 */
-	protected static final String GROUPS = "groups";
-
-	/**
-	 * Audience in the filter
-	 */
-	protected static final String AUDIENCE = "Audience";
-
-	private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
-
-	/**
 	 * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a
 	 * feature.
 	 * 

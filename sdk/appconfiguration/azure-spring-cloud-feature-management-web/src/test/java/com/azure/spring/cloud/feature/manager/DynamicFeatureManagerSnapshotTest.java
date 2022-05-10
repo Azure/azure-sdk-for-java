@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.times;
@@ -65,9 +66,11 @@ public class DynamicFeatureManagerSnapshotTest {
     @Test
     public void invalidType() throws InterruptedException, ExecutionException {
         when(dynamicFeatureManager.getVariantAsync(Mockito.matches("exitingVariant"), Mockito.any()))
-            .thenReturn(Mono.just("A"));
+            .thenReturn(Mono.just(1));
 
         Object returnValue = dynamicFeatureManagerSnapshot.getVariantAsync("exitingVariant", Integer.class).block();
+        assertEquals(1, returnValue);
+        returnValue = dynamicFeatureManagerSnapshot.getVariantAsync("exitingVariant", String.class).block();
         assertNull(returnValue);
         verify(dynamicFeatureManager, times(1)).getVariantAsync("exitingVariant", Integer.class);
     }

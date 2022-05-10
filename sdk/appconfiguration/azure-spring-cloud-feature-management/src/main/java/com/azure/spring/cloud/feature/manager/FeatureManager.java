@@ -30,7 +30,7 @@ public class FeatureManager {
 
     @Autowired
     private transient ApplicationContext context;
-    
+
     @Autowired
     private FeatureManagementProperties featureManagementConfigurations;
 
@@ -63,17 +63,14 @@ public class FeatureManager {
             return false;
         }
 
-        // TODO pretty sure this will throw an null pointer...
         Boolean boolFeature = featureManagementConfigurations.getOnOff().get(feature);
 
         if (boolFeature != null) {
             return boolFeature;
         }
 
-        // TODO this should also throw an error...
         Feature featureItem = featureManagementConfigurations.getFeatureManagement().get(feature);
-        
-        // TODO added the second part back, not sure why it was removed.
+
         if (featureItem == null || !featureItem.getEvaluate()) {
             return false;
         }

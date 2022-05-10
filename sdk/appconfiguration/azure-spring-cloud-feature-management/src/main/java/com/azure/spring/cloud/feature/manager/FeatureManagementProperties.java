@@ -90,28 +90,28 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
     @SuppressWarnings("unchecked")
     private void addToFeatures(Map<? extends String, ? extends Object> features, String key, String combined) {
-        Object featureKey = features.get(key);
+        Object featureValue = features.get(key);
         if (!combined.isEmpty() && !combined.endsWith(".")) {
             combined += ".";
         }
-        if (featureKey instanceof Boolean) {
-            onOff.put(combined + key, (Boolean) featureKey);
+        if (featureValue instanceof Boolean) {
+            onOff.put(combined + key, (Boolean) featureValue);
         } else {
             Feature feature = null;
             DynamicFeature dynamicFeature = null;
             try {
-                feature = MAPPER.convertValue(featureKey, Feature.class);
-                dynamicFeature = MAPPER.convertValue(featureKey, DynamicFeature.class);
+                feature = MAPPER.convertValue(featureValue, Feature.class);
+                dynamicFeature = MAPPER.convertValue(featureValue, DynamicFeature.class);
             } catch (IllegalArgumentException e) {
-                LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureKey.toString());
+                LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureValue.toString());
             }
             // When coming from a file "feature.flag" is not a possible flag name
             if (dynamicFeature != null && StringUtils.hasText(dynamicFeature.getAssigner())
                 && dynamicFeature.getVariants().size() > 0) {
                 dynamicFeatures.put(key, dynamicFeature);
             } else if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
-                if (LinkedHashMap.class.isAssignableFrom(featureKey.getClass())) {
-                    features = (LinkedHashMap<String, Object>) featureKey;
+                if (LinkedHashMap.class.isAssignableFrom(featureValue.getClass())) {
+                    features = (LinkedHashMap<String, Object>) featureValue;
                     for (String fKey : features.keySet()) {
                         addToFeatures(features, fKey, combined + key);
                     }

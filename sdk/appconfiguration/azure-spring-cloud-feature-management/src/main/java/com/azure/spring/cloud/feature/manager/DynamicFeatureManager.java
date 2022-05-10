@@ -44,13 +44,13 @@ public class DynamicFeatureManager {
      * Returns a feature variant of the type given.
      *
      * @param <T> Type of the feature that will be returned.
-     * @param featureName name of the feature being checked.
+     * @param variantName name of the feature being checked.
      * @param returnClass Type of the feature being checked.
      * @return variant of the provided type
      * @throws FilterNotFoundException if a Filter with the given name isn't found
      */
-    public <T> Mono<T> getVariantAsync(String featureName, Class<T> returnClass) throws FilterNotFoundException {
-        return Mono.just(generateVariant(featureName, returnClass));
+    public <T> Mono<T> getVariantAsync(String variantName, Class<T> returnClass) throws FilterNotFoundException {
+        return Mono.just(generateVariant(variantName, returnClass));
     }
 
     @SuppressWarnings("unchecked")

@@ -36,27 +36,25 @@ public class DynamicFeatureManagerSnapshot {
      * If getVariantAsync has all ready been called on this variant, it will return the same variant as it did before.
      *
      * @param <T> Type of the feature that will be returned.
-     * @param featureName name of the feature being checked.
+     * @param variantName name of the variant being checked.
      * @param type Type of the feature being checked.
      * @return variant of the provided type, can return Mono with a null value if the feature requested doesn't match
      * the stored type.
      * @throws FilterNotFoundException if a Filter with the given name isn't found
      */
-    public <T> Mono<T> getVariantAsync(String featureName, Class<T> type) {
-        if (requestMap.get(featureName) == null) {
-            T variant = dynamicFeatureManager.getVariantAsync(featureName, type).block();
+    public <T> Mono<T> getVariantAsync(String variantName, Class<T> type) {
+        T variant = null;
 
-            if (variant != null) {
-                requestMap.put(featureName, variant);
+        if (!requestMap.containsKey(variantName)) {
+            variant = dynamicFeatureManager.getVariantAsync(variantName, type).block();
+            requestMap.put(variantName, variant);
+        } else {
+            Object o = requestMap.get(variantName);
+            if (o.getClass().equals(type)) {
+                variant = type.cast(o);
             }
-            return Mono.justOrEmpty(variant);
         }
 
-        Object variant = requestMap.get(featureName);
-        if (variant != null && variant.getClass().equals(type)) {
-            return Mono.just(type.cast(variant));
-        }
-
-        return Mono.justOrEmpty(null);
+        return Mono.justOrEmpty(variant);
     }
 }

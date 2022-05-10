@@ -15,7 +15,6 @@ public class Feature {
     @JsonProperty("key")
     private String key;
 
-    // TODO at some point I removed this, not sure why. Adding back until I find out why.
     @JsonProperty("evaluate")
     private Boolean evaluate = true;
 

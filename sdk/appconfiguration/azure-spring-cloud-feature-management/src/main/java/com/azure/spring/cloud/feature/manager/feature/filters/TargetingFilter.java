@@ -50,7 +50,7 @@ public class TargetingFilter implements FeatureFilter {
      */
     protected static final String AUDIENCE = "Audience";
 
-    private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
+    protected static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";
 

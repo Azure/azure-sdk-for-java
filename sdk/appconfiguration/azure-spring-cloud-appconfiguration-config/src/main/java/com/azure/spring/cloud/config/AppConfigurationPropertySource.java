@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.DYNAMIC_FEATURE_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.DYNAMIC_FEATURE_KEY;
-import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V1;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V2;
 import static java.util.Collections.emptyList;
@@ -271,9 +270,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 featureSet.addFeature(featureSetting.getFeatureId(), feature);
             } else if (DYNAMIC_FEATURE_CONTENT_TYPE.equalsIgnoreCase(setting.getContentType())
                 && getFeatureSchemaVersion() >= 2) {
-                properties.put(
-                    DYNAMIC_FEATURE_KEY + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()),
-                    FEATURE_MAPPER.convertValue(createDynamicFeature(setting), LinkedHashMap.class));
+                DynamicFeature dynamicFeature = createDynamicFeature(setting);
+                properties.put(DYNAMIC_FEATURE_KEY + dynamicFeature.getName(),
+                    FEATURE_MAPPER.convertValue(dynamicFeature, LinkedHashMap.class));
             }
         }
         return featureSet;
