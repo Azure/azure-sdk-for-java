@@ -7,6 +7,7 @@
 - Added support for setting the change time on directory/file create, set properties, and rename
 - Added support for setting content type on file rename.
 - Added support for FileLastWrittenMode.
+- Added new overload of ShareFileClient.BeginCopy() and ShareFileAsyncClient.BeginCopy(), added new parameters allowing the copying of the source file's CreatedOn, LastWrittenOn, FileAttributes and ChangedOn properties.
 
 ### Breaking Changes
 
