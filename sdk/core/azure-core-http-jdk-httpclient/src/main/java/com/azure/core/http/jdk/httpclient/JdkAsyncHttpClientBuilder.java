@@ -176,7 +176,7 @@ public class JdkAsyncHttpClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
+        ProxyOptions buildProxyOptions = (proxyOptions == null)
             ? ProxyOptions.fromConfiguration(buildConfiguration)
             : proxyOptions;
 

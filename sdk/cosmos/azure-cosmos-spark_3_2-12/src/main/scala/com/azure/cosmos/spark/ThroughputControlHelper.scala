@@ -17,14 +17,14 @@ private object ThroughputControlHelper {
             val throughputControlConfig = cosmosThroughputControlConfig.get
 
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
-                .setGroupName(throughputControlConfig.groupName)
-                .setDefault(true)
+                .groupName(throughputControlConfig.groupName)
+                .defaultControlGroup(true)
 
             if (throughputControlConfig.targetThroughput.isDefined) {
-                groupConfigBuilder.setTargetThroughput(throughputControlConfig.targetThroughput.get)
+                groupConfigBuilder.targetThroughput(throughputControlConfig.targetThroughput.get)
             }
             if (throughputControlConfig.targetThroughputThreshold.isDefined) {
-                groupConfigBuilder.setTargetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
+                groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
             }
 
             val globalThroughputControlConfigBuilder = client.createGlobalThroughputControlConfigBuilder(

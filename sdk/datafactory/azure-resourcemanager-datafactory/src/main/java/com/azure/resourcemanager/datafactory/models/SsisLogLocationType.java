@@ -24,7 +24,11 @@ public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocat
         return fromString(name, SsisLogLocationType.class);
     }
 
-    /** @return known SsisLogLocationType values. */
+    /**
+     * Gets known SsisLogLocationType values.
+     *
+     * @return known SsisLogLocationType values.
+     */
     public static Collection<SsisLogLocationType> values() {
         return values(SsisLogLocationType.class);
     }

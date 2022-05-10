@@ -19,7 +19,7 @@ import static com.azure.messaging.servicebus.jproxy.SimpleProxy.PROXY_BUFFER_SIZ
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
-    private final ClientLogger logger = new ClientLogger(ReadWriteHandler.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReadWriteHandler.class);
     private final ConnectionProperties connection;
 
     ReadWriteHandler(ConnectionProperties connection) {
@@ -29,11 +29,11 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
     @Override
     public void completed(Integer result, ReadWriteState readWriteState) {
         if (result == -1) {
-            logger.info("There were no bytes read/written. State: {}\tConnection: {}.", readWriteState, connection);
+            LOGGER.info("There were no bytes read/written. State: {}\tConnection: {}.", readWriteState, connection);
             try {
                 connection.close();
             } catch (IOException e) {
-                logger.warning("Unable to close connection.", e);
+                LOGGER.warning("Unable to close connection.", e);
             }
             return;
         }
@@ -52,17 +52,17 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
 
                         final InetSocketAddress clientAddress = getClientAddress(connectRequest);
 
-                        logger.info("Connecting to client: {}", clientAddress);
+                        LOGGER.info("Connecting to client: {}", clientAddress);
 
                         connection.setProxyConnectionState(ProxyConnectionState.PROXY_INITIATED);
                         connection.getOutgoingSocket().connect(clientAddress, readWriteState,
                             new ServiceConnectCompletionHandler(connection, this));
                     } else {
-                        throw logger.logExceptionAsError(new IllegalStateException(
+                        throw LOGGER.logExceptionAsError(new IllegalStateException(
                             "There should have been bytes read from the buffer when starting proxy."));
                     }
                 } else {
-                    throw logger.logExceptionAsError(new IllegalStateException(
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(
                         "ReadWriteState should be isReading because proxy connection has not been initiated yet."));
                 }
                 break;
@@ -79,14 +79,14 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
     @Override
     public void failed(Throwable exc, ReadWriteState readWriteState) {
         if (exc instanceof AsynchronousCloseException) {
-            logger.info("Client socket closed.");
+            LOGGER.info("Client socket closed.");
         } else {
-            logger.error("Operation failed connection={}, readWriteState={}", connection, readWriteState, exc);
+            LOGGER.error("Operation failed connection={}, readWriteState={}", connection, readWriteState, exc);
         }
     }
 
     private void copyBytesBetweenClientAndService(ReadWriteState readWriteState) {
-        logger.verbose("Copying bytes. State: {}", readWriteState);
+        LOGGER.info("Copying bytes. State: {}", readWriteState);
 
         final ByteBuffer buffer = readWriteState.getBuffer();
         final Target writeTarget = readWriteState.getWriteTarget();
@@ -122,7 +122,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
             .split(":");
 
         if (split.length != 2) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Unable to parse CONNECT request: " + request));
         }
 
@@ -130,7 +130,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
         try {
             port = Integer.parseInt(split[1]);
         } catch (NumberFormatException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Unable to parse port number from CONNECT request: " + request));
         }
 
@@ -138,7 +138,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
     }
 
     private static class ServiceConnectCompletionHandler implements CompletionHandler<Void, ReadWriteState> {
-        private final ClientLogger logger = new ClientLogger(ServiceConnectCompletionHandler.class);
+        private static final ClientLogger LOGGER = new ClientLogger(ServiceConnectCompletionHandler.class);
         private final ConnectionProperties connection;
         private final ReadWriteHandler handler;
 
@@ -154,7 +154,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
             // 1) read from client buffer and write to service buffer
             // 2) read from service buffer and write to client buffer
             connection.setProxyConnectionState(ProxyConnectionState.PROXY_CONNECTED);
-            logger.warning("Connecting to service successful, {}, {}", connection.getProxyConnectionState(),
+            LOGGER.warning("Connecting to service successful, {}, {}", connection.getProxyConnectionState(),
                 proxyInitRead);
 
             final ByteBuffer buffer = proxyInitRead.getBuffer();
@@ -164,7 +164,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
             buffer.limit(buffer.position());
             buffer.flip();
 
-            logger.info("Writing connection established to client.");
+            LOGGER.info("Writing connection established to client.");
 
             final AsynchronousSocketChannel client = connection.getClientSocket();
             client.write(buffer, clientWriterState, handler);
@@ -172,15 +172,15 @@ class ReadWriteHandler implements CompletionHandler<Integer, ReadWriteState> {
             final ReadWriteState serviceWriterState = new ReadWriteState(Target.SERVICE,
                 ByteBuffer.allocate(PROXY_BUFFER_SIZE), true);
 
-            logger.info("Reading connect to client.");
+            LOGGER.info("Reading connect to client.");
 
             client.read(serviceWriterState.getBuffer(), serviceWriterState, handler);
-            logger.info("Finished reading connect to client.");
+            LOGGER.info("Finished reading connect to client.");
         }
 
         @Override
         public void failed(Throwable exc, ReadWriteState state) {
-            logger.error("serviceConnectFailed, Connection={}, State={}", connection, state, exc);
+            LOGGER.error("serviceConnectFailed, Connection={}, State={}", connection, state, exc);
 
             connection.setProxyConnectionState(ProxyConnectionState.PROXY_FAILED);
 

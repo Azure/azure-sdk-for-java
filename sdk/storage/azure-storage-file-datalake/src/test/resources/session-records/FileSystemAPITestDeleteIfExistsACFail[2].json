@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/55b92db4055b92db4d6e098921a68633781104d13bf5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "21554cf2-3f60-48f4-98ff-242746a05300"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F2980A2ADAB",
+      "Last-Modified" : "Fri, 15 Apr 2022 21:47:13 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a97f76f6-a01e-0042-4112-51f420000000",
+      "x-ms-client-request-id" : "21554cf2-3f60-48f4-98ff-242746a05300",
+      "Date" : "Fri, 15 Apr 2022 21:47:13 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.blob.core.windows.net/55b92db4055b92db4d6e098921a68633781104d13bf5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "874f432b-b4c1-4335-80f0-8ae5b40ab23f"
+    },
+    "Response" : {
+      "content-length" : "251",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "ab22ae11-301e-0040-1512-514a98000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the container.\nRequestId:ab22ae11-301e-0040-1512-514a98000000\nTime:2022-04-15T21:47:13.9859653Z</Message></Error>",
+      "x-ms-client-request-id" : "874f432b-b4c1-4335-80f0-8ae5b40ab23f",
+      "Date" : "Fri, 15 Apr 2022 21:47:13 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "55b92db4055b92db4d6e098921a68633781104d13bf5" ]
+}

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolColumnInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of Sql pool columns. */
 @Immutable
 public final class SqlPoolColumnListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolColumnListResult.class);
-
     /*
      * Array of results.
      */

@@ -46,6 +46,9 @@ public class PerfStressOptions {
     @Parameter(names = { "-c", "--count" }, description = "Number of items")
     private int count = 10;
 
+    @Parameter(names = { "--http-client" }, description = "The http client to use. Can be netty, okhttp.")
+    private HttpClientType httpClient = HttpClientType.NETTY;
+
     /**
      * Get the configured count for performance test.
      * @return The count.
@@ -126,9 +129,21 @@ public class PerfStressOptions {
         return sync;
     }
 
+    /**
+     * The http client to use. Can be netty, okhttp.
+     * @return The http client to use.
+     */
+    public HttpClientType getHttpClient() {
+        return httpClient;
+    }
+
     private static class SemiColonSplitter implements IParameterSplitter {
         public List<String> split(String value) {
             return Arrays.asList(value.split(";"));
         }
+    }
+
+    public enum HttpClientType {
+        NETTY, OKHTTP
     }
 }

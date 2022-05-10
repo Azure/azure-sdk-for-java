@@ -5,20 +5,18 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** IaaS VM workload-specific backup policy. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
 @JsonTypeName("AzureIaasVM")
 @Fluent
 public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSvmProtectionPolicy.class);
-
     /*
      * The instantRPDetails property.
      */
@@ -36,6 +34,15 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
      */
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
+
+    /*
+     * Tiering policy to automatically move RPs to another tier
+     * Key is Target Tier, defined in RecoveryPointTierType enum.
+     * Tiering policy specifies the criteria to move RP to the target tier.
+     */
+    @JsonProperty(value = "tieringPolicy")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, TieringPolicy> tieringPolicy;
 
     /*
      * Instant RP retention policy range in days
@@ -113,6 +120,28 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
      */
     public AzureIaaSvmProtectionPolicy withRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the tieringPolicy property: Tiering policy to automatically move RPs to another tier Key is Target Tier,
+     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
+     *
+     * @return the tieringPolicy value.
+     */
+    public Map<String, TieringPolicy> tieringPolicy() {
+        return this.tieringPolicy;
+    }
+
+    /**
+     * Set the tieringPolicy property: Tiering policy to automatically move RPs to another tier Key is Target Tier,
+     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
+     *
+     * @param tieringPolicy the tieringPolicy value to set.
+     * @return the AzureIaaSvmProtectionPolicy object itself.
+     */
+    public AzureIaaSvmProtectionPolicy withTieringPolicy(Map<String, TieringPolicy> tieringPolicy) {
+        this.tieringPolicy = tieringPolicy;
         return this;
     }
 
@@ -206,6 +235,16 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
+        }
+        if (tieringPolicy() != null) {
+            tieringPolicy()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

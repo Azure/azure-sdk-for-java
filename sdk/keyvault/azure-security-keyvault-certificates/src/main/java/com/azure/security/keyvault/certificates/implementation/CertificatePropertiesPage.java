@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.certificates.implementation;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.util.IterableStream;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
@@ -14,6 +15,7 @@ import java.util.List;
  * A page of Certificate Properties {@link CertificateProperties} resources and a link to get the next page of
  * resources, if any.
  */
+@Immutable
 public final class CertificatePropertiesPage implements Page<CertificateProperties> {
 
     /**

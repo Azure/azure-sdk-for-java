@@ -41,6 +41,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -218,20 +219,27 @@ public class ParallelDocumentQueryExecutionContext<T>
         private final UUID correlatedActivityId;
         private final ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
         private CosmosDiagnostics cosmosDiagnostics;
+        private final Supplier<String> operationContextTextProvider;
 
         public EmptyPagesFilterTransformer(
             RequestChargeTracker tracker,
             CosmosQueryRequestOptions options,
-            UUID correlatedActivityId) {
+            UUID correlatedActivityId,
+            Supplier<String> operationContextTextProvider) {
 
             if (tracker == null) {
                 throw new IllegalArgumentException("Request Charge Tracker must not be null.");
+            }
+
+            if (operationContextTextProvider == null) {
+                throw new IllegalArgumentException("Parameter 'operationContextTextProvider' must not be null.");
             }
 
             this.tracker = tracker;
             this.previousPage = null;
             this.cosmosQueryRequestOptions = options;
             this.correlatedActivityId = correlatedActivityId;
+            this.operationContextTextProvider = operationContextTextProvider;
         }
 
         private DocumentProducer<T>.DocumentProducerFeedResponse plusCharge(
@@ -300,7 +308,8 @@ public class ParallelDocumentQueryExecutionContext<T>
                         logEmptyPageDiagnostics(
                             cosmosDiagnostics,
                             this.correlatedActivityId,
-                            documentProducerFeedResponse.pageResult.getActivityId());
+                            documentProducerFeedResponse.pageResult.getActivityId(),
+                            this.operationContextTextProvider);
                     }
 
                     return false;
@@ -386,21 +395,23 @@ public class ParallelDocumentQueryExecutionContext<T>
     static void logEmptyPageDiagnostics(
         CosmosDiagnostics cosmosDiagnostics,
         UUID correlatedActivityId,
-        String activityId) {
+        String activityId,
+        Supplier<String> operationContextTextProvider) {
         List<ClientSideRequestStatistics> requestStatistics =
             BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {
                 logger.info(
-                    "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}]",
+                    "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}], Context: {}",
                     correlatedActivityId,
                     activityId,
-                    Utils.getSimpleObjectMapper().writeValueAsString(requestStatistics));
+                    Utils.getSimpleObjectMapper().writeValueAsString(requestStatistics),
+                    operationContextTextProvider.get());
             }
 
         } catch (JsonProcessingException e) {
-            logger.warn("Failed to log empty page diagnostics. ", e);
+            logger.warn("Failed to log empty page diagnostics. Context: {}", operationContextTextProvider.get(),  e);
         }
     }
 
@@ -421,10 +432,19 @@ public class ParallelDocumentQueryExecutionContext<T>
         int fluxPrefetch = fluxSequentialMergePrefetch(cosmosQueryRequestOptions, obs.size(),
             maxPageSize, fluxConcurrency);
 
-        logger.debug("ParallelQuery: flux mergeSequential" +
-                         " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
+        if (logger.isDebugEnabled()) {
+            logger.debug("ParallelQuery: flux mergeSequential" +
+                    " concurrency {}, prefetch {}, Context: {}",
+                fluxConcurrency,
+                fluxPrefetch,
+                this.getOperationContextTextProvider().get());
+        }
         return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
-            .transformDeferred(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions, correlatedActivityId));
+            .transformDeferred(new EmptyPagesFilterTransformer<>(
+                new RequestChargeTracker(),
+                this.cosmosQueryRequestOptions,
+                correlatedActivityId,
+                this.getOperationContextTextProvider()));
     }
 
     @Override
@@ -455,7 +475,9 @@ public class ParallelDocumentQueryExecutionContext<T>
                 correlatedActivityId,
                 initialPageSize,
                 initialContinuationToken,
-                top, feedRange);
+                top,
+                feedRange,
+                this.getOperationContextTextProvider());
     }
 
     private int fluxSequentialMergeConcurrency(CosmosQueryRequestOptions options, int numberOfPartitions) {

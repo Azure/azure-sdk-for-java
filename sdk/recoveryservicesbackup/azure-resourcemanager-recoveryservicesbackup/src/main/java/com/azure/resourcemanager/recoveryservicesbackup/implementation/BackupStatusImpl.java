@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStat
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupStatusImpl implements BackupStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupStatusImpl.class);
 
     private final BackupStatusClient innerClient;
 

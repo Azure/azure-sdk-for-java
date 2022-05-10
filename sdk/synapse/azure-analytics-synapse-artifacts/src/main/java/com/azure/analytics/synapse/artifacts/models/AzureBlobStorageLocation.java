@@ -42,4 +42,18 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
         this.container = container;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLocation setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLocation setFileName(Object fileName) {
+        super.setFileName(fileName);
+        return this;
+    }
 }

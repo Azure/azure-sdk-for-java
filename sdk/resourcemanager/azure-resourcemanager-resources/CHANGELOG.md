@@ -1,6 +1,12 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.15.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `ResourceManager.resourceChangeClient()`.
+
+## 2.14.0 (2022-04-11)
 
 ### Bugs Fixed
 

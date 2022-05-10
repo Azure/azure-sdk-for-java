@@ -12,9 +12,13 @@ import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.sql.types.StringType
 import org.scalatest.Retries
 import org.scalatest.tagobjects.Retryable
+
+import java.util.regex.Pattern
 
 class SparkE2EStructuredStreamingITest
   extends IntegrationSpec
@@ -198,6 +202,13 @@ class SparkE2EStructuredStreamingITest
       .start()
 
     Thread.sleep(20000)
+
+    microBatchQuery.lastProgress should not be null
+    microBatchQuery.lastProgress.sources should not be null
+    microBatchQuery.lastProgress.sources should not be null
+    microBatchQuery.lastProgress.sources(0).endOffset should not be null
+    getPartitionCountInOffset(microBatchQuery.lastProgress.sources(0).endOffset) >= 1 shouldEqual true
+
     microBatchQuery.stop()
 
     var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
@@ -274,6 +285,113 @@ class SparkE2EStructuredStreamingITest
     sourceDocument.get("age").asInt() shouldEqual targetDocument.get("age").asInt()
     sourceDocument.get("type").asText() shouldEqual targetDocument.get("type").asText()
     sourceDocument.get("sequenceNumber").asInt() shouldEqual targetDocument.get("sequenceNumber").asInt()
+
+    targetContainer.delete().block()
+  }
+
+  "spark change feed micro batch (incremental)" can
+    "be filtered on FeedRange" taggedAs(Retryable) in {
+
+    val processedRecordCount = new AtomicLong()
+    var spark = this.createSparkSession(processedRecordCount)
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val testId = UUID.randomUUID().toString
+    val targetContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
+      "target_" + testId,
+      "/id",
+      ThroughputProperties.createManualThroughput(18000)).block()
+    val targetContainer = cosmosClient
+      .getDatabase(cosmosDatabase)
+      .getContainer(targetContainerResponse.getProperties.getId)
+
+    // Initially ingest 200 records
+    var lastId = ""
+    for (i <- 0 until 200) {
+      lastId = this.ingestTestDocument(sourceContainer, i)
+    }
+
+    spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValue(), StringType)
+    val pkDefinition = "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$lastId')")
+
+    val feedRange = dummyDf
+      .collect()(0)
+      .getAs[String](0)
+
+    logInfo(s"FeedRange from UDF: $feedRange")
+
+    Thread.sleep(2100)
+
+    val queryCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.partitioning.feedRangeFilter" -> feedRange,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    val sourceCount: Long = spark
+      .read
+      .format("cosmos.oltp")
+      .options(queryCfg)
+      .load()
+      .count()
+
+    val changeFeedCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.partitioning.feedRangeFilter" -> feedRange,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    val writeCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> targetContainer.getId,
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "checkpointLocation" -> ("/tmp/" + testId + "/")
+    )
+
+    val changeFeedDF = spark
+      .readStream
+      .format("cosmos.oltp.changeFeed")
+      .options(changeFeedCfg)
+      .load()
+
+    val microBatchQuery = changeFeedDF
+      .writeStream
+      .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("500 milliseconds"))
+      .queryName(testId)
+      .options(writeCfg)
+      .outputMode("append")
+      .start()
+
+    Thread.sleep(20000)
+
+    microBatchQuery.lastProgress should not be null
+    microBatchQuery.lastProgress.sources should not be null
+    microBatchQuery.lastProgress.sources should not be null
+    microBatchQuery.lastProgress.sources(0).endOffset should not be null
+    getPartitionCountInOffset(microBatchQuery.lastProgress.sources(0).endOffset) shouldEqual 1
+    microBatchQuery.stop()
+
+    logInfo(s"RecordCount in source container after first execution: $sourceCount")
+    val targetCount: Long = getRecordCountOfContainer(targetContainer)
+    logInfo(s"RecordCount in target container after first execution: $targetCount")
+
+    sourceCount > 0 shouldEqual true
+    processedRecordCount.get() shouldEqual sourceCount
+    targetCount shouldEqual sourceCount
 
     targetContainer.delete().block()
   }
@@ -547,8 +665,8 @@ class SparkE2EStructuredStreamingITest
 
   private[this] def ingestTestDocument
   (
-      container: CosmosAsyncContainer,
-      sequenceNumber: Int
+    container: CosmosAsyncContainer,
+    sequenceNumber: Int
   ): String = {
     val id = UUID.randomUUID().toString
     val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
@@ -579,6 +697,17 @@ class SparkE2EStructuredStreamingITest
     spark
   }
 
+  private[this] def getPartitionCountInOffset(text: String): Long = {
+    text should not be null
+
+    val pattern = Pattern.compile("(\"range\")")
+    val matcher = pattern.matcher(text)
+    var count = 0L
+    while (matcher.find) { count += 1 }
+
+    count
+  }
+
   private[this] def getRecordCountOfContainer(container: CosmosAsyncContainer): Long = {
     val countValueList = container
       .queryItems("SELECT VALUE COUNT(1) FROM c", classOf[Long])
@@ -589,6 +718,7 @@ class SparkE2EStructuredStreamingITest
 
     countValueList.get(0)
   }
+
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }

@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * <p>Contrary to {@link MessageListenerContainer}
  * created manually, listener containers managed by registry are not beans in the application context and are not
- * candidates for autowiring. Use {@link #getListenerContainers()} if you need to access this registry's listener
+ * candidates for autowiring. Use {@link #getListenerContainersMap()} if you need to access this registry's listener
  * containers for management purposes.
  *
  * @see AzureListenerEndpoint
@@ -45,7 +45,7 @@ public class AzureListenerEndpointRegistry
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureListenerEndpointRegistry.class);
 
-    private final Map<String, MessageListenerContainer> listenerContainers = new ConcurrentHashMap<>();
+    private final Map<String, MessageListenerContainer> listenerContainersMap = new ConcurrentHashMap<>();
 
     @Nullable
     private ApplicationContext applicationContext;
@@ -68,8 +68,8 @@ public class AzureListenerEndpointRegistry
      * Return the managed {@link MessageListenerContainer} instance(s).
      * @return the managed {@link MessageListenerContainer} instance(s).
      */
-    public Collection<MessageListenerContainer> getListenerContainers() {
-        return Collections.unmodifiableCollection(this.listenerContainers.values());
+    public Collection<MessageListenerContainer> getListenerContainersMap() {
+        return Collections.unmodifiableCollection(this.listenerContainersMap.values());
     }
 
     /**
@@ -82,7 +82,7 @@ public class AzureListenerEndpointRegistry
      * @param factory the listener factory to use
      * @param startImmediately start the container immediately if necessary
      * @throws IllegalStateException If another endpoint with the same id has already been registered.
-     * @see #getListenerContainers()
+     * @see #getListenerContainersMap()
      */
     public void registerListenerContainer(AzureListenerEndpoint endpoint,
                                           MessageListenerContainerFactory<?> factory,
@@ -93,13 +93,13 @@ public class AzureListenerEndpointRegistry
         String id = endpoint.getId();
         Assert.hasText(id, "Endpoint id must be set");
 
-        synchronized (this.listenerContainers) {
-            if (this.listenerContainers.containsKey(id)) {
+        synchronized (this.listenerContainersMap) {
+            if (this.listenerContainersMap.containsKey(id)) {
                 throw new IllegalStateException("Another endpoint is already registered with id '" + id + "'");
             }
             MessageListenerContainer container = createListenerContainer(endpoint, factory);
 
-            this.listenerContainers.put(id, container);
+            this.listenerContainersMap.put(id, container);
             if (startImmediately) {
                 startIfNecessary(container);
             }
@@ -140,27 +140,19 @@ public class AzureListenerEndpointRegistry
             }
         }
 
-        int containerPhase = listenerContainer.getPhase();
-        if (containerPhase < Integer.MAX_VALUE) {  // a custom phase value
-            if (this.getPhase() < Integer.MAX_VALUE && this.getPhase() != containerPhase) {
-                throw new IllegalStateException("Encountered phase mismatch between container factory definitions: "
-                    + this.getPhase() + " vs " + containerPhase);
-            }
-        }
-
         return listenerContainer;
     }
 
     @Override
     public void start() {
-        for (MessageListenerContainer listenerContainer : getListenerContainers()) {
+        for (MessageListenerContainer listenerContainer : getListenerContainersMap()) {
             startIfNecessary(listenerContainer);
         }
     }
 
     @Override
     public void stop() {
-        for (MessageListenerContainer listenerContainer : getListenerContainers()) {
+        for (MessageListenerContainer listenerContainer : getListenerContainersMap()) {
             listenerContainer.stop();
         }
     }
@@ -172,7 +164,7 @@ public class AzureListenerEndpointRegistry
 
     @Override
     public void stop(Runnable callback) {
-        Collection<MessageListenerContainer> listenerContainers = getListenerContainers();
+        Collection<MessageListenerContainer> listenerContainers = getListenerContainersMap();
         AggregatingCallback aggregatingCallback = new AggregatingCallback(listenerContainers.size(), callback);
         for (MessageListenerContainer listenerContainer : listenerContainers) {
             listenerContainer.stop(aggregatingCallback);
@@ -181,7 +173,7 @@ public class AzureListenerEndpointRegistry
 
     @Override
     public boolean isRunning() {
-        for (MessageListenerContainer listenerContainer : getListenerContainers()) {
+        for (MessageListenerContainer listenerContainer : getListenerContainersMap()) {
             if (listenerContainer.isRunning()) {
                 return true;
             }
@@ -203,11 +195,11 @@ public class AzureListenerEndpointRegistry
 
     @Override
     public void destroy() {
-        for (MessageListenerContainer listenerContainer : getListenerContainers()) {
+        for (MessageListenerContainer listenerContainer : getListenerContainersMap()) {
             if (listenerContainer instanceof DisposableBean) {
                 try {
                     ((DisposableBean) listenerContainer).destroy();
-                } catch (Throwable ex) {
+                } catch (Exception ex) {
                     LOGGER.warn("Failed to destroy message listener container", ex);
                 }
             }
@@ -224,7 +216,7 @@ public class AzureListenerEndpointRegistry
      */
     @Nullable
     public MessageListenerContainer getListenerContainer(@NonNull String id) {
-        return this.listenerContainers.get(id);
+        return this.listenerContainersMap.get(id);
     }
 
     /**
@@ -233,7 +225,7 @@ public class AzureListenerEndpointRegistry
      * @see #getListenerContainer(String)
      */
     public Set<String> getListenerContainerIds() {
-        return Collections.unmodifiableSet(this.listenerContainers.keySet());
+        return Collections.unmodifiableSet(this.listenerContainersMap.keySet());
     }
 
     @Override

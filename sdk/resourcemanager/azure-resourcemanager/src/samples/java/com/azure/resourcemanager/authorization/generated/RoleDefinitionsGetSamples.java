@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RoleDefinitions Get. */
 public final class RoleDefinitionsGetSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-01-01-preview/examples/GetRoleDefinitionByName.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetRoleDefinitionByName.json
      */
     /**
      * Sample code: Get role definition by name.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettingsErrorRecord;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Validation result for config server settings. */
 @Fluent
 public final class ConfigServerSettingsValidateResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigServerSettingsValidateResultInner.class);
-
     /*
      * Indicate if the config server settings are valid
      */

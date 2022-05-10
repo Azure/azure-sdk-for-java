@@ -7,15 +7,12 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The common properties of a service. */
 @Fluent
 public class ServicesResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesResource.class);
-
     /*
      * The kind of the service.
      */
@@ -117,7 +114,7 @@ public class ServicesResource extends Resource {
      */
     public void validate() {
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model ServicesResource"));
         }
@@ -125,4 +122,6 @@ public class ServicesResource extends Resource {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesResource.class);
 }

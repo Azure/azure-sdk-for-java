@@ -52,17 +52,21 @@ public final class ConnectionPolicy {
     /**
      * Constructor.
      */
-    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
-        this(ConnectionMode.GATEWAY);
-        this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
-        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
-        this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
-        this.proxy = gatewayConnectionConfig.getProxy();
-        this.tcpConnectionEndpointRediscoveryEnabled = false;
+    public ConnectionPolicy(DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        this(ConnectionMode.DIRECT, directConnectionConfig, gatewayConnectionConfig);
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
-        this(ConnectionMode.DIRECT);
+        this(ConnectionMode.DIRECT, directConnectionConfig, GatewayConnectionConfig.getDefaultConfig());
+    }
+
+    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
+        this(ConnectionMode.GATEWAY, DirectConnectionConfig.getDefaultConfig(), gatewayConnectionConfig);
+    }
+
+    private ConnectionPolicy(ConnectionMode connectionMode, DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        this();
+        this.connectionMode = connectionMode;
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
         this.idleTcpConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
@@ -78,13 +82,15 @@ public final class ConnectionPolicy {
             .DirectConnectionConfigHelper
             .getDirectConnectionConfigAccessor()
             .getIoThreadPriority(directConnectionConfig);
+        this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
+        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
+        this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
+        this.proxy = gatewayConnectionConfig.getProxy();
     }
 
-    private ConnectionPolicy(ConnectionMode connectionMode) {
-        this.connectionMode = connectionMode;
+    private ConnectionPolicy() {
         //  Default values
         this.endpointDiscoveryEnabled = true;
-        this.maxConnectionPoolSize = defaultGatewayMaxConnectionPoolSize;
         this.multipleWriteRegionsEnabled = true;
         this.readRequestsFallbackEnabled = true;
         this.throttlingRetryOptions = new ThrottlingRetryOptions();

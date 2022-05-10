@@ -42,4 +42,39 @@ public final class MicrosoftAccessSink extends CopySink {
         this.preCopyScript = preCopyScript;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }
