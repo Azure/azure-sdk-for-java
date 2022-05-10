@@ -38,7 +38,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     @Value("${cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
-    @Value("${cosmos.maxDegreeOfParallelism")
+    @Value("${cosmos.maxDegreeOfParallelism:0}")
     private int maxDegreeOfParallelism;
 
     @Bean
