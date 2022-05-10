@@ -27,7 +27,11 @@ public final class PolybaseSettingsRejectType extends ExpandableStringEnum<Polyb
         return fromString(name, PolybaseSettingsRejectType.class);
     }
 
-    /** @return known PolybaseSettingsRejectType values. */
+    /**
+     * Gets known PolybaseSettingsRejectType values.
+     *
+     * @return known PolybaseSettingsRejectType values.
+     */
     public static Collection<PolybaseSettingsRejectType> values() {
         return values(PolybaseSettingsRejectType.class);
     }
