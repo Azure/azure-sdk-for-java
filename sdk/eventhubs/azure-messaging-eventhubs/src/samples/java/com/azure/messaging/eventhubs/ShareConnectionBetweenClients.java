@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
@@ -13,7 +16,7 @@ import java.util.stream.Stream;
  */
 public class ShareConnectionBetweenClients {
     /**
-     * Main method to invoke this demo on how to send an {@link EventDataBatch} to an Azure Event Hub.
+     * Main method to invoke this demo.
      *
      * @param args Unused arguments to the program.
      */
@@ -49,6 +52,7 @@ public class ShareConnectionBetweenClients {
             System.out.println("Received: " + event.getData().getBodyAsString());
         });
 
+        // Dispose of the resources.
         producer.close();
         consumer.close();
     }
