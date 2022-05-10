@@ -7,7 +7,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support-netty</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;current} -->
 
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for GraalVM Netty support</name>
@@ -58,49 +58,49 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-aot-graalvm-support</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
+            <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler-proxy</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
         </dependency>
 
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http2</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-unix-common</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-epoll</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
             <classifier>linux-x86_64</classifier>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-kqueue</artifactId>
-            <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+            <version>4.1.76.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
             <classifier>osx-x86_64</classifier>
         </dependency>
     </dependencies>
@@ -115,19 +115,90 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>io.netty:netty-buffer:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
-                                <include>io.netty:netty-codec-http:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
-                                <include>io.netty:netty-codec-http2:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
-                                <include>io.netty:netty-handler:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
-                                <include>io.netty:netty-handler-proxy:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
-                                <include>io.netty:netty-transport-native-unix-common:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
-                                <include>io.netty:netty-transport-native-epoll:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-                                <include>io.netty:netty-transport-native-kqueue:[4.1.73.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+                                <include>io.netty:netty-buffer:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                                <include>io.netty:netty-codec-http:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                                <include>io.netty:netty-codec-http2:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                                <include>io.netty:netty-handler:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                                <include>io.netty:netty-handler-proxy:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                                <include>io.netty:netty-transport-native-unix-common:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+                                <include>io.netty:netty-transport-native-epoll:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+                                <include>io.netty:netty-transport-native-kqueue:[4.1.76.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
                 </configuration>
             </plugin>
+
+            <!-- START: Empty Java Doc -->
+            <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+                 to pass the required checks on Maven. The way this works is by setting the classesDirectory
+                 to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+                 is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+                 will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+                 and recreated with the README.md being copied every time to guarantee that, when building locally,
+                 it'll have the latest copy of the README.md file.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>empty-javadoc-jar-with-readme</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>javadoc</classifier>
+                            <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>copy-readme-to-javadocTemp</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <target>
+                                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                                <delete includeEmptyDirs="true" quiet="true">
+                                    <fileset dir="${project.basedir}/javadocTemp"/>
+                                </delete>
+                                <echo>Copying ${project.basedir}/README.md to
+                                    ${project.basedir}/javadocTemp/README.md
+                                </echo>
+                                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- END: Empty Java Doc -->
         </plugins>
     </build>
 </project>

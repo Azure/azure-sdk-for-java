@@ -30,7 +30,11 @@ public final class AzureFileShareType extends ExpandableStringEnum<AzureFileShar
         return fromString(name, AzureFileShareType.class);
     }
 
-    /** @return known AzureFileShareType values. */
+    /**
+     * Gets known AzureFileShareType values.
+     *
+     * @return known AzureFileShareType values.
+     */
     public static Collection<AzureFileShareType> values() {
         return values(AzureFileShareType.class);
     }

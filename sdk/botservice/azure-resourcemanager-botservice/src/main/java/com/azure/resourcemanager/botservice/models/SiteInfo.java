@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Site information for WebChat or DirectLine Channels to identify which site to regenerate keys for. */
 @Fluent
 public final class SiteInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteInfo.class);
-
     /*
      * The site name
      */
@@ -73,13 +70,15 @@ public final class SiteInfo {
      */
     public void validate() {
         if (siteName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property siteName in model SiteInfo"));
         }
         if (key() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property key in model SiteInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SiteInfo.class);
 }

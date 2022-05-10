@@ -9,12 +9,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerRefreshOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerRefreshOperationResults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectionContainerRefreshOperationResultsImpl
     implements ProtectionContainerRefreshOperationResults {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ProtectionContainerRefreshOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectionContainerRefreshOperationResultsImpl.class);
 
     private final ProtectionContainerRefreshOperationResultsClient innerClient;
 

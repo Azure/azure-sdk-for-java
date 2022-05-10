@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The container probe, for liveness or readiness. */
 @Fluent
 public final class ContainerProbe {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerProbe.class);
-
     /*
      * The execution command to probe
      */

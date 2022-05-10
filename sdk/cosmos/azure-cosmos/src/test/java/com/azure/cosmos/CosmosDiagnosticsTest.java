@@ -168,6 +168,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "connectionStateListenerArgProvider")
+    public Object[][] connectionStateListenerArgProvider() {
+        return new Object[][]{
+            {true},
+            {false}
+        };
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() throws Exception {
         CosmosClient testGatewayClient = null;
@@ -538,7 +546,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
-            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+            if (!query.contains("group by") || qroupByFirstResponse) {
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
                 validateGatewayModeQueryDiagnostics(queryDiagnostics);
                 if (query.contains("group by")) {
@@ -711,10 +719,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void supplementalResponseStatisticsList() throws Exception {
-        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics(mockDiagnosticsClientContext(),null);
+        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
         for (int i = 0; i < 15; i++) {
             RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
-            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null, null);
         }
         List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -729,7 +737,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(storeResponseStatistics.size()).isEqualTo(0);
         for (int i = 0; i < 7; i++) {
             RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
-            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null, null);
         }
         storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
         objectMapper = new ObjectMapper();
@@ -824,17 +832,22 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         validate(deleteItemResponse.getDiagnostics(), 0, 0);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void rntbdStatistics() throws Exception {
+    @Test(groups = {"simple"}, dataProvider = "connectionStateListenerArgProvider", timeOut = TIMEOUT)
+    public void rntbdStatistics(boolean connectionStateListenerEnabled) throws Exception {
         Instant beforeClientInitialization = Instant.now();
 
         CosmosClient client1 = null;
         try {
 
+            DirectConnectionConfig connectionConfig = DirectConnectionConfig.getDefaultConfig();
+            if (connectionStateListenerEnabled) {
+                connectionConfig.setConnectionEndpointRediscoveryEnabled(true);
+            }
+
             client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
-                .directMode()
+                .directMode(connectionConfig)
                 .buildClient();
 
             TestItem testItem = new TestItem();
@@ -869,7 +882,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 beforeOperation2,
                 afterOperation2,
                 beforeOperation3,
-                afterOperation3);
+                afterOperation3,
+                connectionStateListenerEnabled);
 
             // read
             CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
@@ -892,7 +906,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                                          Instant beforeOperation2,
                                          Instant afterOperation2,
                                          Instant beforeOperation3,
-                                         Instant afterOperation3) throws Exception {
+                                         Instant afterOperation3,
+                                         boolean connectionStateListenerEnabled) throws Exception {
         ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
         JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
         assertThat(responseStatisticsList.isArray()).isTrue();
@@ -915,6 +930,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
 
+        JsonNode connectionStateListenerMetrics = serviceEndpointStatistics.get("cerMetrics");
+        if (connectionStateListenerEnabled) {
+
+            assertThat(connectionStateListenerMetrics).isNotNull();
+            assertThat(connectionStateListenerMetrics.get("lastCallTimestamp")).isNull();
+            assertThat(connectionStateListenerMetrics.get("lastActionableContext")).isNull();
+        } else {
+            assertThat(connectionStateListenerMetrics).isNull();
+        }
+
         // first request initialized the rntbd service endpoint
         Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(1);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
@@ -929,11 +954,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
         Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
     }
 
     private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {

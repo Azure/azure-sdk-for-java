@@ -15,13 +15,13 @@ import com.azure.resourcemanager.iotcentral.fluent.models.AppInner;
 import com.azure.resourcemanager.iotcentral.fluent.models.AppTemplateInner;
 import com.azure.resourcemanager.iotcentral.models.App;
 import com.azure.resourcemanager.iotcentral.models.AppAvailabilityInfo;
+import com.azure.resourcemanager.iotcentral.models.AppPatch;
 import com.azure.resourcemanager.iotcentral.models.AppTemplate;
 import com.azure.resourcemanager.iotcentral.models.Apps;
 import com.azure.resourcemanager.iotcentral.models.OperationInputs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AppsImpl implements Apps {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AppsImpl.class);
 
     private final AppsClient innerClient;
 
@@ -54,6 +54,14 @@ public final class AppsImpl implements Apps {
         } else {
             return null;
         }
+    }
+
+    public void update(String resourceGroupName, String resourceName, AppPatch appPatch) {
+        this.serviceClient().update(resourceGroupName, resourceName, appPatch);
+    }
+
+    public void update(String resourceGroupName, String resourceName, AppPatch appPatch, Context context) {
+        this.serviceClient().update(resourceGroupName, resourceName, appPatch, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
@@ -145,7 +153,7 @@ public final class AppsImpl implements Apps {
     public App getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +161,7 @@ public final class AppsImpl implements Apps {
         }
         String resourceName = Utils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
@@ -164,7 +172,7 @@ public final class AppsImpl implements Apps {
     public Response<App> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +180,7 @@ public final class AppsImpl implements Apps {
         }
         String resourceName = Utils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
@@ -183,7 +191,7 @@ public final class AppsImpl implements Apps {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -191,7 +199,7 @@ public final class AppsImpl implements Apps {
         }
         String resourceName = Utils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));
@@ -202,7 +210,7 @@ public final class AppsImpl implements Apps {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -210,7 +218,7 @@ public final class AppsImpl implements Apps {
         }
         String resourceName = Utils.getValueFromIdByName(id, "iotApps");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iotApps'.", id)));

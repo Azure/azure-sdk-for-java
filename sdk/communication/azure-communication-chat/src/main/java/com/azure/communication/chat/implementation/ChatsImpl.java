@@ -58,7 +58,7 @@ public final class ChatsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCh")
-    private interface ChatsService {
+    public interface ChatsService {
         @Post("/chat/threads")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

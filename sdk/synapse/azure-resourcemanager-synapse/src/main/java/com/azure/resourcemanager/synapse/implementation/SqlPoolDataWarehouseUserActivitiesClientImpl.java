@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolDataWarehouseUserActivitiesClient;
 import com.azure.resourcemanager.synapse.fluent.models.DataWarehouseUserActivitiesInner;
 import com.azure.resourcemanager.synapse.models.DataWarehouseUserActivityName;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in SqlPoolDataWarehouseUserActivitiesClient.
  */
 public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPoolDataWarehouseUserActivitiesClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolDataWarehouseUserActivitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolDataWarehouseUserActivitiesService service;
 

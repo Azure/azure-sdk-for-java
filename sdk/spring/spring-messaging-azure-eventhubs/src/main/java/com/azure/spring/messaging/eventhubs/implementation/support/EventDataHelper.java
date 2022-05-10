@@ -13,6 +13,9 @@ import java.util.Map;
  */
 public final class EventDataHelper {
 
+    private EventDataHelper() {
+    }
+
     /**
      * Convert the {@link EventData} to the strings.
      * @param eventData the event data.

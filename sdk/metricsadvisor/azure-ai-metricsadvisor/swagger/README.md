@@ -26,6 +26,7 @@ output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.metricsadvisor
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true

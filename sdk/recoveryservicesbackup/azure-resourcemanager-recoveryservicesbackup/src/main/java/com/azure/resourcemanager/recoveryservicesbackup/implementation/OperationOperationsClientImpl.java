@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ValidateOperationsResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationOperationsClient. */
 public final class OperationOperationsClientImpl implements OperationOperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationOperationsService service;
 

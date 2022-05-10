@@ -52,7 +52,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientWorks")
-    private interface WorkspaceGitRepoManagementsService {
+    public interface WorkspaceGitRepoManagementsService {
         @Post("/getGitHubAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

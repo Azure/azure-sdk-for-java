@@ -10,8 +10,6 @@ import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.StorageFileOutputStream;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.util.StringUtils;
@@ -28,7 +26,7 @@ import java.net.URL;
  * class represents a handle to a file.
  */
 public final class StorageFileResource extends AzureStorageResource {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileResource.class);
+
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of file";
     private final ShareServiceClient shareServiceClient;
     private final ShareClient shareClient;
@@ -97,7 +95,6 @@ public final class StorageFileResource extends AzureStorageResource {
             }
             return this.shareFileClient.getFileOutputStream();
         } catch (ShareStorageException e) {
-            LOGGER.error(MSG_FAIL_OPEN_OUTPUT, e);
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
         }
     }
@@ -191,7 +188,6 @@ public final class StorageFileResource extends AzureStorageResource {
             assertExisted();
             return this.shareFileClient.openInputStream();
         } catch (ShareStorageException e) {
-            LOGGER.error("Failed to open input stream of cloud file", e);
             throw new IOException("Failed to open input stream of cloud file", e);
         }
     }

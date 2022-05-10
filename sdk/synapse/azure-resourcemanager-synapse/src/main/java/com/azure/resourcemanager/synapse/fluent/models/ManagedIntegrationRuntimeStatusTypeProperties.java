@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ManagedIntegrationRuntimeError;
 import com.azure.resourcemanager.synapse.models.ManagedIntegrationRuntimeNode;
 import com.azure.resourcemanager.synapse.models.ManagedIntegrationRuntimeOperationResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,9 +15,6 @@ import java.util.List;
 /** Managed integration runtime status type properties. */
 @Immutable
 public final class ManagedIntegrationRuntimeStatusTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeStatusTypeProperties.class);
-
     /*
      * The time at which the integration runtime was created, in ISO8601
      * format.
