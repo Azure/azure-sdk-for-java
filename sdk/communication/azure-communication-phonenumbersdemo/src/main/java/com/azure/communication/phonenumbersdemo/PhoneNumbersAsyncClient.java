@@ -4,6 +4,12 @@
 package com.azure.communication.phonenumbersdemo;
 
 import com.azure.communication.phonenumbersdemo.implementation.PhoneNumbersImpl;
+import com.azure.communication.phonenumbersdemo.implementation.models.PhoneNumberSearchRequest;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberType;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -16,8 +22,11 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /** Initializes a new instance of the asynchronous PhoneNumbersClient type. */
 @ServiceClient(builder = PhoneNumbersClientBuilder.class, isAsync = true)
@@ -164,6 +173,39 @@ public final class PhoneNumbersAsyncClient {
     public PollerFlux<BinaryData, BinaryData> beginSearchAvailablePhoneNumbers(
             String countryCode, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.beginSearchAvailablePhoneNumbersAsync(countryCode, body, requestOptions);
+    }
+
+    /**
+     * Search for available phone numbers to purchase.
+     *
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param phoneNumberType The type of the phone numbers.
+     * @param assignmentType The assignment type of the phone numbers.
+     * @param capabilities The capacity of the phone numbers.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the result of a phone number search operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities) {
+        return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities,
+            Context.NONE);
+    }
+
+    PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities, Context context) {
+        PhoneNumberSearchRequest request = new PhoneNumberSearchRequest()
+            .setPhoneNumberType(Objects.requireNonNull(phoneNumberType))
+            .setAssignmentType(Objects.requireNonNull(assignmentType))
+            .setCapabilities(Objects.requireNonNull(capabilities));
+        return this.serviceClient.beginSearchAvailablePhoneNumbersWithModelAsync(
+            countryCode, BinaryData.fromObject(request), context == null
+                ? null : new RequestOptions().setContext(context));
     }
 
     /**

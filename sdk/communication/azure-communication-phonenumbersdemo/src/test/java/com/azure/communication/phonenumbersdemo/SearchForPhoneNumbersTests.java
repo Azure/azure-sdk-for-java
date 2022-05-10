@@ -4,8 +4,17 @@
 
 package com.azure.communication.phonenumbersdemo;
 
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberCapabilityType;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberOperationStatus;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberOperationType;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberType;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -43,5 +52,27 @@ public final class SearchForPhoneNumbersTests extends PhoneNumbersClientTestBase
         BinaryData finalResult = poller.getFinalResult();
         JsonNode finalResultNode = MAPPER.readTree(finalResult.toBytes());
         Assertions.assertEquals("+18332705858", finalResultNode.get("phoneNumbers").get(0).asText());
+    }
+
+    @Test
+    public void testSearchForPhoneNumbersWithModelTests() throws IOException {
+        SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> poller =
+            phoneNumbersClient.beginSearchAvailablePhoneNumbers(
+                "US", PhoneNumberType.GEOGRAPHIC, PhoneNumberAssignmentType.APPLICATION,
+                new PhoneNumberCapabilities()
+                    .setCalling(PhoneNumberCapabilityType.NONE)
+                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND), Context.NONE);
+
+        PollResponse<PhoneNumberOperation> pollResponse = poller.poll();
+        Assertions.assertEquals(PhoneNumberOperationType.SEARCH, pollResponse.getValue().getOperationType());
+        Assertions.assertEquals(PhoneNumberOperationStatus.NOT_STARTED, pollResponse.getValue().getStatus());
+
+        PollResponse<PhoneNumberOperation> lastPollResponse = poller.waitForCompletion();
+        Assertions.assertEquals(PhoneNumberOperationStatus.SUCCEEDED, lastPollResponse.getValue().getStatus());
+
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, lastPollResponse.getStatus());
+
+        PhoneNumberSearchResult finalResult = poller.getFinalResult();
+        Assertions.assertEquals("+18332705858", finalResult.getPhoneNumbers().get(0));
     }
 }

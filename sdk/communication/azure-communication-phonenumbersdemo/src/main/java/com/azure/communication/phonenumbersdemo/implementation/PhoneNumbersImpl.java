@@ -4,6 +4,8 @@
 
 package com.azure.communication.phonenumbersdemo.implementation;
 
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbersdemo.models.PhoneNumberSearchResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -616,6 +618,221 @@ public final class PhoneNumbersImpl {
     public SyncPoller<BinaryData, BinaryData> beginSearchAvailablePhoneNumbers(
             String countryCode, BinaryData body, RequestOptions requestOptions) {
         return this.beginSearchAvailablePhoneNumbersAsync(countryCode, body, requestOptions).getSyncPoller();
+    }
+
+    /**
+     * Search for available phone numbers to purchase.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     phoneNumberType: String(geographic/tollFree)
+     *     assignmentType: String(person/application)
+     *     capabilities: {
+     *         calling: String(none/inbound/outbound/inbound+outbound)
+     *         sms: String(none/inbound/outbound/inbound+outbound)
+     *     }
+     *     areaCode: String
+     *     quantity: Integer
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     searchId: String
+     *     phoneNumbers: [
+     *         String
+     *     ]
+     *     phoneNumberType: String(geographic/tollFree)
+     *     assignmentType: String(person/application)
+     *     capabilities: {
+     *         calling: String(none/inbound/outbound/inbound+outbound)
+     *         sms: String(none/inbound/outbound/inbound+outbound)
+     *     }
+     *     cost: {
+     *         amount: double
+     *         currencyCode: String
+     *         billingFrequency: String(monthly)
+     *     }
+     *     searchExpiresBy: String
+     * }
+     * }</pre>
+     *
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param body The phone number search request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the result of a phone number search operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersWithModelAsync(
+            String countryCode, BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.searchAvailablePhoneNumbersWithResponseAsync(countryCode, body, requestOptions),
+                new com.azure.communication.phonenumbersdemo.implementation.PhoneNumbersSearchPollingStrategy<>(
+                        this,
+                        this.client.getHttpPipeline(),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                new TypeReferencePhoneNumberOperation(),
+                new TypeReferencePhoneNumberSearchResult());
+    }
+
+    /**
+     * Search for available phone numbers to purchase.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     phoneNumberType: String(geographic/tollFree)
+     *     assignmentType: String(person/application)
+     *     capabilities: {
+     *         calling: String(none/inbound/outbound/inbound+outbound)
+     *         sms: String(none/inbound/outbound/inbound+outbound)
+     *     }
+     *     areaCode: String
+     *     quantity: Integer
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     searchId: String
+     *     phoneNumbers: [
+     *         String
+     *     ]
+     *     phoneNumberType: String(geographic/tollFree)
+     *     assignmentType: String(person/application)
+     *     capabilities: {
+     *         calling: String(none/inbound/outbound/inbound+outbound)
+     *         sms: String(none/inbound/outbound/inbound+outbound)
+     *     }
+     *     cost: {
+     *         amount: double
+     *         currencyCode: String
+     *         billingFrequency: String(monthly)
+     *     }
+     *     searchExpiresBy: String
+     * }
+     * }</pre>
+     *
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param body The phone number search request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of the result of a phone number search operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersWithModelAsync(
+            String countryCode, BinaryData body, RequestOptions requestOptions, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.searchAvailablePhoneNumbersWithResponseAsync(countryCode, body, requestOptions, context),
+                new com.azure.communication.phonenumbersdemo.implementation.PhoneNumbersSearchPollingStrategy<>(
+                        this,
+                        this.client.getHttpPipeline(),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                new TypeReferencePhoneNumberOperation(),
+                new TypeReferencePhoneNumberSearchResult());
+    }
+
+    /**
+     * Search for available phone numbers to purchase.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     phoneNumberType: String(geographic/tollFree)
+     *     assignmentType: String(person/application)
+     *     capabilities: {
+     *         calling: String(none/inbound/outbound/inbound+outbound)
+     *         sms: String(none/inbound/outbound/inbound+outbound)
+     *     }
+     *     areaCode: String
+     *     quantity: Integer
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     searchId: String
+     *     phoneNumbers: [
+     *         String
+     *     ]
+     *     phoneNumberType: String(geographic/tollFree)
+     *     assignmentType: String(person/application)
+     *     capabilities: {
+     *         calling: String(none/inbound/outbound/inbound+outbound)
+     *         sms: String(none/inbound/outbound/inbound+outbound)
+     *     }
+     *     cost: {
+     *         amount: double
+     *         currencyCode: String
+     *         billingFrequency: String(monthly)
+     *     }
+     *     searchExpiresBy: String
+     * }
+     * }</pre>
+     *
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param body The phone number search request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the result of a phone number search operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersWithModel(
+            String countryCode, BinaryData body, RequestOptions requestOptions) {
+        return this.beginSearchAvailablePhoneNumbersWithModelAsync(countryCode, body, requestOptions).getSyncPoller();
     }
 
     /**
@@ -2257,7 +2474,15 @@ public final class PhoneNumbersImpl {
                                         null));
     }
 
+    private static final class TypeReferencePhoneNumberOperation extends TypeReference<PhoneNumberOperation> {
+        // empty
+    }
+
     private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {
+        // empty
+    }
+
+    private static final class TypeReferencePhoneNumberSearchResult extends TypeReference<PhoneNumberSearchResult> {
         // empty
     }
 

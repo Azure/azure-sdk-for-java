@@ -6,4 +6,12 @@ module com.azure.communication.phonenumbersdemo {
     requires transitive com.azure.core;
 
     exports com.azure.communication.phonenumbersdemo;
+    exports com.azure.communication.phonenumbersdemo.models;
+
+    opens com.azure.communication.phonenumbersdemo.implementation.models to
+            com.azure.core,
+            com.fasterxml.jackson.databind;
+    opens com.azure.communication.phonenumbersdemo.models to
+            com.azure.core,
+            com.fasterxml.jackson.databind;
 }
