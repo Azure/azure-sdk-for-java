@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.1 (Unreleased)
+## 4.0.0-beta.1 (2022-05-10)
 
 ### Features Added
 
@@ -14,10 +14,4 @@
     - spring-cloud-azure-starter-eventhubs
     - spring-cloud-azure-starter-integration-storage-queue
     - spring-cloud-azure-starter-integration-eventhubs
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
