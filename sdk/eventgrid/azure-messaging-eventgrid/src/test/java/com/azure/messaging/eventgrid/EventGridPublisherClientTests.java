@@ -19,7 +19,6 @@ import com.azure.core.models.CloudEvent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.eventgrid.models.SendEventsOptions;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -269,8 +268,8 @@ public class EventGridPublisherClientTests extends TestBase {
                 .setSubject("Test")
                 .setTime(OffsetDateTime.now());
 
-        Mono<Response<Void>> responseMono = egClient.sendEventsWithResponse(Arrays.asList(event), new SendEventsOptions()
-                .setChannelName(getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME)));
+        Mono<Response<Void>> responseMono = egClient.sendEventsWithResponse(Arrays.asList(event),
+            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
         StepVerifier.create(responseMono)
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
                 .verifyComplete();
@@ -300,7 +299,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 .setEventTime(OffsetDateTime.now());
 
         Mono<Response<Void>> responseMono = egClient.sendEventsWithResponse(Arrays.asList(event),
-                new SendEventsOptions().setChannelName(getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME)));
+            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
         StepVerifier.create(responseMono)
                 .expectErrorSatisfies(exception -> {
                     assertEquals(HttpResponseException.class.getName(), exception.getClass().getName());
