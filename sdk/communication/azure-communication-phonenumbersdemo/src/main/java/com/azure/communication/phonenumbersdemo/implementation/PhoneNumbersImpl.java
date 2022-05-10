@@ -467,7 +467,8 @@ public final class PhoneNumbersImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.searchAvailablePhoneNumbersWithResponseAsync(countryCode, body, requestOptions),
-                new DefaultPollingStrategy<>(
+                new com.azure.communication.phonenumbersdemo.implementation.PhoneNumbersSearchPollingStrategy<>(
+                        this,
                         this.client.getHttpPipeline(),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
@@ -542,7 +543,8 @@ public final class PhoneNumbersImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.searchAvailablePhoneNumbersWithResponseAsync(countryCode, body, requestOptions, context),
-                new DefaultPollingStrategy<>(
+                new com.azure.communication.phonenumbersdemo.implementation.PhoneNumbersSearchPollingStrategy<>(
+                        this,
                         this.client.getHttpPipeline(),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
