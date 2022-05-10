@@ -28,6 +28,7 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [Processor client stops receiving](#processor-client-stops-receiving)
   - [Migrate from legacy to new client library](#migrate-from-legacy-to-new-client-library)
 - [Get additional help](#get-additional-help)
+  - [Filing GitHub issues](#filing-github-issues)
 
 ## Handle Event Hubs exceptions
 
@@ -192,7 +193,7 @@ The entire error message looks something like this:
 
 This error is expected when load balancing occurs after EventProcessorClient instances are added or removed.  Load balancing is an ongoing process.  When using the BlobCheckpointStore with your consumer, every ~30 seconds (by default), the consumer will check to see which consumers have a claim for each partition, then run some logic to determine whether it needs to 'steal' a partition from another consumer.  The service side mechanism used to 'steal' partitions is [Epoch][Epoch].
 
-However, if no instances are being added or removed, there is an underlying issue that should be addressed.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for additional information.
+However, if no instances are being added or removed, there is an underlying issue that should be addressed.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for additional information and [Filing GitHub issues](#filing-github-issues).
 
 ### High CPU usage
 
@@ -200,19 +201,7 @@ High CPU usage is usually because an instance owns too many partitions.  We reco
 
 ### Processor client stops receiving
 
-Customers often run the processor client for days on end.  Sometimes, they notice that EventProcessorClient is not processing one or more partitions.  Usually, this is not enough information to determine why the exception occurred.  The EventProcessorClient stopping is the symptom of an underlying cause (i.e. race condition) that occurred while trying to recover from a transient error.  For the team to determine the reason, we need to ask for the following details:
-
-* Event Hub environment
-  * How many partitions?
-* EventProcessorClient environment
-  * What is the machine(s) specs processing your Event Hub?
-  * How many instances are running?
-  * What is the max heap set (i.e. -Xmx)?
-* What is the average size of each EventData?
-* What is the traffic pattern like in your Event Hub? (i.e. # messages/minute and if the EventProcessorClient is always busy or there are slow traffic periods.)
-* Repro code and steps
-  * This is important as we often cannot reproduce the issue in our environment.
-* Logs.  We need DEBUG logs, but if that is not possible, INFO at least.  Error and warning level logs do not provide enough information.  The period of at least +/- 10 minutes from when the issue occurred.
+Customers often run the processor client for days on end.  Sometimes, they notice that EventProcessorClient is not processing one or more partitions.  Usually, this is not enough information to determine why the exception occurred.  The EventProcessorClient stopping is the symptom of an underlying cause (i.e. race condition) that occurred while trying to recover from a transient error.  Please see [Filing Github issues](#filing-github-issues) for the information we require.
 
 ### Migrate from legacy to new client library
 
@@ -221,6 +210,22 @@ The [migration guide][MigrationGuide] includes steps on migrating from the legac
 ## Get additional help
 
 Additional information on ways to reach out for support can be found in the [SUPPORT.md][SUPPORT] at the repo's root.
+
+### Filing GitHub issues
+
+When filing GitHub issues, the following details are requested:
+
+* Event Hub environment
+  * How many partitions?
+* EventProcessorClient environment
+  * What is the machine(s) specs processing your Event Hub?
+  * How many instances are running?
+  * What is the max heap set (i.e., Xmx)?
+* What is the average size of each EventData?
+* What is the traffic pattern like in your Event Hub?  (i.e. # messages/minute and if the EventProcessorClient is always busy or has slow traffic periods.)
+* Repro code and steps
+  * This is important as we often cannot reproduce the issue in our environment.
+* Logs.  We need DEBUG logs, but if that is not possible, INFO at least.  Error and warning level logs do not provide enough information.  The period of at least +/- 10 minutes from when the issue occurred.
 
 <!-- repo links -->
 [IoTConnectionString]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/IoTHubConnectionSample.java
