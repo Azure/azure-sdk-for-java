@@ -3,17 +3,8 @@
 ## 12.13.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for the 2021-06-08 service version.
-- Added support for setting the change time on directory/file create, set properties, and rename
-- Added support for setting content type on file rename.
-- Added support for FileLastWrittenMode.
+- Added support for the 2021-08-06 service version.
 - Added new overload of ShareFileClient.BeginCopy() and ShareFileAsyncClient.BeginCopy(), added new parameters allowing the copying of the source file's CreatedOn, LastWrittenOn, FileAttributes and ChangedOn properties.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 12.13.0-beta.1 (2022-05-06)
 
