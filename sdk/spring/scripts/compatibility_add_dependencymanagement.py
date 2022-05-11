@@ -73,22 +73,29 @@ def add_dependency_management_for_all_poms_files_in_directory(directory, spring_
                 file_path = root + os.sep + file_name
                 add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
 
+
 def add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version):
     log.info("Add dependency management for file: " + file_path)
     with open(file_path, 'r', encoding='utf-8') as pom_file:
         pom_file_content = pom_file.read()
         insert_position = pom_file_content.find('<dependencies>')
-        insert_content = get_dependency_management_content(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+        insert_content = get_dependency_management_content()
         new_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
-        with open(file_path, 'r+', encoding='utf-8') as updated_pom_file:
-            updated_pom_file.writelines(new_content)
+        if '<properties>' not in pom_file_content:
+            insert_position = pom_file_content.find('<name>')
+            insert_content = get_properties_contend_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+            finally_content = new_content[:insert_position] + insert_content + new_content[insert_position:]
+            with open(file_path, 'r+', encoding='utf-8') as updated_pom_file:
+                updated_pom_file.writelines(finally_content)
+        else:
+            insert_position = pom_file_content.find('</properties>')
+            insert_content = get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+            finally_content = new_content[:insert_position] + insert_content + new_content[insert_position:]
+            with open(file_path, 'r+', encoding='utf-8') as updated_pom_file:
+                updated_pom_file.writelines(finally_content)
 
-def get_dependency_management_content(spring_boot_dependencies_version, spring_cloud_dependencies_version):
+def get_dependency_management_content():
     return """
-  <properties>
-    <spring-boot-dependencies-version>{}</spring-boot-dependencies-version>
-    <spring-cloud-dependencies-version>{}</spring-cloud-dependencies-version>
-  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -107,7 +114,23 @@ def get_dependency_management_content(spring_boot_dependencies_version, spring_c
       </dependency>
     </dependencies>
   </dependencyManagement>
-""".format(spring_boot_dependencies_version, spring_cloud_dependencies_version, '${spring-boot-dependencies-version}', '${spring-cloud-dependencies-version}')
+  
+""".format('${spring-boot-dependencies-version}', '${spring-cloud-dependencies-version}')
+
+def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    return """
+  <properties>
+    <spring-boot-dependencies-version>{}</spring-boot-dependencies-version>
+    <spring-cloud-dependencies-version>{}</spring-cloud-dependencies-version>
+  </properties>
+  
+    """.format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+
+def get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    return """
+    <spring-boot-dependencies-version>{}</spring-boot-dependencies-version>
+    <spring-cloud-dependencies-version>{}</spring-cloud-dependencies-version>
+    """.format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
 
 if __name__ == '__main__':
     main()
