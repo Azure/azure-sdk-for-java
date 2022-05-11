@@ -15,6 +15,7 @@ import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
@@ -37,6 +38,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
     protected AppServiceManager appServiceManager;
     protected DnsZoneManager dnsZoneManager;
     protected KeyVaultManager keyVaultManager;
+    protected StorageManager storageManager;
     protected String rgName = "";
 
     @Override
@@ -65,6 +67,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
         appServiceManager = buildManager(AppServiceManager.class, httpPipeline, profile);
         dnsZoneManager = buildManager(DnsZoneManager.class, httpPipeline, profile);
         keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
     }
 
     @Override

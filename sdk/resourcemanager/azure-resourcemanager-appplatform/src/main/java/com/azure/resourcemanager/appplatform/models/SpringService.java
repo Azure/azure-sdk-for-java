@@ -32,6 +32,12 @@ public interface SpringService
     /** @return the entry point of the spring service certificate */
     SpringServiceCertificates certificates();
 
+    /**
+     * @param <T> derived type of {@link SpringStorage.DefinitionStages.WithCreate}
+     * @return the entry point of the spring storage
+     */
+    <T extends SpringStorage.DefinitionStages.WithCreate<T>> SpringStorages<T> storages();
+
     /** @return Monitoring Setting properties of the service */
     MonitoringSettingProperties getMonitoringSetting();
 

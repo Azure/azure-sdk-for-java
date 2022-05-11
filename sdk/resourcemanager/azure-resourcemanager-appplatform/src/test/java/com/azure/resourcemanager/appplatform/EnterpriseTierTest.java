@@ -9,6 +9,9 @@ import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitPrope
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitRepository;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
+import com.azure.resourcemanager.appplatform.models.SpringStorage;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -137,5 +140,47 @@ public class EnterpriseTierTest extends AppPlatformTest {
         Assertions.assertFalse(app.hasServiceRegistryBinding());
         Assertions.assertFalse(springService.getDefaultConfigurationService().getAppBindings().stream().anyMatch(SpringApp::hasConfigurationServiceBinding));
         Assertions.assertFalse(springService.getDefaultServiceRegistry().getAppBindings().stream().anyMatch(SpringApp::hasServiceRegistryBinding));
+    }
+
+    @Test
+    public void canCRUDStorage() {
+        // create Spring Cloud Enterprise Tier
+        String serviceName = generateRandomResourceName("springsvc", 15);
+        Region region = Region.US_EAST;
+        SpringService springService = appPlatformManager.springServices()
+            .define(serviceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withEnterpriseTierSku()
+            .create();
+
+        // create Azure Storage Account
+        String storageAccountName = generateRandomResourceName("sa", 15);
+        StorageAccount storageAccount =
+            storageManager.storageAccounts()
+                .define(storageAccountName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withGeneralPurposeAccountKindV2()
+                .create();
+        StorageAccountKey primaryKey = storageAccount.getKeys().get(0);
+
+        // create Spring Storage
+        String storageName = generateRandomResourceName("springstg", 15);
+        SpringStorage storage = springService.storages()
+            .define(storageName)
+            .withExistingStorageAccount(storageAccountName)
+            .withAccountKey(primaryKey.value())
+            .create();
+
+        if (!isPlaybackMode()) {
+            Assertions.assertEquals(storage.storageAccountName(), storageAccountName);
+        }
+
+        // update Spring Storage
+        StorageAccountKey secondaryKey = storageAccount.getKeys().get(1);
+        storage.update()
+            .withAccountKey(secondaryKey.value())
+            .apply();
     }
 }

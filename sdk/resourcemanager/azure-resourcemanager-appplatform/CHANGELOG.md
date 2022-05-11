@@ -12,6 +12,7 @@
 - Supported `jvmOptions()` in `SpringAppDeployment` for all tiers.
 - Supported Enterprise Tier `runtimeVersion()` in `SpringAppDeployment`.
 - Supported Enterprise Tier binding `Spring App` to `Service Registry`.
+- Supported `Storage` in `Spring Service`.
 
 ### Breaking Changes
 

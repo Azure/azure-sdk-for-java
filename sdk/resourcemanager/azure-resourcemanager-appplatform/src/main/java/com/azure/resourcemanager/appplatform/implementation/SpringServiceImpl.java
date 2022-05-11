@@ -26,6 +26,8 @@ import com.azure.resourcemanager.appplatform.models.SpringConfigurationService;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.appplatform.models.SpringServiceRegistry;
+import com.azure.resourcemanager.appplatform.models.SpringStorage;
+import com.azure.resourcemanager.appplatform.models.SpringStorages;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -49,6 +51,7 @@ public class SpringServiceImpl
     private final SpringAppsImpl apps = new SpringAppsImpl(this);
     private final SpringConfigurationServicesImpl configurationServices = new SpringConfigurationServicesImpl(this);
     private final SpringServiceRegistriesImpl serviceRegistries = new SpringServiceRegistriesImpl(this);
+    private final SpringStoragesImpl storages = new SpringStoragesImpl(this);
     private FunctionalTaskItem configServerTask = null;
     private FunctionalTaskItem monitoringSettingTask = null;
     private ServiceResourceInner patchToUpdate = new ServiceResourceInner();
@@ -77,6 +80,12 @@ public class SpringServiceImpl
     @Override
     public SpringServiceCertificates certificates() {
         return certificates;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends SpringStorage.DefinitionStages.WithCreate<T>> SpringStorages<T> storages() {
+        return (SpringStorages<T>) this.storages;
     }
 
     @Override
