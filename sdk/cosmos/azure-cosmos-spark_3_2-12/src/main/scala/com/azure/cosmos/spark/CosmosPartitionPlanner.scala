@@ -680,7 +680,9 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
           .fromArray(feedRanges)
           .flatMap(
             normalizedRange =>
-              if (isChangeFeed != partitionConfig.partitioningStrategy != PartitioningStrategies.Restrictive) {
+              // for change feed we always need min and max LSN - even with `Restrictive` partitioning strategy
+              // for query we need metadata for any partitioning strategy but `Restrictive`
+              if (isChangeFeed || partitionConfig.partitioningStrategy != PartitioningStrategies.Restrictive) {
                 PartitionMetadataCache.apply(
                   userConfig,
                   cosmosClientConfig,
