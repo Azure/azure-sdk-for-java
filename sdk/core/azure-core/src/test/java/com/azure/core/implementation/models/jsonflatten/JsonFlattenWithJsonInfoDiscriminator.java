@@ -4,17 +4,14 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = JsonFlattenWithJsonInfoDiscriminator.class)
-@JsonTypeName("JsonFlattenWithJsonInfoDiscriminator")
 @Fluent
-public final class JsonFlattenWithJsonInfoDiscriminator {
-    @JsonFlatten
-    @JsonProperty("jsonflatten.discriminator")
+public final class JsonFlattenWithJsonInfoDiscriminator implements JsonCapable<JsonFlattenWithJsonInfoDiscriminator> {
     private String jsonFlattenDiscriminator;
 
     public JsonFlattenWithJsonInfoDiscriminator setJsonFlattenDiscriminator(String jsonFlattenDiscriminator) {
@@ -24,5 +21,48 @@ public final class JsonFlattenWithJsonInfoDiscriminator {
 
     public String getJsonFlattenDiscriminator() {
         return jsonFlattenDiscriminator;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject()
+            .writeStringField("type", "JsonFlattenWithJsonInfoDiscriminator");
+
+        if (jsonFlattenDiscriminator != null) {
+            jsonWriter.writeFieldName("jsonflatten")
+                .writeStartObject()
+                .writeStringField("discriminator", jsonFlattenDiscriminator)
+                .writeEndObject();
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static JsonFlattenWithJsonInfoDiscriminator fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            String discriminator = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jsonflatten".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("discriminator".equals(fieldName)) {
+                            discriminator = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new JsonFlattenWithJsonInfoDiscriminator().setJsonFlattenDiscriminator(discriminator);
+        });
     }
 }

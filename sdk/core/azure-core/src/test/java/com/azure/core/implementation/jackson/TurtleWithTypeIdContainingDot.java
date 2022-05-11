@@ -3,17 +3,11 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = TurtleWithTypeIdContainingDot.class)
-@JsonTypeName("#Favourite.Pet.TurtleWithTypeIdContainingDot")
 public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdContainingDot {
-    @JsonProperty(value = "size")
     private Integer size;
 
     public Integer size() {
@@ -24,5 +18,19 @@ public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdConta
         this.size = size;
         return this;
     }
-}
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject().writeStringField("@odata.type", "#Favourite.Pet.TurtleWithTypeIdContainingDot");
+
+        JsonUtils.writeNonNullIntegerField(jsonWriter, "age", age());
+        JsonUtils.writeNonNullIntegerField(jsonWriter, "size", size);
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static TurtleWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return (TurtleWithTypeIdContainingDot) fromJsonInternal(jsonReader,
+            "#Favourite.Pet.TurtleWithTypeIdContainingDot");
+    }
+}

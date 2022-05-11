@@ -4,16 +4,17 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing flattening.
  */
 @Fluent
-public final class VirtualMachineScaleSet {
-    @JsonFlatten
-    @JsonProperty(value = "properties.virtualMachineProfile")
+public final class VirtualMachineScaleSet implements JsonCapable<VirtualMachineScaleSet> {
     private VirtualMachineScaleSetVMProfile virtualMachineProfile;
 
     public VirtualMachineScaleSet setVirtualMachineProfile(VirtualMachineScaleSetVMProfile virtualMachineProfile) {
@@ -23,5 +24,39 @@ public final class VirtualMachineScaleSet {
 
     public VirtualMachineScaleSetVMProfile getVirtualMachineProfile() {
         return virtualMachineProfile;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (virtualMachineProfile != null) {
+            jsonWriter.writeFieldName("properties")
+                .writeStartObject()
+                .writeFieldName("virtualMachineProfile");
+
+            virtualMachineProfile.toJson(jsonWriter)
+                .writeEndObject();
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static VirtualMachineScaleSet fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            VirtualMachineScaleSet set = new VirtualMachineScaleSet();
+
+            JsonUtils.readFields(reader, fieldName -> {
+                if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("virtualMachineProfile".equals(fieldName2)) {
+                            set.setVirtualMachineProfile(VirtualMachineScaleSetVMProfile.fromJson(reader));
+                        }
+                    });
+                }
+            });
+
+            return set;
+        });
     }
 }

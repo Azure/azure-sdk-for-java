@@ -3,14 +3,15 @@
 
 package com.azure.core.models;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.JsonPatchDocumentHelper;
 import com.azure.core.implementation.JsonPatchOperation;
 import com.azure.core.implementation.JsonPatchOperationKind;
 import com.azure.core.implementation.Option;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.DefaultJsonWriter;
 import com.azure.json.JsonCapable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -44,8 +45,6 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
 
     /**
      * Creates a new JSON Patch document.
-     * <p>
-     * If {@code serializer} isn't specified {@link JacksonAdapter} will be used.
      *
      * @param serializer The {@link JsonSerializer} that will be used to serialize patch operation values.
      */
@@ -479,22 +478,11 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
      */
     @Override
     public String toString() {
-        return toJson(new StringBuilder()).toString();
-    }
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
+        toJson(writer);
 
-    @Override
-    public StringBuilder toJson(StringBuilder stringBuilder) {
-        stringBuilder.append("[");
-
-        for (int i = 0; i < operations.size(); i++) {
-            if (i > 0) {
-                stringBuilder.append(",");
-            }
-
-            operations.get(i).toJson(stringBuilder);
-        }
-
-        return stringBuilder.append("]");
+        return outputStream.toString(StandardCharsets.UTF_8);
     }
 
     @Override
@@ -521,15 +509,7 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
      * {@link JsonToken#START_ARRAY}.
      */
     public static JsonPatchDocument fromJson(JsonReader jsonReader) {
-        List<JsonPatchOperation> operations = JsonUtils.deserializeArray(jsonReader, (reader, token) -> {
-            if (token == JsonToken.START_OBJECT) {
-                return JsonPatchOperation.fromJson(jsonReader);
-            } else if (token == JsonToken.NULL) {
-                return null;
-            } else {
-                throw new IllegalStateException("Array element should either be an object or null, received " + token);
-            }
-        });
+        List<JsonPatchOperation> operations = JsonUtils.readArray(jsonReader, JsonPatchOperation::fromJson);
 
         JsonPatchDocument document = new JsonPatchDocument();
 

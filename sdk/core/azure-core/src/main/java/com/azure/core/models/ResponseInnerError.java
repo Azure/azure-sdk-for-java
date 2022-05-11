@@ -58,19 +58,6 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
     }
 
     @Override
-    public StringBuilder toJson(StringBuilder builder) {
-        builder.append("{\"code\":\"").append(code).append("\",\"innererror\":");
-
-        if (innerError != null) {
-            innerError.toJson(builder);
-        } else {
-            builder.append("null");
-        }
-
-        return builder.append("}");
-    }
-
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
 
@@ -98,23 +85,20 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
      * passed.
      */
     public static ResponseInnerError fromJson(JsonReader jsonReader) {
-        return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             ResponseInnerError innerError = new ResponseInnerError();
 
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = jsonReader.getFieldName();
+                reader.nextToken();
 
                 // Ignore unknown properties.
                 if ("code".equals(fieldName)) {
-                    jsonReader.nextToken();
                     innerError.setCode(jsonReader.getStringValue());
                 } else if ("innererror".equals(fieldName)) {
-                    token = jsonReader.nextToken();
-
-                    // If the next token isn't JsonToken#NULL that means there is an inner error.
-                    if (token != JsonToken.NULL) {
-                        innerError.setInnerError(ResponseInnerError.fromJson(jsonReader));
-                    }
+                    innerError.setInnerError(ResponseInnerError.fromJson(jsonReader));
+                } else {
+                    reader.skipChildren();
                 }
             }
 

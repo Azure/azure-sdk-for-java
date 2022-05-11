@@ -3,26 +3,14 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
-@JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = RabbitWithTypeIdContainingDot.class)
-@JsonTypeName("#Favourite.Pet.RabbitWithTypeIdContainingDot")
 public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
-    @JsonProperty(value = "tailLength")
     private Integer tailLength;
-
-    @JsonProperty(value = "meals")
     private List<String> meals;
 
     public Integer filters() {
@@ -52,8 +40,13 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
             jsonWriter.writeIntField("tailLength", tailLength);
         }
 
-        JsonUtils.serializeArray(jsonWriter, "meals", meals, JsonWriter::writeString);
+        JsonUtils.writeArray(jsonWriter, "meals", meals, JsonWriter::writeString);
 
         return jsonWriter.writeEndObject().flush();
+    }
+
+    public static RabbitWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return (RabbitWithTypeIdContainingDot) fromJsonInternal(jsonReader,
+            "#Favourite.Pet.RabbitWithTypeIdContainingDot");
     }
 }

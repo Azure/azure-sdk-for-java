@@ -3,20 +3,16 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@JsonFlatten
 public class AnimalShelter implements JsonCapable<AnimalShelter> {
-    @JsonProperty(value = "properties.description")
     private String description;
-
-    @JsonProperty(value = "properties.animalsInfo", required = true)
     private List<FlattenableAnimalInfo> animalsInfo;
 
     public String description() {
@@ -38,38 +34,67 @@ public class AnimalShelter implements JsonCapable<AnimalShelter> {
     }
 
     @Override
-    public StringBuilder toJson(StringBuilder stringBuilder) {
-        stringBuilder.append("{\"properties\":{");
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
 
-        JsonUtils.appendNullableField(stringBuilder, "description", description)
-            .append(",\"animalsInfo\":");
-
-        if (animalsInfo == null) {
-            stringBuilder.append("null");
-        } else {
-            stringBuilder.append("[");
-
-            for (FlattenableAnimalInfo animalInfo : animalsInfo) {
-                animalInfo.toJson(stringBuilder);
-            }
-
-            stringBuilder.append("]");
+        if (description == null && animalsInfo == null) {
+            return jsonWriter.writeEndObject().flush();
         }
 
-        return stringBuilder.append("}}");
+        jsonWriter.writeFieldName("properties").writeStartObject();
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "description", description);
+        JsonUtils.writeArray(jsonWriter, "animalsInfo", animalsInfo, (writer, animalInfo) -> animalInfo.toJson(writer));
+
+        return jsonWriter.writeEndObject().writeEndObject().flush();
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject()
-            .writeFieldName("properties")
-            .writeStartObject()
-            .writeStringField("description", description);
+    /**
+     * Creates an instance of {@link AnimalShelter} by reading the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} that will be read.
+     * @return An instance of {@link AnimalShelter} if the {@link JsonReader} is pointing to {@link AnimalShelter} JSON
+     * content, or null if it is pointing to {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the {@link JsonReader} wasn't pointing to the correct {@link JsonToken} when
+     * passed.
+     */
+    public static AnimalShelter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            String description = null;
+            List<FlattenableAnimalInfo> animalsInfo = null;
 
-        return JsonUtils.serializeArray(jsonWriter, "animalsInfo", animalsInfo,
-            (writer, animalInfo) -> animalInfo.toJson(writer))
-            .writeEndObject()
-            .writeEndObject()
-            .flush();
+            // Boolean tracking flag as 'properties.animalsInfo' may be null.
+            boolean hasAnimalsInfo = false;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    // Loop over the flattened properties.
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("animalsInfo".equals(fieldName)) {
+                            hasAnimalsInfo = true;
+                            animalsInfo = JsonUtils.readArray(reader, FlattenableAnimalInfo::fromJson);
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                }
+            }
+
+            // Should this be thrown in the if block for handling 'properties'?
+            if (!hasAnimalsInfo) {
+                throw new IllegalStateException("'animalsInfo' is a required field. The JSON source for the JsonReader"
+                    + " didn't contain the expected 'properties' -> 'animalsInfo' JSON property.");
+            }
+
+            return new AnimalShelter().withAnimalsInfo(animalsInfo).withDescription(description);
+        });
     }
 }

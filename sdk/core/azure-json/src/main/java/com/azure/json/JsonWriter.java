@@ -165,8 +165,7 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON String value.
      * <p>
-     * If the {@code value} is null, this API will be equivalent to calling {@link #writeNull()}. If nothing should be
-     * written when {@code value} is null use {@link #writeStringNonNull(String)}.
+     * If the {@code value} is null, this API will be equivalent to calling {@link #writeNull()}.
      * <p>
      * This API is used instead of {@link #writeStringField(String, String)} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
@@ -175,24 +174,6 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeString(String value);
-
-    // Should this be an overload to writeString with a boolean flag?
-
-    /**
-     * Writes a JSON String value if the passed {@code value} isn't null.
-     * <p>
-     * If JSON null should be written when the {@code value} is null either use {@link #writeString(String)} or
-     * {@link #writeNull()}.
-     * <p>
-     * This API is used instead of {@link #writeStringFieldNonNull(String, String)} when the value needs to be written
-     * to the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     *
-     * @param value String value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeStringNonNull(String value) {
-        return (value == null) ? this : this.writeString(value);
-    }
 
     /**
      * Writes the passed value literally without any additional handling.
@@ -295,8 +276,7 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a JSON String field.
      * <p>
-     * If the {@code value} is null, this API will be equivalent to calling {@link #writeNullField(String)}. If nothing
-     * should be written when {@code value} is null use {@link #writeStringFieldNonNull(String, String)}.
+     * If the {@code value} is null, this API will be equivalent to calling {@link #writeNullField(String)}.
      * <p>
      * Combines {@link #writeFieldName(String)} and {@link #writeString(String)} to simplify adding a key-value to a
      * JSON object.
@@ -306,25 +286,6 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeStringField(String fieldName, String value);
-
-    // Should this be an overload to writeStringField with a boolean flag?
-
-    /**
-     * Writes a JSON String field if the passed {@code value} isn't null.
-     * <p>
-     * If JSON null should be written when the {@code value} is null either use
-     * {@link #writeStringField(String, String)} or {@link #writeNullField(String)}.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeStringNonNull(String)} to simplify adding a key-value
-     * to a JSON object.
-     *
-     * @param fieldName The field name.
-     * @param value The String value.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeStringFieldNonNull(String fieldName, String value) {
-        return (value == null) ? this : this.writeStringField(fieldName, value);
-    }
 
     /**
      * Writes the passed field literally without any additional handling.

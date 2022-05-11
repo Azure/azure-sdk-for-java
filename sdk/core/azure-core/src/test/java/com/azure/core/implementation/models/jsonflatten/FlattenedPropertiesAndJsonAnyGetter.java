@@ -4,25 +4,21 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class with {@link JsonFlatten} on a property along with {@link JsonAnyGetter} on a method.
+ * Class with JSON flattening on a property along with additional properties mapping.
  */
 @Fluent
-public final class FlattenedPropertiesAndJsonAnyGetter {
-    @JsonFlatten
-    @JsonProperty("flattened.string")
+public final class FlattenedPropertiesAndJsonAnyGetter implements JsonCapable<FlattenedPropertiesAndJsonAnyGetter> {
     private String string;
-
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     public FlattenedPropertiesAndJsonAnyGetter setString(String string) {
@@ -34,12 +30,10 @@ public final class FlattenedPropertiesAndJsonAnyGetter {
         return string;
     }
 
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
-    @JsonAnySetter
     public FlattenedPropertiesAndJsonAnyGetter addAdditionalProperty(String key, Object value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
@@ -47,5 +41,43 @@ public final class FlattenedPropertiesAndJsonAnyGetter {
 
         additionalProperties.put(key, value);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (string != null) {
+            jsonWriter.writeFieldName("flattened")
+                .writeStartObject()
+                .writeStringField("string", string)
+                .writeEndObject();
+        }
+
+        if (additionalProperties != null) {
+            additionalProperties.forEach((key, value) ->
+                JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static FlattenedPropertiesAndJsonAnyGetter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            FlattenedPropertiesAndJsonAnyGetter properties = new FlattenedPropertiesAndJsonAnyGetter();
+            properties.additionalProperties = JsonUtils.readFields(reader, true, fieldName -> {
+                if ("flattened".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("string".equals(fieldName2)) {
+                            properties.setString(reader.getStringValue());
+                        }
+                    });
+                    return true;
+                }
+                return false;
+            });
+
+            return properties;
+        });
     }
 }

@@ -24,15 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class ResponseInnerErrorTests {
     @ParameterizedTest
     @MethodSource("toJsonSupplier")
-    public void toJsonStringBuilder(ResponseInnerError innerError, String expectedJson) {
-        assertEquals(expectedJson, innerError.toJson(new StringBuilder()).toString());
-    }
-
-    @ParameterizedTest
-    @MethodSource("toJsonSupplier")
     public void toJsonJsonWriter(ResponseInnerError innerError, String expectedJson) {
         AccessibleByteArrayOutputStream os = new AccessibleByteArrayOutputStream();
-        JsonWriter writer = DefaultJsonWriter.toStream(os);
+        JsonWriter writer = DefaultJsonWriter.fromStream(os);
         innerError.toJson(writer);
 
         assertEquals(expectedJson, os.toString(StandardCharsets.UTF_8));

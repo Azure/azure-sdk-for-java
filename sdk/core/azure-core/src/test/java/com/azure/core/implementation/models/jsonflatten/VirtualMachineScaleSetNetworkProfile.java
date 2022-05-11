@@ -4,17 +4,18 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 
 import java.util.List;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing JSON flattening.
  */
 @Fluent
-public final class VirtualMachineScaleSetNetworkProfile {
-    @JsonProperty(value = "networkInterfaceConfigurations")
+public final class VirtualMachineScaleSetNetworkProfile implements JsonCapable<VirtualMachineScaleSetNetworkProfile> {
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     public VirtualMachineScaleSetNetworkProfile setNetworkInterfaceConfigurations(
@@ -25,5 +26,32 @@ public final class VirtualMachineScaleSetNetworkProfile {
 
     public List<VirtualMachineScaleSetNetworkConfiguration> getNetworkInterfaceConfigurations() {
         return networkInterfaceConfigurations;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (networkInterfaceConfigurations != null) {
+            JsonUtils.writeArray(jsonWriter, "networkInterfaceConfigurations", networkInterfaceConfigurations,
+                (writer, config) -> config.toJson(writer));
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static VirtualMachineScaleSetNetworkProfile fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            VirtualMachineScaleSetNetworkProfile profile = new VirtualMachineScaleSetNetworkProfile();
+
+            JsonUtils.readFields(reader, fieldName -> {
+                if ("networkInterfaceConfigurations".equals(fieldName)) {
+                    profile.setNetworkInterfaceConfigurations(JsonUtils.readArray(reader,
+                        VirtualMachineScaleSetNetworkConfiguration::fromJson));
+                }
+            });
+
+            return profile;
+        });
     }
 }

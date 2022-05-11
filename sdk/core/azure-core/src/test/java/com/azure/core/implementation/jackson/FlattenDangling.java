@@ -3,15 +3,16 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
  * Class for testing serialization.
  */
-public class FlattenDangling {
-    @JsonProperty("a.flattened.property")
-    @JsonFlatten
+public class FlattenDangling implements JsonCapable<FlattenDangling> {
     private String flattenedProperty;
 
     public String getFlattenedProperty() {
@@ -21,5 +22,44 @@ public class FlattenDangling {
     public FlattenDangling setFlattenedProperty(String flattenedProperty) {
         this.flattenedProperty = flattenedProperty;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (flattenedProperty != null) {
+            jsonWriter.writeFieldName("a")
+                .writeStartObject()
+                .writeFieldName("flattened")
+                .writeStartObject()
+                .writeStringField("property", flattenedProperty)
+                .writeEndObject()
+                .writeEndObject();
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static FlattenDangling fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            FlattenDangling dangling = new FlattenDangling();
+
+            JsonUtils.readFields(reader, fieldName -> {
+                if ("a".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("flattened".equals(fieldName2) && reader.currentToken() == JsonToken.START_OBJECT) {
+                            JsonUtils.readFields(reader, fieldName3 -> {
+                                if ("property".equals(fieldName3)) {
+                                    dangling.setFlattenedProperty(reader.getStringValue());
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            return dangling;
+        });
     }
 }

@@ -4,12 +4,11 @@
 package com.azure.core.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
 /**
- * Represents the type of a GeoJSON object.
+ * Represents the GeoJSON object type.
  */
 public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
     /**
@@ -53,7 +52,6 @@ public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
      * @param name Name of the GeoObjectType.
      * @return The corresponding GeoObjectType.
      */
-    @JsonCreator
     public static GeoObjectType fromString(String name) {
         return fromString(name, GeoObjectType.class);
     }

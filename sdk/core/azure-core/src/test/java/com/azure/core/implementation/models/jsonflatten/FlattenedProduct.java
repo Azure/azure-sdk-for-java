@@ -4,20 +4,18 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing JSON flattening.
  */
 @Fluent
-@JsonFlatten
-public class FlattenedProduct {
-    // Flattened and escaped property
-    @JsonProperty(value = "properties.p\\.name")
+public class FlattenedProduct implements JsonCapable<FlattenedProduct> {
     private String productName;
-
-    @JsonProperty(value = "properties.type")
     private String productType;
 
     public String getProductName() {
@@ -36,5 +34,41 @@ public class FlattenedProduct {
     public FlattenedProduct setProductType(String productType) {
         this.productType = productType;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (productName == null && productType == null) {
+            return jsonWriter.writeEndObject().flush();
+        }
+
+        jsonWriter.writeFieldName("properties").writeStartObject();
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "p.name", productName);
+        JsonUtils.writeNonNullStringField(jsonWriter, "type", productType);
+
+        return jsonWriter.writeEndObject().writeEndObject().flush();
+    }
+
+    public static FlattenedProduct fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            FlattenedProduct product = new FlattenedProduct();
+
+            JsonUtils.readFields(reader, fieldName -> {
+                if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    JsonUtils.readFields(reader, fieldName2 -> {
+                        if ("p.name".equals(fieldName2)) {
+                            product.setProductName(reader.getStringValue());
+                        } else if ("type".equals(fieldName2)) {
+                            product.setProductType(reader.getStringValue());
+                        }
+                    });
+                }
+            });
+
+            return product;
+        });
     }
 }

@@ -4,20 +4,18 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
- * Model used for testing {@link JsonFlatten}.
+ * Model used for testing JSON flattening.
  */
 @Fluent
-@JsonFlatten
-public class SampleResource {
-
-    @JsonProperty(value = "properties.name")
+public class SampleResource implements JsonCapable<SampleResource> {
     private String namePropertiesName;
-
-    @JsonProperty(value = "properties.registrationTtl")
     private String registrationTtl;
 
     public SampleResource withNamePropertiesName(String namePropertiesName) {
@@ -36,6 +34,53 @@ public class SampleResource {
 
     public String getRegistrationTtl() {
         return registrationTtl;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        if (namePropertiesName == null && registrationTtl == null) {
+            return jsonWriter.writeEndObject().flush();
+        }
+
+        jsonWriter.writeFieldName("properties").writeStartObject();
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "name", namePropertiesName);
+        JsonUtils.writeNonNullStringField(jsonWriter, "registrationTtl", registrationTtl);
+
+        return jsonWriter.writeEndObject().writeEndObject().flush();
+    }
+
+    public static SampleResource fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            String namePropertiesName = null;
+            String registrationTtl = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            namePropertiesName = reader.getStringValue();
+                        } else if ("registrationTtl".equals(fieldName)) {
+                            registrationTtl = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new SampleResource().withNamePropertiesName(namePropertiesName).withRegistrationTtl(registrationTtl);
+        });
     }
 }
 

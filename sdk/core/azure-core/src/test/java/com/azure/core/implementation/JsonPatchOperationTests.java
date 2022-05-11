@@ -22,15 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JsonPatchOperationTests {
     @ParameterizedTest
     @MethodSource("toJsonSupplier")
-    public void toJsonStringBuilder(JsonPatchOperation operation, String expectedJson) {
-        assertEquals(expectedJson, operation.toJson(new StringBuilder()).toString());
-    }
-
-    @ParameterizedTest
-    @MethodSource("toJsonSupplier")
     public void toJsonJsonWriter(JsonPatchOperation operation, String expectedJson) throws IOException {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        try (JsonWriter writer = DefaultJsonWriter.toStream(outputStream)) {
+        try (JsonWriter writer = DefaultJsonWriter.fromStream(outputStream)) {
             operation.toJson(writer);
         }
 

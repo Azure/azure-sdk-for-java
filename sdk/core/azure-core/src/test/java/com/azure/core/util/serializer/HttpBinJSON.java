@@ -3,21 +3,20 @@
 
 package com.azure.core.util.serializer;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Maps to the JSON return values from http://httpbin.org.
+ * Maps to the JSON return values from <a href="http://httpbin.org">http://httpbin.org</a>.
  */
-public class HttpBinJSON {
-    @JsonProperty()
+public class HttpBinJSON implements JsonCapable<HttpBinJSON> {
     private String url;
-
-    @JsonProperty()
     private Map<String, String> headers;
-
-    @JsonProperty()
     private Object data;
 
     /**
@@ -72,5 +71,67 @@ public class HttpBinJSON {
      */
     public void data(Object data) {
         this.data = data;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "url", url);
+
+        if (headers != null) {
+            jsonWriter.writeFieldName("headers")
+                .writeStartObject();
+
+            headers.forEach(jsonWriter::writeStringField);
+
+            jsonWriter.writeEndObject();
+        }
+
+        if (data != null) {
+            jsonWriter.writeFieldName("data");
+            JsonUtils.writeUntypedField(jsonWriter, data);
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static HttpBinJSON fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            String url = null;
+            Map<String, String> headers = null;
+            Object data = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    url = reader.getStringValue();
+                } else if ("headers".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    if (headers == null) {
+                        headers = new LinkedHashMap<>();
+                    }
+
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        headers.put(fieldName, reader.getStringValue());
+                    }
+                } else if ("data".equals(fieldName)) {
+                    data = JsonUtils.readUntypedField(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            HttpBinJSON json = new HttpBinJSON();
+            json.url(url);
+            json.headers(headers);
+            json.data(data);
+
+            return json;
+        });
     }
 }

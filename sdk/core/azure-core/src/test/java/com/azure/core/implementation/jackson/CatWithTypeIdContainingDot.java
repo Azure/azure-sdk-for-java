@@ -3,20 +3,10 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = CatWithTypeIdContainingDot.class)
-@JsonTypeName("#Favourite.Pet.CatWithTypeIdContainingDot")
 public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
-    @JsonProperty(value = "breed", required = true)
     private String breed;
 
     public String breed() {
@@ -35,5 +25,9 @@ public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
             .writeStringField("breed", breed)
             .writeEndObject()
             .flush();
+    }
+
+    public static CatWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return (CatWithTypeIdContainingDot) fromJsonInternal(jsonReader, "#Favourite.Pet.CatWithTypeIdContainingDot");
     }
 }

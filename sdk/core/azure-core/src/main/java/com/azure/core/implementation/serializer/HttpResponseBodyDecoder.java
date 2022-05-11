@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.implementation.FromJsonCache;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
@@ -18,6 +19,8 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonReader;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
@@ -67,7 +71,7 @@ public final class HttpResponseBodyDecoder {
                 return deserializeBody(body,
                     decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                     null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
-            } catch (IOException | MalformedValueException ex) {
+            } catch (Exception ex) {
                 // This translates in RestProxy as a RestException with no deserialized body.
                 // The response content will still be accessible via the .response() member.
                 LOGGER.warning("Failed to deserialize the error entity.", ex);
@@ -87,7 +91,7 @@ public final class HttpResponseBodyDecoder {
                     serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, e);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new HttpResponseException("Deserialization Failed.", httpResponse, e);
             }
         }
@@ -139,14 +143,16 @@ public final class HttpResponseBodyDecoder {
      * @throws IOException When the body cannot be deserialized
      */
     private static Object deserializeBody(final byte[] value, final Type resultType, final Type wireType,
-        final SerializerAdapter serializer, final SerializerEncoding encoding) throws IOException {
+        final SerializerAdapter serializer, final SerializerEncoding encoding) throws Exception {
         if (wireType == null) {
-            return serializer.deserialize(value, resultType, encoding);
+            return deserializeWithJsonCapableCheck(value, resultType,
+                () -> serializer.deserialize(value, resultType, encoding));
         } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
             return deserializePage(value, resultType, wireType, serializer, encoding);
         } else {
             final Type wireResponseType = constructWireResponseType(resultType, wireType);
-            final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
+            final Object wireResponse = deserializeWithJsonCapableCheck(value, wireResponseType,
+                () -> serializer.deserialize(value, wireResponseType, encoding));
 
             return convertToResultType(wireResponse, resultType, wireType);
         }
@@ -205,19 +211,26 @@ public final class HttpResponseBodyDecoder {
      * @param serializer The serializer used to deserialize the value.
      * @param encoding Encoding used to deserialize string
      * @return An object representing an instance of {@param wireType}
-     * @throws IOException if the serializer is unable to deserialize the value.
      */
-    private static Object deserializePage(final byte[] value,
-        final Type resultType,
-        final Type wireType,
-        final SerializerAdapter serializer,
-        final SerializerEncoding encoding) throws IOException {
+    private static Object deserializePage(final byte[] value, final Type resultType, final Type wireType,
+        final SerializerAdapter serializer, final SerializerEncoding encoding) throws Exception {
         // If the type is the 'Page' interface [@ReturnValueWireType(Page.class)] we will use the 'ItemPage' class.
         final Type wireResponseType = (wireType == Page.class)
             ? TypeUtil.createParameterizedType(ItemPage.class, resultType)
             : wireType;
 
-        return serializer.deserialize(value, wireResponseType, encoding);
+        return deserializeWithJsonCapableCheck(value, wireResponseType,
+            () -> serializer.deserialize(value, wireResponseType, encoding));
+    }
+
+    private static Object deserializeWithJsonCapableCheck(byte[] data, Type deserializationType,
+        Callable<Object> serializerAdapterDeserialization) throws Exception {
+        if (FromJsonCache.isJsonCapable(deserializationType)) {
+            JsonReader jsonReader = DefaultJsonReader.fromBytes(data);
+            return FromJsonCache.fromJson(deserializationType.getClass(), jsonReader);
+        } else {
+            return serializerAdapterDeserialization.call();
+        }
     }
 
     /**

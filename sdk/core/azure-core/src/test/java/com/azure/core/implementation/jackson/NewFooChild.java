@@ -3,15 +3,19 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 
 /**
  * Class for testing serialization.
  */
-@JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
-@JsonTypeName("newfoochild")
 public class NewFooChild extends NewFoo {
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        return toJsonInternal(jsonWriter, "newfoochild");
+    }
+
+    public static NewFooChild fromJson(JsonReader jsonReader) {
+        return (NewFooChild) fromJsonInternal(jsonReader, "newfoochild");
+    }
 }

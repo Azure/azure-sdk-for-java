@@ -49,18 +49,12 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         @Override
-        public StringBuilder toJson(StringBuilder stringBuilder) {
-            return JsonUtils.appendNullableField(stringBuilder.append("{"), "name", name)
-                .append("}");
-        }
-
-        @Override
         public JsonWriter toJson(JsonWriter jsonWriter) {
             return jsonWriter.writeStartObject().writeStringField("name", name).writeEndObject().flush();
         }
 
         public static Foo fromJson(JsonReader jsonReader) {
-            return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+            return JsonUtils.readObject(jsonReader, reader -> {
                 String name = null;
 
                 while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -86,18 +80,12 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         @Override
-        public StringBuilder toJson(StringBuilder stringBuilder) {
-            return JsonUtils.appendNullableField(stringBuilder.append("{"), "customHdr", customHdr)
-                .append("}");
-        }
-
-        @Override
         public JsonWriter toJson(JsonWriter jsonWriter) {
             return jsonWriter.writeStartObject().writeStringField("customHdr", customHdr).writeEndObject().flush();
         }
 
         public static FooHeader fromJson(JsonReader jsonReader) {
-            return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+            return JsonUtils.readObject(jsonReader, reader -> {
                 String customHdr = null;
 
                 while (jsonReader.nextToken() != JsonToken.END_OBJECT) {

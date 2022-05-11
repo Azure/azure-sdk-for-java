@@ -3,24 +3,19 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.util.List;
 
-public class ComposeTurtles {
-    @JsonProperty(value = "description")
+public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
     private String description;
-
-    @JsonProperty(value = "turtlesSet1Lead")
     private TurtleWithTypeIdContainingDot turtlesSet1Lead;
-
-    @JsonProperty(value = "turtlesSet1")
     private List<TurtleWithTypeIdContainingDot> turtlesSet1;
-
-    @JsonProperty(value = "turtlesSet2Lead")
     private NonEmptyAnimalWithTypeIdContainingDot turtlesSet2Lead;
-
-    @JsonProperty(value = "turtlesSet2")
     private List<NonEmptyAnimalWithTypeIdContainingDot> turtlesSet2;
 
     public String description() {
@@ -66,5 +61,67 @@ public class ComposeTurtles {
     public ComposeTurtles withTurtlesSet2(List<NonEmptyAnimalWithTypeIdContainingDot> turtles) {
         this.turtlesSet2 = turtles;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "description", description);
+
+        if (turtlesSet1Lead != null) {
+            jsonWriter.writeFieldName("turtlesSet1Lead");
+            turtlesSet1Lead.toJson(jsonWriter);
+        }
+
+        if (turtlesSet1 != null) {
+            JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, (writer, turtle) -> turtle.toJson(writer));
+        }
+
+        if (turtlesSet2Lead != null) {
+            jsonWriter.writeFieldName("turtlesSet2Lead");
+            turtlesSet2Lead.toJson(jsonWriter);
+        }
+
+        if (turtlesSet2 != null) {
+            JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, (writer, turtle) -> turtle.toJson(writer));
+        }
+
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ComposeTurtles fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(jsonReader, reader -> {
+            String description = null;
+            TurtleWithTypeIdContainingDot turtleSet1Lead = null;
+            List<TurtleWithTypeIdContainingDot> turtleSet1 = null;
+            NonEmptyAnimalWithTypeIdContainingDot turtleSet2Lead = null;
+            List<NonEmptyAnimalWithTypeIdContainingDot> turtleSet2 = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    description = reader.getStringValue();
+                } else if ("turtlesSet1Lead".equals(fieldName)) {
+                    turtleSet1Lead = TurtleWithTypeIdContainingDot.fromJson(reader);
+                } else if ("turtlesSet1".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
+                    turtleSet1 = JsonUtils.readArray(reader, TurtleWithTypeIdContainingDot::fromJson);
+                } else if ("turtlesSet2Lead".equals(fieldName)) {
+                    turtleSet2Lead = NonEmptyAnimalWithTypeIdContainingDot.fromJson(jsonReader);
+                } else if ("turtlesSet2".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
+                    turtleSet2 = JsonUtils.readArray(reader, NonEmptyAnimalWithTypeIdContainingDot::fromJson);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new ComposeTurtles().withDescription(description)
+                .withTurtlesSet1Lead(turtleSet1Lead)
+                .withTurtlesSet1(turtleSet1)
+                .withTurtlesSet2Lead(turtleSet2Lead)
+                .withTurtlesSet2(turtleSet2);
+        });
     }
 }

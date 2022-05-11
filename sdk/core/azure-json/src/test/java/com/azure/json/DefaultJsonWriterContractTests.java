@@ -17,7 +17,7 @@ public class DefaultJsonWriterContractTests extends JsonWriterContractTests {
     public JsonWriter getJsonWriter() {
         outputStream = new AccessibleByteArrayOutputStream();
 
-        return DefaultJsonWriter.toStream(outputStream);
+        return DefaultJsonWriter.fromStream(outputStream);
     }
 
     @Override

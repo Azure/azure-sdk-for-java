@@ -3,24 +3,12 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = DogWithTypeIdContainingDot.class)
-@JsonTypeName("#Favourite.Pet.DogWithTypeIdContainingDot")
 public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
-    @JsonProperty(value = "breed")
     private String breed;
-
-    // Flattenable property
-    @JsonProperty(value = "properties.cuteLevel")
     private Integer cuteLevel;
 
     public String breed() {
@@ -44,8 +32,9 @@ public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject()
-            .writeStringField("@odata.type", "#Favourite.Pet.DogWithTypeIdContainingDot")
-            .writeStringFieldNonNull("breed", breed);
+            .writeStringField("@odata.type", "#Favourite.Pet.DogWithTypeIdContainingDot");
+
+        JsonUtils.writeNonNullStringField(jsonWriter, "breed", breed);
 
         if (cuteLevel != null) {
             jsonWriter.writeFieldName("properties")
@@ -55,5 +44,9 @@ public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
         }
 
         return jsonWriter.writeEndObject().flush();
+    }
+
+    public static DogWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return (DogWithTypeIdContainingDot) fromJsonInternal(jsonReader, "#Favourite.Pet.DogWithTypeIdContainingDot");
     }
 }

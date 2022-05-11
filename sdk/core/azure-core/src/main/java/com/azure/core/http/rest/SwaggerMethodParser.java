@@ -25,6 +25,7 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -33,13 +34,18 @@ import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonWriter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -522,7 +528,24 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
-        return (value instanceof String) ? (String) value : serializer.serializeRaw(value);
+        if (value instanceof String) {
+            return (String) value;
+        } else if (value instanceof ExpandableStringEnum<?>) {
+            return value.toString();
+        } else if (value instanceof JsonCapable<?>) {
+            AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+            JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream);
+            ((JsonCapable<?>) value).toJson(jsonWriter);
+            String toReturn = outputStream.toString(StandardCharsets.UTF_8);
+
+            if (toReturn.startsWith("\"") && toReturn.endsWith("\"")) {
+                return toReturn.substring(1, toReturn.length() - 1);
+            }
+
+            return toReturn;
+        } else {
+            return serializer.serializeRaw(value);
+        }
     }
 
     private static String serializeFormData(SerializerAdapter serializer, String key, Object value,
@@ -549,7 +572,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
-        String serializedValue = serializer.serializeRaw(value);
+        String serializedValue = serialize(serializer, value);
 
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }

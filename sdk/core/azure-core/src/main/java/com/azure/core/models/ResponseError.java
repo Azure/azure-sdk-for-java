@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -112,37 +111,6 @@ public final class ResponseError implements JsonCapable<ResponseError> {
     }
 
     @Override
-    public StringBuilder toJson(StringBuilder builder) {
-        builder.append("{\"code\":\"").append(code)
-            .append("\",\"message\":\"").append(message).append("\"");
-
-        if (target != null) {
-            builder.append(",\"target\":\"").append(target).append("\"");
-        }
-
-        if (innerError != null) {
-            builder.append(",\"innererror\":");
-            innerError.toJson(builder);
-        }
-
-        if (errorDetails != null) {
-            builder.append(",\"details\":[");
-
-            for (int i = 0; i < errorDetails.size(); i++) {
-                if (i > 0) {
-                    builder.append(",");
-                }
-
-                errorDetails.get(i).toJson(builder);
-            }
-
-            builder.append("]");
-        }
-
-        return builder.append("}");
-    }
-
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject()
             .writeStringField("code", code)
@@ -178,10 +146,13 @@ public final class ResponseError implements JsonCapable<ResponseError> {
      * passed.
      */
     public static ResponseError fromJson(JsonReader jsonReader) {
-        return JsonUtils.deserializeObject(jsonReader, (reader, token) -> {
+        return JsonUtils.readObject(jsonReader, reader -> {
             // required
             String code = null;
             String message = null;
+
+            boolean hasCode = false;
+            boolean hasMessage = false;
 
             // optional
             String target = null;
@@ -189,48 +160,31 @@ public final class ResponseError implements JsonCapable<ResponseError> {
             List<ResponseError> errorDetails = null;
 
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                token = jsonReader.nextToken();
+                String fieldName = reader.getFieldName();
+                jsonReader.nextToken();
 
-                switch (jsonReader.getFieldName()) {
-                    case "code":
-                        code = jsonReader.getStringValue();
-                        break;
-
-                    case "message":
-                        message = jsonReader.getStringValue();
-                        break;
-
-                    case "target":
-                        target = jsonReader.getStringValue();
-                        break;
-
-                    case "innererror":
-                        innerError = ResponseInnerError.fromJson(jsonReader);
-                        break;
-
-                    case "details":
-                        if (token == JsonToken.START_ARRAY) {
-                            token = jsonReader.nextToken();
-                            errorDetails = new ArrayList<>();
-                        }
-
-                        while (token != JsonToken.END_ARRAY) {
-                            errorDetails.add(ResponseError.fromJson(jsonReader));
-                            token = jsonReader.nextToken();
-                        }
-
-                        break;
-
-                    default:
-                        break;
+                if ("code".equals(fieldName)) {
+                    hasCode = true;
+                    code = jsonReader.getStringValue();
+                } else if ("message".equals(fieldName)) {
+                    hasMessage = true;
+                    message = jsonReader.getStringValue();
+                } else if ("target".equals(fieldName)) {
+                    target = jsonReader.getStringValue();
+                } else if ("innererror".equals(fieldName)) {
+                    innerError = ResponseInnerError.fromJson(jsonReader);
+                } else if ("details".equals(fieldName)) {
+                    errorDetails = JsonUtils.readArray(reader, ResponseError::fromJson);
+                } else {
+                    reader.skipChildren();
                 }
             }
 
-            if (code == null && message == null) {
+            if (!hasCode && !hasMessage) {
                 throw new IllegalStateException("Missing required properties 'code' and 'message'.");
-            } else if (code == null) {
+            } else if (!hasCode) {
                 throw new IllegalStateException("Missing required property 'code'.");
-            } else if (message == null) {
+            } else if (!hasMessage) {
                 throw new IllegalStateException("Missing required property 'message'.");
             } else {
                 return new ResponseError(code, message)

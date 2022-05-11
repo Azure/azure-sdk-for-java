@@ -106,13 +106,18 @@ public final class JsonWriteContext {
     /**
      * Updates the context based on the {@link JsonToken} that was written.
      * <p>
-     * Tokens {@link JsonToken#END_OBJECT}, {@link JsonToken#END_ARRAY}, {@link JsonToken#BOOLEAN},
-     * {@link JsonToken#NULL}, {@link JsonToken#NUMBER}, and {@link JsonToken#STRING} complete the current context and
-     * prepare set the parent context for return. If the parent context is {@link JsonWriteContext#ROOT} then
-     * {@link JsonWriteContext#COMPLETED} is the updated context as the JSON stream has completed writing. But if the
-     * {@link JsonWriteContext} isn't {@link JsonWriteContext#ROOT} and the token is {@link JsonToken#END_OBJECT} or
-     * {@link JsonToken#END_ARRAY} and the parent context is {@link JsonWriteState#FIELD} that will be completed as well
-     * as the field has completed writing.
+     * Tokens {@link JsonToken#BOOLEAN}, {@link JsonToken#NULL}, {@link JsonToken#NUMBER}, and {@link JsonToken#STRING}
+     * can mutate the current state in three different ways. If the current context is {@link JsonWriteContext#ROOT}
+     * then {@link JsonWriteContext#COMPLETED} is the updated context as the JSON stream has completed writing. If the
+     * current context is {@link JsonWriteState#ARRAY} then this context is returned without mutation as writing an
+     * element to an array doesn't complete the array. Otherwise, the parent context is returned as the only other legal
+     * context is {@link JsonWriteState#FIELD} and writing a value completes the field.
+     * <p>
+     * Tokens {@link JsonToken#END_OBJECT} and {@link JsonToken#END_ARRAY} complete the current context and prepare set
+     * the parent context for return. If the parent context is {@link JsonWriteContext#ROOT} then
+     * {@link JsonWriteContext#COMPLETED} is the updated context as the JSON stream has completed writing. Otherwise,
+     * if the parent context is {@link JsonWriteState#FIELD} that will be completed as well as the field has completed
+     * writing.
      * <p>
      * Tokens {@link JsonToken#START_OBJECT}, {@link JsonToken#START_ARRAY}, and {@link JsonToken#FIELD_NAME} create a
      * child context where the current context becomes the parent context.
@@ -124,13 +129,20 @@ public final class JsonWriteContext {
      * @return The updated writing context.
      */
     public JsonWriteContext updateContext(JsonToken token) {
-        // Simple value has two scenarios:
+        // Simple value has three scenarios:
         //
         // - Current context is the root, writing a simple value completes the JSON stream and the writing context
         //   becomes COMPLETE.
         // - Current context isn't the root, writing context becomes the parent context and the context is completed.
+        // - Current context is ARRAY, writing context stays the same.
         if (isSimpleValue(token)) {
-            return context == JsonWriteState.ROOT ? COMPLETED : parent;
+            if (context == JsonWriteState.ROOT) {
+                return COMPLETED;
+            } else if (context == JsonWriteState.ARRAY) {
+                return this;
+            } else {
+                return parent;
+            }
         }
 
         // Ending an array or object has three scenarios, but before the scenarios play out the current context is

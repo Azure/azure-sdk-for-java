@@ -3,23 +3,15 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonCapable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-@JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = NonEmptyAnimalWithTypeIdContainingDot.class)
-@JsonTypeName("NonEmptyAnimalWithTypeIdContainingDot")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Favourite.Pet.TurtleWithTypeIdContainingDot",
-        value = TurtleWithTypeIdContainingDot.class)
-})
-public class NonEmptyAnimalWithTypeIdContainingDot {
-    @JsonProperty(value = "age")
+import java.util.Objects;
+
+public class NonEmptyAnimalWithTypeIdContainingDot implements JsonCapable<NonEmptyAnimalWithTypeIdContainingDot> {
     private Integer age;
 
     public Integer age() {
@@ -29,5 +21,66 @@ public class NonEmptyAnimalWithTypeIdContainingDot {
     public NonEmptyAnimalWithTypeIdContainingDot withAge(Integer age) {
         this.age = age;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject().writeStringField("@odata.type", "NonEmptyAnimalWithTypeIdContainingDot");
+
+        return JsonUtils.writeNonNullIntegerField(jsonWriter, "age", age)
+            .writeEndObject()
+            .flush();
+    }
+
+    public static NonEmptyAnimalWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
+        return fromJsonInternal(jsonReader, null);
+    }
+
+    static NonEmptyAnimalWithTypeIdContainingDot fromJsonInternal(JsonReader jsonReader,
+        String expectedODataType) {
+        // Assumption time, super classes will have access to their subclasses and they'll be in the same package.
+        return JsonUtils.readObject(jsonReader, reader -> {
+            String odataType = null;
+            Integer age = null;
+            Integer size = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    odataType = jsonReader.getStringValue();
+                } else if ("age".equals(fieldName)) {
+                    age = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                } else if ("size".equals(fieldName)) {
+                    size = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            // When called from a subtype, the expected @odata.type will be passed and verified, as long as the
+            // @odata.type in the JSON wasn't null or missing.
+            // TODO (alzimmer): Should this throw if it was present and null?
+            if (expectedODataType != null && odataType != null && !Objects.equals(expectedODataType, odataType)) {
+                throw new IllegalStateException("Discriminator field '@odata.type' didn't match expected value: "
+                    + "'" + expectedODataType + "'. It was: '" + odataType + "'.");
+            }
+
+            if ((expectedODataType == null && odataType == null)
+                || "NonEmptyAnimalWithTypeIdContainingDot".equals(odataType)) {
+                return new NonEmptyAnimalWithTypeIdContainingDot().withAge(age);
+            } else if ("#Favourite.Pet.TurtleWithTypeIdContainingDot".equals(odataType)
+                || "#Favourite.Pet.TurtleWithTypeIdContainingDot".equals(expectedODataType)) {
+                TurtleWithTypeIdContainingDot turtle = new TurtleWithTypeIdContainingDot().withSize(size);
+                turtle.withAge(age);
+
+                return turtle;
+            } else {
+                throw new IllegalStateException("Discriminator field '@odata.type' didn't match expected values: "
+                    + "'#Favourite.Pet.TurtleWithTypeIdContainingDot' or 'NonEmptyAnimalWithTypeIdContainingDot'. "
+                    + "It was: '" + odataType + "'.");
+            }
+        });
     }
 }
