@@ -704,8 +704,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                   0,
                   0,
                   None,
-                  null,
-                  null
+                  new AtomicLong(0),
+                  new AtomicLong(0)
                 ))
               })
           .collectSeq()
