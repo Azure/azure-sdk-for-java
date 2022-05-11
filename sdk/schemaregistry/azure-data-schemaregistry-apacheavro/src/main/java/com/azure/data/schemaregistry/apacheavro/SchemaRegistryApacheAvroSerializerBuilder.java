@@ -111,7 +111,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      *
      * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance.
      */
-    public SchemaRegistryApacheAvroSerializerBuilder schemaRegistryAsyncClient(
+    public SchemaRegistryApacheAvroSerializerBuilder schemaRegistryClient(
             SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
         this.schemaRegistryAsyncClient = schemaRegistryAsyncClient;
         return this;
@@ -122,7 +122,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      *
      * @return A new instance of {@link SchemaRegistryApacheAvroSerializer}.
      *
-     * @throws NullPointerException if {@link #schemaRegistryAsyncClient(SchemaRegistryAsyncClient)} is {@code null}
+     * @throws NullPointerException if {@link #schemaRegistryClient(SchemaRegistryAsyncClient)} is {@code null}
      * @throws IllegalStateException if {@link #autoRegisterSchemas(boolean)} is {@code true} but {@link
      *         #schemaGroup(String) schemaGroup} is {@code null}.
      */
