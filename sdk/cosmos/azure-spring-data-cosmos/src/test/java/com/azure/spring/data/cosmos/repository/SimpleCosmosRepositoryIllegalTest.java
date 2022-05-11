@@ -30,7 +30,6 @@ public class SimpleCosmosRepositoryIllegalTest {
     @Before
     public void setUp() {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("", new PartitionKeyDefinition());
-        when(entityInformation.getIndexingPolicy()).thenReturn(new IndexingPolicy());
         when(dbOperations.getContainerProperties(any())).thenReturn(containerProperties);
         repository = new SimpleCosmosRepository<>(entityInformation, dbOperations);
     }
