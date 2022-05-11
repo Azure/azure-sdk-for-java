@@ -56,7 +56,7 @@ When the connection to Event Hubs is idle, the service will disconnect the clien
 
 ## Permission issues
 
-An `AmqpException` with an [`AmqpErrorCondition`][AmqpErrorCondition] of "amqp:unauthorized-access" means that the customer's credentials do not allow for them to perform the action (receiving or sending) with Event Hubs.
+An `AmqpException` with an [`AmqpErrorCondition`][AmqpErrorCondition] of "amqp:unauthorized-access" means that the provided credentials do not allow for them to perform the action (receiving or sending) with Event Hubs.
 
 * [Double check you have the correct connection string][GetConnectionString]
 * [Ensure your SAS token is generated correctly][AuthorizeSAS]
@@ -78,7 +78,7 @@ An `AmqpException` with an [`AmqpErrorCondition`][AmqpErrorCondition] of "amqp:u
 
 ### SSL handshake failures
 
-This error can occur when an intercepting proxy is used and the proxy is not configured correctly.  We recommend testing in your hosting environment with the proxy disabled to verify.
+This error can occur when an intercepting proxy is used.  We recommend testing in your hosting environment with the proxy disabled to verify.
 
 ### Socket exhaustion errors
 
@@ -110,7 +110,7 @@ For more information about our identity library, check out our [Authentication a
 
 ## Enable and configure logging
 
-Azure SDK for Java offers a consistent logging story to help troubleshoot application errors and expedite their resolution.  The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue.  View the [logging][Logging] wiki for guidance about enabling logging.
+The Azure SDK for Java offers a consistent logging story to help troubleshoot application errors and expedite their resolution.  The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue.  View the [logging][Logging] wiki for guidance about enabling logging.
 
 In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` provides insights into the library's state.  Below are sample log4j2 and logback configurations to reduce the excessive
 messages when verbose logging is enabled.
@@ -170,17 +170,17 @@ When publishing messages, the Event Hubs service supports a single partition key
 
 The partition key of the EventHubs event is available in the Kafka record headers, the protocol specific key being "x-opt-partition-key" in the header.
 
-By design, we don't promote the Kafka message key to be the Event Hubs partition key nor the reverse because with the same value, the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross-protocol communication case.  Exposing the properties with a protocol specific key to the other protocol client should be good enough.
+By design, Event Hubs does not promote the Kafka message key to be the Event Hubs partition key nor the reverse because with the same value, the Kafka client and the Event Hub client likely send the message to two different partitions.  It might cause some confusion if we set the value in the cross-protocol communication case.  Exposing the properties with a protocol specific key to the other protocol client should be good enough.
 
 ## Troubleshoot EventProcessorClient issues
 
-### 412 precondition failures when checkpointing
+### 412 precondition failures when using an event processor
 
-412 precondition errors occur when the client tries to take or renew ownership of a partition, but the local version of the checkpoint is outdated.  This occurs when another processor instance steals partition ownership.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for more information.
+412 precondition errors occur when the client tries to take or renew ownership of a partition, but the local version of the ownership record is outdated.  This occurs when another processor instance steals partition ownership.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for more information.
 
-### Partition ownership changes a lot
+### Partition ownership changes frequently
 
-When the number of EventProcessorClient instances changes (i.e. added or removed), the running instances try to load-balance partitions between themselves.  The default balancing is greedy, so an EventProcessorClient will take as many partitions at once to reach a balanced state.  As additional nodes are added, they may steal these partitions to balance themselves out.  If this is not the case, a GitHub issue with logs and a repro should be filed.
+When the number of EventProcessorClient instances changes (i.e. added or removed), the running instances try to load-balance partitions between themselves.  For a few minutes after the number of processors changes, partitions are expected to change owners.   Once balanced, partition ownership should be stable and change infrequently.  If partition ownership is changing frequently when the number of processors is constant, this likely indicates a problem.  It is recommended that a GitHub issue with logs and a repro be filed in this case.
 
 ### "...current receiver 'nil' with epoch '0' is getting disconnected"
 
@@ -191,7 +191,7 @@ The entire error message looks something like this:
 > TrackingId:<GUID>, SystemTracker:<NAMESPACE>:eventhub:<EVENT_HUB_NAME>|<CONSUMER_GROUP>,
 > Timestamp:2022-01-01T12:00:00}"}
 
-This error is expected when load balancing occurs after EventProcessorClient instances are added or removed.  Load balancing is an ongoing process.  When using the BlobCheckpointStore with your consumer, every ~30 seconds (by default), the consumer will check to see which consumers have a claim for each partition, then run some logic to determine whether it needs to 'steal' a partition from another consumer.  The service side mechanism used to 'steal' partitions is [Epoch][Epoch].
+This error is expected when load balancing occurs after EventProcessorClient instances are added or removed.  Load balancing is an ongoing process.  When using the BlobCheckpointStore with your consumer, every ~30 seconds (by default), the consumer will check to see which consumers have a claim for each partition, then run some logic to determine whether it needs to 'steal' a partition from another consumer.  The service mechanism used to assert exclusive ownership over a partition is known as the [Epoch][Epoch].
 
 However, if no instances are being added or removed, there is an underlying issue that should be addressed.  See [Partition ownership changes a lot](#partition-ownership-changes-a-lot) for additional information and [Filing GitHub issues](#filing-github-issues).
 
