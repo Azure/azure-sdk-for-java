@@ -24,7 +24,11 @@ public final class PartnerClientAuthenticationType extends ExpandableStringEnum<
         return fromString(name, PartnerClientAuthenticationType.class);
     }
 
-    /** @return known PartnerClientAuthenticationType values. */
+    /**
+     * Gets known PartnerClientAuthenticationType values.
+     *
+     * @return known PartnerClientAuthenticationType values.
+     */
     public static Collection<PartnerClientAuthenticationType> values() {
         return values(PartnerClientAuthenticationType.class);
     }
