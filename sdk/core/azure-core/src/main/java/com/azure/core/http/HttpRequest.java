@@ -55,6 +55,19 @@ public class HttpRequest {
      * @param httpMethod the HTTP request method
      * @param url the target address to send the request to
      * @param headers the HTTP headers to use with this request
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers) {
+        this.httpMethod = httpMethod;
+        this.url = url;
+        this.headers = headers;
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod the HTTP request method
+     * @param url the target address to send the request to
+     * @param headers the HTTP headers to use with this request
      * @param body the request content
      */
     public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {

@@ -172,6 +172,7 @@ import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_S
 public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
+    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final BinaryDataContent content;
 
     BinaryData(BinaryDataContent content) {
@@ -356,20 +357,25 @@ public final class BinaryData {
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
-     * @param aggregate A flag indicating whether {@link Flux} should be aggregated (buffered) eagerly or
+     * @param bufferContent A flag indicating whether {@link Flux} should be buffered eagerly or
      *                  consumption deferred.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      * @throws IllegalArgumentException if the length is less than zero.
      * @throws NullPointerException if {@code data} is null.
      */
-    public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length, boolean aggregate) {
+    public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length, boolean bufferContent) {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
         }
         if (length != null && length < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
         }
-        if (aggregate) {
+        if (bufferContent && length != null && length > MAX_ARRAY_SIZE) {
+            return monoError(LOGGER, new IllegalArgumentException(
+                String.format("'length' cannot be greater than %d when content buffering is enabled.",
+                    MAX_ARRAY_SIZE)));
+        }
+        if (bufferContent) {
             if (length != null) {
                 return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
                     .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));

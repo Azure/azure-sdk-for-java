@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -261,6 +262,27 @@ public class BinaryDataTest {
                     .verifyComplete();
             }
         );
+    }
+
+    @Test
+    public void createFromFluxValidations() {
+        Stream.of(
+            BinaryData.fromFlux(null),
+            BinaryData.fromFlux(null, null),
+            BinaryData.fromFlux(null, null, false),
+            BinaryData.fromFlux(null, null, true)
+        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
+            .expectError(NullPointerException.class)
+            .verify());
+
+        Stream.of(
+            BinaryData.fromFlux(Flux.empty(), -1L),
+            BinaryData.fromFlux(Flux.empty(), -1L, false),
+            BinaryData.fromFlux(Flux.empty(), -1L, true),
+            BinaryData.fromFlux(Flux.empty(), Integer.MAX_VALUE - 7L, true)
+        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
+            .expectError(IllegalArgumentException.class)
+            .verify());
     }
 
     @Test

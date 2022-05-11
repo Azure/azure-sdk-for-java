@@ -46,12 +46,25 @@ public class HttpRequestTests {
     }
 
     @Test
+    public void constructorWithHeaders() throws MalformedURLException {
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"), httpHeaders);
+        assertEquals(HttpMethod.POST, request.getHttpMethod());
+        assertEquals(new URL("http://request.url"), request.getUrl());
+        assertSame(httpHeaders, request.getHeaders());
+        assertNull(request.getBody());
+        assertNull(request.getBodyAsBinaryData());
+    }
+
+    @Test
     public void constructorWithFluxBody() throws MalformedURLException {
+        final HttpHeaders httpHeaders = new HttpHeaders();
         final HttpRequest request = new HttpRequest(
-            HttpMethod.POST, new URL("http://request.url"), new HttpHeaders(), BODY_FLUX);
+            HttpMethod.POST, new URL("http://request.url"), httpHeaders, BODY_FLUX);
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(new URL("http://request.url"), request.getUrl());
 
+        assertSame(httpHeaders, request.getHeaders());
         assertSame(BODY_FLUX, request.getBody());
         assertNull(getContentLength(request));
         assertEquals(BODY, request.getBodyAsBinaryData().toString());
