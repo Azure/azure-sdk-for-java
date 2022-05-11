@@ -280,7 +280,8 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://monitor.azure.com//.default"
+                    /*String.format("%s/.default", endpoint)*/));
         }
         policies.addAll(
                 this.pipelinePolicies.stream()
