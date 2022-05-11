@@ -3,15 +3,11 @@
 
 package com.azure.spring.cloud.actuator.storage;
 
-import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.models.BlobServiceProperties;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
+import org.springframework.core.io.ResourceLoader;
 
-import java.time.Duration;
-
-import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL_FIELD;
 
@@ -21,35 +17,33 @@ import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL
 public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
 
     private final BlobServiceAsyncClient blobServiceAsyncClient;
-    private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
+
+    private final ResourceLoader resourceLoader;
 
     /**
      * Creates a new instance of {@link StorageBlobHealthIndicator}.
+     *
      * @param blobServiceAsyncClient the blob service client
+     * @param resourceLoader the resource loader
      */
-    public StorageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
+    public StorageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient, ResourceLoader resourceLoader) {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
+        this.resourceLoader = resourceLoader;
     }
 
     @Override
-    protected void doHealthCheck(Health.Builder builder) throws Exception {
+    protected void doHealthCheck(Health.Builder builder) {
         if (blobServiceAsyncClient == null) {
             builder.status(NOT_CONFIGURED_STATUS);
         } else {
             builder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
-            final Response<BlobServiceProperties> info = blobServiceAsyncClient.getPropertiesWithResponse()
-                                                                               .block(timeout);
-            if (info != null) {
+            try {
+                resourceLoader.getResource("azure-blob://spring-cloud-azure-not-existing-container/not-existing-blob");
                 builder.up();
+            } catch (Exception e) {
+                builder.down();
             }
         }
     }
 
-    /**
-     * Set health check request timeout.
-     * @param timeout the duration value.
-     */
-    public void setTimeout(Duration timeout) {
-        this.timeout = timeout;
-    }
 }

@@ -9,9 +9,10 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
-import reactor.core.publisher.Mono;
+import org.springframework.core.io.ResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,8 +25,8 @@ class StorageBlobHealthIndicatorTests {
         @SuppressWarnings("unchecked") Response<BlobServiceProperties> mockResponse =
             (Response<BlobServiceProperties>) mock(Response.class);
         BlobServiceAsyncClient mockAsyncClient = getMockBlobServiceAsyncClient();
-        when(mockAsyncClient.getPropertiesWithResponse()).thenReturn(Mono.just(mockResponse));
-        StorageBlobHealthIndicator indicator = new StorageBlobHealthIndicator(mockAsyncClient);
+        ResourceLoader resourceLoader = mock(ResourceLoader.class);
+        StorageBlobHealthIndicator indicator = new StorageBlobHealthIndicator(mockAsyncClient, resourceLoader);
         Health health = indicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
     }
@@ -33,9 +34,9 @@ class StorageBlobHealthIndicatorTests {
     @Test
     void storageBlobIsDown() {
         BlobServiceAsyncClient mockAsyncClient = getMockBlobServiceAsyncClient();
-        when(mockAsyncClient.getPropertiesWithResponse())
-            .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
-        StorageBlobHealthIndicator indicator = new StorageBlobHealthIndicator(mockAsyncClient);
+        ResourceLoader resourceLoader = mock(ResourceLoader.class);
+        when(resourceLoader.getResource(anyString())).thenThrow(new RuntimeException());
+        StorageBlobHealthIndicator indicator = new StorageBlobHealthIndicator(mockAsyncClient, resourceLoader);
         Health health = indicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);
     }

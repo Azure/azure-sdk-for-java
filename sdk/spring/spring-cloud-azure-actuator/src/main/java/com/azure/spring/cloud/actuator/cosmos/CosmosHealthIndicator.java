@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.actuator.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,18 +46,30 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Builder builder) {
-        CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
-            .read()
-            .block(timeout);
-
-        if (response != null) {
-            LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
-                response.getRequestCharge(), endpoint, database);
-        }
-        if (response == null) {
-            builder.down();
+        if (database == null) {
+            builder.status("The option of `spring.cloud.azure.cosmos.database` is not configured!");
         } else {
-            builder.up().withDetail("database", response.getProperties().getId());
+            try {
+                CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
+                                                                        .read()
+                                                                        .block(timeout);
+
+                if (response != null) {
+                    LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
+                        response.getRequestCharge(), endpoint, database);
+                }
+                if (response == null) {
+                    builder.down();
+                } else {
+                    builder.up().withDetail("database", response.getProperties().getId());
+                }
+            }catch (Exception e) {
+                if (e instanceof NotFoundException) {
+                    builder.status("The option of `spring.cloud.azure.cosmos.database` is not configured correctly!");
+                } else {
+                    throw e;
+                }
+            }
         }
     }
 
