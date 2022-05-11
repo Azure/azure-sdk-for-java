@@ -2,7 +2,7 @@
 
 ## 2.15.0-beta.1 (Unreleased)
 
-### Breaking Changes
+### Bug fixed
 
 - Fixed a bug that configure of `RetryOptions` does not take effect.
 
