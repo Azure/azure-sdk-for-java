@@ -1,6 +1,6 @@
 # Release History
 
-## 12.3.0 (2022-05-10)
+## 12.3.0 (2022-05-11)
 
 ### Features Added
 - TenantId can now be discovered through the service OAuth challenge response, when using a `TokenCredential` for authorization against a Storage Table Service.
