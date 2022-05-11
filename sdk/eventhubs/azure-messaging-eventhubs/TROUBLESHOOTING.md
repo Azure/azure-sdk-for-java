@@ -1,6 +1,6 @@
 # Troubleshoot Event Hubs issues
 
-This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure Identity Java client library, and mitigation steps to resolve these errors.
+This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure Event Hubs Java client library, and mitigation steps to resolve these errors.
 
 - [Handle Event Hubs exceptions](#handle-event-hubs-exceptions)
   - [Find relevant information in exception messages](#find-relevant-information-in-exception-messages)
