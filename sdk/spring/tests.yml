@@ -1,21 +1,30 @@
 trigger: none
+pr: none
+
+variables:
+  - template: ../../eng/pipelines/templates/variables/globals.yml
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      Clouds: 'Public'
-      TestResourceDirectories:
-        - spring/spring-cloud-azure-test-eventhubs-binder
-        - spring/spring-cloud-azure-test-servicebus-binder
-      Artifacts:
-        - name: spring-cloud-azure-test-eventhubs-binder
-          groupId: com.azure.spring
-          safeName: springcloudazuretesteventhubsbinder
-        - name: spring-cloud-azure-test-servicebus-binder
-          groupId: com.azure.spring
-          safeName: springcloudazuretestservicebusbinder
-      TimeoutInMinutes: 240
-      ServiceDirectory: spring
-      TestName: IntegrationTestInAzureGlobal
-      TestGoals: 'verify'
-      TestOptions: '-DskipSpringITs=false'
+  - stage:
+    jobs:
+      - job:
+
+        pool:
+          vmImage: "ubuntu-latest"
+
+        steps:
+          - script: |
+              python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py -b 2.6.6 -c 2021.0.1
+            displayName: 'add dependency management'
+          - script: |
+              python ./sdk/spring/scripts/compatibility_deleted_version.py
+            displayName: 'delete version control'
+          - task: Maven@3
+            displayName: 'Run tests'
+            inputs:
+              mavenPomFile: sdk/spring/pom.xml
+              mavenOptions: '$(MemoryOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaTestVersion)
+              jdkArchitectureOption: 'x64'
+              goals: 'clean test -Pdev'
