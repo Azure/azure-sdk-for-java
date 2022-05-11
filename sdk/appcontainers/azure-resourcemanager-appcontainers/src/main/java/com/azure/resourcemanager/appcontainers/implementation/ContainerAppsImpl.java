@@ -84,6 +84,14 @@ public final class ContainerAppsImpl implements ContainerApps {
         this.serviceClient().delete(resourceGroupName, name, context);
     }
 
+    public void update(String resourceGroupName, String name, ContainerAppInner containerAppEnvelope) {
+        this.serviceClient().update(resourceGroupName, name, containerAppEnvelope);
+    }
+
+    public void update(String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context) {
+        this.serviceClient().update(resourceGroupName, name, containerAppEnvelope, context);
+    }
+
     public CustomHostnameAnalysisResult listCustomHostnameAnalysis(String resourceGroupName, String containerAppName) {
         CustomHostnameAnalysisResultInner inner =
             this.serviceClient().listCustomHostnameAnalysis(resourceGroupName, containerAppName);

@@ -30,7 +30,11 @@ public final class IntegrationRuntimeUpdateResult extends ExpandableStringEnum<I
         return fromString(name, IntegrationRuntimeUpdateResult.class);
     }
 
-    /** @return known IntegrationRuntimeUpdateResult values. */
+    /**
+     * Gets known IntegrationRuntimeUpdateResult values.
+     *
+     * @return known IntegrationRuntimeUpdateResult values.
+     */
     public static Collection<IntegrationRuntimeUpdateResult> values() {
         return values(IntegrationRuntimeUpdateResult.class);
     }

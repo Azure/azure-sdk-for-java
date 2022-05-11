@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output
+  stream. Use BlobClientBase.downloadStream and BlobClientBase.downloadStreamWithResponse instead.
+
+## 12.17.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
+- Added the ability to list PageRanges and PageRangesDiff by page.
 
 ## 12.17.0-beta.1 (2022-05-10)
 
