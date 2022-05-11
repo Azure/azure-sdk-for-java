@@ -33,7 +33,11 @@ public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType>
         return fromString(name, ScheduleRunType.class);
     }
 
-    /** @return known ScheduleRunType values. */
+    /**
+     * Gets known ScheduleRunType values.
+     *
+     * @return known ScheduleRunType values.
+     */
     public static Collection<ScheduleRunType> values() {
         return values(ScheduleRunType.class);
     }

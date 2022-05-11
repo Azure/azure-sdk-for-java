@@ -385,7 +385,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
         return fromString(name, BlobErrorCode.class);
     }
 
-    /** @return known BlobErrorCode values. */
+    /**
+     * Gets known BlobErrorCode values.
+     *
+     * @return known BlobErrorCode values.
+     */
     public static Collection<BlobErrorCode> values() {
         return values(BlobErrorCode.class);
     }

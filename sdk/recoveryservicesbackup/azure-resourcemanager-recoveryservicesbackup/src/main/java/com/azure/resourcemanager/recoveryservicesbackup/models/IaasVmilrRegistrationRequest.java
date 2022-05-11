@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("IaasVMILRRegistrationRequest")
 @Fluent
 public final class IaasVmilrRegistrationRequest extends IlrRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVmilrRegistrationRequest.class);
-
     /*
      * ID of the IaaS VM backup copy from where the files/folders have to be
      * restored.

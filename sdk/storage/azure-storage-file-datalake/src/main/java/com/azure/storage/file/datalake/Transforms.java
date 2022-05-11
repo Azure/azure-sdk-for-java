@@ -347,7 +347,8 @@ class Transforms {
         return new PathItem(path.getETag(),
             parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
-            path.getPermissions(), fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
+            path.getPermissions(),
+            path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
             path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
     }
 
