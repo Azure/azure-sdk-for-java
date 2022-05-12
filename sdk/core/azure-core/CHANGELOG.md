@@ -3,6 +3,7 @@
 ## 1.29.0-beta.1 (Unreleased)
 
 ### Bugs Fixed
+
 - Ensure the gap in `HttpLoggingPolicy` between `requestUrl` and upcoming log contents if line separators are removed 
   by default in `ClientLogger` when logging.
 
