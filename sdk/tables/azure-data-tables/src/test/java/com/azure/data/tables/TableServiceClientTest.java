@@ -83,6 +83,10 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
      */
     @Test
     public void serviceCreateTableWithMultipleTenants() {
+        // This feature works only in Storage endpoints with service version 2020_12_06.
+        Assumptions.assumeTrue(serviceClient.getServiceEndpoint().contains("core.windows.net")
+            && serviceClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
+
         // Arrange
         String tableName = testResourceNamer.randomName("tableName", 20);
 
