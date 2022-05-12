@@ -575,6 +575,50 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
+    public void createDatabaseWithMaxDegreeOfParallelism() throws ClassNotFoundException {
+        final String configuredThroughputDbName = TestConstants.DB_NAME + "-max-degree-parallel";
+        deleteDatabaseIfExists(configuredThroughputDbName);
+
+        Integer expectedRequestUnits = 700;
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableDatabaseThroughput(false, expectedRequestUnits)
+            .setMaxDegreeOfParallelism(20)
+            .build();
+        final ReactiveCosmosTemplate configuredThroughputCosmosTemplate = createReactiveCosmosTemplate(config, configuredThroughputDbName);
+
+        final CosmosEntityInformation<Person, String> personInfo =
+            new CosmosEntityInformation<>(Person.class);
+        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo).block();
+
+        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
+        final ThroughputResponse response = database.readThroughput().block();
+        assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        assertEquals(config.getMaxDegreeOfParallelism(), 20);
+    }
+
+    @Test
+    public void createDatabaseWithQueryMerticsEnabled() throws ClassNotFoundException {
+        final String configuredThroughputDbName = TestConstants.DB_NAME + "-query-metrics-enabled";
+        deleteDatabaseIfExists(configuredThroughputDbName);
+
+        Integer expectedRequestUnits = 700;
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableDatabaseThroughput(false, expectedRequestUnits)
+            .enableQueryMetrics(true)
+            .build();
+        final ReactiveCosmosTemplate configuredThroughputCosmosTemplate = createReactiveCosmosTemplate(config, configuredThroughputDbName);
+
+        final CosmosEntityInformation<Person, String> personInfo =
+            new CosmosEntityInformation<>(Person.class);
+        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo).block();
+
+        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
+        final ThroughputResponse response = database.readThroughput().block();
+        assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        assertEquals(config.isQueryMetricsEnabled(), true);
+    }
+
+    @Test
     public void userAgentSpringDataCosmosSuffix() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         //  getUserAgentSuffix method from CosmosClientBuilder
         Method getUserAgentSuffix = CosmosClientBuilder.class.getDeclaredMethod("getUserAgentSuffix");
