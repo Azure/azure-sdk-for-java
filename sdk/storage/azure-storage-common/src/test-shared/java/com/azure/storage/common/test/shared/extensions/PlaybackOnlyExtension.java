@@ -9,8 +9,10 @@ import org.spockframework.runtime.extension.IAnnotationDrivenExtension;
 import org.spockframework.runtime.model.FeatureInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class PlaybackOnlyExtension implements IAnnotationDrivenExtension<PlaybackOnly> {
 
@@ -39,10 +41,10 @@ public class PlaybackOnlyExtension implements IAnnotationDrivenExtension<Playbac
         if ("".equals(expiryStr)) {
             return;
         }
+        OffsetDateTime expiry = LocalDate.parse(expiryStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atTime(0,0)
+            .atZone(ZoneId.of(ZoneId.SHORT_IDS.get("PST"))).toOffsetDateTime();
         OffsetDateTime now = OffsetDateTime.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
-        String nowStr = now.getYear() + "/" + String.format("%02d", now.getMonthValue()) + "/"
-            + String.format("%02d", now.getDayOfMonth());
-        if (expiryStr.compareTo(nowStr) < 0) {
+        if (now.isAfter(expiry)) {
             throw new RuntimeException("PlaybackOnly has expired. Test must be reenabled");
         }
     }
