@@ -647,13 +647,12 @@ final class TestUtils {
         SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion2, targetSentiment2);
         SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment3)));
-        // TODO: file an issue to service team for trimming the empty pre and suffix empty spaces.
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The hotel was dark and unclean. ", TextSentiment.NEGATIVE,
+            "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 32);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 31);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,

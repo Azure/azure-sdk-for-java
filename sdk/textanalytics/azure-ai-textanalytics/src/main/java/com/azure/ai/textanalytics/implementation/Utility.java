@@ -470,10 +470,8 @@ public final class Utility {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new KeyPhrasesCollection(
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-//                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
-//                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
-                    null
-                )));
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
+                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
@@ -500,10 +498,8 @@ public final class Utility {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new KeyPhrasesCollection(
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-//                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
-//                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
-                    null
-                )));
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
+                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
@@ -574,10 +570,9 @@ public final class Utility {
                             CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
                             return categorizedEntity;
                         }).collect(Collectors.toList())),
-                        //                    new IterableStream<>(documentEntities.getWarnings().stream()
-                        //                        .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
-                        null
-                    ))));
+                        new IterableStream<>(
+                            documentEntities.getWarnings().stream()
+                                .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))));
         // Document errors
         for (DocumentError documentError : results.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
@@ -601,9 +596,8 @@ public final class Utility {
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
-                null));
-//                new IterableStream<>(documentEntities.getWarnings().stream().map(
-//                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
+                new IterableStream<>(documentEntities.getWarnings().stream().map(
+                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
     }
 
     public static RecognizeEntitiesResult toRecognizeEntitiesResult(CustomEntitiesResultDocumentsItem documentEntities) {
@@ -621,9 +615,8 @@ public final class Utility {
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
-                null));
-//                new IterableStream<>(documentEntities.getWarnings().stream().map(
-//                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
+                new IterableStream<>(documentEntities.getWarnings().stream().map(
+                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
     }
 
     public static Response<RecognizePiiEntitiesResultCollection> toRecognizePiiEntitiesResultCollectionResponse(
@@ -757,9 +750,8 @@ public final class Utility {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new KeyPhrasesCollection(
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-                    null)));
-//                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
-//                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
+                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
@@ -824,11 +816,8 @@ public final class Utility {
                                 LinkedEntityPropertiesHelper.setBingEntitySearchApiId(entity, linkedEntity.getBingId());
                                 return entity;
                             }).collect(Collectors.toList())),
-                        null
-//                        new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
-//                            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))
-                    )
-                )
+                        new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
+                            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))
             ).collect(Collectors.toList());
         // Document errors
         for (DocumentError documentError : entityLinkingResult.getErrors()) {

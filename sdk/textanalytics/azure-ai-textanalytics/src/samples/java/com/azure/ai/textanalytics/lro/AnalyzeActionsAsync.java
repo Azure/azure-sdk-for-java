@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -19,7 +18,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +35,12 @@ public class AnalyzeActionsAsync {
      */
     public static void main(String[] args) {
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-                                              .serviceVersion(TextAnalyticsServiceVersion.V3_1)
-                                              .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
-                                              .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+                                              .credential(new AzureKeyCredential("{key}"))
+                                              .endpoint("{endpoint}")
                                               .buildAsyncClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 21; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
                     + " the spot! They provide marvelous food and they have a great menu. The chief cook happens to be"

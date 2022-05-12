@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -20,8 +19,6 @@ import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -30,7 +27,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -94,14 +90,12 @@ import static com.azure.ai.textanalytics.TestUtils.getRecognizeEntitiesResultCol
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollectionForActions;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResultCollection;
-import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -199,16 +193,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that detectLanguage returns an "UNKNOWN" result when faulty text is passed.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void detectLanguageFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        faultyTextRunner(input -> validatePrimaryLanguage(client.detectLanguage(input), getUnknownDetectedLanguage()));
-    }
-
-    /**
      * Verifies that a bad request exception is returned for input documents with same IDs.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -295,13 +279,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 () -> client.recognizeEntities(input).iterator().hasNext());
             assertEquals(INVALID_DOCUMENT, exception.getErrorCode());
         });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        faultyTextRunner(input -> assertTrue(client.recognizeEntities(input).iterator().hasNext()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -569,13 +546,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 client.recognizePiiEntities(document).iterator().hasNext());
             assertEquals(INVALID_DOCUMENT, exception.getErrorCode());
         });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        faultyTextRunner(document -> assertFalse(client.recognizePiiEntities(document).iterator().hasNext()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -909,14 +879,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        faultyTextRunner(input ->
-            assertFalse(client.recognizeLinkedEntities(input).iterator().hasNext()));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeBatchLinkedEntityDuplicateIdRunner(inputs -> {
@@ -1176,13 +1138,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        faultyTextRunner(input -> assertFalse(client.extractKeyPhrases(input).iterator().hasNext()));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractBatchKeyPhrasesDuplicateIdRunner(inputs -> {
@@ -1291,6 +1246,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     /**
      * Test analyzing sentiment for a string input.
      */
+    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1303,6 +1259,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     /**
      * Test analyzing sentiment for a string input with default language hint.
      */
+    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInputWithDefaultLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1316,6 +1273,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     /**
      * Test analyzing sentiment for a string input and verifying the result of opinion mining.
      */
+    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1338,32 +1296,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final TextAnalyticsException exception = assertThrows(TextAnalyticsException.class,
                 () -> client.analyzeSentiment(document));
             assertEquals(INVALID_DOCUMENT, exception.getErrorCode());
-        });
-    }
-
-    @Disabled("No longer valid expected output")
-    /**
-     * Test analyzing sentiment for a faulty document.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        faultyTextRunner(input -> {
-            final SentenceSentiment sentenceSentiment1 = new SentenceSentiment("!", TextSentiment.NEUTRAL,
-                new SentimentConfidenceScores(0.0, 0.0, 0.0));
-            SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-            SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 1);
-            final SentenceSentiment sentenceSentiment2 = new SentenceSentiment("@#%%", TextSentiment.NEUTRAL,
-                new SentimentConfidenceScores(0.0, 0.0, 0.0));
-            SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment2, 1);
-            SentenceSentimentPropertiesHelper.setLength(sentenceSentiment2, 4);
-            final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
-                TextSentiment.NEUTRAL,
-                new SentimentConfidenceScores(0.0, 0.0, 0.0),
-                new IterableStream<>(Arrays.asList(sentenceSentiment1, sentenceSentiment2)),
-                null);
-            validateDocumentSentiment(false, expectedDocumentSentiment, client.analyzeSentiment(input));
         });
     }
 

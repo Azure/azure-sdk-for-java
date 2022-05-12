@@ -22,7 +22,7 @@ public enum TextAnalyticsServiceVersion implements ServiceVersion {
     /**
      * Service Version {@code 2022-04-01-preview}.
      */
-    V2022_04_01("2022-04-01-preview");
+    V2022_04_01_PREVIEW("2022-04-01-preview");
 
     private final String version;
 
@@ -44,7 +44,7 @@ public enum TextAnalyticsServiceVersion implements ServiceVersion {
      * @return the latest {@link TextAnalyticsServiceVersion}
      */
     public static TextAnalyticsServiceVersion getLatest() {
-        return V2022_04_01;
+        return V2022_04_01_PREVIEW;
     }
 
 }

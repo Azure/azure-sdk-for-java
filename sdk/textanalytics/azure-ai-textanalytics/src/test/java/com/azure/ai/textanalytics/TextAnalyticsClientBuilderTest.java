@@ -34,7 +34,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -253,7 +252,6 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         });
     }
 
-    @Disabled("AAD is not supported in 2022-03-01 API verson")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithAAD(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {

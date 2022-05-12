@@ -601,6 +601,7 @@ class AnalyzeActionsAsyncClient {
     private SentimentAnalysisTaskParameters getSentimentAnalysisTaskParameters(AnalyzeSentimentAction action) {
         return (SentimentAnalysisTaskParameters) new SentimentAnalysisTaskParameters()
                                                      .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                                     .setOpinionMining(action.isIncludeOpinionMining())
                                                      .setModelVersion(action.getModelVersion())
                                                      .setLoggingOptOut(action.isServiceLogsDisabled());
     }
@@ -896,7 +897,7 @@ class AnalyzeActionsAsyncClient {
                     RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizeEntitiesResultCollectionResponse(results));
                 }
-//                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeEntitiesActionResults.add(actionResult);
@@ -912,7 +913,7 @@ class AnalyzeActionsAsyncClient {
                     RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizePiiEntitiesResultCollection(results));
                 }
-//                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizePiiEntitiesActionResults.add(actionResult);
@@ -928,7 +929,7 @@ class AnalyzeActionsAsyncClient {
                     ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toExtractKeyPhrasesResultCollection(results));
                 }
-//                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 extractKeyPhrasesActionResults.add(actionResult);
@@ -944,7 +945,7 @@ class AnalyzeActionsAsyncClient {
                     RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizeLinkedEntitiesResultCollection(results));
                 }
-//                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeLinkedEntitiesActionResults.add(actionResult);
@@ -960,7 +961,7 @@ class AnalyzeActionsAsyncClient {
                     AnalyzeSentimentActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toAnalyzeSentimentResultCollection(results));
                 }
-//                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 analyzeSentimentActionResults.add(actionResult);
