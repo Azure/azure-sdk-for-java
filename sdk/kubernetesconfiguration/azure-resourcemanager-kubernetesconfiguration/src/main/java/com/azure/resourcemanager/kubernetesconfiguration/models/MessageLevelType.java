@@ -30,7 +30,11 @@ public final class MessageLevelType extends ExpandableStringEnum<MessageLevelTyp
         return fromString(name, MessageLevelType.class);
     }
 
-    /** @return known MessageLevelType values. */
+    /**
+     * Gets known MessageLevelType values.
+     *
+     * @return known MessageLevelType values.
+     */
     public static Collection<MessageLevelType> values() {
         return values(MessageLevelType.class);
     }

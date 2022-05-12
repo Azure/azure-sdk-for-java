@@ -27,7 +27,11 @@ public final class ScopeType extends ExpandableStringEnum<ScopeType> {
         return fromString(name, ScopeType.class);
     }
 
-    /** @return known ScopeType values. */
+    /**
+     * Gets known ScopeType values.
+     *
+     * @return known ScopeType values.
+     */
     public static Collection<ScopeType> values() {
         return values(ScopeType.class);
     }

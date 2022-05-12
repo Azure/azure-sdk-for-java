@@ -36,7 +36,11 @@ public final class ComplianceStateType extends ExpandableStringEnum<ComplianceSt
         return fromString(name, ComplianceStateType.class);
     }
 
-    /** @return known ComplianceStateType values. */
+    /**
+     * Gets known ComplianceStateType values.
+     *
+     * @return known ComplianceStateType values.
+     */
     public static Collection<ComplianceStateType> values() {
         return values(ComplianceStateType.class);
     }

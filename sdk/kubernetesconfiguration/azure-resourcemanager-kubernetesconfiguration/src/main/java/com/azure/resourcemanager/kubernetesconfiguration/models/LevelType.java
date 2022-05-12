@@ -30,7 +30,11 @@ public final class LevelType extends ExpandableStringEnum<LevelType> {
         return fromString(name, LevelType.class);
     }
 
-    /** @return known LevelType values. */
+    /**
+     * Gets known LevelType values.
+     *
+     * @return known LevelType values.
+     */
     public static Collection<LevelType> values() {
         return values(LevelType.class);
     }

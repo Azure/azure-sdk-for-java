@@ -36,7 +36,11 @@ public final class ProvisioningStateType extends ExpandableStringEnum<Provisioni
         return fromString(name, ProvisioningStateType.class);
     }
 
-    /** @return known ProvisioningStateType values. */
+    /**
+     * Gets known ProvisioningStateType values.
+     *
+     * @return known ProvisioningStateType values.
+     */
     public static Collection<ProvisioningStateType> values() {
         return values(ProvisioningStateType.class);
     }

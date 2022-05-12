@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -85,6 +87,19 @@ public final class SourceControlConfigurationManager {
     }
 
     /**
+     * Creates an instance of SourceControlConfiguration service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the SourceControlConfiguration service API instance.
+     */
+    public static SourceControlConfigurationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new SourceControlConfigurationManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create SourceControlConfigurationManager with optional
      * configuration.
      *
@@ -103,6 +118,7 @@ public final class SourceControlConfigurationManager {
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -164,6 +180,19 @@ public final class SourceControlConfigurationManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
@@ -196,7 +225,7 @@ public final class SourceControlConfigurationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kubernetesconfiguration")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -214,10 +243,15 @@ public final class SourceControlConfigurationManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -248,7 +282,11 @@ public final class SourceControlConfigurationManager {
         }
     }
 
-    /** @return Resource collection API of Extensions. */
+    /**
+     * Gets the resource collection API of Extensions.
+     *
+     * @return Resource collection API of Extensions.
+     */
     public Extensions extensions() {
         if (this.extensions == null) {
             this.extensions = new ExtensionsImpl(clientObject.getExtensions(), this);
@@ -256,7 +294,11 @@ public final class SourceControlConfigurationManager {
         return extensions;
     }
 
-    /** @return Resource collection API of OperationStatus. */
+    /**
+     * Gets the resource collection API of OperationStatus.
+     *
+     * @return Resource collection API of OperationStatus.
+     */
     public OperationStatus operationStatus() {
         if (this.operationStatus == null) {
             this.operationStatus = new OperationStatusImpl(clientObject.getOperationStatus(), this);
@@ -264,7 +306,11 @@ public final class SourceControlConfigurationManager {
         return operationStatus;
     }
 
-    /** @return Resource collection API of FluxConfigurations. */
+    /**
+     * Gets the resource collection API of FluxConfigurations.
+     *
+     * @return Resource collection API of FluxConfigurations.
+     */
     public FluxConfigurations fluxConfigurations() {
         if (this.fluxConfigurations == null) {
             this.fluxConfigurations = new FluxConfigurationsImpl(clientObject.getFluxConfigurations(), this);
@@ -272,7 +318,11 @@ public final class SourceControlConfigurationManager {
         return fluxConfigurations;
     }
 
-    /** @return Resource collection API of FluxConfigOperationStatus. */
+    /**
+     * Gets the resource collection API of FluxConfigOperationStatus.
+     *
+     * @return Resource collection API of FluxConfigOperationStatus.
+     */
     public FluxConfigOperationStatus fluxConfigOperationStatus() {
         if (this.fluxConfigOperationStatus == null) {
             this.fluxConfigOperationStatus =
@@ -281,7 +331,11 @@ public final class SourceControlConfigurationManager {
         return fluxConfigOperationStatus;
     }
 
-    /** @return Resource collection API of SourceControlConfigurations. */
+    /**
+     * Gets the resource collection API of SourceControlConfigurations.
+     *
+     * @return Resource collection API of SourceControlConfigurations.
+     */
     public SourceControlConfigurations sourceControlConfigurations() {
         if (this.sourceControlConfigurations == null) {
             this.sourceControlConfigurations =
@@ -290,7 +344,11 @@ public final class SourceControlConfigurationManager {
         return sourceControlConfigurations;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
