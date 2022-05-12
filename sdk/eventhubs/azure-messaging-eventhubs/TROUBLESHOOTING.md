@@ -21,9 +21,9 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [Cannot set multiple partition keys for events in EventDataBatch](#cannot-set-multiple-partition-keys-for-events-in-eventdatabatch)
   - [Setting partition key on EventData is not set in Kafka consumer](#setting-partition-key-on-eventdata-is-not-set-in-kafka-consumer)
 - [Troubleshoot EventProcessorClient issues](#troubleshoot-eventprocessorclient-issues)
-  - [412 precondition failures when checkpointing](#412-precondition-failures-when-checkpointing)
-  - [Partition ownership changes a lot](#partition-ownership-changes-a-lot)
-  - ["...current receiver 'nil' with epoch '0' is getting disconnected"](#current-receiver-nil-with-epoch-0-is-getting-disconnected)
+  - [412 precondition failures when using an event processor](#412-precondition-failures-when-using-an-event-processor)
+  - [Partition ownership changes frequently](#partition-ownership-changes-frequently)
+  - ["...current receiver '<RECEIVER_NAME>' with epoch '0' is getting disconnected"](#current-receiver-receiver_name-with-epoch-0-is-getting-disconnected)
   - [High CPU usage](#high-cpu-usage)
   - [Processor client stops receiving](#processor-client-stops-receiving)
   - [Migrate from legacy to new client library](#migrate-from-legacy-to-new-client-library)
@@ -112,8 +112,7 @@ For more information about our identity library, check out our [Authentication a
 
 The Azure SDK for Java offers a consistent logging story to help troubleshoot application errors and expedite their resolution.  The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue.  View the [logging][Logging] wiki for guidance about enabling logging.
 
-In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` provides insights into the library's state.  Below are sample log4j2 and logback configurations to reduce the excessive
-messages when verbose logging is enabled.
+In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` provides insights into the library's state.  Below are sample log4j2 and logback configurations to reduce the excessive messages when verbose logging is enabled.
 
 ### Configuring Log4J 2
 
@@ -182,7 +181,7 @@ By design, Event Hubs does not promote the Kafka message key to be the Event Hub
 
 When the number of EventProcessorClient instances changes (i.e. added or removed), the running instances try to load-balance partitions between themselves.  For a few minutes after the number of processors changes, partitions are expected to change owners.   Once balanced, partition ownership should be stable and change infrequently.  If partition ownership is changing frequently when the number of processors is constant, this likely indicates a problem.  It is recommended that a GitHub issue with logs and a repro be filed in this case.
 
-### "...current receiver 'nil' with epoch '0' is getting disconnected"
+### "...current receiver '<RECEIVER_NAME>' with epoch '0' is getting disconnected"
 
 The entire error message looks something like this:
 
