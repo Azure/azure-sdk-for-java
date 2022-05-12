@@ -1228,7 +1228,7 @@ class FileAPITests extends APISpec {
 
         then:
         // exception: LeaseNotPresentWithFileOperation
-        thrown(StorageErrorException)
+        thrown(ShareStorageException)
     }
 
     def "Start copy with options metadata"() {
