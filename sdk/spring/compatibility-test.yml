@@ -1,30 +1,22 @@
-#trigger: none
-#pr: none
-trigger:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/spring/
-pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/spring/
+trigger: none
+pr: none
 
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
 
 stages:
+  - stage: "spring boot compatibility tests"
+    - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+      parameters:
+        AdditionalParameters:
+            ServiceDirectory: spring
+        MatrixConfigs:
+          - Name: spring_boot_supported_version_tests
+              Path: sdk/spring/supported-version-matrix.json
+              Selection: sparse
+              NonSparseParameters:
+                - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
+              GenerateVMJobs: true
 #  - stage:
 #    jobs:
 #      - job:
@@ -49,18 +41,18 @@ stages:
 #              jdkVersionOption: $(JavaTestVersion)
 #              jdkArchitectureOption: 'x64'
 #              goals: 'clean test -Pdev'
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: spring
-      TestName: 'spring_boot_supported_versions'
-      MatrixConfigs:
-        - Name: spring_boot_supported_version_tests
-          Path: sdk/spring/supported-version-matrix.json
-          Selection: sparse
-          NonSparseParameters:
-            - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
-          GenerateVMJobs: true
-      Artifacts:
-        - name: spring-cloud-azure-autoconfigure
-          groupId: com.azure.spring
-          safeName: springcloudazureautoconfigure
+#  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+#    parameters:
+#      ServiceDirectory: spring
+#      TestName: 'spring_boot_supported_versions'
+#      MatrixConfigs:
+#        - Name: spring_boot_supported_version_tests
+#          Path: sdk/spring/supported-version-matrix.json
+#          Selection: sparse
+#          NonSparseParameters:
+#            - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
+#          GenerateVMJobs: true
+#      Artifacts:
+#        - name: spring-cloud-azure-autoconfigure
+#          groupId: com.azure.spring
+#          safeName: springcloudazureautoconfigure
