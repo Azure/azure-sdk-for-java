@@ -24,7 +24,11 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
         return fromString(name, DataFlowReferenceType.class);
     }
 
-    /** @return known DataFlowReferenceType values. */
+    /**
+     * Gets known DataFlowReferenceType values.
+     *
+     * @return known DataFlowReferenceType values.
+     */
     public static Collection<DataFlowReferenceType> values() {
         return values(DataFlowReferenceType.class);
     }

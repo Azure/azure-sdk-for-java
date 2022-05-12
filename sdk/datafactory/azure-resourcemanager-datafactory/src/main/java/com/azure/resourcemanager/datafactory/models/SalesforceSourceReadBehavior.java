@@ -27,7 +27,11 @@ public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<Sal
         return fromString(name, SalesforceSourceReadBehavior.class);
     }
 
-    /** @return known SalesforceSourceReadBehavior values. */
+    /**
+     * Gets known SalesforceSourceReadBehavior values.
+     *
+     * @return known SalesforceSourceReadBehavior values.
+     */
     public static Collection<SalesforceSourceReadBehavior> values() {
         return values(SalesforceSourceReadBehavior.class);
     }

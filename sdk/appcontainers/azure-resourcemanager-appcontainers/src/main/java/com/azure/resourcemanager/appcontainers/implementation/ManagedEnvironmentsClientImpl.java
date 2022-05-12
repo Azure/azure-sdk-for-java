@@ -34,7 +34,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPatch;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsCollection;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -141,15 +140,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
                 + "/managedEnvironments/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ManagedEnvironmentInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ManagedEnvironmentPatch environmentEnvelope,
+            @BodyParam("application/json") ManagedEnvironmentInner environmentEnvelope,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1134,7 +1133,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Environment.
@@ -1142,12 +1141,11 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedEnvironmentInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, ManagedEnvironmentPatch environmentEnvelope) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1191,7 +1189,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Environment.
@@ -1200,12 +1198,11 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedEnvironmentInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, ManagedEnvironmentPatch environmentEnvelope, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1246,7 +1243,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Environment.
@@ -1254,41 +1251,20 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedEnvironmentInner> updateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentPatch environmentEnvelope) {
-        return updateWithResponseAsync(resourceGroupName, name, environmentEnvelope)
-            .flatMap(
-                (Response<ManagedEnvironmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, environmentEnvelope);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Patches a Managed Environment. Only patching of tags is supported currently.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedEnvironmentInner update(
-        String resourceGroupName, String name, ManagedEnvironmentPatch environmentEnvelope) {
-        return updateAsync(resourceGroupName, name, environmentEnvelope).block();
-    }
-
-    /**
-     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Environment.
@@ -1297,12 +1273,122 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, name, environmentEnvelope, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpdate(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope).getSyncPoller();
+    }
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpdate(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope, context).getSyncPoller();
+    }
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedEnvironmentInner> updateWithResponse(
-        String resourceGroupName, String name, ManagedEnvironmentPatch environmentEnvelope, Context context) {
-        return updateWithResponseAsync(resourceGroupName, name, environmentEnvelope, context).block();
+    private Mono<Void> updateAsync(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> updateAsync(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        updateAsync(resourceGroupName, name, environmentEnvelope).block();
+    }
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        updateAsync(resourceGroupName, name, environmentEnvelope, context).block();
     }
 
     /**
