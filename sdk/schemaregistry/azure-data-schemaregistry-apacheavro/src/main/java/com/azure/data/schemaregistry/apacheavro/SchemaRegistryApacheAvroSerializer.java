@@ -25,8 +25,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
 /**
  * Schema Registry-based serializer implementation for Avro data format using Apache Avro.
  *
@@ -383,29 +381,7 @@ public final class SchemaRegistryApacheAvroSerializer {
             return Mono.empty();
         }
 
-        final String schemaId;
-
-        // Temporary back-compat for the first beta while we phase this out. In the future, it will return an error.
-        // Check if the first 4 bytes of the payload have the format.
-        final byte[] recordFormatIndicator = new byte[RECORD_FORMAT_INDICATOR_SIZE];
-        contents.mark();
-
-        // Don't try to get 4 bytes if there isn't enough, so we don't get a BufferUnderflowException.
-        final boolean hasPreamble;
-        if (contents.remaining() < RECORD_FORMAT_INDICATOR_SIZE) {
-            hasPreamble = false;
-        } else {
-            contents.get(recordFormatIndicator);
-            hasPreamble = Arrays.equals(RECORD_FORMAT_INDICATOR, recordFormatIndicator);
-        }
-
-        if (hasPreamble) {
-            final byte[] schemaGuidByteArray = new byte[SCHEMA_ID_SIZE];
-            contents.get(schemaGuidByteArray);
-
-            schemaId = new String(schemaGuidByteArray, StandardCharsets.UTF_8);
-        } else {
-            if (CoreUtils.isNullOrEmpty(message.getContentType())) {
+        if (CoreUtils.isNullOrEmpty(message.getContentType())) {
                 return monoError(logger, new IllegalArgumentException("Cannot deserialize message with no content-type."));
             }
 
@@ -423,11 +399,7 @@ public final class SchemaRegistryApacheAvroSerializer {
                         + message.getContentType()));
             }
 
-            schemaId = parts[1];
-
-            // There is no header so reset back to where we marked the buffer before starting to look for the preamble.
-            contents.reset();
-        }
+        final String schemaId = parts[1];
 
         return this.schemaRegistryClient.getSchema(schemaId)
             .handle((registryObject, sink) -> {
