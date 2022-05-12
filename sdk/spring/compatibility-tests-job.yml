@@ -1,13 +1,9 @@
-trigger: none
-pr: none
-
-variables:
-  - template: ../../eng/pipelines/templates/variables/globals.yml
-
 jobs:
   - job:
     pool:
       vmImage: "ubuntu-latest"
+    variables:
+      - template: ../../eng/pipelines/templates/variables/globals.yml
     steps:
       - script: |
           pip install termcolor
