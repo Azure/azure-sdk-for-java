@@ -88,13 +88,13 @@ public class TableClientTest extends TableClientTestBase {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
         final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("AZURE_TABLES_CLIENT_ID", "clientId"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_TABLES_CLIENT_SECRET", "clientSecret"))
+            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
             .build();
 
         final TableClient tableClient2 =
-            getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("AZURE_TABLES_ENDPOINT",
+            getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
                 "https://tablestests.table.core.windows.com"), credential, true).buildClient();
 
         // Act & Assert
