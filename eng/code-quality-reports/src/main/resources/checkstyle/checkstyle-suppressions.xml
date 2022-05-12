@@ -93,6 +93,7 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]metrics[/\\]opentelemetry[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
