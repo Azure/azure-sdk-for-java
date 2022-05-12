@@ -290,8 +290,8 @@ public class HttpLoggingPolicyTests {
             .verifyComplete();
 
         String logString = convertOutputStreamToString(logCaptureStream);
-        assertTrue(logString.contains("Try count: 1"));
-        assertTrue(logString.contains("Try count: 2"));
+        assertTrue(logString.contains(" Try count: 1"));
+        assertTrue(logString.contains(" Try count: 2"));
     }
 
     private void setupLogLevel(int logLevelToSet) {

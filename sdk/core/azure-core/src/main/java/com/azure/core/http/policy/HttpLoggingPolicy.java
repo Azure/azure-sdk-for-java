@@ -152,6 +152,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     .append(request.getHttpMethod())
                     .append(" ")
                     .append(getRedactedUrl(request.getUrl(), allowedQueryParameterNames))
+                    .append(" ") // ensure the gap between url and upcoming contents if line separators are removed
                     .append(System.lineSeparator());
 
                 Integer retryCount = loggingOptions.getTryCount();
