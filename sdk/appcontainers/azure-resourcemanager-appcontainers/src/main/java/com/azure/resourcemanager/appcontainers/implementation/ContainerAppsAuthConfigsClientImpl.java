@@ -78,7 +78,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/authConfigs/{name}")
+                + "/{containerAppName}/authConfigs/{authConfigName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AuthConfigInner>> get(
@@ -86,7 +86,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
-            @PathParam("name") String name,
+            @PathParam("authConfigName") String authConfigName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -94,7 +94,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/authConfigs/{name}")
+                + "/{containerAppName}/authConfigs/{authConfigName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AuthConfigInner>> createOrUpdate(
@@ -102,7 +102,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
-            @PathParam("name") String name,
+            @PathParam("authConfigName") String authConfigName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AuthConfigInner authConfigEnvelope,
             @HeaderParam("Accept") String accept,
@@ -111,7 +111,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/authConfigs/{name}")
+                + "/{containerAppName}/authConfigs/{authConfigName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
@@ -119,7 +119,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
-            @PathParam("name") String name,
+            @PathParam("authConfigName") String authConfigName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -324,7 +324,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -332,7 +332,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthConfigInner>> getWithResponseAsync(
-        String resourceGroupName, String containerAppName, String name) {
+        String resourceGroupName, String containerAppName, String authConfigName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -353,8 +353,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             return Mono
                 .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (authConfigName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter authConfigName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -366,7 +366,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             containerAppName,
-                            name,
+                            authConfigName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -378,7 +378,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -387,7 +387,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthConfigInner>> getWithResponseAsync(
-        String resourceGroupName, String containerAppName, String name, Context context) {
+        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -408,8 +408,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             return Mono
                 .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (authConfigName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter authConfigName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -419,7 +419,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 containerAppName,
-                name,
+                authConfigName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -430,15 +430,15 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a AuthConfig of a Container App on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthConfigInner> getAsync(String resourceGroupName, String containerAppName, String name) {
-        return getWithResponseAsync(resourceGroupName, containerAppName, name)
+    private Mono<AuthConfigInner> getAsync(String resourceGroupName, String containerAppName, String authConfigName) {
+        return getWithResponseAsync(resourceGroupName, containerAppName, authConfigName)
             .flatMap(
                 (Response<AuthConfigInner> res) -> {
                     if (res.getValue() != null) {
@@ -454,15 +454,15 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a AuthConfig of a Container App.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthConfigInner get(String resourceGroupName, String containerAppName, String name) {
-        return getAsync(resourceGroupName, containerAppName, name).block();
+    public AuthConfigInner get(String resourceGroupName, String containerAppName, String authConfigName) {
+        return getAsync(resourceGroupName, containerAppName, authConfigName).block();
     }
 
     /**
@@ -470,7 +470,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -479,8 +479,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthConfigInner> getWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
-        return getWithResponseAsync(resourceGroupName, containerAppName, name, context).block();
+        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
+        return getWithResponseAsync(resourceGroupName, containerAppName, authConfigName, context).block();
     }
 
     /**
@@ -488,7 +488,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -498,7 +498,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthConfigInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String containerAppName, String name, AuthConfigInner authConfigEnvelope) {
+        String resourceGroupName, String containerAppName, String authConfigName, AuthConfigInner authConfigEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -519,8 +519,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             return Mono
                 .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (authConfigName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter authConfigName is required and cannot be null."));
         }
         if (authConfigEnvelope == null) {
             return Mono
@@ -538,7 +538,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             containerAppName,
-                            name,
+                            authConfigName,
                             this.client.getApiVersion(),
                             authConfigEnvelope,
                             accept,
@@ -551,7 +551,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -564,7 +564,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
     private Mono<Response<AuthConfigInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String containerAppName,
-        String name,
+        String authConfigName,
         AuthConfigInner authConfigEnvelope,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -587,8 +587,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             return Mono
                 .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (authConfigName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter authConfigName is required and cannot be null."));
         }
         if (authConfigEnvelope == null) {
             return Mono
@@ -604,7 +604,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 containerAppName,
-                name,
+                authConfigName,
                 this.client.getApiVersion(),
                 authConfigEnvelope,
                 accept,
@@ -616,7 +616,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -626,8 +626,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthConfigInner> createOrUpdateAsync(
-        String resourceGroupName, String containerAppName, String name, AuthConfigInner authConfigEnvelope) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, containerAppName, name, authConfigEnvelope)
+        String resourceGroupName, String containerAppName, String authConfigName, AuthConfigInner authConfigEnvelope) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, containerAppName, authConfigName, authConfigEnvelope)
             .flatMap(
                 (Response<AuthConfigInner> res) -> {
                     if (res.getValue() != null) {
@@ -643,7 +643,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -652,8 +652,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthConfigInner createOrUpdate(
-        String resourceGroupName, String containerAppName, String name, AuthConfigInner authConfigEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, containerAppName, name, authConfigEnvelope).block();
+        String resourceGroupName, String containerAppName, String authConfigName, AuthConfigInner authConfigEnvelope) {
+        return createOrUpdateAsync(resourceGroupName, containerAppName, authConfigName, authConfigEnvelope).block();
     }
 
     /**
@@ -661,7 +661,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,10 +674,11 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
     public Response<AuthConfigInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String containerAppName,
-        String name,
+        String authConfigName,
         AuthConfigInner authConfigEnvelope,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, containerAppName, name, authConfigEnvelope, context)
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, containerAppName, authConfigName, authConfigEnvelope, context)
             .block();
     }
 
@@ -686,7 +687,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -694,7 +695,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String containerAppName, String name) {
+        String resourceGroupName, String containerAppName, String authConfigName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -715,8 +716,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             return Mono
                 .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (authConfigName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter authConfigName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -728,7 +729,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             containerAppName,
-                            name,
+                            authConfigName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -740,7 +741,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -749,7 +750,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String containerAppName, String name, Context context) {
+        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -770,8 +771,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
             return Mono
                 .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (authConfigName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter authConfigName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -781,7 +782,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 containerAppName,
-                name,
+                authConfigName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -792,15 +793,15 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String containerAppName, String name) {
-        return deleteWithResponseAsync(resourceGroupName, containerAppName, name)
+    private Mono<Void> deleteAsync(String resourceGroupName, String containerAppName, String authConfigName) {
+        return deleteWithResponseAsync(resourceGroupName, containerAppName, authConfigName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -809,14 +810,14 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String containerAppName, String name) {
-        deleteAsync(resourceGroupName, containerAppName, name).block();
+    public void delete(String resourceGroupName, String containerAppName, String authConfigName) {
+        deleteAsync(resourceGroupName, containerAppName, authConfigName).block();
     }
 
     /**
@@ -824,7 +825,7 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -833,8 +834,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, containerAppName, name, context).block();
+        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, containerAppName, authConfigName, context).block();
     }
 
     /**

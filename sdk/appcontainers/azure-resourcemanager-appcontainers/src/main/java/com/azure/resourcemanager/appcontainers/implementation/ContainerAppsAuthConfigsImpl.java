@@ -41,8 +41,8 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
         return Utils.mapPage(inner, inner1 -> new AuthConfigImpl(inner1, this.manager()));
     }
 
-    public AuthConfig get(String resourceGroupName, String containerAppName, String name) {
-        AuthConfigInner inner = this.serviceClient().get(resourceGroupName, containerAppName, name);
+    public AuthConfig get(String resourceGroupName, String containerAppName, String authConfigName) {
+        AuthConfigInner inner = this.serviceClient().get(resourceGroupName, containerAppName, authConfigName);
         if (inner != null) {
             return new AuthConfigImpl(inner, this.manager());
         } else {
@@ -51,9 +51,9 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
     }
 
     public Response<AuthConfig> getWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
+        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
         Response<AuthConfigInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, containerAppName, name, context);
+            this.serviceClient().getWithResponse(resourceGroupName, containerAppName, authConfigName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -65,13 +65,13 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
         }
     }
 
-    public void delete(String resourceGroupName, String containerAppName, String name) {
-        this.serviceClient().delete(resourceGroupName, containerAppName, name);
+    public void delete(String resourceGroupName, String containerAppName, String authConfigName) {
+        this.serviceClient().delete(resourceGroupName, containerAppName, authConfigName);
     }
 
     public Response<Void> deleteWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, containerAppName, name, context);
+        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, containerAppName, authConfigName, context);
     }
 
     public AuthConfig getById(String id) {
@@ -90,14 +90,14 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "authConfigs");
-        if (name == null) {
+        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        if (authConfigName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, containerAppName, name, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE).getValue();
     }
 
     public Response<AuthConfig> getByIdWithResponse(String id, Context context) {
@@ -116,14 +116,14 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "authConfigs");
-        if (name == null) {
+        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        if (authConfigName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, containerAppName, name, context);
+        return this.getWithResponse(resourceGroupName, containerAppName, authConfigName, context);
     }
 
     public void deleteById(String id) {
@@ -142,14 +142,14 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "authConfigs");
-        if (name == null) {
+        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        if (authConfigName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, containerAppName, name, Context.NONE);
+        this.deleteWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -168,14 +168,14 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "authConfigs");
-        if (name == null) {
+        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        if (authConfigName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, containerAppName, name, context);
+        return this.deleteWithResponse(resourceGroupName, containerAppName, authConfigName, context);
     }
 
     private ContainerAppsAuthConfigsClient serviceClient() {

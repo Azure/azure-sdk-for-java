@@ -340,6 +340,30 @@ public interface ContainerApp {
     ContainerApp refresh(Context context);
 
     /**
+     * Analyzes a custom hostname for a Container App.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain analysis.
+     */
+    CustomHostnameAnalysisResult listCustomHostnameAnalysis();
+
+    /**
+     * Analyzes a custom hostname for a Container App.
+     *
+     * @param customHostname Custom hostname.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain analysis along with {@link Response}.
+     */
+    Response<CustomHostnameAnalysisResult> listCustomHostnameAnalysisWithResponse(
+        String customHostname, Context context);
+
+    /**
      * List secrets for a container app.
      *
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request

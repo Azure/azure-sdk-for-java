@@ -41,8 +41,8 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
         return Utils.mapPage(inner, inner1 -> new SourceControlImpl(inner1, this.manager()));
     }
 
-    public SourceControl get(String resourceGroupName, String containerAppName, String name) {
-        SourceControlInner inner = this.serviceClient().get(resourceGroupName, containerAppName, name);
+    public SourceControl get(String resourceGroupName, String containerAppName, String sourceControlName) {
+        SourceControlInner inner = this.serviceClient().get(resourceGroupName, containerAppName, sourceControlName);
         if (inner != null) {
             return new SourceControlImpl(inner, this.manager());
         } else {
@@ -51,9 +51,9 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
     }
 
     public Response<SourceControl> getWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
+        String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
         Response<SourceControlInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, containerAppName, name, context);
+            this.serviceClient().getWithResponse(resourceGroupName, containerAppName, sourceControlName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -65,12 +65,12 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
         }
     }
 
-    public void delete(String resourceGroupName, String containerAppName, String name) {
-        this.serviceClient().delete(resourceGroupName, containerAppName, name);
+    public void delete(String resourceGroupName, String containerAppName, String sourceControlName) {
+        this.serviceClient().delete(resourceGroupName, containerAppName, sourceControlName);
     }
 
-    public void delete(String resourceGroupName, String containerAppName, String name, Context context) {
-        this.serviceClient().delete(resourceGroupName, containerAppName, name, context);
+    public void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
+        this.serviceClient().delete(resourceGroupName, containerAppName, sourceControlName, context);
     }
 
     public SourceControl getById(String id) {
@@ -89,15 +89,15 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "sourcecontrols");
-        if (name == null) {
+        String sourceControlName = Utils.getValueFromIdByName(id, "sourcecontrols");
+        if (sourceControlName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, containerAppName, name, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, containerAppName, sourceControlName, Context.NONE).getValue();
     }
 
     public Response<SourceControl> getByIdWithResponse(String id, Context context) {
@@ -116,15 +116,15 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "sourcecontrols");
-        if (name == null) {
+        String sourceControlName = Utils.getValueFromIdByName(id, "sourcecontrols");
+        if (sourceControlName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, containerAppName, name, context);
+        return this.getWithResponse(resourceGroupName, containerAppName, sourceControlName, context);
     }
 
     public void deleteById(String id) {
@@ -143,15 +143,15 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "sourcecontrols");
-        if (name == null) {
+        String sourceControlName = Utils.getValueFromIdByName(id, "sourcecontrols");
+        if (sourceControlName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
         }
-        this.delete(resourceGroupName, containerAppName, name, Context.NONE);
+        this.delete(resourceGroupName, containerAppName, sourceControlName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
@@ -170,15 +170,15 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "sourcecontrols");
-        if (name == null) {
+        String sourceControlName = Utils.getValueFromIdByName(id, "sourcecontrols");
+        if (sourceControlName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
         }
-        this.delete(resourceGroupName, containerAppName, name, context);
+        this.delete(resourceGroupName, containerAppName, sourceControlName, context);
     }
 
     private ContainerAppsSourceControlsClient serviceClient() {

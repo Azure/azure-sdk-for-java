@@ -18,7 +18,7 @@ public interface CertificatesClient {
      * Get the Certificates in a given managed environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -26,13 +26,13 @@ public interface CertificatesClient {
      * @return the Certificates in a given managed environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CertificateInner> list(String resourceGroupName, String managedEnvironmentName);
+    PagedIterable<CertificateInner> list(String resourceGroupName, String environmentName);
 
     /**
      * Get the Certificates in a given managed environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -41,14 +41,14 @@ public interface CertificatesClient {
      * @return the Certificates in a given managed environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CertificateInner> list(String resourceGroupName, String managedEnvironmentName, Context context);
+    PagedIterable<CertificateInner> list(String resourceGroupName, String environmentName, Context context);
 
     /**
      * Get the specified Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -56,14 +56,14 @@ public interface CertificatesClient {
      * @return the specified Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner get(String resourceGroupName, String managedEnvironmentName, String name);
+    CertificateInner get(String resourceGroupName, String environmentName, String certificateName);
 
     /**
      * Get the specified Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -73,14 +73,14 @@ public interface CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CertificateInner> getWithResponse(
-        String resourceGroupName, String managedEnvironmentName, String name, Context context);
+        String resourceGroupName, String environmentName, String certificateName, Context context);
 
     /**
      * Create or Update a Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -88,14 +88,14 @@ public interface CertificatesClient {
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner createOrUpdate(String resourceGroupName, String managedEnvironmentName, String name);
+    CertificateInner createOrUpdate(String resourceGroupName, String environmentName, String certificateName);
 
     /**
      * Create or Update a Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @param certificateEnvelope Certificate to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,8 +108,8 @@ public interface CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CertificateInner> createOrUpdateWithResponse(
         String resourceGroupName,
-        String managedEnvironmentName,
-        String name,
+        String environmentName,
+        String certificateName,
         CertificateInner certificateEnvelope,
         Context context);
 
@@ -117,22 +117,22 @@ public interface CertificatesClient {
      * Deletes the specified Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String managedEnvironmentName, String name);
+    void delete(String resourceGroupName, String environmentName, String certificateName);
 
     /**
      * Deletes the specified Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -142,14 +142,14 @@ public interface CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
-        String resourceGroupName, String managedEnvironmentName, String name, Context context);
+        String resourceGroupName, String environmentName, String certificateName, Context context);
 
     /**
      * Patches a certificate. Currently only patching of tags is supported.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @param certificateEnvelope Properties of a certificate that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -159,14 +159,14 @@ public interface CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CertificateInner update(
-        String resourceGroupName, String managedEnvironmentName, String name, CertificatePatch certificateEnvelope);
+        String resourceGroupName, String environmentName, String certificateName, CertificatePatch certificateEnvelope);
 
     /**
      * Patches a certificate. Currently only patching of tags is supported.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
-     * @param name Name of the Certificate.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
      * @param certificateEnvelope Properties of a certificate that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,8 +179,8 @@ public interface CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CertificateInner> updateWithResponse(
         String resourceGroupName,
-        String managedEnvironmentName,
-        String name,
+        String environmentName,
+        String certificateName,
         CertificatePatch certificateEnvelope,
         Context context);
 }
