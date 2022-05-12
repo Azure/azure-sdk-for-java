@@ -33,7 +33,8 @@ public class StoreResponseDiagnostics {
     private final RntbdEndpointStatistics rntbdEndpointStatistics;
     private final int rntbdRequestLength;
     private final int rntbdResponseLength;
-    private final String innerErrorMessage;
+    private final String exceptionMessage;
+    private final String exceptionResponseHeaders;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(StoreResponse storeResponse) {
         return new StoreResponseDiagnostics(storeResponse);
@@ -60,7 +61,8 @@ public class StoreResponseDiagnostics {
         this.rntbdEndpointStatistics = storeResponse.getEndpointStsts();
         this.rntbdRequestLength = storeResponse.getRntbdRequestLength();
         this.rntbdResponseLength = storeResponse.getRntbdResponseLength();
-        this.innerErrorMessage = null;
+        this.exceptionMessage = null;
+        this.exceptionResponseHeaders = null;
     }
 
     private StoreResponseDiagnostics(CosmosException e) {
@@ -80,7 +82,8 @@ public class StoreResponseDiagnostics {
         this.rntbdEndpointStatistics = BridgeInternal.getServiceEndpointStatistics(e);
         this.rntbdRequestLength = BridgeInternal.getRntbdRequestLength(e);
         this.rntbdResponseLength = BridgeInternal.getRntbdResponseLength(e);
-        this.innerErrorMessage = BridgeInternal.getInnerErrorMessage(e);
+        this.exceptionMessage = BridgeInternal.getInnerErrorMessage(e);
+        this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
     }
 
     public int getStatusCode() {
@@ -127,8 +130,8 @@ public class StoreResponseDiagnostics {
         return rntbdResponseLength;
     }
 
-    public String getInnerErrorMessage() {
-        return innerErrorMessage;
+    public String getExceptionMessage() {
+        return exceptionMessage;
     }
 
     public String getPartitionKeyRangeId() {
@@ -149,5 +152,9 @@ public class StoreResponseDiagnostics {
 
     public String getCorrelatedActivityId() {
         return correlatedActivityId;
+    }
+
+    public String getExceptionResponseHeaders() {
+        return exceptionResponseHeaders;
     }
 }

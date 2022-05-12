@@ -167,7 +167,8 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeNumberField("itemLSN", storeResultDiagnostics.itemLSN);
             jsonGenerator.writeStringField("sessionToken", storeResponseDiagnostics.getSessionTokenAsString());
             jsonGenerator.writeObjectField("backendLatencyInMs", storeResultDiagnostics.backendLatencyInMs);
-            jsonGenerator.writeStringField("exception", storeResponseDiagnostics.getInnerErrorMessage());
+            this.writeNonNullObjectField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
+            this.writeNonNullObjectField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResponseDiagnostics.getRequestTimeline());
 
             this.writeNonNullObjectField(jsonGenerator,"transportRequestChannelAcquisitionContext", storeResponseDiagnostics.getChannelAcquisitionTimeline());

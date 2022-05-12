@@ -485,6 +485,9 @@ public class StoreReader {
                             SessionTokenHelper.setOriginalSessionToken(entity, originalSessionToken);
                         } catch (Throwable throwable) {
                             logger.error("Unexpected failure in handling orig [{}]: new [{}]", arg, throwable.getMessage(), throwable);
+                            if (throwable instanceof Error) {
+                                throw (Error) throwable;
+                            }
                         }
                     }
         );

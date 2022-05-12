@@ -112,6 +112,9 @@ public class StoreClient implements IStoreClient {
                 } catch (Throwable throwable) {
                     logger.error("Unexpected failure in handling orig [{}]", e.getMessage(), e);
                     logger.error("Unexpected failure in handling orig [{}] : new [{}]", e.getMessage(), throwable.getMessage(), throwable);
+                    if (throwable instanceof Error) {
+                        throw (Error) throwable;
+                    }
                 }
             }
         );

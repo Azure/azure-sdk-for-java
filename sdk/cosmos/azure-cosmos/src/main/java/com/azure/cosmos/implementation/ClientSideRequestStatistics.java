@@ -159,6 +159,8 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics.requestCharge = storeResponseDiagnostics.getRequestCharge();
             this.gatewayStatistics.requestTimeline = storeResponseDiagnostics.getRequestTimeline();
             this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
+            this.gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
+            this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
             this.activityId = storeResponseDiagnostics.getActivityId();
         }
     }
@@ -185,7 +187,7 @@ public class ClientSideRequestStatistics {
         return identifier;
     }
 
-    public void recordAddressResolutionEnd(String identifier, String errorMessage) {
+    public void recordAddressResolutionEnd(String identifier, String exceptionMessage) {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
@@ -203,7 +205,7 @@ public class ClientSideRequestStatistics {
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
             resolutionStatistics.endTimeUTC = responseTime;
-            resolutionStatistics.errorMessage = errorMessage;
+            resolutionStatistics.exceptionMessage = exceptionMessage;
             resolutionStatistics.inflightRequest = false;
         }
     }
@@ -385,7 +387,7 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private String targetEndpoint;
         @JsonSerialize
-        private String errorMessage;
+        private String exceptionMessage;
         @JsonSerialize
         private boolean forceRefresh;
         @JsonSerialize
@@ -409,8 +411,8 @@ public class ClientSideRequestStatistics {
             return targetEndpoint;
         }
 
-        public String getErrorMessage() {
-            return errorMessage;
+        public String getExceptionMessage() {
+            return exceptionMessage;
         }
 
         public boolean isInflightRequest() {
@@ -435,6 +437,8 @@ public class ClientSideRequestStatistics {
         private double requestCharge;
         private RequestTimeline requestTimeline;
         private String partitionKeyRangeId;
+        private String exceptionMessage;
+        private String exceptionResponseHeaders;
 
         public String getSessionToken() {
             return sessionToken;
@@ -466,6 +470,14 @@ public class ClientSideRequestStatistics {
 
         public String getPartitionKeyRangeId() {
             return partitionKeyRangeId;
+        }
+
+        public String getExceptionMessage() {
+            return exceptionMessage;
+        }
+
+        public String getExceptionResponseHeaders() {
+            return exceptionResponseHeaders;
         }
     }
 
