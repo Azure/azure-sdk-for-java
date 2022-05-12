@@ -1,34 +1,54 @@
-trigger: none
-pr: none
+#trigger: none
+#pr: none
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/
 
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
 
 stages:
-  - stage:
-    jobs:
-      - job:
-        pool:
-          vmImage: "ubuntu-latest"
-        steps:
-          - script: |
-              pip install termcolor
-            displayName: 'python module install'
-          - script: |
-              python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py -b 2.6.6 -c 2021.0.1
-            displayName: 'add dependency management'
-          - script: |
-              python ./sdk/spring/scripts/compatibility_deleted_version.py
-            displayName: 'remove version'
-          - task: Maven@3
-            displayName: 'Run tests'
-            inputs:
-              mavenPomFile: sdk/spring/pom.xml
-              mavenOptions: '$(MemoryOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaTestVersion)
-              jdkArchitectureOption: 'x64'
-              goals: 'clean test -Pdev'
+#  - stage:
+#    jobs:
+#      - job:
+#        pool:
+#          vmImage: "ubuntu-latest"
+#        steps:
+#          - script: |
+#              pip install termcolor
+#            displayName: 'python module install'
+#          - script: |
+#              python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py -b 2.6.6 -c 2021.0.1
+#            displayName: 'add dependency management'
+#          - script: |
+#              python ./sdk/spring/scripts/compatibility_deleted_version.py
+#            displayName: 'remove version'
+#          - task: Maven@3
+#            displayName: 'Run tests'
+#            inputs:
+#              mavenPomFile: sdk/spring/pom.xml
+#              mavenOptions: '$(MemoryOptions)'
+#              javaHomeOption: 'JDKVersion'
+#              jdkVersionOption: $(JavaTestVersion)
+#              jdkArchitectureOption: 'x64'
+#              goals: 'clean test -Pdev'
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: spring
@@ -40,3 +60,7 @@ stages:
           NonSparseParameters:
             - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
           GenerateVMJobs: true
+      Artifacts:
+        - name: spring-cloud-azure-autoconfigure
+          groupId: com.azure.spring
+          safeName: springcloudazureautoconfigure
