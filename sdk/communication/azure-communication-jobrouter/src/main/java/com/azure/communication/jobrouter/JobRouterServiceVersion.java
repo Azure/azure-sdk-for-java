@@ -22,7 +22,6 @@ public enum JobRouterServiceVersion implements ServiceVersion {
     private final String version;
 
     JobRouterServiceVersion(String version) {
-
         this.version = version;
     }
 

@@ -2,8 +2,23 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.models.PagedDistributionPolicy;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+import static com.azure.core.util.FluxUtil.*;
 
 /**
  * Async Client that supports chat operations.
@@ -32,11 +47,52 @@ import com.azure.core.util.logging.ClientLogger;
 public class JobRouterAsyncClient {
     private final ClientLogger logger = new ClientLogger(JobRouterAsyncClient.class);
 
-    private final AzureCommunicationRoutingServiceImpl jobRouterServiceClient;
-    private final JobRoutersImpl jobRouterClient;
+    private JobRoutersImpl jobRouter;
 
-    public JobRouterAsyncClient(AzureCommunicationRoutingServiceImpl jobRouterServiceClient) {
-        this.jobRouterServiceClient = jobRouterServiceClient;
-        this.jobRouterClient = jobRouterServiceClient.getJobRouters();
+    JobRouterAsyncClient(AzureCommunicationRoutingServiceImpl jobRouterService) {
+        this.jobRouter = jobRouterService.getJobRouters();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
+        try {
+            return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
+        try {
+            return jobRouter.upsertDistributionPolicyWithResponseAsync(id, distributionPolicy, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PagedDistributionPolicy> listDistributionPolicies(Integer maxPageSize) {
+        try {
+            return jobRouter.listDistributionPoliciesAsync(maxPageSize);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue) {
+        try {
+            return withContext(context -> upsertQueueWithResponse(id, jobQueue, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue, Context context) {
+        try {
+            return jobRouter.upsertQueueWithResponseAsync(id, jobQueue, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 }

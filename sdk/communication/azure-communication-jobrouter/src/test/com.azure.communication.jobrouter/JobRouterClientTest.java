@@ -25,11 +25,5 @@ public class JobRouterClientTest extends JobRouterClientTestBase {
 
     private ClientLogger logger = new ClientLogger(JobRouterClientTest.class);
 
-    private CommunicationUserIdentifier firstThreadMember;
-    private CommunicationUserIdentifier secondThreadMember;
-
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-    }
+    private JobRouterClient client;
 }

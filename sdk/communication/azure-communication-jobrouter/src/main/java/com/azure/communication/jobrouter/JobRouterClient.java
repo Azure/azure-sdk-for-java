@@ -40,7 +40,6 @@ public class JobRouterClient {
      * @param client The {@link JobRouterAsyncClient} that the client routes its request through.
      */
     public JobRouterClient(JobRouterAsyncClient client) {
-
         this.client = client;
     }
 }
