@@ -43,7 +43,7 @@ def replace_banned_dependencies(file_path):
             insert_position = pom_file_content.find('''<bannedDependencies>
               <includes>''') + len('''<bannedDependencies>
               <includes>''')
-            new_content = pom_file_content[:insert_position] + '<include>org.springframework.*</include>' + pom_file_content[insert_position:]
+            new_content = pom_file_content[:insert_position] + '\n                <include>org.springframework.*</include>\n                <include>org.springframework:*</include>' + pom_file_content[insert_position:]
             with open(file_path, 'r+', encoding='utf-8') as updated_pom_file:
                 updated_pom_file.writelines(new_content)
 
