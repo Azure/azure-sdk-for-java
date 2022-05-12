@@ -27,13 +27,13 @@ import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.avro.Schema;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -206,15 +206,9 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
             final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
             final EventPosition last = EventPosition.fromSequenceNumber(partitionProperties.getLastEnqueuedSequenceNumber());
 
-            producer.send(Collections.singleton(event));
+            producer.send(Collections.singleton(event), new SendOptions().setPartitionId(partitionId));
 
-            final Flux<PartitionEvent> receiveFlux = consumer.receiveFromPartition(partitionId, last)
-                .filter(e -> {
-                    final Object o = e.getData().getProperties().get(applicationKey);
-                    return o instanceof String && uuid.equals(o);
-                });
-
-            StepVerifier.create(receiveFlux)
+            StepVerifier.create(consumer.receiveFromPartition(partitionId, last).publishOn(Schedulers.boundedElastic()))
                 .assertNext(partitionEvent -> {
                     final PlayingCard deserialize = serializer.deserialize(partitionEvent.getData(),
                         TypeReference.createInstance(PlayingCard.class));
