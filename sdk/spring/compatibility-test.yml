@@ -6,7 +6,7 @@ variables:
 
 stages:
   - stage: "spring boot compatibility tests"
-    - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+    - template: ../../eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
         AdditionalParameters:
             ServiceDirectory: spring
