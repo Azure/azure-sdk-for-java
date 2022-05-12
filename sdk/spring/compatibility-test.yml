@@ -8,10 +8,8 @@ stages:
   - stage:
     jobs:
       - job:
-
         pool:
           vmImage: "ubuntu-latest"
-
         steps:
           - script: |
               pip install termcolor
@@ -21,7 +19,7 @@ stages:
             displayName: 'add dependency management'
           - script: |
               python ./sdk/spring/scripts/compatibility_deleted_version.py
-            displayName: 'delete version control'
+            displayName: 'remove version'
           - task: Maven@3
             displayName: 'Run tests'
             inputs:
@@ -31,3 +29,14 @@ stages:
               jdkVersionOption: $(JavaTestVersion)
               jdkArchitectureOption: 'x64'
               goals: 'clean test -Pdev'
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+        parameters:
+          ServiceDirectory: spring
+          TestName: 'spring_boot_supported_versions'
+          MatrixConfigs:
+            - Name: spring_boot_supported_version_tests
+              Path: sdk/spring/supported-version-matrix.json
+              Selection: sparse
+              NonSparseParameters:
+                - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
+              GenerateVMJobs: true
