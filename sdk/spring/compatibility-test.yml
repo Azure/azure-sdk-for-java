@@ -5,7 +5,7 @@ variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
 
 stages:
-  - stage: "spring boot compatibility tests"
+  - stage: "spring_boot_compatibility_tests"
     jobs:
     - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
