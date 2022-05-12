@@ -365,7 +365,7 @@ public final class BinaryData {
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length, boolean bufferContent) {
         if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
         if (length != null && length < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
