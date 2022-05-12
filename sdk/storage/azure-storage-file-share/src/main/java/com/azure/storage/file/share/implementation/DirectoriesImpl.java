@@ -81,7 +81,6 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -128,7 +127,6 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -220,7 +218,6 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-file-permission") String filePermission,
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
@@ -235,6 +232,8 @@ public final class DirectoriesImpl {
      * @param directory The path of the target directory.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
      *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
@@ -245,27 +244,23 @@ public final class DirectoriesImpl {
      *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      *     x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
-     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
-     * @param fileChangeTime Change time for the file/directory. Default value: Now.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesCreateResponse> createWithResponseAsync(
             String shareName,
             String directory,
             String fileAttributes,
+            String fileCreationTime,
+            String fileLastWriteTime,
             Integer timeout,
             Map<String, String> metadata,
             String filePermission,
             String filePermissionKey,
-            String fileCreationTime,
-            String fileLastWriteTime,
-            String fileChangeTime,
             Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
@@ -282,7 +277,6 @@ public final class DirectoriesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
-                fileChangeTime,
                 accept,
                 context);
     }
@@ -302,7 +296,7 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -333,7 +327,7 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesDeleteResponse> deleteWithResponseAsync(
@@ -358,6 +352,8 @@ public final class DirectoriesImpl {
      * @param directory The path of the target directory.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
      *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
@@ -367,26 +363,22 @@ public final class DirectoriesImpl {
      *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      *     x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
-     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
-     * @param fileChangeTime Change time for the file/directory. Default value: Now.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesSetPropertiesResponse> setPropertiesWithResponseAsync(
             String shareName,
             String directory,
             String fileAttributes,
+            String fileCreationTime,
+            String fileLastWriteTime,
             Integer timeout,
             String filePermission,
             String filePermissionKey,
-            String fileCreationTime,
-            String fileLastWriteTime,
-            String fileChangeTime,
             Context context) {
         final String restype = "directory";
         final String comp = "properties";
@@ -404,7 +396,6 @@ public final class DirectoriesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
-                fileChangeTime,
                 accept,
                 context);
     }
@@ -422,7 +413,7 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesSetMetadataResponse> setMetadataWithResponseAsync(
@@ -467,7 +458,7 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of directories and files on successful completion of {@link Mono}.
+     * @return an enumeration of directories and files.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentWithResponseAsync(
@@ -526,7 +517,7 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of handles on successful completion of {@link Mono}.
+     * @return an enumeration of handles.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesListHandlesResponse> listHandlesWithResponseAsync(
@@ -577,7 +568,7 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesForceCloseHandlesResponse> forceCloseHandlesWithResponseAsync(
@@ -637,7 +628,7 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectoriesRenameResponse> renameWithResponseAsync(
@@ -682,11 +673,6 @@ public final class DirectoriesImpl {
             fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
         }
         String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
         return service.rename(
                 this.client.getUrl(),
                 shareName,
@@ -703,7 +689,6 @@ public final class DirectoriesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
-                fileChangeTime,
                 filePermission,
                 filePermissionKey,
                 metadata,

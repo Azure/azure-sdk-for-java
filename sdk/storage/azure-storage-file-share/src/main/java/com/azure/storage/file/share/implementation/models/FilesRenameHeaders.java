@@ -39,24 +39,6 @@ public final class FilesRenameHeaders {
     private OffsetDateTime xMsFileCreationTime;
 
     /*
-     * The Last-Modified property.
-     */
-    @JsonProperty(value = "Last-Modified")
-    private DateTimeRfc1123 lastModified;
-
-    /*
-     * The x-ms-request-server-encrypted property.
-     */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
-    private Boolean xMsRequestServerEncrypted;
-
-    /*
-     * The Date property.
-     */
-    @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
-
-    /*
      * The ETag property.
      */
     @JsonProperty(value = "ETag")
@@ -75,16 +57,28 @@ public final class FilesRenameHeaders {
     private OffsetDateTime xMsFileChangeTime;
 
     /*
-     * The x-ms-file-parent-id property.
+     * The Last-Modified property.
      */
-    @JsonProperty(value = "x-ms-file-parent-id")
-    private String xMsFileParentId;
+    @JsonProperty(value = "Last-Modified")
+    private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
+    private Boolean xMsRequestServerEncrypted;
+
+    /*
+     * The Date property.
+     */
+    @JsonProperty(value = "Date")
+    private DateTimeRfc1123 dateProperty;
 
     /*
      * The x-ms-file-last-write-time property.
@@ -173,80 +167,6 @@ public final class FilesRenameHeaders {
     }
 
     /**
-     * Get the lastModified property: The Last-Modified property.
-     *
-     * @return the lastModified value.
-     */
-    public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
-    }
-
-    /**
-     * Set the lastModified property: The Last-Modified property.
-     *
-     * @param lastModified the lastModified value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    public FilesRenameHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
-     * @return the xMsRequestServerEncrypted value.
-     */
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
-    }
-
-    /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    public FilesRenameHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the dateProperty property: The Date property.
-     *
-     * @return the dateProperty value.
-     */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
-            return null;
-        }
-        return this.dateProperty.getDateTime();
-    }
-
-    /**
-     * Set the dateProperty property: The Date property.
-     *
-     * @param dateProperty the dateProperty value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    public FilesRenameHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
-        } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
-        }
-        return this;
-    }
-
-    /**
      * Get the eTag property: The ETag property.
      *
      * @return the eTag value.
@@ -307,22 +227,29 @@ public final class FilesRenameHeaders {
     }
 
     /**
-     * Get the xMsFileParentId property: The x-ms-file-parent-id property.
+     * Get the lastModified property: The Last-Modified property.
      *
-     * @return the xMsFileParentId value.
+     * @return the lastModified value.
      */
-    public String getXMsFileParentId() {
-        return this.xMsFileParentId;
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
     }
 
     /**
-     * Set the xMsFileParentId property: The x-ms-file-parent-id property.
+     * Set the lastModified property: The Last-Modified property.
      *
-     * @param xMsFileParentId the xMsFileParentId value to set.
+     * @param lastModified the lastModified value to set.
      * @return the FilesRenameHeaders object itself.
      */
-    public FilesRenameHeaders setXMsFileParentId(String xMsFileParentId) {
-        this.xMsFileParentId = xMsFileParentId;
+    public FilesRenameHeaders setLastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 
@@ -343,6 +270,53 @@ public final class FilesRenameHeaders {
      */
     public FilesRenameHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @return the xMsRequestServerEncrypted value.
+     */
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
+    }
+
+    /**
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @return the FilesRenameHeaders object itself.
+     */
+    public FilesRenameHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the dateProperty property: The Date property.
+     *
+     * @return the dateProperty value.
+     */
+    public OffsetDateTime getDateProperty() {
+        if (this.dateProperty == null) {
+            return null;
+        }
+        return this.dateProperty.getDateTime();
+    }
+
+    /**
+     * Set the dateProperty property: The Date property.
+     *
+     * @param dateProperty the dateProperty value to set.
+     * @return the FilesRenameHeaders object itself.
+     */
+    public FilesRenameHeaders setDateProperty(OffsetDateTime dateProperty) {
+        if (dateProperty == null) {
+            this.dateProperty = null;
+        } else {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
+        }
         return this;
     }
 

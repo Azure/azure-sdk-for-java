@@ -72,7 +72,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = ShareServiceClientBuilder.class, isAsync = true)
 public final class ShareServiceAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(ShareServiceAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(ShareServiceAsyncClient.class);
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
@@ -160,7 +160,11 @@ public final class ShareServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareItem> listShares() {
-        return listShares(null);
+        try {
+            return listShares(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -215,7 +219,7 @@ public final class ShareServiceAsyncClient {
         try {
             return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -295,7 +299,11 @@ public final class ShareServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareServiceProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -326,7 +334,7 @@ public final class ShareServiceAsyncClient {
         try {
             return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -382,7 +390,11 @@ public final class ShareServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(ShareServiceProperties properties) {
-        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        try {
+            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -448,7 +460,7 @@ public final class ShareServiceAsyncClient {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -486,7 +498,11 @@ public final class ShareServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareAsyncClient> createShare(String shareName) {
-        return createShareWithResponse(shareName, (ShareCreateOptions) null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createShareWithResponse(shareName, (ShareCreateOptions) null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -536,8 +552,12 @@ public final class ShareServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB) {
-        return createShareWithResponse(shareName, new ShareCreateOptions().setMetadata(metadata)
-            .setQuotaInGb(quotaInGB));
+        try {
+            return withContext(context -> createShareWithResponse(shareName, new ShareCreateOptions()
+                .setMetadata(metadata).setQuotaInGb(quotaInGB), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -573,7 +593,7 @@ public final class ShareServiceAsyncClient {
         try {
             return withContext(context -> createShareWithResponse(shareName, options, context));
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -610,7 +630,11 @@ public final class ShareServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteShare(String shareName) {
-        return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -643,7 +667,7 @@ public final class ShareServiceAsyncClient {
         try {
             return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -781,7 +805,8 @@ public final class ShareServiceAsyncClient {
      * to interact with the restored share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareAsyncClient> undeleteShare(String deletedShareName, String deletedShareVersion) {
+    public Mono<ShareAsyncClient> undeleteShare(
+        String deletedShareName, String deletedShareVersion) {
         return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion).flatMap(FluxUtil::toMono);
     }
 
@@ -823,12 +848,14 @@ public final class ShareServiceAsyncClient {
      * ShareAsyncClient} used to interact with the restored share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName,
-        String deletedShareVersion) {
+    public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion) {
         try {
-            return withContext(context -> undeleteShareWithResponse(deletedShareName, deletedShareVersion, context));
+            return withContext(context ->
+                undeleteShareWithResponse(
+                    deletedShareName, deletedShareVersion, context));
         } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(logger, ex);
         }
     }
 
