@@ -26,6 +26,7 @@
         <module>azure-core-serializer-json-jackson</module>
         <module>azure-core-test</module>
         <module>azure-core-tracing-opentelemetry</module>
+        <module>azure-core-metrics-opentelemetry</module>
       </modules>
 
       <dependencies>
@@ -89,6 +90,11 @@
           <artifactId>azure-core-tracing-opentelemetry</artifactId>
           <version>1.0.0-beta.24</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-metrics-opentelemetry</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
+        </dependency>
       </dependencies>
 
       <build>
@@ -136,6 +142,7 @@
         <module>azure-core-serializer-json-jackson</module>
         <module>azure-core-test</module>
         <module>azure-core-tracing-opentelemetry</module>
+        <module>azure-core-metrics-opentelemetry</module>
         <module>azure-core-jackson-tests</module>
       </modules>
     </profile>

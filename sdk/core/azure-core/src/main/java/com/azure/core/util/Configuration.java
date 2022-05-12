@@ -152,6 +152,12 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /**
+     * Disables tracing.
+     */
+    public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
+
+
+    /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
      * fails.
      */
