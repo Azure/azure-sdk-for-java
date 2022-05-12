@@ -134,7 +134,7 @@ public final class QueueServiceClientBuilder implements
     HttpTrait<QueueServiceClientBuilder>,
     ConfigurationTrait<QueueServiceClientBuilder>,
     EndpointTrait<QueueServiceClientBuilder> {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
 
     private String endpoint;
     private String accountName;
@@ -188,7 +188,7 @@ public final class QueueServiceClientBuilder implements
      */
     public QueueServiceAsyncClient buildAsyncClient() {
         if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
+            throw logger.logExceptionAsError(new IllegalStateException(
                 "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
                     + "but not both.")
             );
@@ -198,7 +198,7 @@ public final class QueueServiceClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
             .url(endpoint)
@@ -247,7 +247,7 @@ public final class QueueServiceClientBuilder implements
      */
     @Override
     public QueueServiceClientBuilder endpoint(String endpoint) {
-        BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, LOGGER);
+        BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
         this.endpoint = parts.getEndpoint();
         this.accountName = parts.getAccountName();
         if (!CoreUtils.isNullOrEmpty(parts.getSasToken())) {
@@ -340,10 +340,10 @@ public final class QueueServiceClientBuilder implements
      */
     public QueueServiceClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+                = StorageConnectionString.create(connectionString, logger);
         StorageEndpoint endpoint = storageConnectionString.getQueueEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
+            throw logger
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive queue service endpoint."));
         }
@@ -377,7 +377,7 @@ public final class QueueServiceClientBuilder implements
     @Override
     public QueueServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
+            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -505,7 +505,7 @@ public final class QueueServiceClientBuilder implements
     @Override
     public QueueServiceClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

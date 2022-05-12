@@ -139,7 +139,7 @@ public final class QueueClientBuilder implements
     HttpTrait<QueueClientBuilder>,
     ConfigurationTrait<QueueClientBuilder>,
     EndpointTrait<QueueClientBuilder> {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
 
     private String endpoint;
     private String accountName;
@@ -217,7 +217,7 @@ public final class QueueClientBuilder implements
     public QueueAsyncClient buildAsyncClient() {
         StorageImplUtils.assertNotNull("queueName", queueName);
         if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
+            throw logger.logExceptionAsError(new IllegalStateException(
                 "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
                     + "but not both.")
             );
@@ -228,7 +228,7 @@ public final class QueueClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
             .url(endpoint)
@@ -256,7 +256,7 @@ public final class QueueClientBuilder implements
      */
     @Override
     public QueueClientBuilder endpoint(String endpoint) {
-        BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, LOGGER);
+        BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
         this.endpoint = parts.getEndpoint();
         this.accountName = parts.getAccountName();
         this.queueName = parts.getQueueName() == null ? this.queueName : parts.getQueueName();
@@ -364,10 +364,10 @@ public final class QueueClientBuilder implements
     @Override
     public QueueClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+                = StorageConnectionString.create(connectionString, logger);
         StorageEndpoint endpoint = storageConnectionString.getQueueEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
+            throw logger
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive queue service endpoint."));
         }
@@ -401,7 +401,7 @@ public final class QueueClientBuilder implements
     @Override
     public QueueClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
+            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -529,7 +529,7 @@ public final class QueueClientBuilder implements
     @Override
     public QueueClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;
@@ -586,7 +586,7 @@ public final class QueueClientBuilder implements
      * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
      * so that body can be inspected as has been received from the queue.
      * <p>
-     * The handler won't attempt to remove the message from the queue. Therefore, such handling should be included into
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
      * handler itself.
      * <p><strong>Code Samples</strong></p>
      *
@@ -645,7 +645,7 @@ public final class QueueClientBuilder implements
      * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
      * so that body can be inspected as has been received from the queue.
      * <p>
-     * The handler won't attempt to remove the message from the queue. Therefore, such handling should be included into
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
      * handler itself.
      * <p><strong>Code Samples</strong></p>
      *
