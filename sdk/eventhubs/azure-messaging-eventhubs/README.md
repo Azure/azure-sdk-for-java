@@ -359,6 +359,10 @@ TimeUnit.SECONDS.sleep(2);
 eventProcessorClient.stop();
 ```
 
+## Troubleshooting
+
+See [TROUBLESHOOTING.md][troubleshooting].
+
 ## Next steps
 
 Beyond those discussed, the Azure Event Hubs client library offers support for many other scenarios to take
