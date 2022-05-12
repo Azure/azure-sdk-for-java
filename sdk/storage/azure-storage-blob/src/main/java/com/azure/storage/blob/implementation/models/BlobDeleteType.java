@@ -24,11 +24,7 @@ public final class BlobDeleteType extends ExpandableStringEnum<BlobDeleteType> {
         return fromString(name, BlobDeleteType.class);
     }
 
-    /**
-     * Gets known BlobDeleteType values.
-     *
-     * @return known BlobDeleteType values.
-     */
+    /** @return known BlobDeleteType values. */
     public static Collection<BlobDeleteType> values() {
         return values(BlobDeleteType.class);
     }

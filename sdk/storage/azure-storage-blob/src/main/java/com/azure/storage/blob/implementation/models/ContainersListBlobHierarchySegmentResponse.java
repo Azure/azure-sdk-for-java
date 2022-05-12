@@ -29,11 +29,7 @@ public final class ContainersListBlobHierarchySegmentResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * Gets the deserialized response body.
-     *
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public ListBlobsHierarchySegmentResponse getValue() {
         return super.getValue();

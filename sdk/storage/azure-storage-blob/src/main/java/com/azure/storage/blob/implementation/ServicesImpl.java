@@ -205,7 +205,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithResponseAsync(
@@ -239,7 +239,7 @@ public final class ServicesImpl {
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
+     *     (Cross-Origin Resource Sharing) rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -264,7 +264,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service on successful completion of {@link Mono}.
+     * @return stats for the storage service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithResponseAsync(
@@ -301,7 +301,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegmentSinglePageAsync(
@@ -354,7 +354,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user delegation key on successful completion of {@link Mono}.
+     * @return a user delegation key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithResponseAsync(
@@ -381,7 +381,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithResponseAsync(Context context) {
@@ -407,7 +407,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> submitBatchWithResponseAsync(
@@ -457,7 +457,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a Filter Blobs API call on successful completion of {@link Mono}.
+     * @return the result of a Filter Blobs API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesFilterBlobsResponse> filterBlobsWithResponseAsync(
@@ -487,7 +487,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegmentNextSinglePageAsync(

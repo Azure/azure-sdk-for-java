@@ -30,11 +30,7 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
         return fromString(name, GeoReplicationStatus.class);
     }
 
-    /**
-     * Gets known GeoReplicationStatus values.
-     *
-     * @return known GeoReplicationStatus values.
-     */
+    /** @return known GeoReplicationStatus values. */
     public static Collection<GeoReplicationStatus> values() {
         return values(GeoReplicationStatus.class);
     }

@@ -28,11 +28,7 @@ public final class ContainersFilterBlobsResponse extends ResponseBase<Containers
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * Gets the deserialized response body.
-     *
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public FilterBlobSegment getValue() {
         return super.getValue();

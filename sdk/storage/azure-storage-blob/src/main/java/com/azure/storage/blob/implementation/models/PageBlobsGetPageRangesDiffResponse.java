@@ -30,11 +30,7 @@ public final class PageBlobsGetPageRangesDiffResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * Gets the deserialized response body.
-     *
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public PageList getValue() {
         return super.getValue();

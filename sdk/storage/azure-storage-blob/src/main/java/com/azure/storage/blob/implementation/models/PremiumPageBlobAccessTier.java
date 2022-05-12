@@ -54,11 +54,7 @@ public final class PremiumPageBlobAccessTier extends ExpandableStringEnum<Premiu
         return fromString(name, PremiumPageBlobAccessTier.class);
     }
 
-    /**
-     * Gets known PremiumPageBlobAccessTier values.
-     *
-     * @return known PremiumPageBlobAccessTier values.
-     */
+    /** @return known PremiumPageBlobAccessTier values. */
     public static Collection<PremiumPageBlobAccessTier> values() {
         return values(PremiumPageBlobAccessTier.class);
     }

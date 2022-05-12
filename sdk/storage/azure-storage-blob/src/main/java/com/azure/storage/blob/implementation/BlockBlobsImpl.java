@@ -29,7 +29,6 @@ import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -149,7 +148,6 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
-                @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -307,7 +305,7 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsUploadResponse> uploadWithResponseAsync(
@@ -435,7 +433,7 @@ public final class BlockBlobsImpl {
      * The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given
      * URL. This API is supported beginning with the 2020-04-08 version. Partial updates are not supported with Put Blob
      * from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial
-     * updates to a block blobâ€™s contents using a source URL, use the Put Block from URL API in conjunction with Put
+     * updates to a block blob’s contents using a source URL, use the Put Block from URL API in conjunction with Put
      * Block List.
      *
      * @param containerName The container name.
@@ -478,8 +476,6 @@ public final class BlockBlobsImpl {
      *     copied.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      *     copy source.
-     * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
-     *     tags specified by x-ms-tags.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -487,7 +483,7 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrlWithResponseAsync(
@@ -515,7 +511,6 @@ public final class BlockBlobsImpl {
             String blobTagsString,
             Boolean copySourceBlobProperties,
             String copySourceAuthorization,
-            BlobCopySourceTagsMode copySourceTags,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScopeParam,
@@ -621,7 +616,6 @@ public final class BlockBlobsImpl {
                 copySource,
                 copySourceBlobProperties,
                 copySourceAuthorization,
-                copySourceTags,
                 accept,
                 context);
     }
@@ -650,7 +644,7 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsStageBlockResponse> stageBlockWithResponseAsync(
@@ -748,7 +742,7 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithResponseAsync(
@@ -871,7 +865,7 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithResponseAsync(
@@ -1018,7 +1012,7 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsGetBlockListResponse> getBlockListWithResponseAsync(

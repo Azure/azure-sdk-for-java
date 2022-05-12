@@ -39,7 +39,7 @@ public final class QueryFormat {
     private ArrowConfiguration arrowConfiguration;
 
     /*
-     * parquet configuration
+     * Any object
      */
     @JsonProperty(value = "ParquetTextConfiguration")
     private Object parquetTextConfiguration;
@@ -129,7 +129,7 @@ public final class QueryFormat {
     }
 
     /**
-     * Get the parquetTextConfiguration property: parquet configuration.
+     * Get the parquetTextConfiguration property: Any object.
      *
      * @return the parquetTextConfiguration value.
      */
@@ -138,7 +138,7 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the parquetTextConfiguration property: parquet configuration.
+     * Set the parquetTextConfiguration property: Any object.
      *
      * @param parquetTextConfiguration the parquetTextConfiguration value to set.
      * @return the QueryFormat object itself.

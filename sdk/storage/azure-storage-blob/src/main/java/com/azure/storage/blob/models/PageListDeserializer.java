@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.JsonTokenId;
@@ -54,7 +53,6 @@ final class PageListDeserializer extends JsonDeserializer<PageList> {
     public PageList deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         ArrayList<PageRange> pageRanges = new ArrayList<>();
         ArrayList<ClearRange> clearRanges = new ArrayList<>();
-        String nextMarker = null;
 
         // Get the deserializer that handles PageRange.
         JsonDeserializer<Object> pageRangeDeserializer =
@@ -75,13 +73,9 @@ final class PageListDeserializer extends JsonDeserializer<PageList> {
             } else if (p.getCurrentName().equals("ClearRange")) {
                 // Current token is the node that begins a ClearRange object.
                 clearRanges.add((ClearRange) clearRangeDeserializer.deserialize(p, ctxt));
-            } else if (p.getCurrentName().equals("NextMarker")) {
-                // Current token is the next marker
-                nextMarker = "null".equals(p.getText()) ? null : p.getText();
             }
         }
 
-        return PageListHelper.setNextMarker(new PageList().setPageRange(pageRanges).setClearRange(clearRanges),
-            nextMarker);
+        return new PageList().setPageRange(pageRanges).setClearRange(clearRanges);
     }
 }

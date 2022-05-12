@@ -33,11 +33,7 @@ public final class BlobExpiryOptions extends ExpandableStringEnum<BlobExpiryOpti
         return fromString(name, BlobExpiryOptions.class);
     }
 
-    /**
-     * Gets known BlobExpiryOptions values.
-     *
-     * @return known BlobExpiryOptions values.
-     */
+    /** @return known BlobExpiryOptions values. */
     public static Collection<BlobExpiryOptions> values() {
         return values(BlobExpiryOptions.class);
     }
