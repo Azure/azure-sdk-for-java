@@ -32,7 +32,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Handle Event Hubs exceptions
 
-All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. "amqp\:connection\:forced" or "amqp\:link\:detach-forced"), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that needs to be resolved.
+All Event Hubs exceptions are wrapped in an [AmqpException][AmqpException].  They often have an underlying AMQP error code which specifies whether an error is retryable or not.  For retryable errors (ie. `amqp:connection:forced` or `amqp:link:detach-forced`), the client libraries will attempt to recover from these errors based on the [retry options][AmqpRetryOptions] specified when instantiating the client.  To configure retry options, follow the sample [Publish events to specific partition][PublishEventsToSpecificPartition].  If the error is non-retryable, there is some configuration issue that needs to be resolved.
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][EventHubsMessagingExceptions] guidance.
@@ -41,7 +41,7 @@ The recommended way to solve the specific exception the AMQP exception represent
 
 An [AmqpException][AmqpException] contains three fields which describe the error.
 
-* **getErrorCondition**: The underlying AMQP error. A description of the errors can be found in the [AmqpErrorCondition][AmqpErrorCondition] javadocs or the OASIS AMQP 1.0 spec.
+* **getErrorCondition**: The underlying AMQP error. A description of the errors can be found in the [AmqpErrorCondition][AmqpErrorCondition] javadocs or the [OASIS AMQP 1.0 spec][AmqpSpec].
 * **isTransient**: Whether or not trying to perform the same operation is possible.  SDK clients apply the retry policy when the error is transient.
 * **getErrorContext**: Information about where the AMQP error originated.
   * [LinkErrorContext][LinkErrorContext]: Errors that occur in either the send/receive link.
@@ -50,7 +50,7 @@ An [AmqpException][AmqpException] contains three fields which describe the error
 
 ### Commonly encountered exceptions
 
-#### amqp\:connection\:forced and amqp\:link\:detach-forced
+#### `amqp:connection:forced` and `amqp:link:detach-forced`
 
 When the connection to Event Hubs is idle, the service will disconnect the client after some time.  This is not a problem as the clients will re-establish a connection with the service.  More information for users is in the [AMQP troubleshooting documentation][AmqpTroubleshooting].
 
@@ -96,15 +96,15 @@ Further reading:
 
 ### Cannot add components to the connection string
 
-The legacy Event Hub clients allowed customers to add components to the connection string retrieved from the portal.  The legacy clients are in packages [com.microsoft.azure:azure-eventhubs][MavenAzureEventHubs] and [com.microsoft.azure:azure-eventhubs-eph][MavenAzureEventHubsEPH].
+The legacy Event Hub clients allowed customers to add components to the connection string retrieved from the portal.  The legacy clients are in packages [com.microsoft.azure:azure-eventhubs][MavenAzureEventHubs] and [com.microsoft.azure:azure-eventhubs-eph][MavenAzureEventHubsEPH].  The current generation supports connection strings only in the form published by the Azure portal.
 
 #### Adding "TransportType=AmqpWebSockets"
 
-The previous generation of the Event Hubs client library supported extending connection strings using special tokens for certain scenarios.  The current generation supports connection strings only in the form published by the Azure portal.  To request using the `AmqpWebSockets` transport, it would be specified when building the client.  See [PublishEventsWithSocketsAndProxy.java][PublishEventsWithWebSocketsAndProxy] for more details.
+To use web sockets, see the sample [PublishEventsWithSocketsAndProxy.java][PublishEventsWithWebSocketsAndProxy].
 
 #### Adding "Authentication=Managed Identity"
 
-The legacy clients allowed customers to modify the connection string to enable capabilities.  In this case, connect to Event Hubs using managed identity rather than a connection string.  To achieve the same scenario, see [PublishEventsWithAzureIdentity.java][PublishEventsWithAzureIdentity].
+To authenticate with Managed Identity, see the sample [PublishEventsWithAzureIdentity.java][PublishEventsWithAzureIdentity].
 
 For more information about our identity library, check out our [Authentication and the Azure SDK][AuthenticationAndTheAzureSDK] blog post.
 
@@ -262,4 +262,5 @@ When filing GitHub issues, the following details are requested:
 [MavenAzureEventHubs]: https://search.maven.org/artifact/com.microsoft.azure/azure-eventhubs/
 [MavenAzureEventHubsEPH]: https://search.maven.org/artifact/com.microsoft.azure/azure-eventhubs-eph
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
+[AmqpSpec]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [qpid_proton_j_apache]: https://qpid.apache.org/proton/
