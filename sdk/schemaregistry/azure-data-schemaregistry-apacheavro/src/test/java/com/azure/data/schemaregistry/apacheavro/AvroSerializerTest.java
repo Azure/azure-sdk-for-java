@@ -44,8 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for {@link AvroSerializer}.
  */
 public class AvroSerializerTest {
-
-    private final Schema.Parser parser = new Schema.Parser();
     private final EncoderFactory encoderFactory = EncoderFactory.get();
     private final DecoderFactory decoderFactory = DecoderFactory.get();
 
