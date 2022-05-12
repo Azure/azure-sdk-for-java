@@ -63,7 +63,7 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
                 } else {
                     builder.up().withDetail("database", response.getProperties().getId());
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 if (e instanceof NotFoundException) {
                     builder.status("The option of `spring.cloud.azure.cosmos.database` is not configured correctly!");
                 } else {
