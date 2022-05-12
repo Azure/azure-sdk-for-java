@@ -200,7 +200,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
      * @return the BPP.
      */
     @Bean
-    public static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
+    static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
         return new AzureServiceClientBuilderFactoryPostProcessor();
     }
 
