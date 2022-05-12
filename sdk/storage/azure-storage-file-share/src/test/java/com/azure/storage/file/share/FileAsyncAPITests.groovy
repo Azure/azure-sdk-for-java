@@ -5,14 +5,11 @@ package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.FluxUtil
-import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.core.util.polling.PollerFlux
-import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
-import com.azure.storage.file.share.implementation.models.StorageErrorException
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType

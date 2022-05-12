@@ -15,7 +15,6 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
-import com.azure.storage.file.share.implementation.models.StorageErrorException
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList
 import com.azure.storage.file.share.models.DownloadRetryOptions
 import com.azure.storage.file.share.models.FileLastWrittenMode
