@@ -39,11 +39,9 @@ public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
             builder.status(NOT_CONFIGURED_STATUS);
         } else {
             try {
-                String NOT_EXISTING_CONTAINER = "spring-cloud-azure-not-existing-container";
-                String NOT_EXISTING_BLOB = "spring-cloud-azure-not-existing-blob";
                 BlobAsyncClient blobAsyncClient =
-                    blobServiceAsyncClient.getBlobContainerAsyncClient(NOT_EXISTING_CONTAINER)
-                                          .getBlobAsyncClient(NOT_EXISTING_BLOB);
+                    blobServiceAsyncClient.getBlobContainerAsyncClient("spring-cloud-azure-not-existing-container")
+                                          .getBlobAsyncClient("spring-cloud-azure-not-existing-blob");
 
                 builder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
                 BlobRange range = new BlobRange(0, (long) 2);
