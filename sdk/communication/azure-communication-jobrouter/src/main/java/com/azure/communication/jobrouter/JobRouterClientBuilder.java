@@ -1,32 +1,32 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.common.CommunicationTokenCredential;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImplBuilder;
 import com.azure.communication.jobrouter.implementation.CommunicationBearerTokenCredential;
+import com.azure.communication.jobrouter.implementation.utils.BuilderHelper;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.*;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @ServiceClientBuilder(serviceClients = {JobRouterAsyncClient.class, JobRouterClient.class})
 public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClientBuilder>,
     EndpointTrait<JobRouterClientBuilder>,
     HttpTrait<JobRouterClientBuilder> {
+    private static final ClientLogger logger = new ClientLogger(JobRouterClientBuilder.class);
 
     private String endpoint;
     private HttpClient httpClient;
@@ -38,9 +38,7 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
     private ClientOptions clientOptions;
     private RetryOptions retryOptions;
     private Configuration configuration;
-    private static final String APP_CONFIG_PROPERTIES = "azure-communication-jobrouter.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+    private CommunicationConnectionString connectionString;
 
     /**
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
@@ -82,6 +80,17 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
     @Override
     public JobRouterClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Set a connection string for authorization
+     *
+     * @param connectionString valid token credential as a string
+     * @return the updated ChatClientBuilder object
+     */
+    public JobRouterClientBuilder connectionString(String connectionString) {
+        this.connectionString = new CommunicationConnectionString(connectionString);
         return this;
     }
 
@@ -248,17 +257,27 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
     }
 
     private AzureCommunicationRoutingServiceImpl createInternalClient() {
-        Objects.requireNonNull(endpoint);
+        endpoint = Objects.requireNonNullElse(endpoint, connectionString.getEndpoint());
 
         HttpPipeline pipeline;
         if (httpPipeline != null) {
             pipeline = httpPipeline;
         } else {
-            Objects.requireNonNull(communicationTokenCredential);
+            communicationTokenCredential = Objects.requireNonNullElse(communicationTokenCredential,
+                new CommunicationTokenCredential(connectionString.getAccessKey()));
 
-            pipeline = createHttpPipeline(httpClient,
-                new BearerTokenAuthenticationPolicy(new CommunicationBearerTokenCredential(communicationTokenCredential), ""),
-                customPolicies);
+            pipeline = BuilderHelper.buildPipeline(
+                new CommunicationBearerTokenCredential(communicationTokenCredential),
+                null,
+                null,
+                retryOptions,
+                logOptions,
+                clientOptions,
+                httpClient,
+                customPolicies,
+                null,
+                configuration,
+                logger);
         }
 
         AzureCommunicationRoutingServiceImplBuilder clientBuilder = new AzureCommunicationRoutingServiceImplBuilder()
@@ -266,47 +285,5 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
             .pipeline(pipeline);
 
         return clientBuilder.buildClient();
-    }
-
-    private HttpPipeline createHttpPipeline(HttpClient httpClient,
-                                            HttpPipelinePolicy authorizationPolicy,
-                                            List<HttpPipelinePolicy> additionalPolicies) {
-
-        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-        policies.add(getUserAgentPolicy());
-        policies.add(new RequestIdPolicy());
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
-        policies.add(new CookiePolicy());
-        // auth policy is per request, should be after retry
-        policies.add(authorizationPolicy);
-        policies.add(new HttpLoggingPolicy(logOptions));
-
-        if (additionalPolicies != null && additionalPolicies.size() > 0) {
-            policies.addAll(additionalPolicies);
-        }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-    }
-
-    /*
-     * Creates a {@link UserAgentPolicy} using the default chat service module name and version.
-     *
-     * @return The default {@link UserAgentPolicy} for the module.
-     */
-    private UserAgentPolicy getUserAgentPolicy() {
-        Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
-        String applicationId = logOptions.getApplicationId();
-        if (this.clientOptions != null) {
-            applicationId = this.clientOptions.getApplicationId();
-        }
-
-        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
     }
 }
