@@ -41,7 +41,7 @@ public class PlaybackOnlyExtension implements IAnnotationDrivenExtension<Playbac
         if ("".equals(expiryStr)) {
             return;
         }
-        OffsetDateTime expiry = LocalDate.parse(expiryStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atTime(0,0)
+        OffsetDateTime expiry = LocalDate.parse(expiryStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atTime(0, 0)
             .atZone(ZoneId.of(ZoneId.SHORT_IDS.get("PST"))).toOffsetDateTime();
         OffsetDateTime now = OffsetDateTime.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
         if (now.isAfter(expiry)) {
