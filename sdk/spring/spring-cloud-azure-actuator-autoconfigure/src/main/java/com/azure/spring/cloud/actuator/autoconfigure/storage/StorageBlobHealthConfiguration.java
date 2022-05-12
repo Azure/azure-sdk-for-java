@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
 
 /**
  * Auto-configuration class for Storage actuator.
@@ -26,8 +25,7 @@ import org.springframework.core.io.ResourceLoader;
 public class StorageBlobHealthConfiguration {
 
     @Bean
-    StorageBlobHealthIndicator storageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient,
-                                                          ResourceLoader resourceLoader) {
-        return new StorageBlobHealthIndicator(blobServiceAsyncClient, resourceLoader);
+    StorageBlobHealthIndicator storageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
+        return new StorageBlobHealthIndicator(blobServiceAsyncClient);
     }
 }
