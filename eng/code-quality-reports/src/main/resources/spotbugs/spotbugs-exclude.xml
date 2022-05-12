@@ -2637,16 +2637,64 @@
 
   <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
   <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
     <Or>
-      <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
-      <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
-      <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
-      <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
-      <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
-      <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
-      <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
-      <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
+      <Method name="getCustomEntitiesTaskParameters"/>
+      <Method name="getCustomMultiLabelClassificationTaskParameters"/>
+      <Method name="getCustomSingleClassificationTaskParameters"/>
+      <Method name="getEntitiesTaskParameters"/>
+      <Method name="getEntityLinkingTaskParameters"/>
+      <Method name="getExtractiveSummarizationTaskParameters"/>
+      <Method name="getHealthcareTaskParameters"/>
+      <Method name="getKeyPhraseTaskParameters"/>
+      <Method name="getPiiTaskParameters"/>
+      <Method name="getSentimentAnalysisTaskParameters"/>
     </Or>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+    <Or>
+      <Method name="beginAnalyzeHealthcareEntities"/>
+      <Method name="beginAnalyzeHealthcarePagedIterable"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+    <Or>
+      <Method name="beginAnalyzeHealthcareEntities"/>
+      <Method name="beginAnalyzeHealthcarePagedIterable"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
+    <Method name="getAnalyzedSentimentResponse"/>  
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
+    <Method name="getDetectedLanguageResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
+    <Method name="getExtractedKeyPhrasesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
+    <Method name="getRecognizedEntitiesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
+    <Method name="getRecognizedLinkedEntitiesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>  
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
+    <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 

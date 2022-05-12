@@ -135,6 +135,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -199,6 +200,7 @@ class AnalyzeActionsAsyncClient {
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
+            Objects.requireNonNull(actions, "'actions' cannot be null.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -267,6 +269,7 @@ class AnalyzeActionsAsyncClient {
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
+            Objects.requireNonNull(actions, "'actions' cannot be null.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -1318,6 +1321,9 @@ class AnalyzeActionsAsyncClient {
                     break;
                 case CANCELLED:
                     status = LongRunningOperationStatus.USER_CANCELLED;
+                    break;
+                case PARTIALLY_SUCCEEDED:
+                    status = LongRunningOperationStatus.fromString("partiallySucceeded", true);
                     break;
                 default:
                     status = LongRunningOperationStatus.fromString(

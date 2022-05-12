@@ -1897,7 +1897,7 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link AnalyzeActionsResultPagedFlux}.
      *
-     * @throws NullPointerException if {@code documents} is null.
+     * @throws NullPointerException if {@code documents} or {@code actions} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
