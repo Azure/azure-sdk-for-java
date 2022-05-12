@@ -1,27 +1,22 @@
 # EditorConfig helps developers define and maintain consistent coding styles between different editors and IDEs
-# editorconfig.org
-root = true
 
 [*]
 indent_style = space
-indent_size = 4
-charset = utf-8
+veľkosť_zarážky = 1
+znaková sad = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
-max_line_length = 120
 
 [*.json]
-indent_size = 2
-
-# From https://maven.apache.org/developers/conventions/code.html
+indent_size = 1
+# Z https://maven.apache.org/developers/conventions/code.html
 [*.xml]
-indent_size = 2
-continuation_indent_size = 4
+indent_size = 1
+continuation_indent_size = 1
 max_line_length = 240
 
 # From https://maven.apache.org/developers/conventions/code.html
 [*.java]
-continuation_indent_size = 4
-
+continuation_indent_size = 1
 [*.md]
 trim_trailing_whitespace = false
