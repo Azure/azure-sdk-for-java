@@ -33,7 +33,11 @@ public final class RunQueryFilterOperator extends ExpandableStringEnum<RunQueryF
         return fromString(name, RunQueryFilterOperator.class);
     }
 
-    /** @return known RunQueryFilterOperator values. */
+    /**
+     * Gets known RunQueryFilterOperator values.
+     *
+     * @return known RunQueryFilterOperator values.
+     */
     public static Collection<RunQueryFilterOperator> values() {
         return values(RunQueryFilterOperator.class);
     }

@@ -27,7 +27,11 @@ public final class ServiceNowAuthenticationType extends ExpandableStringEnum<Ser
         return fromString(name, ServiceNowAuthenticationType.class);
     }
 
-    /** @return known ServiceNowAuthenticationType values. */
+    /**
+     * Gets known ServiceNowAuthenticationType values.
+     *
+     * @return known ServiceNowAuthenticationType values.
+     */
     public static Collection<ServiceNowAuthenticationType> values() {
         return values(ServiceNowAuthenticationType.class);
     }

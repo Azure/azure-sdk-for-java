@@ -27,7 +27,11 @@ public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
         return fromString(name, RunQueryOrder.class);
     }
 
-    /** @return known RunQueryOrder values. */
+    /**
+     * Gets known RunQueryOrder values.
+     *
+     * @return known RunQueryOrder values.
+     */
     public static Collection<RunQueryOrder> values() {
         return values(RunQueryOrder.class);
     }

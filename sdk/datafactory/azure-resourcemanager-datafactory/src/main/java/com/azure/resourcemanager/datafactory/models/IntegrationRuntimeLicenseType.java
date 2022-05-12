@@ -27,7 +27,11 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
         return fromString(name, IntegrationRuntimeLicenseType.class);
     }
 
-    /** @return known IntegrationRuntimeLicenseType values. */
+    /**
+     * Gets known IntegrationRuntimeLicenseType values.
+     *
+     * @return known IntegrationRuntimeLicenseType values.
+     */
     public static Collection<IntegrationRuntimeLicenseType> values() {
         return values(IntegrationRuntimeLicenseType.class);
     }
