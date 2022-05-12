@@ -152,6 +152,8 @@ class SchemaRegistrySchemaCache {
      * Simple LRU cache. Accesses to cache are synchronized via the outer class lock.
      */
     private static final class SchemaCache extends LinkedHashMap<String, Schema> {
+        private static final long serialVersionUID = -1L;
+
         private final int capacity;
         private final HashMap<Schema, String> schemaToIdCache = new HashMap<>();
 
