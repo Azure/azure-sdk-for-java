@@ -43,12 +43,13 @@ class SchemaRegistrySchemaCache {
     }
 
     Mono<String> getSchemaId(Schema schema) {
+        final String existingSchemaId;
         synchronized (lock) {
-            final String schemaId = cache.getSchemaId(schema);
+            existingSchemaId = cache.getSchemaId(schema);
+        }
 
-            if (schemaId != null) {
-                return Mono.just(schemaId);
-            }
+        if (existingSchemaId != null) {
+            return Mono.just(existingSchemaId);
         }
 
         final String schemaFullName = schema.getFullName();
@@ -108,6 +109,28 @@ class SchemaRegistrySchemaCache {
     }
 
     /**
+     * Gets number of cached schemas.
+     *
+     * @return Number of cached schemas.
+     */
+    int getSize() {
+        synchronized (lock) {
+            return cache.size();
+        }
+    }
+
+    /**
+     * Gets the length of schemas stored in cache.
+     *
+     * @return The length of schemas stored in cache.
+     */
+    int getTotalLength() {
+        synchronized (lock) {
+            return cache.getTotalLength();
+        }
+    }
+
+    /**
      * Logs the cache status if log level verbose is enabled. Otherwise, no-op.
      */
     private void logCacheStatus() {
@@ -126,7 +149,7 @@ class SchemaRegistrySchemaCache {
     }
 
     /**
-     * Simple LRU cache. Accesses to cache are synchronized via the lock.
+     * Simple LRU cache. Accesses to cache are synchronized via the outer class lock.
      */
     private static final class SchemaCache extends LinkedHashMap<String, Schema> {
         private final int capacity;
