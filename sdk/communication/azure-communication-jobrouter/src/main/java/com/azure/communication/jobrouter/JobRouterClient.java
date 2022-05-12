@@ -1,7 +1,15 @@
 package com.azure.communication.jobrouter;
 
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
+
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Sync Client that supports chat operations.
@@ -39,7 +47,12 @@ public class JobRouterClient {
      *
      * @param client The {@link JobRouterAsyncClient} that the client routes its request through.
      */
-    public JobRouterClient(JobRouterAsyncClient client) {
+    JobRouterClient(JobRouterAsyncClient client) {
         this.client = client;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
+        return this.client.upsertDistributionPolicyWithResponse(id, distributionPolicy).block();
     }
 }
