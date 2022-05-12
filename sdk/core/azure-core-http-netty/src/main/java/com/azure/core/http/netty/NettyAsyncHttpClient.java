@@ -14,6 +14,14 @@ import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapp
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -21,6 +29,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.ProxyConnectException;
+import io.netty.handler.stream.ChunkedStream;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -153,13 +163,45 @@ class NettyAsyncHttpClient implements HttpClient {
                     hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
                 }
             }
-            if (restRequest.getBody() != null) {
-                Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
-                return reactorNettyOutbound.send(nettyByteBufFlux);
+            BinaryData body = restRequest.getBodyAsBinaryData();
+            if (body != null) {
+                BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+                if (bodyContent instanceof ByteArrayContent) {
+                    return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(bodyContent.toBytes())));
+                } else if (bodyContent instanceof StringContent
+                    || bodyContent instanceof SerializableContent) {
+                    return reactorNettyOutbound.send(
+                        Mono.fromSupplier(() -> Unpooled.wrappedBuffer(bodyContent.toBytes())));
+                } else if (bodyContent instanceof FileContent) {
+                    FileContent fileContent = (FileContent) bodyContent;
+                    // Beware of NettyOutbound.sendFile(Path) it involves extra file length lookup.
+                    // This is going to use zero-copy transfer if there's no ssl
+                    return reactorNettyOutbound.sendFile(fileContent.getFile(), 0, fileContent.getLength());
+                } else if (bodyContent instanceof InputStreamContent) {
+                    return sendInputStream(reactorNettyOutbound, (InputStreamContent) bodyContent);
+                } else {
+                    Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
+                    return reactorNettyOutbound.send(nettyByteBufFlux);
+                }
             } else {
                 return reactorNettyOutbound;
             }
         };
+    }
+
+    private static NettyOutbound sendInputStream(NettyOutbound reactorNettyOutbound, InputStreamContent bodyContent) {
+        return reactorNettyOutbound.sendUsing(
+            bodyContent::toStream,
+            (c, stream) -> {
+                if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
+                    c.addHandlerLast("reactor.left.chunkedWriter", new ChunkedWriteHandler());
+                }
+
+                return new ChunkedStream(stream);
+            },
+            (stream) -> {
+                // NO-OP. We don't close streams passed to our APIs.
+            });
     }
 
     /**
