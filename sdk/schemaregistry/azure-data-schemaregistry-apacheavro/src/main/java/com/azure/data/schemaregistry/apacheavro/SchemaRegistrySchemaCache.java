@@ -173,6 +173,12 @@ class SchemaRegistrySchemaCache {
             return totalLength;
         }
 
+        /**
+         * Gets the schema id of a matching schema.
+         *
+         * @param schema Schema to get entry for.
+         * @return The schema id or null if it does not exist in the cache.
+         */
         String getSchemaId(Schema schema) {
             final String schemaId = schemaToIdCache.get(schema);
 
@@ -185,7 +191,7 @@ class SchemaRegistrySchemaCache {
         }
 
         /**
-         * Adds a schema keyed by its schema id.  If it is larger than its counterpart.
+         * Adds a schema keyed by its schema id.
          */
         @Override
         public Schema put(String schemaId, Schema value) {
