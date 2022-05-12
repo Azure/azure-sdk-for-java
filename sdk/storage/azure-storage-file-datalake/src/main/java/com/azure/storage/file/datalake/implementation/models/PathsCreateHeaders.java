@@ -39,12 +39,6 @@ public final class PathsCreateHeaders {
     private Long contentLength;
 
     /*
-     * The x-ms-encryption-key-sha256 property.
-     */
-    @JsonProperty(value = "x-ms-encryption-key-sha256")
-    private String xMsEncryptionKeySha256;
-
-    /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
@@ -55,12 +49,6 @@ public final class PathsCreateHeaders {
      */
     @JsonProperty(value = "x-ms-continuation")
     private String xMsContinuation;
-
-    /*
-     * The x-ms-request-server-encrypted property.
-     */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
-    private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
@@ -156,26 +144,6 @@ public final class PathsCreateHeaders {
     }
 
     /**
-     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     *
-     * @return the xMsEncryptionKeySha256 value.
-     */
-    public String getXMsEncryptionKeySha256() {
-        return this.xMsEncryptionKeySha256;
-    }
-
-    /**
-     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     *
-     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
-     * @return the PathsCreateHeaders object itself.
-     */
-    public PathsCreateHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
-        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
-        return this;
-    }
-
-    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      *
      * @return the xMsRequestId value.
@@ -212,26 +180,6 @@ public final class PathsCreateHeaders {
      */
     public PathsCreateHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
-     * @return the xMsRequestServerEncrypted value.
-     */
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
-    }
-
-    /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
-     * @return the PathsCreateHeaders object itself.
-     */
-    public PathsCreateHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
     }
 

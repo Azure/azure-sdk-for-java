@@ -26,7 +26,6 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
@@ -49,7 +48,6 @@ import com.azure.storage.file.datalake.implementation.models.PathsUndeleteRespon
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
-import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -113,9 +111,6 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
                 @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince,
                 @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince,
-                @HeaderParam("x-ms-encryption-key") String encryptionKey,
-                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -197,9 +192,6 @@ public final class PathsImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-                @HeaderParam("x-ms-encryption-key") String encryptionKey,
-                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -311,9 +303,6 @@ public final class PathsImpl {
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-encryption-key") String encryptionKey,
-                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -333,9 +322,6 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-encryption-key") String encryptionKey,
-                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
-                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -417,12 +403,11 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @param sourceModifiedAccessConditions Parameter group.
-     * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsCreateResponse> createWithResponseAsync(
@@ -440,7 +425,6 @@ public final class PathsImpl {
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions,
-            CpkInfo cpkInfo,
             Context context) {
         final String accept = "application/json";
         String cacheControlInternal = null;
@@ -513,21 +497,6 @@ public final class PathsImpl {
             sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
@@ -565,9 +534,6 @@ public final class PathsImpl {
                 sourceIfNoneMatch,
                 sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted,
-                encryptionKey,
-                encryptionKeySha256,
-                encryptionAlgorithm,
                 accept,
                 context);
     }
@@ -649,7 +615,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsUpdateResponse> updateWithResponseAsync(
@@ -803,7 +769,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsLeaseResponse> leaseWithResponseAsync(
@@ -884,12 +850,11 @@ public final class PathsImpl {
      *     400 (Bad Request).
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
-     * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> readWithResponseAsync(
@@ -899,7 +864,6 @@ public final class PathsImpl {
             Boolean xMsRangeGetContentMd5,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
-            CpkInfo cpkInfo,
             Context context) {
         final String accept = "application/json";
         String leaseIdInternal = null;
@@ -927,21 +891,6 @@ public final class PathsImpl {
             ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
@@ -960,9 +909,6 @@ public final class PathsImpl {
                 ifNoneMatch,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
-                encryptionKey,
-                encryptionKeySha256,
-                encryptionAlgorithm,
                 accept,
                 context);
     }
@@ -992,8 +938,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties returns all system and user defined properties for a path on successful completion of {@link
-     *     Mono}.
+     * @return properties returns all system and user defined properties for a path.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -1073,7 +1018,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsDeleteResponse> deleteWithResponseAsync(
@@ -1155,7 +1100,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetAccessControlResponse> setAccessControlWithResponseAsync(
@@ -1248,7 +1193,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursiveWithResponseAsync(
@@ -1311,12 +1256,11 @@ public final class PathsImpl {
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
-     * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsFlushDataResponse> flushDataWithResponseAsync(
@@ -1329,7 +1273,6 @@ public final class PathsImpl {
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
-            CpkInfo cpkInfo,
             Context context) {
         final String action = "flush";
         final String accept = "application/json";
@@ -1388,21 +1331,6 @@ public final class PathsImpl {
             ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -1431,9 +1359,6 @@ public final class PathsImpl {
                 ifUnmodifiedSinceConverted,
                 requestId,
                 this.client.getVersion(),
-                encryptionKey,
-                encryptionKeySha256,
-                encryptionAlgorithm,
                 accept,
                 context);
     }
@@ -1458,12 +1383,11 @@ public final class PathsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
-     * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsAppendDataResponse> appendDataWithResponseAsync(
@@ -1475,7 +1399,6 @@ public final class PathsImpl {
             String requestId,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
-            CpkInfo cpkInfo,
             Context context) {
         final String action = "append";
         final String accept = "application/json";
@@ -1489,21 +1412,6 @@ public final class PathsImpl {
             leaseIdInternal = leaseAccessConditions.getLeaseId();
         }
         String leaseId = leaseIdInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.appendData(
@@ -1519,9 +1427,6 @@ public final class PathsImpl {
                 leaseId,
                 requestId,
                 this.client.getVersion(),
-                encryptionKey,
-                encryptionKeySha256,
-                encryptionAlgorithm,
                 body,
                 accept,
                 context);
@@ -1541,7 +1446,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsSetExpiryResponse> setExpiryWithResponseAsync(
@@ -1576,7 +1481,7 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsUndeleteResponse> undeleteWithResponseAsync(

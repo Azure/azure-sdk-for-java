@@ -180,7 +180,7 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsCreateResponse> createWithResponseAsync(
@@ -219,7 +219,7 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithResponseAsync(
@@ -269,7 +269,7 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -306,7 +306,7 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsDeleteResponse> deleteWithResponseAsync(
@@ -365,7 +365,7 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsListPathsResponse> listPathsWithResponseAsync(
@@ -419,7 +419,7 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of blobs on successful completion of {@link Mono}.
+     * @return an enumeration of blobs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithResponseAsync(
