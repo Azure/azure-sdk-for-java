@@ -40,8 +40,8 @@ public class PlaybackOnlyExtension implements IAnnotationDrivenExtension<Playbac
             return;
         }
         OffsetDateTime now = OffsetDateTime.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
-        String nowStr = now.getYear() + "/" + String.format("%02d",now.getMonthValue()) + "/"
-            + String.format("%02d",now.getDayOfMonth());
+        String nowStr = now.getYear() + "/" + String.format("%02d", now.getMonthValue()) + "/"
+            + String.format("%02d", now.getDayOfMonth());
         if (expiryStr.compareTo(nowStr) < 0) {
             throw new RuntimeException("PlaybackOnly has expired. Test must be reenabled");
         }
