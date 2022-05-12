@@ -31,7 +31,7 @@ import java.util.TreeMap;
  * SharedKey credential policy that is put into a header to authorize requests.
  */
 public final class StorageSharedKeyCredential {
-    private static final ClientLogger LOGGER = new ClientLogger(StorageSharedKeyCredential.class);
+    private final ClientLogger logger = new ClientLogger(StorageSharedKeyCredential.class);
 
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
@@ -128,7 +128,7 @@ public final class StorageSharedKeyCredential {
      * @param requestURL URL of the request
      * @param httpMethod HTTP method being used
      * @param headers Headers on the request
-     * @param logStringToSign Whether to log the string to sign
+     * @param logStringToSign Whether or not to log the string to sign
      * @return the SharedKey authorization value
      */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers,
@@ -141,7 +141,7 @@ public final class StorageSharedKeyCredential {
      * @param requestURL URL of the request
      * @param httpMethod HTTP method being used
      * @param headers Headers on the request
-     * @param logStringToSign Whether to log the string to sign
+     * @param logStringToSign Whether or not to log the string to sign
      * @return the SharedKey authorization value
      */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, HttpHeaders headers,
@@ -190,7 +190,7 @@ public final class StorageSharedKeyCredential {
             getCanonicalizedResource(requestURL));
 
         if (logStringToSign) {
-            StorageImplUtils.logStringToSign(LOGGER, stringToSign, LOG_STRING_TO_SIGN_CONTEXT);
+            StorageImplUtils.logStringToSign(logger, stringToSign, LOG_STRING_TO_SIGN_CONTEXT);
         }
 
         return stringToSign;

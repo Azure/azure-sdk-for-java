@@ -14,5 +14,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @ExtensionAnnotation(PlaybackOnlyExtension.class)
 public @interface PlaybackOnly {
-    String expiryTime() default "";
 }
