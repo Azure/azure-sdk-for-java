@@ -11,8 +11,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.models.SchemaFormat;
-import com.azure.data.schemaregistry.models.SchemaProperties;
 import org.apache.avro.Schema;
 import reactor.core.publisher.Mono;
 
@@ -129,9 +127,8 @@ public final class SchemaRegistryApacheAvroSerializer {
     static final int SCHEMA_ID_SIZE = 32;
 
     private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroSerializer.class);
-    private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final AvroSerializer avroSerializer;
-    private final SerializerOptions serializerOptions;
+    private final SchemaRegistrySchemaCache schemaCache;
 
     /**
      * Creates a new instance.
@@ -140,13 +137,15 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @param avroSerializer Serializer implemented using Apache Avro.
      * @param serializerOptions Options to configure the serializer with.
      */
-    SchemaRegistryApacheAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
-        AvroSerializer avroSerializer, SerializerOptions serializerOptions) {
-        this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
-            "'schemaRegistryClient' cannot be null.");
-        this.avroSerializer = Objects.requireNonNull(avroSerializer,
-            "'avroSerializer' cannot be null.");
-        this.serializerOptions = Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
+    SchemaRegistryApacheAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient, AvroSerializer avroSerializer,
+        SerializerOptions serializerOptions) {
+
+        Objects.requireNonNull(schemaRegistryClient, "'schemaRegistryClient' cannot be null.");
+        Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
+
+        this.avroSerializer = Objects.requireNonNull(avroSerializer, "'avroSerializer' cannot be null.");
+        this.schemaCache = new SchemaRegistrySchemaCache(schemaRegistryClient, serializerOptions.getSchemaGroup(),
+            serializerOptions.autoRegisterSchemas(), serializerOptions.getMaxCacheSize());
     }
 
     /**
@@ -277,28 +276,7 @@ public final class SchemaRegistryApacheAvroSerializer {
             return monoError(logger, exception);
         }
 
-        final String schemaFullName = schema.getFullName();
-        final String schemaString = schema.toString();
-        final String schemaGroup = serializerOptions.getSchemaGroup();
-
-        // It is possible to create the serializer without setting the schema group. This is the case when
-        // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
-        if (CoreUtils.isNullOrEmpty(schemaGroup)) {
-            return monoError(logger, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
-                + "set in SchemaRegistryApacheAvroSerializer.schemaGroup when creating serializer."));
-        }
-
-        final Mono<SchemaProperties> serviceCall;
-        if (serializerOptions.autoRegisterSchemas()) {
-            serviceCall = this.schemaRegistryClient
-                .registerSchema(schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
-        } else {
-            serviceCall = this.schemaRegistryClient.getSchemaProperties(
-                schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
-        }
-
-        return serviceCall.handle((properties, sink) -> {
-            final String schemaId = properties.getId();
+        return this.schemaCache.getSchemaId(schema).handle((schemaId, sink) -> {
 
             try {
                 final byte[] encoded = avroSerializer.serialize(object, schemaId);
@@ -429,12 +407,10 @@ public final class SchemaRegistryApacheAvroSerializer {
             contents.reset();
         }
 
-        return this.schemaRegistryClient.getSchema(schemaId)
-            .handle((registryObject, sink) -> {
-                final byte[] payloadSchema = registryObject.getDefinition().getBytes(StandardCharsets.UTF_8);
-
+        return this.schemaCache.getSchema(schemaId)
+            .handle((schema, sink) -> {
                 try {
-                    final T decode = avroSerializer.deserialize(contents, payloadSchema, typeReference);
+                    final T decode = avroSerializer.deserialize(contents, schema, typeReference);
                     sink.next(decode);
                 } catch (Exception e) {
                     sink.error(e);
