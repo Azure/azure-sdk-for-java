@@ -52,14 +52,9 @@ public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
                                .block(timeout);
 
                 builder.up();
-            } catch (Exception e) {
-                if (e instanceof BlobStorageException) {
-                    builder.up();
-                } else {
-                    throw e;
-                }
+            } catch (BlobStorageException e) {
+                builder.up();
             }
-
         }
     }
 
