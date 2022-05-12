@@ -40,7 +40,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * &#47;&#47; By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
  * &#47;&#47; added to the instance. By default, this is false, so it will error if the schema is not found.
  * SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder&#40;&#41;
- *     .schemaRegistryAsyncClient&#40;schemaRegistryAsyncClient&#41;
+ *     .schemaRegistryClient&#40;schemaRegistryAsyncClient&#41;
  *     .autoRegisterSchemas&#40;true&#41;
  *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
  *     .buildSerializer&#40;&#41;;
@@ -71,7 +71,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
  *     .build&#40;&#41;;
  *
- * MessageContent message = serializer.serializeMessageData&#40;person,
+ * MessageContent message = serializer.serialize&#40;person,
  *     TypeReference.createInstance&#40;MessageContent.class&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
@@ -85,7 +85,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .setContentType&#40;&quot;avro&#47;binary+&#123;schema-id&#125;&quot;&#41;;
  *
  * &#47;&#47; This is an object generated from the Avro schema used in the serialization sample.
- * Person person = serializer.deserializeMessageData&#40;message, TypeReference.createInstance&#40;Person.class&#41;&#41;;
+ * Person person = serializer.deserialize&#40;message, TypeReference.createInstance&#40;Person.class&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
  *
@@ -112,7 +112,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .build&#40;&#41;;
  *
  * &#47;&#47; Serializes and creates an instance of ComplexMessage using the messageFactory function.
- * ComplexMessage message = serializer.serializeMessageData&#40;person,
+ * ComplexMessage message = serializer.serialize&#40;person,
  *     TypeReference.createInstance&#40;ComplexMessage.class&#41;,
  *     &#40;encodedData&#41; -&gt; &#123;
  *         return new ComplexMessage&#40;&quot;unique-id&quot;, OffsetDateTime.now&#40;&#41;&#41;;
