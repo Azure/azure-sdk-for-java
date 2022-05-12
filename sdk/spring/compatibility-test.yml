@@ -10,6 +10,7 @@ stages:
     - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
         JobTemplatePath: sdk/spring/compatibility-tests-job.yml
+        AdditionalParameters:
             ServiceDirectory: spring
         MatrixConfigs:
           - Name: spring_boot_supported_version_tests
