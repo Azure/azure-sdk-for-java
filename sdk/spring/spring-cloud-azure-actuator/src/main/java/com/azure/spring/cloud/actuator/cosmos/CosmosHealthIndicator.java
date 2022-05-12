@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.util.Assert;
 
 import java.time.Duration;
@@ -47,7 +48,8 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
     @Override
     protected void doHealthCheck(Builder builder) throws Exception {
         if (database == null) {
-            builder.status("The option of `spring.cloud.azure.cosmos.database` is not configured!");
+            builder.status(Status.UNKNOWN).withDetail("Database not configured", "The option of `spring.cloud.azure" +
+                ".cosmos.database` is not configured!");
         } else {
             try {
                 CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
@@ -59,14 +61,13 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
                         response.getRequestCharge(), endpoint, database);
                     builder.withDetail("RUs", response.getRequestCharge());
                     builder.withDetail("CosmosUri", endpoint);
-                    builder.up().withDetail("database", response.getProperties().getId());
-
+                    builder.up().withDetail("database", database);
                 } else {
                     builder.down();
                 }
             } catch (Exception e) {
                 if (e instanceof NotFoundException) {
-                    builder.up().withDetail("database", "The option of `spring.cloud.azure.cosmos.database` is not "
+                    builder.status(Status.UNKNOWN).withDetail("Database not found", "The option of `spring.cloud.azure.cosmos.database` is not "
                         + "configured correctly!");
                 } else {
                     throw e;
