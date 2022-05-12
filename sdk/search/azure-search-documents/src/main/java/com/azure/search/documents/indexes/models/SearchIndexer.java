@@ -101,13 +101,6 @@ public final class SearchIndexer {
     @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
-    /*
-     * Adds caching to an enrichment pipeline to allow for incremental
-     * modification steps without having to rebuild the index every time.
-     */
-    @JsonProperty(value = "cache")
-    private SearchIndexerCache cache;
-
     /**
      * Constructor of {@link SearchIndexer}.
      *
@@ -412,28 +405,6 @@ public final class SearchIndexer {
      */
     public SearchIndexer setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
-        return this;
-    }
-
-    /**
-     * Get the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @return the cache value.
-     */
-    public SearchIndexerCache getCache() {
-        return this.cache;
-    }
-
-    /**
-     * Set the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @param cache the cache value to set.
-     * @return the SearchIndexer object itself.
-     */
-    public SearchIndexer setCache(SearchIndexerCache cache) {
-        this.cache = cache;
         return this;
     }
 }
