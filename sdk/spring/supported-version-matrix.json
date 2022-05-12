@@ -11,8 +11,8 @@
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
     "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION": [
-        "2.5.13",
-        "2.6.7"
+      "2.5.13",
+      "2.6.7"
     ],
     "TestFromSource": true
   }
