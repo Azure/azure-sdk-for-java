@@ -24,7 +24,11 @@ public final class OperatorType extends ExpandableStringEnum<OperatorType> {
         return fromString(name, OperatorType.class);
     }
 
-    /** @return known OperatorType values. */
+    /**
+     * Gets known OperatorType values.
+     *
+     * @return known OperatorType values.
+     */
     public static Collection<OperatorType> values() {
         return values(OperatorType.class);
     }

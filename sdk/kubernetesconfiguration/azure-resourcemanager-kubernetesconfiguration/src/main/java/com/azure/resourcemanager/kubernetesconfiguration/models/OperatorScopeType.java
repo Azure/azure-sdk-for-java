@@ -27,7 +27,11 @@ public final class OperatorScopeType extends ExpandableStringEnum<OperatorScopeT
         return fromString(name, OperatorScopeType.class);
     }
 
-    /** @return known OperatorScopeType values. */
+    /**
+     * Gets known OperatorScopeType values.
+     *
+     * @return known OperatorScopeType values.
+     */
     public static Collection<OperatorScopeType> values() {
         return values(OperatorScopeType.class);
     }

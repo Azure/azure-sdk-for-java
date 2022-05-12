@@ -36,7 +36,11 @@ public final class FluxComplianceState extends ExpandableStringEnum<FluxComplian
         return fromString(name, FluxComplianceState.class);
     }
 
-    /** @return known FluxComplianceState values. */
+    /**
+     * Gets known FluxComplianceState values.
+     *
+     * @return known FluxComplianceState values.
+     */
     public static Collection<FluxComplianceState> values() {
         return values(FluxComplianceState.class);
     }
