@@ -1,6 +1,6 @@
 # Release History
 
-## 12.3.0-beta.1 (Unreleased)
+## 12.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,26 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.3.0 (2022-05-11)
+
+### Features Added
+- TenantId can now be discovered through the service OAuth challenge response, when using a `TokenCredential` for authorization against Storage Table Service endpoints with version `2020_12_06`.
+- Added method `enableTenantDiscovery()` to `TableClientBuilder` and `TableServiceClientBuilder`. If enabled, the resulting client will attempt an initial unauthorized request to the service to prompt an OAuth challenge containing the tenantId of the resource. This tenantId will then be used by the `TokenCredential`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.28.0`
+- Upgraded `azure-core-http-netty` dependency to `1.12.0`
+
+## 12.2.2 (2022-04-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.27.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.9`
 
 ## 12.2.1 (2022-03-11)
 

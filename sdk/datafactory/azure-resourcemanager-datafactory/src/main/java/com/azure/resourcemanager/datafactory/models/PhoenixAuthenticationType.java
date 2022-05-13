@@ -31,7 +31,11 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
         return fromString(name, PhoenixAuthenticationType.class);
     }
 
-    /** @return known PhoenixAuthenticationType values. */
+    /**
+     * Gets known PhoenixAuthenticationType values.
+     *
+     * @return known PhoenixAuthenticationType values.
+     */
     public static Collection<PhoenixAuthenticationType> values() {
         return values(PhoenixAuthenticationType.class);
     }

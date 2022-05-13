@@ -52,7 +52,11 @@ public final class CassandraSourceReadConsistencyLevels
         return fromString(name, CassandraSourceReadConsistencyLevels.class);
     }
 
-    /** @return known CassandraSourceReadConsistencyLevels values. */
+    /**
+     * Gets known CassandraSourceReadConsistencyLevels values.
+     *
+     * @return known CassandraSourceReadConsistencyLevels values.
+     */
     public static Collection<CassandraSourceReadConsistencyLevels> values() {
         return values(CassandraSourceReadConsistencyLevels.class);
     }

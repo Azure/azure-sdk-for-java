@@ -36,7 +36,11 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
         return fromString(name, EventSubscriptionStatus.class);
     }
 
-    /** @return known EventSubscriptionStatus values. */
+    /**
+     * Gets known EventSubscriptionStatus values.
+     *
+     * @return known EventSubscriptionStatus values.
+     */
     public static Collection<EventSubscriptionStatus> values() {
         return values(EventSubscriptionStatus.class);
     }

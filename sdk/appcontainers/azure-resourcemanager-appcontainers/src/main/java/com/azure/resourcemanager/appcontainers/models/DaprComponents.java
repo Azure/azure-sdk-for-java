@@ -96,6 +96,36 @@ public interface DaprComponents {
     Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String name, Context context);
 
     /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource.
+     */
+    DaprSecretsCollection listSecrets(String resourceGroupName, String environmentName, String name);
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the Dapr Component.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource along with {@link Response}.
+     */
+    Response<DaprSecretsCollection> listSecretsWithResponse(
+        String resourceGroupName, String environmentName, String name, Context context);
+
+    /**
      * Get a dapr component.
      *
      * @param id the resource ID.

@@ -27,7 +27,11 @@ public final class IntegrationRuntimeAuthKeyName extends ExpandableStringEnum<In
         return fromString(name, IntegrationRuntimeAuthKeyName.class);
     }
 
-    /** @return known IntegrationRuntimeAuthKeyName values. */
+    /**
+     * Gets known IntegrationRuntimeAuthKeyName values.
+     *
+     * @return known IntegrationRuntimeAuthKeyName values.
+     */
     public static Collection<IntegrationRuntimeAuthKeyName> values() {
         return values(IntegrationRuntimeAuthKeyName.class);
     }

@@ -2,6 +2,16 @@
 
 ## 1.29.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Added support for `BinaryData` in `HttpRequest`:
+  - Added `HttpRequest(HttpMethod, URL, HttpHeaders)` and `HttpRequest(HttpMethod, URL, HttpHeaders, BinaryData)` constructors.
+  - Added `HttpRequest.getBodyAsBinaryData()`.
+  - Added `HttpRequest.setBody(BinaryData)`.
+  - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
+
+### Breaking Changes
+
 ### Bugs Fixed
 
 - Ensure the gap in `HttpLoggingPolicy` between `requestUrl` and upcoming log contents if line separators are removed 
