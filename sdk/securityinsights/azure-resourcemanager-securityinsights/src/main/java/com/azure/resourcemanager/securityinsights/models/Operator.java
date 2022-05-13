@@ -27,7 +27,11 @@ public final class Operator extends ExpandableStringEnum<Operator> {
         return fromString(name, Operator.class);
     }
 
-    /** @return known Operator values. */
+    /**
+     * Gets known Operator values.
+     *
+     * @return known Operator values.
+     */
     public static Collection<Operator> values() {
         return values(Operator.class);
     }
