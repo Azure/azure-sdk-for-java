@@ -6,9 +6,9 @@ package com.azure.spring.cloud.autoconfigure.useragent.http;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class KeyVaultSecretUserAgentTests {
                 "spring.cloud.azure.credential.client-id=sample",
                 "spring.cloud.azure.credential.client-secret=sample",
                 "spring.cloud.azure.keyvault.secret.enabled=true",
-                "spring.cloud.azure.keyvault.secret.endpoint=https://sample.vault.azure.net/",
+                "spring.cloud.azure.keyvault.secret.endpoint=https://sample" + System.nanoTime() + ".vault.azure.net/",
                 "spring.cloud.azure.keyvault.secret.client.logging.level=headers",
                 "spring.cloud.azure.keyvault.secret.client.logging.allowed-header-names=User-Agent",
                 "spring.cloud.azure.keyvault.secret.retry.fixed.delay=1",

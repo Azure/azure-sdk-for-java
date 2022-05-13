@@ -6,9 +6,9 @@ package com.azure.spring.cloud.autoconfigure.useragent.http;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
-import com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
+import com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class KeyVaultCertificateUserAgentTests {
                 "spring.cloud.azure.credential.client-id=sample",
                 "spring.cloud.azure.credential.client-secret=sample",
                 "spring.cloud.azure.keyvault.certificate.enabled=true",
-                "spring.cloud.azure.keyvault.certificate.endpoint=https://sample.vault.azure.net/",
+                "spring.cloud.azure.keyvault.certificate.endpoint=https://sample" + System.nanoTime() + ".vault.azure.net/",
                 "spring.cloud.azure.keyvault.certificate.client.logging.level=headers",
                 "spring.cloud.azure.keyvault.certificate.client.logging.allowed-header-names=User-Agent",
                 "spring.cloud.azure.keyvault.certificate.retry.fixed.delay=1s",
