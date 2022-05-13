@@ -176,14 +176,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace, String expand) {
         return listWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderResourceTypeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -199,14 +192,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace) {
         final String expand = null;
         return listWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderResourceTypeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
