@@ -1,13 +1,13 @@
 parameters:
   Matrix: ''
-  MaxParallel: 0
+  MaxParallel: 2
 
 jobs:
   - job: 'test'
 #    dependsOn: ''
 #    condition: always()
-    dependsOn: ${{ parameters.DependsOn }}
-    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+#    dependsOn: ${{ parameters.DependsOn }}
+#    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
 
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
