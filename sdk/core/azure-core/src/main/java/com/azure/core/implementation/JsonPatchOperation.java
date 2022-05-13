@@ -116,15 +116,11 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         // Write the start object and "op" property.
-        jsonWriter.writeStartObject().writeStringField("op", op.toString());
-
-        // Only write "from" property if it isn't null.
-        if (from != null) {
-            jsonWriter.writeStringField("from", from);
-        }
-
-        // Write the "path" property.
-        jsonWriter.writeStringField("path", path);
+        jsonWriter.writeStartObject().writeStringField("op", op.toString())
+            // Only write "from" property if it isn't null.
+            .writeStringField("from", from, false)
+            // Write the "path" property.
+            .writeStringField("path", path);
 
         // Only write the "value" property if it exists.
         if (value.isInitialized()) {

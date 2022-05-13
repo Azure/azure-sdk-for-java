@@ -41,9 +41,8 @@ public final class VirtualMachineScaleSetNetworkConfiguration
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "name", name);
+        jsonWriter.writeStartObject()
+            .writeStringField("name", name, false);
 
         if (primary != null) {
             jsonWriter.writeStartObject("properties")

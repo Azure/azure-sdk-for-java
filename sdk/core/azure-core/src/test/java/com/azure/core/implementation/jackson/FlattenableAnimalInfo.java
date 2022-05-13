@@ -33,17 +33,11 @@ public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo>
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "home", home);
-
-        if (animal == null) {
-            jsonWriter.writeNullField("animal");
-        } else {
-            jsonWriter.writeJsonCapableField("animal", animal);
-        }
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeStringField("home", home, false)
+            .writeJsonCapableField("animal", animal)
+            .writeEndObject()
+            .flush();
     }
 
     /**

@@ -46,7 +46,7 @@ public class ResponseErrorTests {
             Arguments.of(new ResponseError("code", "message")
                 .setInnerError(new ResponseInnerError().setCode("error code")),
                 "{\"code\":\"code\",\"message\":\"message\",\"innererror\":"
-                    + "{\"code\":\"error code\",\"innererror\":null}}"),
+                    + "{\"code\":\"error code\"}}"),
 
             Arguments.of(new ResponseError("code", "message").setErrorDetails(new ArrayList<>()),
                 "{\"code\":\"code\",\"message\":\"message\",\"details\":[]}"),

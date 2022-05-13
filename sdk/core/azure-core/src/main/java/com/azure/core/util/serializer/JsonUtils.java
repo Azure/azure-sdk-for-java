@@ -155,32 +155,6 @@ public final class JsonUtils {
     }
 
     /**
-     * Writes the JSON string field if, and only if, {@code value} isn't null.
-     *
-     * @param writer The {@link JsonWriter} being written.
-     * @param fieldName The field name.
-     * @param value The value.
-     * @return The updated {@link JsonWriter} if {@code value} wasn't null, otherwise the {@link JsonWriter} with no
-     * modifications.
-     */
-    public static JsonWriter writeNonNullStringField(JsonWriter writer, String fieldName, String value) {
-        return (value == null) ? writer : writer.writeStringField(fieldName, value);
-    }
-
-    /**
-     * Writes the JSON int field if, and only if, {@code value} isn't null.
-     *
-     * @param writer The {@link JsonWriter} being written.
-     * @param fieldName The field name.
-     * @param value The value.
-     * @return The updated {@link JsonWriter} if {@code value} wasn't null, otherwise the {@link JsonWriter} with no
-     * modifications.
-     */
-    public static JsonWriter writeNonNullIntegerField(JsonWriter writer, String fieldName, Integer value) {
-        return (value == null) ? writer : writer.writeIntField(fieldName, value);
-    }
-
-    /**
      * Reads the {@link JsonReader} as an untyped object.
      * <p>
      * The returned object is one of the following:

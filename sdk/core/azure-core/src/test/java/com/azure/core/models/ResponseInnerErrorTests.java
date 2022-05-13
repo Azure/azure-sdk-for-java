@@ -35,11 +35,11 @@ public class ResponseInnerErrorTests {
     private static Stream<Arguments> toJsonSupplier() {
         return Stream.of(
             Arguments.of(new ResponseInnerError().setCode("error code"),
-                "{\"code\":\"error code\",\"innererror\":null}"),
+                "{\"code\":\"error code\"}"),
 
             Arguments.of(new ResponseInnerError().setCode("error code")
                     .setInnerError(new ResponseInnerError().setCode("sub-error code")),
-                "{\"code\":\"error code\",\"innererror\":{\"code\":\"sub-error code\",\"innererror\":null}}")
+                "{\"code\":\"error code\",\"innererror\":{\"code\":\"sub-error code\"}}")
         );
     }
 

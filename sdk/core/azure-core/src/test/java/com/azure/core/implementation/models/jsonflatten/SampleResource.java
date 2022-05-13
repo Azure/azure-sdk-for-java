@@ -44,12 +44,12 @@ public class SampleResource implements JsonCapable<SampleResource> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeStartObject("properties");
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "name", namePropertiesName);
-        JsonUtils.writeNonNullStringField(jsonWriter, "registrationTtl", registrationTtl);
-
-        return jsonWriter.writeEndObject().writeEndObject().flush();
+        return jsonWriter.writeStartObject("properties")
+            .writeStringField("name", namePropertiesName, false)
+            .writeStringField("registrationTtl", registrationTtl, false)
+            .writeEndObject()
+            .writeEndObject()
+            .flush();
     }
 
     public static SampleResource fromJson(JsonReader jsonReader) {

@@ -65,21 +65,15 @@ public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "description", description);
-
-        if (turtlesSet1Lead != null) {
-            jsonWriter.writeJsonCapableField("turtlesSet1Lead", turtlesSet1Lead);
-        }
+        jsonWriter.writeStartObject()
+            .writeStringField("description", description, false)
+            .writeJsonCapableField("turtlesSet1Lead", turtlesSet1Lead, false);
 
         if (turtlesSet1 != null) {
             JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, JsonWriter::writeJsonCapable);
         }
 
-        if (turtlesSet2Lead != null) {
-            jsonWriter.writeJsonCapableField("turtlesSet2Lead", turtlesSet2Lead);
-        }
+        jsonWriter.writeJsonCapableField("turtlesSet2Lead", turtlesSet2Lead, false);
 
         if (turtlesSet2 != null) {
             JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, JsonWriter::writeJsonCapable);

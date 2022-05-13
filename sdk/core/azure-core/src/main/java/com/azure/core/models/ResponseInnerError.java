@@ -59,19 +59,10 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        jsonWriter.writeStringField("code", code)
-            .writeFieldName("innererror");
-
-        if (innerError != null) {
-            innerError.toJson(jsonWriter);
-        } else {
-            jsonWriter.writeNull();
-        }
-
-        // Always flush at the end of writing an object.
-        return jsonWriter.writeEndObject()
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", code)
+            .writeJsonCapableField("innererror", innerError, false)
+            .writeEndObject()
             .flush();
     }
 

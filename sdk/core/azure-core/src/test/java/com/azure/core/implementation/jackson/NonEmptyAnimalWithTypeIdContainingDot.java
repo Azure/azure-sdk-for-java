@@ -25,9 +25,9 @@ public class NonEmptyAnimalWithTypeIdContainingDot implements JsonCapable<NonEmp
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject().writeStringField("@odata.type", "NonEmptyAnimalWithTypeIdContainingDot");
-
-        return JsonUtils.writeNonNullIntegerField(jsonWriter, "age", age)
+        return jsonWriter.writeStartObject()
+            .writeStringField("@odata.type", "NonEmptyAnimalWithTypeIdContainingDot")
+            .writeIntegerField("age", age, false)
             .writeEndObject()
             .flush();
     }

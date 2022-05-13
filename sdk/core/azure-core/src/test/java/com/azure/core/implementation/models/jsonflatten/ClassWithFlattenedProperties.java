@@ -41,7 +41,7 @@ public final class ClassWithFlattenedProperties implements JsonCapable<ClassWith
                 .writeEndObject();
         }
 
-        return JsonUtils.writeNonNullStringField(jsonWriter, "@odata.etag", odataETag)
+        return jsonWriter.writeStringField("@odata.etag", odataETag, false)
             .writeEndObject()
             .flush();
     }

@@ -38,11 +38,8 @@ public class School implements JsonCapable<School> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        if (teacher != null) {
-            jsonWriter.writeJsonCapableField("teacher", teacher);
-        }
+        jsonWriter.writeStartObject()
+            .writeJsonCapableField("teacher", teacher, false);
 
         if (name != null) {
             jsonWriter.writeStartObject("properties")

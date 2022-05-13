@@ -27,13 +27,10 @@ public class JsonFlattenNestedInner implements JsonCapable<JsonFlattenNestedInne
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        if (identity != null) {
-            jsonWriter.writeJsonCapableField("identity", identity);
-        }
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeJsonCapableField("identity", identity, false)
+            .writeEndObject()
+            .flush();
     }
 
     public static JsonFlattenNestedInner fromJson(JsonReader jsonReader) {

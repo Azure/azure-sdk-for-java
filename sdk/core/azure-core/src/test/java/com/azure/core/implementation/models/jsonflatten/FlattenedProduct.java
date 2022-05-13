@@ -44,12 +44,12 @@ public class FlattenedProduct implements JsonCapable<FlattenedProduct> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeStartObject("properties");
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "p.name", productName);
-        JsonUtils.writeNonNullStringField(jsonWriter, "type", productType);
-
-        return jsonWriter.writeEndObject().writeEndObject().flush();
+        return jsonWriter.writeStartObject("properties")
+            .writeStringField("p.name", productName, false)
+            .writeStringField("type", productType, false)
+            .writeEndObject()
+            .writeEndObject()
+            .flush();
     }
 
     public static FlattenedProduct fromJson(JsonReader jsonReader) {

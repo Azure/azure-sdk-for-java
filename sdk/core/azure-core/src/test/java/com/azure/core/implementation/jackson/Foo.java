@@ -83,9 +83,8 @@ public class Foo implements JsonCapable<Foo> {
             .writeStringField("$type", type);
 
         if (bar != null || baz != null || qux != null || moreProps != null) {
-            jsonWriter.writeStartObject("properties");
-
-            JsonUtils.writeNonNullStringField(jsonWriter, "bar", bar);
+            jsonWriter.writeStartObject("properties")
+                .writeStringField("bar", bar, false);
 
             if (baz != null || qux != null) {
                 jsonWriter.writeStartObject("props");
@@ -107,9 +106,8 @@ public class Foo implements JsonCapable<Foo> {
                 jsonWriter.writeEndObject();
             }
 
-            JsonUtils.writeNonNullStringField(jsonWriter, "more.props", moreProps);
-
-            jsonWriter.writeEndObject();
+            jsonWriter.writeStringField("more.props", moreProps, false)
+                .writeEndObject();
         }
 
         if (empty != null) {

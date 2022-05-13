@@ -29,10 +29,8 @@ public class FlattenDangling implements JsonCapable<FlattenDangling> {
         jsonWriter.writeStartObject();
 
         if (flattenedProperty != null) {
-            jsonWriter.writeFieldName("a")
-                .writeStartObject()
-                .writeFieldName("flattened")
-                .writeStartObject()
+            jsonWriter.writeStartObject("a")
+                .writeStartObject("flattened")
                 .writeStringField("property", flattenedProperty)
                 .writeEndObject()
                 .writeEndObject();

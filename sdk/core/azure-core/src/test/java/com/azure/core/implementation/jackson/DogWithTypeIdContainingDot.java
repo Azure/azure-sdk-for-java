@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
@@ -32,9 +31,8 @@ public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject()
-            .writeStringField("@odata.type", "#Favourite.Pet.DogWithTypeIdContainingDot");
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "breed", breed);
+            .writeStringField("@odata.type", "#Favourite.Pet.DogWithTypeIdContainingDot")
+            .writeStringField("breed", breed, false);
 
         if (cuteLevel != null) {
             jsonWriter.writeFieldName("properties")

@@ -37,7 +37,8 @@ public final class JsonFlattenOnJsonIgnoredProperty implements JsonCapable<JsonF
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        return JsonUtils.writeNonNullStringField(jsonWriter.writeStartObject(), "name", name)
+        return jsonWriter.writeStartObject()
+            .writeStringField("name", name, false)
             .writeEndObject()
             .flush();
     }

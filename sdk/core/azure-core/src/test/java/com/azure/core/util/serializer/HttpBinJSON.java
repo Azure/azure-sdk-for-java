@@ -75,9 +75,8 @@ public class HttpBinJSON implements JsonCapable<HttpBinJSON> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "url", url);
+        jsonWriter.writeStartObject()
+            .writeStringField("url", url, false);
 
         if (headers != null) {
             jsonWriter.writeStartObject("headers");

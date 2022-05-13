@@ -27,13 +27,10 @@ public final class VirtualMachineScaleSetVMProfile implements JsonCapable<Virtua
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        if (networkProfile != null) {
-            jsonWriter.writeJsonCapableField("networkProfile", networkProfile);
-        }
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeJsonCapableField("networkProfile", networkProfile, false)
+            .writeEndObject()
+            .flush();
     }
 
     public static VirtualMachineScaleSetVMProfile fromJson(JsonReader jsonReader) {
