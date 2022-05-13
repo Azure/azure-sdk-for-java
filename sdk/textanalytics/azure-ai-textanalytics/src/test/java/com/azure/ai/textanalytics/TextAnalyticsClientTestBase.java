@@ -21,6 +21,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -623,6 +624,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void analyzeHealthcareEntitiesForFhirBundle(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+
     // Healthcare LRO - Cancellation
 
     @Test
@@ -1047,6 +1052,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             "All female participants that are premenopausal will be required to have a pregnancy test; "
                 + "any participant who is pregnant or breastfeeding will not be included"),
             new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(false));
+    }
+
+    void analyzeHealthcareEntitiesForFhirBundleRunner(
+        BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
+        testRunner.accept(asList(
+            "All female participants that are premenopausal will be required to have a pregnancy test; "
+                + "any participant who is pregnant or breastfeeding will not be included"),
+            new AnalyzeHealthcareEntitiesOptions().setFhirVersion(FhirVersion.V4_0_1));
     }
 
     // Healthcare LRO runner- Cancellation

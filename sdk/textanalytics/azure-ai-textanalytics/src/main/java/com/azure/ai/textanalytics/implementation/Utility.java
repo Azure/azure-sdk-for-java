@@ -982,6 +982,9 @@ public final class Utility {
                 AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(analyzeHealthcareEntitiesResult,
                     IterableStream.of(healthcareEntityRelations));
 
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(analyzeHealthcareEntitiesResult,
+                    documentEntities.getFhirBundle());
+
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
         // Document errors

@@ -90,6 +90,7 @@ import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_D
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -2178,6 +2179,24 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             assertEquals(EntityConditionality.HYPOTHETICAL, assertion.getConditionality());
             assertNull(assertion.getAssociation());
             assertNull(assertion.getCertainty());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeHealthcareEntitiesForFhirBundle(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeHealthcareEntitiesForFhirBundleRunner((documents, options) -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, "en", options).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            assertNotNull(
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList())
+                    .get(0).stream().collect(Collectors.toList()) // List of document result
+                    .get(0).getFhirBundle());
         });
     }
 
