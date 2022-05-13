@@ -8,6 +8,8 @@ import com.azure.storage.blob.models.*
 import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.Exceptions
 import spock.lang.Retry
@@ -426,6 +428,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
+    @PlaybackOnly(expiryTime = "2022-05-18")
     def "Query Input csv Output arrow"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
