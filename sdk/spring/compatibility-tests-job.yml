@@ -4,6 +4,7 @@ parameters:
 
 jobs:
   - job: 'test'
+    dependsOn: []
 #    dependsOn: ${{ parameters.DependsOn }}
 #    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
 
