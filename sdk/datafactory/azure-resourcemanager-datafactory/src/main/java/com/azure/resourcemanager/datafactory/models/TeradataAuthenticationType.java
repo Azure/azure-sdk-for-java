@@ -27,7 +27,11 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
         return fromString(name, TeradataAuthenticationType.class);
     }
 
-    /** @return known TeradataAuthenticationType values. */
+    /**
+     * Gets known TeradataAuthenticationType values.
+     *
+     * @return known TeradataAuthenticationType values.
+     */
     public static Collection<TeradataAuthenticationType> values() {
         return values(TeradataAuthenticationType.class);
     }

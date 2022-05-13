@@ -39,7 +39,11 @@ public final class ChannelProvisioningState extends ExpandableStringEnum<Channel
         return fromString(name, ChannelProvisioningState.class);
     }
 
-    /** @return known ChannelProvisioningState values. */
+    /**
+     * Gets known ChannelProvisioningState values.
+     *
+     * @return known ChannelProvisioningState values.
+     */
     public static Collection<ChannelProvisioningState> values() {
         return values(ChannelProvisioningState.class);
     }

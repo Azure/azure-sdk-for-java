@@ -119,7 +119,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         final SchemaRegistryClient registryClient = builder.buildClient();
         final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(schemaGroup)
-            .schemaRegistryAsyncClient(builder.buildAsyncClient())
+            .schemaRegistryClient(builder.buildAsyncClient())
             .avroSpecificReader(true)
             .buildSerializer();
 
@@ -175,7 +175,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         // Arrange
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(schemaGroup)
-            .schemaRegistryAsyncClient(builder.buildAsyncClient())
+            .schemaRegistryClient(builder.buildAsyncClient())
             .avroSpecificReader(true)
             .buildSerializer();
 

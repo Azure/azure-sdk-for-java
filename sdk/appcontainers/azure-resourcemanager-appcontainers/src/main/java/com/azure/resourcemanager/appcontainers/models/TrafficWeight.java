@@ -28,6 +28,12 @@ public final class TrafficWeight {
     @JsonProperty(value = "latestRevision")
     private Boolean latestRevision;
 
+    /*
+     * Associates a traffic label with a revision
+     */
+    @JsonProperty(value = "label")
+    private String label;
+
     /**
      * Get the revisionName property: Name of a revision.
      *
@@ -85,6 +91,26 @@ public final class TrafficWeight {
      */
     public TrafficWeight withLatestRevision(Boolean latestRevision) {
         this.latestRevision = latestRevision;
+        return this;
+    }
+
+    /**
+     * Get the label property: Associates a traffic label with a revision.
+     *
+     * @return the label value.
+     */
+    public String label() {
+        return this.label;
+    }
+
+    /**
+     * Set the label property: Associates a traffic label with a revision.
+     *
+     * @param label the label value to set.
+     * @return the TrafficWeight object itself.
+     */
+    public TrafficWeight withLabel(String label) {
+        this.label = label;
         return this;
     }
 

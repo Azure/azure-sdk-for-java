@@ -30,7 +30,11 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
         return fromString(name, SftpAuthenticationType.class);
     }
 
-    /** @return known SftpAuthenticationType values. */
+    /**
+     * Gets known SftpAuthenticationType values.
+     *
+     * @return known SftpAuthenticationType values.
+     */
     public static Collection<SftpAuthenticationType> values() {
         return values(SftpAuthenticationType.class);
     }

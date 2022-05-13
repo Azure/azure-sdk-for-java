@@ -6,14 +6,11 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details for accessing the encryption keys in Key Vault. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
-
     /*
      * The URL of the Key Vault key used to encrypt the account. The key may
      * either be versioned (for example https://vault/keys/mykey/version1) or
@@ -71,10 +68,12 @@ public final class KeyVaultProperties {
      */
     public void validate() {
         if (keyIdentifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyIdentifier in model KeyVaultProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultProperties.class);
 }

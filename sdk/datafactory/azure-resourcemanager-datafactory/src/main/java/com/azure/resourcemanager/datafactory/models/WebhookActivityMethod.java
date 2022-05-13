@@ -24,7 +24,11 @@ public final class WebhookActivityMethod extends ExpandableStringEnum<WebhookAct
         return fromString(name, WebhookActivityMethod.class);
     }
 
-    /** @return known WebhookActivityMethod values. */
+    /**
+     * Gets known WebhookActivityMethod values.
+     *
+     * @return known WebhookActivityMethod values.
+     */
     public static Collection<WebhookActivityMethod> values() {
         return values(WebhookActivityMethod.class);
     }

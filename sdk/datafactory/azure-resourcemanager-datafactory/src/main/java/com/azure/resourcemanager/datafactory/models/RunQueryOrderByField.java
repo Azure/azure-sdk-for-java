@@ -48,7 +48,11 @@ public final class RunQueryOrderByField extends ExpandableStringEnum<RunQueryOrd
         return fromString(name, RunQueryOrderByField.class);
     }
 
-    /** @return known RunQueryOrderByField values. */
+    /**
+     * Gets known RunQueryOrderByField values.
+     *
+     * @return known RunQueryOrderByField values.
+     */
     public static Collection<RunQueryOrderByField> values() {
         return values(RunQueryOrderByField.class);
     }
