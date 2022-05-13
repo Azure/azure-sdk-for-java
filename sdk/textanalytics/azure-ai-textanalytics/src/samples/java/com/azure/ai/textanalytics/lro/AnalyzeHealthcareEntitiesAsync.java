@@ -33,11 +33,10 @@ public class AnalyzeHealthcareEntitiesAsync {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsAsyncClient client =
-            new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
-                .buildAsyncClient();
+        TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
+                                              .credential(new AzureKeyCredential("{key}"))
+                                              .endpoint("{endpoint}")
+                                              .buildAsyncClient();
 
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",

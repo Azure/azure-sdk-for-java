@@ -647,7 +647,6 @@ final class TestUtils {
         SentenceOpinionPropertiesHelper.setTarget(sentenceOpinion2, targetSentiment2);
         SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment3)));
-
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
             "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
