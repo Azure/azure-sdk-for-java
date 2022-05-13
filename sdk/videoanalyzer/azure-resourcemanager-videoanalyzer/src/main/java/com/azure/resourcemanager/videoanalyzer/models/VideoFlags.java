@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VideoFlags {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoFlags.class);
-
     /*
      * Value indicating whether or not the video can be streamed. Only
      * "archive" type videos can be streamed.

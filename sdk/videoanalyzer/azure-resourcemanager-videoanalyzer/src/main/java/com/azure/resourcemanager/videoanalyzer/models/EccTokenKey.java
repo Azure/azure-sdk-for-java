@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.EccTokenKey")
 @Fluent
 public final class EccTokenKey extends TokenKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EccTokenKey.class);
-
     /*
      * Elliptical curve algorithm to be used: ES256, ES384 or ES512.
      */
@@ -112,17 +109,19 @@ public final class EccTokenKey extends TokenKey {
     public void validate() {
         super.validate();
         if (alg() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property alg in model EccTokenKey"));
         }
         if (x() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property x in model EccTokenKey"));
         }
         if (y() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property y in model EccTokenKey"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EccTokenKey.class);
 }
