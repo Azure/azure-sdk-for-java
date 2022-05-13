@@ -24,7 +24,11 @@ public final class EventDefinitionKind extends ExpandableStringEnum<EventDefinit
         return fromString(name, EventDefinitionKind.class);
     }
 
-    /** @return known EventDefinitionKind values. */
+    /**
+     * Gets known EventDefinitionKind values.
+     *
+     * @return known EventDefinitionKind values.
+     */
     public static Collection<EventDefinitionKind> values() {
         return values(EventDefinitionKind.class);
     }
