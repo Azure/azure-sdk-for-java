@@ -57,6 +57,7 @@ import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationR
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationSortingCriteria;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTask;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
@@ -516,7 +517,10 @@ class AnalyzeActionsAsyncClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
+        final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
+        final FhirVersion fhirVersionImpl = fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
         return (HealthcareTaskParameters) new HealthcareTaskParameters()
+                                              .setFhirVersion(fhirVersionImpl)
                                               .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                               .setModelVersion(action.getModelVersion())
                                               .setLoggingOptOut(action.isServiceLogsDisabled());

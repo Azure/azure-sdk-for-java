@@ -83,6 +83,7 @@ public final class AnalyzeTextsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeTextsCancelJobResponse> cancelJob(
                 @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") UUID jobId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -140,6 +141,6 @@ public final class AnalyzeTextsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeTextsCancelJobResponse> cancelJobWithResponseAsync(UUID jobId, Context context) {
         final String accept = "application/json";
-        return service.cancelJob(this.client.getEndpoint(), jobId, accept, context);
+        return service.cancelJob(this.client.getEndpoint(), this.client.getApiVersion(), jobId, accept, context);
     }
 }
