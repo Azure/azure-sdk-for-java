@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource log category configuration of a Microsoft.SignalRService resource. */
 @Fluent
 public final class ResourceLogCategory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceLogCategory.class);
-
     /*
      * Gets or sets the resource log category's name.
      * Available values: ConnectivityLogs, MessagingLogs.

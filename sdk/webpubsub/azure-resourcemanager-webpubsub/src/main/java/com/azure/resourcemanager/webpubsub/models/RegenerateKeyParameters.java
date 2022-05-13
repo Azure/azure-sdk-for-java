@@ -5,24 +5,19 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters describes the request to regenerate access keys. */
 @Fluent
 public final class RegenerateKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateKeyParameters.class);
-
     /*
-     * The keyType to regenerate. Must be either 'primary' or
-     * 'secondary'(case-insensitive).
+     * The type of access key.
      */
     @JsonProperty(value = "keyType")
     private KeyType keyType;
 
     /**
-     * Get the keyType property: The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
+     * Get the keyType property: The type of access key.
      *
      * @return the keyType value.
      */
@@ -31,7 +26,7 @@ public final class RegenerateKeyParameters {
     }
 
     /**
-     * Set the keyType property: The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
+     * Set the keyType property: The type of access key.
      *
      * @param keyType the keyType value to set.
      * @return the RegenerateKeyParameters object itself.

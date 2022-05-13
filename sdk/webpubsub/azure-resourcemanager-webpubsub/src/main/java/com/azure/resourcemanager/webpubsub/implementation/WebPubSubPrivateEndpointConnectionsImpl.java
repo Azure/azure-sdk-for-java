@@ -13,10 +13,9 @@ import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateEndpointConnec
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubPrivateEndpointConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WebPubSubPrivateEndpointConnectionsImpl implements WebPubSubPrivateEndpointConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubPrivateEndpointConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubPrivateEndpointConnectionsImpl.class);
 
     private final WebPubSubPrivateEndpointConnectionsClient innerClient;
 

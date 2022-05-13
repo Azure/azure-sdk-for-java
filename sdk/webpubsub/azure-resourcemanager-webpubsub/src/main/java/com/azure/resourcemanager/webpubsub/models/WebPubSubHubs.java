@@ -19,7 +19,7 @@ public interface WebPubSubHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub setting list.
+     * @return hub setting list as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WebPubSubHub> list(String resourceGroupName, String resourceName);
 
@@ -33,7 +33,7 @@ public interface WebPubSubHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub setting list.
+     * @return hub setting list as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WebPubSubHub> list(String resourceGroupName, String resourceName, Context context);
 
@@ -62,7 +62,7 @@ public interface WebPubSubHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hub setting.
+     * @return a hub setting along with {@link Response}.
      */
     Response<WebPubSubHub> getWithResponse(
         String hubName, String resourceGroupName, String resourceName, Context context);
@@ -101,7 +101,7 @@ public interface WebPubSubHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hub setting.
+     * @return a hub setting along with {@link Response}.
      */
     WebPubSubHub getById(String id);
 
@@ -113,7 +113,7 @@ public interface WebPubSubHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hub setting.
+     * @return a hub setting along with {@link Response}.
      */
     Response<WebPubSubHub> getByIdWithResponse(String id, Context context);
 

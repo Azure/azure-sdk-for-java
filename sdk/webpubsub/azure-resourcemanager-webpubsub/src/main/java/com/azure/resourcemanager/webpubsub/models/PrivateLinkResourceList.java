@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains a list of PrivateLinkResource and a possible link to query more results. */
 @Fluent
 public final class PrivateLinkResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceList.class);
-
     /*
      * List of PrivateLinkResource
      */

@@ -5,24 +5,20 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network ACLs for the resource. */
 @Fluent
 public final class WebPubSubNetworkACLs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubNetworkACLs.class);
-
     /*
-     * Default action when no other rule matches
+     * Azure Networking ACL Action.
      */
     @JsonProperty(value = "defaultAction")
     private AclAction defaultAction;
 
     /*
-     * ACL for requests from public network
+     * Network ACL
      */
     @JsonProperty(value = "publicNetwork")
     private NetworkAcl publicNetwork;
@@ -34,7 +30,7 @@ public final class WebPubSubNetworkACLs {
     private List<PrivateEndpointAcl> privateEndpoints;
 
     /**
-     * Get the defaultAction property: Default action when no other rule matches.
+     * Get the defaultAction property: Azure Networking ACL Action.
      *
      * @return the defaultAction value.
      */
@@ -43,7 +39,7 @@ public final class WebPubSubNetworkACLs {
     }
 
     /**
-     * Set the defaultAction property: Default action when no other rule matches.
+     * Set the defaultAction property: Azure Networking ACL Action.
      *
      * @param defaultAction the defaultAction value to set.
      * @return the WebPubSubNetworkACLs object itself.
@@ -54,7 +50,7 @@ public final class WebPubSubNetworkACLs {
     }
 
     /**
-     * Get the publicNetwork property: ACL for requests from public network.
+     * Get the publicNetwork property: Network ACL.
      *
      * @return the publicNetwork value.
      */
@@ -63,7 +59,7 @@ public final class WebPubSubNetworkACLs {
     }
 
     /**
-     * Set the publicNetwork property: ACL for requests from public network.
+     * Set the publicNetwork property: Network ACL.
      *
      * @param publicNetwork the publicNetwork value to set.
      * @return the WebPubSubNetworkACLs object itself.

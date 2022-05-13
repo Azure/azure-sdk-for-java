@@ -21,10 +21,9 @@ import com.azure.resourcemanager.webpubsub.models.SkuList;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubKeys;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WebPubSubsImpl implements WebPubSubs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubsImpl.class);
 
     private final WebPubSubsClient innerClient;
 
@@ -192,7 +191,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     public WebPubSubResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,7 +199,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
@@ -211,7 +210,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     public Response<WebPubSubResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -219,7 +218,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
@@ -230,7 +229,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -238,7 +237,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
@@ -249,7 +248,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -257,7 +256,7 @@ public final class WebPubSubsImpl implements WebPubSubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));

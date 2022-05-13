@@ -30,7 +30,11 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
         return fromString(name, KeyType.class);
     }
 
-    /** @return known KeyType values. */
+    /**
+     * Gets known KeyType values.
+     *
+     * @return known KeyType values.
+     */
     public static Collection<KeyType> values() {
         return values(KeyType.class);
     }

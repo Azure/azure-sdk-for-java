@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Live trace configuration of a Microsoft.SignalRService resource. */
 @Fluent
 public final class LiveTraceConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveTraceConfiguration.class);
-
     /*
      * Indicates whether or not enable live trace.
      * When it's set to true, live trace client can connect to the service.

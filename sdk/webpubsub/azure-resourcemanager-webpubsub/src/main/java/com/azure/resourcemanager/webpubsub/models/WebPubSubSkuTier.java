@@ -33,7 +33,11 @@ public final class WebPubSubSkuTier extends ExpandableStringEnum<WebPubSubSkuTie
         return fromString(name, WebPubSubSkuTier.class);
     }
 
-    /** @return known WebPubSubSkuTier values. */
+    /**
+     * Gets known WebPubSubSkuTier values.
+     *
+     * @return known WebPubSubSkuTier values.
+     */
     public static Collection<WebPubSubSkuTier> values() {
         return values(WebPubSubSkuTier.class);
     }

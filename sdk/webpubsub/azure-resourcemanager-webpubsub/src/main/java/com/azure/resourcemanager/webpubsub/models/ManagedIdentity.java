@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,10 +12,8 @@ import java.util.Map;
 /** A class represent managed identities used for request and response. */
 @Fluent
 public class ManagedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentity.class);
-
     /*
-     * Represent the identity type: systemAssigned, userAssigned, None
+     * Represents the identity type: systemAssigned, userAssigned, None
      */
     @JsonProperty(value = "type")
     private ManagedIdentityType type;
@@ -44,7 +40,7 @@ public class ManagedIdentity {
     private String tenantId;
 
     /**
-     * Get the type property: Represent the identity type: systemAssigned, userAssigned, None.
+     * Get the type property: Represents the identity type: systemAssigned, userAssigned, None.
      *
      * @return the type value.
      */
@@ -53,7 +49,7 @@ public class ManagedIdentity {
     }
 
     /**
-     * Set the type property: Represent the identity type: systemAssigned, userAssigned, None.
+     * Set the type property: Represents the identity type: systemAssigned, userAssigned, None.
      *
      * @param type the type value to set.
      * @return the ManagedIdentity object itself.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private endpoint connections. */
 @Fluent
 public final class PrivateEndpointConnectionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionList.class);
-
     /*
      * The list of the private endpoint connections
      */

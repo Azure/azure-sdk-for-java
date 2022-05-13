@@ -33,7 +33,11 @@ public final class WebPubSubRequestType extends ExpandableStringEnum<WebPubSubRe
         return fromString(name, WebPubSubRequestType.class);
     }
 
-    /** @return known WebPubSubRequestType values. */
+    /**
+     * Gets known WebPubSubRequestType values.
+     *
+     * @return known WebPubSubRequestType values.
+     */
     public static Collection<WebPubSubRequestType> values() {
         return values(WebPubSubRequestType.class);
     }

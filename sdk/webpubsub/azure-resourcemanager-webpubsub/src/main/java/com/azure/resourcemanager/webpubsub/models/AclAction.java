@@ -27,7 +27,11 @@ public final class AclAction extends ExpandableStringEnum<AclAction> {
         return fromString(name, AclAction.class);
     }
 
-    /** @return known AclAction values. */
+    /**
+     * Gets known AclAction values.
+     *
+     * @return known AclAction values.
+     */
     public static Collection<AclAction> values() {
         return values(AclAction.class);
     }

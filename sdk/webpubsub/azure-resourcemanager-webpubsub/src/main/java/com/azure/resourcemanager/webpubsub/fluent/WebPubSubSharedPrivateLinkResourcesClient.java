@@ -26,7 +26,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of shared private link resources.
+     * @return a list of shared private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SharedPrivateLinkResourceInner> list(String resourceGroupName, String resourceName);
@@ -41,7 +41,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of shared private link resources.
+     * @return a list of shared private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SharedPrivateLinkResourceInner> list(String resourceGroupName, String resourceName, Context context);
@@ -73,7 +73,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource.
+     * @return the specified shared private link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SharedPrivateLinkResourceInner> getWithResponse(
@@ -90,7 +90,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource.
+     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
@@ -111,7 +111,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource.
+     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
@@ -173,7 +173,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -190,7 +190,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(

@@ -36,7 +36,11 @@ public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<
         return fromString(name, SharedPrivateLinkResourceStatus.class);
     }
 
-    /** @return known SharedPrivateLinkResourceStatus values. */
+    /**
+     * Gets known SharedPrivateLinkResourceStatus values.
+     *
+     * @return known SharedPrivateLinkResourceStatus values.
+     */
     public static Collection<SharedPrivateLinkResourceStatus> values() {
         return values(SharedPrivateLinkResourceStatus.class);
     }

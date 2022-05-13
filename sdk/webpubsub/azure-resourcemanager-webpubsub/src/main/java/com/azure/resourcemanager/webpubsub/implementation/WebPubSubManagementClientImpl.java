@@ -42,8 +42,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the WebPubSubManagementClientImpl type. */
 @ServiceClient(builder = WebPubSubManagementClientBuilder.class)
 public final class WebPubSubManagementClientImpl implements WebPubSubManagementClient {
-    private final ClientLogger logger = new ClientLogger(WebPubSubManagementClientImpl.class);
-
     /**
      * Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -320,7 +318,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -379,4 +377,6 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubManagementClientImpl.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result of the request to check name availability. It contains a flag and possible reason of failure. */
 @Fluent
 public final class NameAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInner.class);
-
     /*
      * Indicates whether the name is available or not.
      */

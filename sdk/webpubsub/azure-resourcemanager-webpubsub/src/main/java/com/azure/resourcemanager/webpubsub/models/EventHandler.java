@@ -6,15 +6,12 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of event handler. */
 @Fluent
 public final class EventHandler {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHandler.class);
-
     /*
      * Gets or sets the EventHandler URL template. You can use a predefined
      * parameter {hub} and {event} inside the template, the value of the
@@ -44,8 +41,8 @@ public final class EventHandler {
     private List<String> systemEvents;
 
     /*
-     * Gets or sets the auth settings for an event handler. If not set, no auth
-     * is used.
+     * Upstream auth settings. If not set, no auth is used for upstream
+     * messages.
      */
     @JsonProperty(value = "auth")
     private UpstreamAuthSettings auth;
@@ -123,7 +120,7 @@ public final class EventHandler {
     }
 
     /**
-     * Get the auth property: Gets or sets the auth settings for an event handler. If not set, no auth is used.
+     * Get the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
      *
      * @return the auth value.
      */
@@ -132,7 +129,7 @@ public final class EventHandler {
     }
 
     /**
-     * Set the auth property: Gets or sets the auth settings for an event handler. If not set, no auth is used.
+     * Set the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
      *
      * @param auth the auth value to set.
      * @return the EventHandler object itself.
@@ -149,7 +146,7 @@ public final class EventHandler {
      */
     public void validate() {
         if (urlTemplate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property urlTemplate in model EventHandler"));
         }
@@ -157,4 +154,6 @@ public final class EventHandler {
             auth().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
 }

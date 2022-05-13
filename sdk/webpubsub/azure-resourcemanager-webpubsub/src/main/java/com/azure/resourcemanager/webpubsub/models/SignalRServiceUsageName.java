@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Localizable String object containing the name and a localized value. */
 @Fluent
 public final class SignalRServiceUsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRServiceUsageName.class);
-
     /*
      * The identifier of the usage.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private endpoint. */
 @Fluent
 public final class PrivateEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
-
     /*
      * Full qualified Id of the private endpoint
      */

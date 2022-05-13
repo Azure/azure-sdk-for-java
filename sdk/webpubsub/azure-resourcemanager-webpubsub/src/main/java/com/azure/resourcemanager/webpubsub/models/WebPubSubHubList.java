@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Hub setting list. */
 @Fluent
 public final class WebPubSubHubList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubHubList.class);
-
     /*
      * List of hub settings to this resource.
      */

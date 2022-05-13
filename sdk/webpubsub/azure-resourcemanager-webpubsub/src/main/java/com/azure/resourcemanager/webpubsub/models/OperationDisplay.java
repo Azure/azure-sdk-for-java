@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that describes a operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Friendly name of the resource provider
      */

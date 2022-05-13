@@ -31,7 +31,7 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
+     * @return result of the request to check name availability along with {@link Response}.
      */
     Response<NameAvailability> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityParameters parameters, Context context);
@@ -41,7 +41,8 @@ public interface WebPubSubs {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<WebPubSubResource> list();
 
@@ -52,7 +53,8 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<WebPubSubResource> list(Context context);
 
@@ -64,7 +66,8 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<WebPubSubResource> listByResourceGroup(String resourceGroupName);
 
@@ -77,7 +80,8 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set.
+     * @return object that includes an array of resources and a possible link for next set as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<WebPubSubResource> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -104,7 +108,7 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties.
+     * @return the resource and its properties along with {@link Response}.
      */
     Response<WebPubSubResource> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -157,7 +161,7 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
+     * @return the access keys of the resource along with {@link Response}.
      */
     Response<WebPubSubKeys> listKeysWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -239,7 +243,7 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response.
+     * @return the list skus operation response along with {@link Response}.
      */
     Response<SkuList> listSkusWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -250,7 +254,7 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties.
+     * @return the resource and its properties along with {@link Response}.
      */
     WebPubSubResource getById(String id);
 
@@ -262,7 +266,7 @@ public interface WebPubSubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties.
+     * @return the resource and its properties along with {@link Response}.
      */
     Response<WebPubSubResource> getByIdWithResponse(String id, Context context);
 
