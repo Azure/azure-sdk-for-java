@@ -11,10 +11,9 @@ import com.azure.resourcemanager.storagepool.fluent.OperationsClient;
 import com.azure.resourcemanager.storagepool.fluent.models.StoragePoolRPOperationInner;
 import com.azure.resourcemanager.storagepool.models.Operations;
 import com.azure.resourcemanager.storagepool.models.StoragePoolRPOperation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.storagepool.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.storagepool.fluent.models.ResourceSkuInfoInner;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuInfo;
 import com.azure.resourcemanager.storagepool.models.ResourceSkus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceSkusImpl implements ResourceSkus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceSkusImpl.class);
 
     private final ResourceSkusClient innerClient;
 

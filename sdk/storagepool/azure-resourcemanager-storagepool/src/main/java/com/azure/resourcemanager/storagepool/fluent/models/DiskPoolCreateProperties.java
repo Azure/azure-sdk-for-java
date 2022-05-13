@@ -7,15 +7,12 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.Disk;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties for Disk Pool create or update request. */
 @Fluent
 public final class DiskPoolCreateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolCreateProperties.class);
-
     /*
      * Logical zone for Disk Pool resource; example: ["1"].
      */
@@ -130,10 +127,12 @@ public final class DiskPoolCreateProperties {
             disks().forEach(e -> e.validate());
         }
         if (subnetId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subnetId in model DiskPoolCreateProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolCreateProperties.class);
 }

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.storagepool.fluent.IscsiTargetsClient;
 import com.azure.resourcemanager.storagepool.fluent.models.IscsiTargetInner;
 import com.azure.resourcemanager.storagepool.models.IscsiTarget;
 import com.azure.resourcemanager.storagepool.models.IscsiTargets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IscsiTargetsImpl implements IscsiTargets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetsImpl.class);
 
     private final IscsiTargetsClient innerClient;
 
@@ -74,7 +73,7 @@ public final class IscsiTargetsImpl implements IscsiTargets {
     public IscsiTarget getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -82,14 +81,14 @@ public final class IscsiTargetsImpl implements IscsiTargets {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         String iscsiTargetName = Utils.getValueFromIdByName(id, "iscsiTargets");
         if (iscsiTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiTargets'.", id)));
@@ -100,7 +99,7 @@ public final class IscsiTargetsImpl implements IscsiTargets {
     public Response<IscsiTarget> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,14 +107,14 @@ public final class IscsiTargetsImpl implements IscsiTargets {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         String iscsiTargetName = Utils.getValueFromIdByName(id, "iscsiTargets");
         if (iscsiTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiTargets'.", id)));
@@ -126,7 +125,7 @@ public final class IscsiTargetsImpl implements IscsiTargets {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,14 +133,14 @@ public final class IscsiTargetsImpl implements IscsiTargets {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         String iscsiTargetName = Utils.getValueFromIdByName(id, "iscsiTargets");
         if (iscsiTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiTargets'.", id)));
@@ -152,7 +151,7 @@ public final class IscsiTargetsImpl implements IscsiTargets {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -160,14 +159,14 @@ public final class IscsiTargetsImpl implements IscsiTargets {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         String iscsiTargetName = Utils.getValueFromIdByName(id, "iscsiTargets");
         if (iscsiTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiTargets'.", id)));

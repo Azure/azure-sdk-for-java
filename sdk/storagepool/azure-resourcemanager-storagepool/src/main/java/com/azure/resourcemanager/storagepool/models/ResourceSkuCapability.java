@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Capability a resource SKU has. */
 @Immutable
 public final class ResourceSkuCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapability.class);
-
     /*
      * Capability name
      */

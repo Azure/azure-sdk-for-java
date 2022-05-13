@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuCapability;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuLocationInfo;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuRestrictions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Resource SKU Details. */
 @Immutable
 public final class ResourceSkuInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuInfoInner.class);
-
     /*
      * StoragePool RP API version
      */

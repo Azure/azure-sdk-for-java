@@ -7,15 +7,12 @@ package com.azure.resourcemanager.storagepool.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.IscsiTargetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of iSCSI Targets. */
 @Fluent
 public final class IscsiTargetList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetList.class);
-
     /*
      * An array of iSCSI Targets in a Disk Pool.
      */
@@ -64,11 +61,13 @@ public final class IscsiTargetList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model IscsiTargetList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetList.class);
 }

@@ -11,7 +11,6 @@ import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
 import com.azure.resourcemanager.storagepool.models.SystemMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** Response for Disk Pool request. */
 @Fluent
 public final class DiskPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolInner.class);
-
     /*
      * Determines the SKU of the Disk pool
      */
@@ -291,7 +288,7 @@ public final class DiskPoolInner extends Resource {
             innerSku().validate();
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model DiskPoolInner"));
         } else {
@@ -301,4 +298,6 @@ public final class DiskPoolInner extends Resource {
             systemData().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolInner.class);
 }

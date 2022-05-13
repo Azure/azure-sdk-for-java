@@ -15,7 +15,7 @@ public interface DiskPools {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Disk Pools in a subscription.
+     * @return a list of Disk Pools in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DiskPool> list();
 
@@ -26,7 +26,7 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Disk Pools in a subscription.
+     * @return a list of Disk Pools in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DiskPool> list(Context context);
 
@@ -37,7 +37,7 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of DiskPools in a resource group.
+     * @return a list of DiskPools in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DiskPool> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of DiskPools in a resource group.
+     * @return a list of DiskPools in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DiskPool> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -99,7 +99,7 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Disk pool.
+     * @return a Disk pool along with {@link Response}.
      */
     Response<DiskPool> getByResourceGroupWithResponse(String resourceGroupName, String diskPoolName, Context context);
 
@@ -111,7 +111,8 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
         String resourceGroupName, String diskPoolName);
@@ -125,7 +126,8 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Disk Pool.
+     * @return the network endpoints of all outbound dependencies of a Disk Pool as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
         String resourceGroupName, String diskPoolName, Context context);
@@ -212,7 +214,7 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Disk pool.
+     * @return a Disk pool along with {@link Response}.
      */
     DiskPool getById(String id);
 
@@ -224,7 +226,7 @@ public interface DiskPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Disk pool.
+     * @return a Disk pool along with {@link Response}.
      */
     Response<DiskPool> getByIdWithResponse(String id, Context context);
 

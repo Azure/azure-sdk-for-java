@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Access Control List (ACL) for an iSCSI Target; defines LUN masking policy. */
 @Fluent
 public final class Acl {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Acl.class);
-
     /*
      * iSCSI initiator IQN (iSCSI Qualified Name); example:
      * "iqn.2005-03.org.iscsi:client".
@@ -77,13 +74,15 @@ public final class Acl {
      */
     public void validate() {
         if (initiatorIqn() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property initiatorIqn in model Acl"));
         }
         if (mappedLuns() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property mappedLuns in model Acl"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Acl.class);
 }

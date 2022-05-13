@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.IscsiTargetUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Payload for iSCSI Target update requests. */
 @Fluent
 public final class IscsiTargetUpdate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetUpdate.class);
-
     /*
      * Properties for iSCSI Target update request.
      */
@@ -138,7 +135,7 @@ public final class IscsiTargetUpdate extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model IscsiTargetUpdate"));
@@ -146,4 +143,6 @@ public final class IscsiTargetUpdate extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetUpdate.class);
 }

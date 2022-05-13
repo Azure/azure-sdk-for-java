@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metadata about an operation. */
 @Fluent
 public final class StoragePoolOperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StoragePoolOperationDisplay.class);
-
     /*
      * Localized friendly form of the resource provider name.
      */
@@ -130,28 +127,30 @@ public final class StoragePoolOperationDisplay {
      */
     public void validate() {
         if (provider() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property provider in model StoragePoolOperationDisplay"));
         }
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model StoragePoolOperationDisplay"));
         }
         if (operation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operation in model StoragePoolOperationDisplay"));
         }
         if (description() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property description in model StoragePoolOperationDisplay"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StoragePoolOperationDisplay.class);
 }

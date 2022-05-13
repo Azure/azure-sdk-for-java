@@ -33,7 +33,11 @@ public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
         return fromString(name, CreatedByType.class);
     }
 
-    /** @return known CreatedByType values. */
+    /**
+     * Gets known CreatedByType values.
+     *
+     * @return known CreatedByType values.
+     */
     public static Collection<CreatedByType> values() {
         return values(CreatedByType.class);
     }

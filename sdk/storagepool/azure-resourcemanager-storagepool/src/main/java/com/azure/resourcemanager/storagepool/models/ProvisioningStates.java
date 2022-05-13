@@ -45,7 +45,11 @@ public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningS
         return fromString(name, ProvisioningStates.class);
     }
 
-    /** @return known ProvisioningStates values. */
+    /**
+     * Gets known ProvisioningStates values.
+     *
+     * @return known ProvisioningStates values.
+     */
     public static Collection<ProvisioningStates> values() {
         return values(ProvisioningStates.class);
     }

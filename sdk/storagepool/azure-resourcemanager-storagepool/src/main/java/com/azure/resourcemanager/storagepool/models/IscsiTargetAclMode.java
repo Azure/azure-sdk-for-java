@@ -27,7 +27,11 @@ public final class IscsiTargetAclMode extends ExpandableStringEnum<IscsiTargetAc
         return fromString(name, IscsiTargetAclMode.class);
     }
 
-    /** @return known IscsiTargetAclMode values. */
+    /**
+     * Gets known IscsiTargetAclMode values.
+     *
+     * @return known IscsiTargetAclMode values.
+     */
     public static Collection<IscsiTargetAclMode> values() {
         return values(IscsiTargetAclMode.class);
     }

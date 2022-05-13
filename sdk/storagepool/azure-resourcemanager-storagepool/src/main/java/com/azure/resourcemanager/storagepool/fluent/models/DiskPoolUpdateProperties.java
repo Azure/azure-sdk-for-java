@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.Disk;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties for Disk Pool update request. */
 @Fluent
 public final class DiskPoolUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolUpdateProperties.class);
-
     /*
      * List of Azure Managed Disks to attach to a Disk Pool.
      */

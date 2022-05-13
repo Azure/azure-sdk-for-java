@@ -45,7 +45,11 @@ public final class OperationalStatus extends ExpandableStringEnum<OperationalSta
         return fromString(name, OperationalStatus.class);
     }
 
-    /** @return known OperationalStatus values. */
+    /**
+     * Gets known OperationalStatus values.
+     *
+     * @return known OperationalStatus values.
+     */
     public static Collection<OperationalStatus> values() {
         return values(OperationalStatus.class);
     }

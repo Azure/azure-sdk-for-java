@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties for iSCSI Target create or update request. */
 @Fluent
 public final class IscsiTargetCreateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetCreateProperties.class);
-
     /*
      * Mode for Target connectivity.
      */
@@ -131,7 +128,7 @@ public final class IscsiTargetCreateProperties {
      */
     public void validate() {
         if (aclMode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aclMode in model IscsiTargetCreateProperties"));
@@ -143,4 +140,6 @@ public final class IscsiTargetCreateProperties {
             luns().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetCreateProperties.class);
 }
