@@ -362,9 +362,21 @@ public class PollingStrategyTests {
             .expectSubscription()
             .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .verifyComplete();
-        Assertions.assertEquals(context, contextArgument.getValue());
+        Assertions.assertEquals("value", contextArgument.getValue().getData("key").orElse(null));
 
-        assertEquals(2, activationCallCount[0]);
+        pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            () -> activationOperation.get(),
+            new DefaultPollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), null, Context.NONE),
+            new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
+
+        StepVerifier.create(pollerFlux.contextWrite(reactor.util.context.Context.of("key2", "value2")).map(AsyncPollResponse::getStatus))
+            .expectSubscription()
+            .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
+        Assertions.assertEquals("value2", contextArgument.getValue().getData("key2").orElse(null));
+
+        assertEquals(3, activationCallCount[0]);
     }
 
     public static class PollResult {

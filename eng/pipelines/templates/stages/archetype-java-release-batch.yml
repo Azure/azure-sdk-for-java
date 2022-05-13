@@ -449,7 +449,9 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           vmImage: MMSUbuntu20.04
         variables:
-          DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - name: DocValidationImageId
+            value: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:

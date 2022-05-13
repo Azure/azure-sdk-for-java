@@ -23,7 +23,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         .fullyQualifiedNamespace("{schema-registry-endpoint}")
         .buildAsyncClient();
     private final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-        .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+        .schemaRegistryClient(schemaRegistryAsyncClient)
         .schemaGroup("{schema-group}")
         .buildSerializer();
 
@@ -41,7 +41,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         // By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
         // added to the instance. By default, this is false, so it will error if the schema is not found.
         SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+            .schemaRegistryClient(schemaRegistryAsyncClient)
             .autoRegisterSchemas(true)
             .schemaGroup("{schema-group}")
             .buildSerializer();

@@ -258,14 +258,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainTopicInner> getAsync(String resourceGroupName, String domainName, String domainTopicName) {
         return getWithResponseAsync(resourceGroupName, domainName, domainTopicName)
-            .flatMap(
-                (Response<DomainTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

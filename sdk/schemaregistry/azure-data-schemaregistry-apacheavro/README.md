@@ -73,7 +73,7 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 
 ```java readme-sample-createSchemaRegistryAvroSerializer
 SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-    .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+    .schemaRegistryClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
     .buildSerializer();
 ```
@@ -101,7 +101,7 @@ playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-MessageContent message = serializer.serializeMessageData(playingCard,
+MessageContent message = serializer.serialize(playingCard,
     TypeReference.createInstance(MessageContent.class));
 ```
 
@@ -114,7 +114,7 @@ Deserialize a Schema Registry-compatible avro payload into a strongly-type objec
 ```java readme-sample-deserializeSample
 SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
 MessageContent message = getSchemaRegistryAvroMessage();
-PlayingCard playingCard = serializer.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+PlayingCard playingCard = serializer.deserialize(message, TypeReference.createInstance(PlayingCard.class));
 ```
 
 ## Troubleshooting

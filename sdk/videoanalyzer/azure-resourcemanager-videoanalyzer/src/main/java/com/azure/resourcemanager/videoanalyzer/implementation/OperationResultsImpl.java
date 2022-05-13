@@ -12,10 +12,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.OperationResultsClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.videoanalyzer.models.OperationResults;
 import com.azure.resourcemanager.videoanalyzer.models.PrivateEndpointConnection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationResultsImpl implements OperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationResultsImpl.class);
 
     private final OperationResultsClient innerClient;
 

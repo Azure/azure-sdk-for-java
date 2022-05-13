@@ -1060,8 +1060,10 @@ public class BlobAsyncClientBase {
      * <p>This method will be deprecated in the future. Use {@link #downloadStream()} instead.
      *
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStream()} instead.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Deprecated
     public Flux<ByteBuffer> download() {
         return downloadStream();
     }
@@ -1158,8 +1160,10 @@ public class BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);

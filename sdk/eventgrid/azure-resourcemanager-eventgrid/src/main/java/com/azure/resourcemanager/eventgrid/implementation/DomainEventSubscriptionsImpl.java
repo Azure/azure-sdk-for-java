@@ -163,8 +163,10 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
         return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EventSubscription> list(String resourceGroupName, String domainName, Context context) {
-        PagedIterable<EventSubscriptionInner> inner = this.serviceClient().list(resourceGroupName, domainName, context);
+    public PagedIterable<EventSubscription> list(
+        String resourceGroupName, String domainName, String filter, Integer top, Context context) {
+        PagedIterable<EventSubscriptionInner> inner =
+            this.serviceClient().list(resourceGroupName, domainName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
