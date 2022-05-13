@@ -1,7 +1,6 @@
 package com.azure.communication.jobrouter
 
 import com.azure.core.test.InterceptorManager
-import com.azure.core.test.TestContextManager
 import com.azure.core.util.logging.ClientLogger
 import spock.lang.Specification
 import spock.lang.Timeout
@@ -15,16 +14,13 @@ class APISpec extends Specification {
 
     private InterceptorManager interceptorManager
 
-    JobRouterAsyncClient jrcAsync
     JobRouterClient jrc
-
 
     def setup() {
         def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-        jrcAsync = new JobRouterClientBuilder()
-            .buildAsyncClient()
         jrc = new JobRouterClientBuilder()
+            .connectionString(ENVIRONMENT.connectionString)
             .buildClient()
     }
 }

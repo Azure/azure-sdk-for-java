@@ -1,15 +1,14 @@
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImplBuilder;
-import com.azure.communication.jobrouter.implementation.CommunicationBearerTokenCredential;
 import com.azure.communication.jobrouter.implementation.utils.BuilderHelper;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.*;
@@ -18,6 +17,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +30,7 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
 
     private String endpoint;
     private HttpClient httpClient;
-    private CommunicationTokenCredential communicationTokenCredential;
+    private TokenCredential communicationTokenCredential;
     private HttpPipeline httpPipeline;
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private RetryPolicy retryPolicy;
@@ -100,7 +100,7 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * @param communicationTokenCredential valid token credential as a string
      * @return the updated ChatClientBuilder object
      */
-    public JobRouterClientBuilder credential(CommunicationTokenCredential communicationTokenCredential) {
+    public JobRouterClientBuilder credential(TokenCredential communicationTokenCredential) {
         this.communicationTokenCredential = Objects.requireNonNull(
             communicationTokenCredential, "'communicationTokenCredential' cannot be null.");
         return this;
@@ -264,15 +264,15 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
             pipeline = httpPipeline;
         } else {
             communicationTokenCredential = Objects.requireNonNullElse(communicationTokenCredential,
-                new CommunicationTokenCredential(connectionString.getAccessKey()));
+                new AccessKeyTokenCredential(connectionString.getAccessKey()));
 
             pipeline = BuilderHelper.buildPipeline(
-                new CommunicationBearerTokenCredential(communicationTokenCredential),
+                communicationTokenCredential,
                 null,
                 null,
-                retryOptions,
-                logOptions,
-                clientOptions,
+                Objects.requireNonNullElse(retryOptions, new RetryOptions(new FixedDelayOptions(3, Duration.ofMillis(5)))),
+                Objects.requireNonNullElse(logOptions, new HttpLogOptions()),
+                Objects.requireNonNullElse(clientOptions, new ClientOptions()),
                 httpClient,
                 customPolicies,
                 null,

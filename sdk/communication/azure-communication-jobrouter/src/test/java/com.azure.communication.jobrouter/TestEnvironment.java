@@ -11,32 +11,20 @@ import java.util.Locale;
 
 public final class TestEnvironment {
     private static final ClientLogger LOGGER = new ClientLogger(TestEnvironment.class);
-
-    private static final String SCHEME;
-
-    static {
-        String disableHttps = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_TEST_DISABLE_HTTPS");
-        SCHEME = "true".equalsIgnoreCase(disableHttps) ? "http" : "https";
-    }
-
     private static final TestEnvironment INSTANCE = new TestEnvironment();
 
     private final TestHttpClientType httpClientType;
-
     private final TestMode testMode;
     private final String serviceVersion;
-
-    private final String resourceGroupName;
-    private final String subscriptionId;
+    private final String connectionString;
 
     private TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
         this.serviceVersion = readServiceVersionFromEnvironment();
         this.httpClientType = readHttpClientTypeFromEnvironment();
+        this.connectionString = readConnectionStringFromEnvironment();
 
         System.out.printf("Tests will run with %s http client%n", this.httpClientType);
-        this.resourceGroupName = Configuration.getGlobalConfiguration().get("JOBROUTER_RESOURCE_GROUP_NAME");
-        this.subscriptionId = Configuration.getGlobalConfiguration().get("JOBROUTER_SUBSCRIPTION_ID");
     }
 
     public static TestEnvironment getInstance() {
@@ -56,7 +44,7 @@ public final class TestEnvironment {
             }
         } else {
             LOGGER.info("Environment variable '{}' has not been set yet. Using 'Live' mode.", "AZURE_TEST_MODE");
-            testMode = TestMode.LIVE;
+            testMode = TestMode.PLAYBACK;
         }
 
         System.out.printf("--------%s---------%n", testMode);
@@ -86,6 +74,10 @@ public final class TestEnvironment {
         }
     }
 
+    private static String readConnectionStringFromEnvironment() {
+        return Configuration.getGlobalConfiguration().get("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
+    }
+
     public TestMode getTestMode() {
         return testMode;
     }
@@ -94,17 +86,11 @@ public final class TestEnvironment {
         return serviceVersion;
     }
 
-    public String getResourceGroupName() {
-        return resourceGroupName;
-    }
-
-    public String getSubscriptionId() {
-        return subscriptionId;
-    }
-
     public TestHttpClientType getHttpClientType() {
         return httpClientType;
     }
+
+    public String getConnectionString() { return connectionString; }
 
     public enum TestHttpClientType {
         NETTY,

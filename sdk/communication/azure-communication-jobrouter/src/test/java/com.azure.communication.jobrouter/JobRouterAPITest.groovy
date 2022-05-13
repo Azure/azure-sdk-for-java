@@ -16,7 +16,8 @@ class JobRouterAPITest extends APISpec {
         distributionPolicy.setOfferTtlSeconds(10)
 
         when:
-        jrc.upsertDistributionPolicyWithResponse(distributionPolicy);
+        var id = "Contoso_Jobs_Distribution_policy"
+        jrc.upsertDistributionPolicyWithResponse(id, distributionPolicy);
 
         then:
         println "OK"
