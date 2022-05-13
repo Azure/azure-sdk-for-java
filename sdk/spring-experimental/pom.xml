@@ -18,7 +18,7 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-cloud-azure-native-configuration</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-native-configuration;current} -->
+          <version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-native-configuration;current} -->
         </dependency>
       </dependencies>
       <build>
