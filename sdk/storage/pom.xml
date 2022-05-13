@@ -95,17 +95,18 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-storage-common</module>
+        <module>azure-resourcemanager-storage-generated</module>
         <module>azure-storage-blob</module>
         <module>azure-storage-blob-batch</module>
         <module>azure-storage-blob-changefeed</module>
         <module>azure-storage-blob-cryptography</module>
         <module>azure-storage-blob-nio</module>
-        <module>azure-storage-file-share</module>
+        <module>azure-storage-common</module>
         <module>azure-storage-file-datalake</module>
+        <module>azure-storage-file-share</module>
         <module>azure-storage-internal-avro</module>
-        <module>azure-storage-queue</module>
         <module>azure-storage-perf</module>
+        <module>azure-storage-queue</module>
         <module>microsoft-azure-storage-blob</module>
         <module>microsoft-azure-storage-perf</module>
       </modules>
