@@ -9,8 +9,8 @@ jobs:
   - job: 'compatibility_test'
 #    dependsOn: ''
 #    condition: always()
-    dependsOn: ${{ parameters.DependsOn }}
-    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+#    dependsOn: ${{ parameters.DependsOn }}
+#    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
 
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
