@@ -22,6 +22,7 @@ stages:
 #            GenerateVMJobs: true
       - job:
         dependsOn:
+          jobs:
           - task: Powershell@2
             inputs:
               pwsh: true
@@ -36,7 +37,7 @@ stages:
             displayName: Generate VM Job Matrix
             name: generate_vm_job_matrix
         strategy:
-          Matrix: dependencies.Generate VM Job Matrix.outputs['generate_vm_job_matrix.matrix']
+          matrix: dependencies.Generate VM Job Matrix.outputs['generate_vm_job_matrix.matrix']
         #          matrix:
 #            2.6.6:
 #              sb-v: '2.6.6'
