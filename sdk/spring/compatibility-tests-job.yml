@@ -1,6 +1,9 @@
 parameters:
   Matrix: ''
   MaxParallel: 2
+  SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
+  BuildParallelization: '2C'
+
 
 jobs:
   - job: 'compatibility_test'
@@ -30,11 +33,11 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          options: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
           mavenPomFile: sdk/spring/pom.xml
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
-          goals: 'clean test -Pdev'
+          goals: 'clean test -Pdev '
 
