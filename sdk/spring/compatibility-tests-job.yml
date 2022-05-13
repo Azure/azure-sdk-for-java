@@ -3,8 +3,10 @@ parameters:
   MaxParallel: 0
 
 jobs:
-  - job:
+  - job: 'test'
+    dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
