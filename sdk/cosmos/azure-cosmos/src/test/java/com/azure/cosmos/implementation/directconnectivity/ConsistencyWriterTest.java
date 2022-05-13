@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
@@ -120,6 +121,47 @@ public class ConsistencyWriterTest {
         subscriber.assertNotComplete();
         assertThat(subscriber.errorCount()).isEqualTo(1);
         failureValidator.validate(subscriber.errors().get(0));
+    }
+
+    @Test(groups = "unit")
+    public void writeAsync_Error() {
+        TransportClientWrapper transportClientWrapper = new TransportClientWrapper.Builder.ReplicaResponseBuilder
+            .SequentialBuilder()
+            .then(Mockito.mock(StoreResponse.class))
+            .build();
+
+        Uri primaryUri = Uri.create("primary");
+        Uri secondaryUri1 = Uri.create("secondary1");
+        Uri secondaryUri2 = Uri.create("secondary2");
+        Uri secondaryUri3 = Uri.create("secondary3");
+
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+                                                                                             .withPrimary(primaryUri)
+                                                                                             .withSecondary(ImmutableList.of(secondaryUri1, secondaryUri2, secondaryUri3))
+                                                                                             .build();
+        sessionContainer = Mockito.mock(ISessionContainer.class);
+        IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.mockStatic(SessionTokenHelper.class);
+
+        consistencyWriter = new ConsistencyWriter(clientContext,
+            addressSelectorWrapper.addressSelector,
+            sessionContainer,
+            transportClientWrapper.transportClient,
+            authorizationTokenProvider,
+            serviceConfigReader,
+            false);
+
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        RxDocumentServiceRequest dsr = mockDocumentServiceRequest(clientContext);
+        String outOfMemoryError = "Custom out of memory error";
+        Mockito.doThrow(new OutOfMemoryError(outOfMemoryError)).when(SessionTokenHelper.class);
+        SessionTokenHelper.setOriginalSessionToken(dsr, null);
+
+        Mono<StoreResponse> res = consistencyWriter.writeAsync(dsr, timeoutHelper, false);
+
+        FailureValidator validator = FailureValidator.builder().instanceOf(OutOfMemoryError.class).errorMessageContains(outOfMemoryError).build();
+        validateError(res, validator);
     }
 
     @Test(groups = "unit")
@@ -334,6 +376,18 @@ public class ConsistencyWriterTest {
                 authorizationTokenProvider,
                 serviceConfigReader,
                 useMultipleWriteLocation);
+    }
+
+    public static <T> void validateError(Mono<T> single,
+                                         FailureValidator validator) {
+        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
+
+        try {
+            single.flux().subscribe(testSubscriber);
+        } catch (Throwable throwable) {
+            assertThat(throwable).isInstanceOf(Error.class);
+            validator.validate(throwable);
+        }
     }
 
     // TODO: add more mocking unit tests for Global STRONG (mocking unit tests)

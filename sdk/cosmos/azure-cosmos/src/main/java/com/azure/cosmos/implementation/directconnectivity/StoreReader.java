@@ -258,7 +258,7 @@ public class StoreReader {
                         }
 
                     } catch (Exception e) {
-                        // TODO: what to do on exception?
+                        logger.error("Error occurred while adding store results to resultCollector", e);
                     }
                 }
 

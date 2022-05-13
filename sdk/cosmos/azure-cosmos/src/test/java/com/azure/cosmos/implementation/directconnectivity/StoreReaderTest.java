@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.VectorSessionToken;
@@ -563,6 +564,40 @@ public class StoreReaderTest {
     }
 
     @Test(groups = "unit")
+    public void readPrimaryAsync_Error() {
+        TransportClient transportClient = Mockito.mock(TransportClient.class);
+        AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Mockito.mockStatic(SessionTokenHelper.class);
+
+        Uri primaryURI = Uri.create("primaryLoc");
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        Mockito.doReturn(false).when(request.requestContext.timeoutHelper).isElapsed();
+        request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+            Mockito.eq(request) , Mockito.eq(false));
+        String outOfMemoryError = "Custom out of memory error";
+        Mockito.doThrow(new OutOfMemoryError(outOfMemoryError)).when(SessionTokenHelper.class);
+        SessionTokenHelper.setOriginalSessionToken(request, null);
+
+        StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
+        Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
+
+        StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
+
+        Mono<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
+        FailureValidator validator = FailureValidator.builder().instanceOf(OutOfMemoryError.class).errorMessageContains(outOfMemoryError).build();
+        validateError(readResult, validator);
+    }
+
+    @Test(groups = "unit")
     public void canParseLongLsn() {
         TransportClient transportClient = Mockito.mock(TransportClient.class);
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
@@ -909,6 +944,18 @@ public class StoreReaderTest {
     public static <T> void validateException(Mono<T> single,
                                             FailureValidator validator) {
         validateException(single, validator, TIMEOUT);
+    }
+
+    public static <T> void validateError(Mono<T> single,
+                                             FailureValidator validator) {
+        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
+
+        try {
+            single.flux().subscribe(testSubscriber);
+        } catch (Throwable throwable) {
+            assertThat(throwable).isInstanceOf(Error.class);
+            validator.validate(throwable);
+        }
     }
 
     private int getMatchingElementCount(String cosmosDiagnostics, String regex) {

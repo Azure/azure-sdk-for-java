@@ -154,7 +154,7 @@ public class CosmosException extends AzureException {
 
         //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {
-            for (Map.Entry<String, String> entry : responseHeaders.entrySet()) {
+            for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
                 if (entry.getKey() != null && entry.getValue() != null) {
                     this.responseHeaders.put(entry.getKey(), entry.getValue());
                 }
