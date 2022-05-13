@@ -125,7 +125,7 @@ def get_properties_contend_with_tag():
     return """
   <properties>
     <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    <spring.cloud.version>2021.0.1</spring.cloud.version>
+    <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
   </properties>
   
     """
@@ -134,7 +134,7 @@ def get_properties_contend_with_tag():
 def get_properties_contend():
     return """
     <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    <spring.cloud.version>2021.0.1</spring.cloud.version>
+    <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
     """
 
 
