@@ -1,16 +1,32 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
-- Updated ProxyOptions.SYSTEM_DEFAULTS to use ProxyAuthenticationType.NONE
 
 ### Other Changes
+
+## 2.5.0 (2022-05-06)
+
+### Features Added
+
+- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment 
+  configuration.
+
+### Bugs Fixed
+
+- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
+- Updated ProxyOptions.SYSTEM_DEFAULTS to use `ProxyAuthenticationType.NONE`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
 
 ## 2.4.2 (2022-04-01)
 

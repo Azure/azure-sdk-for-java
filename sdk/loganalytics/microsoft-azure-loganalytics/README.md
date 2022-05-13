@@ -1,5 +1,10 @@
 # Azure Log Analytics
 
+> Please note, a newer package [com.azure:azure-monitor-query](https://search.maven.org/artifact/com.azure/azure-monitor-query) 
+> for [Azure Log Analytics](https://azure.microsoft.com/services/monitor/) is available as of October 2021. While this 
+> package will continue to receive critical bug fixes and security fixes, we strongly encourage you to upgrade to the new package.
+> Read the [migration guide](https://aka.ms/azsdk/java/migrate/monitorquery) for more details.
+
 This project provides client tools or utilities in Java that make it easy to query data in [Azure Log Analytics](https://azure.microsoft.com/services/log-analytics/). For reference documentation on classes and models, please see the [Azure SDK for Java reference](https://docs.microsoft.com/java/api/overview/azure/?view=azure-java-stable). 
 
 Azure Log Analytics provides agents for telemtry collection and enables deep analytics via a [rich query language](https://docs.microsoft.com/azure/data-explorer/kusto/query/). This SDK provides query access to data already stored in Log Analytics. To start collecting data from different sources, take a look at these [quickstarts](https://docs.microsoft.com/azure/log-analytics/log-analytics-quick-collect-azurevm). 
