@@ -36,7 +36,7 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-createSchemaRegistryAvroSerializer
         SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+            .schemaRegistryClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .buildSerializer();
         // END: readme-sample-createSchemaRegistryAvroSerializer

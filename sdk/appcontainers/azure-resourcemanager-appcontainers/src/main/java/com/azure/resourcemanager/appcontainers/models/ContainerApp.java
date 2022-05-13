@@ -259,7 +259,11 @@ public interface ContainerApp {
     ContainerApp.Update update();
 
     /** The template for ContainerApp update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithConfiguration,
+            UpdateStages.WithTemplate {
         /**
          * Executes the update request.
          *
@@ -280,12 +284,44 @@ public interface ContainerApp {
         /** The stage of the ContainerApp update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Application-specific metadata in the form of key-value pairs..
+             * Specifies the tags property: Resource tags..
              *
-             * @param tags Application-specific metadata in the form of key-value pairs.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the ContainerApp update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: managed identities for the Container App to interact with other Azure
+             * services without maintaining any secrets or credentials in code..
+             *
+             * @param identity managed identities for the Container App to interact with other Azure services without
+             *     maintaining any secrets or credentials in code.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+        /** The stage of the ContainerApp update allowing to specify configuration. */
+        interface WithConfiguration {
+            /**
+             * Specifies the configuration property: Non versioned Container App configuration properties..
+             *
+             * @param configuration Non versioned Container App configuration properties.
+             * @return the next definition stage.
+             */
+            Update withConfiguration(Configuration configuration);
+        }
+        /** The stage of the ContainerApp update allowing to specify template. */
+        interface WithTemplate {
+            /**
+             * Specifies the template property: Container App versioned application definition..
+             *
+             * @param template Container App versioned application definition.
+             * @return the next definition stage.
+             */
+            Update withTemplate(Template template);
         }
     }
     /**

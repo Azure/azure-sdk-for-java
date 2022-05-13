@@ -34,6 +34,7 @@ import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsSourc
 import com.azure.resourcemanager.appcontainers.implementation.DaprComponentsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsStoragesImpl;
+import com.azure.resourcemanager.appcontainers.implementation.NamespacesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.OperationsImpl;
 import com.azure.resourcemanager.appcontainers.models.Certificates;
 import com.azure.resourcemanager.appcontainers.models.ContainerApps;
@@ -44,6 +45,7 @@ import com.azure.resourcemanager.appcontainers.models.ContainerAppsSourceControl
 import com.azure.resourcemanager.appcontainers.models.DaprComponents;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironments;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsStorages;
+import com.azure.resourcemanager.appcontainers.models.Namespaces;
 import com.azure.resourcemanager.appcontainers.models.Operations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -54,25 +56,27 @@ import java.util.stream.Collectors;
 
 /** Entry point to ContainerAppsApiManager. */
 public final class ContainerAppsApiManager {
+    private ContainerAppsAuthConfigs containerAppsAuthConfigs;
+
     private ContainerApps containerApps;
 
     private ContainerAppsRevisions containerAppsRevisions;
 
     private ContainerAppsRevisionReplicas containerAppsRevisionReplicas;
 
+    private DaprComponents daprComponents;
+
+    private Operations operations;
+
     private ManagedEnvironments managedEnvironments;
 
     private Certificates certificates;
 
-    private Operations operations;
-
-    private ContainerAppsSourceControls containerAppsSourceControls;
-
-    private DaprComponents daprComponents;
-
-    private ContainerAppsAuthConfigs containerAppsAuthConfigs;
+    private Namespaces namespaces;
 
     private ManagedEnvironmentsStorages managedEnvironmentsStorages;
+
+    private ContainerAppsSourceControls containerAppsSourceControls;
 
     private final ContainerAppsApiClient clientObject;
 
@@ -239,7 +243,7 @@ public final class ContainerAppsApiManager {
                 .append("-")
                 .append("com.azure.resourcemanager.appcontainers")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -297,6 +301,19 @@ public final class ContainerAppsApiManager {
     }
 
     /**
+     * Gets the resource collection API of ContainerAppsAuthConfigs.
+     *
+     * @return Resource collection API of ContainerAppsAuthConfigs.
+     */
+    public ContainerAppsAuthConfigs containerAppsAuthConfigs() {
+        if (this.containerAppsAuthConfigs == null) {
+            this.containerAppsAuthConfigs =
+                new ContainerAppsAuthConfigsImpl(clientObject.getContainerAppsAuthConfigs(), this);
+        }
+        return containerAppsAuthConfigs;
+    }
+
+    /**
      * Gets the resource collection API of ContainerApps.
      *
      * @return Resource collection API of ContainerApps.
@@ -335,6 +352,30 @@ public final class ContainerAppsApiManager {
     }
 
     /**
+     * Gets the resource collection API of DaprComponents.
+     *
+     * @return Resource collection API of DaprComponents.
+     */
+    public DaprComponents daprComponents() {
+        if (this.daprComponents == null) {
+            this.daprComponents = new DaprComponentsImpl(clientObject.getDaprComponents(), this);
+        }
+        return daprComponents;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
      * Gets the resource collection API of ManagedEnvironments.
      *
      * @return Resource collection API of ManagedEnvironments.
@@ -359,53 +400,15 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
+     * Gets the resource collection API of Namespaces.
      *
-     * @return Resource collection API of Operations.
+     * @return Resource collection API of Namespaces.
      */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(clientObject.getNamespaces(), this);
         }
-        return operations;
-    }
-
-    /**
-     * Gets the resource collection API of ContainerAppsSourceControls.
-     *
-     * @return Resource collection API of ContainerAppsSourceControls.
-     */
-    public ContainerAppsSourceControls containerAppsSourceControls() {
-        if (this.containerAppsSourceControls == null) {
-            this.containerAppsSourceControls =
-                new ContainerAppsSourceControlsImpl(clientObject.getContainerAppsSourceControls(), this);
-        }
-        return containerAppsSourceControls;
-    }
-
-    /**
-     * Gets the resource collection API of DaprComponents.
-     *
-     * @return Resource collection API of DaprComponents.
-     */
-    public DaprComponents daprComponents() {
-        if (this.daprComponents == null) {
-            this.daprComponents = new DaprComponentsImpl(clientObject.getDaprComponents(), this);
-        }
-        return daprComponents;
-    }
-
-    /**
-     * Gets the resource collection API of ContainerAppsAuthConfigs.
-     *
-     * @return Resource collection API of ContainerAppsAuthConfigs.
-     */
-    public ContainerAppsAuthConfigs containerAppsAuthConfigs() {
-        if (this.containerAppsAuthConfigs == null) {
-            this.containerAppsAuthConfigs =
-                new ContainerAppsAuthConfigsImpl(clientObject.getContainerAppsAuthConfigs(), this);
-        }
-        return containerAppsAuthConfigs;
+        return namespaces;
     }
 
     /**
@@ -419,6 +422,19 @@ public final class ContainerAppsApiManager {
                 new ManagedEnvironmentsStoragesImpl(clientObject.getManagedEnvironmentsStorages(), this);
         }
         return managedEnvironmentsStorages;
+    }
+
+    /**
+     * Gets the resource collection API of ContainerAppsSourceControls.
+     *
+     * @return Resource collection API of ContainerAppsSourceControls.
+     */
+    public ContainerAppsSourceControls containerAppsSourceControls() {
+        if (this.containerAppsSourceControls == null) {
+            this.containerAppsSourceControls =
+                new ContainerAppsSourceControlsImpl(clientObject.getContainerAppsSourceControls(), this);
+        }
+        return containerAppsSourceControls;
     }
 
     /**

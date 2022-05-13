@@ -514,15 +514,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSubscriptionInner> getAsync(String scope, String eventSubscriptionName) {
-        return getWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(
-                (Response<EventSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(scope, eventSubscriptionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1663,14 +1655,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSubscriptionFullUrlInner> getFullUrlAsync(String scope, String eventSubscriptionName) {
         return getFullUrlWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(
-                (Response<EventSubscriptionFullUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4355,14 +4340,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
         String scope, String eventSubscriptionName) {
         return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(
-                (Response<DeliveryAttributeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

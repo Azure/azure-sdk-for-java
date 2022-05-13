@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPatch;
 
 /** An instance of this class provides access to all the operations defined in ManagedEnvironmentsClient. */
 public interface ManagedEnvironmentsClient {
@@ -220,7 +219,7 @@ public interface ManagedEnvironmentsClient {
     void delete(String resourceGroupName, String name, Context context);
 
     /**
-     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Environment.
@@ -229,13 +228,14 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedEnvironmentInner update(String resourceGroupName, String name, ManagedEnvironmentPatch environmentEnvelope);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdate(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope);
 
     /**
-     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Environment.
@@ -245,9 +245,38 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdate(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context);
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedEnvironmentInner> updateWithResponse(
-        String resourceGroupName, String name, ManagedEnvironmentPatch environmentEnvelope, Context context);
+    void update(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope);
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void update(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context);
 }

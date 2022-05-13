@@ -30,7 +30,11 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
         return fromString(name, SparkServerType.class);
     }
 
-    /** @return known SparkServerType values. */
+    /**
+     * Gets known SparkServerType values.
+     *
+     * @return known SparkServerType values.
+     */
     public static Collection<SparkServerType> values() {
         return values(SparkServerType.class);
     }
