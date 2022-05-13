@@ -7,43 +7,49 @@ variables:
 stages:
   - stage: "spring_boot_compatibility_tests"
     jobs:
-    - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-      parameters:
-#        JobTemplatePath: ../../../../../sdk/spring/compatibility-tests-job.yml
-        JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
-        AdditionalParameters:
-            ServiceDirectory: spring
-        MatrixConfigs:
-          - Name: spring_boot_supported_version_tests
-            Path: sdk/spring/supported-version-matrix.json
-            Selection: sparse
-            NonSparseParameters:
-              - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
-            GenerateVMJobs: true
-#  - stage:
-#    jobs:
-#      - job:
-#        pool:
-#          vmImage: "ubuntu-latest"
-#        steps:
-#          - script: |
-#              pip install termcolor
-#            displayName: 'python module install'
-#          - script: |
-#              python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py -b 2.6.6 -c 2021.0.1
-#            displayName: 'add dependency management'
-#          - script: |
-#              python ./sdk/spring/scripts/compatibility_deleted_version.py
-#            displayName: 'remove version'
-#          - task: Maven@3
-#            displayName: 'Run tests'
-#            inputs:
-#              mavenPomFile: sdk/spring/pom.xml
-#              mavenOptions: '$(MemoryOptions)'
-#              javaHomeOption: 'JDKVersion'
-#              jdkVersionOption: $(JavaTestVersion)
-#              jdkArchitectureOption: 'x64'
-#              goals: 'clean test -Pdev'
+#    - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+#      parameters:
+##        JobTemplatePath: ../../../../../sdk/spring/compatibility-tests-job.yml
+#        JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+#        AdditionalParameters:
+#            ServiceDirectory: spring
+#        MatrixConfigs:
+#          - Name: spring_boot_supported_version_tests
+#            Path: sdk/spring/supported-version-matrix.json
+#            Selection: sparse
+#            NonSparseParameters:
+#              - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
+#            GenerateVMJobs: true
+      - job:
+        strategy:
+          matrix:
+            2.6.6:
+              sb-v: '2.6.6'
+              sc-v: '2021.0.1'
+            2.6.7:
+              sb-v: '2.6.7'
+              sc-v: '2021.0.1'
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - script: |
+              pip install termcolor
+            displayName: 'python module install'
+          - script: |
+              python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py -b ${sb-v} -c ${sc-v}
+            displayName: 'add dependency management'
+          - script: |
+              python ./sdk/spring/scripts/compatibility_deleted_version.py
+            displayName: 'remove version'
+          - task: Maven@3
+            displayName: 'Run tests'
+            inputs:
+              mavenPomFile: sdk/spring/pom.xml
+              mavenOptions: '$(MemoryOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaTestVersion)
+              jdkArchitectureOption: 'x64'
+              goals: 'clean test -Pdev'
 #  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
 #    parameters:
 #      ServiceDirectory: spring
