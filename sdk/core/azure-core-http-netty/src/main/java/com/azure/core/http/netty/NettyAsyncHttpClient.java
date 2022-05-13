@@ -24,11 +24,13 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.ProxyConnectException;
+import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.reactivestreams.Publisher;
@@ -36,11 +38,16 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
+import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -58,6 +65,9 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
+
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
 
@@ -173,10 +183,7 @@ class NettyAsyncHttpClient implements HttpClient {
                     return reactorNettyOutbound.send(
                         Mono.fromSupplier(() -> Unpooled.wrappedBuffer(bodyContent.toBytes())));
                 } else if (bodyContent instanceof FileContent) {
-                    FileContent fileContent = (FileContent) bodyContent;
-                    // Beware of NettyOutbound.sendFile(Path) it involves extra file length lookup.
-                    // This is going to use zero-copy transfer if there's no ssl
-                    return reactorNettyOutbound.sendFile(fileContent.getFile(), 0, fileContent.getLength());
+                    return sendFile(restRequest, reactorNettyOutbound, (FileContent) bodyContent);
                 } else if (bodyContent instanceof InputStreamContent) {
                     return sendInputStream(reactorNettyOutbound, (InputStreamContent) bodyContent);
                 } else {
@@ -189,12 +196,45 @@ class NettyAsyncHttpClient implements HttpClient {
         };
     }
 
+    private static NettyOutbound sendFile(
+        HttpRequest restRequest, NettyOutbound reactorNettyOutbound, FileContent fileContent) {
+        if (restRequest.getUrl().getProtocol().equals("https")) {
+            // NettyOutbound uses such logic internally for ssl connections but with smaller buffer of 1KB.
+            return reactorNettyOutbound.sendUsing(
+                () -> FileChannel.open(fileContent.getFile(), StandardOpenOption.READ),
+                (c, fc) -> {
+                    if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
+                        c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
+                    }
+
+                    try {
+                        return new ChunkedNioFile(
+                            fc, 0, fileContent.getLength(), fileContent.getChunkSize());
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                    }
+                },
+                (fc) -> {
+                    try {
+                        fc.close();
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                    }
+                });
+        } else {
+            // Beware of NettyOutbound.sendFile(Path) it involves extra file length lookup.
+            // This is going to use zero-copy transfer if there's no ssl
+            return reactorNettyOutbound.sendFile(
+                fileContent.getFile(), 0, fileContent.getLength());
+        }
+    }
+
     private static NettyOutbound sendInputStream(NettyOutbound reactorNettyOutbound, InputStreamContent bodyContent) {
         return reactorNettyOutbound.sendUsing(
             bodyContent::toStream,
             (c, stream) -> {
                 if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
-                    c.addHandlerLast("reactor.left.chunkedWriter", new ChunkedWriteHandler());
+                    c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
                 }
 
                 return new ChunkedStream(stream);
