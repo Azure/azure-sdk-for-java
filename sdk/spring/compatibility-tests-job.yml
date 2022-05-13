@@ -4,10 +4,10 @@ parameters:
 
 jobs:
   - job: 'test'
-    dependsOn: ''
-    condition: always()
-#    dependsOn: ${{ parameters.DependsOn }}
-#    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+#    dependsOn: ''
+#    condition: always()
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
 
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
