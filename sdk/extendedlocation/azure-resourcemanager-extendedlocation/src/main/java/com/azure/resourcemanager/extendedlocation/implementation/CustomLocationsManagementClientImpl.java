@@ -36,8 +36,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the CustomLocationsManagementClientImpl type. */
 @ServiceClient(builder = CustomLocationsManagementClientBuilder.class)
 public final class CustomLocationsManagementClientImpl implements CustomLocationsManagementClient {
-    private final ClientLogger logger = new ClientLogger(CustomLocationsManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -231,7 +229,7 @@ public final class CustomLocationsManagementClientImpl implements CustomLocation
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -290,4 +288,6 @@ public final class CustomLocationsManagementClientImpl implements CustomLocation
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomLocationsManagementClientImpl.class);
 }

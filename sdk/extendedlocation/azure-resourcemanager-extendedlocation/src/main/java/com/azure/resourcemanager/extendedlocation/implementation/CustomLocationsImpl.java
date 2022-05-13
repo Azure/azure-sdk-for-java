@@ -17,10 +17,9 @@ import com.azure.resourcemanager.extendedlocation.models.CustomLocation;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocationOperation;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocations;
 import com.azure.resourcemanager.extendedlocation.models.EnabledResourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CustomLocationsImpl implements CustomLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomLocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomLocationsImpl.class);
 
     private final CustomLocationsClient innerClient;
 
@@ -111,7 +110,7 @@ public final class CustomLocationsImpl implements CustomLocations {
     public CustomLocation getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class CustomLocationsImpl implements CustomLocations {
     public Response<CustomLocation> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,7 +138,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +150,7 @@ public final class CustomLocationsImpl implements CustomLocations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,7 +158,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +170,7 @@ public final class CustomLocationsImpl implements CustomLocations {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +178,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

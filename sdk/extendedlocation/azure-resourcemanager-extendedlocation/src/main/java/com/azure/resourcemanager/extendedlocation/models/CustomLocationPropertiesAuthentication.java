@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This is optional input that contains the authentication that should be used to generate the namespace. */
 @Fluent
 public final class CustomLocationPropertiesAuthentication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomLocationPropertiesAuthentication.class);
-
     /*
      * The type of the Custom Locations authentication
      */

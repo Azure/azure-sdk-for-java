@@ -15,7 +15,7 @@ public interface CustomLocations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lists of Custom Locations operations.
+     * @return lists of Custom Locations operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CustomLocationOperation> listOperations();
 
@@ -26,7 +26,7 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lists of Custom Locations operations.
+     * @return lists of Custom Locations operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CustomLocationOperation> listOperations(Context context);
 
@@ -36,7 +36,8 @@ public interface CustomLocations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription.
+     * @return a list of Custom Locations in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<CustomLocation> list();
 
@@ -48,7 +49,8 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription.
+     * @return a list of Custom Locations in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<CustomLocation> list(Context context);
 
@@ -60,7 +62,8 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription and resource group.
+     * @return a list of Custom Locations in the specified subscription and resource group as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<CustomLocation> listByResourceGroup(String resourceGroupName);
 
@@ -73,7 +76,8 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription and resource group.
+     * @return a list of Custom Locations in the specified subscription and resource group as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<CustomLocation> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -98,7 +102,7 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the customLocation with a specified resource group and name.
+     * @return the details of the customLocation with a specified resource group and name along with {@link Response}.
      */
     Response<CustomLocation> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -134,7 +138,7 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Enabled Resource Types.
+     * @return the list of the Enabled Resource Types as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnabledResourceType> listEnabledResourceTypes(String resourceGroupName, String resourceName);
 
@@ -147,7 +151,7 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Enabled Resource Types.
+     * @return the list of the Enabled Resource Types as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnabledResourceType> listEnabledResourceTypes(
         String resourceGroupName, String resourceName, Context context);
@@ -159,7 +163,7 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the customLocation with a specified resource group and name.
+     * @return the details of the customLocation with a specified resource group and name along with {@link Response}.
      */
     CustomLocation getById(String id);
 
@@ -171,7 +175,7 @@ public interface CustomLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the customLocation with a specified resource group and name.
+     * @return the details of the customLocation with a specified resource group and name along with {@link Response}.
      */
     Response<CustomLocation> getByIdWithResponse(String id, Context context);
 
