@@ -37,7 +37,7 @@ class StorageSpec extends Specification {
         ThreadDumper.initialize()
 
         // Hook for errors
-        Schedulers.onHandleError((thread, throwable) -> {
+        Schedulers.onHandleError({ thread, throwable ->
             println "Schedulers.onHandleError caught something"
             throwable.printStackTrace()
             LOGGER.error("Schedulers.onHandleError caught something in {}", thread.name, throwable);
