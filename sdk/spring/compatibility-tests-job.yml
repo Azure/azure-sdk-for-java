@@ -3,7 +3,7 @@ parameters:
   MaxParallel: 2
 
 jobs:
-  - job: 'Compatibility test'
+  - job: 'compatibility_test'
 #    dependsOn: ''
 #    condition: always()
     dependsOn: ${{ parameters.DependsOn }}
