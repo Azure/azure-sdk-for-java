@@ -47,7 +47,7 @@ steps:
       arguments: '--update-type library --build-type client --sr'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: /eng/pipelines/templates/steps/generate-project-list-and-chache-maven-repository.yml
+  - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}

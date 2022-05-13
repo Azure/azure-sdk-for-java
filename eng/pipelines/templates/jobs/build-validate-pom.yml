@@ -51,7 +51,7 @@ jobs:
         parameters:
           ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
-      - template: /eng/pipelines/templates/steps/generate-project-list-and-chache-maven-repository.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build and Validate'
           Artifacts: ${{ parameters.Artifacts }}
