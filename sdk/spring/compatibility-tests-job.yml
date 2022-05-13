@@ -30,6 +30,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
+          options: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
           mavenPomFile: sdk/spring/pom.xml
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
