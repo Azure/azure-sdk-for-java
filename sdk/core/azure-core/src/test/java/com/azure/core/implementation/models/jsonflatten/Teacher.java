@@ -29,12 +29,9 @@ public class Teacher implements JsonCapable<Teacher> {
         jsonWriter.writeStartObject();
 
         if (students != null) {
-            jsonWriter.writeFieldName("students").writeStartObject();
+            jsonWriter.writeStartObject("students");
 
-            students.forEach((key, value) -> {
-                jsonWriter.writeFieldName(key);
-                value.toJson(jsonWriter);
-            });
+            students.forEach(jsonWriter::writeJsonCapableField);
 
             jsonWriter.writeEndObject();
         }

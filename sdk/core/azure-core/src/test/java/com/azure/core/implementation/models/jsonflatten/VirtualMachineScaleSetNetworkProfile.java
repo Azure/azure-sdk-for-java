@@ -34,7 +34,7 @@ public final class VirtualMachineScaleSetNetworkProfile implements JsonCapable<V
 
         if (networkInterfaceConfigurations != null) {
             JsonUtils.writeArray(jsonWriter, "networkInterfaceConfigurations", networkInterfaceConfigurations,
-                (writer, config) -> config.toJson(writer));
+                JsonWriter::writeJsonCapable);
         }
 
         return jsonWriter.writeEndObject().flush();

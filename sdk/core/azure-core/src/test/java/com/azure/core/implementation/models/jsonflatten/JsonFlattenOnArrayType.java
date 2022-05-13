@@ -34,8 +34,7 @@ public final class JsonFlattenOnArrayType implements JsonCapable<JsonFlattenOnAr
         jsonWriter.writeStartObject();
 
         if (jsonFlattenArray != null) {
-            jsonWriter.writeFieldName("jsonflatten")
-                .writeStartObject();
+            jsonWriter.writeStartObject("jsonflatten");
 
             JsonUtils.writeArray(jsonWriter, "array", jsonFlattenArray, JsonWriter::writeString)
                 .writeEndObject();

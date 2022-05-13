@@ -100,24 +100,20 @@ public class NewFoo implements JsonCapable<NewFoo> {
             .writeStringField("$type", type);
 
         if (bar != null || baz != null || qux != null || moreProps != null) {
-            jsonWriter.writeFieldName("properties")
-                .writeStartObject();
+            jsonWriter.writeStartObject("properties");
 
             JsonUtils.writeNonNullStringField(jsonWriter, "bar", bar);
 
             if (baz != null || qux != null) {
-                jsonWriter.writeFieldName("props")
-                    .writeStartObject();
+                jsonWriter.writeStartObject("props");
 
                 if (baz != null) {
                     JsonUtils.writeArray(jsonWriter, "baz", baz, JsonWriter::writeString);
                 }
 
                 if (qux != null) {
-                    jsonWriter.writeFieldName("q")
-                        .writeStartObject()
-                        .writeFieldName("qux")
-                        .writeStartObject();
+                    jsonWriter.writeStartObject("q")
+                        .writeStartObject("qux");
 
                     qux.forEach(jsonWriter::writeStringField);
 
@@ -134,15 +130,13 @@ public class NewFoo implements JsonCapable<NewFoo> {
         }
 
         if (empty != null) {
-            jsonWriter.writeFieldName("props")
-                .writeStartObject()
+            jsonWriter.writeStartObject("props")
                 .writeIntField("empty", empty)
                 .writeEndObject();
         }
 
         if (additionalPropertiesProperty != null) {
-            jsonWriter.writeFieldName("additionalProperties")
-                .writeStartObject();
+            jsonWriter.writeStartObject("additionalProperties");
 
             additionalPropertiesProperty.forEach((key, value) ->
                 JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));

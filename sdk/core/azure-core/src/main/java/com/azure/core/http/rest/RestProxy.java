@@ -342,7 +342,7 @@ public final class RestProxy implements InvocationHandler {
             if (bodyContentObject instanceof JsonCapable<?>) {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 try (JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream)) {
-                    ((JsonCapable<?>) bodyContentObject).toJson(jsonWriter);
+                    jsonWriter.writeJsonCapable((JsonCapable<?>) bodyContentObject);
                 }
 
                 request.setBody(outputStream.toByteArray());

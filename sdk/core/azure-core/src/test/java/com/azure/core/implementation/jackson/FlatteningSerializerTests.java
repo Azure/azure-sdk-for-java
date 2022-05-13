@@ -709,7 +709,7 @@ public class FlatteningSerializerTests {
         JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
 
         writer.writeStartArray();
-        jsonCapables.forEach(jsonCapable -> jsonCapable.toJson(writer));
+        jsonCapables.forEach(writer::writeJsonCapable);
         writer.writeEndArray().flush();
 
         return outputStream.toString(StandardCharsets.UTF_8);

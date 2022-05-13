@@ -40,13 +40,11 @@ public final class JsonUtils {
      */
     public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, T[] array,
         BiConsumer<JsonWriter, T> elementWriterFunc) {
-        jsonWriter.writeFieldName(fieldName);
-
         if (array == null) {
-            return jsonWriter.writeNull().flush();
+            return jsonWriter.writeNullField(fieldName).flush();
         }
 
-        jsonWriter.writeStartArray();
+        jsonWriter.writeStartArray(fieldName);
 
         for (T element : array) {
             elementWriterFunc.accept(jsonWriter, element);
@@ -75,13 +73,11 @@ public final class JsonUtils {
      */
     public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, Iterable<T> array,
         BiConsumer<JsonWriter, T> elementWriterFunc) {
-        jsonWriter.writeFieldName(fieldName);
-
         if (array == null) {
-            return jsonWriter.writeNull().flush();
+            return jsonWriter.writeNullField(fieldName).flush();
         }
 
-        jsonWriter.writeStartArray();
+        jsonWriter.writeStartArray(fieldName);
 
         for (T element : array) {
             elementWriterFunc.accept(jsonWriter, element);

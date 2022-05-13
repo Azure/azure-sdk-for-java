@@ -30,8 +30,7 @@ public class JsonFlattenNestedInner implements JsonCapable<JsonFlattenNestedInne
         jsonWriter.writeStartObject();
 
         if (identity != null) {
-            jsonWriter.writeFieldName("identity");
-            identity.toJson(jsonWriter);
+            jsonWriter.writeJsonCapableField("identity", identity);
         }
 
         return jsonWriter.writeEndObject().flush();

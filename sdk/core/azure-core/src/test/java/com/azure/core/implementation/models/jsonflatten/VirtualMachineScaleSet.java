@@ -31,11 +31,8 @@ public final class VirtualMachineScaleSet implements JsonCapable<VirtualMachineS
         jsonWriter.writeStartObject();
 
         if (virtualMachineProfile != null) {
-            jsonWriter.writeFieldName("properties")
-                .writeStartObject()
-                .writeFieldName("virtualMachineProfile");
-
-            virtualMachineProfile.toJson(jsonWriter)
+            jsonWriter.writeStartObject("properties")
+                .writeJsonCapableField("virtualMachineProfile", virtualMachineProfile)
                 .writeEndObject();
         }
 

@@ -46,8 +46,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
         JsonUtils.writeNonNullStringField(jsonWriter, "name", name);
 
         if (primary != null) {
-            jsonWriter.writeFieldName("properties")
-                .writeStartObject()
+            jsonWriter.writeStartObject("properties")
                 .writeBooleanField("primary", primary)
                 .writeEndObject();
         }

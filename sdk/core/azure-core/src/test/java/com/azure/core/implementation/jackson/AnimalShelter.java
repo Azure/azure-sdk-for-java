@@ -41,10 +41,10 @@ public class AnimalShelter implements JsonCapable<AnimalShelter> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeFieldName("properties").writeStartObject();
+        jsonWriter.writeStartObject("properties");
 
         JsonUtils.writeNonNullStringField(jsonWriter, "description", description);
-        JsonUtils.writeArray(jsonWriter, "animalsInfo", animalsInfo, (writer, animalInfo) -> animalInfo.toJson(writer));
+        JsonUtils.writeArray(jsonWriter, "animalsInfo", animalsInfo, JsonWriter::writeJsonCapable);
 
         return jsonWriter.writeEndObject().writeEndObject().flush();
     }

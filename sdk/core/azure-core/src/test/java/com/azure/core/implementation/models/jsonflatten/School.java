@@ -41,20 +41,17 @@ public class School implements JsonCapable<School> {
         jsonWriter.writeStartObject();
 
         if (teacher != null) {
-            jsonWriter.writeFieldName("teacher");
-            teacher.toJson(jsonWriter);
+            jsonWriter.writeJsonCapableField("teacher", teacher);
         }
 
         if (name != null) {
-            jsonWriter.writeFieldName("properties")
-                .writeStartObject()
+            jsonWriter.writeStartObject("properties")
                 .writeStringField("name", name)
                 .writeEndObject();
         }
 
         if (tags != null) {
-            jsonWriter.writeFieldName("tags")
-                .writeStartObject();
+            jsonWriter.writeStartObject("tags");
 
             tags.forEach(jsonWriter::writeStringField);
 

@@ -48,8 +48,7 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonCapable<Fl
         jsonWriter.writeStartObject();
 
         if (string != null) {
-            jsonWriter.writeFieldName("flattened")
-                .writeStartObject()
+            jsonWriter.writeStartObject("flattened")
                 .writeStringField("string", string)
                 .writeEndObject();
         }

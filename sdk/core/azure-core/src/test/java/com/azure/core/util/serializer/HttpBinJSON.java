@@ -80,8 +80,7 @@ public class HttpBinJSON implements JsonCapable<HttpBinJSON> {
         JsonUtils.writeNonNullStringField(jsonWriter, "url", url);
 
         if (headers != null) {
-            jsonWriter.writeFieldName("headers")
-                .writeStartObject();
+            jsonWriter.writeStartObject("headers");
 
             headers.forEach(jsonWriter::writeStringField);
 

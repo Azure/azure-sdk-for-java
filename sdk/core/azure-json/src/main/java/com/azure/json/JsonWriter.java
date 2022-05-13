@@ -5,10 +5,12 @@ package com.azure.json;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Writes a JSON encoded value to a stream.
  */
+@SuppressWarnings("resource")
 public abstract class JsonWriter implements Closeable {
     /**
      * Gets the current {@link JsonWriteContext writing context} for the JSON object.
@@ -43,13 +45,41 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter flush();
 
     /**
-     * Writes a JSON start object ({@code &#123;}).
+     * Writes a {@link JsonCapable} object.
      * <p>
-     * When {@link #close()} is called all open objects will be closed.
+     * This API is used instead of {@link #writeJsonCapableField(String, JsonCapable)} when the value needs to be
+     * written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param jsonCapable The {@link JsonCapable} object.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code jsonCapable} is null.
+     */
+    public final JsonWriter writeJsonCapable(JsonCapable<?> jsonCapable) {
+        Objects.requireNonNull(jsonCapable, "'jsonCapable' cannot be null.");
+
+        return jsonCapable.toJson(this);
+    }
+
+    /**
+     * Writes a JSON start object ({@code &#123;}).
      *
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeStartObject();
+
+    /**
+     * Writes a JSON start object ({@code &#123;}) with a preceding field name.
+     * <p>
+     * This API is the equivalent of calling {@link #writeFieldName(String)} and {@link #writeStartObject()}, in that
+     * order.
+     *
+     * @param fieldName The field name.
+     * @return The updated JsonWriter object.
+     */
+    public final JsonWriter writeStartObject(String fieldName) {
+        return writeFieldName(fieldName).writeStartObject();
+    }
 
     /**
      * Writes a JSON end object ({@code &#125;}).
@@ -66,6 +96,19 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeStartArray();
+
+    /**
+     * Writes a JSON start array ({@code [}) with a preceding field name.
+     * <p>
+     * This API is the equivalent of calling {@link #writeFieldName(String)} and {@link #writeStartArray()}, in that
+     * order.
+     *
+     * @param fieldName The field name.
+     * @return The updated JsonWriter object.
+     */
+    public final JsonWriter writeStartArray(String fieldName) {
+        return writeFieldName(fieldName).writeStartArray();
+    }
 
     /**
      * Writes a JSON end array ({@code ]}).
@@ -189,6 +232,23 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeRawValue(String value);
+
+    /**
+     * Writes a {@link JsonCapable} object.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeJsonCapable(JsonCapable)} to simplify adding a
+     * key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param jsonCapable The {@link JsonCapable} object.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code jsonCapable} is null.
+     */
+    public final JsonWriter writeJsonCapableField(String fieldName, JsonCapable<?> jsonCapable) {
+        Objects.requireNonNull(jsonCapable, "'jsonCapable' cannot be null.");
+
+        return jsonCapable.toJson(writeFieldName(fieldName));
+    }
 
     /**
      * Writes a JSON binary field.

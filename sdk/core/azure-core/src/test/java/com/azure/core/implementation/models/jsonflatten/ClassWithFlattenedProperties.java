@@ -36,8 +36,7 @@ public final class ClassWithFlattenedProperties implements JsonCapable<ClassWith
         jsonWriter.writeStartObject();
 
         if (odataType != null) {
-            jsonWriter.writeFieldName("@odata")
-                .writeStartObject()
+            jsonWriter.writeStartObject("@odata")
                 .writeStringField("type", odataType)
                 .writeEndObject();
         }

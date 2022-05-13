@@ -29,8 +29,7 @@ public final class JsonFlattenWithJsonInfoDiscriminator implements JsonCapable<J
             .writeStringField("type", "JsonFlattenWithJsonInfoDiscriminator");
 
         if (jsonFlattenDiscriminator != null) {
-            jsonWriter.writeFieldName("jsonflatten")
-                .writeStartObject()
+            jsonWriter.writeStartObject("jsonflatten")
                 .writeStringField("discriminator", jsonFlattenDiscriminator)
                 .writeEndObject();
         }

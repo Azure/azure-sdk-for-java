@@ -59,8 +59,7 @@ public final class JsonFlattenOnPrimitiveType implements JsonCapable<JsonFlatten
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject()
-            .writeFieldName("jsonflatten")
-            .writeStartObject()
+            .writeStartObject("jsonflatten")
             .writeBooleanField("boolean", jsonFlattenBoolean)
             .writeDoubleField("decimal", jsonFlattenDecimal)
             .writeIntField("number", jsonFlattenNumber);

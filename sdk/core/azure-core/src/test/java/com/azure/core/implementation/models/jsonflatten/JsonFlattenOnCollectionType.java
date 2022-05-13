@@ -33,8 +33,7 @@ public final class JsonFlattenOnCollectionType implements JsonCapable<JsonFlatte
         jsonWriter.writeStartObject();
 
         if (jsonFlattenCollection != null) {
-            jsonWriter.writeFieldName("jsonflatten")
-                .writeStartObject();
+            jsonWriter.writeStartObject("jsonflatten");
 
             JsonUtils.writeArray(jsonWriter, "collection", jsonFlattenCollection, JsonWriter::writeString)
                 .writeEndObject();

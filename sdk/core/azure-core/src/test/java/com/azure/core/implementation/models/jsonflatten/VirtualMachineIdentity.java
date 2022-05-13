@@ -50,8 +50,7 @@ public final class VirtualMachineIdentity implements JsonCapable<VirtualMachineI
         }
 
         if (userAssignedIdentities != null) {
-            jsonWriter.writeFieldName("userAssignedIdentities")
-                .writeStartObject();
+            jsonWriter.writeStartObject("userAssignedIdentities");
 
             userAssignedIdentities.forEach((key, value) ->
                 JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));

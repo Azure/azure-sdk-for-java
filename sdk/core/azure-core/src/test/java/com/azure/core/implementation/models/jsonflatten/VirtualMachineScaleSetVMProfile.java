@@ -30,8 +30,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonCapable<Virtua
         jsonWriter.writeStartObject();
 
         if (networkProfile != null) {
-            jsonWriter.writeFieldName("networkProfile");
-            networkProfile.toJson(jsonWriter);
+            jsonWriter.writeJsonCapableField("networkProfile", networkProfile);
         }
 
         return jsonWriter.writeEndObject().flush();

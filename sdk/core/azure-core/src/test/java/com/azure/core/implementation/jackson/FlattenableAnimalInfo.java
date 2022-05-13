@@ -40,8 +40,7 @@ public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo>
         if (animal == null) {
             jsonWriter.writeNullField("animal");
         } else {
-            jsonWriter.writeFieldName("animal");
-            animal.toJson(jsonWriter);
+            jsonWriter.writeJsonCapableField("animal", animal);
         }
 
         return jsonWriter.writeEndObject().flush();

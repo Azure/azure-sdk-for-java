@@ -44,7 +44,7 @@ public class SampleResource implements JsonCapable<SampleResource> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeFieldName("properties").writeStartObject();
+        jsonWriter.writeStartObject("properties");
 
         JsonUtils.writeNonNullStringField(jsonWriter, "name", namePropertiesName);
         JsonUtils.writeNonNullStringField(jsonWriter, "registrationTtl", registrationTtl);

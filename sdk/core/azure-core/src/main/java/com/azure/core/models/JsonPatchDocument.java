@@ -489,7 +489,7 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartArray();
 
-        operations.forEach(operation -> operation.toJson(jsonWriter));
+        operations.forEach(jsonWriter::writeJsonCapable);
 
         return jsonWriter.writeEndArray().flush();
     }

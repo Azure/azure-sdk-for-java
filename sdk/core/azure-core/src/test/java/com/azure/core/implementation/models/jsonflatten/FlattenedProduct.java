@@ -44,7 +44,7 @@ public class FlattenedProduct implements JsonCapable<FlattenedProduct> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeFieldName("properties").writeStartObject();
+        jsonWriter.writeStartObject("properties");
 
         JsonUtils.writeNonNullStringField(jsonWriter, "p.name", productName);
         JsonUtils.writeNonNullStringField(jsonWriter, "type", productType);

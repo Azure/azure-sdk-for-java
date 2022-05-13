@@ -121,14 +121,13 @@ public final class ResponseError implements JsonCapable<ResponseError> {
         }
 
         if (innerError != null) {
-            jsonWriter.writeFieldName("innererror");
-            innerError.toJson(jsonWriter);
+            jsonWriter.writeJsonCapableField("innererror", innerError);
         }
 
         if (errorDetails != null) {
-            jsonWriter.writeFieldName("details").writeStartArray();
+            jsonWriter.writeStartArray("details");
 
-            errorDetails.forEach(error -> error.toJson(jsonWriter));
+            errorDetails.forEach(jsonWriter::writeJsonCapable);
 
             jsonWriter.writeEndArray();
         }
