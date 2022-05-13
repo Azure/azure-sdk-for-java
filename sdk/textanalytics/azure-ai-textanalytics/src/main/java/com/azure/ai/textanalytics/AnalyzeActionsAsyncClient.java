@@ -974,39 +974,41 @@ class AnalyzeActionsAsyncClient {
         final List<TextAnalyticsError> errors = analyzeJobState.getErrors();
         if (!CoreUtils.isNullOrEmpty(errors)) {
             for (TextAnalyticsError error : errors) {
-                final String[] targetPair = parseActionErrorTarget(error.getTarget());
-                final String taskName = targetPair[0];
-                final Integer taskIndex = Integer.valueOf(targetPair[1]);
-                final TextAnalyticsActionResult actionResult;
-                if (ENTITY_RECOGNITION_TASKS.equals(taskName)) {
-                    actionResult = recognizeEntitiesActionResults.get(taskIndex);
-                } else if (ENTITY_RECOGNITION_PII_TASKS.equals(taskName)) {
-                    actionResult = recognizePiiEntitiesActionResults.get(taskIndex);
-                } else if (KEY_PHRASE_EXTRACTION_TASKS.equals(taskName)) {
-                    actionResult = extractKeyPhrasesActionResults.get(taskIndex);
-                } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
-                    actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
-                } else if (SENTIMENT_ANALYSIS_TASKS.equals(taskName)) {
-                    actionResult = analyzeSentimentActionResults.get(taskIndex);
-                } else if (EXTRACTIVE_SUMMARIZATION_TASKS.equals(taskName)) {
-                    actionResult = extractSummaryActionResults.get(taskIndex);
-                } else if (CUSTOM_ENTITY_RECOGNITION_TASKS.equals(taskName)) {
-                    actionResult = recognizeCustomEntitiesActionResults.get(taskIndex);
-                } else if (CUSTOM_SINGLE_CLASSIFICATION_TASKS.equals(taskName)) {
-                    actionResult = singleCategoryClassifyActionResults.get(taskIndex);
-                } else if (CUSTOM_MULTI_CLASSIFICATION_TASKS.equals(taskName)) {
-                    actionResult = multiCategoryClassifyActionResults.get(taskIndex);
-                } else {
-                    throw logger.logExceptionAsError(new RuntimeException(
-                        "Invalid task name in target reference, " + taskName));
-                }
+                if (error != null) {
+                    final String[] targetPair = parseActionErrorTarget(error.getTarget(), error.getMessage());
+                    final String taskName = targetPair[0];
+                    final Integer taskIndex = Integer.valueOf(targetPair[1]);
+                    final TextAnalyticsActionResult actionResult;
+                    if (ENTITY_RECOGNITION_TASKS.equals(taskName)) {
+                        actionResult = recognizeEntitiesActionResults.get(taskIndex);
+                    } else if (ENTITY_RECOGNITION_PII_TASKS.equals(taskName)) {
+                        actionResult = recognizePiiEntitiesActionResults.get(taskIndex);
+                    } else if (KEY_PHRASE_EXTRACTION_TASKS.equals(taskName)) {
+                        actionResult = extractKeyPhrasesActionResults.get(taskIndex);
+                    } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
+                        actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
+                    } else if (SENTIMENT_ANALYSIS_TASKS.equals(taskName)) {
+                        actionResult = analyzeSentimentActionResults.get(taskIndex);
+                    } else if (EXTRACTIVE_SUMMARIZATION_TASKS.equals(taskName)) {
+                        actionResult = extractSummaryActionResults.get(taskIndex);
+                    } else if (CUSTOM_ENTITY_RECOGNITION_TASKS.equals(taskName)) {
+                        actionResult = recognizeCustomEntitiesActionResults.get(taskIndex);
+                    } else if (CUSTOM_SINGLE_CLASSIFICATION_TASKS.equals(taskName)) {
+                        actionResult = singleCategoryClassifyActionResults.get(taskIndex);
+                    } else if (CUSTOM_MULTI_CLASSIFICATION_TASKS.equals(taskName)) {
+                        actionResult = multiCategoryClassifyActionResults.get(taskIndex);
+                    } else {
+                        throw logger.logExceptionAsError(new RuntimeException(
+                            "Invalid task name in target reference, " + taskName));
+                    }
 
-                TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, true);
-                TextAnalyticsActionResultPropertiesHelper.setError(actionResult,
-                    new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                        TextAnalyticsErrorCode.fromString(
-                            error.getErrorCode() == null ? null : error.getErrorCode().toString()),
-                        error.getMessage(), null));
+                    TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, true);
+                    TextAnalyticsActionResultPropertiesHelper.setError(actionResult,
+                        new com.azure.ai.textanalytics.models.TextAnalyticsError(
+                            TextAnalyticsErrorCode.fromString(
+                                error.getErrorCode() == null ? null : error.getErrorCode().toString()),
+                            error.getMessage(), null));
+                }
             }
         }
 
@@ -1199,42 +1201,45 @@ class AnalyzeActionsAsyncClient {
         }
 
         //TODO: In Language REST API, there is no such task names. It might be a different way to parse the Error Target
+        // https://github.com/Azure/azure-sdk-for-java/issues/28834
         final List<Error> errors = analyzeJobState.getErrors();
         if (!CoreUtils.isNullOrEmpty(errors)) {
             for (Error error : errors) {
-                final String[] targetPair = parseActionErrorTarget(error.getTarget());
-                final String taskName = targetPair[0];
-                final Integer taskIndex = Integer.valueOf(targetPair[1]);
-                final TextAnalyticsActionResult actionResult;
-                if (ENTITY_RECOGNITION_TASKS.equals(taskName)) {
-                    actionResult = recognizeEntitiesActionResults.get(taskIndex);
-                } else if (ENTITY_RECOGNITION_PII_TASKS.equals(taskName)) {
-                    actionResult = recognizePiiEntitiesActionResults.get(taskIndex);
-                } else if (KEY_PHRASE_EXTRACTION_TASKS.equals(taskName)) {
-                    actionResult = extractKeyPhrasesActionResults.get(taskIndex);
-                } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
-                    actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
-                } else if (SENTIMENT_ANALYSIS_TASKS.equals(taskName)) {
-                    actionResult = analyzeSentimentActionResults.get(taskIndex);
-                } else if (EXTRACTIVE_SUMMARIZATION_TASKS.equals(taskName)) {
-                    actionResult = extractSummaryActionResults.get(taskIndex);
-                } else if (CUSTOM_ENTITY_RECOGNITION_TASKS.equals(taskName)) {
-                    actionResult = recognizeCustomEntitiesActionResults.get(taskIndex);
-                } else if (CUSTOM_SINGLE_CLASSIFICATION_TASKS.equals(taskName)) {
-                    actionResult = singleCategoryClassifyActionResults.get(taskIndex);
-                } else if (CUSTOM_MULTI_CLASSIFICATION_TASKS.equals(taskName)) {
-                    actionResult = multiCategoryClassifyActionResults.get(taskIndex);
-                } else {
-                    throw logger.logExceptionAsError(new RuntimeException(
-                        "Invalid task name in target reference, " + taskName));
-                }
+                if (error != null) {
+                    final String[] targetPair = parseActionErrorTarget(error.getTarget(), error.getMessage());
+                    final String taskName = targetPair[0];
+                    final Integer taskIndex = Integer.valueOf(targetPair[1]);
+                    final TextAnalyticsActionResult actionResult;
+                    if (ENTITY_RECOGNITION_TASKS.equals(taskName)) {
+                        actionResult = recognizeEntitiesActionResults.get(taskIndex);
+                    } else if (ENTITY_RECOGNITION_PII_TASKS.equals(taskName)) {
+                        actionResult = recognizePiiEntitiesActionResults.get(taskIndex);
+                    } else if (KEY_PHRASE_EXTRACTION_TASKS.equals(taskName)) {
+                        actionResult = extractKeyPhrasesActionResults.get(taskIndex);
+                    } else if (ENTITY_LINKING_TASKS.equals(taskName)) {
+                        actionResult = recognizeLinkedEntitiesActionResults.get(taskIndex);
+                    } else if (SENTIMENT_ANALYSIS_TASKS.equals(taskName)) {
+                        actionResult = analyzeSentimentActionResults.get(taskIndex);
+                    } else if (EXTRACTIVE_SUMMARIZATION_TASKS.equals(taskName)) {
+                        actionResult = extractSummaryActionResults.get(taskIndex);
+                    } else if (CUSTOM_ENTITY_RECOGNITION_TASKS.equals(taskName)) {
+                        actionResult = recognizeCustomEntitiesActionResults.get(taskIndex);
+                    } else if (CUSTOM_SINGLE_CLASSIFICATION_TASKS.equals(taskName)) {
+                        actionResult = singleCategoryClassifyActionResults.get(taskIndex);
+                    } else if (CUSTOM_MULTI_CLASSIFICATION_TASKS.equals(taskName)) {
+                        actionResult = multiCategoryClassifyActionResults.get(taskIndex);
+                    } else {
+                        throw logger.logExceptionAsError(new RuntimeException(
+                            "Invalid task name in target reference, " + taskName));
+                    }
 
-                TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, true);
-                TextAnalyticsActionResultPropertiesHelper.setError(actionResult,
-                    new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                        TextAnalyticsErrorCode.fromString(
-                            error.getCode() == null ? null : error.getCode().toString()),
-                        error.getMessage(), null));
+                    TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, true);
+                    TextAnalyticsActionResultPropertiesHelper.setError(actionResult,
+                        new com.azure.ai.textanalytics.models.TextAnalyticsError(
+                            TextAnalyticsErrorCode.fromString(
+                                error.getCode() == null ? null : error.getCode().toString()),
+                            error.getMessage(), null));
+                }
             }
         }
 
@@ -1359,10 +1364,12 @@ class AnalyzeActionsAsyncClient {
         return options == null ? new AnalyzeActionsOptions() : options;
     }
 
-    private String[] parseActionErrorTarget(String targetReference) {
+    private String[] parseActionErrorTarget(String targetReference, String errorMessage) {
         if (CoreUtils.isNullOrEmpty(targetReference)) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                "Expected an error with a target field referencing an action but did not get one"));
+            if (CoreUtils.isNullOrEmpty(errorMessage)) {
+                errorMessage = "Expected an error with a target field referencing an action but did not get one";
+            }
+            throw logger.logExceptionAsError(new RuntimeException(errorMessage));
         }
         // action could be failed and the target reference is "#/tasks/keyPhraseExtractionTasks/0";
         final Matcher matcher = PATTERN.matcher(targetReference);
