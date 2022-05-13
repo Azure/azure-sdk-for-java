@@ -96,7 +96,9 @@ public final class BuilderHelper {
             policies.add(credentialPolicy);
         }
 
-        policies.addAll(perRetryPolicies);
+        if (perRetryPolicies!= null) {
+            policies.addAll(perRetryPolicies);
+        }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 

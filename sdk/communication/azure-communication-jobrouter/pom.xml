@@ -75,6 +75,11 @@
       <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
+      <groupId>org.reactivestreams</groupId>
+      <artifactId>reactive-streams</artifactId>
+      <version>1.0.3</version> <!-- {x-version-update;org.reactivestreams:reactive-streams;dependency} -->
+    </dependency>
+    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
