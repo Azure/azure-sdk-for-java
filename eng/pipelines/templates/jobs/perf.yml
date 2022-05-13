@@ -29,6 +29,10 @@ variables:
     value: 'none'
   - name: skipComponentGovernanceDetection
     value: 'true'
+  - name: Pool
+    value: 'azsdk-pool-mms-ubuntu-2004-perf'
+  - name: OSVmImage
+    value: 'MMSUbuntu20.04'
 
 resources:
   repositories:
@@ -42,8 +46,8 @@ jobs:
 - job: Perf
   timeoutInMinutes: 360
   pool:
-    name: "azsdk-pool-mms-ubuntu-2004-perf"
-    vmImage: "MMSUbuntu20.04"  
+    name: $(Pool)
+    vmImage: $(OSVmImage)
   steps:
     - checkout: self
       path: s
@@ -51,11 +55,21 @@ jobs:
     - checkout: azure-sdk-tools
       path: s/azure-sdk-tools
 
+    - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+      parameters:
+        AgentImage: $(OSVmImage)
+
     - task: JavaToolInstaller@0
       inputs:
         versionSpec: '8'
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
+      displayName: Install Java 8
+    
+    - script: |
+        java --version
+        mvn --version
+      displayName: Print Java Versions
 
     - template: ../../../common/TestResources/deploy-test-resources.yml
       parameters:
