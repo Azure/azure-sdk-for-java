@@ -4,7 +4,7 @@ parameters:
 
 jobs:
   - job: 'test'
-    dependsOn: ${{ parameters.DependsOn }}
+#    dependsOn: ${{ parameters.DependsOn }}
 #    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
 
     strategy:
