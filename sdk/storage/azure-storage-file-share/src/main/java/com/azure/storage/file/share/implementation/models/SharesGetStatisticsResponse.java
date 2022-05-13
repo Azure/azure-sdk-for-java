@@ -28,7 +28,11 @@ public final class SharesGetStatisticsResponse extends ResponseBase<SharesGetSta
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public ShareStats getValue() {
         return super.getValue();
