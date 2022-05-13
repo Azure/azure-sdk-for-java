@@ -25,6 +25,7 @@ jobs:
         parameters:
           Paths:
             - 'sdk/spring'
+            - 'sdk/boms/spring-cloud-azure-dependencies'
             - 'eng'
       - script: |
           pip install termcolor
