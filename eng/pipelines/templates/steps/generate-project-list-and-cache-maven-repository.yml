@@ -19,9 +19,6 @@ parameters:
     type: string
     default: test
 
-variables:
-  TestFromSource: falseIsh
-
 steps:
 - pwsh: |
     $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
@@ -41,6 +38,8 @@ steps:
   displayName: Initialize project list variable
 
 - task: Cache@2
+  variables:
+    TestFromSource: falseIsh
   inputs:
     key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "$(ProjectList)" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
     path: $(MAVEN_CACHE_FOLDER)
