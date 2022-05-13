@@ -157,6 +157,7 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
     private static final int NEUTRAL_SCORE_ZERO = 0;
+    private static final int OPERATION_ID_LENGTH = 37;
     private static final String DOCUMENT_SENTENCES_ASSESSMENTS_REG_EXP =
         "#/documents/(\\d+)/sentences/(\\d+)/assessments/(\\d+)";
     private static final Pattern PATTERN;
@@ -323,7 +324,7 @@ public final class Utility {
 
     /**
      * Extracts the operation ID from the 'operation-location' URL. An example of 'operation-location' is
-     * https://[...]/analyze/jobs/aaa11111-a111-a111-a1111-a12345678901
+     * https://[...]/language/analyze-text/jobs/36c9e042-77df-4cba-a87e-21ba2f50205a?api-version=2022-04-01-preview
      *
      * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
      * operation ID used to track the progress and obtain the ID of the analyze operation.
@@ -332,9 +333,10 @@ public final class Utility {
      */
     public static String parseOperationId(String operationLocation) {
         if (!CoreUtils.isNullOrEmpty(operationLocation)) {
-            int lastIndex = operationLocation.lastIndexOf('/');
-            if (lastIndex != -1) {
-                return operationLocation.substring(lastIndex + 1, lastIndex + 37);
+            final int indexBeforeOperationId = operationLocation.lastIndexOf('/');
+            if (indexBeforeOperationId != -1) {
+                return operationLocation.substring(indexBeforeOperationId + 1,
+                    indexBeforeOperationId + OPERATION_ID_LENGTH);
             }
         }
         throw LOGGER.logExceptionAsError(
@@ -381,7 +383,6 @@ public final class Utility {
         return new SimpleResponse<>(response,
             toAnalyzeSentimentResultCollection(((SentimentTaskResult) response.getValue()).getResults()));
     }
-
 
     // Detect Language
     public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse(
