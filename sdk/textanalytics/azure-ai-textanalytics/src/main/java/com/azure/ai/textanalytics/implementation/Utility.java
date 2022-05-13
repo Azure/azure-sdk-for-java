@@ -365,6 +365,10 @@ public final class Utility {
                     parameterMap.put(key, value);
                 } else if ("$skip".equals(key) || "$top".equals(key)) {
                     parameterMap.put(key, Integer.valueOf(value));
+                } else if ("skip".equals(key) || "top".equals(key)) {
+                    // Language API no longer has '$' in front of the 'top' and 'skip'.
+                    // https://[...]?showStats=False&top=2&skip=20&api-version=2022-04-01-preview
+                    parameterMap.put("$" + key, Integer.valueOf(value));
                 }
             }
             return parameterMap;

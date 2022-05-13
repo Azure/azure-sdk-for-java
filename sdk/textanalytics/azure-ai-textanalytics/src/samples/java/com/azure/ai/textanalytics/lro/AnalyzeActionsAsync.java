@@ -12,6 +12,7 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -55,6 +56,7 @@ public class AnalyzeActionsAsync {
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions()
                 .setDisplayName("{tasks_display_name}")
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
             new AnalyzeActionsOptions())
             .flatMap(result -> {
