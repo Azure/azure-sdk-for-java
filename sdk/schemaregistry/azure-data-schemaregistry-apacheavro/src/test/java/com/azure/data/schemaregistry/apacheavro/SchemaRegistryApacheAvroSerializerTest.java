@@ -56,7 +56,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.AVRO_MIME_TYPE;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.SCHEMA_ID_SIZE;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_ENDPOINT;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_TEST_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,6 +71,8 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link SchemaRegistryApacheAvroSerializer}.
  */
 public class SchemaRegistryApacheAvroSerializerTest {
+    private static final int SCHEMA_ID_SIZE = 32;
+
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
     private static final String MOCK_SCHEMA_GROUP = "mock-group";
     private static final int MOCK_CACHE_SIZE = 128;

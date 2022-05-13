@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Cache parsed and fetched schemas.
+
 ### Breaking Changes
 
 - Renamed `autoRegisterSchema` to `autoRegisterSchemas` in `SchemaRegistryApacheAvroSerializerBuilder`.
