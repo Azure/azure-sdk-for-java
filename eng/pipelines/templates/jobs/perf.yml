@@ -67,7 +67,7 @@ jobs:
       displayName: Install Java 8
     
     - script: |
-        java --version
+        java -version
         mvn --version
       displayName: Print Java Versions
 
