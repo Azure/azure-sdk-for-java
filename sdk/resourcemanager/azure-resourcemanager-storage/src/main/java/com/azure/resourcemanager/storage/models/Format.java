@@ -27,7 +27,11 @@ public final class Format extends ExpandableStringEnum<Format> {
         return fromString(name, Format.class);
     }
 
-    /** @return known Format values. */
+    /**
+     * Gets known Format values.
+     *
+     * @return known Format values.
+     */
     public static Collection<Format> values() {
         return values(Format.class);
     }

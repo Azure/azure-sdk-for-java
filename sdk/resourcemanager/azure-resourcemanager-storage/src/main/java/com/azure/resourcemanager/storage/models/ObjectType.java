@@ -27,7 +27,11 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
         return fromString(name, ObjectType.class);
     }
 
-    /** @return known ObjectType values. */
+    /**
+     * Gets known ObjectType values.
+     *
+     * @return known ObjectType values.
+     */
     public static Collection<ObjectType> values() {
         return values(ObjectType.class);
     }
