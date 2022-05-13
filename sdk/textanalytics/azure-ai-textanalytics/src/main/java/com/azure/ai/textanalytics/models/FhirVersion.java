@@ -15,7 +15,7 @@ import java.util.Collection;
 @Immutable
 public final class FhirVersion extends ExpandableStringEnum<FhirVersion> {
     /** Static value 4.0.1 for FhirVersion. */
-    public static final FhirVersion FOUR01 = fromString("4.0.1");
+    public static final FhirVersion V4_0_1 = fromString("4.0.1");
 
     /**
      * Creates or finds a FhirVersion from its string representation.

@@ -10,7 +10,7 @@ library defaults to the latest supported API version, which currently is `2022-0
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `TextAnalyticsClientBuilder`. 
 - Added support for Healthcare Entities Analysis through the `beginAnalyzeActions` API with the `AnalyzeHealthcareEntitiesAction` type. 
-- Added keyword argument `fhirVersion` to `beginAnalyzeHealthcareEntities` and `AnalyzeHealthcareEntitiesAction`. 
+- Added property `fhirVersion` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`. 
   Use the keyword to indicate the version for the `fhirBundle` contained on the `AnalyzeHealthcareEntitiesResult`.
 - Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
 
