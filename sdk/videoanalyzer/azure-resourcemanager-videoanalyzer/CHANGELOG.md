@@ -1,14 +1,60 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2022-05-13)
 
-### Features Added
+- Azure Resource Manager Video Analyzer client library for Java. This package contains Microsoft Azure SDK for Video Analyzer Management SDK. Azure Video Analyzer provides a platform for you to build intelligent video applications that span the edge and the cloud. Package tag package-preview-2021-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.VideoAnalyzersUpdateHeaders` was removed
 
-### Other Changes
+* `models.VideoAnalyzersCreateOrUpdateHeaders` was removed
+
+* `models.VideoAnalyzersUpdateResponse` was removed
+
+* `models.VideoAnalyzersCreateOrUpdateResponse` was removed
+
+### Features Added
+
+#### `models.PipelineJob` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.AccessPolicyEntity` was modified
+
+* `resourceGroupName()` was added
+
+#### `VideoAnalyzerManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.LivePipeline` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.VideoAnalyzer` was modified
+
+* `resourceGroupName()` was added
+
+#### `VideoAnalyzerManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.VideoEntity` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.EdgeModuleEntity` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PipelineTopology` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.4 (2021-10-27)
 
