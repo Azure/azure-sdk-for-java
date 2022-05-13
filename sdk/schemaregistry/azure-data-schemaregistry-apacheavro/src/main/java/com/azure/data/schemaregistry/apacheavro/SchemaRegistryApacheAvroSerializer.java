@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -123,9 +122,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public final class SchemaRegistryApacheAvroSerializer {
     static final String AVRO_MIME_TYPE = "avro/binary";
-    static final byte[] RECORD_FORMAT_INDICATOR = new byte[]{0x00, 0x00, 0x00, 0x00};
-    static final int RECORD_FORMAT_INDICATOR_SIZE = RECORD_FORMAT_INDICATOR.length;
-    static final int SCHEMA_ID_SIZE = 32;
 
     private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroSerializer.class);
     private final AvroSerializer avroSerializer;
