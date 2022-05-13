@@ -7,15 +7,12 @@ package com.azure.resourcemanager.extendedlocation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Lists of Custom Locations operations. */
 @Fluent
 public final class CustomLocationOperationsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomLocationOperationsList.class);
-
     /*
      * Next page of operations.
      */
@@ -75,7 +72,7 @@ public final class CustomLocationOperationsList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model CustomLocationOperationsList"));
@@ -83,4 +80,6 @@ public final class CustomLocationOperationsList {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomLocationOperationsList.class);
 }

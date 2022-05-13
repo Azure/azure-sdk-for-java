@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Custom Locations operation response. */
 @Immutable
 public final class CustomLocationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomLocationListResult.class);
-
     /*
      * The URL to use for getting the next set of results.
      */
