@@ -9,6 +9,8 @@ stages:
     jobs:
     - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
+        PreSteps: []
+        PostSteps: []
         JobTemplatePath: ../../../../../sdk/spring/compatibility-tests-job.yml
         AdditionalParameters:
             ServiceDirectory: spring
