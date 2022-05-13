@@ -17,6 +17,8 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.test.shared.policy.NoOpHttpPipelinePolicy
 import okhttp3.ConnectionPool
+import reactor.core.publisher.Hooks
+import reactor.core.scheduler.Schedulers
 import spock.lang.Specification
 
 import java.time.Duration
@@ -33,6 +35,13 @@ class StorageSpec extends Specification {
     static {
         // Dump threads if run goes over 30 minutes and there's a possible deadlock.
         ThreadDumper.initialize()
+
+        // Hook for errors
+        Schedulers.onHandleError((thread, throwable) -> {
+            println "Schedulers.onHandleError caught something"
+            throwable.printStackTrace()
+            LOGGER.error("Schedulers.onHandleError caught something in {}", thread.name, throwable);
+        })
     }
 
     private InterceptorManager interceptorManager
