@@ -27,7 +27,6 @@ stages:
         - template: /eng/pipelines/templates/steps/generate-project-list-and-chache-maven-repository.yml
           parameters:
             JobType: 'Reporting'
-            SDKType: 'client'
             Artifacts:
               - name: aggregate-reports # fake artifact name
                 groupId: reports # fake group Id

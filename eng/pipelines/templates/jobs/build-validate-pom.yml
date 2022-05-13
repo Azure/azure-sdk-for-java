@@ -54,7 +54,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/generate-project-list-and-chache-maven-repository.yml
         parameters:
           JobType: 'Build and Validate'
-          SDKType: ${{ parameters.SDKType }}
           Artifacts: ${{ parameters.Artifacts }}
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
