@@ -1,6 +1,6 @@
 parameters:
   Matrix: ''
-  MaxParallel: 2
+  MaxParallel: 0
   SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
   BuildParallelization: '2C'
 
@@ -26,7 +26,7 @@ jobs:
           Paths:
             - 'sdk/spring'
             - 'sdk/boms/spring-cloud-azure-dependencies'
-            - 'eng'
+#            - 'eng'
       - script: |
           pip install termcolor
         displayName: 'python module install'
