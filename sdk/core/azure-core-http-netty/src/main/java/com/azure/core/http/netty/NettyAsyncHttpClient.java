@@ -177,9 +177,13 @@ class NettyAsyncHttpClient implements HttpClient {
             if (body != null) {
                 BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
                 if (bodyContent instanceof ByteArrayContent) {
+                    // This is marginally more performant than reactorNettyOutbound.sendByteArray which
+                    // adds extra operators to achieve same result.
+                    // The bytes are in memory at this time anyway and Unpooled.wrappedBuffer is lightweight.
                     return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(bodyContent.toBytes())));
                 } else if (bodyContent instanceof StringContent
                     || bodyContent instanceof SerializableContent) {
+                    // This defers encoding final bytes until emission happens.
                     return reactorNettyOutbound.send(
                         Mono.fromSupplier(() -> Unpooled.wrappedBuffer(bodyContent.toBytes())));
                 } else if (bodyContent instanceof FileContent) {
@@ -198,8 +202,12 @@ class NettyAsyncHttpClient implements HttpClient {
 
     private static NettyOutbound sendFile(
         HttpRequest restRequest, NettyOutbound reactorNettyOutbound, FileContent fileContent) {
+        // NettyOutbound uses such logic internally for ssl connections but with smaller buffer of 1KB.
+        // We use simplified check here to handle https instead of original check that Netty uses
+        // as other corner cases are not existent (i.e. different protocols using ssl).
+        // But in case we missed them these will be still handled by Netty's logic - they'd just use 1KB chunk
+        // and this check should be evolved when they're discovered.
         if (restRequest.getUrl().getProtocol().equals("https")) {
-            // NettyOutbound uses such logic internally for ssl connections but with smaller buffer of 1KB.
             return reactorNettyOutbound.sendUsing(
                 () -> FileChannel.open(fileContent.getFile(), StandardOpenOption.READ),
                 (c, fc) -> {
