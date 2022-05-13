@@ -1,8 +1,6 @@
 parameters:
   Matrix: ''
   MaxParallel: 0
-  PreSteps: []
-  PostSteps: []
 
 jobs:
   - job:
@@ -15,7 +13,6 @@ jobs:
     variables:
       - template: ../../eng/pipelines/templates/variables/globals.yml
 
-    - ${{ parameters.PreSteps }}
     steps:
       - script: |
           pip install termcolor
@@ -36,4 +33,3 @@ jobs:
           jdkArchitectureOption: 'x64'
           goals: 'clean test -Pdev'
 
-      - ${{ parameters.PostSteps }}
