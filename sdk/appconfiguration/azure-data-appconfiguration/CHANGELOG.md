@@ -1,6 +1,16 @@
 # Release History
 
-## 1.3.3 (2022-05-10)
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.3 (2022-05-11)
 
 ### Other Changes
 

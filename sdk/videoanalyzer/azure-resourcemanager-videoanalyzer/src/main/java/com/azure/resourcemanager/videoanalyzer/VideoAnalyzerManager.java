@@ -8,12 +8,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -61,6 +64,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Entry point to VideoAnalyzerManager. Azure Video Analyzer provides a platform for you to build intelligent video
@@ -129,6 +133,19 @@ public final class VideoAnalyzerManager {
     }
 
     /**
+     * Creates an instance of Video Analyzer service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the Video Analyzer service API instance.
+     */
+    public static VideoAnalyzerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new VideoAnalyzerManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create VideoAnalyzerManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -139,13 +156,14 @@ public final class VideoAnalyzerManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -207,15 +225,30 @@ public final class VideoAnalyzerManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -237,7 +270,7 @@ public final class VideoAnalyzerManager {
                 .append("-")
                 .append("com.azure.resourcemanager.videoanalyzer")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -255,16 +288,34 @@ public final class VideoAnalyzerManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -276,7 +327,11 @@ public final class VideoAnalyzerManager {
         }
     }
 
-    /** @return Resource collection API of EdgeModules. */
+    /**
+     * Gets the resource collection API of EdgeModules. It manages EdgeModuleEntity.
+     *
+     * @return Resource collection API of EdgeModules.
+     */
     public EdgeModules edgeModules() {
         if (this.edgeModules == null) {
             this.edgeModules = new EdgeModulesImpl(clientObject.getEdgeModules(), this);
@@ -284,7 +339,11 @@ public final class VideoAnalyzerManager {
         return edgeModules;
     }
 
-    /** @return Resource collection API of PipelineTopologies. */
+    /**
+     * Gets the resource collection API of PipelineTopologies. It manages PipelineTopology.
+     *
+     * @return Resource collection API of PipelineTopologies.
+     */
     public PipelineTopologies pipelineTopologies() {
         if (this.pipelineTopologies == null) {
             this.pipelineTopologies = new PipelineTopologiesImpl(clientObject.getPipelineTopologies(), this);
@@ -292,7 +351,11 @@ public final class VideoAnalyzerManager {
         return pipelineTopologies;
     }
 
-    /** @return Resource collection API of LivePipelines. */
+    /**
+     * Gets the resource collection API of LivePipelines. It manages LivePipeline.
+     *
+     * @return Resource collection API of LivePipelines.
+     */
     public LivePipelines livePipelines() {
         if (this.livePipelines == null) {
             this.livePipelines = new LivePipelinesImpl(clientObject.getLivePipelines(), this);
@@ -300,7 +363,11 @@ public final class VideoAnalyzerManager {
         return livePipelines;
     }
 
-    /** @return Resource collection API of PipelineJobs. */
+    /**
+     * Gets the resource collection API of PipelineJobs. It manages PipelineJob.
+     *
+     * @return Resource collection API of PipelineJobs.
+     */
     public PipelineJobs pipelineJobs() {
         if (this.pipelineJobs == null) {
             this.pipelineJobs = new PipelineJobsImpl(clientObject.getPipelineJobs(), this);
@@ -308,7 +375,11 @@ public final class VideoAnalyzerManager {
         return pipelineJobs;
     }
 
-    /** @return Resource collection API of LivePipelineOperationStatuses. */
+    /**
+     * Gets the resource collection API of LivePipelineOperationStatuses.
+     *
+     * @return Resource collection API of LivePipelineOperationStatuses.
+     */
     public LivePipelineOperationStatuses livePipelineOperationStatuses() {
         if (this.livePipelineOperationStatuses == null) {
             this.livePipelineOperationStatuses =
@@ -317,7 +388,11 @@ public final class VideoAnalyzerManager {
         return livePipelineOperationStatuses;
     }
 
-    /** @return Resource collection API of PipelineJobOperationStatuses. */
+    /**
+     * Gets the resource collection API of PipelineJobOperationStatuses.
+     *
+     * @return Resource collection API of PipelineJobOperationStatuses.
+     */
     public PipelineJobOperationStatuses pipelineJobOperationStatuses() {
         if (this.pipelineJobOperationStatuses == null) {
             this.pipelineJobOperationStatuses =
@@ -326,7 +401,11 @@ public final class VideoAnalyzerManager {
         return pipelineJobOperationStatuses;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -334,7 +413,11 @@ public final class VideoAnalyzerManager {
         return operations;
     }
 
-    /** @return Resource collection API of VideoAnalyzers. */
+    /**
+     * Gets the resource collection API of VideoAnalyzers. It manages VideoAnalyzer.
+     *
+     * @return Resource collection API of VideoAnalyzers.
+     */
     public VideoAnalyzers videoAnalyzers() {
         if (this.videoAnalyzers == null) {
             this.videoAnalyzers = new VideoAnalyzersImpl(clientObject.getVideoAnalyzers(), this);
@@ -342,7 +425,11 @@ public final class VideoAnalyzerManager {
         return videoAnalyzers;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
@@ -350,7 +437,11 @@ public final class VideoAnalyzerManager {
         return privateLinkResources;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -359,7 +450,11 @@ public final class VideoAnalyzerManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of OperationStatuses. */
+    /**
+     * Gets the resource collection API of OperationStatuses.
+     *
+     * @return Resource collection API of OperationStatuses.
+     */
     public OperationStatuses operationStatuses() {
         if (this.operationStatuses == null) {
             this.operationStatuses = new OperationStatusesImpl(clientObject.getOperationStatuses(), this);
@@ -367,7 +462,11 @@ public final class VideoAnalyzerManager {
         return operationStatuses;
     }
 
-    /** @return Resource collection API of OperationResults. */
+    /**
+     * Gets the resource collection API of OperationResults.
+     *
+     * @return Resource collection API of OperationResults.
+     */
     public OperationResults operationResults() {
         if (this.operationResults == null) {
             this.operationResults = new OperationResultsImpl(clientObject.getOperationResults(), this);
@@ -375,7 +474,11 @@ public final class VideoAnalyzerManager {
         return operationResults;
     }
 
-    /** @return Resource collection API of VideoAnalyzerOperationStatuses. */
+    /**
+     * Gets the resource collection API of VideoAnalyzerOperationStatuses.
+     *
+     * @return Resource collection API of VideoAnalyzerOperationStatuses.
+     */
     public VideoAnalyzerOperationStatuses videoAnalyzerOperationStatuses() {
         if (this.videoAnalyzerOperationStatuses == null) {
             this.videoAnalyzerOperationStatuses =
@@ -384,7 +487,11 @@ public final class VideoAnalyzerManager {
         return videoAnalyzerOperationStatuses;
     }
 
-    /** @return Resource collection API of VideoAnalyzerOperationResults. */
+    /**
+     * Gets the resource collection API of VideoAnalyzerOperationResults.
+     *
+     * @return Resource collection API of VideoAnalyzerOperationResults.
+     */
     public VideoAnalyzerOperationResults videoAnalyzerOperationResults() {
         if (this.videoAnalyzerOperationResults == null) {
             this.videoAnalyzerOperationResults =
@@ -393,7 +500,11 @@ public final class VideoAnalyzerManager {
         return videoAnalyzerOperationResults;
     }
 
-    /** @return Resource collection API of Locations. */
+    /**
+     * Gets the resource collection API of Locations.
+     *
+     * @return Resource collection API of Locations.
+     */
     public Locations locations() {
         if (this.locations == null) {
             this.locations = new LocationsImpl(clientObject.getLocations(), this);
@@ -401,7 +512,11 @@ public final class VideoAnalyzerManager {
         return locations;
     }
 
-    /** @return Resource collection API of Videos. */
+    /**
+     * Gets the resource collection API of Videos. It manages VideoEntity.
+     *
+     * @return Resource collection API of Videos.
+     */
     public Videos videos() {
         if (this.videos == null) {
             this.videos = new VideosImpl(clientObject.getVideos(), this);
@@ -409,7 +524,11 @@ public final class VideoAnalyzerManager {
         return videos;
     }
 
-    /** @return Resource collection API of AccessPolicies. */
+    /**
+     * Gets the resource collection API of AccessPolicies. It manages AccessPolicyEntity.
+     *
+     * @return Resource collection API of AccessPolicies.
+     */
     public AccessPolicies accessPolicies() {
         if (this.accessPolicies == null) {
             this.accessPolicies = new AccessPoliciesImpl(clientObject.getAccessPolicies(), this);
