@@ -27,7 +27,11 @@ public final class ProximityPlacementGroupType extends ExpandableStringEnum<Prox
         return fromString(name, ProximityPlacementGroupType.class);
     }
 
-    /** @return known ProximityPlacementGroupType values. */
+    /**
+     * Gets known ProximityPlacementGroupType values.
+     *
+     * @return known ProximityPlacementGroupType values.
+     */
     public static Collection<ProximityPlacementGroupType> values() {
         return values(ProximityPlacementGroupType.class);
     }

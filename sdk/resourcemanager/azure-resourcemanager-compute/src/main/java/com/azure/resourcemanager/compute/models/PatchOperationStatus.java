@@ -36,7 +36,11 @@ public final class PatchOperationStatus extends ExpandableStringEnum<PatchOperat
         return fromString(name, PatchOperationStatus.class);
     }
 
-    /** @return known PatchOperationStatus values. */
+    /**
+     * Gets known PatchOperationStatus values.
+     *
+     * @return known PatchOperationStatus values.
+     */
     public static Collection<PatchOperationStatus> values() {
         return values(PatchOperationStatus.class);
     }
