@@ -10,9 +10,6 @@ stages:
     - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
         SparseCheckout: true
-        SparseCheckoutPaths:
-          - 'sdk/spring'
-          - 'eng'
         JobTemplatePath: ../../../../../sdk/spring/compatibility-tests-job.yml
 #        JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
         AdditionalParameters:

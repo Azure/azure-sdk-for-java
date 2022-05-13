@@ -21,6 +21,11 @@ jobs:
       - template: ../../eng/pipelines/templates/variables/globals.yml
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/spring'
+            - 'eng'
       - script: |
           pip install termcolor
         displayName: 'python module install'
