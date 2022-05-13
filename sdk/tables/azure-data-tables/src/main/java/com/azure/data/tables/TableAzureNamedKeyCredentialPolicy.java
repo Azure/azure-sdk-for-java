@@ -13,10 +13,7 @@ import com.azure.core.util.Header;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Locale;
 import java.util.Map;
 
 import static com.azure.data.tables.implementation.TableSasUtils.computeHmac256;
@@ -64,10 +61,10 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      * @return The auth header
      */
     String generateAuthorizationHeader(URL requestUrl, HttpHeaders headers) {
-        String signature =
-            computeHmac256(credential.getAzureNamedKey().getKey(), buildStringToSign(requestUrl, headers));
+        String signature = computeHmac256(this.credential.getAzureNamedKey().getKey(),
+            buildStringToSign(requestUrl, headers, this.credential));
 
-        return String.format(AUTHORIZATION_HEADER_FORMAT, credential.getAzureNamedKey().getName(), signature);
+        return String.format(AUTHORIZATION_HEADER_FORMAT, this.credential.getAzureNamedKey().getName(), signature);
     }
 
     /**
@@ -78,13 +75,13 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      *
      * @return A string to sign for the request.
      */
-    private String buildStringToSign(URL requestUrl, HttpHeaders headers) {
+    private static String buildStringToSign(URL requestUrl, HttpHeaders headers, AzureNamedKeyCredential credential) {
         // If the x-ms-header exists ignore the Date header.
         String dateHeader = headers.get("x-ms-date") != null
             ? ""
-            : this.getStandardHeaderValue(headers, "Date");
+            : getStandardHeaderValue(headers, "Date");
 
-        return String.join("\n", dateHeader, getCanonicalizedResource(requestUrl));
+        return String.join("\n", dateHeader, getCanonicalizedResource(requestUrl, credential));
     }
 
     /**
@@ -95,7 +92,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      *
      * @return The standard header for the given name.
      */
-    private String getStandardHeaderValue(HttpHeaders headers, String headerName) {
+    private static String getStandardHeaderValue(HttpHeaders headers, String headerName) {
         final Header header = headers.get(headerName);
 
         return header == null ? "" : header.getValue();
@@ -109,7 +106,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      *
      * @return The string that is the canonicalized resource.
      */
-    private String getCanonicalizedResource(URL requestUrl) {
+    private static String getCanonicalizedResource(URL requestUrl, AzureNamedKeyCredential credential) {
         StringBuilder canonicalizedResource = new StringBuilder("/").append(credential.getAzureNamedKey().getName());
 
         if (requestUrl.getPath().length() > 0) {
@@ -120,23 +117,12 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
 
         if (requestUrl.getQuery() != null) {
             Map<String, String[]> queryParams = parseQueryStringSplitValues(requestUrl.getQuery());
-            ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
+            String[] queryParamValues = queryParams.get("comp");
 
-            Collections.sort(queryParamNames);
-
-            for (String queryParamName : queryParamNames) {
-                String[] queryParamValues = queryParams.get(queryParamName);
-
+            if (queryParamValues != null) {
                 Arrays.sort(queryParamValues);
-
-                String queryParamValuesStr = String.join(",", queryParamValues);
-
-                if ("comp".equalsIgnoreCase(queryParamName)) {
-                    canonicalizedResource.append("?")
-                        .append(queryParamName.toLowerCase(Locale.ROOT))
-                        .append("=")
-                        .append(queryParamValuesStr);
-                }
+                canonicalizedResource.append("?comp=")
+                    .append(String.join(",", queryParamValues));
             }
         }
 
