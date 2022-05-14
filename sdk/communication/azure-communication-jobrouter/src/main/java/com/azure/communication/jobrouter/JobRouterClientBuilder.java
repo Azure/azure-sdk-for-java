@@ -1,6 +1,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImplBuilder;
 import com.azure.communication.jobrouter.implementation.utils.BuilderHelper;
@@ -8,6 +9,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -19,6 +21,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +33,7 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
 
     private String endpoint;
     private HttpClient httpClient;
-    private TokenCredential communicationTokenCredential;
+    private AzureKeyCredential credential;
     private HttpPipeline httpPipeline;
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private RetryPolicy retryPolicy;
@@ -91,18 +94,20 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      */
     public JobRouterClientBuilder connectionString(String connectionString) {
         this.connectionString = new CommunicationConnectionString(connectionString);
+        this.credential(new AzureKeyCredential(this.connectionString.getAccessKey()));
+        this.endpoint(this.connectionString.getEndpoint());
         return this;
     }
 
     /**
-     * Set a token credential for authorization
+     * Set a key credential for authorization
      *
-     * @param communicationTokenCredential valid token credential as a string
+     * @param credential valid credential as a string
      * @return the updated ChatClientBuilder object
      */
-    public JobRouterClientBuilder credential(TokenCredential communicationTokenCredential) {
-        this.communicationTokenCredential = Objects.requireNonNull(
-            communicationTokenCredential, "'communicationTokenCredential' cannot be null.");
+    public JobRouterClientBuilder credential(AzureKeyCredential credential) {
+        this.credential = Objects.requireNonNull(
+            credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -257,19 +262,12 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
     }
 
     private AzureCommunicationRoutingServiceImpl createInternalClient() {
-        endpoint = Objects.requireNonNullElse(endpoint, connectionString.getEndpoint());
-
         HttpPipeline pipeline;
         if (httpPipeline != null) {
             pipeline = httpPipeline;
         } else {
-            communicationTokenCredential = Objects.requireNonNullElse(communicationTokenCredential,
-                new AccessKeyTokenCredential(connectionString.getAccessKey()));
-
             pipeline = BuilderHelper.buildPipeline(
-                communicationTokenCredential,
-                null,
-                null,
+                new HmacAuthenticationPolicy(credential),
                 Objects.requireNonNullElse(retryOptions, new RetryOptions(new FixedDelayOptions(3, Duration.ofMillis(5)))),
                 Objects.requireNonNullElse(logOptions, new HttpLogOptions()),
                 Objects.requireNonNullElse(clientOptions, new ClientOptions()),

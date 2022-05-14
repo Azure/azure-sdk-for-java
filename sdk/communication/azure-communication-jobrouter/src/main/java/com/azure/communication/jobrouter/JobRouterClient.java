@@ -5,6 +5,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -48,7 +49,22 @@ public class JobRouterClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
-        return this.client.upsertDistributionPolicyWithResponse(id, distributionPolicy).block();
+    public Response<DistributionPolicy> upsertDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+        return this.upsertDistributionPolicyWithResponse(id, distributionPolicy, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
+        return this.client.upsertDistributionPolicyWithResponse(id, distributionPolicy, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDistributionPolicy(String id) {
+        return this.deleteDistributionPolicyWithResponse(id, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDistributionPolicyWithResponse(String id, Context context) {
+        return this.client.deleteDistributionPolicyWithResponse(id, context).block();
     }
 }
