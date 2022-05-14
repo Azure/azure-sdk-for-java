@@ -30,7 +30,11 @@ public final class HiveServerType extends ExpandableStringEnum<HiveServerType> {
         return fromString(name, HiveServerType.class);
     }
 
-    /** @return known HiveServerType values. */
+    /**
+     * Gets known HiveServerType values.
+     *
+     * @return known HiveServerType values.
+     */
     public static Collection<HiveServerType> values() {
         return values(HiveServerType.class);
     }

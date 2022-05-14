@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerRefreshOperationResultsClient;
 import reactor.core.publisher.Mono;
 
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
  */
 public final class ProtectionContainerRefreshOperationResultsClientImpl
     implements ProtectionContainerRefreshOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionContainerRefreshOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionContainerRefreshOperationResultsService service;
 

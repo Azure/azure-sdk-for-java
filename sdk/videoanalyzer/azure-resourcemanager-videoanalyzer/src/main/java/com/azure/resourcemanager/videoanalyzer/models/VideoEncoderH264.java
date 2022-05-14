@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.VideoEncoderH264")
 @Fluent
 public final class VideoEncoderH264 extends VideoEncoderBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoEncoderH264.class);
-
     /** {@inheritDoc} */
     @Override
     public VideoEncoderH264 withBitrateKbps(String bitrateKbps) {

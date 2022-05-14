@@ -7,15 +7,12 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of SparkConfiguration resources. */
 @Fluent
 public final class SparkConfigurationListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkConfigurationListResponse.class);
-
     /*
      * List of SparkConfiguration.
      */
@@ -75,7 +72,7 @@ public final class SparkConfigurationListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model SparkConfigurationListResponse"));
@@ -83,4 +80,6 @@ public final class SparkConfigurationListResponse {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SparkConfigurationListResponse.class);
 }

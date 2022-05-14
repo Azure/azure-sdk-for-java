@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -207,5 +209,34 @@ public class AppendBlobClientJavaDocCodeSnippets {
         client.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(requestConditions), timeout, context);
         System.out.println("Sealed AppendBlob");
         // END: com.azure.storage.blob.specialized.AppendBlobClient.sealWithResponse#AppendBlobSealOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobClient#createIfNotExists()} and
+     * {@link AppendBlobClient#createIfNotExistsWithResponse(AppendBlobCreateOptions, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists
+        client.createIfNotExists();
+        System.out.println("Created AppendBlob");
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tags", "value");
+        Context context = new Context("key", "value");
+
+        Response<AppendBlobItem> response = client.createIfNotExistsWithResponse(new AppendBlobCreateOptions()
+            .setHeaders(headers).setMetadata(metadata).setTags(tags), timeout, context);
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context
+
     }
 }

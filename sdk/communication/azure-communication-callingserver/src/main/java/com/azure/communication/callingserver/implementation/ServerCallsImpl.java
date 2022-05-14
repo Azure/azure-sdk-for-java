@@ -59,7 +59,7 @@ public final class ServerCallsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCa")
-    private interface ServerCallsService {
+    public interface ServerCallsService {
         @Post("/calling/serverCalls/{serverCallId}/participants")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

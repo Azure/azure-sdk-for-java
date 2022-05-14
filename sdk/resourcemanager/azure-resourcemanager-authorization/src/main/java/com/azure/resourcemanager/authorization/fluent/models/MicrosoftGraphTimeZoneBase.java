@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** timeZoneBase. */
 @Fluent
 public final class MicrosoftGraphTimeZoneBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTimeZoneBase.class);
-
     /*
      * The name of a time zone. It can be a standard time zone name such as
      * 'Hawaii-Aleutian Standard Time', or 'Customized Time Zone' for a custom

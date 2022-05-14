@@ -13,12 +13,10 @@ import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerRecover
 import com.azure.resourcemanager.synapse.fluent.models.RecoverableSqlPoolInner;
 import com.azure.resourcemanager.synapse.models.RecoverableSqlPool;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerRecoverableSqlPools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsImpl
     implements WorkspaceManagedSqlServerRecoverableSqlPools {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerRecoverableSqlPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceManagedSqlServerRecoverableSqlPoolsImpl.class);
 
     private final WorkspaceManagedSqlServerRecoverableSqlPoolsClient innerClient;
 

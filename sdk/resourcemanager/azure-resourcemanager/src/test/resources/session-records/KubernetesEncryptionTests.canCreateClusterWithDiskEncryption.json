@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Administrator%27&api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Administrator%27&api-version=2015-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "64ffcd18-b6ca-47a7-a1e4-bc591c84033d",
@@ -161,7 +161,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleAssignments/a588287c-3884-45a8-b6a9-fe2f963ea059?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleAssignments/a588287c-3884-45a8-b6a9-fe2f963ea059?api-version=2020-10-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "49100abf-dd05-40b8-b709-fd342ebd8e8a",
@@ -308,7 +308,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Key%20Vault%20Crypto%20Service%20Encryption%20User%27&api-version=2015-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "9b9e9a01-a12c-4720-8713-8aacf775f0d1",
@@ -335,7 +335,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleAssignments/dfc61998-210b-48f3-801d-7340ad8e5827?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.KeyVault/vaults/kv18381/providers/Microsoft.Authorization/roleAssignments/dfc61998-210b-48f3-801d-7340ad8e5827?api-version=2020-10-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "69e85b52-4ceb-449f-937e-dd91bce03943",
@@ -388,7 +388,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.ContainerService/managedClusters/aks82992887?api-version=2022-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.ContainerService/managedClusters/aks82992887?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "1636af44-3b9e-4d2c-963c-82ce43bda454",
@@ -884,7 +884,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.ContainerService/managedClusters/aks82992887?api-version=2022-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg52580/providers/Microsoft.ContainerService/managedClusters/aks82992887?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "7874e591-d9d6-4c11-b77d-8a56d2f1a002"

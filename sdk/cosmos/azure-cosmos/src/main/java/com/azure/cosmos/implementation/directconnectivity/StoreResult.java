@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
@@ -33,6 +34,7 @@ public class StoreResult {
     final public long numberOfReadRegions;
     final public long itemLSN;
     final public ISessionToken sessionToken;
+    final public String sessionTokenAsString;
     final public double requestCharge;
     final public String activityId;
     final public String correlatedActivityId;
@@ -43,6 +45,7 @@ public class StoreResult {
     final public boolean isNotFoundException;
     final public boolean isInvalidPartitionException;
     final public Uri storePhysicalAddress;
+    final public String storePhysicalAddressAsString;
     final public boolean isThroughputControlRequestRateTooLargeException;
     final public Double backendLatencyInMs;
 
@@ -80,10 +83,12 @@ public class StoreResult {
         this.isInvalidPartitionException = this.exception != null
                 && Exceptions.isNameCacheStale(this.exception);
         this.storePhysicalAddress = storePhysicalAddress;
+        this.storePhysicalAddressAsString = storePhysicalAddress != null ? storePhysicalAddress.getURIAsString() : null;
         this.globalCommittedLSN = globalCommittedLSN;
         this.numberOfReadRegions = numberOfReadRegions;
         this.itemLSN = itemLSN;
         this.sessionToken = sessionToken;
+        this.sessionTokenAsString = sessionToken != null ? sessionToken.convertToString() : null;
         this.isThroughputControlRequestRateTooLargeException = this.exception != null && Exceptions.isThroughputControlRequestRateTooLargeException(this.exception);
         this.backendLatencyInMs = backendLatencyInMs;
     }
@@ -155,7 +160,7 @@ public class StoreResult {
             subStatusCode = this.exception.getSubStatusCode();
         }
 
-        return "storePhysicalAddress: " + this.storePhysicalAddress +
+        return "storePhysicalAddress: " + this.storePhysicalAddressAsString +
                 ", lsn: " + this.lsn +
                 ", globalCommittedLsn: " + this.globalCommittedLSN +
                 ", partitionKeyRangeId: " + this.partitionKeyRangeId +
@@ -168,10 +173,23 @@ public class StoreResult {
                 ", isInvalidPartition: " + this.isInvalidPartitionException +
                 ", requestCharge: " + this.requestCharge +
                 ", itemLSN: " + this.itemLSN +
-                ", sessionToken: " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
+                ", sessionToken: " + this.sessionTokenAsString +
                 ", backendLatencyInMs: " + this.backendLatencyInMs +
                 ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
     }
+
+    /**
+     * Static factory method to create serializable store result to be used in CosmosDiagnostics
+     * @param storeResult store result
+     * @return serializable store result
+     */
+    public static StoreResult createSerializableStoreResult(StoreResult storeResult) {
+        if (storeResult == null) {
+            return null;
+        }
+        return new StoreResult(storeResult);
+    }
+
     public static class StoreResultSerializer extends StdSerializer<StoreResult> {
         private static final long serialVersionUID = 5315472126043077905L;
 
@@ -194,8 +212,7 @@ public class StoreResult {
                 subStatusCode = storeResult.exception.getSubStatusCode();
             }
             jsonGenerator.writeStartObject();
-            jsonGenerator.writeObjectField("storePhysicalAddress", storeResult.storePhysicalAddress == null ? null :
-                storeResult.storePhysicalAddress.getURIAsString());
+            jsonGenerator.writeObjectField("storePhysicalAddress", storeResult.storePhysicalAddressAsString);
             jsonGenerator.writeNumberField("lsn", storeResult.lsn);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResult.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResult.partitionKeyRangeId);
@@ -208,7 +225,7 @@ public class StoreResult {
             jsonGenerator.writeBooleanField("isThroughputControlRequestRateTooLarge", storeResult.isThroughputControlRequestRateTooLargeException);
             jsonGenerator.writeNumberField("requestCharge", storeResult.requestCharge);
             jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
-            jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));
+            jsonGenerator.writeStringField("sessionToken", storeResult.sessionTokenAsString);
             jsonGenerator.writeObjectField("backendLatencyInMs", storeResult.backendLatencyInMs);
             jsonGenerator.writeStringField("exception", BridgeInternal.getInnerErrorMessage(storeResult.exception));
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
@@ -246,5 +263,41 @@ public class StoreResult {
 
              jsonGenerator.writeObjectField(fieldName, object);
         }
+    }
+
+    /**
+     * Private copy constructor, only to be used internally for serialization purposes
+     * <p>
+     * NOTE: This constructor does not copy all the fields to avoid memory issues.
+     */
+    private StoreResult(StoreResult storeResult) {
+        this.storeResponse = StoreResponse.createSerializableStoreResponse(storeResult.storeResponse);
+        this.exception = ImplementationBridgeHelpers
+            .CosmosExceptionHelper
+            .getCosmosExceptionAccessor()
+            .createSerializableCosmosException(storeResult.exception);
+        this.lsn = storeResult.lsn;
+        this.partitionKeyRangeId = storeResult.partitionKeyRangeId;
+        this.quorumAckedLSN = storeResult.quorumAckedLSN;
+        this.globalCommittedLSN = storeResult.globalCommittedLSN;
+        this.numberOfReadRegions = storeResult.numberOfReadRegions;
+        this.itemLSN = storeResult.itemLSN;
+        //  Just saving the string representation and nulling out the ISessionToken
+        this.sessionToken = null;
+        this.sessionTokenAsString = storeResult.sessionTokenAsString;
+        this.requestCharge = storeResult.requestCharge;
+        this.activityId = storeResult.activityId;
+        this.correlatedActivityId = storeResult.correlatedActivityId;
+        this.currentReplicaSetSize = storeResult.currentReplicaSetSize;
+        this.currentWriteQuorum = storeResult.currentWriteQuorum;
+        this.isValid = storeResult.isValid;
+        this.isGoneException = storeResult.isGoneException;
+        this.isNotFoundException = storeResult.isNotFoundException;
+        this.isInvalidPartitionException = storeResult.isInvalidPartitionException;
+        //  Just saving the string representation and nulling out the URI
+        this.storePhysicalAddress = null;
+        this.storePhysicalAddressAsString = storeResult.storePhysicalAddressAsString;
+        this.isThroughputControlRequestRateTooLargeException = storeResult.isThroughputControlRequestRateTooLargeException;
+        this.backendLatencyInMs = storeResult.backendLatencyInMs;
     }
 }

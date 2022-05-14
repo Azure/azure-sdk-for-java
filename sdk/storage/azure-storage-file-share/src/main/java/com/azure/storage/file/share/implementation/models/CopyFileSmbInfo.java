@@ -38,6 +38,14 @@ public final class CopyFileSmbInfo {
     private String fileLastWriteTime;
 
     /*
+     * Specifies either the option to copy file last write time from a source
+     * file(source) to a target file or a time value in ISO 8601 format to set
+     * as last write time on a target file.
+     */
+    @JsonProperty(value = "fileChangeTime")
+    private String fileChangeTime;
+
+    /*
      * Specifies the option to copy file security descriptor from source file
      * or to set it using the value which is defined by the header value of
      * x-ms-file-permission or x-ms-file-permission-key.
@@ -123,6 +131,28 @@ public final class CopyFileSmbInfo {
      */
     public CopyFileSmbInfo setFileLastWriteTime(String fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
+        return this;
+    }
+
+    /**
+     * Get the fileChangeTime property: Specifies either the option to copy file last write time from a source
+     * file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
+     *
+     * @return the fileChangeTime value.
+     */
+    public String getFileChangeTime() {
+        return this.fileChangeTime;
+    }
+
+    /**
+     * Set the fileChangeTime property: Specifies either the option to copy file last write time from a source
+     * file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
+     *
+     * @param fileChangeTime the fileChangeTime value to set.
+     * @return the CopyFileSmbInfo object itself.
+     */
+    public CopyFileSmbInfo setFileChangeTime(String fileChangeTime) {
+        this.fileChangeTime = fileChangeTime;
         return this;
     }
 

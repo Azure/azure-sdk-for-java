@@ -5,9 +5,10 @@ java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.catalog
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-low-level-client: true
+data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 title: PurviewCatalogClient

@@ -27,7 +27,11 @@ public final class IntegrationRuntimeType extends ExpandableStringEnum<Integrati
         return fromString(name, IntegrationRuntimeType.class);
     }
 
-    /** @return known IntegrationRuntimeType values. */
+    /**
+     * Gets known IntegrationRuntimeType values.
+     *
+     * @return known IntegrationRuntimeType values.
+     */
     public static Collection<IntegrationRuntimeType> values() {
         return values(IntegrationRuntimeType.class);
     }

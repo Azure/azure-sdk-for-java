@@ -166,11 +166,9 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
             httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
             return;
         } catch (MalformedURLException | ParseException | JOSEException | BadJOSEException ex) {
-            LOGGER.error("Failed to initialize UserPrincipal.", ex);
-            throw new ServletException(ex);
+            throw new ServletException("Failed to initialize UserPrincipal.", ex);
         } catch (ServiceUnavailableException ex) {
-            LOGGER.error("Failed to acquire graph api token.", ex);
-            throw new ServletException(ex);
+            throw new ServletException("Failed to acquire graph api token.", ex);
         } catch (MsalServiceException ex) {
             // Handle conditional access policy, step 2.
             // No step 3 any more, because ServletException will not be caught.

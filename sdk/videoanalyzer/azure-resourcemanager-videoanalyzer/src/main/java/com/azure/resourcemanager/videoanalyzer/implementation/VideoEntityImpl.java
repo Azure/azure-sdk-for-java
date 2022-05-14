@@ -65,6 +65,10 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
         return this.innerModel().archival();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VideoEntityInner innerModel() {
         return this.innerObject;
     }

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The parameters to provide for the Facebook channel. */
 @Fluent
 public final class FacebookChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FacebookChannelProperties.class);
-
     /*
      * Verify token. Value only returned through POST to the action Channel
      * List API, otherwise empty.
@@ -164,9 +161,11 @@ public final class FacebookChannelProperties {
             pages().forEach(e -> e.validate());
         }
         if (appId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property appId in model FacebookChannelProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FacebookChannelProperties.class);
 }

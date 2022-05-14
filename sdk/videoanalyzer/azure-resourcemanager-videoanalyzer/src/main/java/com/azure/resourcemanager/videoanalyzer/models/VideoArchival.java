@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Video archival properties. */
 @Fluent
 public final class VideoArchival {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoArchival.class);
-
     /*
      * Video retention period indicates the maximum age of the video archive
      * segments which are intended to be kept in storage. It must be provided

@@ -42,7 +42,11 @@ public final class WorkloadItemType extends ExpandableStringEnum<WorkloadItemTyp
         return fromString(name, WorkloadItemType.class);
     }
 
-    /** @return known WorkloadItemType values. */
+    /**
+     * Gets known WorkloadItemType values.
+     *
+     * @return known WorkloadItemType values.
+     */
     public static Collection<WorkloadItemType> values() {
         return values(WorkloadItemType.class);
     }

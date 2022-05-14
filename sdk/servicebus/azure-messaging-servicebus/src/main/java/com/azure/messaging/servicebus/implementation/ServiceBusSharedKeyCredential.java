@@ -49,7 +49,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusSharedKeyCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSharedKeyCredential.class);
 
     private final String policyName;
     private final Mac hmac;
@@ -103,7 +103,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
         try {
             hmac = Mac.getInstance(HASH_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                 String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
         }
 
@@ -112,7 +112,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
         try {
             hmac.init(finalKey);
         } catch (InvalidKeyException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
         }
         this.sharedAccessSignature = null;
@@ -149,7 +149,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (request.getScopes().size() != 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'scopes' should only contain a single argument that is the token audience or resource name."));
         }
 
@@ -158,7 +158,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
         if (CoreUtils.isNullOrEmpty(resource)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
         }
 
         if (sharedAccessSignature != null) {
@@ -195,7 +195,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
                     long epochSeconds = Long.parseLong(expirationTimeStr);
                     return Instant.ofEpochSecond(epochSeconds).atOffset(ZoneOffset.UTC);
                 } catch (NumberFormatException exception) {
-                    logger.verbose("Invalid expiration time format in the SAS token: {}. Falling back to max "
+                    LOGGER.verbose("Invalid expiration time format in the SAS token: {}. Falling back to max "
                         + "expiration time.", expirationTimeStr);
                     return OffsetDateTime.MAX;
                 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Disk information. */
 @Fluent
 public final class DiskInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskInformation.class);
-
     /*
      * The lun property.
      */

@@ -193,18 +193,13 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
 
             if (annotatedMethods.isEmpty()) {
                 this.nonAnnotatedClasses.add(targetClass);
-                if (LOGGER.isTraceEnabled()) {
-                    LOGGER.trace("No @AzureMessageListener annotations found on bean type: " + targetClass);
-                }
+                LOGGER.trace("No @AzureMessageListener annotations found on bean type: {}", targetClass);
             } else {
                 // Non-empty set of methods
                 annotatedMethods.forEach((method, listeners) -> listeners
                     .forEach(listener -> processAzureListener(listener, method, bean)));
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(
-                        annotatedMethods.size() + " @AzureMessageListener methods processed on bean '" + beanName
-                            + "': " + annotatedMethods);
-                }
+                LOGGER.debug("{} @AzureMessageListener methods processed on bean '{}': {}", annotatedMethods.size(),
+                    beanName, annotatedMethods);
             }
         }
         return bean;
@@ -227,16 +222,16 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
             invocableMethod, beanFactory, messageHandlerMethodFactory);
 
         MessageListenerContainerFactory<?> factory = null;
-        String containerFactoryBeanName = resolve(getContainerFactoryBeanName(listenerAnnotation));
-        if (StringUtils.hasText(containerFactoryBeanName)) {
+        String containerFactoryBeanNameResolved = resolve(getContainerFactoryBeanName(listenerAnnotation));
+        if (StringUtils.hasText(containerFactoryBeanNameResolved)) {
             Assert.state(this.beanFactory != null, "BeanFactory must be set to obtain container factory by bean name");
             try {
-                factory = this.beanFactory.getBean(containerFactoryBeanName, MessageListenerContainerFactory.class);
+                factory = this.beanFactory.getBean(containerFactoryBeanNameResolved, MessageListenerContainerFactory.class);
             } catch (NoSuchBeanDefinitionException ex) {
                 throw new BeanInitializationException(
                     "Could not register Azure listener endpoint on [" + mostSpecificMethod + "], no "
                         + MessageListenerContainerFactory.class.getSimpleName() + " with id '"
-                        + containerFactoryBeanName + "' was found in the application context", ex);
+                        + containerFactoryBeanNameResolved + "' was found in the application context", ex);
             }
         }
 

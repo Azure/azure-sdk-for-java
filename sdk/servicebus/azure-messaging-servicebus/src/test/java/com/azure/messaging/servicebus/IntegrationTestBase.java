@@ -21,6 +21,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderCl
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -61,6 +62,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected final ClientLogger logger;
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
+    private static final Configuration GLOBAL_CONFIGURATION = TestUtils.getGlobalConfiguration();
 
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
@@ -165,7 +167,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * Gets the configured ProxyConfiguration from environment variables.
      */
     public ProxyOptions getProxyConfiguration() {
-        final String address = System.getenv(Configuration.PROPERTY_HTTP_PROXY);
+        final String address = GLOBAL_CONFIGURATION.get(Configuration.PROPERTY_HTTP_PROXY);
 
         if (address == null) {
             return null;
@@ -182,15 +184,15 @@ public abstract class IntegrationTestBase extends TestBase {
         final int port = Integer.parseInt(host[1]);
         final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostname, port));
 
-        final String username = System.getenv(PROXY_USERNAME);
+        final String username = GLOBAL_CONFIGURATION.get(PROXY_USERNAME);
 
         if (username == null) {
             logger.info("Environment variable '{}' is not set. No authentication used.");
             return new ProxyOptions(ProxyAuthenticationType.NONE, proxy, null, null);
         }
 
-        final String password = System.getenv(PROXY_PASSWORD);
-        final String authentication = System.getenv(PROXY_AUTHENTICATION_TYPE);
+        final String password = GLOBAL_CONFIGURATION.get(PROXY_PASSWORD);
+        final String authentication = GLOBAL_CONFIGURATION.get(PROXY_AUTHENTICATION_TYPE);
 
         final ProxyAuthenticationType authenticationType = CoreUtils.isNullOrEmpty(authentication)
             ? ProxyAuthenticationType.NONE
@@ -227,9 +229,9 @@ public abstract class IntegrationTestBase extends TestBase {
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(System.getenv("AZURE_CLIENT_ID"))
-                .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-                .tenantId(System.getenv("AZURE_TENANT_ID"))
+                .clientId(TestUtils.getPropertyValue("AZURE_CLIENT_ID"))
+                .clientSecret(TestUtils.getPropertyValue("AZURE_CLIENT_SECRET"))
+                .tenantId(TestUtils.getPropertyValue("AZURE_TENANT_ID"))
                 .build();
 
             return builder.credential(fullyQualifiedDomainName, clientSecretCredential);
@@ -267,14 +269,15 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String queueName = getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                return builder.receiver().queueName(queueName);
+                return builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK).queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return builder.receiver().topicName(topicName).subscriptionName(subscriptionName);
+                return builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                    .topicName(topicName).subscriptionName(subscriptionName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
@@ -292,6 +295,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(queueName, "'queueName' cannot be null.");
                 return builder
                     .sessionReceiver()
+                    .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                     .queueName(queueName);
 
             case SUBSCRIPTION:
@@ -300,6 +304,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
                 return builder.sessionReceiver()
+                    .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
@@ -369,13 +374,15 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
-        logger.verbose("Message id '{}'.", messageId);
+        message.setMessageId(messageId);
+        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
-        logger.verbose("Message id '{}'.", messageId);
+        message.setMessageId(messageId);
+        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
@@ -386,15 +393,16 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
+        assertNotNull(message, "'message' cannot be null.");
         assertArrayEquals(CONTENTS_BYTES, message.getBody().toBytes());
 
         // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
         // the queue or topic contains messages from previous test cases.
-        assertNotNull(message.getMessageId());
+        assertNotNull(message.getMessageId(), "'messageId' cannot be null.");
         //assertEquals(messageId, message.getMessageId());
 
         if (isSessionEnabled) {
-            assertNotNull(message.getSessionId());
+            assertNotNull(message.getSessionId(), "'sessionId' cannot be null.");
             // Disabling session ID exact match assertion. Since we do multiple operations on the same queue/topic, it's possible
             // the queue or topic contains messages from previous test cases.
             // assertEquals(sessionId, message.getSessionId());

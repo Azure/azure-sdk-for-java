@@ -61,7 +61,7 @@ public final class RoleAssignmentsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AccessControlClientR")
-    private interface RoleAssignmentsService {
+    public interface RoleAssignmentsService {
         @Post("/checkAccessSynapseRbac")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
