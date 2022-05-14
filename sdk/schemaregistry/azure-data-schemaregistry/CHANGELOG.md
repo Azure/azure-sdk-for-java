@@ -7,6 +7,13 @@
 - Added `SchemaProperties.getGroupName()`.
 - Added `SchemaProperties.getName()`.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.28.0`.
+- Update `azure-core-http-netty` dependency to `1.12.0`.
+
 ## 1.1.1 (2022-04-07)
 
 ### Other Changes
