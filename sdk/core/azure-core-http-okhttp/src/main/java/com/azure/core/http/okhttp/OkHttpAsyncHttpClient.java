@@ -18,6 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import okio.BufferedSink;
 import okio.ByteString;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -111,16 +112,49 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @return the Mono emitting okhttp3.RequestBody
      */
     private static Mono<RequestBody> toOkHttpRequestBody(Flux<ByteBuffer> bbFlux, HttpHeaders headers) {
-        Mono<okio.ByteString> bsMono = bbFlux == null
-            ? EMPTY_BYTE_STRING_MONO
-            : toByteString(bbFlux);
+        Long contentLength = null; // content.getLength();
+        if (contentLength == null) {
+            String contentLengthHeaderValue = headers.getValue("Content-Length");
+            if (contentLengthHeaderValue != null) {
+                contentLength = Long.parseLong(contentLengthHeaderValue);
+            } else {
+                contentLength = -1L;
+            }
+        }
+        long effectiveContentLength = contentLength;
 
-        return bsMono.map(bs -> {
-            String contentType = headers.getValue("Content-Type");
-            MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
+        String contentType = headers.getValue("Content-Type");
+        MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
-            return RequestBody.create(bs, mediaType);
-        });
+        RequestBody requestBody = new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                return mediaType;
+            }
+
+            @Override
+            public long contentLength() {
+                return effectiveContentLength;
+            }
+
+            @Override
+            public void writeTo(BufferedSink bufferedSink) throws IOException {
+                // This call happens on OkHttp thread pool.
+                bbFlux.flatMapSequential(buffer -> {
+                    try {
+                        while (buffer.hasRemaining()) {
+                            // This call happens on OkHttp thread pool as well.
+                            bufferedSink.write(buffer);
+                        }
+                        return Mono.empty();
+                    } catch (IOException e) {
+                        return Mono.error(e);
+                    }
+                }).then().block();
+            }
+        };
+
+        return Mono.just(requestBody);
     }
 
     /**
