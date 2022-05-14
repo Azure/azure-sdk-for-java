@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -109,6 +110,37 @@ public final class PathsUpdateHeaders {
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PathsUpdateHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PathsUpdateHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.contentRange = rawHeaders.getValue("Content-Range");
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        this.xMsProperties = rawHeaders.getValue("x-ms-properties");
+        this.xMsContinuation = rawHeaders.getValue("x-ms-continuation");
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        this.contentMD5 = rawHeaders.getValue("Content-MD5");
+        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
+        this.cacheControl = rawHeaders.getValue("Cache-Control");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+        if (rawHeaders.getValue("Content-Length") != null) {
+            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentLanguage = rawHeaders.getValue("Content-Language");
+        this.contentType = rawHeaders.getValue("Content-Type");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
