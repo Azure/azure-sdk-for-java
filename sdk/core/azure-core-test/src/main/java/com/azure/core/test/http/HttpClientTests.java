@@ -31,6 +31,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -239,7 +240,18 @@ public abstract class HttpClientTests {
                             ByteBuffer.wrap(
                                 bytes, startIndex, Math.min(bytes.length - startIndex, bufferSize)));
                     }
-                    BinaryData fluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList),
+                    BinaryData fluxBinaryData = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate),
+                        null, false).block();
+
+                    BinaryData asyncFluxBinaryData = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate)
+                            .delayElements(Duration.ofNanos(10))
+                            .flatMapSequential(
+                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
+                            ),
                         null, false).block();
 
                     BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
@@ -258,6 +270,7 @@ public abstract class HttpClientTests {
                         Arguments.of(Named.named("InputStream",
                             streamData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("Flux", fluxBinaryData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("Object", objectBinaryData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("File", fileData), Named.named("" + size, bytes))
                     );
