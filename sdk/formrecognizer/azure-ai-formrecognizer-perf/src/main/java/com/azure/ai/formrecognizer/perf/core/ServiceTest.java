@@ -12,6 +12,7 @@ import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -56,6 +57,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(formrecognizerEndpoint)
+            .audience(FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(new AzureKeyCredential(formrecognizerApiKey));
 
         this.documentModelAdministrationClient = builder.buildClient();

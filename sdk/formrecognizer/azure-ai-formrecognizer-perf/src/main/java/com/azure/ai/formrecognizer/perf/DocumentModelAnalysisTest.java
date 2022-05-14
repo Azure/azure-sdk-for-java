@@ -24,6 +24,7 @@ public class DocumentModelAnalysisTest extends ServiceTest<PerfStressOptions> {
      */
     public DocumentModelAnalysisTest(PerfStressOptions options) {
         super(options);
+        this.modelId = "prebuilt-receipt";
     }
 
     @Override

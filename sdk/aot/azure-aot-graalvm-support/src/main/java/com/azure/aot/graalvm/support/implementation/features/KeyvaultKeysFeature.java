@@ -21,7 +21,7 @@ public class KeyvaultKeysFeature implements GraalVMFeature {
     @Override
     public Set<String[]> getDynamicProxies() {
         return setsOf(
-            interfaces("com.azure.security.keyvault.keys.KeyService")
+            interfaces("com.azure.security.keyvault.keys.implementation.KeyService")
         );
     }
 }
