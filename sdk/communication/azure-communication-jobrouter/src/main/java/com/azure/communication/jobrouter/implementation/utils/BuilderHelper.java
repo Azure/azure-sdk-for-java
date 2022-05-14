@@ -52,14 +52,11 @@ public final class BuilderHelper {
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(
-        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken,
+        HttpPipelinePolicy credentialPolicy,
         RetryOptions retryOptions,
         HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
-
-        validateSingleCredentialIsPresent(
-            tokenCredential, azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -79,17 +76,6 @@ public final class BuilderHelper {
         clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
-        }
-
-        HttpPipelinePolicy credentialPolicy;
-        if (tokenCredential != null) {
-            credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, "");
-        } else if (azureSasCredential != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
-        } else if (sasToken != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
-        } else {
-            credentialPolicy = null;
         }
 
         if (credentialPolicy != null) {
@@ -124,19 +110,5 @@ public final class BuilderHelper {
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
         return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
-    }
-
-    private static void validateSingleCredentialIsPresent(
-        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, ClientLogger logger) {
-        List<Object> usedCredentials = Stream.of(
-                tokenCredential, azureSasCredential, sasToken)
-            .filter(Objects::nonNull).collect(Collectors.toList());
-        if (usedCredentials.size() > 1) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Only one credential should be used. Credentials present: "
-                    + usedCredentials.stream().map(c -> c instanceof String ? "sasToken" : c.getClass().getName())
-                    .collect(Collectors.joining(","))
-            ));
-        }
     }
 }

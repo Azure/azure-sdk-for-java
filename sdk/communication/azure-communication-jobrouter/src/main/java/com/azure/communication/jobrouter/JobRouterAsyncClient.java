@@ -59,8 +59,27 @@ public class JobRouterAsyncClient {
     }
 
     Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
+        context = context == null ? Context.NONE : context;
         try {
             return jobRouter.upsertDistributionPolicyWithResponseAsync(id, distributionPolicy, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteDistributionPolicyWithResponse(String id) {
+        try {
+            return withContext(context -> deleteDistributionPolicyWithResponse(id, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteDistributionPolicyWithResponse(String id, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            return jobRouter.deleteDistributionPolicyWithResponseAsync(id, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -85,6 +104,7 @@ public class JobRouterAsyncClient {
     }
 
     Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue, Context context) {
+        context = context == null ? Context.NONE : context;
         try {
             return jobRouter.upsertQueueWithResponseAsync(id, jobQueue, context);
         } catch (RuntimeException ex) {
