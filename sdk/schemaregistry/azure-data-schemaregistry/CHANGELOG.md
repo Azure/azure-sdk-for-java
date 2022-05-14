@@ -1,17 +1,11 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2022-05-13)
 
 ### Features Added
 
 - Added `SchemaProperties.getGroupName()`.
 - Added `SchemaProperties.getName()`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.1.1 (2022-04-07)
 
