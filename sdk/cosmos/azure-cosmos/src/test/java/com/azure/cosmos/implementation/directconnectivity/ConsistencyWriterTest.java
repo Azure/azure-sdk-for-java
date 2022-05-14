@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.testng.annotations.DataProvider;
@@ -142,7 +143,7 @@ public class ConsistencyWriterTest {
         sessionContainer = Mockito.mock(ISessionContainer.class);
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
-        Mockito.mockStatic(SessionTokenHelper.class);
+        MockedStatic<SessionTokenHelper> sessionTokenHelperMockedStatic = Mockito.mockStatic(SessionTokenHelper.class);
 
         consistencyWriter = new ConsistencyWriter(clientContext,
             addressSelectorWrapper.addressSelector,
@@ -162,6 +163,8 @@ public class ConsistencyWriterTest {
 
         FailureValidator validator = FailureValidator.builder().instanceOf(OutOfMemoryError.class).errorMessageContains(outOfMemoryError).build();
         validateError(res, validator);
+        //  Finally, close the mocked static thread
+        sessionTokenHelperMockedStatic.close();
     }
 
     @Test(groups = "unit")
