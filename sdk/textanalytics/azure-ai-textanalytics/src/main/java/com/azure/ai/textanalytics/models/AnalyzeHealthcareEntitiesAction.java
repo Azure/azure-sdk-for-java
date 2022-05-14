@@ -14,6 +14,7 @@ public class AnalyzeHealthcareEntitiesAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
+    private FhirVersion fhirVersion;
 
     /**
      * Get the name of action.
@@ -83,5 +84,25 @@ public class AnalyzeHealthcareEntitiesAction {
         return this;
     }
 
+    /**
+     * Get the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
+     * additional information see https://www.hl7.org/fhir/overview.html.
+     *
+     * @return the fhirVersion value.
+     */
+    public FhirVersion getFhirVersion() {
+        return fhirVersion;
+    }
 
+    /**
+     * Set the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
+     * additional information see https://www.hl7.org/fhir/overview.html.
+     *
+     * @param fhirVersion the fhirVersion value to set.
+     * @return the AnalyzeHealthcareEntitiesAction object itself.
+     */
+    public AnalyzeHealthcareEntitiesAction setFhirVersion(FhirVersion fhirVersion) {
+        this.fhirVersion = fhirVersion;
+        return this;
+    }
 }

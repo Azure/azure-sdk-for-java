@@ -15,7 +15,7 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      * For additional information see https://www.hl7.org/fhir/overview.html.
      */
     @JsonProperty(value = "fhirVersion")
-    private String fhirVersion;
+    private FhirVersion fhirVersion;
 
     /*
      * Specifies the method used to interpret string offsets.  Defaults to Text
@@ -31,7 +31,7 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      *
      * @return the fhirVersion value.
      */
-    public String getFhirVersion() {
+    public FhirVersion getFhirVersion() {
         return this.fhirVersion;
     }
 
@@ -42,7 +42,7 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      * @param fhirVersion the fhirVersion value to set.
      * @return the HealthcareTaskParameters object itself.
      */
-    public HealthcareTaskParameters setFhirVersion(String fhirVersion) {
+    public HealthcareTaskParameters setFhirVersion(FhirVersion fhirVersion) {
         this.fhirVersion = fhirVersion;
         return this;
     }

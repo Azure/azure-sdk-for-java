@@ -35,6 +35,7 @@ import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCode;
@@ -981,6 +982,9 @@ public final class Utility {
                 AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(analyzeHealthcareEntitiesResult,
                     IterableStream.of(healthcareEntityRelations));
 
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(analyzeHealthcareEntitiesResult,
+                    documentEntities.getFhirBundle());
+
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
         // Document errors
@@ -1010,6 +1014,10 @@ public final class Utility {
                 toConditionality(conditionality));
         }
         return entityAssertion;
+    }
+
+    public static FhirVersion toFhirVersion(com.azure.ai.textanalytics.models.FhirVersion fhirVersion) {
+        return fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
     }
 
     private static EntityCertainty toCertainty(Certainty certainty) {

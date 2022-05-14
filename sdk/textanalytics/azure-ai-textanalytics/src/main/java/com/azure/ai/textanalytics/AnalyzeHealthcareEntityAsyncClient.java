@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROResult;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobResponse;
 import com.azure.ai.textanalytics.implementation.models.CancelHealthJobResponse;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
@@ -60,6 +61,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsVa
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toFhirVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -91,6 +93,7 @@ class AnalyzeHealthcareEntityAsyncClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
 
             if (service != null) {
                 return new PollerFlux<>(
@@ -103,6 +106,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
                                         (HealthcareTaskParameters) new HealthcareTaskParameters()
+                                                                       .setFhirVersion(finalFhirVersion)
                                                                        .setStringIndexType(finalStringIndexType)
                                                                        .setModelVersion(finalModelVersion)
                                                                        .setLoggingOptOut(finalLoggingOptOut)))),
@@ -164,6 +168,7 @@ class AnalyzeHealthcareEntityAsyncClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
 
             if (service != null) {
                 return new PollerFlux<>(
@@ -176,6 +181,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
                                         (HealthcareTaskParameters) new HealthcareTaskParameters()
+                                                                       .setFhirVersion(finalFhirVersion)
                                                                        .setStringIndexType(finalStringIndexType)
                                                                        .setModelVersion(finalModelVersion)
                                                                        .setLoggingOptOut(finalLoggingOptOut)))),

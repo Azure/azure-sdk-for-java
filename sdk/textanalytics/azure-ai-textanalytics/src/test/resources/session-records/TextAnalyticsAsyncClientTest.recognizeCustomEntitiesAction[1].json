@@ -1,0 +1,64 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f1affb6f-56d4-4940-b839-890b170cbc7e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "312",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/2fb70694-fafd-4e3c-9ae2-54ee7112591f?api-version=2022-04-01-preview",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "aa2b875a-0827-4372-b3e3-938598ca1105",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 13 May 2022 21:45:44 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/2fb70694-fafd-4e3c-9ae2-54ee7112591f?api-version=2022-04-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "050aa18a-062c-4eb7-a808-fc6ef49c765c"
+    },
+    "Response" : {
+      "content-length" : "1243",
+      "x-envoy-upstream-service-time" : "32",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c4f0c3b0-4155-4b4c-b76d-bac8a484d1e1",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"2fb70694-fafd-4e3c-9ae2-54ee7112591f\",\"lastUpdateDateTime\":\"2022-05-13T21:45:44Z\",\"createdDateTime\":\"2022-05-13T21:45:43Z\",\"expirationDateTime\":\"2022-05-14T21:45:43Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-05-13T21:45:44.4812586Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"David Schmidt\",\"category\":\"artist\",\"offset\":0,\"length\":13,\"confidenceScore\":0.8},{\"text\":\"Food\",\"category\":\"service\",\"offset\":38,\"length\":4,\"confidenceScore\":0.03},{\"text\":\"Safety\",\"category\":\"geographic_poi\",\"offset\":43,\"length\":6,\"confidenceScore\":0.06},{\"text\":\"International Food\",\"category\":\"geographic_poi\",\"offset\":51,\"length\":18,\"confidenceScore\":0.07},{\"text\":\"IFIC\",\"category\":\"geographic_poi\",\"offset\":91,\"length\":4,\"confidenceScore\":0.05},{\"text\":\"Information Council\",\"category\":\"restaurant_name\",\"offset\":70,\"length\":19,\"confidenceScore\":0.1},{\"text\":\"Washington, D.C.\",\"category\":\"state\",\"offset\":98,\"length\":16,\"confidenceScore\":0.49}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\",\"deploymentName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\"}}]}}",
+      "Date" : "Fri, 13 May 2022 21:46:13 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/2fb70694-fafd-4e3c-9ae2-54ee7112591f?api-version=2022-04-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "979a7a37-9a02-482f-805d-3cabc7e189b7"
+    },
+    "Response" : {
+      "content-length" : "1243",
+      "x-envoy-upstream-service-time" : "35",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "39b00037-c326-4050-ad95-704b101a67ab",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"2fb70694-fafd-4e3c-9ae2-54ee7112591f\",\"lastUpdateDateTime\":\"2022-05-13T21:45:44Z\",\"createdDateTime\":\"2022-05-13T21:45:43Z\",\"expirationDateTime\":\"2022-05-14T21:45:43Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-05-13T21:45:44.4812586Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"David Schmidt\",\"category\":\"artist\",\"offset\":0,\"length\":13,\"confidenceScore\":0.8},{\"text\":\"Food\",\"category\":\"service\",\"offset\":38,\"length\":4,\"confidenceScore\":0.03},{\"text\":\"Safety\",\"category\":\"geographic_poi\",\"offset\":43,\"length\":6,\"confidenceScore\":0.06},{\"text\":\"International Food\",\"category\":\"geographic_poi\",\"offset\":51,\"length\":18,\"confidenceScore\":0.07},{\"text\":\"IFIC\",\"category\":\"geographic_poi\",\"offset\":91,\"length\":4,\"confidenceScore\":0.05},{\"text\":\"Information Council\",\"category\":\"restaurant_name\",\"offset\":70,\"length\":19,\"confidenceScore\":0.1},{\"text\":\"Washington, D.C.\",\"category\":\"state\",\"offset\":98,\"length\":16,\"confidenceScore\":0.49}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\",\"deploymentName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\"}}]}}",
+      "Date" : "Fri, 13 May 2022 21:46:13 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

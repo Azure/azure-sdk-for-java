@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -23,6 +24,7 @@ import com.azure.core.util.polling.SyncPoller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample demonstrates how to analyze a healthcare task.
@@ -49,7 +51,9 @@ public class AnalyzeHealthcareEntities {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
+                                                       .setFhirVersion(FhirVersion.V4_0_1)
+                                                       .setIncludeStatistics(true);
 
         SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
@@ -104,6 +108,11 @@ public class AnalyzeHealthcareEntities {
                         System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     }
+                }
+                // FHIR bundle in JSON format
+                final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                if (fhirBundle != null) {
+                    System.out.printf("FHIR bundle: %s%n", fhirBundle);
                 }
             }
         }
