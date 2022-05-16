@@ -122,39 +122,20 @@ def get_dependency_management_content():
 
 
 def get_properties_contend_with_tag():
-    # version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
-    # sbv = version.split("_")[0]
-    # scv = version.split("_")[1]
     return """
   <properties>
-    <spring.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.version>
-    <spring.boot.version>"#{'${spring.version}'.split('_')[0]}"</spring.boot.version>
-    <spring.cloud.version>"#{'${spring.version}'.split('_')[1]}"</spring.cloud.version>
+    <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
+    <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
   </properties>
   
     """
-  #   return """
-  # <properties>
-  #   <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-  #   <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
-  # </properties>
-  #
-  #   """
 
 
 def get_properties_contend():
-    # version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
-    # sbv = version.split("_")[0]
-    # scv = version.split("_")[1]
     return """
-        <spring.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.version>
-        <spring.boot.version>"#{'${spring.version}'.split('_')[0]}"</spring.boot.version>
-        <spring.cloud.version>"#{'${spring.version}'.split('_')[1]}"</spring.cloud.version>
-        """
-    # return """
-    # <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    # <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
-    # """
+    <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
+    <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
+    """
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 {
   "displayNames": {
     "2.5.13": "springboot2_5_13",
+    "2.6.6": "springboot2_6_6",
     "2.6.7": "springboot2_6_7"
   },
   "matrix": {
@@ -9,8 +10,13 @@
     },
     "JavaTestVersion": "1.11",
     "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION": [
-      "2.5.13_2020.0.5",
-      "2.6.7_2021.0.2"
+      "2.5.13",
+      "2.6.6",
+      "2.6.7"
+    ],
+    "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION": [
+      "2020.0.5",
+      "2021.0.2"
     ]
   }
 }
