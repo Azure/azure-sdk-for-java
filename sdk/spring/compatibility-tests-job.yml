@@ -1,6 +1,6 @@
 parameters:
   Matrix: ''
-#  MaxParallel: 4
+  MaxParallel: 100
   SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
   BuildParallelization: '2C'
 
@@ -13,7 +13,7 @@ jobs:
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
 
     strategy:
-#      maxParallel: ${{ parameters.MaxParallel }}
+      maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
     pool:
       vmImage: "ubuntu-latest"
