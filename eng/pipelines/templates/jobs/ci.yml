@@ -263,8 +263,6 @@ jobs:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'
