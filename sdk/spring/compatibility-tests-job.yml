@@ -13,7 +13,7 @@ jobs:
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
 
     strategy:
-      maxParallel: ${{ parameters.MaxParallel }}
+#      maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
     pool:
       vmImage: "ubuntu-latest"
