@@ -1,9 +1,19 @@
 # Release History
 
+## 12.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 12.3.0 (2022-05-11)
 
 ### Features Added
-- TenantId can now be discovered through the service OAuth challenge response, when using a `TokenCredential` for authorization against a Storage Table Service.
+- TenantId can now be discovered through the service OAuth challenge response, when using a `TokenCredential` for authorization against Storage Table Service endpoints with version `2020_12_06`.
 - Added method `enableTenantDiscovery()` to `TableClientBuilder` and `TableServiceClientBuilder`. If enabled, the resulting client will attempt an initial unauthorized request to the service to prompt an OAuth challenge containing the tenantId of the resource. This tenantId will then be used by the `TokenCredential`.
 
 ### Other Changes

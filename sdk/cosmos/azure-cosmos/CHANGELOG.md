@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Changed 429 (Throttling) retry policy to have an upper bound for the back-off time of 5 seconds - See [PR 28764](https://github.com/Azure/azure-sdk-for-java/pull/28764)
 
 ### 4.29.1 (2022-04-27)
 #### Bugs Fixed

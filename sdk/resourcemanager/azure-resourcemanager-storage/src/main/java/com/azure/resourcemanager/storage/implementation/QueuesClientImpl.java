@@ -300,14 +300,7 @@ public final class QueuesClientImpl implements QueuesClient {
     public Mono<StorageQueueInner> createAsync(
         String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
         return createWithResponseAsync(resourceGroupName, accountName, queueName, queue)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -501,14 +494,7 @@ public final class QueuesClientImpl implements QueuesClient {
     public Mono<StorageQueueInner> updateAsync(
         String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
         return updateWithResponseAsync(resourceGroupName, accountName, queueName, queue)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -689,14 +675,7 @@ public final class QueuesClientImpl implements QueuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageQueueInner> getAsync(String resourceGroupName, String accountName, String queueName) {
         return getWithResponseAsync(resourceGroupName, accountName, queueName)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -871,8 +850,7 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String queueName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, queueName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, queueName).flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.SecureIotDeviceRemoteTunnel")
 @Fluent
 public final class SecureIotDeviceRemoteTunnel extends TunnelBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureIotDeviceRemoteTunnel.class);
-
     /*
      * Name of the IoT Hub.
      */
@@ -82,16 +79,18 @@ public final class SecureIotDeviceRemoteTunnel extends TunnelBase {
     public void validate() {
         super.validate();
         if (iotHubName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property iotHubName in model SecureIotDeviceRemoteTunnel"));
         }
         if (deviceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deviceId in model SecureIotDeviceRemoteTunnel"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecureIotDeviceRemoteTunnel.class);
 }

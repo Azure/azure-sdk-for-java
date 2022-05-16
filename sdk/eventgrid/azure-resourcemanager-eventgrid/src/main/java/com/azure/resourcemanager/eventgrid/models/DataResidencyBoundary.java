@@ -27,7 +27,11 @@ public final class DataResidencyBoundary extends ExpandableStringEnum<DataReside
         return fromString(name, DataResidencyBoundary.class);
     }
 
-    /** @return known DataResidencyBoundary values. */
+    /**
+     * Gets known DataResidencyBoundary values.
+     *
+     * @return known DataResidencyBoundary values.
+     */
     public static Collection<DataResidencyBoundary> values() {
         return values(DataResidencyBoundary.class);
     }
