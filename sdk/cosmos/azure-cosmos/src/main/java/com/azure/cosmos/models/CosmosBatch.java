@@ -395,6 +395,8 @@ public final class CosmosBatch {
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
 
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         ImplementationBridgeHelpers.CosmosBatchHelper.setCosmosBatchAccessor(
             new ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor() {

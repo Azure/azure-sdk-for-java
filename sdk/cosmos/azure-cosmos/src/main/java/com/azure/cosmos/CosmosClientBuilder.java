@@ -861,6 +861,8 @@ public class CosmosClientBuilder implements
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
 
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
             new CosmosClientBuilderHelper.CosmosClientBuilderAccessor() {

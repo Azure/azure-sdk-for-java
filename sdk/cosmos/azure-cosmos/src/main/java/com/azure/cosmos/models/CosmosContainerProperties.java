@@ -362,6 +362,8 @@ public final class CosmosContainerProperties {
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
 
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {

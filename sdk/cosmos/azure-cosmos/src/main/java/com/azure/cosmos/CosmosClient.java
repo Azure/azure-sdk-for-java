@@ -228,6 +228,8 @@ public final class CosmosClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this.asyncClientWrapper, databaseId, containerId);
     }
 
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         ImplementationBridgeHelpers.CosmosClientHelper.setCosmosClientAccessor(
             cosmosClient -> cosmosClient.asyncClient());

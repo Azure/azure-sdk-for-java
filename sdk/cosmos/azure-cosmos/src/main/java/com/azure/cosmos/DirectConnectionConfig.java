@@ -316,6 +316,8 @@ public final class DirectConnectionConfig {
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
 
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         ImplementationBridgeHelpers.DirectConnectionConfigHelper.setDirectConnectionConfigAccessor(
             new ImplementationBridgeHelpers.DirectConnectionConfigHelper.DirectConnectionConfigAccessor() {

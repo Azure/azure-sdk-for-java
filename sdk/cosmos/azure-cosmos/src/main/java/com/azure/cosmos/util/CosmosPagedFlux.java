@@ -310,6 +310,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
 
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         ImplementationBridgeHelpers.CosmosPageFluxHelper.setCosmosPageFluxAccessor(
             new ImplementationBridgeHelpers.CosmosPageFluxHelper.CosmosPageFluxAccessor() {
