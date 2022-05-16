@@ -1,6 +1,6 @@
 # Release History
 
-## 5.12.0-beta.1 (Unreleased)
+## 5.12.0 (2022-06-07)
 
 ### Features Added
 
@@ -9,8 +9,6 @@
 ### Breaking Changes
 
 - `EventData` extends from `MessageContent`.
-
-### Bugs Fixed
 
 ### Other Changes
 
