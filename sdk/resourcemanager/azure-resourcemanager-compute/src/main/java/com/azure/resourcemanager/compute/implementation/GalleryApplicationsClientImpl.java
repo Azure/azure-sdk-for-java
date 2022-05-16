@@ -1038,14 +1038,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     public Mono<GalleryApplicationInner> getAsync(
         String resourceGroupName, String galleryName, String galleryApplicationName) {
         return getWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName)
-            .flatMap(
-                (Response<GalleryApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

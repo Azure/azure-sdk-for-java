@@ -24,7 +24,11 @@ public final class ExpirationAction extends ExpandableStringEnum<ExpirationActio
         return fromString(name, ExpirationAction.class);
     }
 
-    /** @return known ExpirationAction values. */
+    /**
+     * Gets known ExpirationAction values.
+     *
+     * @return known ExpirationAction values.
+     */
     public static Collection<ExpirationAction> values() {
         return values(ExpirationAction.class);
     }

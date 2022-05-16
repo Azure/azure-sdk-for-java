@@ -27,7 +27,11 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
         return fromString(name, DiskDeleteOptionTypes.class);
     }
 
-    /** @return known DiskDeleteOptionTypes values. */
+    /**
+     * Gets known DiskDeleteOptionTypes values.
+     *
+     * @return known DiskDeleteOptionTypes values.
+     */
     public static Collection<DiskDeleteOptionTypes> values() {
         return values(DiskDeleteOptionTypes.class);
     }

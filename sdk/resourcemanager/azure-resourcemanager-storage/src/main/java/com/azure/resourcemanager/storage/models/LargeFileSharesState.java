@@ -27,7 +27,11 @@ public final class LargeFileSharesState extends ExpandableStringEnum<LargeFileSh
         return fromString(name, LargeFileSharesState.class);
     }
 
-    /** @return known LargeFileSharesState values. */
+    /**
+     * Gets known LargeFileSharesState values.
+     *
+     * @return known LargeFileSharesState values.
+     */
     public static Collection<LargeFileSharesState> values() {
         return values(LargeFileSharesState.class);
     }
