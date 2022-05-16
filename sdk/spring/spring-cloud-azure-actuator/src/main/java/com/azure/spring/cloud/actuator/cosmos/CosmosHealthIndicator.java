@@ -50,27 +50,29 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
         if (database == null) {
             builder.status(Status.UNKNOWN).withDetail("Database not configured",
                 "The option of `spring.cloud.azure.cosmos.database` is not configured!");
-        } else {
-            try {
-                CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
-                                                                        .read()
-                                                                        .block(timeout);
-
-                if (response != null) {
-                    LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
-                        response.getRequestCharge(), endpoint, database);
-                    builder.up()
-                           .withDetail("RUs", response.getRequestCharge())
-                           .withDetail("CosmosUri", endpoint)
-                           .withDetail("database", database);
-                } else {
-                    builder.down();
-                }
-            } catch (NotFoundException e) {
-                builder.status(Status.UNKNOWN).withDetail("Database not found",
-                    "The option of `spring.cloud.azure.cosmos.database` is not configured correctly!");
-            }
+            return;
         }
+
+        try {
+            CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
+                                                                    .read()
+                                                                    .block(timeout);
+
+            if (response != null) {
+                LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
+                    response.getRequestCharge(), endpoint, database);
+                builder.up()
+                       .withDetail("RUs", response.getRequestCharge())
+                       .withDetail("CosmosUri", endpoint)
+                       .withDetail("database", database);
+            } else {
+                builder.down();
+            }
+        } catch (NotFoundException e) {
+            builder.status(Status.UNKNOWN).withDetail("Database not found",
+                "The option of `spring.cloud.azure.cosmos.database` is not configured correctly!");
+        }
+
     }
 
     /**
