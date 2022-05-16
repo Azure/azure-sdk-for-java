@@ -448,10 +448,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
-                StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(dce);
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, storeResponseDiagnostics, this.globalEndpointManager);
-                BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, this.globalEndpointManager);
             }
 
             return Mono.error(dce);
@@ -773,10 +770,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
-                StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(dce);
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, storeResponseDiagnostics, this.globalEndpointManager);
-                BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, this.globalEndpointManager);
             }
 
             return Mono.error(dce);

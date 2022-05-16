@@ -58,7 +58,7 @@ public class StoreResponseDiagnostics {
         this.requestTimeline = storeResponse.getRequestTimeline();
         this.channelAcquisitionTimeline = storeResponse.getChannelAcquisitionTimeline();
         this.rntbdChannelTaskQueueSize = storeResponse.getRntbdChannelTaskQueueSize();
-        this.rntbdEndpointStatistics = storeResponse.getEndpointStsts();
+        this.rntbdEndpointStatistics = storeResponse.getEndpointStatistics();
         this.rntbdRequestLength = storeResponse.getRntbdRequestLength();
         this.rntbdResponseLength = storeResponse.getRntbdResponseLength();
         this.exceptionMessage = null;

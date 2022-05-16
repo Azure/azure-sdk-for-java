@@ -161,7 +161,7 @@ public class StoreResponse {
         this.rntbdEndpointStatistics = rntbdEndpointStatistics;
     }
 
-    RntbdEndpointStatistics getEndpointStsts() {
+    RntbdEndpointStatistics getEndpointStatistics() {
         return this.rntbdEndpointStatistics;
     }
 

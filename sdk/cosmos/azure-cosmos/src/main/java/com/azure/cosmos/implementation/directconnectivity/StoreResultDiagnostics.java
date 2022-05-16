@@ -152,7 +152,7 @@ public class StoreResultDiagnostics {
                               SerializerProvider serializerProvider) throws IOException {
             StoreResponseDiagnostics storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics();
             jsonGenerator.writeStartObject();
-            jsonGenerator.writeObjectField("storePhysicalAddress", storeResultDiagnostics.storePhysicalAddressAsString);
+            jsonGenerator.writeStringField("storePhysicalAddress", storeResultDiagnostics.storePhysicalAddressAsString);
             jsonGenerator.writeNumberField("lsn", storeResultDiagnostics.lsn);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResultDiagnostics.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResponseDiagnostics.getPartitionKeyRangeId());
@@ -167,8 +167,8 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeNumberField("itemLSN", storeResultDiagnostics.itemLSN);
             jsonGenerator.writeStringField("sessionToken", storeResponseDiagnostics.getSessionTokenAsString());
             jsonGenerator.writeObjectField("backendLatencyInMs", storeResultDiagnostics.backendLatencyInMs);
-            this.writeNonNullObjectField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
-            this.writeNonNullObjectField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
+            this.writeNonNullStringField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
+            this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResponseDiagnostics.getRequestTimeline());
 
             this.writeNonNullObjectField(jsonGenerator,"transportRequestChannelAcquisitionContext", storeResponseDiagnostics.getChannelAcquisitionTimeline());
@@ -190,6 +190,14 @@ public class StoreResultDiagnostics {
              }
 
              jsonGenerator.writeObjectField(fieldName, object);
+        }
+
+        private void writeNonNullStringField(JsonGenerator jsonGenerator, String fieldName, String value) throws IOException {
+            if (value == null) {
+                return;
+            }
+
+            jsonGenerator.writeStringField(fieldName, value);
         }
     }
 }

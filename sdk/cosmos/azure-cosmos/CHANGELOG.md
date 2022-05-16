@@ -7,8 +7,11 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed bubbling of Errors in case of any `java.lang.Error` - See [PR 28620](https://github.com/Azure/azure-sdk-for-java/pull/28620)
 
 #### Other Changes
+* Added `exceptionMessage` and `exceptionResponseHeaders` to `CosmosDiagnostics` in case of any exceptions - See [PR 28620](https://github.com/Azure/azure-sdk-for-java/pull/28620)
+* Improved performance of `query plan` cache by using `ConcurrentHashMap` with a fixed size of 1000 - See [PR 28537](https://github.com/Azure/azure-sdk-for-java/pull/28537)  
 
 ### 4.29.1 (2022-04-27)
 #### Bugs Fixed

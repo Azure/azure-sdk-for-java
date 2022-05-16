@@ -350,8 +350,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                    rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
                                }
                                if (request.requestContext.cosmosDiagnostics != null) {
-                                   StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(rsp);
-                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, storeResponseDiagnostics, globalEndpointManager);
+                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
                                }
                                return rsp;
                        })
@@ -412,9 +411,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                BridgeInternal.setRequestTimeline(dce, httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
                            }
 
-                           StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(dce);
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, storeResponseDiagnostics, globalEndpointManager);
-                           BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
                        }
 
                        return Mono.error(dce);
@@ -506,9 +503,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                     }
 
                     if (Exceptions.isThroughputControlRequestRateTooLargeException(dce)) {
-                        StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(dce);
-                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, storeResponseDiagnostics, globalEndpointManager);
-                        BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
+                        if (request.requestContext.cosmosDiagnostics != null) {
+                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
+                        }
                     }
 
                     return Mono.error(dce);
