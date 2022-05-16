@@ -1,6 +1,6 @@
 parameters:
   Matrix: ''
-  MaxParallel: 0
+  MaxParallel: 2
   SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
   BuildParallelization: '2C'
 
