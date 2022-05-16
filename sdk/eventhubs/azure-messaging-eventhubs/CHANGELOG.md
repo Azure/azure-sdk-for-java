@@ -14,6 +14,9 @@
 
 #### Dependency Updates
 
+- Upgraded `azure-core` to `1.28.0`.
+- Upgraded `azure-core-amqp` to `2.5.0`.
+
 ## 5.11.2 (2022-04-11)
 
 ### Other Changes
