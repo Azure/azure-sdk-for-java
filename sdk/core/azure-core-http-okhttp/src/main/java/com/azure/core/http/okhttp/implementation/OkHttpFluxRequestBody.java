@@ -10,6 +10,7 @@ import okhttp3.MediaType;
 import okio.BufferedSink;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -38,18 +39,18 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
     @Override
     public void writeTo(BufferedSink bufferedSink) throws IOException {
         if (bodySent.compareAndSet(false, true)) {
-            // This call happens on OkHttp thread pool.
-            Mono<Void> requestSendMono = content.toFluxByteBuffer().flatMapSequential(buffer -> {
-                try {
-                    while (buffer.hasRemaining()) {
-                        // This call happens on OkHttp thread pool as well.
-                        bufferedSink.write(buffer);
+            Mono<Void> requestSendMono = content.toFluxByteBuffer()
+                .publishOn(Schedulers.boundedElastic())
+                .flatMapSequential(buffer -> {
+                    try {
+                        while (buffer.hasRemaining()) {
+                            bufferedSink.write(buffer);
+                        }
+                        return Mono.empty();
+                    } catch (IOException e) {
+                        return Mono.error(e);
                     }
-                    return Mono.empty();
-                } catch (IOException e) {
-                    return Mono.error(e);
-                }
-            }).then();
+                }).then();
             // The blocking happens on OkHttp thread pool.
             if (writeTimeout != null) {
                 requestSendMono.block(writeTimeout);
