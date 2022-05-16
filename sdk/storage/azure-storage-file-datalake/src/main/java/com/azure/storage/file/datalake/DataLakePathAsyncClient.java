@@ -356,7 +356,7 @@ public class DataLakePathAsyncClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
+        return createWithResponse(new DataLakePathCreateOptions().setRequestConditions(requestConditions)).flatMap(FluxUtil::toMono);
     }
 
     /**
