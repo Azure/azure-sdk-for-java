@@ -37,6 +37,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jdk.internal.reflect.Reflection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -48,6 +49,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 public class ImplementationBridgeHelpers {
@@ -828,7 +830,7 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosExceptionHelper {
-        private static CosmosExceptionAccessor accessor;
+        private static AtomicReference<CosmosExceptionAccessor> accessor = new AtomicReference<>();
 
         private CosmosExceptionHelper() {
         }
@@ -838,19 +840,19 @@ public class ImplementationBridgeHelpers {
         }
 
         public static CosmosExceptionAccessor getCosmosExceptionAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosExceptionAccessor is not initialized yet!");
+            CosmosExceptionAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosExceptionAccessor is not initialized yet!");
+                System.exit(9800); // Using a unique status code here to help debug the issue.
             }
 
-            return accessor;
+            return snapshot;
         }
 
         public static void setCosmosExceptionAccessor(final CosmosExceptionAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosExceptionAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosExceptionAccessor already initialized!");
             }
-
-            accessor = newAccessor;
         }
 
         public interface CosmosExceptionAccessor {
@@ -861,11 +863,21 @@ public class ImplementationBridgeHelpers {
 
     private static <T> void ensureClassLoaded(Class<T> classType) {
         try {
+            try {
+                ClassLoader classLoader = classType.getClassLoader();
+                logger.info(
+                        "Calling ensureClassLoaded for class {} with callerClassLoader {}",
+                        classType,
+                        classLoader);
+            } catch (Throwable e) {
+                logger.warn("Failed to get class loader", e);
+            }
+
             // ensures the class is loaded
             Class.forName(classType.getName());
-        } catch (ClassNotFoundException e) {
-            logger.error("cannot load class {}", classType.getName());
-            throw new RuntimeException(e);
+        } catch (Throwable e) {
+            logger.error("Can not load class {}", classType.getName(), e);
+            System.exit(9801); // Using a unique status code here to help debug the issue.
         }
     }
 }
