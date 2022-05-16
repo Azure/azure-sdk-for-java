@@ -59,6 +59,10 @@ public final class ProtectionPolicyResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ProtectionPolicyResourceInner innerModel() {
         return this.innerObject;
     }

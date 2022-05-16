@@ -24,7 +24,11 @@ public final class GalleryExpandParams extends ExpandableStringEnum<GalleryExpan
         return fromString(name, GalleryExpandParams.class);
     }
 
-    /** @return known GalleryExpandParams values. */
+    /**
+     * Gets known GalleryExpandParams values.
+     *
+     * @return known GalleryExpandParams values.
+     */
     public static Collection<GalleryExpandParams> values() {
         return values(GalleryExpandParams.class);
     }

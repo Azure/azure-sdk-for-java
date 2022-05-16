@@ -27,7 +27,11 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
         return fromString(name, DiffDiskPlacement.class);
     }
 
-    /** @return known DiffDiskPlacement values. */
+    /**
+     * Gets known DiffDiskPlacement values.
+     *
+     * @return known DiffDiskPlacement values.
+     */
     public static Collection<DiffDiskPlacement> values() {
         return values(DiffDiskPlacement.class);
     }

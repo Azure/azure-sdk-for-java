@@ -60,6 +60,8 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   private[this] var staleCachedItemRefreshPeriodInMsOverride: Option[Long] = None
   private[this] var cachedItemTtlInMsOverride: Option[Long] = None
 
+  def cachedCount(): Int = cache.readOnlySnapshot().size
+
   // NOTE
   // This method can only be used from the Spark driver
   // The reason for this restriction is that the IO operations necessary
@@ -478,5 +480,18 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
       case Some(_) =>
         cache.remove(key).isDefined
     }
+  }
+
+  def purge(cosmosContainerConfig: CosmosContainerConfig): Unit = {
+    assertOnSparkDriver()
+    cache.readOnlySnapshot().foreach(keyValuePair =>
+      if (keyValuePair._2.cosmosContainerConfig == cosmosContainerConfig) {
+        cache.get(keyValuePair._1) match {
+          case None => false
+          case Some(_) =>
+            cache.remove(keyValuePair._1).isDefined
+        }
+      }
+    )
   }
 }

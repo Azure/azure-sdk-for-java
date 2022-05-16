@@ -188,14 +188,7 @@ public final class JobDetailsClientImpl implements JobDetailsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResourceInner> getAsync(String vaultName, String resourceGroupName, String jobName) {
         return getWithResponseAsync(vaultName, resourceGroupName, jobName)
-            .flatMap(
-                (Response<JobResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -30,7 +30,11 @@ public final class ConnectAuthKind extends ExpandableStringEnum<ConnectAuthKind>
         return fromString(name, ConnectAuthKind.class);
     }
 
-    /** @return known ConnectAuthKind values. */
+    /**
+     * Gets known ConnectAuthKind values.
+     *
+     * @return known ConnectAuthKind values.
+     */
     public static Collection<ConnectAuthKind> values() {
         return values(ConnectAuthKind.class);
     }

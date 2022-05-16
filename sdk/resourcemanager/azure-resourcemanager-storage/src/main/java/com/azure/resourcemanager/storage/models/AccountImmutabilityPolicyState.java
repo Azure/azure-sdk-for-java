@@ -30,7 +30,11 @@ public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<A
         return fromString(name, AccountImmutabilityPolicyState.class);
     }
 
-    /** @return known AccountImmutabilityPolicyState values. */
+    /**
+     * Gets known AccountImmutabilityPolicyState values.
+     *
+     * @return known AccountImmutabilityPolicyState values.
+     */
     public static Collection<AccountImmutabilityPolicyState> values() {
         return values(AccountImmutabilityPolicyState.class);
     }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.RsaTokenKey")
 @Fluent
 public final class RsaTokenKey extends TokenKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RsaTokenKey.class);
-
     /*
      * RSA algorithm to be used: RS256, RS384 or RS512.
      */
@@ -112,17 +109,19 @@ public final class RsaTokenKey extends TokenKey {
     public void validate() {
         super.validate();
         if (alg() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property alg in model RsaTokenKey"));
         }
         if (n() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property n in model RsaTokenKey"));
         }
         if (e() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property e in model RsaTokenKey"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RsaTokenKey.class);
 }
