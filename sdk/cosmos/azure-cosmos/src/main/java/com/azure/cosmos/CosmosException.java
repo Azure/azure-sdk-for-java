@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
@@ -44,7 +45,7 @@ import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
  * service, an IllegalStateException is thrown instead of CosmosException.
  */
 public class CosmosException extends AzureException {
-    private static final long MAX_RETRY_AFTER_IN_MS = 5000L;
+    private static final long MAX_RETRY_AFTER_IN_MS = BatchExecUtils.MAX_RETRY_AFTER_IN_MS;
     private static final long serialVersionUID = 1L;
 
     private static final ObjectMapper mapper = new ObjectMapper();
