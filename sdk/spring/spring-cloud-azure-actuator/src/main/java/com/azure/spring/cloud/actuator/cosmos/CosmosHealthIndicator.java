@@ -59,9 +59,10 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
                 if (response != null) {
                     LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
                         response.getRequestCharge(), endpoint, database);
-                    builder.withDetail("RUs", response.getRequestCharge());
-                    builder.withDetail("CosmosUri", endpoint);
-                    builder.up().withDetail("database", database);
+                    builder.up()
+                           .withDetail("RUs", response.getRequestCharge())
+                           .withDetail("CosmosUri", endpoint)
+                           .withDetail("database", database);
                 } else {
                     builder.down();
                 }
