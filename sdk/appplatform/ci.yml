@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appplatform/ci.yml
+      - sdk/appplatform/azure-resourcemanager-appplatform-generated/
+    exclude:
+      - sdk/appplatform/pom.xml
+      - sdk/appplatform/azure-resourcemanager-appplatform-generated/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appplatform/ci.yml
+      - sdk/appplatform/azure-resourcemanager-appplatform-generated/
+    exclude:
+      - sdk/appplatform/pom.xml
+      - sdk/appplatform/azure-resourcemanager-appplatform-generated/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: appplatform
+    Artifacts:
+      - name: azure-resourcemanager-appplatform-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappplatformgenerated

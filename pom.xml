@@ -848,6 +848,7 @@
         <module>sdk/appconfiguration</module>
         <module>sdk/appcontainers</module>
         <module>sdk/applicationinsights</module>
+        <module>sdk/appplatform</module>
         <module>sdk/attestation</module>
         <module>sdk/automanage</module>
         <module>sdk/automation</module>
