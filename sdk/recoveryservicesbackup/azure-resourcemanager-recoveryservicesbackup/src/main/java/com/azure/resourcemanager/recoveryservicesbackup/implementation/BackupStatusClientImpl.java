@@ -176,15 +176,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupStatusResponseInner> getAsync(String azureRegion, BackupStatusRequest parameters) {
-        return getWithResponseAsync(azureRegion, parameters)
-            .flatMap(
-                (Response<BackupStatusResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
