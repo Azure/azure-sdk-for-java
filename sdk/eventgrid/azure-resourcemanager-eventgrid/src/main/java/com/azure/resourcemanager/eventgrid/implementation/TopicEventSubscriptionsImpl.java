@@ -163,8 +163,10 @@ public final class TopicEventSubscriptionsImpl implements TopicEventSubscription
         return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EventSubscription> list(String resourceGroupName, String topicName, Context context) {
-        PagedIterable<EventSubscriptionInner> inner = this.serviceClient().list(resourceGroupName, topicName, context);
+    public PagedIterable<EventSubscription> list(
+        String resourceGroupName, String topicName, String filter, Integer top, Context context) {
+        PagedIterable<EventSubscriptionInner> inner =
+            this.serviceClient().list(resourceGroupName, topicName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 

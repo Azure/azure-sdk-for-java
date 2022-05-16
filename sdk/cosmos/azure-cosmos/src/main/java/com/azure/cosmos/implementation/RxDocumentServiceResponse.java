@@ -30,6 +30,7 @@ public class RxDocumentServiceResponse {
     private final Map<String, String> headersMap;
     private final StoreResponse storeResponse;
     private RequestTimeline gatewayHttpRequestTimeline;
+    private CosmosDiagnostics cosmosDiagnostics;
 
     public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response) {
         String[] headerNames = response.getResponseHeaderNames();
@@ -209,10 +210,11 @@ public class RxDocumentServiceResponse {
     }
 
     public CosmosDiagnostics getCosmosDiagnostics() {
-        if (this.storeResponse == null) {
-            return null;
-        }
-        return this.storeResponse.getCosmosDiagnostics();
+        return this.cosmosDiagnostics;
+    }
+
+    public void setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+        this.cosmosDiagnostics = cosmosDiagnostics;
     }
 
     public DiagnosticsClientContext getDiagnosticsClientContext() {

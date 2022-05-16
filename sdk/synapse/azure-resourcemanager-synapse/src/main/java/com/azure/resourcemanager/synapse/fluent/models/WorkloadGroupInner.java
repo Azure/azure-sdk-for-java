@@ -6,15 +6,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workload group operations for a sql pool. */
 @Fluent
 public final class WorkloadGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadGroupInner.class);
-
     /*
      * Resource properties.
      */

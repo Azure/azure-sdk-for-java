@@ -54,7 +54,7 @@ public final class MetadataRolesImpl {
      */
     @Host("{Endpoint}/policyStore")
     @ServiceInterface(name = "PurviewMetadataClien")
-    private interface MetadataRolesService {
+    public interface MetadataRolesService {
         @Get("/metadataRoles")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> list(

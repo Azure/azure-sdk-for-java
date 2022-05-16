@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.ClassicCompute/virtualMachines")
 @Fluent
 public final class AzureIaaSClassicComputeVMProtectableItem extends IaaSvmProtectableItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSClassicComputeVMProtectableItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureIaaSClassicComputeVMProtectableItem withVirtualMachineId(String virtualMachineId) {

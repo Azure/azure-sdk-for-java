@@ -30,7 +30,11 @@ public final class CosmosDbServicePrincipalCredentialType
         return fromString(name, CosmosDbServicePrincipalCredentialType.class);
     }
 
-    /** @return known CosmosDbServicePrincipalCredentialType values. */
+    /**
+     * Gets known CosmosDbServicePrincipalCredentialType values.
+     *
+     * @return known CosmosDbServicePrincipalCredentialType values.
+     */
     public static Collection<CosmosDbServicePrincipalCredentialType> values() {
         return values(CosmosDbServicePrincipalCredentialType.class);
     }

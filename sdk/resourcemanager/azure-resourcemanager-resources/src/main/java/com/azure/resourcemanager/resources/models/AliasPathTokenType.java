@@ -45,7 +45,11 @@ public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathToke
         return fromString(name, AliasPathTokenType.class);
     }
 
-    /** @return known AliasPathTokenType values. */
+    /**
+     * Gets known AliasPathTokenType values.
+     *
+     * @return known AliasPathTokenType values.
+     */
     public static Collection<AliasPathTokenType> values() {
         return values(AliasPathTokenType.class);
     }

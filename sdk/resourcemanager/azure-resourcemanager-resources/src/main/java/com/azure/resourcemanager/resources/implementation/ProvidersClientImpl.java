@@ -263,15 +263,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> unregisterAsync(String resourceProviderNamespace) {
-        return unregisterWithResponseAsync(resourceProviderNamespace)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return unregisterWithResponseAsync(resourceProviderNamespace).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -400,7 +392,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> registerAtManagementGroupScopeAsync(String resourceProviderNamespace, String groupId) {
         return registerAtManagementGroupScopeWithResponseAsync(resourceProviderNamespace, groupId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -531,15 +523,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> registerAsync(String resourceProviderNamespace) {
-        return registerWithResponseAsync(resourceProviderNamespace)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return registerWithResponseAsync(resourceProviderNamespace).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1026,15 +1010,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAsync(String resourceProviderNamespace, String expand) {
-        return getWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceProviderNamespace, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1049,15 +1025,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAsync(String resourceProviderNamespace) {
         final String expand = null;
-        return getWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceProviderNamespace, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1188,14 +1156,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace, String expand) {
         return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1211,14 +1172,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
     public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace) {
         final String expand = null;
         return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

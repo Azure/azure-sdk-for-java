@@ -27,7 +27,11 @@ public final class IncidentLabelType extends ExpandableStringEnum<IncidentLabelT
         return fromString(name, IncidentLabelType.class);
     }
 
-    /** @return known IncidentLabelType values. */
+    /**
+     * Gets known IncidentLabelType values.
+     *
+     * @return known IncidentLabelType values.
+     */
     public static Collection<IncidentLabelType> values() {
         return values(IncidentLabelType.class);
     }

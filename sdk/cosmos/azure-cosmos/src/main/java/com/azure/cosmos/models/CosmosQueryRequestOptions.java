@@ -615,6 +615,10 @@ public class CosmosQueryRequestOptions {
 
                 @Override
                 public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
+                    if (queryRequestOptions == null) {
+                        return null;
+                    }
+
                     return queryRequestOptions.getOperationContextAndListenerTuple();
                 }
 

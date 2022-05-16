@@ -24,15 +24,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceVaultConfigsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupResourceVaultConfigsClient. */
 public final class BackupResourceVaultConfigsClientImpl implements BackupResourceVaultConfigsClient {
-    private final ClientLogger logger = new ClientLogger(BackupResourceVaultConfigsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupResourceVaultConfigsService service;
 
@@ -215,15 +212,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceVaultConfigResourceInner> getAsync(String vaultName, String resourceGroupName) {
-        return getWithResponseAsync(vaultName, resourceGroupName)
-            .flatMap(
-                (Response<BackupResourceVaultConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -386,14 +375,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     private Mono<BackupResourceVaultConfigResourceInner> updateAsync(
         String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<BackupResourceVaultConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -562,14 +544,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     private Mono<BackupResourceVaultConfigResourceInner> putAsync(
         String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
         return putWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<BackupResourceVaultConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

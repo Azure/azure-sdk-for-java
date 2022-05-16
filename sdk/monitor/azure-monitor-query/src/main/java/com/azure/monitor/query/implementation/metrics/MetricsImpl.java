@@ -49,7 +49,7 @@ public final class MetricsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorManagementCli")
-    private interface MetricsService {
+    public interface MetricsService {
         @Get("/{resourceUri}/providers/microsoft.insights/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

@@ -49,7 +49,7 @@ public final class RoleDefinitionsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AccessControlClientR")
-    private interface RoleDefinitionsService {
+    public interface RoleDefinitionsService {
         @Get("/roleDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

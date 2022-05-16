@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Meta data for the Service Provider. */
 @Fluent
 public final class ServiceProviderParameterMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceProviderParameterMetadata.class);
-
     /*
      * the constraints of the bot meta data.
      */

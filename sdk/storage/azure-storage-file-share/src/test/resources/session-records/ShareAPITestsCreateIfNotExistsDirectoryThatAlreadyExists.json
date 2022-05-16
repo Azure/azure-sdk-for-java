@@ -1,0 +1,76 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/2a1753d402a1753d4d95253307cc6dd9897b3439da3b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "21ecaf8f-46de-45d2-9f50-08f9640c0700"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F7BFCEF75ED",
+      "Last-Modified" : "Sat, 16 Apr 2022 07:37:41 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "726c5c73-301a-000c-2264-5185f0000000",
+      "x-ms-client-request-id" : "21ecaf8f-46de-45d2-9f50-08f9640c0700",
+      "Date" : "Sat, 16 Apr 2022 07:37:40 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/2a1753d402a1753d4d95253307cc6dd9897b3439da3b/testCreateDirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6ab5ed66-b37d-418e-b28b-63d14c251f75"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-file-permission-key" : "13206157815093487607*16113479809698295934",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2022-04-16T07:37:41.2677229Z",
+      "Last-Modified" : "Sat, 16 Apr 2022 07:37:41 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sat, 16 Apr 2022 07:37:40 GMT",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2022-04-16T07:37:41.2677229Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8DA1F7BFD03EA6D",
+      "x-ms-request-id" : "b5ba6648-001a-0007-1764-517e9b000000",
+      "x-ms-client-request-id" : "6ab5ed66-b37d-418e-b28b-63d14c251f75",
+      "x-ms-file-last-write-time" : "2022-04-16T07:37:41.2677229Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/2a1753d402a1753d4d95253307cc6dd9897b3439da3b/testCreateDirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "56288267-dbe9-4f7e-8b89-ebeb38e7d44b"
+    },
+    "Response" : {
+      "content-length" : "228",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceAlreadyExists",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "d3e34385-001a-005a-6f64-51741f000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceAlreadyExists</Code><Message>The specified resource already exists.\nRequestId:d3e34385-001a-005a-6f64-51741f000000\nTime:2022-04-16T07:37:41.3311619Z</Message></Error>",
+      "x-ms-client-request-id" : "56288267-dbe9-4f7e-8b89-ebeb38e7d44b",
+      "Date" : "Sat, 16 Apr 2022 07:37:40 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "2a1753d42a1753d4d95176037cb70724779348a8aa", "2a1753d402a1753d4d95253307cc6dd9897b3439da3b" ]
+}

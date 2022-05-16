@@ -9,7 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.Map;
+import java.util.List;
 
 /** SQL stored procedure activity type. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -29,7 +29,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "typeProperties.storedProcedureParameters")
-    private Map<String, StoredProcedureParameter> storedProcedureParameters;
+    private Object storedProcedureParameters;
 
     /**
      * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
@@ -57,7 +57,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      *
      * @return the storedProcedureParameters value.
      */
-    public Map<String, StoredProcedureParameter> getStoredProcedureParameters() {
+    public Object getStoredProcedureParameters() {
         return this.storedProcedureParameters;
     }
 
@@ -68,9 +68,50 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
-    public SqlServerStoredProcedureActivity setStoredProcedureParameters(
-            Map<String, StoredProcedureParameter> storedProcedureParameters) {
+    public SqlServerStoredProcedureActivity setStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerStoredProcedureActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerStoredProcedureActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerStoredProcedureActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerStoredProcedureActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerStoredProcedureActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerStoredProcedureActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

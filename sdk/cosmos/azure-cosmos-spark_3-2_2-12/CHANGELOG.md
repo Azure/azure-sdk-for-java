@@ -1,5 +1,21 @@
 ## Release History
 
+### 4.10.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.9.0 (2022-04-22)
+
+#### Bugs Fixed
+* Fixed an issue preventing the `cosmos.oltp.changeFeed` DataSource to honor the `spark.cosmos.partitioning.feedRangeFilter` config parameter. - See [PR 28258](https://github.com/Azure/azure-sdk-for-java/pull/28258)
+* Fixed memory leak issue related to circular reference of `CosmosDiagnostics` in `StoreResponse` and `CosmosException` - See [PR 28343](https://github.com/Azure/azure-sdk-for-java/pull/28343)
+
 ### 4.8.0 (2022-04-08)
 #### Features Added
 * Added an API to determine installed version of the Cosmos Spark connector (`CosmosItemsDataSource.version`/`CosmosChangeFeedDataSource.version`).See [PR 27709](https://github.com/Azure/azure-sdk-for-java/pull/27709)

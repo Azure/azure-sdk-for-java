@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceStorageConfigsNonCrrsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import reactor.core.publisher.Mono;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in BackupResourceStorageConfigsNonCrrsClient.
  */
 public final class BackupResourceStorageConfigsNonCrrsClientImpl implements BackupResourceStorageConfigsNonCrrsClient {
-    private final ClientLogger logger = new ClientLogger(BackupResourceStorageConfigsNonCrrsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupResourceStorageConfigsNonCrrsService service;
 
@@ -217,15 +214,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceConfigResourceInner> getAsync(String vaultName, String resourceGroupName) {
-        return getWithResponseAsync(vaultName, resourceGroupName)
-            .flatMap(
-                (Response<BackupResourceConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -383,14 +372,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     private Mono<BackupResourceConfigResourceInner> updateAsync(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<BackupResourceConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -550,8 +532,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> patchAsync(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
-        return patchWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return patchWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**

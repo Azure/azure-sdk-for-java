@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPolicyO
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicyOperationStatuses;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectionPolicyOperationStatusesImpl implements ProtectionPolicyOperationStatuses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionPolicyOperationStatusesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectionPolicyOperationStatusesImpl.class);
 
     private final ProtectionPolicyOperationStatusesClient innerClient;
 

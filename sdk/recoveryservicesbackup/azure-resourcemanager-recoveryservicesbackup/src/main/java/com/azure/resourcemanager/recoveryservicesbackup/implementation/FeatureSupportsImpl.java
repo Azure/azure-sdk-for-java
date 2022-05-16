@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AzureVMRes
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFeatureSupportResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupportRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupports;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class FeatureSupportsImpl implements FeatureSupports {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureSupportsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FeatureSupportsImpl.class);
 
     private final FeatureSupportsClient innerClient;
 

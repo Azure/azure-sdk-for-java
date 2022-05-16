@@ -30,7 +30,11 @@ public final class DataConnectorLicenseState extends ExpandableStringEnum<DataCo
         return fromString(name, DataConnectorLicenseState.class);
     }
 
-    /** @return known DataConnectorLicenseState values. */
+    /**
+     * Gets known DataConnectorLicenseState values.
+     *
+     * @return known DataConnectorLicenseState values.
+     */
     public static Collection<DataConnectorLicenseState> values() {
         return values(DataConnectorLicenseState.class);
     }

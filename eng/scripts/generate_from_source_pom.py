@@ -267,7 +267,9 @@ def is_spring_child_pom(tree_root: ET.Element):
     group_id_node = element_find(tree_root, 'groupId')
     artifact_id_node = element_find(tree_root, 'artifactId')
     return not group_id_node is None and group_id_node.text == 'com.azure.spring' \
-           and not artifact_id_node is None and artifact_id_node.text != 'spring-cloud-azure' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
+           and not artifact_id_node is None \
+           and artifact_id_node.text != 'spring-cloud-azure' \
+           and artifact_id_node.text != 'spring-cloud-azure-experimental' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
 
 # Creates an artifacts identifier.
 def create_artifact_identifier(element: ET.Element):

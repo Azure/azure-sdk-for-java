@@ -12,4 +12,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFileStorageWriteSettings")
 @Fluent
-public final class AzureFileStorageWriteSettings extends StoreWriteSettings {}
+public final class AzureFileStorageWriteSettings extends StoreWriteSettings {
+    /** {@inheritDoc} */
+    @Override
+    public AzureFileStorageWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFileStorageWriteSettings setCopyBehavior(Object copyBehavior) {
+        super.setCopyBehavior(copyBehavior);
+        return this;
+    }
+}

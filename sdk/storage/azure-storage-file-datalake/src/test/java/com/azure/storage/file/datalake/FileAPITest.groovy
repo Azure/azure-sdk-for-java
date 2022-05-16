@@ -15,11 +15,9 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.sas.AccountSasPermission
-import com.azure.storage.common.sas.AccountSasResourceType
-import com.azure.storage.common.sas.AccountSasService
-import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
@@ -46,6 +44,8 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
@@ -266,6 +266,113 @@ class FileAPITest extends APISpec {
         fc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create if not exists min"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        then:
+        notThrown(DataLakeStorageException)
+        fc.exists()
+    }
+
+    def "Create if not exists defaults"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        def createResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create if not exists overwrite"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def initialResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
+
+        // Try to create the resource again
+        def secondResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        fc.exists()
+        secondResponse.getStatusCode() == 409
+    }
+
+    def "Create if not exists Exists"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        then:
+        fc.exists()
+    }
+
+    @Unroll
+    def "Create if not exists headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null)
+        def response = fc.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create if not exists metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        def client = fsc.getFileClient(generatePathName())
+        client.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata), null, Context.NONE)
+        def response = client.getProperties()
+
+        then:
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create if not exists permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        def client = fsc.getFileClient(generatePathName())
+        client.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setUmask(umask), null, Context.NONE).getStatusCode() == 201
+    }
+
     def "Delete min"() {
         expect:
         fc.deleteWithResponse(null, null, null).getStatusCode() == 200
@@ -321,6 +428,91 @@ class FileAPITest extends APISpec {
 
         when:
         fc.deleteWithResponse(drc, null, null).getStatusCode()
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Delete if exists"() {
+        expect:
+        fc.deleteIfExists()
+    }
+
+    def "Delete if exists min"() {
+        expect:
+        fc.deleteIfExistsWithResponse(null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists file does not exist anymore"() {
+        when:
+        def response = fc.deleteIfExistsWithResponse(null, null, null)
+        fc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+        response.getStatusCode() == 200
+    }
+
+    def "Delete if exists file that does not exist"() {
+        when:
+        def initialResponse = fc.deleteIfExistsWithResponse(null, null, null)
+        def secondResponse = fc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 200
+        secondResponse.getStatusCode() == 404
+    }
+
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        match = setupPathMatchCondition(fc, match)
+        leaseID = setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        def options = new DataLakePathDeleteOptions().setIsRecursive(false).setRequestConditions(drc)
+
+        expect:
+        fc.deleteIfExistsWithResponse(options, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(fc, noneMatch)
+        setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+
+        when:
+        fc.deleteIfExistsWithResponse(options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -3414,6 +3606,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
+    @PlaybackOnly(expiryTime = "2022-05-18")
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3427,14 +3620,14 @@ class FileAPITest extends APISpec {
         schema.add(new FileQueryArrowField(FileQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2))
         FileQueryArrowSerialization outSer = new FileQueryArrowSerialization().setSchema(schema)
         def expression = "SELECT _2 from BlobStorage WHERE _1 > 250;"
-        String expectedData = "/////4AAAAAQAAAAAAAKAAwABgAFAAgACgAAAAABAwAMAAAACAAIAAAABAAIAAAABAAAAAEAAAAUAAAAEAAUAAgABgAHAAwAAAAQABAAAAAAAAEHJAAAABQAAAAEAAAAAAAAAAgADAAEAAgACAAAAAQAAAACAAAABAAAAE5hbWUAAAAAAAAAAP////9wAAAAEAAAAAAACgAOAAYABQAIAAoAAAAAAwMAEAAAAAAACgAMAAAABAAIAAoAAAAwAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAP////+IAAAAFAAAAAAAAAAMABYABgAFAAgADAAMAAAAAAMDABgAAAAAAgAAAAAAAAAACgAYAAwABAAIAAoAAAA8AAAAEAAAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAA"
+        String expectedData = "/////4AAAAAQAAAAAAAKAAwABgAFAAgACgAAAAABBAAMAAAACAAIAAAABAAIAAAABAAAAAEAAAAUAAAAEAAUAAgABgAHAAwAAAAQABAAAAAAAAEHEAAAACAAAAAEAAAAAAAAAAQAAABOYW1lAAAAAAgADAAEAAgACAAAAAQAAAACAAAAAAAAAP////9wAAAAEAAAAAAACgAOAAYABQAIAAoAAAAAAwQAEAAAAAAACgAMAAAABAAIAAoAAAAwAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAP////8AAAAA/////4gAAAAUAAAAAAAAAAwAFgAGAAUACAAMAAwAAAAAAwQAGAAAAAACAAAAAAAAAAAKABgADAAEAAgACgAAADwAAAAQAAAAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAAA="
         OutputStream os = new ByteArrayOutputStream()
-        FileQueryOptions options = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
+        FileQueryOptions options = new FileQueryOptions(expression, os).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
         InputStream qqStream = fc.openQueryInputStreamWithResponse(options).getValue()
-        byte[] queryData = readFromInputStream(qqStream, 912)
+        byte[] queryData = readFromInputStream(qqStream, 920)
 
         then:
         notThrown(IOException)
@@ -4035,4 +4228,5 @@ class FileAPITest extends APISpec {
         notThrown(DataLakeStorageException)
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
+
 }

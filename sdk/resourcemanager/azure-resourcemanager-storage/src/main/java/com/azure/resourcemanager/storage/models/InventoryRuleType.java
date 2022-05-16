@@ -24,7 +24,11 @@ public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleT
         return fromString(name, InventoryRuleType.class);
     }
 
-    /** @return known InventoryRuleType values. */
+    /**
+     * Gets known InventoryRuleType values.
+     *
+     * @return known InventoryRuleType values.
+     */
     public static Collection<InventoryRuleType> values() {
         return values(InventoryRuleType.class);
     }

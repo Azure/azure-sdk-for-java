@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Telegram channel. */
 @Fluent
 public final class TelegramChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TelegramChannelProperties.class);
-
     /*
      * The Telegram access token. Value only returned through POST to the
      * action Channel List API, otherwise empty.

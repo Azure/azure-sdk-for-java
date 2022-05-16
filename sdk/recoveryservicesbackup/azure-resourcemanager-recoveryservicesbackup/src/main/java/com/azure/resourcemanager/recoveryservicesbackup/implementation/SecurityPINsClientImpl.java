@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TokenInformationInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecurityPINsClient. */
 public final class SecurityPINsClientImpl implements SecurityPINsClient {
-    private final ClientLogger logger = new ClientLogger(SecurityPINsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecurityPINsService service;
 
@@ -192,14 +189,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
     private Mono<TokenInformationInner> getAsync(
         String vaultName, String resourceGroupName, SecurityPinBase parameters) {
         return getWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<TokenInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -216,14 +206,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
     private Mono<TokenInformationInner> getAsync(String vaultName, String resourceGroupName) {
         final SecurityPinBase parameters = null;
         return getWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<TokenInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

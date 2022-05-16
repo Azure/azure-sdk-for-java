@@ -21,6 +21,7 @@ java: true
 output-folder: ../
 namespace: com.azure.data.schemaregistry
 generate-client-as-impl: true
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
