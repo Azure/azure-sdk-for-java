@@ -10,6 +10,10 @@ import okhttp3.RequestBody;
 
 import java.util.Objects;
 
+/**
+ * Base class for streamable request bodies.
+ * @param <T> BinaryDataContent.
+ */
 public abstract class OkHttpStreamableRequestBody<T extends BinaryDataContent> extends RequestBody {
     protected final T content;
     /**

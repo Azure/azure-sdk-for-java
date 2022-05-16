@@ -234,7 +234,7 @@ public abstract class HttpClientTests {
                     BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes));
 
                     List<ByteBuffer> bufferList = new ArrayList<>();
-                    int bufferSize = 10;
+                    int bufferSize = 113;
                     for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
                         bufferList.add(
                             ByteBuffer.wrap(

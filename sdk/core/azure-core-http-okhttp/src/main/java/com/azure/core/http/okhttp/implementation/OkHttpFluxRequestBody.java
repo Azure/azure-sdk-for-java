@@ -8,6 +8,7 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
 import okio.BufferedSink;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -39,18 +40,19 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
     @Override
     public void writeTo(BufferedSink bufferedSink) throws IOException {
         if (bodySent.compareAndSet(false, true)) {
-            Mono<Void> requestSendMono = content.toFluxByteBuffer()
+            Mono<BufferedSink> requestSendMono = content.toFluxByteBuffer()
                 .publishOn(Schedulers.boundedElastic())
-                .flatMapSequential(buffer -> {
+                .reduce(bufferedSink, (sink, buffer) -> {
                     try {
                         while (buffer.hasRemaining()) {
-                            bufferedSink.write(buffer);
+                            sink.write(buffer);
                         }
-                        return Mono.empty();
+                        return sink;
                     } catch (IOException e) {
-                        return Mono.error(e);
+                        throw Exceptions.propagate(e);
                     }
-                }).then();
+                });
+
             // The blocking happens on OkHttp thread pool.
             if (writeTimeout != null) {
                 requestSendMono.block(writeTimeout);

@@ -30,10 +30,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okio.ByteString;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -41,6 +44,9 @@ import java.util.Objects;
  * HttpClient implementation for OkHttp.
  */
 class OkHttpAsyncHttpClient implements HttpClient {
+
+    private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
+    private static final long BUFFERED_FLUX_REQUEST_THRESHOLD = 10 * 1024L;
 
     final OkHttpClient httpClient;
     private final Duration writeTimeout;
@@ -108,7 +114,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return Mono.just(requestBuilder.head().build());
         }
 
-        return Mono.fromCallable(() -> toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders()))
+        return toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders())
             .map(okhttpRequestBody -> requestBuilder.method(request.getHttpMethod().toString(), okhttpRequestBody)
                 .build());
     }
@@ -118,29 +124,70 @@ class OkHttpAsyncHttpClient implements HttpClient {
      *
      * @param bodyContent The request body content
      * @param headers the headers associated with the original request
-     * @return okhttp3.RequestBody
+     * @return the Mono emitting okhttp request
      */
-    private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
+    private Mono<RequestBody> toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
         String contentType = headers.getValue("Content-Type");
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
         if (bodyContent == null) {
-            return RequestBody.create(ByteString.EMPTY, mediaType);
+            return Mono.just(RequestBody.create(ByteString.EMPTY, mediaType));
         }
 
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-        if (content instanceof ByteArrayContent
-            || content instanceof StringContent
+        if (content instanceof ByteArrayContent) {
+            return Mono.just(RequestBody.create(content.toBytes(), mediaType));
+        } else if (content instanceof StringContent
             || content instanceof SerializableContent) {
-            return RequestBody.create(content.toBytes(), mediaType);
+            return Mono.fromCallable(() -> RequestBody.create(content.toBytes(), mediaType));
         } else if (content instanceof InputStreamContent) {
-            return new OkHttpInputStreamRequestBody((InputStreamContent) content, headers, mediaType);
+            // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
+            return Mono.just(new OkHttpInputStreamRequestBody((InputStreamContent) content, headers, mediaType));
         } else if (content instanceof FileContent) {
-            return new OkHttpFileRequestBody((FileContent) content, headers, mediaType);
+            // The FileContent doesn't read bytes until it's triggered by OkHttp dispatcher.
+            return Mono.just(new OkHttpFileRequestBody((FileContent) content, headers, mediaType));
         } else {
-            return new OkHttpFluxRequestBody(content, headers, mediaType, writeTimeout);
+            // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
+            OkHttpFluxRequestBody fluxRequestBody = new OkHttpFluxRequestBody(
+                content, headers, mediaType, writeTimeout);
+            if (fluxRequestBody.contentLength() < 0
+                || fluxRequestBody.contentLength() > BUFFERED_FLUX_REQUEST_THRESHOLD) {
+                // If Flux is large enough or length is unknown (aka chunked encoding)
+                // then the cost of thread jumping (see OkHttpFluxRequestBody class)
+                // is lesser than memory pressure.
+                // This allows arbitrary length uploads.
+                return Mono.just(fluxRequestBody);
+            } else {
+                // If Flux is small enough then buffering performs better.
+                return toByteString(bodyContent.toFluxByteBuffer()).map(bs -> RequestBody.create(bs, mediaType));
+            }
         }
+    }
+
+    /**
+     * Aggregate Flux of java.nio.ByteBuffer to single okio.ByteString.
+     *
+     * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances. Content of each ByteBuffer will be
+     * written (i.e copied) to the internal okio.Buffer slots. Once the stream terminates, the contents of all slots get
+     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally, the
+     * initial okio.Buffer will be returned to the pool.
+     *
+     * @param bbFlux the Flux of ByteBuffer to aggregate
+     * @return a mono emitting aggregated ByteString
+     */
+    private static Mono<ByteString> toByteString(Flux<ByteBuffer> bbFlux) {
+        Objects.requireNonNull(bbFlux, "'bbFlux' cannot be null.");
+        return Mono.using(okio.Buffer::new,
+                buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
+                    try {
+                        b.write(byteBuffer);
+                        return b;
+                    } catch (IOException ioe) {
+                        throw Exceptions.propagate(ioe);
+                    }
+                }).map(b -> ByteString.of(b.readByteArray())), okio.Buffer::clear)
+            .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
     }
 
     private static class OkHttpCallback implements okhttp3.Callback {
