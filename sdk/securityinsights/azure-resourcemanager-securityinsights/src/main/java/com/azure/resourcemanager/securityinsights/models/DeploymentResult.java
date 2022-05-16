@@ -30,7 +30,11 @@ public final class DeploymentResult extends ExpandableStringEnum<DeploymentResul
         return fromString(name, DeploymentResult.class);
     }
 
-    /** @return known DeploymentResult values. */
+    /**
+     * Gets known DeploymentResult values.
+     *
+     * @return known DeploymentResult values.
+     */
     public static Collection<DeploymentResult> values() {
         return values(DeploymentResult.class);
     }

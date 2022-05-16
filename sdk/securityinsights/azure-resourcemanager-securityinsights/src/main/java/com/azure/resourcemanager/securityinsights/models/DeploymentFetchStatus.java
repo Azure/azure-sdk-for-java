@@ -30,7 +30,11 @@ public final class DeploymentFetchStatus extends ExpandableStringEnum<Deployment
         return fromString(name, DeploymentFetchStatus.class);
     }
 
-    /** @return known DeploymentFetchStatus values. */
+    /**
+     * Gets known DeploymentFetchStatus values.
+     *
+     * @return known DeploymentFetchStatus values.
+     */
     public static Collection<DeploymentFetchStatus> values() {
         return values(DeploymentFetchStatus.class);
     }

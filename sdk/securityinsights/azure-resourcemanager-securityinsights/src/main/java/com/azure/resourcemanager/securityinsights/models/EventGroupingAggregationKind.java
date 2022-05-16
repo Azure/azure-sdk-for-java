@@ -27,7 +27,11 @@ public final class EventGroupingAggregationKind extends ExpandableStringEnum<Eve
         return fromString(name, EventGroupingAggregationKind.class);
     }
 
-    /** @return known EventGroupingAggregationKind values. */
+    /**
+     * Gets known EventGroupingAggregationKind values.
+     *
+     * @return known EventGroupingAggregationKind values.
+     */
     public static Collection<EventGroupingAggregationKind> values() {
         return values(EventGroupingAggregationKind.class);
     }
