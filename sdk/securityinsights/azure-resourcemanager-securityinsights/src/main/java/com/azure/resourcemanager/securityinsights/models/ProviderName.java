@@ -45,7 +45,11 @@ public final class ProviderName extends ExpandableStringEnum<ProviderName> {
         return fromString(name, ProviderName.class);
     }
 
-    /** @return known ProviderName values. */
+    /**
+     * Gets known ProviderName values.
+     *
+     * @return known ProviderName values.
+     */
     public static Collection<ProviderName> values() {
         return values(ProviderName.class);
     }

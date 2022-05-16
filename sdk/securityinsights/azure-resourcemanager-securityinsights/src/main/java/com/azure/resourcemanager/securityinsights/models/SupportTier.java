@@ -30,7 +30,11 @@ public final class SupportTier extends ExpandableStringEnum<SupportTier> {
         return fromString(name, SupportTier.class);
     }
 
-    /** @return known SupportTier values. */
+    /**
+     * Gets known SupportTier values.
+     *
+     * @return known SupportTier values.
+     */
     public static Collection<SupportTier> values() {
         return values(SupportTier.class);
     }
