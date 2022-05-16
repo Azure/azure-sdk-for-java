@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Represents the encryption data that is stored on the service.
  */
-final class EncryptionData {
+final class EncryptionDataV1 {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
@@ -46,13 +46,13 @@ final class EncryptionData {
     private Map<String, String> keyWrappingMetadata;
 
     /**
-     * Initializes a new instance of the {@link EncryptionData} class.
+     * Initializes a new instance of the {@link EncryptionDataV1} class.
      */
-    EncryptionData() {
+    EncryptionDataV1() {
     }
 
     /**
-     * Initializes a new instance of the {@link EncryptionData} class using the specified wrappedContentKey,
+     * Initializes a new instance of the {@link EncryptionDataV1} class using the specified wrappedContentKey,
      * encryptionAgent, contentEncryptionIV, and keyWrappingMetadata.
      *
      * @param encryptionMode The blob encryption mode.
@@ -61,7 +61,7 @@ final class EncryptionData {
      * @param contentEncryptionIV The content encryption IV.
      * @param keyWrappingMetadata Metadata for encryption.
      */
-    EncryptionData(String encryptionMode, WrappedKey wrappedContentKey, EncryptionAgent encryptionAgent,
+    EncryptionDataV1(String encryptionMode, WrappedKey wrappedContentKey, EncryptionAgent encryptionAgent,
         byte[] contentEncryptionIV, Map<String, String> keyWrappingMetadata) {
         this.encryptionMode = encryptionMode;
         this.wrappedContentKey = wrappedContentKey;
@@ -123,7 +123,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    EncryptionData setEncryptionMode(String encryptionMode) {
+    EncryptionDataV1 setEncryptionMode(String encryptionMode) {
         this.encryptionMode = encryptionMode;
         return this;
     }
@@ -136,7 +136,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    EncryptionData setWrappedContentKey(WrappedKey wrappedContentKey) {
+    EncryptionDataV1 setWrappedContentKey(WrappedKey wrappedContentKey) {
         this.wrappedContentKey = wrappedContentKey;
         return this;
     }
@@ -148,7 +148,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    EncryptionData setEncryptionAgent(EncryptionAgent encryptionAgent) {
+    EncryptionDataV1 setEncryptionAgent(EncryptionAgent encryptionAgent) {
         this.encryptionAgent = encryptionAgent;
         return this;
     }
@@ -160,7 +160,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    EncryptionData setContentEncryptionIV(byte[] contentEncryptionIV) {
+    EncryptionDataV1 setContentEncryptionIV(byte[] contentEncryptionIV) {
         this.contentEncryptionIV = contentEncryptionIV;
         return this;
     }
@@ -172,7 +172,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    EncryptionData setKeyWrappingMetadata(Map<String, String> keyWrappingMetadata) {
+    EncryptionDataV1 setKeyWrappingMetadata(Map<String, String> keyWrappingMetadata) {
         this.keyWrappingMetadata = keyWrappingMetadata;
         return this;
     }
@@ -181,7 +181,7 @@ final class EncryptionData {
         return MAPPER.writeValueAsString(this);
     }
 
-    static EncryptionData fromJsonString(String jsonString) throws JsonProcessingException {
-        return MAPPER.readValue(jsonString, EncryptionData.class);
+    static EncryptionDataV1 fromJsonString(String jsonString) throws JsonProcessingException {
+        return MAPPER.readValue(jsonString, EncryptionDataV1.class);
     }
 }

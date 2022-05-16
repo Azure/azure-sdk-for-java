@@ -7,5 +7,7 @@ enum EncryptionAlgorithm {
     /**
      * AES-CBC using a 256 bit key.
      */
-    AES_CBC_256
+    AES_CBC_256,
+
+    AES_GMC_256
 }

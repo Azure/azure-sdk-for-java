@@ -592,7 +592,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
                     // Build EncryptionData
-                    EncryptionData encryptionData = new EncryptionData()
+                    EncryptionDataV1 encryptionData = new EncryptionDataV1()
                         .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
                         .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
                             EncryptionAlgorithm.AES_CBC_256))

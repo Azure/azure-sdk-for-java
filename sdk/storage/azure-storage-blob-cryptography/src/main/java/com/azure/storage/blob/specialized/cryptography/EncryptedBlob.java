@@ -10,9 +10,9 @@ import java.nio.ByteBuffer;
 final class EncryptedBlob {
 
     /**
-     * {@link EncryptionData} to decrypt EncryptedBlob
+     * {@link EncryptionDataV1} to decrypt EncryptedBlob
      */
-    private final EncryptionData encryptionData;
+    private final EncryptionDataV1 encryptionData;
 
     /**
      * The encrypted blob content as a Flowable ByteBuffer
@@ -22,10 +22,10 @@ final class EncryptedBlob {
     /**
      * Creates a new EncryptedBlob with given EncryptedData and Flowable ByteBuffer
      *
-     * @param encryptionData A {@link EncryptionData}
+     * @param encryptionData A {@link EncryptionDataV1}
      * @param ciphertextFlux A Flowable ByteBuffer
      */
-    EncryptedBlob(EncryptionData encryptionData, Flux<ByteBuffer> ciphertextFlux) {
+    EncryptedBlob(EncryptionDataV1 encryptionData, Flux<ByteBuffer> ciphertextFlux) {
         this.encryptionData = encryptionData;
         this.ciphertextFlux = ciphertextFlux;
     }
@@ -33,7 +33,7 @@ final class EncryptedBlob {
     /**
      * @return This EncryptedBlob's EncryptedData.
      */
-    EncryptionData getEncryptionData() {
+    EncryptionDataV1 getEncryptionData() {
         return this.encryptionData;
     }
 

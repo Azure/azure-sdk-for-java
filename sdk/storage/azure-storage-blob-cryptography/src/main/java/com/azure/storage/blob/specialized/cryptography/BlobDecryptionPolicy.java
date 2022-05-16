@@ -137,7 +137,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      */
     Flux<ByteBuffer> decryptBlob(String encryptedDataString, Flux<ByteBuffer> encryptedFlux,
         EncryptedBlobRange encryptedBlobRange, boolean padding) {
-        EncryptionData encryptionData = getAndValidateEncryptionData(encryptedDataString);
+        EncryptionDataV1 encryptionData = getAndValidateEncryptionData(encryptedDataString);
 
         // The number of bytes we have put into the Cipher so far.
         AtomicLong totalInputBytes = new AtomicLong(0);
@@ -305,12 +305,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Gets and validates {@link EncryptionData} from a Blob's metadata
+     * Gets and validates {@link EncryptionDataV1} from a Blob's metadata
      *
      * @param encryptedDataString {@code String} of encrypted metadata
-     * @return {@link EncryptionData}
+     * @return {@link EncryptionDataV1}
      */
-    private EncryptionData getAndValidateEncryptionData(String encryptedDataString) {
+    private EncryptionDataV1 getAndValidateEncryptionData(String encryptedDataString) {
         if (encryptedDataString == null) {
             if (requiresEncryption) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
@@ -320,7 +320,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         }
 
         try {
-            EncryptionData encryptionData = EncryptionData.fromJsonString(encryptedDataString);
+            EncryptionDataV1 encryptionData = EncryptionDataV1.fromJsonString(encryptedDataString);
 
             // Blob being downloaded is not null.
             if (encryptionData == null) {
@@ -355,10 +355,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * Returns the key encryption key for blob. First tries to get key encryption key from KeyResolver, then falls back
      * to IKey stored on this EncryptionPolicy.
      *
-     * @param encryptionData A {@link EncryptionData}
+     * @param encryptionData A {@link EncryptionDataV1}
      * @return Key encryption key as a byte array
      */
-    private Mono<byte[]> getKeyEncryptionKey(EncryptionData encryptionData) {
+    private Mono<byte[]> getKeyEncryptionKey(EncryptionDataV1 encryptionData) {
         /*
          * 1. Invoke the key resolver if specified to get the key. If the resolver is specified but does not have a
          * mapping for the key id, an error should be thrown. This is important for key rotation scenario.
@@ -396,14 +396,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * Creates a {@link Cipher} using given content encryption key, encryption data, iv, and padding.
      *
      * @param contentEncryptionKey The content encryption key, used to decrypt the contents of the blob.
-     * @param encryptionData {@link EncryptionData}
+     * @param encryptionData {@link EncryptionDataV1}
      * @param iv IV used to initialize the Cipher.  If IV is null, encryptionData
      * @param padding If cipher should use padding. Padding is necessary to decrypt all the way to end of a blob.
      * Otherwise, don't use padding.
      * @return {@link Cipher}
      * @throws InvalidKeyException The key provided is invalid
      */
-    private Cipher getCipher(byte[] contentEncryptionKey, EncryptionData encryptionData, byte[] iv, boolean padding)
+    private Cipher getCipher(byte[] contentEncryptionKey, EncryptionDataV1 encryptionData, byte[] iv, boolean padding)
         throws InvalidKeyException {
         try {
             switch (encryptionData.getEncryptionAgent().getAlgorithm()) {

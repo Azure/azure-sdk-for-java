@@ -9,11 +9,15 @@ import java.util.Map;
 final class CryptographyConstants {
     static final String ENCRYPTION_PROTOCOL_V1 = "1.0";
 
+    static final String ENCRYPTION_PROTOCOL_V2 = "2.0";
+
     static final String AGENT_METADATA_KEY = "EncryptionLibrary";
 
     static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
 
     static final String AES_CBC_NO_PADDING = "AES/CBC/NoPadding";
+
+    static final String AES_GMC_NO_PADDING = "AES/GMC/NoPadding";
 
     static final String AES = "AES";
 
