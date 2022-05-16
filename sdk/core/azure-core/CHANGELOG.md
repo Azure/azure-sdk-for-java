@@ -17,6 +17,8 @@
 - Ensure the gap in `HttpLoggingPolicy` between `requestUrl` and upcoming log contents if line separators are removed 
   by default in `ClientLogger` when logging.
 
+### Other Changes
+
 ## 1.28.0 (2022-05-06)
 
 ### Features Added
