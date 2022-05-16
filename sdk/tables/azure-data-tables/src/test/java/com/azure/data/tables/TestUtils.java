@@ -47,7 +47,7 @@ public final class TestUtils {
     public static String getConnectionString(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
-            : Configuration.getGlobalConfiguration().get("AZURE_TABLES_CONNECTION_STRING");
+            : Configuration.getGlobalConfiguration().get("TABLES_CONNECTION_STRING");
     }
 
     public static HttpRequest request(String url) throws MalformedURLException {
@@ -189,7 +189,7 @@ public final class TestUtils {
 
     static boolean isCosmosTest() {
         Configuration globalConfiguration = Configuration.getGlobalConfiguration();
-        return globalConfiguration.get("AZURE_TABLES_CONNECTION_STRING") != null
-            && globalConfiguration.get("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+        return globalConfiguration.get("TABLES_CONNECTION_STRING") != null
+            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
     }
 }

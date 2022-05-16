@@ -24,7 +24,11 @@ public final class TriggerReferenceType extends ExpandableStringEnum<TriggerRefe
         return fromString(name, TriggerReferenceType.class);
     }
 
-    /** @return known TriggerReferenceType values. */
+    /**
+     * Gets known TriggerReferenceType values.
+     *
+     * @return known TriggerReferenceType values.
+     */
     public static Collection<TriggerReferenceType> values() {
         return values(TriggerReferenceType.class);
     }

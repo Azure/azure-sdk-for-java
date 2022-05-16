@@ -1,17 +1,31 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.10.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for 2021-06-08 service version.
-- Added support for Customer Provided Keys.
-- Added creationTime and expiryTime fields to `PathItem`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.9.1 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-blob` from `12.16.0` to version `12.16.1`.
+
+## 12.10.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
+- Added support for Customer Provided Keys.
+- Added creationTime and expiryTime fields to `PathItem`.
 
 ## 12.9.0 (2022-04-07)
 

@@ -27,7 +27,11 @@ public final class DataTypeState extends ExpandableStringEnum<DataTypeState> {
         return fromString(name, DataTypeState.class);
     }
 
-    /** @return known DataTypeState values. */
+    /**
+     * Gets known DataTypeState values.
+     *
+     * @return known DataTypeState values.
+     */
     public static Collection<DataTypeState> values() {
         return values(DataTypeState.class);
     }

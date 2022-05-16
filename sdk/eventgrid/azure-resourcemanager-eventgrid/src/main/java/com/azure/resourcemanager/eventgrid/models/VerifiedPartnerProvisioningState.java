@@ -39,7 +39,11 @@ public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum
         return fromString(name, VerifiedPartnerProvisioningState.class);
     }
 
-    /** @return known VerifiedPartnerProvisioningState values. */
+    /**
+     * Gets known VerifiedPartnerProvisioningState values.
+     *
+     * @return known VerifiedPartnerProvisioningState values.
+     */
     public static Collection<VerifiedPartnerProvisioningState> values() {
         return values(VerifiedPartnerProvisioningState.class);
     }

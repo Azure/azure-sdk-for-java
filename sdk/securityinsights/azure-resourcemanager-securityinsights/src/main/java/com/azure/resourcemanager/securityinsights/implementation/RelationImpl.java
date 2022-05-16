@@ -50,6 +50,10 @@ public final class RelationImpl implements Relation, Relation.Definition, Relati
         return this.innerModel().relatedResourceKind();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RelationInner innerModel() {
         return this.innerObject;
     }

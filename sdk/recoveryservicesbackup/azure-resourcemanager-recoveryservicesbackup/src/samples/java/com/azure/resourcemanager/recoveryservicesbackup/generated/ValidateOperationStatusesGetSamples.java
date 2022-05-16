@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ValidateOperationStatuses Get. */
 public final class ValidateOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ValidateOperationStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/ValidateOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status of Validate Operation.

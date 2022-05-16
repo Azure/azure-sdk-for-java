@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 import java.util.Map;
@@ -27,7 +26,7 @@ public final class ShareFileRenameOptions {
     private String filePermission;
     private FileSmbProperties smbProperties;
     private Map<String, String> metadata;
-    private ShareFileHttpHeaders headers;
+    private String contentType;
 
     /**
      * Creates a {@code ShareFileRenameOptions} object.
@@ -176,44 +175,22 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the {@link ShareFileHttpHeaders}. Currently, only content type is respected. Others are ignored.
+     * Gets the content type.
      *
-     * @return The {@link ShareFileHttpHeaders}.
+     * @return The content type.
      */
-    public ShareFileHttpHeaders getHeaders() {
-        return this.headers;
+    public String getContentType() {
+        return this.contentType;
     }
 
     /**
-     * Sets the {@link ShareFileHttpHeaders}.  Currently, only content type is respected. This method will throw if
-     * others are set.
+     * Sets the content type.
      *
-     * @param headers {@link ShareFileHttpHeaders}
+     * @param contentType the content type.
      * @return The updated options.
-     * @throws IllegalArgumentException If headers besides content type are set, this method will throw.
      */
-    public ShareFileRenameOptions setHeaders(ShareFileHttpHeaders headers) {
-        if (headers.getCacheControl() != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("cache control is not supported on this api"));
-        }
-        if (headers.getContentDisposition() != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("content disposition is not supported on this api"));
-        }
-        if (headers.getContentEncoding() != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("content encoding is not supported on this api"));
-        }
-        if (headers.getContentLanguage() != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("content language is not supported on this api"));
-        }
-        if (headers.getContentMd5() != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("content md5 is not supported on this api"));
-        }
-        this.headers = headers;
+    public ShareFileRenameOptions setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 }

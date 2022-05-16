@@ -164,15 +164,7 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VerifiedPartnerInner> getAsync(String verifiedPartnerName) {
-        return getWithResponseAsync(verifiedPartnerName)
-            .flatMap(
-                (Response<VerifiedPartnerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(verifiedPartnerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

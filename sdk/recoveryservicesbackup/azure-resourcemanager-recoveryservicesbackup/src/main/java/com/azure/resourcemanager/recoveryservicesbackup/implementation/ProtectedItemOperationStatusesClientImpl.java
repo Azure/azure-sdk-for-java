@@ -253,14 +253,7 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
         String operationId) {
         return getWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

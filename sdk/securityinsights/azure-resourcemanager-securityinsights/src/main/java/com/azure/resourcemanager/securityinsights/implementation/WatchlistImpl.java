@@ -138,6 +138,10 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WatchlistInner innerModel() {
         return this.innerObject;
     }

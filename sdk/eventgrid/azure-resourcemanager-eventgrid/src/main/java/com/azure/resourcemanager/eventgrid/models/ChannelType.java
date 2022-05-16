@@ -27,7 +27,11 @@ public final class ChannelType extends ExpandableStringEnum<ChannelType> {
         return fromString(name, ChannelType.class);
     }
 
-    /** @return known ChannelType values. */
+    /**
+     * Gets known ChannelType values.
+     *
+     * @return known ChannelType values.
+     */
     public static Collection<ChannelType> values() {
         return values(ChannelType.class);
     }

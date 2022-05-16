@@ -111,10 +111,7 @@ public final class OSProfile {
     private Boolean allowExtensionOperations;
 
     /*
-     * Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine.  **Note: This property is for
-     * private testing only, and all customers must not set the property to
-     * false.**
+     * Optional property which must either be set to True or omitted.
      */
     @JsonProperty(value = "requireGuestProvisionSignal")
     private Boolean requireGuestProvisionSignal;
@@ -350,9 +347,7 @@ public final class OSProfile {
     }
 
     /**
-     * Get the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
-     * must not set the property to false.**.
+     * Get the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
      *
      * @return the requireGuestProvisionSignal value.
      */
@@ -361,9 +356,7 @@ public final class OSProfile {
     }
 
     /**
-     * Set the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
-     * must not set the property to false.**.
+     * Set the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
      *
      * @param requireGuestProvisionSignal the requireGuestProvisionSignal value to set.
      * @return the OSProfile object itself.

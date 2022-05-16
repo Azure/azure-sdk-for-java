@@ -27,7 +27,11 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
         return fromString(name, WindowsPatchAssessmentMode.class);
     }
 
-    /** @return known WindowsPatchAssessmentMode values. */
+    /**
+     * Gets known WindowsPatchAssessmentMode values.
+     *
+     * @return known WindowsPatchAssessmentMode values.
+     */
     public static Collection<WindowsPatchAssessmentMode> values() {
         return values(WindowsPatchAssessmentMode.class);
     }

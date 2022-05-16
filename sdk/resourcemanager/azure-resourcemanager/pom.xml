@@ -201,13 +201,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.9</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -260,7 +260,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
@@ -274,7 +274,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <additionalReadmes>
             <additionalReadme>

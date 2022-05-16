@@ -22,6 +22,9 @@ public class EventHubsSample {
     private static final String AZURE_EVENT_HUBS_NAME =
             Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_NAME", "");
 
+    /**
+     * The method to run Event Hubs sample.
+     */
     public static void runSample() {
         System.out.println("\n================================================================");
         System.out.println(" Starting Event Hubs Sender Sample");
