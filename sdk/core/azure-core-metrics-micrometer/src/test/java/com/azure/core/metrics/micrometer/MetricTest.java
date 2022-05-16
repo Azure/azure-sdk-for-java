@@ -1,9 +1,9 @@
-package com.azure.core.metrics.opentelemetry;
-
+package com.azure.core.metrics.micrometer;
+/*
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.metrics.ClientLongHistogram;
-import com.azure.core.util.metrics.ClientMeter;
+import com.azure.core.util.metrics.LongHistogram;
+import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.ClientMeterProvider;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -40,7 +40,7 @@ public class MetricTest {
         Map<String, Object> commonAttributes = Collections.singletonMap("key", "value");
         Map<String, Object> extraAttributes = Collections.singletonMap("extraKey", "extraValue");
 
-        ClientLongHistogram longHistogram = ClientMeterProvider
+        LongHistogram longHistogram = MeterProvider
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setImplementationConfiguration(sdkMeterProvider))
             .getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
 
@@ -84,11 +84,11 @@ public class MetricTest {
             .build();
 
         Map<String, Object> commonAttributes = Collections.singletonMap("key", "value");
-        ClientMeter meter = ClientMeterProvider
+        Meter meter = MeterProvider
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setImplementationConfiguration(sdkMeterProvider));
 
-        ClientLongHistogram longHistogram1 = meter.getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
-        ClientLongHistogram longHistogram2 = meter.getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
+        LongHistogram longHistogram1 = meter.getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
+        LongHistogram longHistogram2 = meter.getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
 
         longHistogram1.record(42, Context.NONE);
         longHistogram2.record(420, Context.NONE);
@@ -121,3 +121,4 @@ public class MetricTest {
                                                     0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0))));
     }
 }
+*/

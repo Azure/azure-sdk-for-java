@@ -13,10 +13,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.DoubleHistogram;
-import com.azure.core.util.metrics.MeterProxy;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -107,8 +104,6 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private volatile Instant lastKnownErrorReportedAt;
     private volatile int linkSize;
 
-    private final static DoubleHistogram DEFAULT_SEND_DURATION_METRIC = MeterProxy.getDoubleHistogram("az.amqp.producer.link.duration", "duration", "ms",  new MetricsOptions<>());
-    private final DoubleHistogram sendDurationMetric;
     /**
      * Creates an instance of {@link ReactorSender}.
      *
@@ -147,8 +142,6 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         this.activeTimeoutMessage = String.format(
             "ReactorSender connectionId[%s] linkName[%s]: Waiting for send and receive handler to be ACTIVE",
             handler.getConnectionId(), handler.getLinkName());
-
-        this.sendDurationMetric = DEFAULT_SEND_DURATION_METRIC;
 
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {

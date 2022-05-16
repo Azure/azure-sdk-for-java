@@ -1,39 +1,27 @@
 package com.azure.core.util;
 
-public class MetricsOptions<T> {
+public class MetricsOptions {
 
-    private final T metricProvider;
-    private boolean isEnabled;
-    private final String instrumentationScope;
-    private final String instrumentationVersion;
+    private Object implConfiguration;
+    private boolean isEnabled = true;
 
     public MetricsOptions() {
-        this(null);
     }
 
-    public MetricsOptions(T metricProvider) {
-        this.metricProvider = metricProvider;
-        instrumentationScope = "todo";//getClass().getPackage();
-        instrumentationVersion = "0.0.0";
+    public Object getImplementationConfiguration() {
+        return implConfiguration;
+    }
+    public boolean isEnabled() {
+        return this.isEnabled;
     }
 
-    public static MetricsOptions<?> fromConfiguration(Configuration configuration) {
-        // PROPERTY_AZURE_METRICS_DISABLED
-        return new MetricsOptions<>(null);
-    }
-
-    public void isMetricsEnabled(boolean enabled) {
+    public MetricsOptions enable(boolean enabled) {
         this.isEnabled = enabled;
+        return this;
     }
 
-    public T getProviderImplementation() {
-        return metricProvider;
-    }
-
-    public String getInstrumentationScope() {
-        return instrumentationScope;
-    }
-    public String getInstrumentationVersion() {
-        return instrumentationVersion;
+    public MetricsOptions setImplementationConfiguration(Object implConfiguration) {
+        this.implConfiguration = implConfiguration;
+        return this;
     }
 }

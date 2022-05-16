@@ -12,12 +12,19 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.annotation.Options;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.ClientMeter;
+import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.LongHistogram;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -28,14 +35,19 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -183,6 +195,12 @@ public class EventHubProducerAsyncClient implements Closeable {
 
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS = new CreateBatchOptions();
+    private static final String VERSION_KEY = "version";
+    private static final String UNKNOWN = "UNKNOWN";
+    private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
+    private static final ClientMeter DEFAULT_METER = ClientMeterProvider.createMeter("azure-messaging-eventhubs", getLibraryVersion(), new MetricsOptions());
+
+    private final EventHubsMetricProducerMetricHelper metricHelper;
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -196,6 +214,10 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
+
+    private static String getLibraryVersion() {
+        return CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE).getOrDefault(VERSION_KEY, UNKNOWN);
+    }
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -218,6 +240,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
+        // TODO custom MetricOptions
+        this.metricHelper = new EventHubsMetricProducerMetricHelper(DEFAULT_METER, fullyQualifiedNamespace, eventHubName);
     }
 
     /**
@@ -532,7 +556,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final AtomicReference<Context> parentContext = isTracingEnabled
             ? new AtomicReference<>(Context.NONE)
             : null;
-
+        Instant startTime = Instant.now();
         Context sharedContext = null;
         final List<Message> messages = new ArrayList<>();
 
@@ -578,9 +602,14 @@ public class EventHubProducerAsyncClient implements Closeable {
             String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
             .publishOn(scheduler)
             .doOnEach(signal -> {
+                Context parentContextVal = parentContext.get();
                 if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), signal);
+                    tracerProvider.endSpan(parentContextVal, signal);
                 }
+
+                boolean error = signal.getType().equals(SignalType.ON_ERROR) && signal.hasError();
+
+                metricHelper.recordSendBatch(Duration.between(startTime, Instant.now()), batch.getCount(), parentContextVal, batch.getPartitionId(), error, getErrorCode(signal));
             });
     }
 
@@ -617,6 +646,16 @@ public class EventHubProducerAsyncClient implements Closeable {
             .doOnError(error -> {
                 LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
             });
+    }
+
+    private static AmqpErrorCondition getErrorCode(Signal<Void> signal) {
+        Throwable throwable = signal.getThrowable();
+        if (throwable instanceof AmqpException) {
+            AmqpException exception = (AmqpException) throwable;
+            return exception.getErrorCondition();
+        }
+
+        return null;
     }
 
     private String getEntityPath(String partitionId) {

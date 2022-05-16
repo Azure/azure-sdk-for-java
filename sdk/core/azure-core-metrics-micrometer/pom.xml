@@ -11,11 +11,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-core-metrics-opentelemetry</artifactId>
+  <artifactId>azure-core-metrics-micrometer</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
 
-  <name>Microsoft Azure OpenTelemetry metrics plugin</name>
-  <description>This package contains the OpenTelemetry tracing plugin for Azure client libraries.</description>
+  <name>Microsoft Azure Micrometer metrics plugin</name>
+  <description>This package contains the Micrometer metrics plugin for Azure client libraries.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -33,16 +33,11 @@
 
   <properties>
     <javaModulesSurefireArgLine>
-      --add-opens com.azure.core.metrics.opentelemetry/com.azure.core.metrics.opentelemetry.implementation=ALL-UNNAMED
+      --add-opens com.azure.core.metrics.micrometer/com.azure.core.metrics.micrometer.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-api</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
@@ -54,20 +49,10 @@
       <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
-
-    <!--test dependencies -->
     <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.14.0</version>
-      <scope>test</scope>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+      <version>1.8.5</version> <!-- {x-version-update;cio.micrometer:micrometer-core;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -132,10 +117,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.8.5]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -61,5 +61,5 @@ module com.azure.core {
     uses com.azure.core.util.serializer.JsonSerializerProvider;
     uses com.azure.core.util.serializer.MemberNameConverterProvider;
     uses com.azure.core.util.tracing.Tracer;
-    uses com.azure.core.util.metrics.MeterProvider;
+    uses com.azure.core.util.metrics.ClientMeterProvider;
 }
