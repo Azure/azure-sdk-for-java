@@ -8,15 +8,16 @@
         "endpointType": {
             "type": "String"
         },
-        "testApplicationId": {
-           "type": "string"
-        },
-        "testApplicationSecret": {
-            "type": "string"
+        "testApplicationOid": {
+            "type": "string",
+            "metadata": {
+                "description": "The client OID to grant access to test resources."
+            }
         }
     },
     "variables": {
         "mgmtApiVersion": "2019-04-01",
+        "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",
         "location": "[resourceGroup().location]",
         "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
@@ -46,7 +47,7 @@
             "name": "[guid(concat('tableDataContributorRoleId', resourceGroup().id))]",
             "properties": {
                 "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
-                "principalId": "[parameters('testApplicationId')]"
+                "principalId": "[parameters('testApplicationOid')]"
             }
         },
         {
@@ -112,19 +113,11 @@
         }
     ],
     "outputs": {
-        "AZURE_TABLES_CONNECTION_STRING": {
+        "TABLES_CONNECTION_STRING": {
             "type": "string",
             "value": "[if(equals(parameters('endpointType'), 'storage'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('mgmtApiVersion')).keys[0].value, ';EndpointSuffix=core.windows.net/;'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('primaryAccountName')), '2020-04-01').primaryMasterKey, ';EndpointSuffix=cosmos.azure.com:443/;'))]",
         },
-        "AZURE_TABLES_CLIENT_ID": {
-            "type": "string",
-            "value": "[parameters('testApplicationId')]"
-        },
-        "AZURE_TABLES_CLIENT_SECRET": {
-            "type": "string",
-            "value": "[parameters('testApplicationSecret')]"
-        },
-        "AZURE_TABLES_ENDPOINT": {
+        "TABLES_ENDPOINT": {
           "type": "string",
           "value": "[concat('https://', variables('primaryAccountName'), '.table.', if(equals(parameters('endpointType'), 'storage'), 'core.windows.net', 'cosmos.azure.com:443'))]"
         }

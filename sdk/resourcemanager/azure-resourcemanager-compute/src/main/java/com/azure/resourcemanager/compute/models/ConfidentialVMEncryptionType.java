@@ -31,7 +31,11 @@ public final class ConfidentialVMEncryptionType extends ExpandableStringEnum<Con
         return fromString(name, ConfidentialVMEncryptionType.class);
     }
 
-    /** @return known ConfidentialVMEncryptionType values. */
+    /**
+     * Gets known ConfidentialVMEncryptionType values.
+     *
+     * @return known ConfidentialVMEncryptionType values.
+     */
     public static Collection<ConfidentialVMEncryptionType> values() {
         return values(ConfidentialVMEncryptionType.class);
     }

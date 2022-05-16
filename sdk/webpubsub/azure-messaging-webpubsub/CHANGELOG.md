@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.2 (2022-05-10)
 
 ### Other Changes
@@ -8,6 +18,7 @@
 
 - Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
 - Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `nimbus-jose-jwt` from `9.10.1` to version `9.22`.
 
 ## 1.1.1 (2022-04-14)
 

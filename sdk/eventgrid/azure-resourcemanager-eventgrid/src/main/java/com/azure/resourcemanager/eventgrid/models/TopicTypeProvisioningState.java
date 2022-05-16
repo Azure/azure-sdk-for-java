@@ -39,7 +39,11 @@ public final class TopicTypeProvisioningState extends ExpandableStringEnum<Topic
         return fromString(name, TopicTypeProvisioningState.class);
     }
 
-    /** @return known TopicTypeProvisioningState values. */
+    /**
+     * Gets known TopicTypeProvisioningState values.
+     *
+     * @return known TopicTypeProvisioningState values.
+     */
     public static Collection<TopicTypeProvisioningState> values() {
         return values(TopicTypeProvisioningState.class);
     }
