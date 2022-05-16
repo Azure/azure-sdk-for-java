@@ -26,14 +26,14 @@ import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TablesQueryResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -119,12 +119,13 @@ public class AzureTableImplTest extends TestBase {
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
 
-        List<TableResponseProperties> result = azureTable.getTables().queryWithResponseAsync(
-            testResourceNamer.randomUuid(), null, queryOptions, Context.NONE).block().getValue().getValue();
-
-        Mono.when(Flux.fromIterable(result).flatMap(tableResponseProperty ->
-            azureTable.getTables().deleteWithResponseAsync(tableResponseProperty.getTableName(),
-                testResourceNamer.randomUuid(), Context.NONE))).block();
+        azureTable.getTables().queryWithResponseAsync(testResourceNamer.randomUuid(), null, queryOptions, Context.NONE)
+            .map(TablesQueryResponse::getValue)
+            .map(TableQueryResponse::getValue)
+            .flatMapIterable(tableResponseProperties -> tableResponseProperties)
+            .flatMap(tableResponseProperties ->
+                azureTable.getTables().deleteWithResponseAsync(tableResponseProperties.getTableName(),
+                testResourceNamer.randomUuid(), Context.NONE)).blockLast();
     }
 
     void createTable(String tableName) {
@@ -223,7 +224,6 @@ public class AzureTableImplTest extends TestBase {
         createTable(tableA);
         createTable(tableB);
         int expectedStatusCode = 200;
-        int expectedSize = 2;
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
@@ -231,7 +231,6 @@ public class AzureTableImplTest extends TestBase {
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
                 List<TableResponseProperties> results = response.getValue().getValue();
-                Assertions.assertEquals(expectedSize, results.size());
                 assertTrue(results.stream().anyMatch(p -> tableA.equals(p.getTableName())));
                 assertTrue(results.stream().anyMatch(p -> tableB.equals(p.getTableName())));
             })

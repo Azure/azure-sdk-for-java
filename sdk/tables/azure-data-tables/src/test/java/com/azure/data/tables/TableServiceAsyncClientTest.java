@@ -93,19 +93,23 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
      */
     @Test
     public void serviceCreateTableWithMultipleTenants() {
+        // This feature works only in Storage endpoints with service version 2020_12_06.
+        Assumptions.assumeTrue(serviceClient.getServiceEndpoint().contains("core.windows.net")
+            && serviceClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
+
         // Arrange
         String tableName = testResourceNamer.randomName("tableName", 20);
 
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
         final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("AZURE_TABLES_CLIENT_ID", "clientId"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_TABLES_CLIENT_SECRET", "clientSecret"))
+            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
             .build();
 
         final TableServiceAsyncClient tableServiceAsyncClient =
-            getClientBuilder(Configuration.getGlobalConfiguration().get("AZURE_TABLES_ENDPOINT",
+            getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
                 "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
 
         // Act & Assert

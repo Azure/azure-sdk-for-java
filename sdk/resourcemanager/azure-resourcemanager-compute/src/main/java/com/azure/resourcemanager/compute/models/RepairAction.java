@@ -30,7 +30,11 @@ public final class RepairAction extends ExpandableStringEnum<RepairAction> {
         return fromString(name, RepairAction.class);
     }
 
-    /** @return known RepairAction values. */
+    /**
+     * Gets known RepairAction values.
+     *
+     * @return known RepairAction values.
+     */
     public static Collection<RepairAction> values() {
         return values(RepairAction.class);
     }

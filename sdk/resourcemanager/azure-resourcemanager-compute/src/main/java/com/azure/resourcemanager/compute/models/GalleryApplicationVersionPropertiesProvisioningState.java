@@ -40,7 +40,11 @@ public final class GalleryApplicationVersionPropertiesProvisioningState
         return fromString(name, GalleryApplicationVersionPropertiesProvisioningState.class);
     }
 
-    /** @return known GalleryApplicationVersionPropertiesProvisioningState values. */
+    /**
+     * Gets known GalleryApplicationVersionPropertiesProvisioningState values.
+     *
+     * @return known GalleryApplicationVersionPropertiesProvisioningState values.
+     */
     public static Collection<GalleryApplicationVersionPropertiesProvisioningState> values() {
         return values(GalleryApplicationVersionPropertiesProvisioningState.class);
     }

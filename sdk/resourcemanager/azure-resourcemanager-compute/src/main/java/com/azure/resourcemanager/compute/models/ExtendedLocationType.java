@@ -24,7 +24,11 @@ public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLoc
         return fromString(name, ExtendedLocationType.class);
     }
 
-    /** @return known ExtendedLocationType values. */
+    /**
+     * Gets known ExtendedLocationType values.
+     *
+     * @return known ExtendedLocationType values.
+     */
     public static Collection<ExtendedLocationType> values() {
         return values(ExtendedLocationType.class);
     }

@@ -33,7 +33,11 @@ public final class PipelineJobState extends ExpandableStringEnum<PipelineJobStat
         return fromString(name, PipelineJobState.class);
     }
 
-    /** @return known PipelineJobState values. */
+    /**
+     * Gets known PipelineJobState values.
+     *
+     * @return known PipelineJobState values.
+     */
     public static Collection<PipelineJobState> values() {
         return values(PipelineJobState.class);
     }
