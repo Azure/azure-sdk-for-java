@@ -919,7 +919,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
      * client.listPageRanges&#40;blobRange&#41;.subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s%n&quot;,
-     * rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
+     *     rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#BlobRange -->
      *
@@ -941,11 +941,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions -->
      * <pre>
      * ListPageRangesOptions options = new ListPageRangesOptions&#40;new BlobRange&#40;offset&#41;&#41;
-     * 	  .setMaxResultsPerPage&#40;1000&#41;.setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
+     *     .setMaxResultsPerPage&#40;1000&#41;.setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
      *
      * client.listPageRanges&#40;options&#41;
-     * 	  .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s%n&quot;, rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;,
-     * 		  rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
+     *     .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s%n&quot;, rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions -->
      *
@@ -1149,12 +1149,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions -->
      * <pre>
      * ListPageRangesDiffOptions options = new ListPageRangesDiffOptions&#40;new BlobRange&#40;offset&#41;, &quot;previous snapshot&quot;&#41;
-     * 	   .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
-     * 	   .setMaxResultsPerPage&#40;1000&#41;;
+     *     .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setMaxResultsPerPage&#40;1000&#41;;
      *
      * client.listPageRangesDiff&#40;options&#41;
-     * 	   .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;,
-     * 	       rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
+     *     .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;,
+     *         rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions -->
      *

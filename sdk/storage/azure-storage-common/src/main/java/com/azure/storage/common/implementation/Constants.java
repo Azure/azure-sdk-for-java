@@ -216,7 +216,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2021-04-10";
+        public static final String TARGET_STORAGE_VERSION = "2021-06-08";
 
         /**
          * Error code returned from the service.

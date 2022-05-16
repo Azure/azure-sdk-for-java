@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.GeoReplicationStatus
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
@@ -763,7 +764,14 @@ class ServiceAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-request-id") != null
         response.getHeaders().getValue("Date") != null
         response.getValue().getGeoReplication().getStatus() != null
-        response.getValue().getGeoReplication().getLastSyncTime() != null
+
+        // The LastSyncTime will return a DateTimeRfc1123 if the replication status is LIVE
+        // but there are two other statuses, unavailable and bootstrap, which will return null.
+        if (response.getValue().getGeoReplication().getStatus() == GeoReplicationStatus.LIVE) {
+            assert response.getValue().getGeoReplication().getLastSyncTime() != null
+        } else {
+            assert response.getValue().getGeoReplication().getLastSyncTime() == null
+        }
     }
 
     def "Get stats min"() {

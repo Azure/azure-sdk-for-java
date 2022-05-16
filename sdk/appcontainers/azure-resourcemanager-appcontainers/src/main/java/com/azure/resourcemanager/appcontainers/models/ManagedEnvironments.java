@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
 
 /** Resource collection API of ManagedEnvironments. */
 public interface ManagedEnvironments {
@@ -108,6 +109,33 @@ public interface ManagedEnvironments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String name, Context context);
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void update(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope);
+
+    /**
+     * Patches a Managed Environment using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Environment.
+     * @param environmentEnvelope Configuration details of the Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void update(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context);
 
     /**
      * Get the properties of a Managed Environment used to host container apps.
