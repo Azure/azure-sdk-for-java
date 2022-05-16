@@ -9,13 +9,8 @@
     },
     "JavaTestVersion": "1.11",
     "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION": [
-      {"2.5.13": {"SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION": [
-        "2020.0.5"
-      ]}},
-      {"2.6.7": {"SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION": [
-        "2021.0.1",
-        "2021.0.2"
-      ]}}
+      "2.5.13;2020.0.5",
+      "2.6.7;2021.0.2"
     ]
   }
 }

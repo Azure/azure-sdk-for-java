@@ -122,20 +122,37 @@ def get_dependency_management_content():
 
 
 def get_properties_contend_with_tag():
+    version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
+    sbv = version.split(";")[0]
+    scv = version.split(";")[1]
     return """
   <properties>
-    <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
+    <spring.boot.version>sbv</spring.boot.version>
+    <spring.cloud.version>scv</spring.cloud.version>
   </properties>
   
     """
+  #   return """
+  # <properties>
+  #   <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
+  #   <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
+  # </properties>
+  #
+  #   """
 
 
 def get_properties_contend():
+    version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
+    sbv = version.split(";")[0]
+    scv = version.split(";")[1]
     return """
-    <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
-    """
+        <spring.boot.version>sbv</spring.boot.version>
+        <spring.cloud.version>scv</spring.cloud.version>
+        """
+    # return """
+    # <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
+    # <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
+    # """
 
 
 if __name__ == '__main__':
