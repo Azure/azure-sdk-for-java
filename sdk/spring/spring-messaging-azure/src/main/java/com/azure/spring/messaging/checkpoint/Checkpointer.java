@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  * checkpointer.success()
  *             .doOnSuccess(success -> LOGGER.info("Successfully checkpoint {}", message.getPayload()))
  *             .doOnError(e -> LOGGER.error("Fail to checkpoint the message", e))
- *             .subscribe();
+ *             .block();
  * }</pre>
  */
 public interface Checkpointer {

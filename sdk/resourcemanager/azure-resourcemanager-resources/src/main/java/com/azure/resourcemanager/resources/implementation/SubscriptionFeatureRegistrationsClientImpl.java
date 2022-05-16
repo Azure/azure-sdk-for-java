@@ -267,15 +267,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionFeatureRegistrationInner> getAsync(String providerNamespace, String featureName) {
-        return getWithResponseAsync(providerNamespace, featureName)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(providerNamespace, featureName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -438,14 +430,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         String featureName,
         SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType) {
         return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -463,14 +448,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         String providerNamespace, String featureName) {
         final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
         return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -617,7 +595,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String providerNamespace, String featureName) {
-        return deleteWithResponseAsync(providerNamespace, featureName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(providerNamespace, featureName).flatMap(ignored -> Mono.empty());
     }
 
     /**

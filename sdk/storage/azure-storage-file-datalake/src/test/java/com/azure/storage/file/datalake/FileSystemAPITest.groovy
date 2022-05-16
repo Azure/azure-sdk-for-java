@@ -1478,7 +1478,6 @@ class FileSystemAPITest extends APISpec {
         def fileName = generatePathName()
         def fileClient = fsc.getFileClient(fileName)
         fileClient.create()
-        fileClient.scheduleDeletion(new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(2)))
 
         when:
         def response = fsc.listPaths().iterator()

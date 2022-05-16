@@ -333,14 +333,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicInner> getByResourceGroupAsync(String resourceGroupName, String topicName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, topicName)
-            .flatMap(
-                (Response<TopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1668,14 +1661,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicSharedAccessKeysInner> listSharedAccessKeysAsync(String resourceGroupName, String topicName) {
         return listSharedAccessKeysWithResponseAsync(resourceGroupName, topicName)
-            .flatMap(
-                (Response<TopicSharedAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -30,7 +30,11 @@ public final class ODataAadServicePrincipalCredentialType
         return fromString(name, ODataAadServicePrincipalCredentialType.class);
     }
 
-    /** @return known ODataAadServicePrincipalCredentialType values. */
+    /**
+     * Gets known ODataAadServicePrincipalCredentialType values.
+     *
+     * @return known ODataAadServicePrincipalCredentialType values.
+     */
     public static Collection<ODataAadServicePrincipalCredentialType> values() {
         return values(ODataAadServicePrincipalCredentialType.class);
     }

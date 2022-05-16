@@ -20,10 +20,10 @@ public final class Configuration {
     /*
      * ActiveRevisionsMode controls how active revisions are handled for the
      * Container app:
-     * <list><item>Multiple: multiple revisions can be active. If no value if
-     * provided, this is the default</item><item>Single: Only one revision can
-     * be active at a time. Revision weights can not be used in this
-     * mode</item></list>
+     * <list><item>Multiple: multiple revisions can be
+     * active.</item><item>Single: Only one revision can be active at a time.
+     * Revision weights can not be used in this mode. If no value if provided,
+     * this is the default.</item></list>
      */
     @JsonProperty(value = "activeRevisionsMode")
     private ActiveRevisionsMode activeRevisionsMode;
@@ -69,9 +69,9 @@ public final class Configuration {
 
     /**
      * Get the activeRevisionsMode property: ActiveRevisionsMode controls how active revisions are handled for the
-     * Container app: &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be active. If no value if provided, this
-     * is the default&lt;/item&gt;&lt;item&gt;Single: Only one revision can be active at a time. Revision weights can
-     * not be used in this mode&lt;/item&gt;&lt;/list&gt;.
+     * Container app: &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be
+     * active.&lt;/item&gt;&lt;item&gt;Single: Only one revision can be active at a time. Revision weights can not be
+     * used in this mode. If no value if provided, this is the default.&lt;/item&gt;&lt;/list&gt;.
      *
      * @return the activeRevisionsMode value.
      */
@@ -81,9 +81,9 @@ public final class Configuration {
 
     /**
      * Set the activeRevisionsMode property: ActiveRevisionsMode controls how active revisions are handled for the
-     * Container app: &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be active. If no value if provided, this
-     * is the default&lt;/item&gt;&lt;item&gt;Single: Only one revision can be active at a time. Revision weights can
-     * not be used in this mode&lt;/item&gt;&lt;/list&gt;.
+     * Container app: &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be
+     * active.&lt;/item&gt;&lt;item&gt;Single: Only one revision can be active at a time. Revision weights can not be
+     * used in this mode. If no value if provided, this is the default.&lt;/item&gt;&lt;/list&gt;.
      *
      * @param activeRevisionsMode the activeRevisionsMode value to set.
      * @return the Configuration object itself.

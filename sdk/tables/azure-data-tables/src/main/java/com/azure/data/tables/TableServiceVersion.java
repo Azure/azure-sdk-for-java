@@ -11,7 +11,12 @@ public enum TableServiceVersion implements ServiceVersion {
     /**
      * API version 2019-02-02
      */
-    V2019_02_02("2019-02-02");
+    V2019_02_02("2019-02-02"),
+
+    /**
+     * API version 2020_12_06
+     */
+    V2020_12_06("2020-12-06");
 
     private final String version;
 
@@ -33,7 +38,7 @@ public enum TableServiceVersion implements ServiceVersion {
      * @return The latest REST API version supported by this client library.
      */
     public static TableServiceVersion getLatest() {
-        return V2019_02_02;
+        return V2020_12_06;
     }
 
     static TableServiceVersion fromString(String version) {

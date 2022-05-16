@@ -41,7 +41,7 @@ public final class ContainerAppProbeHttpGet {
      * Scheme to use for connecting to the host. Defaults to HTTP.
      */
     @JsonProperty(value = "scheme")
-    private String scheme;
+    private Scheme scheme;
 
     /**
      * Get the host property: Host name to connect to, defaults to the pod IP. You probably want to set "Host" in
@@ -132,7 +132,7 @@ public final class ContainerAppProbeHttpGet {
      *
      * @return the scheme value.
      */
-    public String scheme() {
+    public Scheme scheme() {
         return this.scheme;
     }
 
@@ -142,7 +142,7 @@ public final class ContainerAppProbeHttpGet {
      * @param scheme the scheme value to set.
      * @return the ContainerAppProbeHttpGet object itself.
      */
-    public ContainerAppProbeHttpGet withScheme(String scheme) {
+    public ContainerAppProbeHttpGet withScheme(Scheme scheme) {
         this.scheme = scheme;
         return this;
     }
