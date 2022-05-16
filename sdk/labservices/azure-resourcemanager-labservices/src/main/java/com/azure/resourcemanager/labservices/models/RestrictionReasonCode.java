@@ -28,7 +28,11 @@ public final class RestrictionReasonCode extends ExpandableStringEnum<Restrictio
         return fromString(name, RestrictionReasonCode.class);
     }
 
-    /** @return known RestrictionReasonCode values. */
+    /**
+     * Gets known RestrictionReasonCode values.
+     *
+     * @return known RestrictionReasonCode values.
+     */
     public static Collection<RestrictionReasonCode> values() {
         return values(RestrictionReasonCode.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The lab user list management profile. */
 @Fluent
 public final class RosterProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RosterProfile.class);
-
     /*
      * The AAD group ID which this lab roster is populated from. Having this
      * set enables AAD sync mode.

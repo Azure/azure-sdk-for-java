@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuCapabilities;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuCapacity;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuCost;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuRestrictions;
 import com.azure.resourcemanager.labservices.models.LabServicesSkuTier;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure Lab Services resource SKUs. */
 @Fluent
 public final class LabServicesSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabServicesSkuInner.class);
-
     /*
      * The lab services resource type.
      */

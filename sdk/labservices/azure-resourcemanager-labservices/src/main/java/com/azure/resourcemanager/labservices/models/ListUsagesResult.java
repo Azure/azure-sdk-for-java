@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Core Usages. */
 @Immutable
 public final class ListUsagesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListUsagesResult.class);
-
     /*
      * The array page of Usages.
      */

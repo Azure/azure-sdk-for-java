@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connection profile for how users connect to lab virtual machines. */
 @Fluent
 public final class ConnectionProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionProfile.class);
-
     /*
      * The enabled access level for Web Access over SSH.
      */

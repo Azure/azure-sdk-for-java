@@ -15,7 +15,7 @@ public interface LabPlans {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabPlan> list();
 
@@ -27,7 +27,7 @@ public interface LabPlans {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabPlan> list(String filter, Context context);
 
@@ -38,7 +38,7 @@ public interface LabPlans {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabPlan> listByResourceGroup(String resourceGroupName);
 
@@ -50,7 +50,7 @@ public interface LabPlans {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabPlan> listByResourceGroup(String resourceGroupName, Context context);
 

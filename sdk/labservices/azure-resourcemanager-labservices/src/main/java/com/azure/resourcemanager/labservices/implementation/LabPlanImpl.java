@@ -99,6 +99,10 @@ public final class LabPlanImpl implements LabPlan, LabPlan.Definition, LabPlan.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LabPlanInner innerModel() {
         return this.innerObject;
     }

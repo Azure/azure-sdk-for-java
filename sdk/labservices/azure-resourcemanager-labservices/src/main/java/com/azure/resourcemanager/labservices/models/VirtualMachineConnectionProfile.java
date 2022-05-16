@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The connection information for the virtual machine. */
 @Immutable
 public final class VirtualMachineConnectionProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineConnectionProfile.class);
-
     /*
      * The private IP address of the virtual machine.
      */

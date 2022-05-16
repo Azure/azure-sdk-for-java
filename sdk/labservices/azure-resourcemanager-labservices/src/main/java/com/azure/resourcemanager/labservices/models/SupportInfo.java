@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Support contact information and instructions. */
 @Fluent
 public final class SupportInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportInfo.class);
-
     /*
      * Support web address.
      */

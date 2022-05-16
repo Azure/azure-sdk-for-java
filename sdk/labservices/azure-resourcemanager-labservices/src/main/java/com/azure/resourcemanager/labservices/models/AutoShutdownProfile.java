@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Profile for how to handle shutting down virtual machines. */
 @Fluent
 public final class AutoShutdownProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoShutdownProfile.class);
-
     /*
      * Whether shutdown on disconnect is enabled
      */

@@ -24,7 +24,11 @@ public final class RestrictionType extends ExpandableStringEnum<RestrictionType>
         return fromString(name, RestrictionType.class);
     }
 
-    /** @return known RestrictionType values. */
+    /**
+     * Gets known RestrictionType values.
+     *
+     * @return known RestrictionType values.
+     */
     public static Collection<RestrictionType> values() {
         return values(RestrictionType.class);
     }

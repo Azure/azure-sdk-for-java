@@ -13,7 +13,6 @@ import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.LabPlanNetworkProfile;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.SupportInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +23,6 @@ import java.util.Map;
  */
 @Fluent
 public final class LabPlanInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabPlanInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the lab plan.
      */
@@ -261,11 +258,13 @@ public final class LabPlanInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model LabPlanInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LabPlanInner.class);
 }

@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.LabPlanNetworkProfile;
 import com.azure.resourcemanager.labservices.models.SupportInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Lab plan resource properties for updates. */
 @Fluent
 public class LabPlanUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabPlanUpdateProperties.class);
-
     /*
      * The default lab connection profile. This can be changed on a lab
      * resource and only provides a default profile.

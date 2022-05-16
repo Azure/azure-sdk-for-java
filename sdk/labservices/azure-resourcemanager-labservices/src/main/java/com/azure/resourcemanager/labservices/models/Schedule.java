@@ -84,6 +84,13 @@ public interface Schedule {
     String notes();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.labservices.fluent.models.ScheduleInner object.
      *
      * @return the inner object.

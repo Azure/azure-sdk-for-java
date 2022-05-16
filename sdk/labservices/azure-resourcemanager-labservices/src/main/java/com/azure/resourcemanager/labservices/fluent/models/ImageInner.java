@@ -12,15 +12,12 @@ import com.azure.resourcemanager.labservices.models.EnableState;
 import com.azure.resourcemanager.labservices.models.OsState;
 import com.azure.resourcemanager.labservices.models.OsType;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Lab services virtual machine image. */
 @Fluent
 public final class ImageInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the image.
      */
@@ -230,11 +227,13 @@ public final class ImageInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model ImageInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageInner.class);
 }

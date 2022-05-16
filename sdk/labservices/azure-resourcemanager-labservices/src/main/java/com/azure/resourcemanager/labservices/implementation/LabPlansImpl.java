@@ -14,10 +14,9 @@ import com.azure.resourcemanager.labservices.fluent.models.LabPlanInner;
 import com.azure.resourcemanager.labservices.models.LabPlan;
 import com.azure.resourcemanager.labservices.models.LabPlans;
 import com.azure.resourcemanager.labservices.models.SaveImageBody;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LabPlansImpl implements LabPlans {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabPlansImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LabPlansImpl.class);
 
     private final LabPlansClient innerClient;
 
@@ -92,7 +91,7 @@ public final class LabPlansImpl implements LabPlans {
     public LabPlan getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -100,7 +99,7 @@ public final class LabPlansImpl implements LabPlans {
         }
         String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
@@ -111,7 +110,7 @@ public final class LabPlansImpl implements LabPlans {
     public Response<LabPlan> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class LabPlansImpl implements LabPlans {
         }
         String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
@@ -130,7 +129,7 @@ public final class LabPlansImpl implements LabPlans {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class LabPlansImpl implements LabPlans {
         }
         String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
@@ -149,7 +148,7 @@ public final class LabPlansImpl implements LabPlans {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class LabPlansImpl implements LabPlans {
         }
         String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));

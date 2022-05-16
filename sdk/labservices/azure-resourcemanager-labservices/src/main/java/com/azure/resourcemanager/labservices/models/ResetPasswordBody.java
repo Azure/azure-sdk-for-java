@@ -6,14 +6,11 @@ package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Body of a reset password request. */
 @Fluent
 public final class ResetPasswordBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResetPasswordBody.class);
-
     /*
      * The user whose password is being reset
      */
@@ -73,14 +70,16 @@ public final class ResetPasswordBody {
      */
     public void validate() {
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property username in model ResetPasswordBody"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property password in model ResetPasswordBody"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResetPasswordBody.class);
 }

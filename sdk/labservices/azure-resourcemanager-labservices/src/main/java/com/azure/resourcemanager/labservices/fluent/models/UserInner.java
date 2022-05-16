@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.InvitationState;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RegistrationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -19,8 +18,6 @@ import java.time.OffsetDateTime;
 /** User of a lab that can register for and use virtual machines within the lab. */
 @Fluent
 public final class UserInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the user
      * resource.
@@ -161,11 +158,13 @@ public final class UserInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model UserInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserInner.class);
 }

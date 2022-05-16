@@ -19,7 +19,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of schedules.
+     * @return paged list of schedules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> listByLab(String resourceGroupName, String labName);
 
@@ -34,7 +34,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of schedules.
+     * @return paged list of schedules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> listByLab(String resourceGroupName, String labName, String filter, Context context);
 

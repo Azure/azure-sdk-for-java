@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The lab security profile. */
 @Fluent
 public final class SecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityProfile.class);
-
     /*
      * The registration code for the lab.
      */

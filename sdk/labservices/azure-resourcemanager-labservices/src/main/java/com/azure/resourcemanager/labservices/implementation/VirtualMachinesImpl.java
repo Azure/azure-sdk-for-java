@@ -14,10 +14,9 @@ import com.azure.resourcemanager.labservices.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.labservices.models.ResetPasswordBody;
 import com.azure.resourcemanager.labservices.models.VirtualMachine;
 import com.azure.resourcemanager.labservices.models.VirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachinesImpl implements VirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesImpl.class);
 
     private final VirtualMachinesClient innerClient;
 

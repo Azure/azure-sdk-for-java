@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.LabInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged list of labs. */
 @Immutable
 public final class PagedLabs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PagedLabs.class);
-
     /*
      * The array page of lab results.
      */

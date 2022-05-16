@@ -6,7 +6,6 @@ package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** Recurrence pattern of a lab schedule. */
 @Fluent
 public final class RecurrencePattern {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecurrencePattern.class);
-
     /*
      * The frequency of the recurrence.
      */
@@ -132,15 +129,17 @@ public final class RecurrencePattern {
      */
     public void validate() {
         if (frequency() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property frequency in model RecurrencePattern"));
         }
         if (expirationDate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property expirationDate in model RecurrencePattern"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecurrencePattern.class);
 }

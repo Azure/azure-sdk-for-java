@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.EnableState;
 import com.azure.resourcemanager.labservices.models.OsState;
 import com.azure.resourcemanager.labservices.models.OsType;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of an image resource. */
 @Fluent
 public final class ImageProperties extends ImageUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageProperties.class);
-
     /*
      * Current provisioning state of the image.
      */

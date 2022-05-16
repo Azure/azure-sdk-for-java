@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.ImagesClient;
 import com.azure.resourcemanager.labservices.fluent.models.ImageInner;
 import com.azure.resourcemanager.labservices.models.ImageUpdate;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ImagesClient. */
 public final class ImagesClientImpl implements ImagesClient {
-    private final ClientLogger logger = new ClientLogger(ImagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ImagesService service;
 
@@ -269,7 +266,7 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageInner> listByLabPlanAsync(String resourceGroupName, String labPlanName, String filter) {
@@ -287,7 +284,7 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageInner> listByLabPlanAsync(String resourceGroupName, String labPlanName) {
@@ -308,7 +305,7 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageInner> listByLabPlanAsync(
@@ -327,7 +324,7 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByLabPlan(String resourceGroupName, String labPlanName) {
@@ -346,7 +343,7 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInner> listByLabPlan(
@@ -475,14 +472,7 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImageInner> getAsync(String resourceGroupName, String labPlanName, String imageName) {
         return getWithResponseAsync(resourceGroupName, labPlanName, imageName)
-            .flatMap(
-                (Response<ImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -658,14 +648,7 @@ public final class ImagesClientImpl implements ImagesClient {
     private Mono<ImageInner> createOrUpdateAsync(
         String resourceGroupName, String labPlanName, String imageName, ImageInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labPlanName, imageName, body)
-            .flatMap(
-                (Response<ImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -843,14 +826,7 @@ public final class ImagesClientImpl implements ImagesClient {
     private Mono<ImageInner> updateAsync(
         String resourceGroupName, String labPlanName, String imageName, ImageUpdate body) {
         return updateWithResponseAsync(resourceGroupName, labPlanName, imageName, body)
-            .flatMap(
-                (Response<ImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

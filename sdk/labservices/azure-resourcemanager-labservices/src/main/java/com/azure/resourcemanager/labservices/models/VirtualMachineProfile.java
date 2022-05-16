@@ -6,15 +6,12 @@ package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** The base virtual machine configuration for a lab. */
 @Fluent
 public final class VirtualMachineProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineProfile.class);
-
     /*
      * Indicates what lab virtual machines are created from.
      */
@@ -250,13 +247,13 @@ public final class VirtualMachineProfile {
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property createOption in model VirtualMachineProfile"));
         }
         if (imageReference() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property imageReference in model VirtualMachineProfile"));
@@ -264,7 +261,7 @@ public final class VirtualMachineProfile {
             imageReference().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model VirtualMachineProfile"));
         } else {
@@ -274,13 +271,13 @@ public final class VirtualMachineProfile {
             additionalCapabilities().validate();
         }
         if (usageQuota() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property usageQuota in model VirtualMachineProfile"));
         }
         if (adminUser() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property adminUser in model VirtualMachineProfile"));
         } else {
@@ -290,4 +287,6 @@ public final class VirtualMachineProfile {
             nonAdminUser().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineProfile.class);
 }

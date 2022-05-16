@@ -13,10 +13,9 @@ import com.azure.resourcemanager.labservices.fluent.LabsClient;
 import com.azure.resourcemanager.labservices.fluent.models.LabInner;
 import com.azure.resourcemanager.labservices.models.Lab;
 import com.azure.resourcemanager.labservices.models.Labs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LabsImpl implements Labs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LabsImpl.class);
 
     private final LabsClient innerClient;
 
@@ -97,7 +96,7 @@ public final class LabsImpl implements Labs {
     public Lab getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,7 +104,7 @@ public final class LabsImpl implements Labs {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
@@ -116,7 +115,7 @@ public final class LabsImpl implements Labs {
     public Response<Lab> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class LabsImpl implements Labs {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
@@ -135,7 +134,7 @@ public final class LabsImpl implements Labs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class LabsImpl implements Labs {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
@@ -154,7 +153,7 @@ public final class LabsImpl implements Labs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,7 +161,7 @@ public final class LabsImpl implements Labs {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));

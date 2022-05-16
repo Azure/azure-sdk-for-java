@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.RosterProfile;
 import com.azure.resourcemanager.labservices.models.SecurityProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a lab resource used for updates. */
 @Fluent
 public class LabUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabUpdateProperties.class);
-
     /*
      * The resource auto shutdown configuration for the lab. This controls
      * whether actions are taken on resources that are sitting idle.
