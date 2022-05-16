@@ -866,7 +866,7 @@ public class ImplementationBridgeHelpers {
             try {
                 ClassLoader classLoader = classType.getClassLoader();
                 logger.info(
-                        "Calling ensureClassLoaded for class {} with callerClassLoader {}",
+                        "Calling ensureClassLoaded for class {} with classLoader {}",
                         classType,
                         classLoader);
             } catch (Throwable e) {
