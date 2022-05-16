@@ -122,16 +122,16 @@ def get_dependency_management_content():
 
 
 def get_properties_contend_with_tag():
-    version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
-    sbv = version.split("-")[0]
-    scv = version.split("_")[1]
+    # version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
+    # sbv = version.split("_")[0]
+    # scv = version.split("_")[1]
     return """
   <properties>
-    <spring.boot.version>{}</spring.boot.version>
-    <spring.cloud.version>{}</spring.cloud.version>
+    <spring.boot.version>#{'${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}'.split('_')[0]}</spring.boot.version>
+    <spring.cloud.version>#{'${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}'.split('_')[1]}</spring.cloud.version>
   </properties>
   
-    """.format(sbv, scv)
+    """
   #   return """
   # <properties>
   #   <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
@@ -142,13 +142,13 @@ def get_properties_contend_with_tag():
 
 
 def get_properties_contend():
-    version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
-    sbv = version.split("_")[0]
-    scv = version.split("_")[1]
+    # version = "${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}"
+    # sbv = version.split("_")[0]
+    # scv = version.split("_")[1]
     return """
-        <spring.boot.version>sbv</spring.boot.version>
-        <spring.cloud.version>scv</spring.cloud.version>
-        """.format(sbv, scv)
+        <spring.boot.version>#{'${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}'.split('_')[0]}</spring.boot.version>
+        <spring.cloud.version>#{'${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}'.split('_')[1]}</spring.cloud.version>
+        """
     # return """
     # <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
     # <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
