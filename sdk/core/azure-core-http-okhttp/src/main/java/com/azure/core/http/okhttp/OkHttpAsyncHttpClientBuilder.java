@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -32,20 +31,20 @@ public class OkHttpAsyncHttpClientBuilder {
 
     private final okhttp3.OkHttpClient okHttpClient;
 
-    private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
-    private static final long DEFAULT_CONNECT_TIMEOUT;
-    private static final long DEFAULT_WRITE_TIMEOUT;
-    private static final long DEFAULT_READ_TIMEOUT;
+    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT;
+    private static final Duration DEFAULT_WRITE_TIMEOUT;
+    private static final Duration DEFAULT_READ_TIMEOUT;
 
     static {
         ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
         Configuration configuration = Configuration.getGlobalConfiguration();
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger).toMillis();
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger);
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), logger).toMillis();
+            Duration.ofSeconds(60), logger);
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), logger).toMillis();
+            Duration.ofSeconds(60), logger);
     }
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();
@@ -245,9 +244,9 @@ public class OkHttpAsyncHttpClientBuilder {
 
         // Configure operation timeouts.
         httpClientBuilder = httpClientBuilder
-            .connectTimeout(getTimeoutMillis(connectionTimeout, DEFAULT_CONNECT_TIMEOUT), TimeUnit.MILLISECONDS)
-            .writeTimeout(getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT), TimeUnit.MILLISECONDS)
-            .readTimeout(getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), TimeUnit.MILLISECONDS);
+            .connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
+            .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
+            .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {
@@ -285,7 +284,7 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the followRedirects property.
         httpClientBuilder.followRedirects(this.followRedirects);
 
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build());
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build(), getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT));
     }
 
     /*
@@ -294,7 +293,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
      * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
      */
-    static long getTimeoutMillis(Duration configuredTimeout, long defaultTimeout) {
+    static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
         // Timeout is null, use the default timeout.
         if (configuredTimeout == null) {
             return defaultTimeout;
@@ -302,10 +301,14 @@ public class OkHttpAsyncHttpClientBuilder {
 
         // Timeout is less than or equal to zero, return no timeout.
         if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
-            return 0;
+            return Duration.ZERO;
         }
 
         // Return the maximum of the timeout period and the minimum allowed timeout period.
-        return Math.max(configuredTimeout.toMillis(), MINIMUM_TIMEOUT);
+        if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
+            return MINIMUM_TIMEOUT;
+        } else  {
+            return configuredTimeout;
+        }
     }
 }

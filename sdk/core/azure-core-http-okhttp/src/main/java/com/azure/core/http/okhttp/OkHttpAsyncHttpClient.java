@@ -11,6 +11,17 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
+import com.azure.core.http.okhttp.implementation.OkHttpFileRequestBody;
+import com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody;
+import com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -18,27 +29,25 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okio.BufferedSink;
 import okio.ByteString;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Objects;
 
 /**
  * HttpClient implementation for OkHttp.
  */
 class OkHttpAsyncHttpClient implements HttpClient {
-    final OkHttpClient httpClient;
-    //
-    private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
 
-    OkHttpAsyncHttpClient(OkHttpClient httpClient) {
+    final OkHttpClient httpClient;
+    private final Duration writeTimeout;
+
+    OkHttpAsyncHttpClient(OkHttpClient httpClient, Duration writeTimeout) {
         this.httpClient = httpClient;
+        this.writeTimeout = writeTimeout;
     }
 
     @Override
@@ -81,7 +90,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @param request the azure-core request
      * @return the Mono emitting okhttp request
      */
-    private static Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
+    private Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
         Request.Builder requestBuilder = new Request.Builder()
             .url(request.getUrl());
 
@@ -99,87 +108,39 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return Mono.just(requestBuilder.head().build());
         }
 
-        return toOkHttpRequestBody(request.getBody(), request.getHeaders())
+        return Mono.fromCallable(() -> toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders()))
             .map(okhttpRequestBody -> requestBuilder.method(request.getHttpMethod().toString(), okhttpRequestBody)
                 .build());
     }
 
     /**
-     * Create a Mono of okhttp3.RequestBody from the given java.nio.ByteBuffer Flux.
+     * Create a Mono of okhttp3.RequestBody from the given BinaryData.
      *
-     * @param bbFlux stream of java.nio.ByteBuffer representing request content
+     * @param bodyContent The request body content
      * @param headers the headers associated with the original request
-     * @return the Mono emitting okhttp3.RequestBody
+     * @return okhttp3.RequestBody
      */
-    private static Mono<RequestBody> toOkHttpRequestBody(Flux<ByteBuffer> bbFlux, HttpHeaders headers) {
-        Long contentLength = null; // content.getLength();
-        if (contentLength == null) {
-            String contentLengthHeaderValue = headers.getValue("Content-Length");
-            if (contentLengthHeaderValue != null) {
-                contentLength = Long.parseLong(contentLengthHeaderValue);
-            } else {
-                contentLength = -1L;
-            }
-        }
-        long effectiveContentLength = contentLength;
-
+    private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
         String contentType = headers.getValue("Content-Type");
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
-        RequestBody requestBody = new RequestBody() {
-            @Override
-            public MediaType contentType() {
-                return mediaType;
-            }
+        if (bodyContent == null) {
+            return RequestBody.create(ByteString.EMPTY, mediaType);
+        }
 
-            @Override
-            public long contentLength() {
-                return effectiveContentLength;
-            }
+        BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-            @Override
-            public void writeTo(BufferedSink bufferedSink) throws IOException {
-                // This call happens on OkHttp thread pool.
-                bbFlux.flatMapSequential(buffer -> {
-                    try {
-                        while (buffer.hasRemaining()) {
-                            // This call happens on OkHttp thread pool as well.
-                            bufferedSink.write(buffer);
-                        }
-                        return Mono.empty();
-                    } catch (IOException e) {
-                        return Mono.error(e);
-                    }
-                }).then().block();
-            }
-        };
-
-        return Mono.just(requestBody);
-    }
-
-    /**
-     * Aggregate Flux of java.nio.ByteBuffer to single okio.ByteString.
-     *
-     * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances. Content of each ByteBuffer will be
-     * written (i.e copied) to the internal okio.Buffer slots. Once the stream terminates, the contents of all slots get
-     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally the
-     * initial okio.Buffer will be returned to the pool.
-     *
-     * @param bbFlux the Flux of ByteBuffer to aggregate
-     * @return a mono emitting aggregated ByteString
-     */
-    private static Mono<ByteString> toByteString(Flux<ByteBuffer> bbFlux) {
-        Objects.requireNonNull(bbFlux, "'bbFlux' cannot be null.");
-        return Mono.using(okio.Buffer::new,
-            buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
-                try {
-                    b.write(byteBuffer);
-                    return b;
-                } catch (IOException ioe) {
-                    throw Exceptions.propagate(ioe);
-                }
-            }).map(b -> ByteString.of(b.readByteArray())), okio.Buffer::clear)
-            .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
+        if (content instanceof ByteArrayContent
+            || content instanceof StringContent
+            || content instanceof SerializableContent) {
+            return RequestBody.create(content.toBytes(), mediaType);
+        } else if (content instanceof InputStreamContent) {
+            return new OkHttpInputStreamRequestBody((InputStreamContent) content, headers, mediaType);
+        } else if (content instanceof FileContent) {
+            return new OkHttpFileRequestBody((FileContent) content, headers, mediaType);
+        } else {
+            return new OkHttpFluxRequestBody(content, headers, mediaType, writeTimeout);
+        }
     }
 
     private static class OkHttpCallback implements okhttp3.Callback {
@@ -196,7 +157,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @SuppressWarnings("NullableProblems")
         @Override
         public void onFailure(okhttp3.Call call, IOException e) {
-            sink.error(e);
+            if (e.getMessage().startsWith("canceled due to") && e.getSuppressed().length == 1) {
+                // This block maintains error experience for unbuffered request bodies.
+                // If Flux or Stream throws in RequestBody.writeTo the original exception is wrapped into IOException.
+                sink.error(e.getSuppressed()[0]);
+            } else {
+                sink.error(e);
+            }
         }
 
         @SuppressWarnings("NullableProblems")

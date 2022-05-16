@@ -1,0 +1,64 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.http.okhttp.implementation;
+
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.util.logging.ClientLogger;
+import okhttp3.MediaType;
+import okio.BufferedSink;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+/**
+ * An {@link okhttp3.RequestBody} subtype that sends {@link BinaryDataContent}
+ * as {@link Flux} of {@link ByteBuffer} in an unbuffered manner.
+ * This class accepts any {@link BinaryDataContent} as catch-all for backwards compatibility
+ * but ideally should be used only with reactive payloads.
+ */
+public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDataContent> {
+
+    private static final ClientLogger LOGGER = new ClientLogger(OkHttpFluxRequestBody.class);
+
+    private final AtomicBoolean bodySent = new AtomicBoolean(false);
+    private final Duration writeTimeout;
+
+    public OkHttpFluxRequestBody(
+        BinaryDataContent content, HttpHeaders httpHeaders, MediaType mediaType, Duration writeTimeout) {
+        super(content, httpHeaders, mediaType);
+        this.writeTimeout = writeTimeout;
+    }
+
+    @Override
+    public void writeTo(BufferedSink bufferedSink) throws IOException {
+        if (bodySent.compareAndSet(false, true)) {
+            // This call happens on OkHttp thread pool.
+            Mono<Void> requestSendMono = content.toFluxByteBuffer().flatMapSequential(buffer -> {
+                try {
+                    while (buffer.hasRemaining()) {
+                        // This call happens on OkHttp thread pool as well.
+                        bufferedSink.write(buffer);
+                    }
+                    return Mono.empty();
+                } catch (IOException e) {
+                    return Mono.error(e);
+                }
+            }).then();
+            // The blocking happens on OkHttp thread pool.
+            if (writeTimeout != null) {
+                requestSendMono.block(writeTimeout);
+            } else {
+                requestSendMono.block();
+            }
+        } else {
+            // Prevent OkHttp from potentially re-sending non-repeatable body outside of retry policies.
+            throw LOGGER.logThrowableAsError(new IOException("Re-attempt to send Flux body is not supported"));
+        }
+    }
+}
