@@ -86,10 +86,9 @@ Write-Host "Creating destination directory $DestinationPath"
 if (Test-Path $DestinationPath) {
   Remove-Item $DestinationPath -Force -Recurse | Out-Null
 }
-
 New-Item -Path $DestinationPath -Type Directory | Out-Null
-
-Write-Host "Starting GPG signing and publishing"
+$DestinationPath = Resolve-Path -Path $DestinationPath
+$destinationPathUri = $([Uri]$DestinationPath).AbsoluteUri
 
 $outputMatrix = [ordered]@{}
 
@@ -145,21 +144,31 @@ foreach ($packageDetail in $packageDetails) {
   $gpgexeOption = "-Dgpgexe=$GPGExecutablePath"
   Write-Host "GPG Executable Option is: $gpgexeOption"
 
-  $localRepositoryDirectory = Get-RandomRepositoryDirectory
-  $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
-  Write-Host "Local Repository Directory URI is: $localRepositoryDirectoryUri"
-
-  $urlOption = "-Durl=$localRepositoryDirectoryUri"
+  $urlOption = "-Durl=$destinationPathUri"
   Write-Host "URL Option is: $urlOption"
 
   $settingsOption = "--settings=$(Join-Path $PSScriptRoot '..' 'maven.publish.settings.xml' -Resolve)"
   Write-Host "Settings Option is: $settingsOption"
 
   Write-Host ""
-  Write-Host "Signing and deploying package to $localRepositoryDirectoryUri"
+  Write-Host "Signing package"
   
-  Write-Host "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"-Daether.checksums.algorithms=SHA-256`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"$settingsOption`""
-  mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+  Write-Host "mvn gpg:sign-and-deploy-file ```n    `"--batch-mode`" ```n    `"-Daether.checksums.algorithms=SHA-256,MD5,SHA-1`" ```n    `"$pomOption`" ```n    `"$fileOption`" ```n    `"$javadocOption`" ```n    `"$sourcesOption`" ```n    `"$filesOption`" ```n    `"$classifiersOption`" ```n    `"$typesOption`" ```n    `"$urlOption`" ```n    `"$gpgexeOption`" ```n    `"-DrepositoryId=target-repo`" ```n    `"$settingsOption`""
+
+  mvn gpg:sign-and-deploy-file `
+    "--batch-mode" `
+    "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" `
+    "$pomOption" `
+    "$fileOption" `
+    "$javadocOption" `
+    "$sourcesOption" `
+    "$filesOption" `
+    "$classifiersOption" `
+    "$typesOption" `
+    "$urlOption" `
+    "$gpgexeOption" `
+    "-DrepositoryId=target-repo" `
+    "$settingsOption"
   
   if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
@@ -167,22 +176,16 @@ foreach ($packageDetail in $packageDetails) {
   $artifactId = $packageDetail.ArtifactId
   $version = $packageDetail.Version
 
-  $signedArtifactPath = Join-Path $localRepositoryDirectory $groupId.Replace('.', '/') $artifactId $version
+  $relativePath = "$($groupId.Replace('.', '/'))/$artifactId/$version"
+  $signedArtifactPath = Join-Path $DestinationPath $relativePath
 
   if (-not (Test-Path $signedArtifactPath)) {
     Write-Error "Unable to located expected gpg output folder $signedArtifactPath"
     exit 1
   }
 
-  $artifactName = "$groupId.$artifactId.$version"
-
-  $zipArchivePath = Join-Path $DestinationPath "$artifactName.zip"
-
-  Write-Host "Compressing artifact to $zipArchivePath"
-  Compress-Archive -Path "$signedArtifactPath/*" -DestinationPath $zipArchivePath
-
-  $outputMatrix[$artifactName] = [ordered]@{
-    "FileName"= "$artifactName.zip";
+  $outputMatrix["$groupId.$artifactId.$version"] = [ordered]@{
+    "Path"= $relativePath;
     "GroupId"= $groupId;
     "ArtifactId"= $artifactId;
     "Version"= $version;

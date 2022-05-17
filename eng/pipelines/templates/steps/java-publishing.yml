@@ -89,7 +89,7 @@ steps:
       inputs:
         pwsh: true
         workingDirectory: $(Agent.BuildDirectory)
-        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Compress-EsrpReleasePackages.ps1
+        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/SignAndHash-MavenPackages.ps1
         arguments: >
           -Path ${{ parameters.ArtifactDirectory }}
           -DestinationPath ${{ parameters.OutputDirectory }}
