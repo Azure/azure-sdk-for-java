@@ -1,6 +1,6 @@
 # Release History
 
-## 4.12.0-beta.2 (2022-05-10)
+## 4.12.0-beta.2 (2022-05-17)
 
 ### Breaking Changes
 - Removed class `SendEventsOptions` and replaced it by the String `channelName`.
