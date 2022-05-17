@@ -1061,8 +1061,10 @@ public class BlobAsyncClientBase {
      * <p>This method will be deprecated in the future. Use {@link #downloadStream()} instead.
      *
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStream()} instead.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Deprecated
     public Flux<ByteBuffer> download() {
         return downloadStream();
     }
@@ -1159,8 +1161,10 @@ public class BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
@@ -1725,12 +1729,12 @@ public class BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
      * <pre>
      * client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
      *

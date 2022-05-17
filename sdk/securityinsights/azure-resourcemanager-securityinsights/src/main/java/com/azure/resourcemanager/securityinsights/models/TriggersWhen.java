@@ -24,7 +24,11 @@ public final class TriggersWhen extends ExpandableStringEnum<TriggersWhen> {
         return fromString(name, TriggersWhen.class);
     }
 
-    /** @return known TriggersWhen values. */
+    /**
+     * Gets known TriggersWhen values.
+     *
+     * @return known TriggersWhen values.
+     */
     public static Collection<TriggersWhen> values() {
         return values(TriggersWhen.class);
     }

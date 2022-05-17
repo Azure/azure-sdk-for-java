@@ -9,6 +9,10 @@
         "description": "The base resource name."
       }
     },
+    "eventHubName": {
+      "type": "string",
+      "defaultValue": "javaeventhub"
+    },
     "tenantId": {
       "type": "string",
       "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
@@ -67,6 +71,20 @@
       }
     },
     {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[concat(parameters('baseName'), '/', parameters('eventHubName'))]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', parameters('baseName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 5,
+        "status": "Active"
+      }
+    },
+    {
       "type": "Microsoft.EventHub/namespaces/schemagroups",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[format('{0}/{1}', parameters('baseName'), variables('schemaRegistryGroup'))]",
@@ -91,6 +109,10 @@
     "AZURE_CLIENT_SECRET": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
+    },
+    "SCHEMA_REGISTRY_EVENT_HUB_NAME": {
+      "type": "string",
+      "value": "[parameters('eventHubName')]"
     },
     "SCHEMA_REGISTRY_GROUP": {
       "type": "string",

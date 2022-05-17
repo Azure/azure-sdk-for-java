@@ -30,7 +30,11 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
         return fromString(name, DirectoryServiceOptions.class);
     }
 
-    /** @return known DirectoryServiceOptions values. */
+    /**
+     * Gets known DirectoryServiceOptions values.
+     *
+     * @return known DirectoryServiceOptions values.
+     */
     public static Collection<DirectoryServiceOptions> values() {
         return values(DirectoryServiceOptions.class);
     }

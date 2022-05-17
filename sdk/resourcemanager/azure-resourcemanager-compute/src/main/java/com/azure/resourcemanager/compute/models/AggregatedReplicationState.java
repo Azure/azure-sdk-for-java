@@ -33,7 +33,11 @@ public final class AggregatedReplicationState extends ExpandableStringEnum<Aggre
         return fromString(name, AggregatedReplicationState.class);
     }
 
-    /** @return known AggregatedReplicationState values. */
+    /**
+     * Gets known AggregatedReplicationState values.
+     *
+     * @return known AggregatedReplicationState values.
+     */
     public static Collection<AggregatedReplicationState> values() {
         return values(AggregatedReplicationState.class);
     }

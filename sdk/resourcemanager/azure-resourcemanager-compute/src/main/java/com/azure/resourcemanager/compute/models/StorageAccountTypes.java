@@ -39,7 +39,11 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
         return fromString(name, StorageAccountTypes.class);
     }
 
-    /** @return known StorageAccountTypes values. */
+    /**
+     * Gets known StorageAccountTypes values.
+     *
+     * @return known StorageAccountTypes values.
+     */
     public static Collection<StorageAccountTypes> values() {
         return values(StorageAccountTypes.class);
     }

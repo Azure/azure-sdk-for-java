@@ -11,15 +11,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.models.SchemaFormat;
-import com.azure.data.schemaregistry.models.SchemaProperties;
 import org.apache.avro.Schema;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,7 +39,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * &#47;&#47; By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
  * &#47;&#47; added to the instance. By default, this is false, so it will error if the schema is not found.
  * SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder&#40;&#41;
- *     .schemaRegistryAsyncClient&#40;schemaRegistryAsyncClient&#41;
+ *     .schemaRegistryClient&#40;schemaRegistryAsyncClient&#41;
  *     .autoRegisterSchemas&#40;true&#41;
  *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
  *     .buildSerializer&#40;&#41;;
@@ -50,10 +47,10 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
  *
  * <p><strong>Serialize an object</strong></p>
- * Serializes an Avro generated object into {@link MessageContent}.
- * {@link #serialize(Object, TypeReference)} assumes that there is a no argument constructor used to
- * instantiate the {@link MessageContent} type. If there is a different way to instantiate the concrete type, use
- * the overload which takes a message factory function, {@link #serialize(Object, TypeReference, Function)}.
+ * Serializes an Avro generated object into {@link MessageContent}. {@link #serialize(Object, TypeReference)} assumes
+ * that there is a no argument constructor used to instantiate the {@link MessageContent} type. If there is a different
+ * way to instantiate the concrete type, use the overload which takes a message factory function, {@link
+ * #serialize(Object, TypeReference, Function)}.
  *
  * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
  * <pre>
@@ -73,7 +70,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
  *     .build&#40;&#41;;
  *
- * MessageContent message = serializer.serializeMessageData&#40;person,
+ * MessageContent message = serializer.serialize&#40;person,
  *     TypeReference.createInstance&#40;MessageContent.class&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize -->
@@ -87,7 +84,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .setContentType&#40;&quot;avro&#47;binary+&#123;schema-id&#125;&quot;&#41;;
  *
  * &#47;&#47; This is an object generated from the Avro schema used in the serialization sample.
- * Person person = serializer.deserializeMessageData&#40;message, TypeReference.createInstance&#40;Person.class&#41;&#41;;
+ * Person person = serializer.deserialize&#40;message, TypeReference.createInstance&#40;Person.class&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize -->
  *
@@ -95,7 +92,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Serializes an Avro generated object into {@link MessageContent}. It uses the {@link Function messageFactory} to
  * instantiate and populate the type.
  *
- * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory -->
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory
+ * -->
  * <pre>
  * &#47;&#47; The object to encode. The avro schema is:
  * &#47;&#47; &#123;
@@ -114,7 +112,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .build&#40;&#41;;
  *
  * &#47;&#47; Serializes and creates an instance of ComplexMessage using the messageFactory function.
- * ComplexMessage message = serializer.serializeMessageData&#40;person,
+ * ComplexMessage message = serializer.serialize&#40;person,
  *     TypeReference.createInstance&#40;ComplexMessage.class&#41;,
  *     &#40;encodedData&#41; -&gt; &#123;
  *         return new ComplexMessage&#40;&quot;unique-id&quot;, OffsetDateTime.now&#40;&#41;&#41;;
@@ -124,14 +122,10 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public final class SchemaRegistryApacheAvroSerializer {
     static final String AVRO_MIME_TYPE = "avro/binary";
-    static final byte[] RECORD_FORMAT_INDICATOR = new byte[]{0x00, 0x00, 0x00, 0x00};
-    static final int RECORD_FORMAT_INDICATOR_SIZE = RECORD_FORMAT_INDICATOR.length;
-    static final int SCHEMA_ID_SIZE = 32;
 
     private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroSerializer.class);
-    private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final AvroSerializer avroSerializer;
-    private final SerializerOptions serializerOptions;
+    private final SchemaRegistrySchemaCache schemaCache;
 
     /**
      * Creates a new instance.
@@ -140,13 +134,15 @@ public final class SchemaRegistryApacheAvroSerializer {
      * @param avroSerializer Serializer implemented using Apache Avro.
      * @param serializerOptions Options to configure the serializer with.
      */
-    SchemaRegistryApacheAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
-        AvroSerializer avroSerializer, SerializerOptions serializerOptions) {
-        this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
-            "'schemaRegistryClient' cannot be null.");
-        this.avroSerializer = Objects.requireNonNull(avroSerializer,
-            "'avroSerializer' cannot be null.");
-        this.serializerOptions = Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
+    SchemaRegistryApacheAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient, AvroSerializer avroSerializer,
+        SerializerOptions serializerOptions) {
+
+        Objects.requireNonNull(schemaRegistryClient, "'schemaRegistryClient' cannot be null.");
+        Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
+
+        this.avroSerializer = Objects.requireNonNull(avroSerializer, "'avroSerializer' cannot be null.");
+        this.schemaCache = new SchemaRegistrySchemaCache(schemaRegistryClient, serializerOptions.getSchemaGroup(),
+            serializerOptions.autoRegisterSchemas(), serializerOptions.getMaxCacheSize());
     }
 
     /**
@@ -158,11 +154,11 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @return The message encoded or {@code null} if the message could not be serialized.
      *
-     * @throws IllegalArgumentException if {@code T} does not have a no argument constructor. Or if the schema could not
-     *     be fetched from {@code T}.
+     * @throws IllegalArgumentException if {@code T} does not have a no argument constructor. Or if the schema could
+     *     not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated.
-     * @throws SchemaRegistryApacheAvroException if an instance of {@code T} could not be instantiated or there was a
-     *     problem serializing the object.
+     * @throws SchemaRegistryApacheAvroException if an instance of {@code T} could not be instantiated or there was
+     *     a problem serializing the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws ResourceNotFoundException if the schema could not be found and {@link
      *     SchemaRegistryApacheAvroSerializerBuilder#autoRegisterSchemas(boolean)} is false.
@@ -205,8 +201,8 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @return A Mono that completes with the serialized message.
      *
-     * @throws IllegalArgumentException if {@code T} does not have a no argument constructor. Or if the schema could not
-     *     be fetched from {@code T}.
+     * @throws IllegalArgumentException if {@code T} does not have a no argument constructor. Or if the schema could
+     *     not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      * @throws SchemaRegistryApacheAvroException if the object could not be serialized.
@@ -277,28 +273,7 @@ public final class SchemaRegistryApacheAvroSerializer {
             return monoError(logger, exception);
         }
 
-        final String schemaFullName = schema.getFullName();
-        final String schemaString = schema.toString();
-        final String schemaGroup = serializerOptions.getSchemaGroup();
-
-        // It is possible to create the serializer without setting the schema group. This is the case when
-        // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
-        if (CoreUtils.isNullOrEmpty(schemaGroup)) {
-            return monoError(logger, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
-                + "set in SchemaRegistryApacheAvroSerializer.schemaGroup when creating serializer."));
-        }
-
-        final Mono<SchemaProperties> serviceCall;
-        if (serializerOptions.autoRegisterSchemas()) {
-            serviceCall = this.schemaRegistryClient
-                .registerSchema(schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
-        } else {
-            serviceCall = this.schemaRegistryClient.getSchemaProperties(
-                schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
-        }
-
-        return serviceCall.handle((properties, sink) -> {
-            final String schemaId = properties.getId();
+        return this.schemaCache.getSchemaId(schema).handle((schemaId, sink) -> {
 
             try {
                 final byte[] encoded = avroSerializer.serialize(object, schemaId);
@@ -383,58 +358,30 @@ public final class SchemaRegistryApacheAvroSerializer {
             return Mono.empty();
         }
 
-        final String schemaId;
-
-        // Temporary back-compat for the first beta while we phase this out. In the future, it will return an error.
-        // Check if the first 4 bytes of the payload have the format.
-        final byte[] recordFormatIndicator = new byte[RECORD_FORMAT_INDICATOR_SIZE];
-        contents.mark();
-
-        // Don't try to get 4 bytes if there isn't enough, so we don't get a BufferUnderflowException.
-        final boolean hasPreamble;
-        if (contents.remaining() < RECORD_FORMAT_INDICATOR_SIZE) {
-            hasPreamble = false;
-        } else {
-            contents.get(recordFormatIndicator);
-            hasPreamble = Arrays.equals(RECORD_FORMAT_INDICATOR, recordFormatIndicator);
+        if (CoreUtils.isNullOrEmpty(message.getContentType())) {
+            return monoError(logger, new IllegalArgumentException("Cannot deserialize message with no content-type."));
         }
 
-        if (hasPreamble) {
-            final byte[] schemaGuidByteArray = new byte[SCHEMA_ID_SIZE];
-            contents.get(schemaGuidByteArray);
-
-            schemaId = new String(schemaGuidByteArray, StandardCharsets.UTF_8);
-        } else {
-            if (CoreUtils.isNullOrEmpty(message.getContentType())) {
-                return monoError(logger, new IllegalArgumentException("Cannot deserialize message with no content-type."));
-            }
-
-            // It is the new format, so we parse the mime-type.
-            final String[] parts = message.getContentType().split("\\+");
-            if (parts.length != 2) {
-                return monoError(logger, new IllegalArgumentException(
-                    "Content type was not in the expected format of MIME type + schema ID. Actual: "
-                        + message.getContentType()));
-            }
-
-            if (!AVRO_MIME_TYPE.equalsIgnoreCase(parts[0])) {
-                return monoError(logger, new IllegalArgumentException(
-                    "An avro encoder may only be used on content that is of 'avro/binary' type. Actual: "
-                        + message.getContentType()));
-            }
-
-            schemaId = parts[1];
-
-            // There is no header so reset back to where we marked the buffer before starting to look for the preamble.
-            contents.reset();
+        // It is the new format, so we parse the mime-type.
+        final String[] parts = message.getContentType().split("\\+");
+        if (parts.length != 2) {
+            return monoError(logger, new IllegalArgumentException(
+                "Content type was not in the expected format of MIME type + schema ID. Actual: "
+                    + message.getContentType()));
         }
 
-        return this.schemaRegistryClient.getSchema(schemaId)
-            .handle((registryObject, sink) -> {
-                final byte[] payloadSchema = registryObject.getDefinition().getBytes(StandardCharsets.UTF_8);
+        if (!AVRO_MIME_TYPE.equalsIgnoreCase(parts[0])) {
+            return monoError(logger, new IllegalArgumentException(
+                "An avro encoder may only be used on content that is of 'avro/binary' type. Actual: "
+                    + message.getContentType()));
+        }
 
+        final String schemaId = parts[1];
+
+        return this.schemaCache.getSchema(schemaId)
+            .handle((schema, sink) -> {
                 try {
-                    final T decode = avroSerializer.deserialize(contents, payloadSchema, typeReference);
+                    final T decode = avroSerializer.deserialize(contents, schema, typeReference);
                     sink.next(decode);
                 } catch (Exception e) {
                     sink.error(e);

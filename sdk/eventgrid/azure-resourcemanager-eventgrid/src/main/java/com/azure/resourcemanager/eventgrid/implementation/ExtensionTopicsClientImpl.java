@@ -144,15 +144,7 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExtensionTopicInner> getAsync(String scope) {
-        return getWithResponseAsync(scope)
-            .flatMap(
-                (Response<ExtensionTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

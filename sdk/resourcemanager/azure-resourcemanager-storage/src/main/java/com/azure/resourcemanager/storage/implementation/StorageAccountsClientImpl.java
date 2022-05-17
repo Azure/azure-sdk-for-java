@@ -449,15 +449,7 @@ public final class StorageAccountsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
         StorageAccountCheckNameAvailabilityParameters accountName) {
-        return checkNameAvailabilityWithResponseAsync(accountName)
-            .flatMap(
-                (Response<CheckNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkNameAvailabilityWithResponseAsync(accountName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -916,7 +908,7 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1078,14 +1070,7 @@ public final class StorageAccountsClientImpl
     public Mono<StorageAccountInner> getByResourceGroupAsync(
         String resourceGroupName, String accountName, StorageAccountExpand expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, expand)
-            .flatMap(
-                (Response<StorageAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1105,14 +1090,7 @@ public final class StorageAccountsClientImpl
     public Mono<StorageAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         final StorageAccountExpand expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, expand)
-            .flatMap(
-                (Response<StorageAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1300,14 +1278,7 @@ public final class StorageAccountsClientImpl
     public Mono<StorageAccountInner> updateAsync(
         String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<StorageAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1805,14 +1776,7 @@ public final class StorageAccountsClientImpl
     public Mono<StorageAccountListKeysResultInner> listKeysAsync(
         String resourceGroupName, String accountName, ListKeyExpand expand) {
         return listKeysWithResponseAsync(resourceGroupName, accountName, expand)
-            .flatMap(
-                (Response<StorageAccountListKeysResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1831,14 +1795,7 @@ public final class StorageAccountsClientImpl
     public Mono<StorageAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName) {
         final ListKeyExpand expand = null;
         return listKeysWithResponseAsync(resourceGroupName, accountName, expand)
-            .flatMap(
-                (Response<StorageAccountListKeysResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2013,14 +1970,7 @@ public final class StorageAccountsClientImpl
     public Mono<StorageAccountListKeysResultInner> regenerateKeyAsync(
         String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, regenerateKey)
-            .flatMap(
-                (Response<StorageAccountListKeysResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2196,14 +2146,7 @@ public final class StorageAccountsClientImpl
     public Mono<ListAccountSasResponseInner> listAccountSasAsync(
         String resourceGroupName, String accountName, AccountSasParameters parameters) {
         return listAccountSasWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<ListAccountSasResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2376,14 +2319,7 @@ public final class StorageAccountsClientImpl
     public Mono<ListServiceSasResponseInner> listServiceSasAsync(
         String resourceGroupName, String accountName, ServiceSasParameters parameters) {
         return listServiceSasWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<ListServiceSasResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3639,7 +3575,7 @@ public final class StorageAccountsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeUserDelegationKeysAsync(String resourceGroupName, String accountName) {
         return revokeUserDelegationKeysWithResponseAsync(resourceGroupName, accountName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

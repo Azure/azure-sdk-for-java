@@ -36,7 +36,11 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
         return fromString(name, ODataAuthenticationType.class);
     }
 
-    /** @return known ODataAuthenticationType values. */
+    /**
+     * Gets known ODataAuthenticationType values.
+     *
+     * @return known ODataAuthenticationType values.
+     */
     public static Collection<ODataAuthenticationType> values() {
         return values(ODataAuthenticationType.class);
     }

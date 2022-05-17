@@ -1349,6 +1349,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     /**
      * Test analyzing sentiment for a string input.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1363,6 +1364,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     /**
      * Test analyzing sentiment for a string input with default language hint.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInputWithDefaultLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1377,6 +1379,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     /**
      * Test analyzing sentiment for a string input and verifying the result of opinion mining.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1405,6 +1408,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     /**
      * Test analyzing sentiment for a faulty document.
      */
+    @Disabled("REGRESSION: No longer valid expected output")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1467,6 +1471,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      * which TextAnalyticsRequestOptions is null and null language code which will use the default language code, 'en'.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1485,6 +1490,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      * which TextAnalyticsRequestOptions is null and given a language code.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForListStringWithLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1502,6 +1508,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
      * which to show the request statistics only and verify the analyzed sentiment result.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForListStringShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1519,6 +1526,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
      * which AnalyzeSentimentOptions includes opinion mining and request statistics.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForListStringNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1538,6 +1546,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
      * which AnalyzeSentimentOptions includes opinion mining and request statistics.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForListStringShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1555,6 +1564,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      * which TextAnalyticsRequestOptions is null.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchInputWithNullRequestOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1572,6 +1582,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      * which TextAnalyticsRequestOptions includes request statistics.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1589,6 +1600,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
      * which AnalyzeSentimentOptions is null.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchInputWithNullAnalyzeSentimentOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1606,6 +1618,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
      * which AnalyzeSentimentOptions includes request statistics but not opinion mining.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchInputShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1623,6 +1636,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
      * which AnalyzeSentimentOptions includes opinion mining but not request statistics.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchInputNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1643,6 +1657,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
      * which AnalyzeSentimentOptions includes opinion mining and request statistics.
      */
+    @Disabled("REGRESSION: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14208842")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1670,6 +1685,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 }));
     }
 
+    @Disabled("REGRESSION:https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14262098")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1727,6 +1743,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 //        );
     }
 
+    @Disabled("REGRESSION:https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14262098")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1753,6 +1770,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("REGRESSION:https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14262098")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1782,6 +1800,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("REGRESSION:https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14262098")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
@@ -1837,6 +1856,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("REGRESSION:https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14262098")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2202,6 +2222,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
+    @Disabled("REGRESSION:https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14262098")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {

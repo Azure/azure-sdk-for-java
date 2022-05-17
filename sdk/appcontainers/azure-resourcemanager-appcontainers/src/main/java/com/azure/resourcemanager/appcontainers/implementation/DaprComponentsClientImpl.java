@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -29,6 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.appcontainers.fluent.DaprComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.DaprComponentsCollection;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
@@ -114,6 +116,22 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
+                + "/managedEnvironments/{environmentName}/daprComponents/{name}/listSecrets")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<DaprSecretsCollectionInner>> listSecrets(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -828,6 +846,173 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String name, Context context) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, name, context).block();
+    }
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DaprSecretsCollectionInner>> listSecretsWithResponseAsync(
+        String resourceGroupName, String environmentName, String name) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSecrets(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            environmentName,
+                            name,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the Dapr Component.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DaprSecretsCollectionInner>> listSecretsWithResponseAsync(
+        String resourceGroupName, String environmentName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listSecrets(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                environmentName,
+                name,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DaprSecretsCollectionInner> listSecretsAsync(
+        String resourceGroupName, String environmentName, String name) {
+        return listSecretsWithResponseAsync(resourceGroupName, environmentName, name)
+            .flatMap(
+                (Response<DaprSecretsCollectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DaprSecretsCollectionInner listSecrets(String resourceGroupName, String environmentName, String name) {
+        return listSecretsAsync(resourceGroupName, environmentName, name).block();
+    }
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the Dapr Component.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DaprSecretsCollectionInner> listSecretsWithResponse(
+        String resourceGroupName, String environmentName, String name, Context context) {
+        return listSecretsWithResponseAsync(resourceGroupName, environmentName, name, context).block();
     }
 
     /**

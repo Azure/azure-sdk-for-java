@@ -34,7 +34,11 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
         return fromString(name, IntegrationRuntimeSsisCatalogPricingTier.class);
     }
 
-    /** @return known IntegrationRuntimeSsisCatalogPricingTier values. */
+    /**
+     * Gets known IntegrationRuntimeSsisCatalogPricingTier values.
+     *
+     * @return known IntegrationRuntimeSsisCatalogPricingTier values.
+     */
     public static Collection<IntegrationRuntimeSsisCatalogPricingTier> values() {
         return values(IntegrationRuntimeSsisCatalogPricingTier.class);
     }

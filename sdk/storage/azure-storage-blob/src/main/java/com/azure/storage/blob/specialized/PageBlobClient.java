@@ -697,7 +697,8 @@ public final class PageBlobClient extends BlobClientBase {
      * <pre>
      * BlobRange blobRange = new BlobRange&#40;offset&#41;;
      * String prevSnapshot = &quot;previous snapshot&quot;;
-     * PagedIterable<PageRangeItem> iterable = client.listPageRanges&#40;blobRange&#41;;
+     * PagedIterable&lt;PageRangeItem&gt; iterable = client.listPageRanges&#40;blobRange&#41;;
+     *
      * for &#40;PageRangeItem item : iterable&#41; &#123;
      *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
      *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
@@ -721,17 +722,21 @@ public final class PageBlobClient extends BlobClientBase {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#ListPageRangesOptions-Duration-Context -->
-     * ListPageRangesOptions options = new ListPageRangesOptions&40;new BlobRange&40;offset&41;&41;
-     *     .setRequestConditions&40;new BlobRequestConditions&40;&41;.setLeaseId&40;leaseId&41;&41;
-     *     .setMaxResultsPerPage&40;1000&41;;
-     * Context context = new Context&40;key, value&41;;
+     * <pre>
+     * ListPageRangesOptions options = new ListPageRangesOptions&#40;new BlobRange&#40;offset&#41;&#41;
+     *     .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setMaxResultsPerPage&#40;1000&#41;;
+     *
+     * Context context = new Context&#40;key, value&#41;;
+     *
      * PagedIterable&lt;PageRangeItem&gt; iter = client
-     *     .listPageRanges&40;options, timeout, context&41;;
-     * System.out.println&40;&quot;Valid Page Ranges are:&quot;&41;;
-     * for &40;PageRangeItem item : iter&41; &#123;
-     *     System.out.printf&40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&40;&41;.getOffset&40;&41;,
-     *         item.getRange&40;&41;.getLength&40;&41;, item.isClear&40;&41;&41;;
-     *  &#125;
+     *     .listPageRanges&#40;options, timeout, context&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * for &#40;PageRangeItem item : iter&#41; &#123;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;, item.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         item.getRange&#40;&#41;.getLength&#40;&#41;, item.isClear&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#ListPageRangesOptions-Duration-Context -->
      *
@@ -876,7 +881,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * Context context = new Context&#40;key, value&#41;;
      *
-     * PagedIterable&lt;PageRangeItem&lg; iter = client
+     * PagedIterable&lt;PageRangeItem&gt; iter = client
      *     .listPageRangesDiff&#40;options, timeout, context&#41;;
      *
      * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;

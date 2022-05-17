@@ -33,7 +33,11 @@ public final class ConfidenceScoreStatus extends ExpandableStringEnum<Confidence
         return fromString(name, ConfidenceScoreStatus.class);
     }
 
-    /** @return known ConfidenceScoreStatus values. */
+    /**
+     * Gets known ConfidenceScoreStatus values.
+     *
+     * @return known ConfidenceScoreStatus values.
+     */
     public static Collection<ConfidenceScoreStatus> values() {
         return values(ConfidenceScoreStatus.class);
     }

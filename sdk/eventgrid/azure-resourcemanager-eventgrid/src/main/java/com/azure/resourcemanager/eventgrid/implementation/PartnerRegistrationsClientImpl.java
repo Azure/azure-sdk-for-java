@@ -292,14 +292,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     private Mono<PartnerRegistrationInner> getByResourceGroupAsync(
         String resourceGroupName, String partnerRegistrationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerRegistrationName)
-            .flatMap(
-                (Response<PartnerRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

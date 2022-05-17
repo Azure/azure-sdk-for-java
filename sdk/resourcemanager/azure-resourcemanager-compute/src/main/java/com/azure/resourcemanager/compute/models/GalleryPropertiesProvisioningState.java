@@ -39,7 +39,11 @@ public final class GalleryPropertiesProvisioningState extends ExpandableStringEn
         return fromString(name, GalleryPropertiesProvisioningState.class);
     }
 
-    /** @return known GalleryPropertiesProvisioningState values. */
+    /**
+     * Gets known GalleryPropertiesProvisioningState values.
+     *
+     * @return known GalleryPropertiesProvisioningState values.
+     */
     public static Collection<GalleryPropertiesProvisioningState> values() {
         return values(GalleryPropertiesProvisioningState.class);
     }

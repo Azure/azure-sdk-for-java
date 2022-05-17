@@ -30,7 +30,11 @@ public final class IncidentStatus extends ExpandableStringEnum<IncidentStatus> {
         return fromString(name, IncidentStatus.class);
     }
 
-    /** @return known IncidentStatus values. */
+    /**
+     * Gets known IncidentStatus values.
+     *
+     * @return known IncidentStatus values.
+     */
     public static Collection<IncidentStatus> values() {
         return values(IncidentStatus.class);
     }
