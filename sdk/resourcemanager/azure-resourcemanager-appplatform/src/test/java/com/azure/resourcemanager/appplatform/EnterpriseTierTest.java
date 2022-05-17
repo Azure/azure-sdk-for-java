@@ -72,6 +72,23 @@ public class EnterpriseTierTest extends AppPlatformTest {
 
         // config2 is cleared
         Assertions.assertNull(springService.getDefaultConfigurationService().getGitRepository("config2"));
+
+        // begin with no default configuration service, then create it
+        String serviceName2 = generateRandomResourceName("springsvc", 15);
+        SpringService springService2 = appPlatformManager.springServices()
+            .define(serviceName2)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withEnterpriseTierSku()
+            .create();
+        Assertions.assertNull(springService2.getDefaultConfigurationService());
+
+        springService2.update()
+            .withGitRepository("config2", GIT_CONFIG_URI, "master", filePatterns)
+            .apply();
+
+        Assertions.assertNotNull(springService2.getDefaultConfigurationService());
+        Assertions.assertNotNull(springService2.getDefaultConfigurationService().getGitRepository("config2"));
     }
 
     @Test
@@ -93,26 +110,32 @@ public class EnterpriseTierTest extends AppPlatformTest {
         SpringApp app = springService.apps()
             .define(appName)
             .withDefaultActiveDeployment()
+            .withConfigurationServiceBinding()
+            .withServiceRegistryBinding()
             .withHttpsOnly()
             .withDefaultPublicEndpoint()
-            .withConfigurationServiceBinding()
             .create();
 
         Assertions.assertNotNull(app.url());
         Assertions.assertTrue(app.isHttpsOnly());
         Assertions.assertTrue(app.isPublic());
         Assertions.assertTrue(app.hasConfigurationServiceBinding());
+        Assertions.assertTrue(app.hasServiceRegistryBinding());
         Assertions.assertTrue(springService.getDefaultConfigurationService().getAppBindings().stream().anyMatch(SpringApp::hasConfigurationServiceBinding));
+        Assertions.assertTrue(springService.getDefaultServiceRegistry().getAppBindings().stream().anyMatch(SpringApp::hasServiceRegistryBinding));
 
         app.update()
             .withoutHttpsOnly()
-            .withoutDefaultPublicEndpoint()
             .withoutConfigurationServiceBinding()
+            .withoutServiceRegistryBinding()
+            .withoutDefaultPublicEndpoint()
             .apply();
 
         Assertions.assertFalse(app.isHttpsOnly());
         Assertions.assertFalse(app.isPublic());
         Assertions.assertFalse(app.hasConfigurationServiceBinding());
+        Assertions.assertFalse(app.hasServiceRegistryBinding());
         Assertions.assertFalse(springService.getDefaultConfigurationService().getAppBindings().stream().anyMatch(SpringApp::hasConfigurationServiceBinding));
+        Assertions.assertFalse(springService.getDefaultServiceRegistry().getAppBindings().stream().anyMatch(SpringApp::hasServiceRegistryBinding));
     }
 }

@@ -236,14 +236,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private Mono<PrivateEndpointConnectionResourceInner> getAsync(
         String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
         return getWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName)
-            .flatMap(
-                (Response<PrivateEndpointConnectionResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

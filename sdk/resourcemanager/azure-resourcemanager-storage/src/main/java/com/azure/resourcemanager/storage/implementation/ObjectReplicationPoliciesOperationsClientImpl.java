@@ -453,14 +453,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
     public Mono<ObjectReplicationPolicyInner> getAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -678,14 +671,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
         String objectReplicationPolicyId,
         ObjectReplicationPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -885,7 +871,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return deleteWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

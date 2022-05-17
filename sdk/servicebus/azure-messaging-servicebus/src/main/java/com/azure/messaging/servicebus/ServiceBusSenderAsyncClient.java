@@ -754,7 +754,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         final Mono<Void> sendMessage = getSendLink().flatMap(link -> {
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 final TransactionalState deliveryState = new TransactionalState();
-                deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                deliveryState.setTxnId(Binary.create(transactionContext.getTransactionId()));
                 return messages.size() == 1
                     ? link.send(messages.get(0), deliveryState)
                     : link.send(messages, deliveryState);

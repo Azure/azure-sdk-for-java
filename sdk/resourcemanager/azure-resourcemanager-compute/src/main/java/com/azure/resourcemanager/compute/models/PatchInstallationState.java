@@ -39,7 +39,11 @@ public final class PatchInstallationState extends ExpandableStringEnum<PatchInst
         return fromString(name, PatchInstallationState.class);
     }
 
-    /** @return known PatchInstallationState values. */
+    /**
+     * Gets known PatchInstallationState values.
+     *
+     * @return known PatchInstallationState values.
+     */
     public static Collection<PatchInstallationState> values() {
         return values(PatchInstallationState.class);
     }

@@ -30,7 +30,11 @@ public final class PollingFrequency extends ExpandableStringEnum<PollingFrequenc
         return fromString(name, PollingFrequency.class);
     }
 
-    /** @return known PollingFrequency values. */
+    /**
+     * Gets known PollingFrequency values.
+     *
+     * @return known PollingFrequency values.
+     */
     public static Collection<PollingFrequency> values() {
         return values(PollingFrequency.class);
     }

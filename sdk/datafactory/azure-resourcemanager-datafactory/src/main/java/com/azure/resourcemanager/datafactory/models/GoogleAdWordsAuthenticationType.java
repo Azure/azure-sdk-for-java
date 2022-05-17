@@ -27,7 +27,11 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
         return fromString(name, GoogleAdWordsAuthenticationType.class);
     }
 
-    /** @return known GoogleAdWordsAuthenticationType values. */
+    /**
+     * Gets known GoogleAdWordsAuthenticationType values.
+     *
+     * @return known GoogleAdWordsAuthenticationType values.
+     */
     public static Collection<GoogleAdWordsAuthenticationType> values() {
         return values(GoogleAdWordsAuthenticationType.class);
     }
