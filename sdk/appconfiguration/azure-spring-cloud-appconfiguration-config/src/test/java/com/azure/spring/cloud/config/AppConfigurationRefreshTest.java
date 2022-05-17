@@ -43,9 +43,6 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
-import net.jcip.annotations.NotThreadSafe;
-
-@NotThreadSafe
 public class AppConfigurationRefreshTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshTest.class);

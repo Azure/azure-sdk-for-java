@@ -32,23 +32,24 @@ The feature management library supports application.yml or bootstrap.yml as a fe
 
 ```yaml
 feature-management:
-  feature-t: false
-  feature-u:
-    enabled-for:
-      -
-        name: Random
-  feature-v:
-    enabled-for:
-      -
-        name: TimeWindowFilter
-        parameters:
-          time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT"
-          time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
-  feature-w:
-    evaluate: false
-    enabled-for:
-      -
-        name: AlwaysOnFilter
+  feature-flags:
+    feature-t: false
+    feature-u:
+      enabled-for:
+        -
+          name: Random
+    feature-v:
+      enabled-for:
+        -
+          name: TimeWindowFilter
+          parameters:
+            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT"
+            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+    feature-w:
+      evaluate: false
+      enabled-for:
+        -
+          name: AlwaysOnFilter
 ```
 
 The `feature-management` section of the YAML document is used by convention to load feature flags. In the section above, we see that we have provided three different features. Features define their filters using the `enabled-for`  property. We can see that feature `feature-t` is set to false with no filters set. `feature-t` will always return false, this can also be done for true. `feature-u` which has only one feature filter `Random` which does not require any configuration so it only has the name property. `feature-v` it specifies a feature filter named `TimeWindow`. This is an example of a configurable feature filter. We can see in the example that the filter has a parameter's property. This is used to configure the filter. In this case, the start and end times for the feature to be active are configured.
@@ -170,12 +171,13 @@ This filter provides the capability to enable a feature based on a set percentag
 
 ```yaml
 feature-management:
-  feature-v:
-    enabled-for:
-      -
-        name: PercentageFilter
-        parameters:
-          percentage-filter-setting: 50
+  feature-flags:
+    feature-v:
+      enabled-for:
+        -
+          name: PercentageFilter
+          parameters:
+            percentage-filter-setting: 50
 ```
 
 ### TimeWindowFilter
@@ -184,13 +186,14 @@ This filter provides the capability to enable a feature based on a time window. 
 
 ```yaml
 feature-management:
-  feature-v:
-    enabled-for:
-      -
-       name: TimeWindowFilter
-        parameters:
-          time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-          time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+  feature-flags:
+    feature-v:
+      enabled-for:
+        -
+         name: TimeWindowFilter
+          parameters:
+            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
+            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
 ### TargetingFilter
@@ -199,22 +202,23 @@ This filter provides the capability to enable a feature for a target audience. A
 
 ```yml
 feature-management:
-  target:
-    enabled-for:
-      -
-        name: targetingFilter
-        parameters:
-          users:
-            - Jeff
-            - Alicia
-          groups:
-            -
-              name: Ring0
-              rolloutPercentage: 100
-            -
-              name: Ring1
-              rolloutPercentage: 100
-          defaultRolloutPercentage: 50
+  feature-flags:
+    target:
+      enabled-for:
+        -
+          name: targetingFilter
+          parameters:
+            users:
+              - Jeff
+              - Alicia
+            groups:
+              -
+                name: Ring0
+                rolloutPercentage: 100
+              -
+                name: Ring1
+                rolloutPercentage: 100
+            defaultRolloutPercentage: 50
 ```
 
 ## Targeting
