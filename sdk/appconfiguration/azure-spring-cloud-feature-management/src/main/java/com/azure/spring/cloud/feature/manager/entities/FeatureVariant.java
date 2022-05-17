@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,9 +30,11 @@ public final class FeatureVariant {
 
     @NotBlank
     @JsonProperty("configuration-reference")
+    @JsonAlias({"configurationReference", "configuration-reference"})
     private String configurationReference;
 
     @JsonProperty("assignment-parameters")
+    @JsonAlias({"assignment-parameters", "assignmentParameters"})
     private LinkedHashMap<String, Object> assignmentParameters;
 
     /**
