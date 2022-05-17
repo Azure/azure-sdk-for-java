@@ -5,9 +5,9 @@ package com.azure.core.metrics.micrometer;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.metrics.ClientLongHistogram;
-import com.azure.core.util.metrics.ClientMeter;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureLongHistogram;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.openjdk.jmh.Main;
@@ -39,27 +39,28 @@ import java.util.concurrent.TimeUnit;
 public class MicrometerMetricsBenchmark {
 
     private static final MeterRegistry registry = new SimpleMeterRegistry();
+    private final static AzureMeterProvider CLIENT_METER_PROVIDER = AzureMeterProvider.DEFAULT_PROVIDER;
 
     private final static Map<String, Object> COMMON_ATTRIBUTES = new HashMap<>() {{
         put("az.messaging.destination", "fqdn");
         put("az.messaging.entity", "entityName");
     }};
 
-    private static final MetricHelper METRIC_HELPER = new MetricHelper(ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(registry)),
+    private static final MetricHelper METRIC_HELPER = new MetricHelper(CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(registry)),
         "fqdn", "entityName");
 
-    private static final ClientLongHistogram HISTOGRAM_WITH_ATTRIBUTES = ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(registry))
-        .getLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
+    private static final AzureLongHistogram HISTOGRAM_WITH_ATTRIBUTES = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(registry))
+        .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
-    private static ClientLongHistogram HISTOGRAM = ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(registry))
-        .getLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
+    private static AzureLongHistogram HISTOGRAM = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(registry))
+        .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
-    private static ClientLongHistogram DISABLED_METRICS_HISTOGRAM = ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(registry).enable(false))
-        .getLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
+    private static AzureLongHistogram DISABLED_METRICS_HISTOGRAM = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(registry).enable(false))
+        .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
     @Benchmark
     public void disabledMetrics() {
@@ -96,11 +97,11 @@ public class MicrometerMetricsBenchmark {
         private final static String DURATION_METRIC_DESCRIPTION = "Duration of producer send call";
         private final static String DURATION_METRIC_UNIT = "ms";
 
-        private final ClientMeter meter;
+        private final AzureMeter meter;
         private final String fullyQualifiedNamespace;
         private final String eventHubName;
 
-        public MetricHelper(ClientMeter meter, String fullyQualifiedNamespace, String eventHubName) {
+        public MetricHelper(AzureMeter meter, String fullyQualifiedNamespace, String eventHubName) {
             this.meter = meter;
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.eventHubName = eventHubName;
@@ -143,10 +144,10 @@ public class MicrometerMetricsBenchmark {
         }
 
         private static class SendBatchMetrics {
-            public final ClientLongHistogram sendDuration;
+            public final AzureLongHistogram sendDuration;
 
-            public SendBatchMetrics(ClientMeter meter, Map<String, Object> attributes) {
-                this.sendDuration  = meter.getLongHistogram(DURATION_METRIC_NAME, DURATION_METRIC_DESCRIPTION, DURATION_METRIC_UNIT, attributes);
+            public SendBatchMetrics(AzureMeter meter, Map<String, Object> attributes) {
+                this.sendDuration  = meter.createLongHistogram(DURATION_METRIC_NAME, DURATION_METRIC_DESCRIPTION, DURATION_METRIC_UNIT, attributes);
             }
 
             public void record(long duration, Context context) {

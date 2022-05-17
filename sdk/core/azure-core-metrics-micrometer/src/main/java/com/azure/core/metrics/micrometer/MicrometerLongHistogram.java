@@ -1,10 +1,10 @@
 package com.azure.core.metrics.micrometer;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.metrics.ClientLongHistogram;
+import com.azure.core.util.metrics.AzureLongHistogram;
 import io.micrometer.core.instrument.DistributionSummary;
 
-class MicrometerLongHistogram implements ClientLongHistogram {
+class MicrometerLongHistogram implements AzureLongHistogram {
 
     private final DistributionSummary summary;
 

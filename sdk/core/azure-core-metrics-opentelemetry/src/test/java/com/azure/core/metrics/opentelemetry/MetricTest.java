@@ -2,9 +2,9 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.metrics.ClientLongHistogram;
-import com.azure.core.util.metrics.ClientMeter;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureLongHistogram;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
@@ -38,11 +38,10 @@ public class MetricTest {
             .build();
 
         Map<String, Object> commonAttributes = Collections.singletonMap("key", "value");
-        Map<String, Object> extraAttributes = Collections.singletonMap("extraKey", "extraValue");
 
-        ClientLongHistogram longHistogram = ClientMeterProvider
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setImplementationConfiguration(sdkMeterProvider))
-            .getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
+        AzureLongHistogram longHistogram = AzureMeterProvider.DEFAULT_PROVIDER
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider))
+            .createLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
 
         longHistogram.record(42, Context.NONE);
         longHistogram.record(420, Context.NONE);
@@ -84,11 +83,11 @@ public class MetricTest {
             .build();
 
         Map<String, Object> commonAttributes = Collections.singletonMap("key", "value");
-        ClientMeter meter = ClientMeterProvider
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setImplementationConfiguration(sdkMeterProvider));
+        AzureMeter meter = AzureMeterProvider.DEFAULT_PROVIDER
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider));
 
-        ClientLongHistogram longHistogram1 = meter.getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
-        ClientLongHistogram longHistogram2 = meter.getLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
+        AzureLongHistogram longHistogram1 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
+        AzureLongHistogram longHistogram2 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
 
         longHistogram1.record(42, Context.NONE);
         longHistogram2.record(420, Context.NONE);

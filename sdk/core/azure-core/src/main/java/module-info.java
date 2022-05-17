@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.core.util.metrics.AzureMeterProvider;
+
 module com.azure.core {
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
@@ -34,7 +36,6 @@ module com.azure.core {
 
     // TODO temporary until we find final shape of ObjectMapper shimming APIs
     exports com.azure.core.implementation.jackson to com.azure.core.management, com.azure.core.serializer.json.jackson;
-    exports com.azure.core.implementation.util to com.azure.http.netty, com.azure.core.http.okhttp, com.azure.core.http.jdk.httpclient;
 
     // export core utilities to other core packages.
     exports com.azure.core.implementation.util to com.azure.http.netty, com.azure.core.http.okhttp,
@@ -62,5 +63,5 @@ module com.azure.core {
     uses com.azure.core.util.serializer.JsonSerializerProvider;
     uses com.azure.core.util.serializer.MemberNameConverterProvider;
     uses com.azure.core.util.tracing.Tracer;
-    uses com.azure.core.util.metrics.ClientMeterProvider;
+    uses AzureMeterProvider;
 }

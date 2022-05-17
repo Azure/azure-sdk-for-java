@@ -1,4 +1,5 @@
 import com.azure.core.metrics.opentelemetry.OpenTelemetryMeterProvider;
+import com.azure.core.util.metrics.AzureMeterProvider;
 
 module com.azure.core.metrics.opentelemetry {
     requires transitive com.azure.core;
@@ -10,6 +11,6 @@ module com.azure.core.metrics.opentelemetry {
 
     exports com.azure.core.metrics.opentelemetry;
 
-    provides com.azure.core.util.metrics.ClientMeterProvider
+    provides AzureMeterProvider
         with OpenTelemetryMeterProvider;
 }

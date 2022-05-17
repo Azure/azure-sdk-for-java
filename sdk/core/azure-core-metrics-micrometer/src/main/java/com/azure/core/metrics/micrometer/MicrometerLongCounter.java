@@ -1,10 +1,10 @@
 package com.azure.core.metrics.micrometer;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.metrics.ClientLongCounter;
+import com.azure.core.util.metrics.AzureLongCounter;
 import io.micrometer.core.instrument.Counter;
 
-class MicrometerLongCounter implements ClientLongCounter {
+class MicrometerLongCounter implements AzureLongCounter {
 
     private final Counter counter;
 

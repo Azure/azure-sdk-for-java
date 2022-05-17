@@ -1,4 +1,5 @@
 import com.azure.core.metrics.micrometer.MicrometerMeterProvider;
+import com.azure.core.util.metrics.AzureMeterProvider;
 
 module com.azure.core.metrics.micrometer {
     requires transitive com.azure.core;
@@ -8,6 +9,6 @@ module com.azure.core.metrics.micrometer {
 
     exports com.azure.core.metrics.micrometer;
 
-    provides com.azure.core.util.metrics.ClientMeterProvider
+    provides AzureMeterProvider
         with MicrometerMeterProvider;
 }

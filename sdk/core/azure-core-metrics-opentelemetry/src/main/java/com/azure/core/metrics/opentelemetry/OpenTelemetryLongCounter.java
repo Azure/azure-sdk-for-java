@@ -1,14 +1,14 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.metrics.ClientLongCounter;
+import com.azure.core.util.metrics.AzureLongCounter;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.metrics.LongCounter;
 
 import java.util.Map;
 
-class OpenTelemetryLongCounter implements ClientLongCounter {
+class OpenTelemetryLongCounter implements AzureLongCounter {
 
     private final LongCounter counter;
     private final Attributes commonAttributes;

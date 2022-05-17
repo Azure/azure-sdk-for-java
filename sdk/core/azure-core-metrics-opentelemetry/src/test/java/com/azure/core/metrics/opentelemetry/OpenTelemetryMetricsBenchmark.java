@@ -5,9 +5,9 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.metrics.ClientLongHistogram;
-import com.azure.core.util.metrics.ClientMeter;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureLongHistogram;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.testing.exporter.InMemoryMetricReader;
 import org.openjdk.jmh.Main;
@@ -40,6 +40,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 @State(Scope.Thread)
 public class OpenTelemetryMetricsBenchmark {
     private static final InMemoryMetricReader SDK_METER_READER = InMemoryMetricReader.create();
+    private final static AzureMeterProvider CLIENT_METER_PROVIDER = AzureMeterProvider.DEFAULT_PROVIDER;
 
     private static final SdkMeterProvider SDK_METER_PROVIDER = SdkMeterProvider.builder()
         .registerMetricReader(SDK_METER_READER)
@@ -50,24 +51,24 @@ public class OpenTelemetryMetricsBenchmark {
         put("az.messaging.entity", "entityName");
     }};
 
-    private final static MetricHelper METRIC_HELPER = new MetricHelper(ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(SDK_METER_PROVIDER)),"fqdn", "entityName");
+    private final static MetricHelper METRIC_HELPER = new MetricHelper(CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER)),"fqdn", "entityName");
 
-    private static final ClientLongHistogram HISTOGRAM_WITH_ATTRIBUTES = ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(SDK_METER_PROVIDER))
-        .getLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
+    private static final AzureLongHistogram HISTOGRAM_WITH_ATTRIBUTES = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER))
+        .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
-    private static final ClientLongHistogram HISTOGRAM = ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(SDK_METER_PROVIDER))
-        .getLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
+    private static final AzureLongHistogram HISTOGRAM = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER))
+        .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
-    private static final ClientLongHistogram NOOP_HISTOGRAM = ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(io.opentelemetry.api.metrics.MeterProvider.noop()))
-        .getLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
+    private static final AzureLongHistogram NOOP_HISTOGRAM = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop()))
+        .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
-    private static final ClientLongHistogram DISABLED_METRICS_HISTOGRAM = ClientMeterProvider
-        .createMeter("bench", null, new MetricsOptions().setImplementationConfiguration(SDK_METER_READER).enable(false))
-        .getLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
+    private static final AzureLongHistogram DISABLED_METRICS_HISTOGRAM = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_READER).enable(false))
+        .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
     private static final Context AZ_CONTEXT_WITH_OTEL_CONTEXT = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root());
 
@@ -116,11 +117,11 @@ public class OpenTelemetryMetricsBenchmark {
         private final static String DURATION_METRIC_DESCRIPTION = "Duration of producer send call";
         private final static String DURATION_METRIC_UNIT = "ms";
 
-        private final ClientMeter meter;
+        private final AzureMeter meter;
         private final String fullyQualifiedNamespace;
         private final String eventHubName;
 
-        public MetricHelper(ClientMeter meter, String fullyQualifiedNamespace, String eventHubName) {
+        public MetricHelper(AzureMeter meter, String fullyQualifiedNamespace, String eventHubName) {
             this.meter = meter;
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.eventHubName = eventHubName;
@@ -163,10 +164,10 @@ public class OpenTelemetryMetricsBenchmark {
         }
 
         private static class SendBatchMetrics {
-            public final ClientLongHistogram sendDuration;
+            public final AzureLongHistogram sendDuration;
 
-            public SendBatchMetrics(ClientMeter meter, Map<String, Object> attributes) {
-                this.sendDuration  = meter.getLongHistogram(DURATION_METRIC_NAME, DURATION_METRIC_DESCRIPTION, DURATION_METRIC_UNIT, attributes);
+            public SendBatchMetrics(AzureMeter meter, Map<String, Object> attributes) {
+                this.sendDuration  = meter.createLongHistogram(DURATION_METRIC_NAME, DURATION_METRIC_DESCRIPTION, DURATION_METRIC_UNIT, attributes);
             }
 
             public void record(long duration, Context context) {

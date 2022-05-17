@@ -1,16 +1,16 @@
 package com.azure.core.metrics.micrometer;
 
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.metrics.ClientMeter;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 
-public class MicrometerMeterProvider extends ClientMeterProvider {
+public class MicrometerMeterProvider implements AzureMeterProvider {
 
     public MicrometerMeterProvider() {
     }
 
     @Override
-    public ClientMeter getMeter(String libraryName, String libraryVersion, MetricsOptions options) {
+    public AzureMeter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         return new MicrometerMeter(libraryName, libraryVersion, options);
     }
 }

@@ -1,16 +1,16 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.metrics.ClientMeter;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 
-public class OpenTelemetryMeterProvider extends ClientMeterProvider {
+public class OpenTelemetryMeterProvider implements AzureMeterProvider {
 
     public OpenTelemetryMeterProvider() {
     }
 
     @Override
-    public ClientMeter getMeter(String libraryName, String libraryVersion, MetricsOptions options) {
+    public AzureMeter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         return new OpenTelemetryMeter(libraryName, libraryVersion, options);
     }
 }
