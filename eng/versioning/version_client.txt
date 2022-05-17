@@ -100,7 +100,7 @@ com.azure:azure-identity;1.5.1;1.6.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventgrid;4.11.0;4.12.0-beta.1
+com.azure:azure-messaging-eventgrid;4.11.1;4.12.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.11.2;5.12.0
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.12.1;1.12.2
@@ -351,7 +351,7 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-messaging-eventhubs;5.12.0-beta.1
+unreleased_com.azure:azure-messaging-eventhubs;5.12.0
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
