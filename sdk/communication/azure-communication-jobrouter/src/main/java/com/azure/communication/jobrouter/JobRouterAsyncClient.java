@@ -415,6 +415,41 @@ public class JobRouterAsyncClient {
         }
     }
 
+    // Offers
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponse(String offerId, String workerId) {
+        try {
+            return withContext(context -> acceptJobActionWithResponse(offerId, workerId, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponse(String offerId, String workerId, Context context) {
+        try {
+            return jobRouter.acceptJobActionWithResponseAsync(offerId, workerId, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> declineJobActionWithResponse(String offerId, String workerId) {
+        try {
+            return withContext(context -> declineJobActionWithResponse(offerId, workerId, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Object>> declineJobActionWithResponse(String offerId, String workerId, Context context) {
+        try {
+            return jobRouter.declineJobActionWithResponseAsync(offerId, workerId, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     // Queues
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue) {
@@ -430,6 +465,145 @@ public class JobRouterAsyncClient {
             return jobRouter.upsertQueueWithResponseAsync(id, jobQueue, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<JobQueue>> getQueueWithResponse(String id) {
+        try {
+            return withContext(context -> getQueueWithResponse(id, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<JobQueue>> getQueueWithResponse(String id, Context context) {
+        try {
+            return jobRouter.getQueueWithResponseAsync(id, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteQueueWithResponse(String id) {
+        try {
+            return withContext(context -> deleteQueueWithResponse(id, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteQueueWithResponse(String id, Context context) {
+        try {
+            return jobRouter.deleteQueueWithResponseAsync(id, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PagedQueue> listQueues() {
+        try {
+            return jobRouter.listQueuesAsync();
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PagedQueue> listQueues(Integer maxPageSize) {
+        try {
+            return jobRouter.listQueuesAsync(maxPageSize);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueueStatistics>> getQueueStatisticsWithResponse(String id) {
+        try {
+            return withContext(context -> getQueueStatisticsWithResponse(id, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<QueueStatistics>> getQueueStatisticsWithResponse(String id, Context context) {
+        try {
+            return jobRouter.getQueueStatisticsWithResponseAsync(id, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    // Workers
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorker routerWorker) {
+        try {
+            return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
+        try {
+            return jobRouter.upsertWorkerWithResponseAsync(id, routerWorker, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RouterWorker>> getWorkerWithResponse(String id) {
+        try {
+            return withContext(context -> getWorkerWithResponse(id, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<RouterWorker>> getWorkerWithResponse(String id, Context context) {
+        try {
+            return jobRouter.getWorkerWithResponseAsync(id, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWorkerWithResponse(String id) {
+        try {
+            return withContext(context -> deleteWorkerWithResponse(id, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteWorkerWithResponse(String id, Context context) {
+        try {
+            return jobRouter.deleteWorkerWithResponseAsync(id, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PagedWorker> listWorkers() {
+        try {
+            return jobRouter.listWorkersAsync();
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PagedWorker> listWorkers(WorkerStateSelector workerStateSelector, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
+        try {
+            return jobRouter.listWorkersAsync(workerStateSelector, channelId, queueId, hasCapacity, maxPageSize);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
         }
     }
 }
