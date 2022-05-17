@@ -32,7 +32,10 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -180,6 +183,8 @@ public class EventHubClientBuilder implements
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubClientBuilder.class);
+    private static final AzureMeter DEFAULT_METER = AzureMeterProvider.DEFAULT_PROVIDER.createMeter("azure-messaging-eventhubs", getLibraryVersion(), new MetricsOptions());
+
     private final Object connectionLock = new Object();
     private final AtomicBoolean isSharedConnection = new AtomicBoolean();
     private TokenCredential credentials;
@@ -812,7 +817,16 @@ public class EventHubClientBuilder implements
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
+        AzureMeter meter = DEFAULT_METER;
+        if (clientOptions != null)  {
+            MetricsOptions metricsOptions = clientOptions.getMetricsOptions();
+            if (metricsOptions != null) {
+                meter = AzureMeterProvider.DEFAULT_PROVIDER.createMeter("azure-messaging-eventhubs", getLibraryVersion(), metricsOptions);
+            }
+        }
+
+        EventHubsMetricProducerMetricHelper metricHelper = new EventHubsMetricProducerMetricHelper(meter, fullyQualifiedNamespace, eventHubName);
+        return new EventHubAsyncClient(processor, tracerProvider, metricHelper, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose);
     }
 
@@ -1007,5 +1021,9 @@ public class EventHubClientBuilder implements
                 + "set or was false.");
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
+    }
+
+    private static String getLibraryVersion() {
+        return CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE).getOrDefault(VERSION_KEY, UNKNOWN);
     }
 }
