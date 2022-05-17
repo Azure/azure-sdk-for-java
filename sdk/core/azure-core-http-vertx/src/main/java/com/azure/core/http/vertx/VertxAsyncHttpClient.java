@@ -11,12 +11,15 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.util.Context;
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
@@ -26,6 +29,7 @@ import java.util.Objects;
  */
 class VertxAsyncHttpClient implements HttpClient {
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
+    private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
     /**
@@ -33,9 +37,11 @@ class VertxAsyncHttpClient implements HttpClient {
      *
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
-    VertxAsyncHttpClient(io.vertx.core.http.HttpClient client) {
+    VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Vertx vertx) {
         Objects.requireNonNull(client, "client cannot be null");
+        Objects.requireNonNull(vertx, "vertx cannot be null");
         this.client = client;
+        this.scheduler = Schedulers.fromExecutor(vertx.nettyEventLoopGroup());
     }
 
     @Override
@@ -53,6 +59,11 @@ class VertxAsyncHttpClient implements HttpClient {
                 HttpHeaders requestHeaders = request.getHeaders();
                 if (requestHeaders != null) {
                     requestHeaders.stream().forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
+                    if (request.getHeaders().get("Content-Length") == null) {
+                        vertxHttpRequest.setChunked(true);
+                    }
+                } else {
+                    vertxHttpRequest.setChunked(true);
                 }
 
                 vertxHttpRequest.response(event -> {
@@ -74,8 +85,7 @@ class VertxAsyncHttpClient implements HttpClient {
                     }
                 });
 
-                getRequestBody(request).subscribe(buffer -> {
-                    int bytesRead = 0;
+                getRequestBody(request).subscribeOn(scheduler).subscribe(buffer -> {
                     while (buffer.hasRemaining()) {
                         int bufferSize;
                         if (buffer.remaining() > BYTE_BUFFER_CHUNK_SIZE) {
@@ -85,10 +95,9 @@ class VertxAsyncHttpClient implements HttpClient {
                         }
 
                         byte[] bytes = new byte[bufferSize];
-                        buffer.get(bytes, bytesRead, bytes.length);
-                        vertxHttpRequest.write(Buffer.buffer(bytes));
+                        buffer.get(bytes, 0, bytes.length);
 
-                        bytesRead += bufferSize;
+                        vertxHttpRequest.write(Buffer.buffer(bytes));
                     }
                 }, sink::error, vertxHttpRequest::end);
             }, sink::error));

@@ -256,7 +256,7 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = this.vertx.createHttpClient(this.httpClientOptions);
-        return new VertxAsyncHttpClient(client);
+        return new VertxAsyncHttpClient(client, this.vertx);
     }
 
     /**
