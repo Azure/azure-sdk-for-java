@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
@@ -428,20 +427,6 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
-        eventHubClientBuilder.clientOptions(clientOptions);
-        return this;
-    }
-
-    /**
-     * Sets the amqp client options for the processor client. The identifier set on amqp client options will be used
-     * for tracing and setting on wire. The identifier set on {@code AmqpClientOptions} are currently not used but can
-     * be used in build async client.
-     *
-     * @param clientOptions The amqp client options.
-     * @return The updated {@link EventProcessorClientBuilder} object.
-     */
-    @Override
-    public EventProcessorClientBuilder clientOptions(AmqpClientOptions clientOptions) {
         eventHubClientBuilder.clientOptions(clientOptions);
         return this;
     }

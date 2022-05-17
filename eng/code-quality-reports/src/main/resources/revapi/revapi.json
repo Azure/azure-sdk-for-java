@@ -248,11 +248,6 @@
           "new": "class com.azure.messaging.eventhubs.EventData",
           "superClass": "com.azure.core.models.MessageContent",
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
-        },
-        {
-          "code": "java.method.addedToInterface",
-          "new": "method T com.azure.core.amqp.client.traits.AmqpTrait<T extends com.azure.core.amqp.client.traits.AmqpTrait<T>>::clientOptions(com.azure.core.amqp.AmqpClientOptions)",
-          "justification": "Add a new method for AMQP SDK builder to set identifier."
         }
       ]
     }

@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.client.traits;
 
-import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
@@ -59,13 +58,4 @@ public interface AmqpTrait<T extends AmqpTrait<T>> {
      *      operations.
      */
     T clientOptions(ClientOptions clientOptions);
-
-    /**
-     * Allows for setting identifier.
-     *
-     * @param clientOptions A configured instance of {@link AmqpClientOptions}.
-     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
-     *      operations.
-     */
-    T clientOptions(AmqpClientOptions clientOptions);
 }

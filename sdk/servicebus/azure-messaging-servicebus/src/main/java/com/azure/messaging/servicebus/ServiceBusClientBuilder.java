@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -223,7 +222,6 @@ public final class ServiceBusClientBuilder implements
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
     private boolean crossEntityTransactions;
-    private AmqpClientOptions amqpClientOptions = new AmqpClientOptions();
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -248,21 +246,6 @@ public final class ServiceBusClientBuilder implements
     @Override
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-        return this;
-    }
-
-    /**
-     * Sets the {@link AmqpClientOptions} to be sent from the client built from this builder, enabling customization of
-     * certain properties, as well as support the addition of custom identifier information. Refer to the {@link
-     * AmqpClientOptions} documentation for more information.
-     *
-     * @param clientOptions to be set on the client.
-     *
-     * @return The updated {@link ServiceBusClientBuilder} object.
-     */
-    @Override
-    public ServiceBusClientBuilder clientOptions(AmqpClientOptions clientOptions) {
-        this.amqpClientOptions = clientOptions;
         return this;
     }
 
