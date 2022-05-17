@@ -34,8 +34,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.ClientMeter;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -183,7 +183,7 @@ public class EventHubClientBuilder implements
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubClientBuilder.class);
-    private static final ClientMeter DEFAULT_METER = ClientMeterProvider.createMeter("azure-messaging-eventhubs", getLibraryVersion(), new MetricsOptions());
+    private static final AzureMeter DEFAULT_METER = AzureMeterProvider.DEFAULT_PROVIDER.createMeter("azure-messaging-eventhubs", getLibraryVersion(), new MetricsOptions());
 
     private final Object connectionLock = new Object();
     private final AtomicBoolean isSharedConnection = new AtomicBoolean();
@@ -817,11 +817,11 @@ public class EventHubClientBuilder implements
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        ClientMeter meter = DEFAULT_METER;
+        AzureMeter meter = DEFAULT_METER;
         if (clientOptions != null)  {
             MetricsOptions metricsOptions = clientOptions.getMetricsOptions();
             if (metricsOptions != null) {
-                meter = ClientMeterProvider.createMeter("azure-messaging-eventhubs", getLibraryVersion(), metricsOptions);
+                meter = AzureMeterProvider.DEFAULT_PROVIDER.createMeter("azure-messaging-eventhubs", getLibraryVersion(), metricsOptions);
             }
         }
 

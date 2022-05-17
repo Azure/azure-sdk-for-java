@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 public class MicrometerMetricsBenchmark {
 
     private static final MeterRegistry registry = new SimpleMeterRegistry();
-    private final static AzureMeterProvider CLIENT_METER_PROVIDER = AzureMeterProvider.DEFAULT_PROVIDER;
+    private final static AzureMeterProvider CLIENT_METER_PROVIDER = AzureMeterProvider.getDefaultProvider();
 
     private final static Map<String, Object> COMMON_ATTRIBUTES = new HashMap<>() {{
         put("az.messaging.destination", "fqdn");

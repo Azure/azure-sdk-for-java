@@ -21,7 +21,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -90,7 +90,7 @@ class EventHubProducerAsyncClientTest {
     private static final String ENTITY_PATH = HOSTNAME + Configuration.getGlobalConfiguration()
         .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
-    private static final EventHubsMetricProducerMetricHelper METRIC_HELPER = new EventHubsMetricProducerMetricHelper(ClientMeterProvider.createMeter("foo", null, null), "fqdn", "eventHubName");
+    private static final EventHubsMetricProducerMetricHelper METRIC_HELPER = new EventHubsMetricProducerMetricHelper(AzureMeterProvider.DEFAULT_PROVIDER.createMeter("foo", null, null), "fqdn", "eventHubName");
 
     @Mock
     private AmqpSendLink sendLink;

@@ -40,7 +40,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 @State(Scope.Thread)
 public class OpenTelemetryMetricsBenchmark {
     private static final InMemoryMetricReader SDK_METER_READER = InMemoryMetricReader.create();
-    private final static AzureMeterProvider CLIENT_METER_PROVIDER = AzureMeterProvider.DEFAULT_PROVIDER;
+    private final static AzureMeterProvider CLIENT_METER_PROVIDER = AzureMeterProvider.getDefaultProvider();
 
     private static final SdkMeterProvider SDK_METER_PROVIDER = SdkMeterProvider.builder()
         .registerMetricReader(SDK_METER_READER)

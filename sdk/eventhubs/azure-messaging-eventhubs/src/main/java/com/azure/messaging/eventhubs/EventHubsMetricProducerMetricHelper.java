@@ -2,11 +2,10 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.util.Context;
-import com.azure.core.util.metrics.ClientLongCounter;
-import com.azure.core.util.metrics.ClientLongHistogram;
-import com.azure.core.util.metrics.ClientMeter;
+import com.azure.core.util.metrics.AzureLongCounter;
+import com.azure.core.util.metrics.AzureLongHistogram;
+import com.azure.core.util.metrics.AzureMeter;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,10 +18,10 @@ class EventHubsMetricProducerMetricHelper {
     private final static String DURATION_METRIC_UNIT = "ms";
 
     private final static String COUNTER_METRIC_NAME = "az.messaging.producer.send.events";
-    private final static String COUNTER_METRIC_DESCRIPTION = "Duration of producer send call";
-    private final static String COUNTER_METRIC_UNIT = "todo";
+    private final static String COUNTER_METRIC_DESCRIPTION = "Count of events sent";
+    private final static String COUNTER_METRIC_UNIT = null;
 
-    private final ClientMeter meter;
+    private final AzureMeter meter;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
 
@@ -30,7 +29,7 @@ class EventHubsMetricProducerMetricHelper {
     private final ConcurrentMap<String, SendBatchMetrics[]> allMetrics = new ConcurrentHashMap<>();
     private final SendBatchMetrics[] nullPartition;
 
-    public EventHubsMetricProducerMetricHelper(ClientMeter meter, String fullyQualifiedNamespace, String eventHubName) {
+    public EventHubsMetricProducerMetricHelper(AzureMeter meter, String fullyQualifiedNamespace, String eventHubName) {
         this.meter = meter;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
@@ -49,7 +48,7 @@ class EventHubsMetricProducerMetricHelper {
             index = errorCode != null ? errorCode.ordinal() : ERROR_DIMENSIONS_LENGTH - 2;
         }
 
-        metrics[index].record(duration., batchSize, context);
+        metrics[index].record(durationMs, batchSize, context);
     }
 
     private SendBatchMetrics[] createMetrics(String partitionId) {
@@ -75,12 +74,12 @@ class EventHubsMetricProducerMetricHelper {
     }
 
     private static class SendBatchMetrics {
-        public final ClientLongHistogram sendDuration;
-        public final ClientLongCounter eventCounter;
+        public final AzureLongHistogram sendDuration;
+        public final AzureLongCounter eventCounter;
 
-        public SendBatchMetrics(ClientMeter meter, Map<String, Object> attributes) {
-            this.sendDuration  = meter.getLongHistogram(DURATION_METRIC_NAME, DURATION_METRIC_DESCRIPTION, DURATION_METRIC_UNIT, attributes);
-            this.eventCounter = meter.getLongCounter(COUNTER_METRIC_NAME, COUNTER_METRIC_DESCRIPTION, COUNTER_METRIC_UNIT, attributes);
+        public SendBatchMetrics(AzureMeter meter, Map<String, Object> attributes) {
+            this.sendDuration  = meter.createLongHistogram(DURATION_METRIC_NAME, DURATION_METRIC_DESCRIPTION, DURATION_METRIC_UNIT, attributes);
+            this.eventCounter = meter.createLongCounter(COUNTER_METRIC_NAME, COUNTER_METRIC_DESCRIPTION, COUNTER_METRIC_UNIT, attributes);
         }
 
         public void record(long duration, long eventCount, Context context) {

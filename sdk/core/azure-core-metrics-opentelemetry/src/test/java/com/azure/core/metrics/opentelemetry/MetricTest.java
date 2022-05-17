@@ -39,7 +39,7 @@ public class MetricTest {
 
         Map<String, Object> commonAttributes = Collections.singletonMap("key", "value");
 
-        AzureLongHistogram longHistogram = AzureMeterProvider.DEFAULT_PROVIDER
+        AzureLongHistogram longHistogram = AzureMeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider))
             .createLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);
 
@@ -83,7 +83,7 @@ public class MetricTest {
             .build();
 
         Map<String, Object> commonAttributes = Collections.singletonMap("key", "value");
-        AzureMeter meter = AzureMeterProvider.DEFAULT_PROVIDER
+        AzureMeter meter = AzureMeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider));
 
         AzureLongHistogram longHistogram1 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms", commonAttributes);

@@ -18,7 +18,7 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
-import com.azure.core.util.metrics.ClientMeterProvider;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -74,7 +74,7 @@ public class EventHubProducerClientTest {
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private static final EventHubsMetricProducerMetricHelper METRIC_HELPER = new EventHubsMetricProducerMetricHelper(ClientMeterProvider.createMeter("foo", null, null), HOSTNAME, EVENT_HUB_NAME);
+    private static final EventHubsMetricProducerMetricHelper METRIC_HELPER = new EventHubsMetricProducerMetricHelper(AzureMeterProvider.DEFAULT_PROVIDER.createMeter("foo", null, null), HOSTNAME, EVENT_HUB_NAME);
 
     @Mock
     private AmqpSendLink sendLink;
