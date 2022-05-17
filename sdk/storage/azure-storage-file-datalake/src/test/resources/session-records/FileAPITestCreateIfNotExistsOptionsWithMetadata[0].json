@@ -1,0 +1,92 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/51e40ea8051e40ea8cba302134a865833019a4fb384f?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3085b23e-2a72-470a-9738-6784a2d74c03"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-08-06",
+      "eTag" : "0x8DA383545F3C50C",
+      "Last-Modified" : "Tue, 17 May 2022 18:44:28 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8d59bc51-e01e-0007-3a1e-6afda4000000",
+      "x-ms-client-request-id" : "3085b23e-2a72-470a-9738-6784a2d74c03",
+      "Date" : "Tue, 17 May 2022 18:44:28 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/51e40ea8051e40ea8cba302134a865833019a4fb384f/51e40ea8151e40ea8cba66450df52d7c3d88c47a2b86?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5758fd72-374d-44b0-ab1d-df0e8f0a969e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-08-06",
+      "eTag" : "0x8DA3835467D2279",
+      "Last-Modified" : "Tue, 17 May 2022 18:44:29 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "87b46b15-e01f-0001-581e-6a1b65000000",
+      "x-ms-client-request-id" : "5758fd72-374d-44b0-ab1d-df0e8f0a969e",
+      "Date" : "Tue, 17 May 2022 18:44:29 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/51e40ea8051e40ea8cba302134a865833019a4fb384f/51e40ea8251e40ea8cba95085a0e34434e6a448d9ac0?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d032dffb-db7f-46cb-aacd-17f7c1e0e3a4"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-08-06",
+      "eTag" : "0x8DA3835468B46A8",
+      "Last-Modified" : "Tue, 17 May 2022 18:44:29 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "87b46b17-e01f-0001-5a1e-6a1b65000000",
+      "x-ms-client-request-id" : "d032dffb-db7f-46cb-aacd-17f7c1e0e3a4",
+      "Date" : "Tue, 17 May 2022 18:44:29 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/51e40ea8051e40ea8cba302134a865833019a4fb384f?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aa557831-2ace-451b-ba81-95f939dfdd89"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-08-06",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Tue, 17 May 2022 18:44:28 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-has-legal-hold" : "false",
+      "Date" : "Tue, 17 May 2022 18:44:29 GMT",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "x-ms-has-immutability-policy" : "false",
+      "eTag" : "0x8DA383545F3C50C",
+      "x-ms-request-id" : "57682c00-601e-0004-7d1e-6a0ec4000000",
+      "x-ms-client-request-id" : "aa557831-2ace-451b-ba81-95f939dfdd89"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "51e40ea8051e40ea8cba302134a865833019a4fb384f", "51e40ea8151e40ea8cba66450df52d7c3d88c47a2b86", "51e40ea8251e40ea8cba95085a0e34434e6a448d9ac0" ]
+}
