@@ -19,7 +19,7 @@ from utils import ListIndentDumper
 
 
 GROUP_ID = 'com.azure'
-LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples --generate-tests'
+LLC_ARGUMENTS = '--data-plane --sdk-integration --generate-samples --generate-tests'
 
 
 def sdk_automation(config: dict) -> List[dict]:
@@ -42,7 +42,7 @@ def sdk_automation(config: dict) -> List[dict]:
         if match:
             readme_file_paths.append(file_path)
 
-    processed_readme_file_paths = []
+    processed_files = []
 
     for file_path in config['changedFiles']:
         match = re.search(
@@ -50,17 +50,20 @@ def sdk_automation(config: dict) -> List[dict]:
             file_path,
             re.IGNORECASE,
         )
-        if match and '/examples/' not in file_path:
+        if match and '/examples/' not in file_path and os.path.isfile(os.path.join(spec_root, file_path)):
             service = match.group(1)
             file_name = match.group(2)
 
             readme_file_path = find_readme(file_path, readme_file_paths, spec_root)
 
-            if readme_file_path and readme_file_path in processed_readme_file_paths:
+            if (readme_file_path and readme_file_path in processed_files) \
+                    or (file_name in processed_files):
                 continue
             else:
                 if readme_file_path:
-                    processed_readme_file_paths.append(readme_file_path)
+                    processed_files.append(readme_file_path)
+                else:
+                    processed_files.append(file_name)
 
                 file_path = os.path.join(spec_root, file_path)
                 readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
@@ -69,7 +72,7 @@ def sdk_automation(config: dict) -> List[dict]:
             logging.info('[Skip] changed file {0}'.format(file_path))
 
     for readme_file_path in readme_file_paths:
-        if readme_file_path in processed_readme_file_paths:
+        if readme_file_path in processed_files:
             pass
         else:
             match = re.search(
@@ -80,7 +83,7 @@ def sdk_automation(config: dict) -> List[dict]:
             if match:
                 service = match.group(1)
 
-                processed_readme_file_paths.append(readme_file_path)
+                processed_files.append(readme_file_path)
 
                 readme_file_path = os.path.join(spec_root, readme_file_path)
                 sdk_automation_readme(readme_file_path, None, None, packages, service, sdk_root)
@@ -148,7 +151,7 @@ def generate(
         sdk_root,
         'sdk', service, module
     )
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
+    # shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
@@ -158,7 +161,7 @@ def generate(
         # use readme from spec repo
         readme_file_path = readme
 
-        require_sdk_integration = not os.path.exists(output_dir)
+        require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
@@ -266,7 +269,9 @@ def get_generate_parameters(
     if readme_file_path:
         # try readme.java.md, it must contain 'output-folder' and
         # match pattern $(java-sdks-folder)/sdk/<service>/<module>
-        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
+        java_readme_file_path = readme_file_path
+        if not java_readme_file_path.endswith('.java.md'):
+            java_readme_file_path = readme_file_path.replace('.md', '.java.md')
         if uri_file_exists(java_readme_file_path):
             content = uri_file_read(java_readme_file_path)
             if content:
@@ -342,7 +347,7 @@ def update_readme(
                     yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
                     for yaml_str in yaml_blocks:
                         yaml_json = yaml.safe_load(yaml_str)
-                        if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
+                        if 'data-plane' in yaml_json and yaml_json['data-plane']:
                             match_found, input_files = update_yaml_input_files(yaml_json, input_file)
                             if match_found:
                                 # yaml block found, update

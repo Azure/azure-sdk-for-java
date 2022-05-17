@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.19 (Unreleased)
+## 12.0.0-beta.20 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.0.0-beta.19 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
 
 ## 12.0.0-beta.18 (2022-04-07)
 

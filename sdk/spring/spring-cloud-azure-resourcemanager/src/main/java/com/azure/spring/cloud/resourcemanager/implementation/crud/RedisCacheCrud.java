@@ -33,7 +33,7 @@ public class RedisCacheCrud extends AbstractResourceCrud<RedisCache, String> {
             return resourceManager.redisCaches().getByResourceGroup(resourceMetadata.getResourceGroup(),
                                                                     name);
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

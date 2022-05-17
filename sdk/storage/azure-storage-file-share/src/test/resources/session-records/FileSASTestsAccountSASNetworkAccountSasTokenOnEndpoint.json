@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/d046471ad046471aae520858956f6ea6164743b6b6?restype=share&sv=2021-04-10&se=2021-05-15T21%3A18%3A14Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/d046471ad046471aae520858956f6ea6164743b6b6?restype=share&sv=2021-06-08&se=2021-05-15T21%3A18%3A14Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-10-02",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/d046471ad046471aae520858956f6ea6164743b6b6/d046471ad046471aae573874fb5fc5641e734c5aa9?sv=2021-04-10&se=2021-05-15T21%3A18%3A14Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/d046471ad046471aae520858956f6ea6164743b6b6/d046471ad046471aae573874fb5fc5641e734c5aa9?sv=2021-06-08&se=2021-05-15T21%3A18%3A14Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-10-02",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net/d046471ad046471aae520858956f6ea6164743b6b6/d046471ad046471aae573874fb5fc5641e734c5aa9?sv=2021-04-10&se=2021-05-15T21%3A18%3A14Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/d046471ad046471aae520858956f6ea6164743b6b6/d046471ad046471aae573874fb5fc5641e734c5aa9?sv=2021-06-08&se=2021-05-15T21%3A18%3A14Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-10-02",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",

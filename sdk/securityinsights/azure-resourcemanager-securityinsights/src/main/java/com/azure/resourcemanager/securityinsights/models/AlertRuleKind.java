@@ -40,7 +40,11 @@ public final class AlertRuleKind extends ExpandableStringEnum<AlertRuleKind> {
         return fromString(name, AlertRuleKind.class);
     }
 
-    /** @return known AlertRuleKind values. */
+    /**
+     * Gets known AlertRuleKind values.
+     *
+     * @return known AlertRuleKind values.
+     */
     public static Collection<AlertRuleKind> values() {
         return values(AlertRuleKind.class);
     }

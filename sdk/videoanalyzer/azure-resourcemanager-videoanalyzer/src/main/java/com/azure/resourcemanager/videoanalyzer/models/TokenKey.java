@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class TokenKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TokenKey.class);
-
     /*
      * JWT token key id. Validation keys are looked up based on the key id
      * present on the JWT token header.
@@ -63,8 +60,10 @@ public class TokenKey {
      */
     public void validate() {
         if (kid() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property kid in model TokenKey"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TokenKey.class);
 }

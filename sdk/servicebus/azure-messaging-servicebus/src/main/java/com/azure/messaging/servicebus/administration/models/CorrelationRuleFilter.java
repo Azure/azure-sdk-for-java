@@ -42,6 +42,8 @@ import java.util.Objects;
  */
 @Fluent
 public class CorrelationRuleFilter extends RuleFilter {
+    private static final ClientLogger LOGGER = new ClientLogger(CorrelationRuleFilter.class);
+
     private final Map<String, Object> properties = new HashMap<>();
     private String correlationId;
     private String contentType;
@@ -69,11 +71,10 @@ public class CorrelationRuleFilter extends RuleFilter {
      * @throws NullPointerException If {@code correlationId} is null.
      */
     public CorrelationRuleFilter(String correlationId) {
-        final ClientLogger logger = new ClientLogger(CorrelationRuleFilter.class);
         if (correlationId == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'correlationId' cannot be null"));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'correlationId' cannot be null"));
         } else if (correlationId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
         }
 
         this.correlationId = correlationId;

@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.PrivateEndpointsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointsClient. */
 public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointsService service;
 
@@ -216,14 +213,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId) {
         return getOperationStatusWithResponseAsync(
                 vaultName, resourceGroupName, privateEndpointConnectionName, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

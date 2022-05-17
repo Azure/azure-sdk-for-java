@@ -24,7 +24,11 @@ public final class ReplicationStatusTypes extends ExpandableStringEnum<Replicati
         return fromString(name, ReplicationStatusTypes.class);
     }
 
-    /** @return known ReplicationStatusTypes values. */
+    /**
+     * Gets known ReplicationStatusTypes values.
+     *
+     * @return known ReplicationStatusTypes values.
+     */
     public static Collection<ReplicationStatusTypes> values() {
         return values(ReplicationStatusTypes.class);
     }

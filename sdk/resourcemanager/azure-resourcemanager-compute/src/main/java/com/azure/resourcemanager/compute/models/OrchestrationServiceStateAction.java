@@ -27,7 +27,11 @@ public final class OrchestrationServiceStateAction extends ExpandableStringEnum<
         return fromString(name, OrchestrationServiceStateAction.class);
     }
 
-    /** @return known OrchestrationServiceStateAction values. */
+    /**
+     * Gets known OrchestrationServiceStateAction values.
+     *
+     * @return known OrchestrationServiceStateAction values.
+     */
     public static Collection<OrchestrationServiceStateAction> values() {
         return values(OrchestrationServiceStateAction.class);
     }

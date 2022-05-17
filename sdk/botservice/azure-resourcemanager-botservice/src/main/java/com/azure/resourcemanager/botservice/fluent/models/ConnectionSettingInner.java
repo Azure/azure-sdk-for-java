@@ -6,11 +6,9 @@ package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.models.ConnectionSettingProperties;
 import com.azure.resourcemanager.botservice.models.Kind;
 import com.azure.resourcemanager.botservice.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Bot channel resource definition. */
 @Fluent
 public final class ConnectionSettingInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionSettingInner.class);
-
     /*
      * The set of properties specific to bot channel resource
      */

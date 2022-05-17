@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.models.MessageContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
@@ -23,7 +23,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         .fullyQualifiedNamespace("{schema-registry-endpoint}")
         .buildAsyncClient();
     private final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-        .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+        .schemaRegistryClient(schemaRegistryAsyncClient)
         .schemaGroup("{schema-group}")
         .buildSerializer();
 
@@ -41,8 +41,8 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         // By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
         // added to the instance. By default, this is false, so it will error if the schema is not found.
         SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
-            .autoRegisterSchema(true)
+            .schemaRegistryClient(schemaRegistryAsyncClient)
+            .autoRegisterSchemas(true)
             .schemaGroup("{schema-group}")
             .buildSerializer();
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation
@@ -69,8 +69,8 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
             .setFavouriteColour("Turquoise")
             .build();
 
-        MessageWithMetadata message = serializer.serializeMessageData(person,
-            TypeReference.createInstance(MessageWithMetadata.class));
+        MessageContent message = serializer.serialize(person,
+            TypeReference.createInstance(MessageContent.class));
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize
     }
 
@@ -96,7 +96,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
             .build();
 
         // Serializes and creates an instance of ComplexMessage using the messageFactory function.
-        ComplexMessage message = serializer.serializeMessageData(person,
+        ComplexMessage message = serializer.serialize(person,
             TypeReference.createInstance(ComplexMessage.class),
             (encodedData) -> {
                 return new ComplexMessage("unique-id", OffsetDateTime.now());
@@ -110,12 +110,12 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
     public void deserialize() {
         // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize
         // Message to deserialize. Assume that the body contains data which has been serialized using an Avro encoder.
-        MessageWithMetadata message = new MessageWithMetadata()
+        MessageContent message = new MessageContent()
             .setBodyAsBinaryData(BinaryData.fromBytes(new byte[0]))
             .setContentType("avro/binary+{schema-id}");
 
         // This is an object generated from the Avro schema used in the serialization sample.
-        Person person = serializer.deserializeMessageData(message, TypeReference.createInstance(Person.class));
+        Person person = serializer.deserialize(message, TypeReference.createInstance(Person.class));
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize
     }
 }

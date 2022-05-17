@@ -112,6 +112,9 @@ public class StoreClient implements IStoreClient {
                 } catch (Throwable throwable) {
                     logger.error("Unexpected failure in handling orig [{}]", e.getMessage(), e);
                     logger.error("Unexpected failure in handling orig [{}] : new [{}]", e.getMessage(), throwable.getMessage(), throwable);
+                    if (throwable instanceof Error) {
+                        throw (Error) throwable;
+                    }
                 }
             }
         );
@@ -138,23 +141,16 @@ public class StoreClient implements IStoreClient {
     private RxDocumentServiceResponse completeResponse(
         StoreResponse storeResponse,
         RxDocumentServiceRequest request) throws InternalServerErrorException {
-        if (storeResponse.getResponseHeaderNames().length != storeResponse.getResponseHeaderValues().length) {
-            throw new InternalServerErrorException(RMResources.InvalidBackendResponse);
-        }
 
-        Map<String, String> headers = new HashMap<>(storeResponse.getResponseHeaderNames().length);
-        for (int idx = 0; idx < storeResponse.getResponseHeaderNames().length; idx++) {
-            String name = storeResponse.getResponseHeaderNames()[idx];
-            String value = storeResponse.getResponseHeaderValues()[idx];
+        Map<String, String> responseHeaders = new HashMap<>(storeResponse.getResponseHeaders());
 
-            headers.put(name, value);
-        }
-
-        this.updateResponseHeader(request, headers);
-        this.captureSessionToken(request, headers);
+        this.updateResponseHeader(request, responseHeaders);
+        this.captureSessionToken(request, responseHeaders);
         BridgeInternal.recordRetryContextEndTime(request.requestContext.cosmosDiagnostics);
-        storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
-        return new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
+        RxDocumentServiceResponse rxDocumentServiceResponse =
+            new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
+        rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+        return rxDocumentServiceResponse;
     }
 
     private long getLSN(Map<String, String> headers) {

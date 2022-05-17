@@ -21,14 +21,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobCancellationsClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobCancellationsClient. */
 public final class JobCancellationsClientImpl implements JobCancellationsClient {
-    private final ClientLogger logger = new ClientLogger(JobCancellationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobCancellationsService service;
 
@@ -189,8 +186,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String jobName) {
-        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName).flatMap(ignored -> Mono.empty());
     }
 
     /**

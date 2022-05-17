@@ -6,15 +6,12 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** IP address for the container group. */
 @Fluent
 public final class IpAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddress.class);
-
     /*
      * The list of ports exposed on the container group.
      */
@@ -38,6 +35,12 @@ public final class IpAddress {
      */
     @JsonProperty(value = "dnsNameLabel")
     private String dnsNameLabel;
+
+    /*
+     * The value representing the security enum.
+     */
+    @JsonProperty(value = "dnsNameLabelReusePolicy")
+    private DnsNameLabelReusePolicy dnsNameLabelReusePolicy;
 
     /*
      * The FQDN for the IP.
@@ -126,6 +129,26 @@ public final class IpAddress {
     }
 
     /**
+     * Get the dnsNameLabelReusePolicy property: The value representing the security enum.
+     *
+     * @return the dnsNameLabelReusePolicy value.
+     */
+    public DnsNameLabelReusePolicy dnsNameLabelReusePolicy() {
+        return this.dnsNameLabelReusePolicy;
+    }
+
+    /**
+     * Set the dnsNameLabelReusePolicy property: The value representing the security enum.
+     *
+     * @param dnsNameLabelReusePolicy the dnsNameLabelReusePolicy value to set.
+     * @return the IpAddress object itself.
+     */
+    public IpAddress withDnsNameLabelReusePolicy(DnsNameLabelReusePolicy dnsNameLabelReusePolicy) {
+        this.dnsNameLabelReusePolicy = dnsNameLabelReusePolicy;
+        return this;
+    }
+
+    /**
      * Get the fqdn property: The FQDN for the IP.
      *
      * @return the fqdn value.
@@ -141,15 +164,17 @@ public final class IpAddress {
      */
     public void validate() {
         if (ports() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ports in model IpAddress"));
         } else {
             ports().forEach(e -> e.validate());
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model IpAddress"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IpAddress.class);
 }

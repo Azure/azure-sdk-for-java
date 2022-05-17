@@ -295,14 +295,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ChannelInner> getAsync(String resourceGroupName, String partnerNamespaceName, String channelName) {
         return getWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName)
-            .flatMap(
-                (Response<ChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -479,14 +472,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     private Mono<ChannelInner> createOrUpdateAsync(
         String resourceGroupName, String partnerNamespaceName, String channelName, ChannelInner channelInfo) {
         return createOrUpdateWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName, channelInfo)
-            .flatMap(
-                (Response<ChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -929,7 +915,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
         String channelName,
         ChannelUpdateParameters channelUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName, channelUpdateParameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1351,14 +1337,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     private Mono<EventSubscriptionFullUrlInner> getFullUrlAsync(
         String resourceGroupName, String partnerNamespaceName, String channelName) {
         return getFullUrlWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName)
-            .flatMap(
-                (Response<EventSubscriptionFullUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

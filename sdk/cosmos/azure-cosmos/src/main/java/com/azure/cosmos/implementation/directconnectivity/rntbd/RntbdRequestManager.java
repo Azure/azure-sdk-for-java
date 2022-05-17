@@ -97,13 +97,17 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private final int pendingRequestLimit;
     private final ConcurrentHashMap<Long, RntbdRequestRecord> pendingRequests;
     private final Timestamps timestamps = new Timestamps();
+    private final RntbdConnectionStateListener rntbdConnectionStateListener;
 
     private boolean closingExceptionally = false;
     private CoalescingBufferQueue pendingWrites;
 
     // endregion
 
-    public RntbdRequestManager(final ChannelHealthChecker healthChecker, final int pendingRequestLimit) {
+    public RntbdRequestManager(
+        final ChannelHealthChecker healthChecker,
+        final int pendingRequestLimit,
+        final RntbdConnectionStateListener connectionStateListener) {
 
         checkArgument(pendingRequestLimit > 0, "pendingRequestLimit: %s", pendingRequestLimit);
         checkNotNull(healthChecker, "healthChecker");
@@ -111,6 +115,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingRequests = new ConcurrentHashMap<>(pendingRequestLimit);
         this.pendingRequestLimit = pendingRequestLimit;
         this.healthChecker = healthChecker;
+        this.rntbdConnectionStateListener = connectionStateListener;
     }
 
     // region ChannelHandler methods
@@ -298,7 +303,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, cause);
-            logger.debug("{} closing due to:", context, cause);
+            if (logger.isDebugEnabled()) {
+                logger.debug("{} closing due to:", context, cause);
+            }
             context.flush().close();
         }
     }
@@ -628,6 +635,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (this.pendingWrites != null && !this.pendingWrites.isEmpty()) {
             // an expensive call that fires at least one exceptionCaught event
             this.pendingWrites.releaseAndFailAll(context, throwable);
+        }
+
+        if (this.rntbdConnectionStateListener != null) {
+            this.rntbdConnectionStateListener.onException(throwable);
         }
 
         if (this.pendingRequests.isEmpty()) {

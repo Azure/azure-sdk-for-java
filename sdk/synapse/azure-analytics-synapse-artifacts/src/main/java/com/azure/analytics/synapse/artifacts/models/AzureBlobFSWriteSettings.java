@@ -42,4 +42,18 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
         this.blockSizeInMB = blockSizeInMB;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSWriteSettings setCopyBehavior(Object copyBehavior) {
+        super.setCopyBehavior(copyBehavior);
+        return this;
+    }
 }

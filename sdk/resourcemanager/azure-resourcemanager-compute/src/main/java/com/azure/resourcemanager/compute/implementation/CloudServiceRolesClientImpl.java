@@ -220,14 +220,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloudServiceRoleInner> getAsync(String roleName, String resourceGroupName, String cloudServiceName) {
         return getWithResponseAsync(roleName, resourceGroupName, cloudServiceName)
-            .flatMap(
-                (Response<CloudServiceRoleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

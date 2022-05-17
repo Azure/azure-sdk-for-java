@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
@@ -59,6 +60,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class GatewayAddressCache implements IAddressCache {
@@ -93,6 +95,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
 
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
+    private final GlobalEndpointManager globalEndpointManager;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -103,7 +106,8 @@ public class GatewayAddressCache implements IAddressCache {
         HttpClient httpClient,
         long suboptimalPartitionForceRefreshIntervalInSeconds,
         boolean tcpConnectionEndpointRediscoveryEnabled,
-        ApiType apiType) {
+        ApiType apiType,
+        GlobalEndpointManager globalEndpointManager) {
         this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
@@ -144,6 +148,7 @@ public class GatewayAddressCache implements IAddressCache {
         this.serverPartitionAddressToPkRangeIdMap = new ConcurrentHashMap<>();
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     public GatewayAddressCache(
@@ -154,7 +159,8 @@ public class GatewayAddressCache implements IAddressCache {
         UserAgentContainer userAgent,
         HttpClient httpClient,
         boolean tcpConnectionEndpointRediscoveryEnabled,
-        ApiType apiType) {
+        ApiType apiType,
+        GlobalEndpointManager globalEndpointManager) {
         this(clientContext,
             serviceEndpoint,
             protocol,
@@ -163,13 +169,16 @@ public class GatewayAddressCache implements IAddressCache {
             httpClient,
             DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
             tcpConnectionEndpointRediscoveryEnabled,
-            apiType);
+            apiType,
+            globalEndpointManager);
     }
 
     @Override
-    public void updateAddresses(final URI serverKey) {
+    public int updateAddresses(final URI serverKey) {
 
         Objects.requireNonNull(serverKey, "expected non-null serverKey");
+
+        AtomicInteger updatedCacheEntryCount = new AtomicInteger(0);
 
         if (this.tcpConnectionEndpointRediscoveryEnabled) {
             this.serverPartitionAddressToPkRangeIdMap.computeIfPresent(serverKey, (uri, partitionKeyRangeIdentitySet) -> {
@@ -180,6 +189,8 @@ public class GatewayAddressCache implements IAddressCache {
                     } else {
                         this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
                     }
+
+                    updatedCacheEntryCount.incrementAndGet();
                 }
 
                 return null;
@@ -188,6 +199,7 @@ public class GatewayAddressCache implements IAddressCache {
             logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
         }
 
+        return updatedCacheEntryCount.get();
     }
 
     @Override
@@ -436,10 +448,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
-                BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, this.globalEndpointManager);
             }
 
             return Mono.error(dce);
@@ -761,10 +770,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
-                BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, this.globalEndpointManager);
             }
 
             return Mono.error(dce);

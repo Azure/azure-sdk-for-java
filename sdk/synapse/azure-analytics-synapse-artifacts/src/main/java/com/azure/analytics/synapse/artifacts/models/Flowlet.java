@@ -146,4 +146,25 @@ public class Flowlet extends DataFlow {
         this.scriptLines = scriptLines;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Flowlet setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Flowlet setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Flowlet setFolder(DataFlowFolder folder) {
+        super.setFolder(folder);
+        return this;
+    }
 }

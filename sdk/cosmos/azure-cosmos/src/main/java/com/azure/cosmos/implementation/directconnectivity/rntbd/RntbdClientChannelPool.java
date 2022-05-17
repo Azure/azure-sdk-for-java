@@ -183,14 +183,22 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
     private final ClientTelemetry clientTelemetry;
+
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
      *
      * @param bootstrap the {@link Bootstrap} that is used for connections.
      * @param config the {@link Config} that is used for the channel pool instance created.
+     * @param clientTelemetry the {@link ClientTelemetry} that is used to track client telemetry related metrics.
+     * @param connectionStateListener the {@link RntbdConnectionStateListener}.
      */
-    RntbdClientChannelPool(final RntbdServiceEndpoint endpoint, final Bootstrap bootstrap, final Config config, final ClientTelemetry clientTelemetry) {
-        this(endpoint, bootstrap, config, new RntbdClientChannelHealthChecker(config), clientTelemetry);
+    RntbdClientChannelPool(
+        final RntbdServiceEndpoint endpoint,
+        final Bootstrap bootstrap,
+        final Config config,
+        final ClientTelemetry clientTelemetry,
+        final RntbdConnectionStateListener connectionStateListener) {
+        this(endpoint, bootstrap, config, new RntbdClientChannelHealthChecker(config), clientTelemetry, connectionStateListener);
     }
 
     private RntbdClientChannelPool(
@@ -198,7 +206,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Bootstrap bootstrap,
         final Config config,
         final RntbdClientChannelHealthChecker healthChecker,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final RntbdConnectionStateListener connectionStateListener) {
 
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
@@ -206,7 +215,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(healthChecker, "expected non-null healthChecker");
 
         this.endpoint = endpoint;
-        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker);
+        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
 
@@ -1329,7 +1338,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void releaseAndOfferChannelIfHealthy(
         final Channel channel,
         final Promise<Void> promise,
-        final Future<Boolean> future) {
+        final Future<Boolean> future) throws Exception {
 
         final boolean isHealthy = future.getNow();
 
@@ -1342,18 +1351,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         } else {
             // Channel is unhealthy so just close and release it
-            try {
-                this.poolHandler.channelReleased(channel);
-            } catch (Throwable error) {
-                logger.debug("[{}] pool handler failed due to ", this, error);
-            } finally {
-                if (this.executor.inEventLoop()) {
-                    this.closeChannel(channel);
-                } else {
-                    this.executor.submit(() -> this.closeChannel(channel));
-                }
-                promise.setSuccess(null);
+            this.poolHandler.channelReleased(channel);
+            if (this.executor.inEventLoop()) {
+                this.closeChannel(channel);
+            } else {
+                this.executor.submit(() -> this.closeChannel(channel));
             }
+            promise.setSuccess(null);
         }
     }
 

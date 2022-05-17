@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectedItemResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProtectedItemOperationResultsClient. */
 public final class ProtectedItemOperationResultsClientImpl implements ProtectedItemOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(ProtectedItemOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectedItemOperationResultsService service;
 
@@ -250,14 +247,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
         String operationId) {
         return getWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId)
-            .flatMap(
-                (Response<ProtectedItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

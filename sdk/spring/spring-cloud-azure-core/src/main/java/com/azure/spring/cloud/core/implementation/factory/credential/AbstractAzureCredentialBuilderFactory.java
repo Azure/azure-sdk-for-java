@@ -36,7 +36,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
      * To create a {@link AbstractAzureCredentialBuilderFactory} instance with {@link AzureProperties}.
      * @param azureProperties The Azure properties.
      */
-    public AbstractAzureCredentialBuilderFactory(AzureProperties azureProperties) {
+    protected AbstractAzureCredentialBuilderFactory(AzureProperties azureProperties) {
         this.azureProperties = azureProperties;
     }
 
@@ -63,7 +63,6 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     @Override
     protected void configureRetry(T builder) {
         RetryOptionsProvider.RetryOptions retry = null;
-        AzureProperties azureProperties = getAzureProperties();
         if (azureProperties instanceof RetryOptionsProvider) {
             retry = ((RetryOptionsProvider) azureProperties).getRetry();
         }
@@ -72,14 +71,14 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
             return;
         }
 
-        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retry.getMode())) {
+        if (RetryOptionsProvider.RetryMode.EXPONENTIAL == retry.getMode()) {
             if (retry.getExponential() != null && retry.getExponential().getMaxRetries() != null) {
                 builder.maxRetry(retry.getExponential().getMaxRetries());
             }
-        } else if (RetryOptionsProvider.RetryMode.FIXED.equals(retry.getMode())) {
-            if (retry.getFixed() != null && retry.getFixed().getMaxRetries() != null) {
-                builder.maxRetry(retry.getFixed().getMaxRetries());
-            }
+        } else if (RetryOptionsProvider.RetryMode.FIXED == retry.getMode()
+            && retry.getFixed() != null
+            && retry.getFixed().getMaxRetries() != null) {
+            builder.maxRetry(retry.getFixed().getMaxRetries());
         }
 
     }

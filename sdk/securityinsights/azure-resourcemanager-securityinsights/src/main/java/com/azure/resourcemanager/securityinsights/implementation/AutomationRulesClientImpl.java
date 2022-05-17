@@ -255,14 +255,7 @@ public final class AutomationRulesClientImpl implements AutomationRulesClient {
     private Mono<AutomationRuleInner> getAsync(
         String resourceGroupName, String workspaceName, String automationRuleId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, automationRuleId)
-            .flatMap(
-                (Response<AutomationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -442,14 +435,7 @@ public final class AutomationRulesClientImpl implements AutomationRulesClient {
         AutomationRuleInner automationRuleToUpsert) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, automationRuleId, automationRuleToUpsert)
-            .flatMap(
-                (Response<AutomationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -469,14 +455,7 @@ public final class AutomationRulesClientImpl implements AutomationRulesClient {
         final AutomationRuleInner automationRuleToUpsert = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, automationRuleId, automationRuleToUpsert)
-            .flatMap(
-                (Response<AutomationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -641,14 +620,7 @@ public final class AutomationRulesClientImpl implements AutomationRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Object> deleteAsync(String resourceGroupName, String workspaceName, String automationRuleId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, automationRuleId)
-            .flatMap(
-                (Response<Object> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

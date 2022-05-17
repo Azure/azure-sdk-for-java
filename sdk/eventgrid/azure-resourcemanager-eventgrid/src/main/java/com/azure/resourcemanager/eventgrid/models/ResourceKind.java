@@ -27,7 +27,11 @@ public final class ResourceKind extends ExpandableStringEnum<ResourceKind> {
         return fromString(name, ResourceKind.class);
     }
 
-    /** @return known ResourceKind values. */
+    /**
+     * Gets known ResourceKind values.
+     *
+     * @return known ResourceKind values.
+     */
     public static Collection<ResourceKind> values() {
         return values(ResourceKind.class);
     }

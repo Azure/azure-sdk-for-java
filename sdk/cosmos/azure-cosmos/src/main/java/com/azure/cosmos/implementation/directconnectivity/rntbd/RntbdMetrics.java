@@ -49,8 +49,11 @@ public final class RntbdMetrics {
             if (step > 0) {
                 RntbdMetrics.add(RntbdMetrics.consoleLoggingRegistry(step));
             }
-        } catch (Throwable error) {
-            logger.error("failed to initialize console logging registry due to ", error);
+        } catch (Throwable throwable) {
+            logger.error("failed to initialize console logging registry due to ", throwable);
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            }
         }
     }
 

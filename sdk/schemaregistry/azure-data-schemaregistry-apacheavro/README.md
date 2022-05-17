@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.0.0-beta.11</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -51,7 +51,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 
@@ -73,7 +73,7 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 
 ```java readme-sample-createSchemaRegistryAvroSerializer
 SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-    .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+    .schemaRegistryClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
     .buildSerializer();
 ```
@@ -101,8 +101,8 @@ playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-MessageWithMetadata message = serializer.serializeMessageData(playingCard,
-    TypeReference.createInstance(MessageWithMetadata.class));
+MessageContent message = serializer.serialize(playingCard,
+    TypeReference.createInstance(MessageContent.class));
 ```
 
 The avro type `PlayingCard` is available in samples package
@@ -113,8 +113,8 @@ Deserialize a Schema Registry-compatible avro payload into a strongly-type objec
 
 ```java readme-sample-deserializeSample
 SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
-MessageWithMetadata message = getSchemaRegistryAvroMessage();
-PlayingCard playingCard = serializer.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+MessageContent message = getSchemaRegistryAvroMessage();
+PlayingCard playingCard = serializer.deserialize(message, TypeReference.createInstance(PlayingCard.class));
 ```
 
 ## Troubleshooting

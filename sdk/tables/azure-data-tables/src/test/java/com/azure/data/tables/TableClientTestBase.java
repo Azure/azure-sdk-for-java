@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -18,26 +19,45 @@ public abstract class TableClientTestBase extends TestBase {
     protected HttpClient playbackClient;
 
     protected TableClientBuilder getClientBuilder(String tableName, String connectionString) {
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
+        final TableClientBuilder tableClientBuilder = new TableClientBuilder()
+            .connectionString(connectionString);
+
+        return configureTestClientBuilder(tableClientBuilder, tableName);
+    }
+
+    protected TableClientBuilder getClientBuilder(String tableName, String endpoint, TokenCredential tokenCredential,
+                                                  boolean enableTenantDiscovery) {
+        final TableClientBuilder tableClientBuilder = new TableClientBuilder()
+            .credential(tokenCredential)
+            .endpoint(endpoint);
+
+        if (enableTenantDiscovery) {
+            tableClientBuilder.enableTenantDiscovery();
+        }
+
+        return configureTestClientBuilder(tableClientBuilder, tableName);
+    }
+
+    private TableClientBuilder configureTestClientBuilder(TableClientBuilder tableClientBuilder, String tableName) {
+        tableClientBuilder
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .tableName(tableName);
 
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
 
-            builder.httpClient(playbackClient);
+            tableClientBuilder.httpClient(playbackClient);
         } else {
-            builder.httpClient(DEFAULT_HTTP_CLIENT);
+            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
 
-                builder.addPolicy(recordPolicy);
+                tableClientBuilder.addPolicy(recordPolicy);
             }
         }
 
-        return builder;
+        return tableClientBuilder;
     }
 
     @Test

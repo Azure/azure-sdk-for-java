@@ -27,7 +27,11 @@ public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum
         return fromString(name, GoogleBigQueryAuthenticationType.class);
     }
 
-    /** @return known GoogleBigQueryAuthenticationType values. */
+    /**
+     * Gets known GoogleBigQueryAuthenticationType values.
+     *
+     * @return known GoogleBigQueryAuthenticationType values.
+     */
     public static Collection<GoogleBigQueryAuthenticationType> values() {
         return values(GoogleBigQueryAuthenticationType.class);
     }

@@ -43,6 +43,7 @@ license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
 custom-types-subpackage: models
 generate-client-as-impl: true
+service-interface-as-public: true
 sync-methods: none
 add-context-parameter: true
 context-client-method-parameter: true

@@ -66,7 +66,11 @@ public final class MabServerType extends ExpandableStringEnum<MabServerType> {
         return fromString(name, MabServerType.class);
     }
 
-    /** @return known MabServerType values. */
+    /**
+     * Gets known MabServerType values.
+     *
+     * @return known MabServerType values.
+     */
     public static Collection<MabServerType> values() {
         return values(MabServerType.class);
     }
