@@ -2233,6 +2233,7 @@
   <Match>
     <Or>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientEncryptionKeyHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncContainerHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncDatabaseHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchHelper"/>
