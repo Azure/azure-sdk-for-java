@@ -544,7 +544,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final AtomicReference<Context> parentContext = isTracingEnabled
             ? new AtomicReference<>(Context.NONE)
             : null;
-        Instant startTime = Instant.now();
+        long startTime =  System.currentTimeMillis();
         Context sharedContext = null;
         final List<Message> messages = new ArrayList<>();
 
@@ -598,7 +598,7 @@ public class EventHubProducerAsyncClient implements Closeable {
 
                 boolean error = signal.getType().equals(SignalType.ON_ERROR) && signal.hasError();
 
-                metricHelper.recordSendBatch(Duration.between(startTime, Instant.now()), batch.getCount(), parentContextVal, batch.getPartitionId(), error, getErrorCode(signal));
+                metricHelper.recordSendBatch( System.currentTimeMillis() - startTime, batch.getCount(), parentContextVal, batch.getPartitionId(), error, getErrorCode(signal));
             });
     }
 

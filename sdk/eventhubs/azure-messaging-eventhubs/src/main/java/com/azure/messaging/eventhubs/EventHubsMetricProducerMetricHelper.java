@@ -37,7 +37,7 @@ class EventHubsMetricProducerMetricHelper {
         this.nullPartition = createMetrics(null);
     }
 
-    void recordSendBatch(Duration duration, long batchSize, Context context, String partitionId, boolean error, AmqpErrorCondition errorCode) {
+    void recordSendBatch(long durationMs, long batchSize, Context context, String partitionId, boolean error, AmqpErrorCondition errorCode) {
         if (!meter.isEnabled()) {
             return;
         }
@@ -49,7 +49,7 @@ class EventHubsMetricProducerMetricHelper {
             index = errorCode != null ? errorCode.ordinal() : ERROR_DIMENSIONS_LENGTH - 2;
         }
 
-        metrics[index].record(duration.toMillis(), batchSize, context);
+        metrics[index].record(duration., batchSize, context);
     }
 
     private SendBatchMetrics[] createMetrics(String partitionId) {
