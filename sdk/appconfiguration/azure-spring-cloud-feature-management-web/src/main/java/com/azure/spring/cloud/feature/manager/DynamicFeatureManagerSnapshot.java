@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
  * value in the same request.
  */
 @Configuration
-public class DynamicFeatureManagerSnapshot {
+public final class DynamicFeatureManagerSnapshot {
 
     private DynamicFeatureManager dynamicFeatureManager;
 

@@ -5,7 +5,7 @@ package com.azure.spring.cloud.feature.manager.targeting;
 /**
  * Configuration options for the `Microsoft.TargetingFilter`.
  */
-public class TargetingEvaluationOptions {
+public final class TargetingEvaluationOptions {
 
     private boolean ignoreCase;
 

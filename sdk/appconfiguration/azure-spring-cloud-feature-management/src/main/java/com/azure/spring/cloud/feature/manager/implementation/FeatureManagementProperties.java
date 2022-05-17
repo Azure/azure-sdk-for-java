@@ -1,4 +1,4 @@
-package com.azure.spring.cloud.feature.manager;
+package com.azure.spring.cloud.feature.manager.implementation;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.feature.manager.entities.DynamicFeature;
-import com.azure.spring.cloud.feature.manager.entities.Feature;
+import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.implementation.entities.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**

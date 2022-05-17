@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager;
+package com.azure.spring.cloud.feature.manager.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,10 +14,11 @@ import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.Test;
 
-import com.azure.spring.cloud.feature.manager.entities.DynamicFeature;
-import com.azure.spring.cloud.feature.manager.entities.Feature;
+import com.azure.spring.cloud.feature.manager.FilterNotFoundException;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
+import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.implementation.entities.Feature;
 
 public class FeatureManagementPropertiesTest {
 

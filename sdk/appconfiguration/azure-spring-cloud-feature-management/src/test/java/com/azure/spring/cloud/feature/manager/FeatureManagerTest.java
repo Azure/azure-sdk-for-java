@@ -24,11 +24,13 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.entities.IFeatureVariantAssigner;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
+import com.azure.spring.cloud.feature.manager.implementation.entities.Feature;
 
 import reactor.core.publisher.Mono;
 

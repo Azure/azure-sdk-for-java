@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
+import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
+
 /**
  * The definition of a dynamic feature.
  */

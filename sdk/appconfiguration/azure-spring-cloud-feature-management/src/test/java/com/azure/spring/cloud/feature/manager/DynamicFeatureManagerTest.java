@@ -26,11 +26,13 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-import com.azure.spring.cloud.feature.manager.entities.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.entities.IFeatureVariantAssigner;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
+import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.testobjects.DiscountBanner;
 import com.azure.spring.cloud.feature.manager.testobjects.MockableProperties;
 

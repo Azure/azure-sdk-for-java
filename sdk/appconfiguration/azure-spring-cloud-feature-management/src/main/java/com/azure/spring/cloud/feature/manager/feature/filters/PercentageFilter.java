@@ -15,7 +15,7 @@ import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationCo
  * A feature filter that can be used to activate a feature based on a random percentage.
  */
 @Component("PercentageFilter")
-public class PercentageFilter implements FeatureFilter {
+public final class PercentageFilter implements FeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PercentageFilter.class);
 

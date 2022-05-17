@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
  * Context passed into Feature Filters used for evaluation.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FeatureFilterEvaluationContext {
+public final class FeatureFilterEvaluationContext {
 
     @JsonProperty("name")
     private String name;

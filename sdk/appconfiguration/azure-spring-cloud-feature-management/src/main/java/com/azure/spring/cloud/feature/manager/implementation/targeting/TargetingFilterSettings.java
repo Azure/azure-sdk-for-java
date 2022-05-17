@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.targeting;
+package com.azure.spring.cloud.feature.manager.implementation.targeting;
 
 /**
  * The settings that are used to configure the TargetingFilter feature filter.

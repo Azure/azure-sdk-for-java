@@ -5,7 +5,7 @@ package com.azure.spring.cloud.feature.manager;
 /**
  * Error thrown when an issue is found while generating a Feature Variant.
  */
-public class DynamicFeatureException extends RuntimeException {
+public final class DynamicFeatureException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
@@ -15,7 +15,7 @@ public class DynamicFeatureException extends RuntimeException {
      * @param message the error message.
      * @param cause original issue caught
      */
-    public DynamicFeatureException(String message, Throwable cause) {
+    DynamicFeatureException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -24,7 +24,7 @@ public class DynamicFeatureException extends RuntimeException {
      *
      * @param message the error message.
      */
-    public DynamicFeatureException(String message) {
+    DynamicFeatureException(String message) {
         super(message);
     }
 

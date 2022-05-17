@@ -6,7 +6,7 @@ import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationCo
 /**
  * A filter that always returns true
  */
-public class AlwaysOnFilter implements FeatureFilter {
+public final class AlwaysOnFilter implements FeatureFilter {
 
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Validated
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FeatureVariant {
+public final class FeatureVariant {
 
     @NotBlank
     @JsonProperty("name")

@@ -15,8 +15,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
-import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
+import com.azure.spring.cloud.feature.manager.implementation.entities.Feature;
 
 import reactor.core.publisher.Mono;
 

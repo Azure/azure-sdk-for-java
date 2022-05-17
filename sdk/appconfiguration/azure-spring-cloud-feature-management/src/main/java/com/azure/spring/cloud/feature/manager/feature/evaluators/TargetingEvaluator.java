@@ -17,19 +17,19 @@ import com.azure.spring.cloud.feature.manager.entities.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.entities.IFeatureVariantAssigner;
 import com.azure.spring.cloud.feature.manager.feature.filters.TargetingFilter;
-import com.azure.spring.cloud.feature.manager.targeting.Audience;
-import com.azure.spring.cloud.feature.manager.targeting.GroupRollout;
+import com.azure.spring.cloud.feature.manager.implementation.targeting.Audience;
+import com.azure.spring.cloud.feature.manager.implementation.targeting.GroupRollout;
+import com.azure.spring.cloud.feature.manager.implementation.targeting.TargetingFilterSettings;
 import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
-import com.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings;
 
 import reactor.core.publisher.Mono;
 
 /**
  * Evaluator for Dynamic Feature and Feature Filters.
  */
-public class TargetingEvaluator extends TargetingFilter implements IFeatureVariantAssigner {
+public final class TargetingEvaluator extends TargetingFilter implements IFeatureVariantAssigner {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TargetingEvaluator.class);
 

@@ -21,7 +21,7 @@ import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationCo
  * A feature filter that can be used at activate a feature based on a time window.
  */
 @Component("TimeWindowFilter")
-public class TimeWindowFilter implements FeatureFilter {
+public final class TimeWindowFilter implements FeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeWindowFilter.class);
 

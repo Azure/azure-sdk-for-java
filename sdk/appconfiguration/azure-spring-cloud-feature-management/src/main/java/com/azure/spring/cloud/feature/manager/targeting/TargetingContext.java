@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Context for evaluating the `Microsoft.TargetingFilter`.
  */
-public class TargetingContext implements ITargetingContext {
+public final class TargetingContext implements ITargetingContext {
 
     private String userId;
 

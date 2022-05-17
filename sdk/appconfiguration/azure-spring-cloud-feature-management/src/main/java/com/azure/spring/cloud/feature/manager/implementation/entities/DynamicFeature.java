@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.entities;
+package com.azure.spring.cloud.feature.manager.implementation.entities;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
+import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**

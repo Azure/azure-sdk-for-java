@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager;
+package com.azure.spring.cloud.feature.manager.implementation;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.azure.spring.cloud.feature.manager.FeatureHandler;
 
 /**
  * Adds the feature management handler to intercept all paths.

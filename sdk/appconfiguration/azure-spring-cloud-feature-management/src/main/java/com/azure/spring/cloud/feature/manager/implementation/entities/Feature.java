@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.entities;
+package com.azure.spring.cloud.feature.manager.implementation.entities;
 
+import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;

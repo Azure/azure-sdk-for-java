@@ -6,7 +6,7 @@ package com.azure.spring.cloud.feature.manager;
  * This class defines a custom exception type for when an expected Filter is not found when checking if a Feature is
  * enabled. A FilterNotFoundException is only thrown when failfast is enabled, which is true by default.
  */
-public class FeatureManagementException extends RuntimeException {
+public final class FeatureManagementException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class FeatureManagementException extends RuntimeException {
      *
      * @param message the error message.
      */
-    public FeatureManagementException(String message) {
+    FeatureManagementException(String message) {
         super(message);
         this.message = message;
     }
@@ -31,7 +31,7 @@ public class FeatureManagementException extends RuntimeException {
      * @param message the error message.
      * @param cause   the original error thrown, typically of NoSuchBeanDefinitionException type.
      */
-    public FeatureManagementException(String message, Throwable cause) {
+    FeatureManagementException(String message, Throwable cause) {
         super(message, cause);
         this.message = message;
     }
