@@ -1,10 +1,10 @@
 # Spring Cloud Azure Native Configuration
 
-The Azure Spring Native Support client library provides support for Spring Boot applications using Spring Cloud Azure Starters to be built as [GraalVM native
+The Spring Cloud Azure Native Support library provides support for building Spring Boot applications using Spring Cloud Azure Starters to [GraalVM native
 images](https://www.graalvm.org/22.0/reference-manual/native-image/). 
-This library is built on top of [spring-native-configuration](https://mvnrepository.com/artifact/org.springframework.experimental/spring-native-configuration) and [Azure AOT Graalvm Support](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/aot), which provides Spring Cloud Azure support through [Native hints](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#native-hints).
+This library builds on top of [spring-native-configuration](https://mvnrepository.com/artifact/org.springframework.experimental/spring-native-configuration) and [Azure AOT GraalVM Support](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/aot), and provides Spring Cloud Azure support through [Native hints](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#native-hints).
 
-**NOTE:** This library is a preview and is intended to enable applications using Spring Cloud Azure Starter libraries to quickly
+**NOTE:** This library is a preview version and is intended to enable applications using Spring Cloud Azure Starter libraries to quickly
 build and validate native images. However, this is not a stable, GA version and is not officially supported to use in production
 environments.
 
