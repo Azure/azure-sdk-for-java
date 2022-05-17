@@ -3,13 +3,14 @@ Text Analytics is a cloud-based service that provides advanced natural language 
 and includes the main features below:
 
 - Sentiment Analysis
-- Entity Recognition (Healthcare, Linked, Named, and Personally Identifiable Information (PII) entities)
+- Entity Recognition (Named, Linked, and Personally Identifiable Information (PII) entities)
 - Language Detection
 - Key Phrase Extraction
 - Multiple Actions Analysis Per Document
+- Healthcare Entities Analysis
 - Extractive Text Summarization
-- Custom Entity Recognition
-- Custom Single and Multi Category Classification
+- Custom Named Entity Recognition
+- Custom Text classification
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -55,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -64,20 +65,20 @@ add the direct dependency to your project as follows.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `v3.2-preview.1` version of the service.
+**Note:** This version of the client library defaults to the `2022-04-01-preview` version of the service.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.2.x | 3.0, 3.1, 3.2-preview.1 (default)
+|5.2.x | 3.0, 3.1, 2022-04-01-preview (default)
 |5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
-#### Create a Cognitive Services or Text Analytics resource
-Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
-resource if you plan to access multiple cognitive services under a single endpoint/key. For Text Analytics access only,
-create a Text Analytics resource.
+#### Create a Cognitive Services or Language service resource
+The Language service supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
+resource if you plan to access multiple cognitive services under a single endpoint/key. For Language service access only,
+create a Language service resource.
 
 You can create either resource using the 
 
@@ -85,10 +86,10 @@ You can create either resource using the
 
 **Option 2:** [Azure CLI][azure_cli]
 
-Below is an example of how you can create a Text Analytics resource using the CLI:
+Below is an example of how you can create a Language service resource using the CLI:
 
 ```bash
-# Create a new resource group to hold the text analytics resource -
+# Create a new resource group to hold the Language service resource -
 # if using an existing resource group, skip this step
 az group create --name <your-resource-group> --location <location>
 ```
@@ -106,15 +107,15 @@ az cognitiveservices account create \
 For more information about creating the resource or how to get the location and sku information see [here][azure_cli]
 
 ### Authenticate the client
-In order to interact with the Text Analytics service, you will need to create an instance of the Text Analytics client,
+In order to interact with the Language service, you will need to create an instance of the Text Analytics client,
 both the asynchronous and synchronous clients can be created by using `TextAnalyticsClientBuilder` invoking `buildClient()`
 creates a synchronous client while `buildAsyncClient()` creates its asynchronous counterpart.
 
 You will need an **endpoint** and either a **key** or **AAD TokenCredential** to instantiate a client object. 
 
 #### Looking up the endpoint
-You can find the **endpoint** for your Text Analytics resource in the [Azure Portal][azure_portal] under the "Keys and Endpoint",
-or [Azure CLI][azure_cli_endpoint].
+You can find the **endpoint** for your Language service resource in the [Azure Portal][azure_portal] under the
+"Keys and Endpoint", or [Azure CLI][azure_cli_endpoint].
 ```bash
 # Get the endpoint for the text analytics resource
 az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "endpoint"
@@ -122,8 +123,8 @@ az cognitiveservices account show --name "resource-name" --resource-group "resou
 
 #### Create a Text Analytics client with key credential
 Once you have the value for the [key][key], provide it as a string to the [AzureKeyCredential][azure_key_credential].
-This can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Text Analytics
-resource or by running the following Azure CLI command:
+This can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Language 
+service resource or by running the following Azure CLI command:
 
 ```bash
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
@@ -173,7 +174,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET. 
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with Text Analytics, please
+running environment. For more information about using Azure Active Directory authorization with Language service, please
 refer to [the associated documentation][aad_authorization].
 
 ```java readme-sample-createTextAnalyticsAsyncClientWithAAD
@@ -228,7 +229,7 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Sentiment](#analyze-sentiment "Analyze sentiment")
 * [Detect Language](#detect-language "Detect language")
 * [Extract Key Phrases](#extract-key-phrases "Extract key phrases")
-* [Recognize Entities](#recognize-entities "Recognize entities")
+* [Recognize Named Entities](#recognize-entities "Recognize named entities")
 * [Recognize Personally Identifiable Information Entities](#recognize-personally-identifiable-information-entities "Recognize Personally Identifiable Information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
 * [Analyze Healthcare Entities](#analyze-healthcare-entities "Analyze healthcare entities")
@@ -296,7 +297,7 @@ textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.
 For samples on using the production recommended option `ExtractKeyPhrasesBatch` see [here][extract_key_phrases_sample].
 Please refer to the service documentation for a conceptual discussion of [key phrase extraction][key_phrase_extraction].
 
-### Recognize entities
+### Recognize named entities
 Run a predictive model to identify a collection of named entities in the provided document or batch of documents and 
 categorize those entities into categories such as person, location, or organization.  For more information on available
 categories, see [Text Analytics Named Entity Categories][named_entities_categories].
@@ -405,11 +406,12 @@ syncPoller.getFinalResult().forEach(
 The `Analyze` functionality allows choosing which of the supported Text Analytics features to execute in the same
 set of documents. Currently, the supported features are:
 
-- Entities Recognition
+- Named Entities Recognition
 - PII Entities Recognition
 - Linked Entity Recognition
 - Key Phrase Extraction
 - Sentiment Analysis
+- Healthcare Analysis
 - Extractive Summarization (see sample [here][extractive_summarization_sample])
 - Custom Entity Recognition (see sample [here][custom_entities_sample])
 - Custom Single Category Classification (see sample [here][custom_single_classification_sample])
