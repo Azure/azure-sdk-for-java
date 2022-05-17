@@ -21,13 +21,13 @@ public class DataLakePathCreateOptions {
     private DataLakeRequestConditions requestConditions;
 
     /**
-     * Constructs a {@link DataLakePathCreateOptions}.
+     * Optional parameters for creating a file or directory.
      */
     public DataLakePathCreateOptions() {
     }
 
     /**
-     * Gets the permissions.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account.
      *
      * @return the permissions
      */
@@ -36,7 +36,10 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Sets the permissions.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access
+     * permissions for the file owner, the file owning group, and others. Each class may be granted read,
+     * write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit
+     * octal notation (e.g. 0766) are supported.
      *
      * @param permissions The permissions.
      * @return the updated options.
@@ -47,7 +50,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Gets the umask.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account.
      *
      * @return the umask.
      */
@@ -56,7 +59,13 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Sets the umask.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account.
+     * When creating a file or directory and the parent folder does not have a default ACL,
+     * the umask restricts the permissions of the file or directory to be created. The resulting
+     * permission is given by p bitwise-and ^u, where p is the permission and u is the umask. For example,
+     * if p is 0777 and u is 0057, then the resulting permission is 0720. The default permission is
+     * 0777 for a directory and 0666 for a file. The default umask is 0027. The umask must be specified
+     * in 4-digit octal notation (e.g. 0766).
      *
      * @param umask The umask.
      * @return the updated options.
@@ -67,7 +76,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Gets the http headers.
+     * Gets the http header properties.
      *
      * @return the http headers.
      */
@@ -76,7 +85,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Sets the umask.
+     * Optional standard HTTP header properties that can be set for the new file or directory.
      *
      * @param headers The http headers.
      * @return the updated options.
@@ -87,13 +96,15 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * @return Metadata to associate with the datalake path.
+     * @return Metadata associated with the datalake path.
      */
     public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
+     * Optional custom metadata to set for this file or directory.
+     *
      * @param metadata Metadata to associate with the datalake path. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return The updated options.
@@ -104,7 +115,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Gets the request conditions.
+     * Optional {@link DataLakeRequestConditions} conditions on the creation of this file or directory.
      *
      * @return the request conditions.
      */
@@ -113,10 +124,11 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Optional {@link DataLakeRequestConditions} conditions on the creation of this file or directory.
      * Sets the request conditions.
      *
      * @param requestConditions The request conditions.
-     * @return the updated FileQueryOptions object.
+     * @return The updated options.
      */
     public DataLakePathCreateOptions setRequestConditions(DataLakeRequestConditions requestConditions) {
         this.requestConditions = requestConditions;

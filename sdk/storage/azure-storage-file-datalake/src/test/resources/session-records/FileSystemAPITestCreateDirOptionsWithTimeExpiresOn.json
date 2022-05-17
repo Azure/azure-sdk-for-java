@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/f68872220f6887222da4318611aa6783ff4fa4d41b3f?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1f9b02f0-890d-4c43-8446-fb5cf25df795"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-08-06",
+      "eTag" : "0x8DA38363D6FB77A",
+      "Last-Modified" : "Tue, 17 May 2022 18:51:23 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "5f91412c-a01e-0003-121f-6a1608000000",
+      "x-ms-client-request-id" : "1f9b02f0-890d-4c43-8446-fb5cf25df795",
+      "Date" : "Tue, 17 May 2022 18:51:23 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/f68872220f6887222da4318611aa6783ff4fa4d41b3f/f68872221f6887222da42538813a6d6a1e7b447848a8?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d72240e8-49fe-4380-8319-d96b2e82ed68"
+    },
+    "Response" : {
+      "content-length" : "250",
+      "x-ms-version" : "2021-08-06",
+      "x-ms-error-code" : "MissingRequiredHeader",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "8d1a0d59-201f-0006-5d1f-6a03a9000000",
+      "Body" : "{\"error\":{\"code\":\"MissingRequiredHeader\",\"message\":\"An HTTP header that's mandatory for this request is not specified.\\nRequestId:8d1a0d59-201f-0006-5d1f-6a03a9000000\\nTime:2022-05-17T18:51:24.4430882Z\",\"detail\":{\"HeaderName\":\"x-ms-lease-duration\"}}}",
+      "x-ms-client-request-id" : "d72240e8-49fe-4380-8319-d96b2e82ed68",
+      "Date" : "Tue, 17 May 2022 18:51:23 GMT",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "f68872220f6887222da4318611aa6783ff4fa4d41b3f", "f68872221f6887222da42538813a6d6a1e7b447848a8" ]
+}
