@@ -12,19 +12,18 @@
 ### Lettuce Library
 
 #### Dependency Requirements
-```
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-identity</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>io.lettuce</groupId>
-            <artifactId>lettuce-core</artifactId>
-            <version>6.1.8.RELEASE</version>
-        </dependency>
+````
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.5.0</version>
+</dependency>
 
+<dependency>
+    <groupId>io.lettuce</groupId>
+    <artifactId>lettuce-core</artifactId>
+    <version>6.1.8.RELEASE</version>
+</dependency>
 ```
 
 ##### Challenges

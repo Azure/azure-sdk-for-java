@@ -13,17 +13,17 @@
 ### Redisson
 #### Dependency Requirements
 ```
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-identity</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>3.17.0</version>
-        </dependency>
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.5.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.redisson</groupId>
+    <artifactId>redisson</artifactId>
+    <version>3.17.0</version>
+</dependency>
 ```
 
 #### Authenticate with AAD Hello World.
