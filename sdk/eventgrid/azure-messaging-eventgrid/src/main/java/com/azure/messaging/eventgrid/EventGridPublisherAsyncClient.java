@@ -18,7 +18,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.TracerProxy;
-import com.azure.messaging.eventgrid.models.SendEventsOptions;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
@@ -291,13 +290,15 @@ public final class EventGridPublisherAsyncClient<T> {
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the events to publish.
-     * @param sendEventsOptions the options to configure the request to send events.
+     * @param channelName the channel name to send to Event Grid service. This is only applicable for sending
+     *   Cloud Events to a partner topic in partner namespace. For more details, refer to
+     *   <a href=https://docs.microsoft.com/azure/event-grid/partner-events-overview>Partner Events Overview.</a>
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, SendEventsOptions sendEventsOptions) {
-        return withContext(context -> this.sendEventsWithResponse(events, sendEventsOptions, context));
+    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, String channelName) {
+        return withContext(context -> this.sendEventsWithResponse(events, channelName, context));
     }
 
     @SuppressWarnings("unchecked")
@@ -306,11 +307,11 @@ public final class EventGridPublisherAsyncClient<T> {
     }
 
     @SuppressWarnings("unchecked")
-    Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, SendEventsOptions options, Context context) {
+    Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, String channelName, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
-        if (options != null && !CoreUtils.isNullOrEmpty(options.getChannelName())) {
+        if (!CoreUtils.isNullOrEmpty(channelName)) {
             String requestHttpHeadersKey = AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
             Map<Object, Object> keyValues = context.getValues();
             if (keyValues != null && keyValues.containsKey(requestHttpHeadersKey)) {
@@ -319,11 +320,11 @@ public final class EventGridPublisherAsyncClient<T> {
                 Object value = keyValues.get(requestHttpHeadersKey);
                 if (value instanceof HttpHeaders) {
                     HttpHeaders headers = (HttpHeaders) value;
-                    headers.add(PARTNER_CHANNEL_HEADER_NAME, options.getChannelName());
+                    headers.add(PARTNER_CHANNEL_HEADER_NAME, channelName);
                 }
             } else {
                 context = context.addData(requestHttpHeadersKey,
-                        new HttpHeaders().add(PARTNER_CHANNEL_HEADER_NAME, options.getChannelName()));
+                        new HttpHeaders().add(PARTNER_CHANNEL_HEADER_NAME, channelName));
             }
         }
 

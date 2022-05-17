@@ -10,7 +10,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
-import com.azure.messaging.eventgrid.models.SendEventsOptions;
 import com.azure.messaging.eventgrid.samples.models.User;
 
 import java.nio.charset.StandardCharsets;
@@ -59,10 +58,7 @@ public class PublishCloudEventsToPartnerTopic {
         events.add(cloudEventJsonStrData);
         events.add(cloudEventBytes.addExtensionAttribute("extension", "value"));
 
-        SendEventsOptions sendEventsOptions = new SendEventsOptions()
-                .setChannelName("my-channel-name");
-
         // send to "my-channel-name" channel
-        publisherClient.sendEventsWithResponse(events, sendEventsOptions, Context.NONE);
+        publisherClient.sendEventsWithResponse(events, "my-channel-name", Context.NONE);
     }
 }
