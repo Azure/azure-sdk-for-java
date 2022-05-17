@@ -5,11 +5,9 @@ package com.azure.spring.cloud.feature.manager.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
 import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
@@ -63,13 +61,5 @@ public class FeatureDefinition {
      */
     public List<FeatureVariant> getVariants() {
         return variants;
-    }
-    
-    /**
-     * Validates Feature Definition on construction
-     */
-    @PostConstruct
-    public void validateAndInit() {
-        Assert.isTrue(variants.size() > 0, "Feature " + name + " needs at least one variant.");
     }
 }

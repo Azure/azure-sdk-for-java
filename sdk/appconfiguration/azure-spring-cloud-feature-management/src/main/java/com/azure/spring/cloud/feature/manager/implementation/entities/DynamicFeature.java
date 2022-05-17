@@ -55,12 +55,4 @@ public class DynamicFeature {
     public void setVariants(Map<String, FeatureVariant> variants) {
         this.variants = variants;
     }
-    
-    /**
-     * Validates Feature Definition on construction
-     */
-    @PostConstruct
-    public void validateAndInit() {
-        Assert.isTrue(variants.size() > 0, "Assigner " + assigner + " needs at least one variant.");
-    }
 }
