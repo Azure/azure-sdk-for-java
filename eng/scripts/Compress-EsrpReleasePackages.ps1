@@ -188,7 +188,7 @@ foreach ($packageDetail in $packageDetails) {
     "Version"= $version;
   }
 
-  if($SingleArchiveVariable) {
+  if($SingleArtifactVariable) {
     Write-Host "##vso[task.setvariable variable=$SingleArtifactVariable]$signedArtifactPath"
   }
 
