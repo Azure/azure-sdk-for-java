@@ -33,7 +33,11 @@ public final class SharingState extends ExpandableStringEnum<SharingState> {
         return fromString(name, SharingState.class);
     }
 
-    /** @return known SharingState values. */
+    /**
+     * Gets known SharingState values.
+     *
+     * @return known SharingState values.
+     */
     public static Collection<SharingState> values() {
         return values(SharingState.class);
     }

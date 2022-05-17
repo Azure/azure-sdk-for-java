@@ -27,7 +27,11 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
         return fromString(name, LinuxPatchAssessmentMode.class);
     }
 
-    /** @return known LinuxPatchAssessmentMode values. */
+    /**
+     * Gets known LinuxPatchAssessmentMode values.
+     *
+     * @return known LinuxPatchAssessmentMode values.
+     */
     public static Collection<LinuxPatchAssessmentMode> values() {
         return values(LinuxPatchAssessmentMode.class);
     }

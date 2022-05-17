@@ -4,6 +4,7 @@
 
 ### Features Added
 - Replaced creating single thread executor with `Schedulers.boundedElastic()`. ([#27805](https://github.com/Azure/azure-sdk-for-java/issues/27805))
+- Added new method `getSessionId()` in `ServiceBusReceiverAsyncClient` . ([#28338](https://github.com/Azure/azure-sdk-for-java/issues/28338))
 ### Breaking Changes
 
 ### Bugs Fixed

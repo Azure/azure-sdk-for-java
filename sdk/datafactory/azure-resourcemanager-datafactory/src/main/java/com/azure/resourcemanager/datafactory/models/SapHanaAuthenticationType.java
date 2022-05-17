@@ -27,7 +27,11 @@ public final class SapHanaAuthenticationType extends ExpandableStringEnum<SapHan
         return fromString(name, SapHanaAuthenticationType.class);
     }
 
-    /** @return known SapHanaAuthenticationType values. */
+    /**
+     * Gets known SapHanaAuthenticationType values.
+     *
+     * @return known SapHanaAuthenticationType values.
+     */
     public static Collection<SapHanaAuthenticationType> values() {
         return values(SapHanaAuthenticationType.class);
     }

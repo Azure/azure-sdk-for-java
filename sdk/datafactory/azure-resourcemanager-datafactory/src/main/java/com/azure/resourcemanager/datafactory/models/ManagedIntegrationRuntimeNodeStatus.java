@@ -34,7 +34,11 @@ public final class ManagedIntegrationRuntimeNodeStatus
         return fromString(name, ManagedIntegrationRuntimeNodeStatus.class);
     }
 
-    /** @return known ManagedIntegrationRuntimeNodeStatus values. */
+    /**
+     * Gets known ManagedIntegrationRuntimeNodeStatus values.
+     *
+     * @return known ManagedIntegrationRuntimeNodeStatus values.
+     */
     public static Collection<ManagedIntegrationRuntimeNodeStatus> values() {
         return values(ManagedIntegrationRuntimeNodeStatus.class);
     }
