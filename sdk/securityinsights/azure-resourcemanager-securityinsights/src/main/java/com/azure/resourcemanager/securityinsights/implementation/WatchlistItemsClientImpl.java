@@ -515,14 +515,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
     private Mono<WatchlistItemInner> getAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, String watchlistItemId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId)
-            .flatMap(
-                (Response<WatchlistItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -702,7 +695,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, String watchlistItemId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -908,14 +901,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
         WatchlistItemInner watchlistItem) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, watchlistItem)
-            .flatMap(
-                (Response<WatchlistItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

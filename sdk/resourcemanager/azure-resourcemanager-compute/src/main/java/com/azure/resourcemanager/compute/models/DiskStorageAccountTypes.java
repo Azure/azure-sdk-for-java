@@ -39,7 +39,11 @@ public final class DiskStorageAccountTypes extends ExpandableStringEnum<DiskStor
         return fromString(name, DiskStorageAccountTypes.class);
     }
 
-    /** @return known DiskStorageAccountTypes values. */
+    /**
+     * Gets known DiskStorageAccountTypes values.
+     *
+     * @return known DiskStorageAccountTypes values.
+     */
     public static Collection<DiskStorageAccountTypes> values() {
         return values(DiskStorageAccountTypes.class);
     }

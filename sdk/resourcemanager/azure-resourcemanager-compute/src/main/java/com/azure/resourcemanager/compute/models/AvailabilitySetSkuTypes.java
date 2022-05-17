@@ -27,7 +27,11 @@ public final class AvailabilitySetSkuTypes extends ExpandableStringEnum<Availabi
         return fromString(name, AvailabilitySetSkuTypes.class);
     }
 
-    /** @return known AvailabilitySetSkuTypes values. */
+    /**
+     * Gets known AvailabilitySetSkuTypes values.
+     *
+     * @return known AvailabilitySetSkuTypes values.
+     */
     public static Collection<AvailabilitySetSkuTypes> values() {
         return values(AvailabilitySetSkuTypes.class);
     }

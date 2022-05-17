@@ -45,7 +45,11 @@ public final class Permissions extends ExpandableStringEnum<Permissions> {
         return fromString(name, Permissions.class);
     }
 
-    /** @return known Permissions values. */
+    /**
+     * Gets known Permissions values.
+     *
+     * @return known Permissions values.
+     */
     public static Collection<Permissions> values() {
         return values(Permissions.class);
     }

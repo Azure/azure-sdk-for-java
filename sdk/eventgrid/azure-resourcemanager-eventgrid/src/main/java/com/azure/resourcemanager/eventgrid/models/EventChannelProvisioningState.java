@@ -39,7 +39,11 @@ public final class EventChannelProvisioningState extends ExpandableStringEnum<Ev
         return fromString(name, EventChannelProvisioningState.class);
     }
 
-    /** @return known EventChannelProvisioningState values. */
+    /**
+     * Gets known EventChannelProvisioningState values.
+     *
+     * @return known EventChannelProvisioningState values.
+     */
     public static Collection<EventChannelProvisioningState> values() {
         return values(EventChannelProvisioningState.class);
     }

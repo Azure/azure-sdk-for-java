@@ -398,14 +398,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
     private Mono<AlertRuleTemplateInner> getAsync(
         String resourceGroupName, String workspaceName, String alertRuleTemplateId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, alertRuleTemplateId)
-            .flatMap(
-                (Response<AlertRuleTemplateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

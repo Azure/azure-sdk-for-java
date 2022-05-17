@@ -216,14 +216,7 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
         String workspaceName,
         DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
         return postWithResponseAsync(resourceGroupName, workspaceName, dataConnectorsCheckRequirements)
-            .flatMap(
-                (Response<DataConnectorRequirementsStateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

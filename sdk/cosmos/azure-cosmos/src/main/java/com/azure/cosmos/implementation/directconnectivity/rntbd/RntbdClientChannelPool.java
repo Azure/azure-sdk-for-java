@@ -1338,7 +1338,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void releaseAndOfferChannelIfHealthy(
         final Channel channel,
         final Promise<Void> promise,
-        final Future<Boolean> future) {
+        final Future<Boolean> future) throws Exception {
 
         final boolean isHealthy = future.getNow();
 
@@ -1351,18 +1351,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         } else {
             // Channel is unhealthy so just close and release it
-            try {
-                this.poolHandler.channelReleased(channel);
-            } catch (Throwable error) {
-                logger.debug("[{}] pool handler failed due to ", this, error);
-            } finally {
-                if (this.executor.inEventLoop()) {
-                    this.closeChannel(channel);
-                } else {
-                    this.executor.submit(() -> this.closeChannel(channel));
-                }
-                promise.setSuccess(null);
+            this.poolHandler.channelReleased(channel);
+            if (this.executor.inEventLoop()) {
+                this.closeChannel(channel);
+            } else {
+                this.executor.submit(() -> this.closeChannel(channel));
             }
+            promise.setSuccess(null);
         }
     }
 
