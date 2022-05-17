@@ -447,8 +447,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 false,
                                                                 null,
                                                                 null,
-                                                                 ConnectionPolicy.getDefaultPolicy(),
-                                                                 openConnectionsHandler);
+                                                                ConnectionPolicy.getDefaultPolicy(),
+                                                                openConnectionsHandler);
 
         String collectionRid = createdCollection.getResourceId();
 

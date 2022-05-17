@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -119,7 +120,11 @@ public class GlobalAddressResolver implements IAddressResolver {
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
 
-        return this.collectionCache.resolveByNameAsync(null, containerLink, null)
+        // Strip the leading "/", which follows the same format for document requests
+        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
+        // TODO: ideally it should have been consistent across
+        String cacheKey = StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR);
+        return this.collectionCache.resolveByNameAsync(null, cacheKey, null)
                 .flatMapMany(collection -> {
                     if (collection == null) {
                         logger.warn("Can not find the collection, no connections will be opened");

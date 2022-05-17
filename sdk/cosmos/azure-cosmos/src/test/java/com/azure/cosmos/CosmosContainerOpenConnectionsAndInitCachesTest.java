@@ -48,6 +48,10 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
     @BeforeClass(groups = {"simple"})
     public void beforeClass() {
+        // Enable the channel acquisition context,
+        // so that we can validate that a real request will reuse the channel established in openConnectionsAndInitCaches
+        System.setProperty("azure.cosmos.directTcp.defaultOptions", "{\"channelAcquisitionContextEnabled\":\"true\"}");
+
         directCosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
@@ -129,13 +133,21 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         assertThat(routingMap.size()).isEqualTo(0);
         assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isFalse();
 
+        String diagnostics = "";
         // Calling it twice to make sure no side effect of second time no-op call
         if (useAsync) {
             directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
             directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+
+            TestObject newItem = TestObject.create();
+            diagnostics = directCosmosAsyncContainer.createItem(newItem).block().getDiagnostics().toString();
+
         } else {
             directCosmosContainer.openConnectionsAndInitCaches();
             directCosmosContainer.openConnectionsAndInitCaches();
+
+            TestObject newItem = TestObject.create();
+            diagnostics = directCosmosAsyncContainer.createItem(newItem).block().getDiagnostics().toString();
         }
 
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
@@ -146,6 +158,9 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         // The goal is to have at most 1 connection to each replica
         int numberOfReplicas = feedRanges.size() * configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize();
         assertThat(provider.count()).isEqualTo(numberOfReplicas);
+
+        assertThat(diagnostics).contains("transportRequestChannelAcquisitionContext");
+        assertThat(diagnostics).doesNotContain("startNew");
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
@@ -166,8 +181,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         // Verifying no error when initializeContainer called on gateway mode
         // Calling it twice to make sure no side effect of second time no-op call
-        String resultForFirstCall;
-        String resultForSecondCall;
         if (useAsync) {
             gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
             gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
