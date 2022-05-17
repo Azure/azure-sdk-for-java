@@ -10,7 +10,6 @@ import com.azure.core.util.metrics.ClientMeter;
 import com.azure.core.util.metrics.ClientMeterProvider;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.testing.exporter.InMemoryMetricReader;
-import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -23,7 +22,6 @@ import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.runner.RunnerException;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -93,11 +91,14 @@ public class OpenTelemetryMetricsBenchmark {
 
     @Benchmark
     public void basicHistogramWithCommonAndExtraAttributes() {
-        METRIC_HELPER.recordSendBatch(Duration.ofMillis(1), "pId", false, null, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        METRIC_HELPER.recordSendBatch(1, "pId", false, null, AZ_CONTEXT_WITH_OTEL_CONTEXT);
     }
 
     public static void main(String... args) throws IOException, RunnerException {
-        Main.main(args);
+        //Main.main(args);
+        for (int i = 0; i < 1000000000; i ++) {
+            METRIC_HELPER.recordSendBatch(42, "pId", false, null, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        }
     }
 
     enum ErrorCode {
@@ -124,15 +125,15 @@ public class OpenTelemetryMetricsBenchmark {
         // do we know all partitions ahead of time?
         private final ConcurrentMap<String, SendBatchMetrics[]> allMetrics = new ConcurrentHashMap<>();
 
-        void recordSendBatch(Duration duration, String partitionId, boolean error, ErrorCode errorCode, Context context) {
-            SendBatchMetrics[] metrics = allMetrics.computeIfAbsent(partitionId, pId -> createMetrics(pId));
+        void recordSendBatch(long duration, String partitionId, boolean error, ErrorCode errorCode, Context context) {
+            SendBatchMetrics[] metrics = allMetrics.computeIfAbsent(partitionId, this::createMetrics);
 
             int index = ERROR_DIMENSIONS_LENGTH - 1; // ok
             if (error) {
                 index = errorCode != null ? errorCode.ordinal() : ERROR_DIMENSIONS_LENGTH - 2;
             }
 
-            metrics[index].record(duration.toMillis(), context);
+            metrics[index].record(duration, context);
         }
 
         private SendBatchMetrics[] createMetrics(String partitionId) {
