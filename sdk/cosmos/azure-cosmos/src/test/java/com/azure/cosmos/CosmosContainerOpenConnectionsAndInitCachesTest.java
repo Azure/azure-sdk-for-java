@@ -170,7 +170,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         CosmosAsyncClient asyncClient = useAsync ? gatewayCosmosAsyncClient : gatewayCosmosClient.asyncClient();
 
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncClient.getDocClientWrapper();
-        String containerId = asyncContainer.getId();
 
         ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
         ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
