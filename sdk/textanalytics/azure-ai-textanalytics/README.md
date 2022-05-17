@@ -10,7 +10,7 @@ and includes the main features below:
 - Healthcare Entities Analysis
 - Extractive Text Summarization
 - Custom Named Entity Recognition
-- Custom Text classification
+- Custom Text Classification
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -75,7 +75,7 @@ This table shows the relationship between SDK services and supported API version
 |5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
-#### Create a Cognitive Services or Language service resource
+#### Create a Cognitive Services or Language Service resource
 The Language service supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Language service access only,
 create a Language service resource.
@@ -229,7 +229,7 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Sentiment](#analyze-sentiment "Analyze sentiment")
 * [Detect Language](#detect-language "Detect language")
 * [Extract Key Phrases](#extract-key-phrases "Extract key phrases")
-* [Recognize Named Entities](#recognize-entities "Recognize named entities")
+* [Recognize Named Entities](#recognize-named-entities "Recognize named entities")
 * [Recognize Personally Identifiable Information Entities](#recognize-personally-identifiable-information-entities "Recognize Personally Identifiable Information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
 * [Analyze Healthcare Entities](#analyze-healthcare-entities "Analyze healthcare entities")
