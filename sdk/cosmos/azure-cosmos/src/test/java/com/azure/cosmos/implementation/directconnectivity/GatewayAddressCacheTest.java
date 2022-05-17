@@ -424,8 +424,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     public void tryGetAddresses_ForDataPartitions_Suboptimal_Refresh(
             List<String> allPartitionKeyRangeIds,
             String partitionKeyRangeId,
-            String collectionLink,
-            boolean openConnectionHandlerIsNull) throws Exception {
+            String collectionLink) throws Exception {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
