@@ -189,7 +189,7 @@ foreach ($packageDetail in $packageDetails) {
   }
 
   if($SingleArchiveVariable) {
-    Write-Host "##vso[task.setvariable variable=$SingleArtifactVariable]$zipArchivePath"
+    Write-Host "##vso[task.setvariable variable=$SingleArtifactVariable]$signedArtifactPath"
   }
 
   Write-Host ""
