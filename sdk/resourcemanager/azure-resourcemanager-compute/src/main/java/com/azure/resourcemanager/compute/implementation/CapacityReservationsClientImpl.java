@@ -1329,14 +1329,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String capacityReservationName,
         CapacityReservationInstanceViewTypes expand) {
         return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
-            .flatMap(
-                (Response<CapacityReservationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1355,14 +1348,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         final CapacityReservationInstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
-            .flatMap(
-                (Response<CapacityReservationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

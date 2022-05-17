@@ -436,7 +436,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0
                 && clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
                 String eventName =
-                    "Diagnostics for PKRange " + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId;
+                    "Diagnostics for PKRange "
+                        + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId();
                 tracerProvider.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), parentContext);
             } else if (clientSideRequestStatistics.getGatewayStatistics() != null) {

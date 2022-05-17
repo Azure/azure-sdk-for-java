@@ -1,6 +1,6 @@
 # Release History
 
-## 5.12.0-beta.1 (Unreleased)
+## 5.12.0 (2022-05-16)
 
 ### Features Added
 - Added identifier to client. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
@@ -11,11 +11,12 @@
 
 - `EventData` extends from `MessageContent`.
 
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
+
+- Upgraded `azure-core` to `1.28.0`.
+- Upgraded `azure-core-amqp` to `2.5.0`.
 
 ## 5.11.2 (2022-04-11)
 
