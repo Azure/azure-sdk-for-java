@@ -162,8 +162,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
-        List<NetworkCallRecord> networkCallRecords = collectNetworkCallsWithIdentityUri();
-        sanitizeIdentityInUri(networkCallRecords);
+        if(getTestMode() == TestMode.RECORD){
+            List<NetworkCallRecord> networkCallRecords = collectNetworkCallsWithIdentityUri();
+            sanitizeIdentityInUri(networkCallRecords);
+        }
     }
 
     private List<NetworkCallRecord> collectNetworkCallsWithIdentityUri() {

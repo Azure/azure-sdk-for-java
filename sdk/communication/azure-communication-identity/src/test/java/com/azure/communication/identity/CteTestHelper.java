@@ -3,7 +3,7 @@
 
 package com.azure.communication.identity;
 
-import com.azure.communication.identity.implementation.models.TeamsUserExchangeTokenRequest;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -66,11 +66,8 @@ public class CteTestHelper {
      *
      * @return the Teams User AAD token.
      */
-    private static TeamsUserExchangeTokenRequest createTeamsUserExchangeTokenRequest() throws MalformedURLException, ExecutionException, InterruptedException {
-        TeamsUserExchangeTokenRequest cteParams = new TeamsUserExchangeTokenRequest();
-        cteParams.setToken("Sanitized");
-        cteParams.setAppId("Sanitized");
-        cteParams.setUserId("Sanitized");
+    private static GetTokenForTeamsUserOptions createTeamsUserExchangeTokenRequest() throws MalformedURLException, ExecutionException, InterruptedException {
+        GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions("Sanitized", "Sanitized", "Sanitized");
         if (TEST_MODE != TestMode.PLAYBACK) {
             try {
                 IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
@@ -82,17 +79,17 @@ public class CteTestHelper {
                         .build();
                 Arrays.fill(password, '0');
                 IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
-                cteParams.setToken(result.accessToken());
-                cteParams.setAppId(COMMUNICATION_M365_APP_ID);
                 String[] accountIds = result.account().homeAccountId().split("\\.");
-                cteParams.setUserId(accountIds[0]);
+                options.setTeamsUserAadToken(result.accessToken())
+                        .setClientId(COMMUNICATION_M365_APP_ID)
+                        .setUserObjectId(accountIds[0]);
             } catch (Exception e) {
                 ClientLogger logger = new ClientLogger(CommunicationIdentityClientTestBase.class);
                 logger.error("Could not generate Teams User AAD token, failed with '{}' ", e.getMessage());
                 throw e;
             }
         }
-        return cteParams;
+        return options;
     }
 
     static boolean skipExchangeAadTeamsTokenTest() {
@@ -106,12 +103,12 @@ public class CteTestHelper {
      */
     static Stream<Arguments> getNullParams() {
         List<Arguments> argumentsList = new ArrayList<>();
-        argumentsList.add(Arguments.of(null, null, null, "token"));
+        argumentsList.add(Arguments.of(new GetTokenForTeamsUserOptions(null, null, null), "token"));
         try {
-            TeamsUserExchangeTokenRequest cteParams = createTeamsUserExchangeTokenRequest();
-            argumentsList.add(Arguments.of(null, cteParams.getAppId(), cteParams.getUserId(), "token"));
-            argumentsList.add(Arguments.of(cteParams.getToken(), null, cteParams.getUserId(), "AppId"));
-            argumentsList.add(Arguments.of(cteParams.getToken(), cteParams.getAppId(), null, "UserId"));
+            GetTokenForTeamsUserOptions options = createTeamsUserExchangeTokenRequest();
+            argumentsList.add(Arguments.of(new GetTokenForTeamsUserOptions(null, options.getClientId(), options.getUserObjectId()), "token"));
+            argumentsList.add(Arguments.of(new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), null, options.getUserObjectId()), "AppId"));
+            argumentsList.add(Arguments.of(new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), options.getClientId(), null), "UserId"));
         } catch (Exception e) {
         }
         return argumentsList.stream();
@@ -124,9 +121,10 @@ public class CteTestHelper {
      */
     static Stream<Arguments> getInvalidTokens() {
         List<Arguments> argumentsList = new ArrayList<>();
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyToken", "", COMMUNICATION_M365_APP_ID, ""));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidToken", "invalid", COMMUNICATION_M365_APP_ID, ""));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithExpiredToken", COMMUNICATION_EXPIRED_TEAMS_TOKEN, COMMUNICATION_M365_APP_ID, ""));
+        GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions("", COMMUNICATION_M365_APP_ID, "");
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyToken", options));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidToken", options.setTeamsUserAadToken("invalid")));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithExpiredToken", options.setTeamsUserAadToken(COMMUNICATION_EXPIRED_TEAMS_TOKEN)));
         return argumentsList.stream();
     }
 
@@ -137,10 +135,10 @@ public class CteTestHelper {
      */
     static Stream<Arguments> getInvalidAppIds() throws Exception {
         List<Arguments> argumentsList = new ArrayList<>();
-        TeamsUserExchangeTokenRequest cteParams = createTeamsUserExchangeTokenRequest();
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyAppId", cteParams.getToken(), "", cteParams.getUserId()));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidAppId", cteParams.getToken(), "invalid", cteParams.getUserId()));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongAppId", cteParams.getToken(), cteParams.getUserId(), cteParams.getUserId()));
+        GetTokenForTeamsUserOptions options = createTeamsUserExchangeTokenRequest();
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyAppId", options.setClientId("")));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidAppId", options.setClientId("invalid")));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongAppId", options.setClientId(options.getUserObjectId())));
         return argumentsList.stream();
     }
 
@@ -151,10 +149,10 @@ public class CteTestHelper {
      */
     static Stream<Arguments> getInvalidUserIds() throws Exception {
         List<Arguments> argumentsList = new ArrayList<>();
-        TeamsUserExchangeTokenRequest cteParams = createTeamsUserExchangeTokenRequest();
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyUserId", cteParams.getToken(), cteParams.getAppId(), ""));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidUserId", cteParams.getToken(), cteParams.getAppId(), "invalid"));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongUserId", cteParams.getToken(), cteParams.getAppId(), cteParams.getAppId()));
+        GetTokenForTeamsUserOptions options = createTeamsUserExchangeTokenRequest();
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyUserId", options.setUserObjectId("")));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidUserId", options.setUserObjectId("invalid")));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongUserId", options.setUserObjectId(options.getClientId())));
         return argumentsList.stream();
     }
 
@@ -165,8 +163,8 @@ public class CteTestHelper {
      */
     static Stream<Arguments> getValidParams() throws Exception {
         List<Arguments> argumentsList = new ArrayList<>();
-        TeamsUserExchangeTokenRequest cteParams = createTeamsUserExchangeTokenRequest();
-        argumentsList.add(Arguments.of(cteParams.getToken(), cteParams.getAppId(), cteParams.getUserId()));
+        GetTokenForTeamsUserOptions options = createTeamsUserExchangeTokenRequest();
+        argumentsList.add(Arguments.of(options));
         return argumentsList.stream();
     }
 

@@ -5,6 +5,7 @@ package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -126,7 +127,7 @@ public class CommunicationIdentityUsingManagedIdentityTests extends Communicatio
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
-    public void getTokenForTeamsUser(String teamsUserAadToken, String appId, String userId) {
+    public void getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -135,13 +136,13 @@ public class CommunicationIdentityUsingManagedIdentityTests extends Communicatio
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserUsingManagedIdentitySync");
         // Action & Assert
-        AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
+        AccessToken issuedToken = client.getTokenForTeamsUser(options);
         verifyTokenNotEmpty(issuedToken);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
-    public void getTokenForTeamsUserWithResponse(String teamsUserAadToken, String appId, String userId) {
+    public void getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -149,7 +150,7 @@ public class CommunicationIdentityUsingManagedIdentityTests extends Communicatio
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithResponseUsingManagedIdentitySync");
         // Action & Assert
-        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, appId, userId, Context.NONE);
+        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, Context.NONE);
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }

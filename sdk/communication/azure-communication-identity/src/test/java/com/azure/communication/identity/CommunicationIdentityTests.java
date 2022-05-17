@@ -5,6 +5,7 @@ package com.azure.communication.identity;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -228,7 +229,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
-    public void getTokenForTeamsUserWithValidParams(String teamsUserAadToken, String appId, String userId) {
+    public void getTokenForTeamsUserWithValidParams(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -236,13 +237,13 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithValidParamsSync");
         // Action & Assert
-        AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
+        AccessToken issuedToken = client.getTokenForTeamsUser(options);
         verifyTokenNotEmpty(issuedToken);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
-    public void getTokenForTeamsUserWithValidParamsWithResponse(String teamsUserAadToken, String appId, String userId) {
+    public void getTokenForTeamsUserWithValidParamsWithResponse(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -250,7 +251,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithValidParamsWithResponseSync");
         // Action & Assert
-        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, appId, userId, Context.NONE);
+        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, Context.NONE);
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }
@@ -258,7 +259,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest(name = "when {3} is null")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getNullParams")
-    public void getTokenForTeamsUserWithNullParams(String teamsUserAadToken, String appId, String userId, String exceptionMessage) {
+    public void getTokenForTeamsUserWithNullParams(GetTokenForTeamsUserOptions options, String exceptionMessage) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -267,7 +268,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "getTokenForTeamsUserWithNullSync: when " + exceptionMessage + " is null");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains(exceptionMessage));
@@ -278,7 +279,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidTokens")
-    public void getTokenForTeamsUserWithInvalidToken(String testName, String invalidTeamsUserAadToken, String appId, String userId) {
+    public void getTokenForTeamsUserWithInvalidToken(String testName, GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -287,7 +288,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, testName + TEST_SUFFIX);
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(invalidTeamsUserAadToken, appId, userId);
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -298,7 +299,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidAppIds")
-    public void getTokenForTeamsUserWithInvalidAppId(String testName, String teamsUserAadToken, String invalidAppId, String userId) {
+    public void getTokenForTeamsUserWithInvalidAppId(String testName, GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -307,7 +308,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, testName + TEST_SUFFIX);
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, invalidAppId, userId);
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));
@@ -318,7 +319,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidUserIds")
-    public void getTokenForTeamsUserWithInvalidUserId(String testName, String teamsUserAadToken, String appId, String invalidUserId) {
+    public void getTokenForTeamsUserWithInvalidUserId(String testName, GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -327,7 +328,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, testName + TEST_SUFFIX);
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, appId, invalidUserId);
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));

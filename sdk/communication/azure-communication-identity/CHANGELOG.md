@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 - Added support to build custom Teams endpoint using M365 Teams identities:

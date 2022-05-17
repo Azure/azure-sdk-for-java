@@ -168,7 +168,10 @@ communicationIdentityClient.deleteUser(user);
 Use the `getTokenForTeamsUser` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
 
 ```java readme-sample-getTokenForTeamsUser
-AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
+String clientId = "<Client ID of an Azure AD application>";
+String userObjectId = "<Object ID of an Azure AD user (Teams User)>";
+GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
+AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(options);
 System.out.println("User token value: " + accessToken.getToken());
 System.out.println("Expires at: " + accessToken.getExpiresAt());
 ```

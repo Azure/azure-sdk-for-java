@@ -5,6 +5,7 @@ package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
@@ -183,7 +184,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
-    public void getTokenForTeamsUser(String teamsUserAadToken, String appId, String userId) {
+    public void getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -192,7 +193,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserUsingManagedIdentity");
         // Action & Assert
-        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
+        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
                 .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
                 .verifyComplete();
@@ -200,7 +201,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
 
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
-    public void getTokenForTeamsUserWithResponse(String teamsUserAadToken, String appId, String userId) {
+    public void getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
@@ -209,7 +210,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithResponseUsingManagedIdentity");
         // Action & Assert
-        Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(teamsUserAadToken, appId, userId);
+        Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(options);
         StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
                     verifyTokenNotEmpty(issuedTokenResponse.getValue());

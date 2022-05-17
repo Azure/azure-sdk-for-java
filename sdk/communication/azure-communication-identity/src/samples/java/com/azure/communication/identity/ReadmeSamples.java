@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -171,10 +172,11 @@ public class ReadmeSamples {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-            String appId = "<Client ID of an Azure AD application>";
-            String userId = "<Object ID of an Azure AD user (Teams User)>";
             // BEGIN: readme-sample-getTokenForTeamsUser
-            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
+            String clientId = "<Client ID of an Azure AD application>";
+            String userObjectId = "<Object ID of an Azure AD user (Teams User)>";
+            GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
+            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(options);
             System.out.println("User token value: " + accessToken.getToken());
             System.out.println("Expires at: " + accessToken.getExpiresAt());
             // END: readme-sample-getTokenForTeamsUser
