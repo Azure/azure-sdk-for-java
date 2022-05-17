@@ -40,13 +40,13 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.14.0</version>
+      <version>1.14.0</version> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-prometheus</artifactId>
-      <version>1.14.0-alpha</version>
+      <version>1.14.0-alpha</version> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-prometheus;dependency} -->
     </dependency>
 
     <dependency>
@@ -79,8 +79,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-sdk:jar:1.14.0</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-prometheus:jar:1.14.0-alpha</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-prometheus;dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-prometheus:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-prometheus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
