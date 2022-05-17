@@ -46,6 +46,9 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     @Override
     public Long getLength() {
+        if (bytes.get() != null) {
+            return (long) bytes.get().length;
+        }
         return length;
     }
 

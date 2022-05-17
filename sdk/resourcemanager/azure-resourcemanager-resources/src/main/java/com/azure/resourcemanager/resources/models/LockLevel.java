@@ -30,7 +30,11 @@ public final class LockLevel extends ExpandableStringEnum<LockLevel> {
         return fromString(name, LockLevel.class);
     }
 
-    /** @return known LockLevel values. */
+    /**
+     * Gets known LockLevel values.
+     *
+     * @return known LockLevel values.
+     */
     public static Collection<LockLevel> values() {
         return values(LockLevel.class);
     }

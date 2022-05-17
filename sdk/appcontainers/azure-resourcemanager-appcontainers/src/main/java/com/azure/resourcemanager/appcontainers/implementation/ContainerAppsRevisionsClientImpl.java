@@ -70,6 +70,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -153,6 +154,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App for which Revisions are needed.
+     * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -161,7 +163,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RevisionInner>> listRevisionsSinglePageAsync(
-        String resourceGroupName, String containerAppName) {
+        String resourceGroupName, String containerAppName, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -193,6 +195,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
                             resourceGroupName,
                             containerAppName,
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<RevisionInner>>map(
@@ -212,6 +215,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App for which Revisions are needed.
+     * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -221,7 +225,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RevisionInner>> listRevisionsSinglePageAsync(
-        String resourceGroupName, String containerAppName, Context context) {
+        String resourceGroupName, String containerAppName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -251,6 +255,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
                 resourceGroupName,
                 containerAppName,
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(
@@ -269,15 +274,17 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App for which Revisions are needed.
+     * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Revisions for a given Container App as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RevisionInner> listRevisionsAsync(String resourceGroupName, String containerAppName) {
+    private PagedFlux<RevisionInner> listRevisionsAsync(
+        String resourceGroupName, String containerAppName, String filter) {
         return new PagedFlux<>(
-            () -> listRevisionsSinglePageAsync(resourceGroupName, containerAppName),
+            () -> listRevisionsSinglePageAsync(resourceGroupName, containerAppName, filter),
             nextLink -> listRevisionsNextSinglePageAsync(nextLink));
     }
 
@@ -286,6 +293,25 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App for which Revisions are needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Revisions for a given Container App as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<RevisionInner> listRevisionsAsync(String resourceGroupName, String containerAppName) {
+        final String filter = null;
+        return new PagedFlux<>(
+            () -> listRevisionsSinglePageAsync(resourceGroupName, containerAppName, filter),
+            nextLink -> listRevisionsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get the Revisions for a given Container App.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App for which Revisions are needed.
+     * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -294,9 +320,9 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RevisionInner> listRevisionsAsync(
-        String resourceGroupName, String containerAppName, Context context) {
+        String resourceGroupName, String containerAppName, String filter, Context context) {
         return new PagedFlux<>(
-            () -> listRevisionsSinglePageAsync(resourceGroupName, containerAppName, context),
+            () -> listRevisionsSinglePageAsync(resourceGroupName, containerAppName, filter, context),
             nextLink -> listRevisionsNextSinglePageAsync(nextLink, context));
     }
 
@@ -312,7 +338,8 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(listRevisionsAsync(resourceGroupName, containerAppName));
+        final String filter = null;
+        return new PagedIterable<>(listRevisionsAsync(resourceGroupName, containerAppName, filter));
     }
 
     /**
@@ -320,6 +347,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App for which Revisions are needed.
+     * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -328,8 +356,8 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(
-        String resourceGroupName, String containerAppName, Context context) {
-        return new PagedIterable<>(listRevisionsAsync(resourceGroupName, containerAppName, context));
+        String resourceGroupName, String containerAppName, String filter, Context context) {
+        return new PagedIterable<>(listRevisionsAsync(resourceGroupName, containerAppName, filter, context));
     }
 
     /**

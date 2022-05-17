@@ -25,7 +25,11 @@ public final class CapacityReservationGroupInstanceViewTypes
         return fromString(name, CapacityReservationGroupInstanceViewTypes.class);
     }
 
-    /** @return known CapacityReservationGroupInstanceViewTypes values. */
+    /**
+     * Gets known CapacityReservationGroupInstanceViewTypes values.
+     *
+     * @return known CapacityReservationGroupInstanceViewTypes values.
+     */
     public static Collection<CapacityReservationGroupInstanceViewTypes> values() {
         return values(CapacityReservationGroupInstanceViewTypes.class);
     }

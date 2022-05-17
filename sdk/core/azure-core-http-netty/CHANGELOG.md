@@ -1,5 +1,17 @@
 # Release History
 
+## 1.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+- Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
 ## 1.12.0 (2022-05-06)
 
 ### Features Added

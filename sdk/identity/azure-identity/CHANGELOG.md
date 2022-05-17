@@ -9,7 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
-- Update msal4j to 1.12.0.
+
+## 1.5.1 (2022-05-06)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` dependency to 1.12.0
+- Upgraded `azure-core` dependency to 1.28.0
 
 ## 1.5.0 (2022-04-05)
 

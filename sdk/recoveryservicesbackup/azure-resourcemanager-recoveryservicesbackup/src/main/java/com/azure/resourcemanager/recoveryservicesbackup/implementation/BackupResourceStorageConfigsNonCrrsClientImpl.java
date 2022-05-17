@@ -214,15 +214,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceConfigResourceInner> getAsync(String vaultName, String resourceGroupName) {
-        return getWithResponseAsync(vaultName, resourceGroupName)
-            .flatMap(
-                (Response<BackupResourceConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -380,14 +372,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     private Mono<BackupResourceConfigResourceInner> updateAsync(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<BackupResourceConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -547,8 +532,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> patchAsync(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
-        return patchWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return patchWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**

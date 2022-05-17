@@ -27,6 +27,13 @@ public final class ManagedEnvironmentProperties {
     private String daprAIInstrumentationKey;
 
     /*
+     * Application Insights connection string used by Dapr to export Service to
+     * Service communication telemetry
+     */
+    @JsonProperty(value = "daprAIConnectionString")
+    private String daprAIConnectionString;
+
+    /*
      * Vnet configuration for the environment
      */
     @JsonProperty(value = "vnetConfiguration")
@@ -58,6 +65,12 @@ public final class ManagedEnvironmentProperties {
     @JsonProperty(value = "appLogsConfiguration")
     private AppLogsConfiguration appLogsConfiguration;
 
+    /*
+     * Whether or not this Managed Environment is zone-redundant.
+     */
+    @JsonProperty(value = "zoneRedundant")
+    private Boolean zoneRedundant;
+
     /**
      * Get the provisioningState property: Provisioning state of the Environment.
      *
@@ -86,6 +99,28 @@ public final class ManagedEnvironmentProperties {
      */
     public ManagedEnvironmentProperties withDaprAIInstrumentationKey(String daprAIInstrumentationKey) {
         this.daprAIInstrumentationKey = daprAIInstrumentationKey;
+        return this;
+    }
+
+    /**
+     * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
+     * Service communication telemetry.
+     *
+     * @return the daprAIConnectionString value.
+     */
+    public String daprAIConnectionString() {
+        return this.daprAIConnectionString;
+    }
+
+    /**
+     * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
+     * Service communication telemetry.
+     *
+     * @param daprAIConnectionString the daprAIConnectionString value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties withDaprAIConnectionString(String daprAIConnectionString) {
+        this.daprAIConnectionString = daprAIConnectionString;
         return this;
     }
 
@@ -155,6 +190,26 @@ public final class ManagedEnvironmentProperties {
      */
     public ManagedEnvironmentProperties withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration) {
         this.appLogsConfiguration = appLogsConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
+    }
+
+    /**
+     * Set the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties withZoneRedundant(Boolean zoneRedundant) {
+        this.zoneRedundant = zoneRedundant;
         return this;
     }
 

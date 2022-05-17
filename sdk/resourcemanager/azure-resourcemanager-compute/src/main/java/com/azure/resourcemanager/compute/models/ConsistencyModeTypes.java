@@ -30,7 +30,11 @@ public final class ConsistencyModeTypes extends ExpandableStringEnum<Consistency
         return fromString(name, ConsistencyModeTypes.class);
     }
 
-    /** @return known ConsistencyModeTypes values. */
+    /**
+     * Gets known ConsistencyModeTypes values.
+     *
+     * @return known ConsistencyModeTypes values.
+     */
     public static Collection<ConsistencyModeTypes> values() {
         return values(ConsistencyModeTypes.class);
     }

@@ -27,7 +27,11 @@ public final class VmDiskTypes extends ExpandableStringEnum<VmDiskTypes> {
         return fromString(name, VmDiskTypes.class);
     }
 
-    /** @return known VmDiskTypes values. */
+    /**
+     * Gets known VmDiskTypes values.
+     *
+     * @return known VmDiskTypes values.
+     */
     public static Collection<VmDiskTypes> values() {
         return values(VmDiskTypes.class);
     }

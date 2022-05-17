@@ -450,14 +450,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EntityInner> getAsync(String resourceGroupName, String workspaceName, String entityId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, entityId)
-            .flatMap(
-                (Response<EntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -634,14 +627,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     private Mono<EntityExpandResponseInner> expandAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityExpandParameters parameters) {
         return expandWithResponseAsync(resourceGroupName, workspaceName, entityId, parameters)
-            .flatMap(
-                (Response<EntityExpandResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -817,14 +803,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     private Mono<GetQueriesResponseInner> queriesAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityItemQueryKind kind) {
         return queriesWithResponseAsync(resourceGroupName, workspaceName, entityId, kind)
-            .flatMap(
-                (Response<GetQueriesResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1004,14 +983,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     private Mono<EntityGetInsightsResponseInner> getInsightsAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityGetInsightsParameters parameters) {
         return getInsightsWithResponseAsync(resourceGroupName, workspaceName, entityId, parameters)
-            .flatMap(
-                (Response<EntityGetInsightsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
