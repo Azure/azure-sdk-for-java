@@ -51,6 +51,7 @@ public class OkHttpAsyncHttpClientBuilder {
     private Duration readTimeout;
     private Duration writeTimeout;
     private Duration connectionTimeout;
+    private Duration callTimeout;
     private ConnectionPool connectionPool;
     private Dispatcher dispatcher;
     private ProxyOptions proxyOptions;
@@ -112,6 +113,7 @@ public class OkHttpAsyncHttpClientBuilder {
      *
      * @param readTimeout Read timeout duration.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
+     * @see OkHttpClient.Builder#readTimeout(Duration)
      */
     public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
         // setReadTimeout can be null
@@ -134,6 +136,7 @@ public class OkHttpAsyncHttpClientBuilder {
      *
      * @param writeTimeout Write operation timeout duration.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
+     * @see OkHttpClient.Builder#writeTimeout(Duration)
      */
     public OkHttpAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
         this.writeTimeout = writeTimeout;
@@ -151,10 +154,11 @@ public class OkHttpAsyncHttpClientBuilder {
      * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
      * be used.
      * <p>
-     * By default the connection timeout is 10 seconds.
+     * By default, the connection timeout is 10 seconds.
      *
      * @param connectionTimeout Connect timeout duration.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
+     * @see OkHttpClient.Builder#connectTimeout(Duration)
      */
     public OkHttpAsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
@@ -163,10 +167,32 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
+     * Sets the default timeout for complete calls.
+     * <p>
+     * The call timeout spans the entire call: resolving DNS, connecting, writing the request body,
+     * server processing, and reading the response body.
+     * <p>
+     * Null or {@link Duration#ZERO} means no call timeout, otherwise values
+     * must be between 1 and {@link Integer#MAX_VALUE} when converted to milliseconds.
+     * <p>
+     * By default, call timeout is not enabled.
+     *
+     * @param callTimeout Call timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     * @see OkHttpClient.Builder#callTimeout(Duration)
+     */
+    public OkHttpAsyncHttpClientBuilder callTimeout(Duration callTimeout) {
+        // callTimeout can be null
+        this.callTimeout = callTimeout;
+        return this;
+    }
+
+    /**
      * Sets the Http connection pool.
      *
      * @param connectionPool The OkHttp connection pool to use.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
+     * @see OkHttpClient.Builder#connectionPool(ConnectionPool)
      */
     public OkHttpAsyncHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
         // Null ConnectionPool is not allowed
@@ -179,6 +205,7 @@ public class OkHttpAsyncHttpClientBuilder {
      *
      * @param dispatcher The dispatcher to use.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
+     * @see OkHttpClient.Builder#dispatcher(Dispatcher)
      */
     public OkHttpAsyncHttpClientBuilder dispatcher(Dispatcher dispatcher) {
         // Null Dispatcher is not allowed
@@ -247,6 +274,11 @@ public class OkHttpAsyncHttpClientBuilder {
             .connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
             .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
             .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
+
+        if (callTimeout != null) {
+            // Call timeout is disabled by default.
+            httpClientBuilder.callTimeout(callTimeout);
+        }
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {

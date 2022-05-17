@@ -11,7 +11,6 @@ import com.azure.core.test.HttpClientTestsWireMockServer;
 import com.azure.core.test.http.HttpClientTests;
 import com.azure.core.util.BinaryData;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -50,10 +49,8 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Test
     public void testVerySlowFluxGetsInterruptedByOkHttpInternals() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .callTimeout(Duration.ofMillis(1000)) // this caps full req-res roundtrip.
-            .build();
-        HttpClient httpClient = new OkHttpAsyncHttpClientBuilder(okHttpClient)
+        HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
+            .callTimeout(Duration.ofMillis(1000)) // this caps full req-res round trip.
             .build();
 
         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
@@ -74,10 +71,8 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Test
     public void testUnresponsiveFluxGetsInterruptedInFluxRequestBody() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
             .callTimeout(Duration.ofMillis(1000)) // this caps full req-res round trip.
-            .build();
-        HttpClient httpClient = new OkHttpAsyncHttpClientBuilder(okHttpClient)
             .build();
 
         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
