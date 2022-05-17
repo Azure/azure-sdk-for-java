@@ -38,6 +38,7 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -786,27 +787,8 @@ class ContainerAPITest extends APISpec {
         response.getStatusCode() == 404
     }
 
-    def "Delete if exists service container min"() {
-        setup:
-        def containerName = generateContainerName()
-        primaryBlobServiceClient.createBlobContainer(containerName)
-
-        when:
-        def result = premiumBlobServiceClient.deleteBlobContainerIfExists(containerName)
-
-        then:
-        !premiumBlobServiceClient.getBlobContainerClient(containerName).exists()
-        result
-    }
-
-    def "Delete if exists service container that does not exist"() {
-        when:
-        def response = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(generateContainerName(), null)
-
-        then:
-        response.getStatusCode() == 404
-    }
-
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
     def "Delete if exists container that was already deleted"() {
         when:
         boolean result = cc.deleteIfExists()

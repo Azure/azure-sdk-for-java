@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -24,8 +22,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.AudioEncoderAac", value = AudioEncoderAac.class)})
 @Fluent
 public class AudioEncoderBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AudioEncoderBase.class);
-
     /*
      * Bitrate, in kilobits per second or Kbps, at which audio should be
      * encoded (2-channel stereo audio at a sampling rate of 48 kHz). Allowed

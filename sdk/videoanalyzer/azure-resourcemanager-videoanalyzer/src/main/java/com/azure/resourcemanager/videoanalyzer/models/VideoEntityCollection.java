@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoEntityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of VideoEntity items. */
 @Fluent
 public final class VideoEntityCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoEntityCollection.class);
-
     /*
      * A collection of VideoEntity items.
      */

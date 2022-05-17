@@ -27,7 +27,11 @@ public final class ArchiveStatus extends ExpandableStringEnum<ArchiveStatus> {
         return fromString(name, ArchiveStatus.class);
     }
 
-    /** @return known ArchiveStatus values. */
+    /**
+     * Gets known ArchiveStatus values.
+     *
+     * @return known ArchiveStatus values.
+     */
     public static Collection<ArchiveStatus> values() {
         return values(ArchiveStatus.class);
     }

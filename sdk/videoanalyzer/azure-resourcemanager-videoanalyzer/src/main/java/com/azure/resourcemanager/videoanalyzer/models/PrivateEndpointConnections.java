@@ -30,7 +30,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under video analyzer account.
+     * @return all private endpoint connections under video analyzer account along with {@link Response}.
      */
     Response<PrivateEndpointConnectionListResult> listWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -58,7 +58,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection under video analyzer account.
+     * @return private endpoint connection under video analyzer account along with {@link Response}.
      */
     Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName, String accountName, String name, Context context);
@@ -85,7 +85,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String name, Context context);
 
@@ -96,7 +96,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection under video analyzer account.
+     * @return private endpoint connection under video analyzer account along with {@link Response}.
      */
     PrivateEndpointConnection getById(String id);
 
@@ -108,7 +108,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection under video analyzer account.
+     * @return private endpoint connection under video analyzer account along with {@link Response}.
      */
     Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context);
 
@@ -130,7 +130,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

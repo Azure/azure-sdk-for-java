@@ -202,7 +202,7 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
         private Duration connectionIdleTimeout;
 
         /**
-         * Comma-delimited list of headers applied to each request sent with client.
+         * List of headers applied to each request sent with client.
          */
         private final List<HeaderProperties> headers = new ArrayList<>();
 

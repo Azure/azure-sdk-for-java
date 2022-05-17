@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzerOperationStatusesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerOperationStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VideoAnalyzerOperationStatusesClient. */
 public final class VideoAnalyzerOperationStatusesClientImpl implements VideoAnalyzerOperationStatusesClient {
-    private final ClientLogger logger = new ClientLogger(VideoAnalyzerOperationStatusesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VideoAnalyzerOperationStatusesService service;
 
@@ -82,7 +79,7 @@ public final class VideoAnalyzerOperationStatusesClientImpl implements VideoAnal
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video analyzer operation status.
+     * @return video analyzer operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerOperationStatusInner>> getWithResponseAsync(
@@ -130,7 +127,7 @@ public final class VideoAnalyzerOperationStatusesClientImpl implements VideoAnal
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video analyzer operation status.
+     * @return video analyzer operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerOperationStatusInner>> getWithResponseAsync(
@@ -174,19 +171,11 @@ public final class VideoAnalyzerOperationStatusesClientImpl implements VideoAnal
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video analyzer operation status.
+     * @return video analyzer operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VideoAnalyzerOperationStatusInner> getAsync(String locationName, String operationId) {
-        return getWithResponseAsync(locationName, operationId)
-            .flatMap(
-                (Response<VideoAnalyzerOperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(locationName, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -213,7 +202,7 @@ public final class VideoAnalyzerOperationStatusesClientImpl implements VideoAnal
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video analyzer operation status.
+     * @return video analyzer operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VideoAnalyzerOperationStatusInner> getWithResponse(

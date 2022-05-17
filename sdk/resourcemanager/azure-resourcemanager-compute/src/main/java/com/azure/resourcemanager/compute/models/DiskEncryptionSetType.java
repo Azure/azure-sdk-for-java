@@ -33,7 +33,11 @@ public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryp
         return fromString(name, DiskEncryptionSetType.class);
     }
 
-    /** @return known DiskEncryptionSetType values. */
+    /**
+     * Gets known DiskEncryptionSetType values.
+     *
+     * @return known DiskEncryptionSetType values.
+     */
     public static Collection<DiskEncryptionSetType> values() {
         return values(DiskEncryptionSetType.class);
     }

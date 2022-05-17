@@ -75,7 +75,11 @@ public final class EntityMappingType extends ExpandableStringEnum<EntityMappingT
         return fromString(name, EntityMappingType.class);
     }
 
-    /** @return known EntityMappingType values. */
+    /**
+     * Gets known EntityMappingType values.
+     *
+     * @return known EntityMappingType values.
+     */
     public static Collection<EntityMappingType> values() {
         return values(EntityMappingType.class);
     }

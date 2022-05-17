@@ -141,6 +141,10 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DomainInner innerModel() {
         return this.innerObject;
     }

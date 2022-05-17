@@ -301,14 +301,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String diskRestorePointName) {
         return getWithResponseAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
-            .flatMap(
-                (Response<DiskRestorePointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

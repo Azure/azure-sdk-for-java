@@ -27,7 +27,11 @@ public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
         return fromString(name, DeleteOptions.class);
     }
 
-    /** @return known DeleteOptions values. */
+    /**
+     * Gets known DeleteOptions values.
+     *
+     * @return known DeleteOptions values.
+     */
     public static Collection<DeleteOptions> values() {
         return values(DeleteOptions.class);
     }

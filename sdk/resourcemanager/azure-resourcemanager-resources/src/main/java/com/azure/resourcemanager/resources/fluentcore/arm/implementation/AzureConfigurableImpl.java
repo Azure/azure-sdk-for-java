@@ -17,7 +17,6 @@ import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthentica
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,18 +31,17 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     implements AzureConfigurable<T> {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private List<HttpPipelinePolicy> policies;
-    private List<String> scopes;
+    private final List<HttpPipelinePolicy> policies;
+    private final List<String> scopes;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private Configuration configuration;
-    private List<TokenCredential> tokens;
+    private final List<TokenCredential> tokens;
 
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();
         scopes = new ArrayList<>();
         tokens = new ArrayList<>();
-        retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
         httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
     }
 

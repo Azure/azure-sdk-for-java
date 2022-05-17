@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Retention duration. */
 @Fluent
 public final class RetentionDuration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionDuration.class);
-
     /*
      * Count of duration types. Retention duration is obtained by the counting
      * the duration type Count times.

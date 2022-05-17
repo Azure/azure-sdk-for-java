@@ -27,7 +27,11 @@ public final class VirtualMachineEvictionPolicyTypes extends ExpandableStringEnu
         return fromString(name, VirtualMachineEvictionPolicyTypes.class);
     }
 
-    /** @return known VirtualMachineEvictionPolicyTypes values. */
+    /**
+     * Gets known VirtualMachineEvictionPolicyTypes values.
+     *
+     * @return known VirtualMachineEvictionPolicyTypes values.
+     */
     public static Collection<VirtualMachineEvictionPolicyTypes> values() {
         return values(VirtualMachineEvictionPolicyTypes.class);
     }

@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.JobResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobDetailsClient. */
 public final class JobDetailsClientImpl implements JobDetailsClient {
-    private final ClientLogger logger = new ClientLogger(JobDetailsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobDetailsService service;
 
@@ -191,14 +188,7 @@ public final class JobDetailsClientImpl implements JobDetailsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResourceInner> getAsync(String vaultName, String resourceGroupName, String jobName) {
         return getWithResponseAsync(vaultName, resourceGroupName, jobName)
-            .flatMap(
-                (Response<JobResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

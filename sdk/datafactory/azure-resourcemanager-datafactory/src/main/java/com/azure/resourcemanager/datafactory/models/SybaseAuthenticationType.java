@@ -27,7 +27,11 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
         return fromString(name, SybaseAuthenticationType.class);
     }
 
-    /** @return known SybaseAuthenticationType values. */
+    /**
+     * Gets known SybaseAuthenticationType values.
+     *
+     * @return known SybaseAuthenticationType values.
+     */
     public static Collection<SybaseAuthenticationType> values() {
         return values(SybaseAuthenticationType.class);
     }

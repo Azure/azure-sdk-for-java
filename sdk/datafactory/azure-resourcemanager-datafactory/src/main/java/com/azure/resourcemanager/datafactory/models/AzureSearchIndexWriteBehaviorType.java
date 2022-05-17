@@ -27,7 +27,11 @@ public final class AzureSearchIndexWriteBehaviorType extends ExpandableStringEnu
         return fromString(name, AzureSearchIndexWriteBehaviorType.class);
     }
 
-    /** @return known AzureSearchIndexWriteBehaviorType values. */
+    /**
+     * Gets known AzureSearchIndexWriteBehaviorType values.
+     *
+     * @return known AzureSearchIndexWriteBehaviorType values.
+     */
     public static Collection<AzureSearchIndexWriteBehaviorType> values() {
         return values(AzureSearchIndexWriteBehaviorType.class);
     }

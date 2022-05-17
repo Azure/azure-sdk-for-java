@@ -305,14 +305,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     private Mono<PartnerDestinationInner> getByResourceGroupAsync(
         String resourceGroupName, String partnerDestinationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerDestinationName)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -479,14 +472,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     private Mono<PartnerDestinationInner> createOrUpdateAsync(
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
         return createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -900,14 +886,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
         String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1504,14 +1483,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerDestinationInner> activateAsync(String resourceGroupName, String partnerDestinationName) {
         return activateWithResponseAsync(resourceGroupName, partnerDestinationName)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

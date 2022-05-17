@@ -1066,14 +1066,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceAtScopeAsync(String scope, String deploymentName) {
         return checkExistenceAtScopeWithResponseAsync(scope, deploymentName)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1450,15 +1443,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> getAtScopeAsync(String scope, String deploymentName) {
-        return getAtScopeWithResponseAsync(scope, deploymentName)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtScopeWithResponseAsync(scope, deploymentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1582,7 +1567,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtScopeAsync(String scope, String deploymentName) {
-        return cancelAtScopeWithResponseAsync(scope, deploymentName).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelAtScopeWithResponseAsync(scope, deploymentName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1971,14 +1956,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExportResultInner> exportTemplateAtScopeAsync(String scope, String deploymentName) {
         return exportTemplateAtScopeWithResponseAsync(scope, deploymentName)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2499,14 +2477,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceAtTenantScopeAsync(String deploymentName) {
         return checkExistenceAtTenantScopeWithResponseAsync(deploymentName)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2843,15 +2814,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> getAtTenantScopeAsync(String deploymentName) {
-        return getAtTenantScopeWithResponseAsync(deploymentName)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtTenantScopeWithResponseAsync(deploymentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2958,7 +2921,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtTenantScopeAsync(String deploymentName) {
-        return cancelAtTenantScopeWithResponseAsync(deploymentName).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelAtTenantScopeWithResponseAsync(deploymentName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3537,14 +3500,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExportResultInner> exportTemplateAtTenantScopeAsync(String deploymentName) {
         return exportTemplateAtTenantScopeWithResponseAsync(deploymentName)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4084,14 +4040,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceAtManagementGroupScopeAsync(String groupId, String deploymentName) {
         return checkExistenceAtManagementGroupScopeWithResponseAsync(groupId, deploymentName)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4476,14 +4425,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> getAtManagementGroupScopeAsync(String groupId, String deploymentName) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4608,8 +4550,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName) {
-        return cancelAtManagementGroupScopeWithResponseAsync(groupId, deploymentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return cancelAtManagementGroupScopeWithResponseAsync(groupId, deploymentName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5261,14 +5202,7 @@ public final class DeploymentsClientImpl
     public Mono<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeAsync(
         String groupId, String deploymentName) {
         return exportTemplateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5840,14 +5774,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceAtSubscriptionScopeAsync(String deploymentName) {
         return checkExistenceAtSubscriptionScopeWithResponseAsync(deploymentName)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6228,15 +6155,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> getAtSubscriptionScopeAsync(String deploymentName) {
-        return getAtSubscriptionScopeWithResponseAsync(deploymentName)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtSubscriptionScopeWithResponseAsync(deploymentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6366,7 +6285,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName) {
-        return cancelAtSubscriptionScopeWithResponseAsync(deploymentName).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelAtSubscriptionScopeWithResponseAsync(deploymentName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7007,14 +6926,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeAsync(String deploymentName) {
         return exportTemplateAtSubscriptionScopeWithResponseAsync(deploymentName)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -7638,14 +7550,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName) {
         return checkExistenceWithResponseAsync(resourceGroupName, deploymentName)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -8075,14 +7980,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String deploymentName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, deploymentName)
-            .flatMap(
-                (Response<DeploymentExtendedInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -8228,7 +8126,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String deploymentName) {
-        return cancelWithResponseAsync(resourceGroupName, deploymentName).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelWithResponseAsync(resourceGroupName, deploymentName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8945,14 +8843,7 @@ public final class DeploymentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName) {
         return exportTemplateWithResponseAsync(resourceGroupName, deploymentName)
-            .flatMap(
-                (Response<DeploymentExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -9273,15 +9164,7 @@ public final class DeploymentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TemplateHashResultInner> calculateTemplateHashAsync(Object template) {
-        return calculateTemplateHashWithResponseAsync(template)
-            .flatMap(
-                (Response<TemplateHashResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return calculateTemplateHashWithResponseAsync(template).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

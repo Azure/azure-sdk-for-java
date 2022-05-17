@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation details. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * The service provider.
      */

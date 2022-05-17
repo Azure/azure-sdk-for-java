@@ -31,7 +31,7 @@ public final class AzureStorageRetryOptionsConverter implements Converter<Storag
     public RequestRetryOptions convert(@NonNull StorageRetry storageRetry) {
         RetryOptionsProvider.RetryMode retryMode = storageRetry.getMode();
 
-        if (EXPONENTIAL.equals(retryMode)) {
+        if (EXPONENTIAL == retryMode) {
             RetryOptionsProvider.RetryOptions.ExponentialRetryOptions exponential = storageRetry.getExponential();
             if (exponential != null && exponential.getMaxRetries() != null) {
                 return new RequestRetryOptions(RetryPolicyType.EXPONENTIAL,
@@ -43,7 +43,7 @@ public final class AzureStorageRetryOptionsConverter implements Converter<Storag
             } else {
                 LOGGER.debug("The max-retries is not set, skip the convert.");
             }
-        } else if (FIXED.equals(retryMode)) {
+        } else if (FIXED == retryMode) {
             RetryOptionsProvider.RetryOptions.FixedRetryOptions fixed = storageRetry.getFixed();
             if (fixed != null && fixed.getMaxRetries() != null) {
                 return new RequestRetryOptions(RetryPolicyType.FIXED,
