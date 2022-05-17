@@ -120,6 +120,9 @@ public class ConsistencyWriter {
                     SessionTokenHelper.setOriginalSessionToken(entity, sessionToken);
                 } catch (Throwable throwable) {
                     logger.error("Unexpected failure in handling orig [{}]: new [{}]", arg, throwable.getMessage(), throwable);
+                    if (throwable instanceof Error) {
+                        throw (Error) throwable;
+                    }
                 }
             }
         );
@@ -202,6 +205,9 @@ public class ConsistencyWriter {
                                                    } catch (Throwable throwable) {
                                                        logger.error("Unexpected failure in handling orig [{}]", t.getMessage(), t);
                                                        logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
+                                                       if (throwable instanceof Error) {
+                                                           throw (Error) throwable;
+                                                       }
                                                    }
                                                }
                                            );

@@ -154,6 +154,7 @@ public class CosmosException extends AzureException {
         this.statusCode = statusCode;
         this.responseHeaders = new ConcurrentHashMap<>();
 
+        //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {
             for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
                 if (entry.getKey() != null && entry.getValue() != null) {
@@ -552,31 +553,6 @@ public class CosmosException extends AzureException {
                 @Override
                 public CosmosException createCosmosException(int statusCode, Exception innerException) {
                     return new CosmosException(statusCode, innerException);
-                }
-
-                @Override
-                public CosmosException createSerializableCosmosException(CosmosException cosmosException) {
-                    if (cosmosException == null) {
-                        return null;
-                    }
-                    CosmosException exception = new CosmosException(cosmosException.statusCode,
-                        cosmosException.cosmosError, cosmosException.getResponseHeaders());
-                    exception.requestTimeline = cosmosException.requestTimeline;
-                    exception.channelAcquisitionTimeline = cosmosException.channelAcquisitionTimeline;
-                    exception.rntbdChannelTaskQueueSize = cosmosException.rntbdChannelTaskQueueSize;
-                    exception.rntbdEndpointStatistics = cosmosException.rntbdEndpointStatistics;
-                    exception.lsn = cosmosException.lsn;
-                    exception.partitionKeyRangeId = cosmosException.partitionKeyRangeId;
-                    exception.requestUri = cosmosException.requestUri;
-                    exception.resourceAddress = cosmosException.resourceAddress;
-                    exception.requestPayloadLength = cosmosException.requestPayloadLength;
-                    exception.rntbdPendingRequestQueueSize = cosmosException.rntbdPendingRequestQueueSize;
-                    exception.rntbdRequestLength = cosmosException.rntbdRequestLength;
-                    exception.rntbdResponseLength = cosmosException.rntbdResponseLength;
-                    exception.sendingRequestHasStarted = cosmosException.sendingRequestHasStarted;
-                    exception.requestHeaders = null;
-                    exception.cosmosDiagnostics = null;
-                    return exception;
                 }
             });
     }
