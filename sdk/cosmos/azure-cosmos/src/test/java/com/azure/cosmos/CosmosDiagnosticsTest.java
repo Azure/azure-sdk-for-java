@@ -931,7 +931,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
         assertThat(storeResult).isNotNull();
 
-        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThan(0);
+        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
         assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
 
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
