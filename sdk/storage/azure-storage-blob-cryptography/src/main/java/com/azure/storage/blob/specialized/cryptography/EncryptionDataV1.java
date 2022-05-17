@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Represents the encryption data that is stored on the service.
  */
-final class EncryptionDataV1 {
+final class EncryptionDataV1 implements EncryptionData {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
@@ -75,7 +75,8 @@ final class EncryptionDataV1 {
      *
      * @return encryption mode
      */
-    String getEncryptionMode() {
+    @Override
+    public String getEncryptionMode() {
         return this.encryptionMode;
     }
 
@@ -85,7 +86,8 @@ final class EncryptionDataV1 {
      * @return A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the encrypted
      *         key bytes.
      */
-    WrappedKey getWrappedContentKey() {
+    @Override
+    public WrappedKey getWrappedContentKey() {
         return this.wrappedContentKey;
     }
 
@@ -94,7 +96,8 @@ final class EncryptionDataV1 {
      *
      * @return an {@link EncryptionAgent}.
      */
-    EncryptionAgent getEncryptionAgent() {
+    @Override
+    public EncryptionAgent getEncryptionAgent() {
         return this.encryptionAgent;
     }
 
@@ -112,7 +115,8 @@ final class EncryptionDataV1 {
      *
      * @return A HashMap containing the encryption metadata in a key-value format.
      */
-    Map<String, String> getKeyWrappingMetadata() {
+    @Override
+    public Map<String, String> getKeyWrappingMetadata() {
         return this.keyWrappingMetadata;
     }
 
@@ -177,11 +181,12 @@ final class EncryptionDataV1 {
         return this;
     }
 
-    String toJsonString() throws JsonProcessingException {
+    @Override
+    public String toJsonString() throws JsonProcessingException {
         return MAPPER.writeValueAsString(this);
     }
 
     static EncryptionDataV1 fromJsonString(String jsonString) throws JsonProcessingException {
-        return MAPPER.readValue(jsonString, EncryptionDataV1.class);
+        return (EncryptionDataV1) EncryptionData.fromJsonString(jsonString, EncryptionDataV1.class);
     }
 }

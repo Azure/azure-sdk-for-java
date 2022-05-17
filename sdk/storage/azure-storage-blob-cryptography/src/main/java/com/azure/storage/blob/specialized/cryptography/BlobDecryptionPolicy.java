@@ -358,7 +358,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param encryptionData A {@link EncryptionDataV1}
      * @return Key encryption key as a byte array
      */
-    private Mono<byte[]> getKeyEncryptionKey(EncryptionDataV1 encryptionData) {
+    private Mono<byte[]> getKeyEncryptionKey(EncryptionData encryptionData) {
         /*
          * 1. Invoke the key resolver if specified to get the key. If the resolver is specified but does not have a
          * mapping for the key id, an error should be thrown. This is important for key rotation scenario.

@@ -12,7 +12,7 @@ final class EncryptedBlob {
     /**
      * {@link EncryptionDataV1} to decrypt EncryptedBlob
      */
-    private final EncryptionDataV1 encryptionData;
+    private final EncryptionData encryptionData;
 
     /**
      * The encrypted blob content as a Flowable ByteBuffer
@@ -25,7 +25,7 @@ final class EncryptedBlob {
      * @param encryptionData A {@link EncryptionDataV1}
      * @param ciphertextFlux A Flowable ByteBuffer
      */
-    EncryptedBlob(EncryptionDataV1 encryptionData, Flux<ByteBuffer> ciphertextFlux) {
+    EncryptedBlob(EncryptionData encryptionData, Flux<ByteBuffer> ciphertextFlux) {
         this.encryptionData = encryptionData;
         this.ciphertextFlux = ciphertextFlux;
     }
@@ -33,7 +33,7 @@ final class EncryptedBlob {
     /**
      * @return This EncryptedBlob's EncryptedData.
      */
-    EncryptionDataV1 getEncryptionData() {
+    EncryptionData getEncryptionData() {
         return this.encryptionData;
     }
 

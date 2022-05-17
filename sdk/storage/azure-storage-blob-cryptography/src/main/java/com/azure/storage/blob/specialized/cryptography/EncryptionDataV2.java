@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Represents the encryption data that is stored on the service.
  */
-public class EncryptionDataV2 {
+public class EncryptionDataV2 implements EncryptionData{
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
@@ -75,7 +75,8 @@ public class EncryptionDataV2 {
      *
      * @return The encryptionAgent property.
      */
-    EncryptionAgent getEncryptionAgent() {
+    @Override
+    public EncryptionAgent getEncryptionAgent() {
         return encryptionAgent;
     }
 
@@ -95,7 +96,8 @@ public class EncryptionDataV2 {
      *
      * @return The encryptionMode property.
      */
-    String getEncryptionMode() {
+    @Override
+    public String getEncryptionMode() {
         return encryptionMode;
     }
 
@@ -135,7 +137,8 @@ public class EncryptionDataV2 {
      *
      * @return The keyWrappingMetadata property.
      */
-    Map<String, String> getKeyWrappingMetadata() {
+    @Override
+    public Map<String, String> getKeyWrappingMetadata() {
         return keyWrappingMetadata;
     }
 
@@ -155,7 +158,8 @@ public class EncryptionDataV2 {
      *
      * @return The wrappedContentKey property.
      */
-    WrappedKey getWrappedContentKey() {
+    @Override
+    public WrappedKey getWrappedContentKey() {
         return wrappedContentKey;
     }
 
@@ -170,11 +174,12 @@ public class EncryptionDataV2 {
         return this;
     }
 
-    String toJsonString() throws JsonProcessingException {
+    @Override
+    public String toJsonString() throws JsonProcessingException {
         return MAPPER.writeValueAsString(this);
     }
 
-    static EncryptionDataV1 fromJsonString(String jsonString) throws JsonProcessingException {
-        return MAPPER.readValue(jsonString, EncryptionDataV1.class);
+    static EncryptionDataV2 fromJsonString(String jsonString) throws JsonProcessingException {
+        return (EncryptionDataV2) EncryptionData.fromJsonString(jsonString, EncryptionDataV2.class);
     }
 }

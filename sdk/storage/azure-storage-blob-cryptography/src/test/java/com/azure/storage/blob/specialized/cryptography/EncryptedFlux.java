@@ -43,7 +43,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
 
     private int testCase;
 
-    private EncryptionDataV1 encryptionData;
+    private EncryptionData encryptionData;
 
     public static final int DATA_OFFSET = 10;
 
@@ -269,7 +269,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
         return this.plainText;
     }
 
-    public EncryptionDataV1 getEncryptionData() {
+    public EncryptionData getEncryptionData() {
         return this.encryptionData;
     }
 }
