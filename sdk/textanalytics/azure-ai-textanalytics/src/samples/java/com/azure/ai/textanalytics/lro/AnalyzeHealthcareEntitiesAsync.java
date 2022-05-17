@@ -83,7 +83,7 @@ public class AnalyzeHealthcareEntitiesAsync {
             perPage.getStatusCode(), perPage.getContinuationToken());
         for (AnalyzeHealthcareEntitiesResultCollection resultCollection : perPage.getElements()) {
             // Model version
-            System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
+            System.out.printf("Results of \"Analyze Healthcare\" Model, version: %s%n",
                 resultCollection.getModelVersion());
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();

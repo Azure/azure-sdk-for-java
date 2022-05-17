@@ -51,7 +51,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                 System.out.printf("Status code of request response: %d%n", sentimentBatchResultResponse.getStatusCode());
                 AnalyzeSentimentResultCollection sentimentBatchResultCollection = sentimentBatchResultResponse.getValue();
 
-                System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
+                System.out.printf("Results of \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = sentimentBatchResultCollection.getStatistics();

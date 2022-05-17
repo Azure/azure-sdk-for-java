@@ -70,7 +70,7 @@ public class AnalyzeHealthcareEntities {
         for (AnalyzeHealthcareEntitiesResultCollection resultCollection : syncPoller.getFinalResult()) {
             // Model version
             System.out.printf(
-                "Results of Azure Text Analytics \"Analyze Healthcare Entities\" Model, version: %s%n",
+                "Results of \"Analyze Healthcare Entities\" Model, version: %s%n",
                 resultCollection.getModelVersion());
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
