@@ -76,7 +76,7 @@ public class CosmosBulkItemResponseTest {
 
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
-            new ArrayList<>(headers.entrySet()),
+            headers,
             responseContent.getBytes(StandardCharsets.UTF_8));
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
@@ -155,7 +155,7 @@ public class CosmosBulkItemResponseTest {
 
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
-            new ArrayList<>(),
+            new HashMap<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(

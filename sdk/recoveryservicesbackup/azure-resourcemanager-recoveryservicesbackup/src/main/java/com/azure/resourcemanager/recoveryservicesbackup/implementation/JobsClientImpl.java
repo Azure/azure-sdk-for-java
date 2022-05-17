@@ -176,8 +176,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> exportAsync(String vaultName, String resourceGroupName, String filter) {
-        return exportWithResponseAsync(vaultName, resourceGroupName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return exportWithResponseAsync(vaultName, resourceGroupName, filter).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -193,8 +192,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> exportAsync(String vaultName, String resourceGroupName) {
         final String filter = null;
-        return exportWithResponseAsync(vaultName, resourceGroupName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return exportWithResponseAsync(vaultName, resourceGroupName, filter).flatMap(ignored -> Mono.empty());
     }
 
     /**

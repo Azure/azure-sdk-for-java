@@ -1791,12 +1791,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withCapacity(3)
             .create();
 
+        List<VirtualMachineScaleSetVM> instances = vmss.virtualMachines().list().stream().collect(Collectors.toList());
+        Assertions.assertEquals(3, instances.size());
+
         // batch operation on instance 0 and 2
-        // leave instance 0 untouched
-        Collection<String> instanceIds = Arrays.asList("0", "2");
+        // leave instance 1 untouched
+        Collection<String> instanceIds = Arrays.asList(instances.get(0).instanceId(), instances.get(2).instanceId());
 
         VirtualMachineScaleSetVMs vmInstances = vmss.virtualMachines();
-        VirtualMachineScaleSetVM vmInstance2 = vmss.virtualMachines().getInstance("2");
+        VirtualMachineScaleSetVM vmInstance2 = vmss.virtualMachines().getInstance(instances.get(2).instanceId());
 
 //        vmInstances.reimageInstances(instanceIds);
 
@@ -1819,7 +1822,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance2.powerState());
 
         // instance 1 is not affected
-        VirtualMachineScaleSetVM vmInstance1 = vmss.virtualMachines().getInstance("1");
+        VirtualMachineScaleSetVM vmInstance1 = vmss.virtualMachines().getInstance(instances.get(1).instanceId());
         Assertions.assertEquals(PowerState.RUNNING, vmInstance1.powerState());
     }
 

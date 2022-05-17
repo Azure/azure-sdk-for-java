@@ -30,7 +30,11 @@ public final class SkuConversionStatus extends ExpandableStringEnum<SkuConversio
         return fromString(name, SkuConversionStatus.class);
     }
 
-    /** @return known SkuConversionStatus values. */
+    /**
+     * Gets known SkuConversionStatus values.
+     *
+     * @return known SkuConversionStatus values.
+     */
     public static Collection<SkuConversionStatus> values() {
         return values(SkuConversionStatus.class);
     }

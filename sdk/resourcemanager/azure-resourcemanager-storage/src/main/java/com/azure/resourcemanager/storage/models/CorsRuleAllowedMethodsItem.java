@@ -45,7 +45,11 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
         return fromString(name, CorsRuleAllowedMethodsItem.class);
     }
 
-    /** @return known CorsRuleAllowedMethodsItem values. */
+    /**
+     * Gets known CorsRuleAllowedMethodsItem values.
+     *
+     * @return known CorsRuleAllowedMethodsItem values.
+     */
     public static Collection<CorsRuleAllowedMethodsItem> values() {
         return values(CorsRuleAllowedMethodsItem.class);
     }
