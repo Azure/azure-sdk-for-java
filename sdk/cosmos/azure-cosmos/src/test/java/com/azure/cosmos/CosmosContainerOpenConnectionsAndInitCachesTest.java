@@ -161,6 +161,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         assertThat(diagnostics).contains("transportRequestChannelAcquisitionContext");
         assertThat(diagnostics).doesNotContain("startNew");
+        assertThat(diagnostics).contains("poll");
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")

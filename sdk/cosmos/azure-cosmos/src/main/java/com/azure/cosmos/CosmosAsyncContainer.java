@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -62,6 +63,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -477,8 +479,24 @@ public class CosmosAsyncContainer {
                 .flatMap(openConnectionResponses -> {
                     // Generate a simple statistics string for open connections
                     int total = openConnectionResponses.size();
-                    long connectionsEstablished = openConnectionResponses.stream().filter(response -> response.isConnected()).count();
-                    return Mono.just(String.format("Established: %s, Failed: %s", connectionsEstablished, total - connectionsEstablished));
+
+                    ConcurrentHashMap<String, Boolean> endPointOpenConnectionsStatistics = new ConcurrentHashMap<>();
+                    for (OpenConnectionResponse openConnectionResponse : openConnectionResponses) {
+                        endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURIAsString(), (key, value) -> {
+                            if (value == null) {
+                                return openConnectionResponse.isConnected();
+                            }
+
+                            // Sometimes different replicas can landed on the same server, that is why we could reach here
+                            // We will only create max one connection for each endpoint in openConnectionsAndInitCaches
+                            // if one failed, one succeeded, then it is still good
+                            return openConnectionResponse.isConnected() || value;
+                        });
+                    }
+
+                    long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
+                    return Mono.just(String.format(
+                            "EndpointsConnected: %s, Failed: %s", endpointConnected, endPointOpenConnectionsStatistics.size() - endpointConnected));
                 });
     }
 
