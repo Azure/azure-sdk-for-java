@@ -42,7 +42,11 @@ public final class EventSubscriptionProvisioningState extends ExpandableStringEn
         return fromString(name, EventSubscriptionProvisioningState.class);
     }
 
-    /** @return known EventSubscriptionProvisioningState values. */
+    /**
+     * Gets known EventSubscriptionProvisioningState values.
+     *
+     * @return known EventSubscriptionProvisioningState values.
+     */
     public static Collection<EventSubscriptionProvisioningState> values() {
         return values(EventSubscriptionProvisioningState.class);
     }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -18,8 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.UnsecuredEndpoint")
 @Fluent
 public final class UnsecuredEndpoint extends EndpointBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnsecuredEndpoint.class);
-
     /** {@inheritDoc} */
     @Override
     public UnsecuredEndpoint withCredentials(CredentialsBase credentials) {

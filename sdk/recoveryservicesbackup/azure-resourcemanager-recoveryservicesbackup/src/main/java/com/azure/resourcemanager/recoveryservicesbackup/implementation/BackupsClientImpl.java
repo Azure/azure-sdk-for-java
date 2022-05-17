@@ -250,7 +250,7 @@ public final class BackupsClientImpl implements BackupsClient {
         BackupRequestResource parameters) {
         return triggerWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

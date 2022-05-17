@@ -98,6 +98,10 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PartnerTopicInner innerModel() {
         return this.innerObject;
     }

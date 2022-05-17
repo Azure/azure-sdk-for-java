@@ -114,6 +114,10 @@ public final class PartnerNamespaceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PartnerNamespaceInner innerModel() {
         return this.innerObject;
     }

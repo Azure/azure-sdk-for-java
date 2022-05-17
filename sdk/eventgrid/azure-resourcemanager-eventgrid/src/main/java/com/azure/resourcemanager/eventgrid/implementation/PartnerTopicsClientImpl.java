@@ -317,14 +317,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerTopicInner> getByResourceGroupAsync(String resourceGroupName, String partnerTopicName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerTopicName)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -486,14 +479,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
     private Mono<PartnerTopicInner> createOrUpdateAsync(
         String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo) {
         return createOrUpdateWithResponseAsync(resourceGroupName, partnerTopicName, partnerTopicInfo)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -893,14 +879,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
     private Mono<PartnerTopicInner> updateAsync(
         String resourceGroupName, String partnerTopicName, PartnerTopicUpdateParameters partnerTopicUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, partnerTopicName, partnerTopicUpdateParameters)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1491,14 +1470,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerTopicInner> activateAsync(String resourceGroupName, String partnerTopicName) {
         return activateWithResponseAsync(resourceGroupName, partnerTopicName)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1642,14 +1614,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerTopicInner> deactivateAsync(String resourceGroupName, String partnerTopicName) {
         return deactivateWithResponseAsync(resourceGroupName, partnerTopicName)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

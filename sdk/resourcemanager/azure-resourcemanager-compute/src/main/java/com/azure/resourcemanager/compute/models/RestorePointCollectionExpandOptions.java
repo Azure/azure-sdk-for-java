@@ -25,7 +25,11 @@ public final class RestorePointCollectionExpandOptions
         return fromString(name, RestorePointCollectionExpandOptions.class);
     }
 
-    /** @return known RestorePointCollectionExpandOptions values. */
+    /**
+     * Gets known RestorePointCollectionExpandOptions values.
+     *
+     * @return known RestorePointCollectionExpandOptions values.
+     */
     public static Collection<RestorePointCollectionExpandOptions> values() {
         return values(RestorePointCollectionExpandOptions.class);
     }

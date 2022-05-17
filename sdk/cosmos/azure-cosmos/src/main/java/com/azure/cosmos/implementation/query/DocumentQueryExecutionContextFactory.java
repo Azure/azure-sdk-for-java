@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -217,6 +218,10 @@ public class DocumentQueryExecutionContextFactory {
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
         if (canCacheQuery(queryInfo) && !queryPlanCache.containsKey(query.getQueryText())) {
+            if (queryPlanCache.size() == Constants.QUERYPLAN_CACHE_SIZE) {
+                logger.warn("Clearing query plan cache as it has reached the maximum size : {}", queryPlanCache.size());
+                queryPlanCache.clear();
+            }
             queryPlanCache.put(query.getQueryText(), partitionedQueryExecutionInfo);
         }
     }

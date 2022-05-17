@@ -163,6 +163,8 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("topicName") String topicName,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -179,6 +181,16 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
             @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EventSubscriptionsListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -309,14 +321,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     private Mono<EventSubscriptionInner> getAsync(
         String resourceGroupName, String topicName, String eventSubscriptionName) {
         return getWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName)
-            .flatMap(
-                (Response<EventSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1424,14 +1429,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     private Mono<EventSubscriptionFullUrlInner> getFullUrlAsync(
         String resourceGroupName, String topicName, String eventSubscriptionName) {
         return getFullUrlWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName)
-            .flatMap(
-                (Response<EventSubscriptionFullUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1474,6 +1472,14 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1482,7 +1488,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listSinglePageAsync(
-        String resourceGroupName, String topicName) {
+        String resourceGroupName, String topicName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1513,12 +1519,19 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
                             resourceGroupName,
                             topicName,
                             this.client.getApiVersion(),
+                            filter,
+                            top,
                             accept,
                             context))
             .<PagedResponse<EventSubscriptionInner>>map(
                 res ->
                     new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1527,6 +1540,14 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1536,7 +1557,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listSinglePageAsync(
-        String resourceGroupName, String topicName, Context context) {
+        String resourceGroupName, String topicName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1565,12 +1586,45 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
                 resourceGroupName,
                 topicName,
                 this.client.getApiVersion(),
+                filter,
+                top,
                 accept,
                 context)
             .map(
                 res ->
                     new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * List all event subscriptions that have been created for a specific topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<EventSubscriptionInner> listAsync(
+        String resourceGroupName, String topicName, String filter, Integer top) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, topicName, filter, top),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1585,7 +1639,11 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listAsync(String resourceGroupName, String topicName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, topicName));
+        final String filter = null;
+        final Integer top = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, topicName, filter, top),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1593,6 +1651,14 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1600,8 +1666,11 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listAsync(String resourceGroupName, String topicName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, topicName, context));
+    private PagedFlux<EventSubscriptionInner> listAsync(
+        String resourceGroupName, String topicName, String filter, Integer top, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, topicName, filter, top, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1616,7 +1685,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> list(String resourceGroupName, String topicName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, topicName));
+        final String filter = null;
+        final Integer top = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, topicName, filter, top));
     }
 
     /**
@@ -1624,6 +1695,14 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
+     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
+     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
+     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
+     *     'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     *     100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1631,8 +1710,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> list(String resourceGroupName, String topicName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, topicName, context));
+    public PagedIterable<EventSubscriptionInner> list(
+        String resourceGroupName, String topicName, String filter, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, topicName, filter, top, context));
     }
 
     /**
@@ -1758,14 +1838,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
         String resourceGroupName, String topicName, String eventSubscriptionName) {
         return getDeliveryAttributesWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName)
-            .flatMap(
-                (Response<DeliveryAttributeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1802,5 +1875,78 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
         String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
         return getDeliveryAttributesWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName, context)
             .block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EventSubscriptionInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EventSubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

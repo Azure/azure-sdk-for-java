@@ -64,6 +64,10 @@ public final class EventChannelImpl implements EventChannel, EventChannel.Defini
         return this.innerModel().partnerTopicFriendlyDescription();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public EventChannelInner innerModel() {
         return this.innerObject;
     }

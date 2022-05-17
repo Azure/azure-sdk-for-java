@@ -16,6 +16,7 @@ import java.util.Map;
  */
 public final class BatchExecUtils {
 
+    public final static long MAX_RETRY_AFTER_IN_MS = 5000L;
     private final static Logger logger = LoggerFactory.getLogger(BatchExecUtils.class);
 
     public static Duration getRetryAfterDuration(Map<String, String> responseHeaders) {
@@ -26,7 +27,7 @@ public final class BatchExecUtils {
 
             if (StringUtils.isNotEmpty(header)) {
                 try {
-                    retryIntervalInMilliseconds = Long.parseLong(header);
+                    retryIntervalInMilliseconds = Math.min(Long.parseLong(header), MAX_RETRY_AFTER_IN_MS);
                 } catch (NumberFormatException e) {
                     // If the value cannot be parsed as long, return 0.
                 }

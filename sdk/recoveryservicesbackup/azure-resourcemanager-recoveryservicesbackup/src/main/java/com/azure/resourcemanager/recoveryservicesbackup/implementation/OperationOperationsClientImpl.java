@@ -193,14 +193,7 @@ public final class OperationOperationsClientImpl implements OperationOperationsC
     private Mono<ValidateOperationsResponseInner> validateAsync(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
         return validateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<ValidateOperationsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

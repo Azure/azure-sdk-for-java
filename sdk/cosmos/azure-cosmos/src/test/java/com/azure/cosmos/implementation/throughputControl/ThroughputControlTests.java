@@ -312,15 +312,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 testContainer.createItem(getDocumentDefinition(), requestOptions).block();
             }
 
-            String query = "SELECT * FROM c WHERE CONTAINS(c.groupId, @GROUPID) AND CONTAINS(c.groupId, @CLIENTITEMSUFFIX)";
-            List<SqlParameter> parameters = new ArrayList<>();
-            parameters.add(new SqlParameter("@GROUPID", groupConfig.getGroupName()));
-            parameters.add(new SqlParameter("@CLIENTITEMSUFFIX", ".client"));
-            SqlQuerySpec querySpec = new SqlQuerySpec(query, parameters);
-
-            List<GlobalThroughputControlClientItem> clientItems = controlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
-                    .collectList()
-                    .block();
+            List<GlobalThroughputControlClientItem> clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
             assertThat(clientItems.size()).isEqualTo(clientCount);
 
         } finally {
@@ -330,6 +322,45 @@ public class ThroughputControlTests extends TestSuiteBase {
                 }
             }
         }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 4)
+    public void enableSameGroupMultipleTimes() {
+        // This test is to validate even though same groups have been enabled multiple times, no new client item will be created
+
+        String controlContainerId = "throughputControlContainer";
+        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
+        database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
+
+        ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                        .groupName("group-" + UUID.randomUUID())
+                        .targetThroughputThreshold(1)
+                        .build();
+
+        GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                .setControlItemRenewInterval(Duration.ofSeconds(5))
+                .setControlItemExpireInterval(Duration.ofSeconds(20))
+                .build();
+        container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+        container.createItem(getDocumentDefinition(), requestOptions).block();
+
+        List<GlobalThroughputControlClientItem> clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
+        assertThat(clientItems.size()).isEqualTo(1);
+        String clientId = clientItems.get(0).getId();
+
+        // now enable the same group again
+        container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+        container.createItem(getDocumentDefinition(), requestOptions).block();
+        clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
+
+        // validate no new client item being created
+        assertThat(clientItems.size()).isEqualTo(1);
+        assertThat(clientItems.get(0).getId()).isEqualTo(clientId);
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
@@ -432,6 +463,18 @@ public class ThroughputControlTests extends TestSuiteBase {
         } catch (CosmosException cosmosException) {
             return cosmosException.getDiagnostics();
         }
+    }
+
+    private List<GlobalThroughputControlClientItem> getClientItems(String groupName, CosmosAsyncContainer controlContainer) {
+        String query = "SELECT * FROM c WHERE CONTAINS(c.groupId, @GROUPID) AND CONTAINS(c.groupId, @CLIENTITEMSUFFIX)";
+        List<SqlParameter> parameters = new ArrayList<>();
+        parameters.add(new SqlParameter("@GROUPID", groupName));
+        parameters.add(new SqlParameter("@CLIENTITEMSUFFIX", ".client"));
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, parameters);
+
+        return controlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
+                .collectList()
+                .block();
     }
 
     // TODO: add tests split
