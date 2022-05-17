@@ -46,7 +46,12 @@ import java.util.Objects;
 class OkHttpAsyncHttpClient implements HttpClient {
 
     private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
-    private static final long BUFFERED_FLUX_REQUEST_THRESHOLD = 10 * 1024L;
+    /**
+     * This constant defines a size of Flux based request where buffering in memory becomes less performant
+     * than streaming (which involves thread hops). The value has been established experimentally using
+     * Storage benchmarks.
+     */
+    private static final long BUFFERED_FLUX_REQUEST_THRESHOLD = 100 * 1024L;
 
     final OkHttpClient httpClient;
     private final Duration writeTimeout;
