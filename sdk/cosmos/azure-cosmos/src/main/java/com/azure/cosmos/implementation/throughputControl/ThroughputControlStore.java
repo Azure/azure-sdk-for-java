@@ -112,9 +112,10 @@ public class ThroughputControlStore {
                 throughputControlContainerProperties = new ContainerThroughputControlGroupProperties();
             }
 
-            int groupSize = throughputControlContainerProperties.enableThroughputControlGroup(group);
+            int groupSizeBefore = throughputControlContainerProperties.getThroughputControlGroupSet().size();
+            int groupSizeAfter = throughputControlContainerProperties.enableThroughputControlGroup(group);
 
-            if (groupSize == 1) {
+            if (groupSizeAfter > groupSizeBefore && groupSizeAfter == 1) {
                 // This is the first enabled group for the target container
                 // Clean the current cache in case we have built EmptyThroughputContainerController.
                 this.containerControllerCache.remove(containerNameLink);
