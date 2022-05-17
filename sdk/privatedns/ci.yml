@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/privatedns/ci.yml
+      - sdk/privatedns/azure-resourcemanager-privatedns-generated/
+    exclude:
+      - sdk/privatedns/pom.xml
+      - sdk/privatedns/azure-resourcemanager-privatedns-generated/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/privatedns/ci.yml
+      - sdk/privatedns/azure-resourcemanager-privatedns-generated/
+    exclude:
+      - sdk/privatedns/pom.xml
+      - sdk/privatedns/azure-resourcemanager-privatedns-generated/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: privatedns
+    Artifacts:
+      - name: azure-resourcemanager-privatedns-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerprivatednsgenerated
