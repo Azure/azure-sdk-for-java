@@ -25,6 +25,8 @@ public class ClientOptions {
 
     private String applicationId;
 
+    private MetricsOptions metricsOptions;
+
     /**
      * Gets the application ID.
      *
@@ -110,5 +112,14 @@ public class ClientOptions {
             return Collections.emptyList();
         }
         return headers;
+    }
+
+    public ClientOptions setMetricsOptions(MetricsOptions metricsOptions) {
+        this.metricsOptions = metricsOptions;
+        return this;
+    }
+
+    public MetricsOptions getMetricsOptions() {
+        return metricsOptions;
     }
 }

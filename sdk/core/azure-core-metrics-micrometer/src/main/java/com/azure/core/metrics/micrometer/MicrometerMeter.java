@@ -59,4 +59,9 @@ public class MicrometerMeter implements ClientMeter {
 
         return new MicrometerLongCounter(counter);
     }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

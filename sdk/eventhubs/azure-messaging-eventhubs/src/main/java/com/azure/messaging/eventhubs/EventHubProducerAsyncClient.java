@@ -12,19 +12,12 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.annotation.Options;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.ClientMeter;
-import com.azure.core.util.metrics.ClientMeterProvider;
-import com.azure.core.util.metrics.LongHistogram;
-import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -198,7 +191,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
     private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
-    private static final ClientMeter DEFAULT_METER = ClientMeterProvider.createMeter("azure-messaging-eventhubs", getLibraryVersion(), new MetricsOptions());
 
     private final EventHubsMetricProducerMetricHelper metricHelper;
 
@@ -215,18 +207,14 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
 
-    private static String getLibraryVersion() {
-        return CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE).getOrDefault(VERSION_KEY, UNKNOWN);
-    }
-
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
      * when {@link CreateBatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
+                                EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider, EventHubsMetricProducerMetricHelper metricHelper,
+                                MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -240,8 +228,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
-        // TODO custom MetricOptions
-        this.metricHelper = new EventHubsMetricProducerMetricHelper(DEFAULT_METER, fullyQualifiedNamespace, eventHubName);
+
+        this.metricHelper = metricHelper;
     }
 
     /**
@@ -602,9 +590,10 @@ public class EventHubProducerAsyncClient implements Closeable {
             String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
             .publishOn(scheduler)
             .doOnEach(signal -> {
-                Context parentContextVal = parentContext.get();
+                Context parentContextVal = Context.NONE;
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContextVal, signal);
+                    parentContext.get();
                 }
 
                 boolean error = signal.getType().equals(SignalType.ON_ERROR) && signal.hasError();

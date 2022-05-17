@@ -20,23 +20,29 @@ class EventHubsMetricProducerMetricHelper {
 
     private final static String COUNTER_METRIC_NAME = "az.messaging.producer.send.events";
     private final static String COUNTER_METRIC_DESCRIPTION = "Duration of producer send call";
-    private final static String COUNTER_METRIC_UNIT = null;
+    private final static String COUNTER_METRIC_UNIT = "todo";
 
     private final ClientMeter meter;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
 
+    // do we know all partitions ahead of time?
+    private final ConcurrentMap<String, SendBatchMetrics[]> allMetrics = new ConcurrentHashMap<>();
+    private final SendBatchMetrics[] nullPartition;
+
     public EventHubsMetricProducerMetricHelper(ClientMeter meter, String fullyQualifiedNamespace, String eventHubName) {
         this.meter = meter;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
+        this.nullPartition = createMetrics(null);
     }
 
-    // do we know all partitions ahead of time?
-    private final ConcurrentMap<String, SendBatchMetrics[]> allMetrics = new ConcurrentHashMap<>();
-
     void recordSendBatch(Duration duration, long batchSize, Context context, String partitionId, boolean error, AmqpErrorCondition errorCode) {
-        SendBatchMetrics[] metrics = allMetrics.computeIfAbsent(partitionId, pId -> createMetrics(pId));
+        if (!meter.isEnabled()) {
+            return;
+        }
+
+        SendBatchMetrics[] metrics = partitionId == null ? nullPartition : allMetrics.computeIfAbsent(partitionId, this::createMetrics);
 
         int index = ERROR_DIMENSIONS_LENGTH - 1; // ok
         if (error) {
@@ -62,7 +68,7 @@ class EventHubsMetricProducerMetricHelper {
         Map<String, Object> attributes = new HashMap<>(4);
         attributes.put("az.messaging.destination", fullyQualifiedNamespace);
         attributes.put("az.messaging.entity", eventHubName);
-        attributes.put("az.messaging.partition_id", partitionId);
+        attributes.put("az.messaging.partition_id", partitionId == null ? "N/A" : partitionId);
         attributes.put("az.messaging.status_code", errorCode);
 
         return attributes;

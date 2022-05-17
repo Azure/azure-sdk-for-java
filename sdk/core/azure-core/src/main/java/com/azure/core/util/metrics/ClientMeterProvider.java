@@ -33,7 +33,6 @@ public abstract class ClientMeterProvider {
 
     public abstract ClientMeter getMeter(String libraryName, String libraryVersion, MetricsOptions options);
 
-
     private static class NoopMeter implements ClientMeter {
 
         private static final ClientLongHistogram NOOP_LONG_HISTOGRAM = (value, context) -> { };
@@ -50,6 +49,11 @@ public abstract class ClientMeterProvider {
         @Override
         public ClientLongCounter getLongCounter(String metricName, String metricDescription, String unit, Map<String, Object> attributes) {
             return NOOP_LONG_COUNTER;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return false;
         }
     }
 }

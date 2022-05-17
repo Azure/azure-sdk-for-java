@@ -45,7 +45,7 @@ public class OpenTelemetryMetricsBenchmark {
         .registerMetricReader(SDK_METER_READER)
         .build();
 
-    private final static Map<String, Object> COMMON_ATTRIBUTES = new HashMap<>() {{
+    private final static Map<String, Object> COMMON_ATTRIBUTES = new HashMap<String, Object>() {{
         put("az.messaging.destination", "fqdn");
         put("az.messaging.entity", "entityName");
     }};
