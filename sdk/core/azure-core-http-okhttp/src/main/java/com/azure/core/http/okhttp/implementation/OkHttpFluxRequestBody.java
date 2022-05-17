@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okio.BufferedSink;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -16,6 +17,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -29,12 +31,12 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpFluxRequestBody.class);
 
     private final AtomicBoolean bodySent = new AtomicBoolean(false);
-    private final Duration writeTimeout;
+    private final OkHttpClient okHttpClient;
 
     public OkHttpFluxRequestBody(
-        BinaryDataContent content, HttpHeaders httpHeaders, MediaType mediaType, Duration writeTimeout) {
+        BinaryDataContent content, HttpHeaders httpHeaders, MediaType mediaType, OkHttpClient okHttpClient) {
         super(content, httpHeaders, mediaType);
-        this.writeTimeout = writeTimeout;
+        this.okHttpClient = Objects.requireNonNull(okHttpClient, "'okHttpClient' cannot be null.");
     }
 
     @Override
@@ -54,8 +56,13 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
                 });
 
             // The blocking happens on OkHttp thread pool.
-            if (writeTimeout != null) {
-                requestSendMono.block(writeTimeout);
+            int callTimeoutMillis = okHttpClient.callTimeoutMillis();
+            if (callTimeoutMillis > 0) {
+                /*
+                 * Default call timeout (in milliseconds). By default there is no timeout for complete calls, but
+                 * there is for the connect, write, and read actions within a call.
+                 */
+                requestSendMono.block(Duration.ofMillis(callTimeoutMillis));
             } else {
                 requestSendMono.block();
             }

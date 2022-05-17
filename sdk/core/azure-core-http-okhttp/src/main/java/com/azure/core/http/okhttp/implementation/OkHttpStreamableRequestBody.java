@@ -23,10 +23,9 @@ public abstract class OkHttpStreamableRequestBody<T extends BinaryDataContent> e
     private final MediaType mediaType;
 
     public OkHttpStreamableRequestBody(T content, HttpHeaders httpHeaders, MediaType mediaType) {
-        Objects.requireNonNull(content, "'content' cannot be null.");
-        Objects.requireNonNull(httpHeaders, "'httpHeaders' cannot be null.");
-        this.content = content;
-        this.effectiveContentLength = getRequestContentLength(content, httpHeaders);
+        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+        this.effectiveContentLength = getRequestContentLength(content,
+            Objects.requireNonNull(httpHeaders, "'httpHeaders' cannot be null."));
         this.mediaType = mediaType;
     }
 

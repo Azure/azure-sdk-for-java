@@ -9,6 +9,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Named;
@@ -44,6 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Generic test suite for {@link HttpClient HttpClients}.
  */
 public abstract class HttpClientTests {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
+
     private static final String REQUEST_HOST = "http://localhost";
     private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
@@ -55,7 +58,7 @@ public abstract class HttpClientTests {
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
-    private static final String ECHO_RESPONSE = "echo";
+    protected static final String ECHO_RESPONSE = "echo";
 
     private static final Random RANDOM = new Random();
 
@@ -207,7 +210,7 @@ public abstract class HttpClientTests {
         throws MalformedURLException {
         HttpRequest request = new HttpRequest(
             HttpMethod.PUT,
-            new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_RESPONSE),
+            getRequestUrl(ECHO_RESPONSE),
             new HttpHeaders(),
             requestBody);
 
@@ -298,8 +301,22 @@ public abstract class HttpClientTests {
 
     private Mono<String> sendRequest(String requestPath) {
         return createHttpClient()
-            .send(new HttpRequest(HttpMethod.GET, REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath))
+            .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)))
             .flatMap(HttpResponse::getBodyAsString);
+    }
+
+    /**
+     * Gets the request URL for given path.
+     * @param requestPath The path.
+     * @return The request URL for given path.
+     * @throws RuntimeException if url is invalid.
+     */
+    protected URL getRequestUrl(String requestPath) {
+        try {
+            return new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     private static class ByteArraySerializer implements ObjectSerializer {

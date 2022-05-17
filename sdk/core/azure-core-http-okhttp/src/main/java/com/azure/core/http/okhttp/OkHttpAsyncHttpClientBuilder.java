@@ -284,7 +284,7 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the followRedirects property.
         httpClientBuilder.followRedirects(this.followRedirects);
 
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build(), getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT));
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }
 
     /*

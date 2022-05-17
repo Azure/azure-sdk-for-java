@@ -37,7 +37,6 @@ import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -54,11 +53,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static final long BUFFERED_FLUX_REQUEST_THRESHOLD = 100 * 1024L;
 
     final OkHttpClient httpClient;
-    private final Duration writeTimeout;
 
-    OkHttpAsyncHttpClient(OkHttpClient httpClient, Duration writeTimeout) {
+    OkHttpAsyncHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
-        this.writeTimeout = writeTimeout;
     }
 
     @Override
@@ -155,7 +152,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         } else {
             // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
             OkHttpFluxRequestBody fluxRequestBody = new OkHttpFluxRequestBody(
-                content, headers, mediaType, writeTimeout);
+                content, headers, mediaType, httpClient);
             if (fluxRequestBody.contentLength() < 0
                 || fluxRequestBody.contentLength() > BUFFERED_FLUX_REQUEST_THRESHOLD) {
                 // If Flux is large enough or length is unknown (aka chunked encoding)
