@@ -245,6 +245,11 @@ public abstract class HttpClientTests {
                             .map(ByteBuffer::duplicate),
                         null, false).block();
 
+                    BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate),
+                        size.longValue(), false).block();
+
                     BinaryData asyncFluxBinaryData = BinaryData.fromFlux(
                         Flux.fromIterable(bufferList)
                             .map(ByteBuffer::duplicate)
@@ -253,6 +258,15 @@ public abstract class HttpClientTests {
                                 buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
                             ),
                         null, false).block();
+
+                    BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate)
+                            .delayElements(Duration.ofNanos(10))
+                            .flatMapSequential(
+                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
+                            ),
+                        size.longValue(), false).block();
 
                     BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
 
@@ -270,7 +284,9 @@ public abstract class HttpClientTests {
                         Arguments.of(Named.named("InputStream",
                             streamData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("Flux", fluxBinaryData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("Object", objectBinaryData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("File", fileData), Named.named("" + size, bytes))
                     );
