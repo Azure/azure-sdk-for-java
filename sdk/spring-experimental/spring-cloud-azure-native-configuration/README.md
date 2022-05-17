@@ -1,4 +1,4 @@
-# Spring Cloud Azure Spring Native Support client library for Java
+# Spring Cloud Azure Native Configuration
 
 The Azure Spring Native Support client library provides support for Spring Boot applications using Spring Cloud Azure Starters to be built as [GraalVM native
 images](https://www.graalvm.org/22.0/reference-manual/native-image/). 
