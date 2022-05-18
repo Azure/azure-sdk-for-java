@@ -53,7 +53,7 @@ public class AnalyzeSentimentBatchDocuments {
         AnalyzeSentimentResultCollection sentimentBatchResultCollection = sentimentBatchResultResponse.getValue();
 
         // Model version
-        System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
+        System.out.printf("Results of \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = sentimentBatchResultCollection.getStatistics();

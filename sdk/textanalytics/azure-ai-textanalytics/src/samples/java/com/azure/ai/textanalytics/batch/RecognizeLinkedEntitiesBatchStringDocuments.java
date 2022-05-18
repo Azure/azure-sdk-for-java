@@ -43,7 +43,7 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
         RecognizeLinkedEntitiesResultCollection linkedEntitiesResultCollection = client.recognizeLinkedEntitiesBatch(documents, "en", requestOptions);
 
         // Model version
-        System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", linkedEntitiesResultCollection.getModelVersion());
+        System.out.printf("Results of \"Linked Entities Recognition\" Model, version: %s%n", linkedEntitiesResultCollection.getModelVersion());
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = linkedEntitiesResultCollection.getStatistics();
