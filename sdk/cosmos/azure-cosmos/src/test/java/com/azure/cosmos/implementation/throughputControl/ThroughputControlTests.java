@@ -193,7 +193,6 @@ public class ThroughputControlTests extends TestSuiteBase {
                 createItemResponse.getDiagnostics().toString(),
                 BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-            // second request to same group. which will get throttled
             CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
 
             if (shouldThrottleSecondRequest) {
