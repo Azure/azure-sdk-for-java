@@ -176,7 +176,11 @@ public class AadGraphClient {
             scopes.add(MICROSOFT_GRAPH_SCOPE);
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
             result = application.acquireToken(onBehalfOfParameters).get();
-        } catch (ExecutionException | InterruptedException | MalformedURLException e) {
+        } catch (InterruptedException e) {
+            LOGGER.warn("Interrupted during acquiring token for graph API!", e);
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException | MalformedURLException e) {
             // Handle conditional access policy, step 1.
             final Throwable cause = e.getCause();
             if (cause instanceof MsalServiceException) {

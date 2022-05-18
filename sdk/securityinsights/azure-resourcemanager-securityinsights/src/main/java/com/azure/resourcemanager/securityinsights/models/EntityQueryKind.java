@@ -30,7 +30,11 @@ public final class EntityQueryKind extends ExpandableStringEnum<EntityQueryKind>
         return fromString(name, EntityQueryKind.class);
     }
 
-    /** @return known EntityQueryKind values. */
+    /**
+     * Gets known EntityQueryKind values.
+     *
+     * @return known EntityQueryKind values.
+     */
     public static Collection<EntityQueryKind> values() {
         return values(EntityQueryKind.class);
     }

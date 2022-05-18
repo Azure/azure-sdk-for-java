@@ -197,15 +197,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceEncryptionConfigExtendedResourceInner> getAsync(
         String vaultName, String resourceGroupName) {
-        return getWithResponseAsync(vaultName, resourceGroupName)
-            .flatMap(
-                (Response<BackupResourceEncryptionConfigExtendedResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -365,8 +357,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(
         String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
-        return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return updateWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**

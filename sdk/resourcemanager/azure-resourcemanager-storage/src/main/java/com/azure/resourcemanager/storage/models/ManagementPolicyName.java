@@ -24,7 +24,11 @@ public final class ManagementPolicyName extends ExpandableStringEnum<ManagementP
         return fromString(name, ManagementPolicyName.class);
     }
 
-    /** @return known ManagementPolicyName values. */
+    /**
+     * Gets known ManagementPolicyName values.
+     *
+     * @return known ManagementPolicyName values.
+     */
     public static Collection<ManagementPolicyName> values() {
         return values(ManagementPolicyName.class);
     }

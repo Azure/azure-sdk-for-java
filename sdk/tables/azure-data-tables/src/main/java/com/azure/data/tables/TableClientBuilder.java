@@ -576,7 +576,9 @@ public final class TableClientBuilder implements
     }
 
     /**
-     * Enabled tenant discovery when authenticating with the Storage Table Service. This is disabled by default.
+     * Enable tenant discovery when authenticating with the Table Service. <strong>This functionality is disabled by
+     * default and only available for Storage endpoints using service version
+     * {@link TableServiceVersion#V2020_12_06 2020_12_06}.</strong>
      * <p>
      * Enable this if there is a chance for your application and the Storage account it communicates with to reside in
      * different tenants. If this is enabled, clients created using this builder will make an unauthorized initial
