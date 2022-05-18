@@ -521,6 +521,11 @@ class RxGatewayStoreModel implements RxStoreModel {
         // Disable throughput control for gateway mode
     }
 
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return Flux.empty();
+    }
+
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
         if (request.getResourceType() == ResourceType.DocumentCollection &&
             request.getOperationType() == OperationType.Delete) {
