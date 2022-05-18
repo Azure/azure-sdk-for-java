@@ -48,8 +48,8 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> setupAsync() {
         return super.setupAsync()
-            .then(shareFileAsyncClient.create(options.getSize()))
-            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), options.getSize()))
+            .then(Mono.defer(() -> shareFileAsyncClient.create(options.getSize())))
+            .then(Mono.defer(() -> shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), options.getSize())))
             .then();
     }
 
