@@ -3,7 +3,6 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
@@ -34,8 +33,8 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
     private final OkHttpClient okHttpClient;
 
     public OkHttpFluxRequestBody(
-        BinaryDataContent content, HttpHeaders httpHeaders, MediaType mediaType, OkHttpClient okHttpClient) {
-        super(content, httpHeaders, mediaType);
+        BinaryDataContent content, long effectiveContentLength, MediaType mediaType, OkHttpClient okHttpClient) {
+        super(content, effectiveContentLength, mediaType);
         this.okHttpClient = Objects.requireNonNull(okHttpClient, "'okHttpClient' cannot be null.");
     }
 

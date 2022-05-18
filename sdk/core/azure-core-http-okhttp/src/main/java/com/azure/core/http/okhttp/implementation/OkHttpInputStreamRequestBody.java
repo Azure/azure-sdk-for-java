@@ -3,7 +3,6 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
@@ -23,8 +22,8 @@ public class OkHttpInputStreamRequestBody extends OkHttpStreamableRequestBody<In
 
     private final AtomicBoolean bodySent = new AtomicBoolean(false);
 
-    public OkHttpInputStreamRequestBody(InputStreamContent content, HttpHeaders httpHeaders, MediaType mediaType) {
-        super(content, httpHeaders, mediaType);
+    public OkHttpInputStreamRequestBody(InputStreamContent content, long effectiveContentLength, MediaType mediaType) {
+        super(content, effectiveContentLength, mediaType);
     }
 
     @Override

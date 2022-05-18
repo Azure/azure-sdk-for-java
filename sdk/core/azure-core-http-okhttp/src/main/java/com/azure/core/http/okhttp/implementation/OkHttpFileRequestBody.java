@@ -3,7 +3,6 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.FileContent;
 import okhttp3.MediaType;
 import okio.BufferedSink;
@@ -17,8 +16,8 @@ import java.nio.file.StandardOpenOption;
  */
 public class OkHttpFileRequestBody extends OkHttpStreamableRequestBody<FileContent> {
 
-    public OkHttpFileRequestBody(FileContent content, HttpHeaders httpHeaders, MediaType mediaType) {
-        super(content, httpHeaders, mediaType);
+    public OkHttpFileRequestBody(FileContent content, long effectiveContentLength, MediaType mediaType) {
+        super(content, effectiveContentLength, mediaType);
     }
 
     @Override

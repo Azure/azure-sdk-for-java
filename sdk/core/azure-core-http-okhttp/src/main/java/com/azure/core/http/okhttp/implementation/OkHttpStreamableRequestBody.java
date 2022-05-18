@@ -3,7 +3,6 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.BinaryDataContent;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -22,25 +21,10 @@ public abstract class OkHttpStreamableRequestBody<T extends BinaryDataContent> e
     protected final long effectiveContentLength;
     private final MediaType mediaType;
 
-    public OkHttpStreamableRequestBody(T content, HttpHeaders httpHeaders, MediaType mediaType) {
+    public OkHttpStreamableRequestBody(T content, long effectiveContentLength, MediaType mediaType) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
-        this.effectiveContentLength = getRequestContentLength(content,
-            Objects.requireNonNull(httpHeaders, "'httpHeaders' cannot be null."));
+        this.effectiveContentLength = effectiveContentLength;
         this.mediaType = mediaType;
-    }
-
-    private static long getRequestContentLength(BinaryDataContent content, HttpHeaders headers) {
-        Long contentLength = content.getLength();
-        if (contentLength == null) {
-            String contentLengthHeaderValue = headers.getValue("Content-Length");
-            if (contentLengthHeaderValue != null) {
-                contentLength = Long.parseLong(contentLengthHeaderValue);
-            } else {
-                // -1 means that content length is unknown.
-                contentLength = -1L;
-            }
-        }
-        return contentLength;
     }
 
     @Override

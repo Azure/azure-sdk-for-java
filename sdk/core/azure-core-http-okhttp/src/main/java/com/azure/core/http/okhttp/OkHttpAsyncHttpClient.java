@@ -143,28 +143,44 @@ class OkHttpAsyncHttpClient implements HttpClient {
         } else if (content instanceof StringContent
             || content instanceof SerializableContent) {
             return Mono.fromCallable(() -> RequestBody.create(content.toBytes(), mediaType));
-        } else if (content instanceof InputStreamContent) {
-            // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-            return Mono.just(new OkHttpInputStreamRequestBody((InputStreamContent) content, headers, mediaType));
-        } else if (content instanceof FileContent) {
-            // The FileContent doesn't read bytes until it's triggered by OkHttp dispatcher.
-            return Mono.just(new OkHttpFileRequestBody((FileContent) content, headers, mediaType));
         } else {
-            // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-            OkHttpFluxRequestBody fluxRequestBody = new OkHttpFluxRequestBody(
-                content, headers, mediaType, httpClient);
-            if (fluxRequestBody.contentLength() < 0
-                || fluxRequestBody.contentLength() > BUFFERED_FLUX_REQUEST_THRESHOLD) {
-                // If Flux is large enough or length is unknown (aka chunked encoding)
-                // then the cost of thread jumping (see OkHttpFluxRequestBody class)
-                // is lesser than memory pressure.
-                // This allows arbitrary length uploads.
-                return Mono.just(fluxRequestBody);
+            long effectiveContentLength = getRequestContentLength(content, headers);
+            if (content instanceof InputStreamContent) {
+                // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
+                return Mono.just(new OkHttpInputStreamRequestBody(
+                    (InputStreamContent) content, effectiveContentLength, mediaType));
+            } else if (content instanceof FileContent) {
+                // The FileContent doesn't read bytes until it's triggered by OkHttp dispatcher.
+                return Mono.just(new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType));
             } else {
-                // If Flux is small enough then buffering performs better.
-                return toByteString(bodyContent.toFluxByteBuffer()).map(bs -> RequestBody.create(bs, mediaType));
+                if (effectiveContentLength < 0
+                    || effectiveContentLength > BUFFERED_FLUX_REQUEST_THRESHOLD) {
+                    // If Flux is large enough or length is unknown (aka chunked encoding)
+                    // then the cost of thread jumping (see OkHttpFluxRequestBody class)
+                    // is lesser than memory pressure.
+                    // This allows arbitrary length uploads.
+                    // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
+                    return Mono.just(new OkHttpFluxRequestBody(content, effectiveContentLength, mediaType, httpClient));
+                } else {
+                    // If Flux is small enough then buffering performs better.
+                    return toByteString(bodyContent.toFluxByteBuffer()).map(bs -> RequestBody.create(bs, mediaType));
+                }
             }
         }
+    }
+
+    private static long getRequestContentLength(BinaryDataContent content, HttpHeaders headers) {
+        Long contentLength = content.getLength();
+        if (contentLength == null) {
+            String contentLengthHeaderValue = headers.getValue("Content-Length");
+            if (contentLengthHeaderValue != null) {
+                contentLength = Long.parseLong(contentLengthHeaderValue);
+            } else {
+                // -1 means that content length is unknown.
+                contentLength = -1L;
+            }
+        }
+        return contentLength;
     }
 
     /**
