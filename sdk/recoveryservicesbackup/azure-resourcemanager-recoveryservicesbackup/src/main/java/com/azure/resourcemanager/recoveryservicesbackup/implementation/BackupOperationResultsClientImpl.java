@@ -193,8 +193,7 @@ public final class BackupOperationResultsClientImpl implements BackupOperationRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getAsync(String vaultName, String resourceGroupName, String operationId) {
-        return getWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return getWithResponseAsync(vaultName, resourceGroupName, operationId).flatMap(ignored -> Mono.empty());
     }
 
     /**

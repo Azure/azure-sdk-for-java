@@ -30,7 +30,11 @@ public final class VirtualMachineScaleSetScaleInRules extends ExpandableStringEn
         return fromString(name, VirtualMachineScaleSetScaleInRules.class);
     }
 
-    /** @return known VirtualMachineScaleSetScaleInRules values. */
+    /**
+     * Gets known VirtualMachineScaleSetScaleInRules values.
+     *
+     * @return known VirtualMachineScaleSetScaleInRules values.
+     */
     public static Collection<VirtualMachineScaleSetScaleInRules> values() {
         return values(VirtualMachineScaleSetScaleInRules.class);
     }

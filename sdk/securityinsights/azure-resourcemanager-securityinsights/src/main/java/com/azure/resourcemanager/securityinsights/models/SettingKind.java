@@ -33,7 +33,11 @@ public final class SettingKind extends ExpandableStringEnum<SettingKind> {
         return fromString(name, SettingKind.class);
     }
 
-    /** @return known SettingKind values. */
+    /**
+     * Gets known SettingKind values.
+     *
+     * @return known SettingKind values.
+     */
     public static Collection<SettingKind> values() {
         return values(SettingKind.class);
     }
