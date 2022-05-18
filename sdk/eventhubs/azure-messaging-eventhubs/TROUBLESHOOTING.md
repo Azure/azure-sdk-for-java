@@ -251,7 +251,7 @@ When filing GitHub issues, the following details are requested:
 [EventHubsMessagingExceptions]: https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions
 [EventHubsTroubleshooting]: https://docs.microsoft.com/azure/event-hubs/troubleshooting-guide
 [GetConnectionString]: https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
-[IoTEventHubEndpoint]: https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-read-builtin
+[IoTEventHubEndpoint]: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messages-read-builtin
 [IoTHubSAS]: https://docs.microsoft.com/azure/iot-hub/iot-hub-dev-guide-sas#security-tokens
 [Logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [troubleshoot_authentication_authorization]: https://docs.microsoft.com/azure/event-hubs/troubleshoot-authentication-authorization
@@ -261,5 +261,5 @@ When filing GitHub issues, the following details are requested:
 [MavenAzureEventHubs]: https://search.maven.org/artifact/com.microsoft.azure/azure-eventhubs/
 [MavenAzureEventHubsEPH]: https://search.maven.org/artifact/com.microsoft.azure/azure-eventhubs-eph
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
-[AmqpSpec]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+[AmqpSpec]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html
 [qpid_proton_j_apache]: https://qpid.apache.org/proton/
