@@ -51,7 +51,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(AZURE_FORM_RECOGNIZER_ENDPOINT)
-            .audience(FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_API_KEY));
 
         this.documentModelAdministrationClient = builder.buildClient();
