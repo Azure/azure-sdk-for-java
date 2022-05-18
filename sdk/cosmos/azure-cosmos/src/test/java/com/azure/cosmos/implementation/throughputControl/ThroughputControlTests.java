@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlClientItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -40,6 +41,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -141,6 +143,69 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputGlobalControlCanUpdateConfig(OperationType operationType) {
+        String controlContainerId = "throughputControlContainer";
+        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
+        database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
+
+        List<Pair<Integer, Boolean>> testCases = new ArrayList<>(
+            Arrays.asList(
+                Pair.of(6, true),
+                Pair.of(100, false)
+            )
+        );
+
+        UUID randomId = UUID.randomUUID();
+
+        for (Pair<Integer, Boolean> testCase : testCases) {
+            int targetThroughput = testCase.getLeft();
+            boolean shouldThrottleSecondRequest = testCase.getRight();
+
+            logger.info(
+                "TESTCASE - TargetThroughput: {}. ShouldThrottleSecondRequest: {}",
+                targetThroughput,
+                shouldThrottleSecondRequest);
+
+            // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+            ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName("group-" + randomId)
+                    .targetThroughput(targetThroughput)
+                    .build();
+
+            GlobalThroughputControlConfig globalControlConfig =
+                this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                           .setControlItemRenewInterval(Duration.ofSeconds(5))
+                           .setControlItemExpireInterval(Duration.ofSeconds(20))
+                           .build();
+            container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setContentResponseOnWriteEnabled(true);
+            requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+            CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+            TestItem createdItem = createItemResponse.getItem();
+            this.validateRequestNotThrottled(
+                createItemResponse.getDiagnostics().toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            // second request to same group. which will get throttled
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
+
+            if (shouldThrottleSecondRequest) {
+                this.validateRequestThrottled(
+                    cosmosDiagnostics.toString(),
+                    BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            } else {
+                this.validateRequestNotThrottled(
+                    cosmosDiagnostics.toString(),
+                    BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            }
+        }
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)

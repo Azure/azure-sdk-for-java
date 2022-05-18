@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
 import org.testng.annotations.Test;
 
@@ -39,8 +40,13 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     true,
                     false);
 
-            int currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup);
+            Pair<Integer, Boolean> stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup);
+            int currentGroupSize = stateAfterEnabling.getLeft();
+            boolean wasGroupConfigUpdated = stateAfterEnabling.getRight();
+
             assertThat(currentGroupSize).isEqualTo(1);
+            assertThat(wasGroupConfigUpdated).isEqualTo(false);
 
             // Test 2: add throughput control group with same id
             LocalThroughputControlGroup throughputControlGroupDuplciate = new LocalThroughputControlGroup(
@@ -62,6 +68,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     null,
                     true,
                     false);
+
             assertThatThrownBy(() -> throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup2))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("A default group already exists");
@@ -74,8 +81,14 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     null,
                     false,
                     false);
-            currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(newGroup);
+
+            stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(newGroup);
+            currentGroupSize = stateAfterEnabling.getLeft();
+            wasGroupConfigUpdated = stateAfterEnabling.getRight();
+
             assertThat(currentGroupSize).isEqualTo(2);
+            assertThat(wasGroupConfigUpdated).isEqualTo(false);
 
             // Test 5: add a same group as step 4
             LocalThroughputControlGroup newGroupDuplicate = new LocalThroughputControlGroup(
@@ -85,8 +98,31 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     newGroup.getTargetThroughputThreshold(),
                     newGroup.isDefault(),
                     newGroup.isContinueOnInitError());
-            currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(newGroupDuplicate);
+
+            stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(newGroupDuplicate);
+            currentGroupSize = stateAfterEnabling.getLeft();
+            wasGroupConfigUpdated = stateAfterEnabling.getRight();
+
             assertThat(currentGroupSize).isEqualTo(2);
+            assertThat(wasGroupConfigUpdated).isEqualTo(false);
+
+            // Test 6: add a same group as step 4 but with updated threshold
+            LocalThroughputControlGroup newGroupDuplicateModified = new LocalThroughputControlGroup(
+                newGroup.getGroupName(),
+                container,
+                newGroup.getTargetThroughput() != null ? newGroup.getTargetThroughput() * 2 : null,
+                newGroup.getTargetThroughputThreshold()  != null ? newGroup.getTargetThroughputThreshold() * 2: null,
+                newGroup.isDefault(),
+                newGroup.isContinueOnInitError());
+
+            stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(newGroupDuplicateModified);
+            currentGroupSize = stateAfterEnabling.getLeft();
+            wasGroupConfigUpdated = stateAfterEnabling.getRight();
+
+            assertThat(currentGroupSize).isEqualTo(2);
+            assertThat(wasGroupConfigUpdated).isEqualTo(true);
         } finally {
             if (testClient != null) {
                 testClient.close();

@@ -101,9 +101,11 @@ public class ThroughputControlContainerManager {
                 this.group.getTargetThroughputThreshold(),
                 this.group.isDefault());
 
+        PartitionKey pk = new PartitionKey(this.configItemPartitionKeyValue);
+
         return this.globalControlContainer.readItem(
                     this.configItemId,
-                    new PartitionKey(this.configItemPartitionKeyValue),
+                    pk,
                     GlobalThroughputControlConfigItem.class)
             .onErrorResume(throwable -> {
                 CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
@@ -119,16 +121,38 @@ public class ThroughputControlContainerManager {
                 return cosmosException != null && cosmosException.getStatusCode() == HttpConstants.StatusCodes.CONFLICT;
             }))
             .flatMap(itemResponse -> {
-                this.configItem = itemResponse.getItem();
+                GlobalThroughputControlConfigItem configItemSnapshotFromStore = itemResponse.getItem();
 
-                if (!expectedConfigItem.equals(configItem)) {
+                if (!expectedConfigItem.equals(configItemSnapshotFromStore)) {
                     logger.warn(
-                        "Group config using by this client is different than the one in control container, will be ignored. Using following config: {}",
-                        this.configItem.toString());
+                        "Group config using by this client is different than the one in control container. Config in " +
+                            "control container will be updated, but won't immediately become effective on already " +
+                            "running clients. Updating current config {} to the following config {}",
+                        configItemSnapshotFromStore,
+                        expectedConfigItem);
+
+                    CosmosItemRequestOptions replaceRequestOptions = new CosmosItemRequestOptions();
+                    replaceRequestOptions.setContentResponseOnWriteEnabled(true);
+                    replaceRequestOptions.setIfMatchETag(itemResponse.getETag());
+
+                    return this.globalControlContainer.replaceItem(
+                        expectedConfigItem,
+                        this.configItemId,
+                        pk,
+                        replaceRequestOptions);
                 }
 
+                return Mono.just(itemResponse);
+            })
+            .flatMap(itemResponse -> {
+                this.configItem = itemResponse.getItem();
+
                 return Mono.just(this.configItem);
-            });
+            })
+            .retryWhen(RetrySpec.max(10).filter(throwable -> {
+                CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+                return cosmosException != null && cosmosException.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED;
+            }));
     }
 
     /**
