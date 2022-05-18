@@ -24,6 +24,7 @@ import com.azure.resourcemanager.compute.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
 import com.azure.resourcemanager.compute.models.ComputeUsages;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSets;
 import com.azure.resourcemanager.compute.models.Disks;
 import com.azure.resourcemanager.compute.models.Galleries;
 import com.azure.resourcemanager.compute.models.GalleryImageVersions;
@@ -66,6 +67,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     private Galleries galleries;
     private GalleryImages galleryImages;
     private GalleryImageVersions galleryImageVersions;
+    private DiskEncryptionSets diskEncryptionSets;
 
     /** @return the storage manager */
     public StorageManager storageManager() {
@@ -263,5 +265,9 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
             galleryImageVersions = new GalleryImageVersionsImpl(this);
         }
         return galleryImageVersions;
+    }
+
+    public DiskEncryptionSets diskEncryptionSets() {
+        throw new UnsupportedOperationException();
     }
 }
