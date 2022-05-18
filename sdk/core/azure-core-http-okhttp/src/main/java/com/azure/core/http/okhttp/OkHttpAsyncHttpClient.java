@@ -188,7 +188,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      *
      * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances. Content of each ByteBuffer will be
      * written (i.e copied) to the internal okio.Buffer slots. Once the stream terminates, the contents of all slots get
-     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally, the
+     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally the
      * initial okio.Buffer will be returned to the pool.
      *
      * @param bbFlux the Flux of ByteBuffer to aggregate
@@ -197,14 +197,14 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static Mono<ByteString> toByteString(Flux<ByteBuffer> bbFlux) {
         Objects.requireNonNull(bbFlux, "'bbFlux' cannot be null.");
         return Mono.using(okio.Buffer::new,
-                buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
-                    try {
-                        b.write(byteBuffer);
-                        return b;
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                }).map(b -> ByteString.of(b.readByteArray())), okio.Buffer::clear)
+            buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
+                try {
+                    b.write(byteBuffer);
+                    return b;
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            }).map(b -> ByteString.of(b.readByteArray())), okio.Buffer::clear)
             .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
     }
 
