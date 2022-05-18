@@ -143,7 +143,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
 
         EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(
             null, "https://random.blob.core.windows.net", BlobServiceVersion.getLatest(), null, null, null, null, null, null, key, "keyWrapAlgorithm", null)
-            .encryptBlob(Flux.just(this.plainText)).block();
+            .encryptBlob(Flux.just(this.plainText), null).block();
         this.cipherText = APISpec.collectBytesInBuffer(encryptedBlob.getCiphertextFlux()).block();
         this.encryptionData = encryptedBlob.getEncryptionData();
     }

@@ -4,6 +4,8 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.common.implementation.Constants;
+
 import java.util.Map;
 
 final class CryptographyConstants {
@@ -36,6 +38,12 @@ final class CryptographyConstants {
     static final String CONTENT_RANGE = "Content-Range";
 
     static final String CONTENT_LENGTH = "Content-Length";
+
+    static final int NONCE_LENGTH = 12;
+
+    static final int TAG_LENGTH = 16;
+
+    static final int GMC_ENCRYPTION_REGION_LENGTH = 4 * Constants.MB;
 
     static final String DECRYPT_UNENCRYPTED_BLOB = "Encryption client is being used but the blob metadata indicates "
         + "that it is not encrypted.";

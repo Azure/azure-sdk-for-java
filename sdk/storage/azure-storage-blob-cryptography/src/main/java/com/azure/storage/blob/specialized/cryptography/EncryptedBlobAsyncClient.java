@@ -27,6 +27,8 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.BufferAggregator;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -37,12 +39,16 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
+import javax.crypto.spec.GCMParameterSpec;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
@@ -386,6 +392,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
+        return uploadWithResponse(options, null);
+    }
+
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options,
+        EncryptionVersion version) {
+        version = version == null ? EncryptionVersion.V1 : version;
         try {
             StorageImplUtils.assertNotNull("options", options);
             // Can't use a Collections.emptyMap() because we add metadata for encryption.
@@ -394,7 +406,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, false)
                 : options.getDataFlux();
-            Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
+            Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal, version);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                 .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
@@ -577,11 +589,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param plainTextFlux The Flux ByteBuffer to be encrypted.
      * @return A {@link EncryptedBlob}
      */
-    Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
+    Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux, EncryptionVersion version) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
             SecretKey aesKey = generateSecretKey();
-            Cipher cipher = generateCipher(aesKey);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
             keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY,
@@ -591,45 +602,105 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 .map(encryptedKey -> {
                     WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
-                    // Build EncryptionData
-                    EncryptionDataV1 encryptionData = new EncryptionDataV1()
-                        .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                        .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
-                            EncryptionAlgorithm.AES_CBC_256))
-                        .setKeyWrappingMetadata(keyWrappingMetadata)
-                        .setContentEncryptionIV(cipher.getIV())
-                        .setWrappedContentKey(wrappedKey);
+                    EncryptionData encryptionData;
+                    Flux<ByteBuffer> encryptedTextFlux;
+                    switch (version) {
+                        case V1:
+                            Cipher cbcCipher = generateCBCCipher(aesKey);
+                            // Build EncryptionData
+                            encryptionData = new EncryptionDataV1()
+                                .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
+                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
+                                    EncryptionAlgorithm.AES_CBC_256))
+                                .setKeyWrappingMetadata(keyWrappingMetadata)
+                                .setContentEncryptionIV(cbcCipher.getIV())
+                                .setWrappedContentKey(wrappedKey);
 
-                    // Encrypt plain text with content encryption key
-                    Flux<ByteBuffer> encryptedTextFlux = plainTextFlux.map(plainTextBuffer -> {
-                        int outputSize = cipher.getOutputSize(plainTextBuffer.remaining());
+                            // Encrypt plain text with content encryption key
+                            encryptedTextFlux = plainTextFlux.map(plainTextBuffer -> {
+                                int outputSize = cbcCipher.getOutputSize(plainTextBuffer.remaining());
 
-                        /*
-                         * This should be the only place we allocate memory in encryptBlob(). Although there is an
-                         * overload that can encrypt in place that would save allocations, we do not want to overwrite
-                         * customer's memory, so we must allocate our own memory. If memory usage becomes unreasonable,
-                         * we should implement pooling.
-                         */
-                        ByteBuffer encryptedTextBuffer = ByteBuffer.allocate(outputSize);
+                                /*
+                                 * This should be the only place we allocate memory in encryptBlob(). Although there is an
+                                 * overload that can encrypt in place that would save allocations, we do not want to overwrite
+                                 * customer's memory, so we must allocate our own memory. If memory usage becomes unreasonable,
+                                 * we should implement pooling.
+                                 */
+                                ByteBuffer encryptedTextBuffer = ByteBuffer.allocate(outputSize);
 
-                        int encryptedBytes;
-                        try {
-                            encryptedBytes = cipher.update(plainTextBuffer, encryptedTextBuffer);
-                        } catch (ShortBufferException e) {
-                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                        }
-                        encryptedTextBuffer.position(0);
-                        encryptedTextBuffer.limit(encryptedBytes);
-                        return encryptedTextBuffer;
-                    });
+                                int encryptedBytes;
+                                try {
+                                    encryptedBytes = cbcCipher.update(plainTextBuffer, encryptedTextBuffer);
+                                } catch (ShortBufferException e) {
+                                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                                }
+                                encryptedTextBuffer.position(0);
+                                encryptedTextBuffer.limit(encryptedBytes);
+                                return encryptedTextBuffer;
+                            });
 
-                    /*
-                     * Defer() ensures the contained code is not executed until the Flux is subscribed to, in
-                     * other words, cipher.doFinal() will not be called until the plainTextFlux has completed
-                     * and therefore all other data has been encrypted.
-                     */
-                    encryptedTextFlux = Flux.concat(encryptedTextFlux,
-                        Mono.fromCallable(() -> ByteBuffer.wrap(cipher.doFinal())));
+                            /*
+                             * Defer() ensures the contained code is not executed until the Flux is subscribed to, in
+                             * other words, cipher.doFinal() will not be called until the plainTextFlux has completed
+                             * and therefore all other data has been encrypted.
+                             */
+                            encryptedTextFlux = Flux.concat(encryptedTextFlux,
+                                Mono.fromCallable(() -> ByteBuffer.wrap(cbcCipher.doFinal())));
+                            break;
+                        case V2:
+                            // Build EncryptionData
+                            encryptionData = new EncryptionDataV2()
+                                .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
+                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
+                                    EncryptionAlgorithm.AES_CBC_256))
+                                .setKeyWrappingMetadata(keyWrappingMetadata)
+                                .setAuthenticationBlockInfo(new AuthenticationBlockInfo(
+                                    CryptographyConstants.GMC_ENCRYPTION_REGION_LENGTH,
+                                    CryptographyConstants.NONCE_LENGTH))
+                                .setWrappedContentKey(wrappedKey);
+
+                            /*
+                            This introduces an extra layer of buffering that is undesirable. Now, we allocate buffers
+                            to get to 4mb chunks. And the cipher will also allocate buffers to do the encryption.
+
+                            Perhaps we can introduce an
+                            internal option that allows us to skip buffering and chunking if we know it's already done?
+                            This would require us to set the staging area size to 4mb-28 here so that it emits 4mb.
+                            It also couples the encryption and the upload.
+                             */
+                            BufferStagingArea stagingArea =
+                                new BufferStagingArea(CryptographyConstants.GMC_ENCRYPTION_REGION_LENGTH,
+                                    CryptographyConstants.GMC_ENCRYPTION_REGION_LENGTH);
+
+                            encryptedTextFlux =
+                                plainTextFlux.map(stagingArea::write)
+                                    .index()
+                                    .flatMapSequential(tuple -> {
+                                        Cipher gmcCipher = generateGMCCipher(aesKey, tuple.getT1());
+
+                                        // Each flux is at most 1 BufferAggregator of 4mb
+                                        Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()
+                                            .flatMap(BufferAggregator::asFlux)
+                                            .map(buffer -> {
+                                                // Do these buffers have arrays? I don't think so. Whatever I do has to be replayable?
+                                                // Can I allocate 0 length BB to use that overload?
+                                                // Double check that output size for gmc is 0 until calling do final. Even if it's not that should be ok?
+                                                ByteBuffer placeHolder = ByteBuffer.allocate(0);
+                                                return gmcCipher.update(buffer, placeHolder);
+                                            });
+
+                                        cipherTextWithTag = Flux.concat(cipherTextWithTag,
+                                            Mono.fromCallable(() -> ByteBuffer.wrap(gmcCipher.doFinal())));
+
+                                        return Flux.concat(Flux.just(ByteBuffer.wrap(gmcCipher.getIV())),
+                                            cipherTextWithTag);
+                                    }, 1, 1);
+
+                            break;
+                        default:
+                            throw LOGGER.logExceptionAsError(new IllegalStateException("Encryption version not supported"));
+                    }
+
                     return new EncryptedBlob(encryptionData, encryptedTextFlux);
                 }));
         } catch (GeneralSecurityException e) {
@@ -645,12 +716,21 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         return keyGen.generateKey();
     }
 
-    Cipher generateCipher(SecretKey aesKey) throws GeneralSecurityException {
+    Cipher generateCBCCipher(SecretKey aesKey) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_PKCS5PADDING);
 
         // Generate content encryption key
         cipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
+        return cipher;
+    }
+
+    Cipher generateGMCCipher(SecretKey aesKey, long index) throws NoSuchPaddingException, NoSuchAlgorithmException,
+        InvalidAlgorithmParameterException, InvalidKeyException {
+        Cipher cipher = Cipher.getInstance(CryptographyConstants.AES_GMC_NO_PADDING);
+        byte[] iv = ByteBuffer.allocate(12).putLong(index).array(); // standard gcm nonce is 12 bytes per James' doc
+
+        cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(CryptographyConstants.TAG_LENGTH * 8, iv));
         return cipher;
     }
 
@@ -661,8 +741,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param metadata The customer's metadata to be updated.
      * @return A Mono containing the cipher text
      */
-    private Flux<ByteBuffer> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText, Map<String, String> metadata) {
-        return this.encryptBlob(plainText).flatMapMany(encryptedBlob -> {
+    private Flux<ByteBuffer> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText,
+        Map<String, String> metadata, EncryptionVersion version) {
+        return this.encryptBlob(plainText, version).flatMapMany(encryptedBlob -> {
             try {
                 metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY,
                     encryptedBlob.getEncryptionData().toJsonString());

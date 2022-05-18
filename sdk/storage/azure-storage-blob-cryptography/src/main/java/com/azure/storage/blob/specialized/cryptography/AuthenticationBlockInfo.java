@@ -13,7 +13,7 @@ public class AuthenticationBlockInfo {
      * The cipher text length.
      */
     @JsonProperty(value = "CipherTextLength")
-    private int ciphertextLength;
+    private int encryptionRegionLength;
 
     /**
      * The nonce length.
@@ -28,7 +28,7 @@ public class AuthenticationBlockInfo {
      * @param nonceLength The length of the nonce.
      */
     AuthenticationBlockInfo(int ciphertextLength, int nonceLength) {
-        this.ciphertextLength = ciphertextLength;
+        this.encryptionRegionLength = ciphertextLength;
         this.nonceLength = nonceLength;
     }
 
@@ -37,8 +37,8 @@ public class AuthenticationBlockInfo {
      *
      * @return The ciphertextLength property.
      */
-    public int getCiphertextLength() {
-        return ciphertextLength;
+    public int getEncryptionRegionLength() {
+        return encryptionRegionLength;
     }
 
     /**
