@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 /**
- * Configure the necessary beans used for aad authentication and authorization.
+ * Configure the necessary beans used for Azure AD authentication and authorization.
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(WebApplicationCondition.class)
@@ -30,7 +30,7 @@ public class AadWebApplicationConfiguration {
     /**
      * Declare OAuth2UserService bean.
      *
-     * @param properties the AAD authentication properties
+     * @param properties the Azure AD authentication properties
      * @return OAuth2UserService bean
      */
     @Bean
