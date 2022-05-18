@@ -117,7 +117,7 @@ In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` p
 ### Configuring Log4J 2
 
 1.  Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for Log4j2" section.
-2.Add [log4j2.xml][log4j2] to your `src/main/resources`.
+2. Add [log4j2.xml][log4j2] to your `src/main/resources`.
 
 ### Configuring logback
 
