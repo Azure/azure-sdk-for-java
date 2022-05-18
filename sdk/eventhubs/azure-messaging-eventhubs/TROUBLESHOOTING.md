@@ -106,7 +106,7 @@ To use web sockets, see the sample [PublishEventsWithSocketsAndProxy.java][Publi
 
 To authenticate with Managed Identity, see the sample [PublishEventsWithAzureIdentity.java][PublishEventsWithAzureIdentity].
 
-For more information about our identity library, check out our [Authentication and the Azure SDK][AuthenticationAndTheAzureSDK] blog post.
+For more information about the `Azure.Identity` library, check out our [Authentication and the Azure SDK][AuthenticationAndTheAzureSDK] blog post.
 
 ## Enable and configure logging
 
