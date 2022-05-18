@@ -19,7 +19,7 @@ public class ThreadInterruptedStatusRestoreTest {
         testThread.start();
         TimeUnit.SECONDS.sleep(2L);
         testThread.interrupt();
-        latch.await();
+        latch.await(5, TimeUnit.SECONDS);
         System.out.println(Thread.currentThread().getName() + ": begin assertion");
         Assertions.assertTrue(testThread.isInterrupted());
         System.out.println(Thread.currentThread().getName() + ": end assertion");
