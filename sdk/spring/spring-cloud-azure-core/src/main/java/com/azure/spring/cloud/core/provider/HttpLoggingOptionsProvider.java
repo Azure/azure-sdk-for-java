@@ -36,14 +36,14 @@ public interface HttpLoggingOptionsProvider {
         HttpLogDetailLevel getLevel();
 
         /**
-         * Gets the whitelisted headers that should be logged.
-         * @return The list of whitelisted headers.
+         * Gets the allowlist headers that should be logged.
+         * @return The list of allowlist headers.
          */
         Set<String> getAllowedHeaderNames();
 
         /**
-         * Gets the whitelisted query parameters.
-         * @return The list of whitelisted query parameters.
+         * Gets the allowlist query parameters.
+         * @return The list of allowlist query parameters.
          */
         Set<String> getAllowedQueryParamNames();
 

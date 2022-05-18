@@ -24,9 +24,9 @@ public enum KnownLinuxVirtualMachineImage {
      * @deprecated use OPENSUSE_LEAP_15.
      */
     @Deprecated
-    OPENSUSE_LEAP_15_1("SUSE", "openSUSE-Leap", "15-2"),
+    OPENSUSE_LEAP_15_1("SUSE", "openSUSE-Leap-15-3", "gen1"),
     /** OpenSUSE-Leap 15. */
-    OPENSUSE_LEAP_15("SUSE", "openSUSE-Leap", "15-2"),
+    OPENSUSE_LEAP_15("SUSE", "openSUSE-Leap-15-3", "gen1"),
 
     /**
      * SLES 15-SP1-gen1.
