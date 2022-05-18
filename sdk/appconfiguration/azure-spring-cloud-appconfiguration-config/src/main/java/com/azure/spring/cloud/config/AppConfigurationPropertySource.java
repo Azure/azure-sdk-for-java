@@ -278,7 +278,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         return featureSet;
     }
 
-    private Integer getFeatureSchemaVersion() {
+    private int getFeatureSchemaVersion() {
         String version = System
             .getenv(AppConfigurationConstants.AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION);
 

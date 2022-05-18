@@ -7,12 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.util.Assert;
-import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Defines the assigner and variants of a Dynamic Feature
  */
-@Validated
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DynamicFeature {
 
@@ -83,13 +78,5 @@ public class DynamicFeature {
             }
         }
         this.variants = map;
-    }
-
-    /**
-     * Validates Feature Definition on construction
-     */
-    @PostConstruct
-    public void validateAndInit() {
-        Assert.isTrue(variants.size() > 0, "Assigner " + assigner + " needs at least one variant.");
     }
 }
