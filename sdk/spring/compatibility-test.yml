@@ -20,9 +20,17 @@ stages:
             Selection: sparse
             NonSparseParameters:
               - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
-              - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION
+#              - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION
             GenerateVMJobs: true
-#      - job:
+        PreGenerationSteps:
+          - script: |
+              pip install termcolor
+            displayName: 'python module install'
+          - script: |
+              python ./sdk/spring/scripts/compatibility_set_env.py
+            displayName: 'set env'
+
+        #      - job:
 #        dependsOn:
 #          jobs:
 #          - task: Powershell@2
