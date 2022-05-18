@@ -13,6 +13,7 @@
 #### Other Changes
 * Changed 429 (Throttling) retry policy to have an upper bound for the back-off time of 5 seconds - See [PR 28764](https://github.com/Azure/azure-sdk-for-java/pull/28764)
 * Improved efficiency of spark partitioning for queries with partitioning strategy `Restrictive` by skipping I/O calls to retrieve metadata (min. LSN, max. LSN, document count and total document size). - See [PR 28764](https://github.com/Azure/azure-sdk-for-java/pull/28764)
+* Added option to change the throughput control threshold in a global throughput control group configuration - See [PR 28938](https://github.com/Azure/azure-sdk-for-java/pull/28938)
 
 ### 4.9.0 (2022-04-22)
 
