@@ -162,7 +162,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         String description = "This is my gallery image";
         String releaseURI = "http://www.example.com/compute/galleryimageuri";
         OffsetDateTime offsetDateTime = OffsetDateTime.now().plusDays(10);
-        String eula = "This is my eula";
         Map<String, String> tags = new HashMap<>();
         tags.put("tag1", "myTag1");
         galleryImage
@@ -170,7 +169,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .withDescription(description)
             .withReleaseNoteUri(releaseURI)
             .withEndOfLifeDate(offsetDateTime)
-            .withEula(eula)
             .withRecommendedCPUsCountForVirtualMachine(10, 20)
             .withRecommendedMemoryForVirtualMachine(10, 20)
             .withUnsupportedDiskType(DiskSkuTypes.PREMIUM_LRS)
@@ -182,7 +180,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
         Assertions.assertEquals(description, galleryImage.description());
         Assertions.assertEquals(releaseURI, galleryImage.releaseNoteUri());
-        Assertions.assertEquals(eula, galleryImage.eula());
         Assertions.assertEquals(tags, galleryImage.tags());
         Assertions.assertEquals(10, galleryImage.recommendedVirtualMachineConfiguration().vCPUs().min());
         Assertions.assertEquals(20, galleryImage.recommendedVirtualMachineConfiguration().vCPUs().max());
