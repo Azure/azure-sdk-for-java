@@ -1,15 +1,10 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.3 (2022-05-17)
 
 ### Other Changes
-
+- Changed the proxy interface package names to match the 1.28.0 version of `azure-core`
+ 
 ## 1.0.0-beta.2 (2022-04-25)
 
 ### Features Added
