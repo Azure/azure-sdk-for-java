@@ -3,21 +3,17 @@
 
 package com.azure.spring.cloud.actuator.storage;
 
-import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
-import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.DownloadRetryOptions;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
+import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_EXISTING_CONTAINER;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL_FIELD;
 
 /**
@@ -43,23 +39,16 @@ public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
             return;
         }
 
-        try {
-            BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(
-                "spring-cloud-azure-not-existing-container");
-            BlobAsyncClient blobAsyncClient = containerAsyncClient.getBlobAsyncClient(
-                "spring-cloud-azure-not-existing-blob");
+        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(
+            NOT_EXISTING_CONTAINER);
+        Response<Boolean> exists = containerAsyncClient.existsWithResponse().block(timeout);
+        assert exists != null;
 
-            builder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
-            BlobRange range = new BlobRange(0, (long) 2);
-            DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(3);
-            Mono<BlobDownloadAsyncResponse> response = blobAsyncClient.downloadStreamWithResponse(
-                range, options, null, false);
-            response.block(timeout);
-
-            builder.up();
-        } catch (BlobStorageException e) {
-            builder.up();
-        }
+        builder.up()
+               .withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl())
+               .withDetail("containerName", NOT_EXISTING_CONTAINER)
+               .withDetail("exists", exists.getValue())
+               .withDetail("statusCode", exists.getStatusCode());
     }
 
     /**

@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.actuator.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +18,7 @@ import java.time.Duration;
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
- * Simple implementation of a {@link HealthIndicator} returning status information for
- * Cosmos data stores.
+ * Simple implementation of a {@link HealthIndicator} returning status information for Cosmos data stores.
  */
 public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
@@ -33,6 +31,7 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     /**
      * Creates a new instance of {@link CosmosHealthIndicator}.
+     *
      * @param cosmosAsyncClient the cosmosAsyncClient
      * @param database database name
      * @param endpoint cosmos endpoint
@@ -53,30 +52,25 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
             return;
         }
 
-        try {
-            CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
-                                                                    .read()
-                                                                    .block(timeout);
+        CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
+                                                                .read()
+                                                                .block(timeout);
 
-            if (response != null) {
-                LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
-                    response.getRequestCharge(), endpoint, database);
-                builder.up()
-                       .withDetail("RUs", response.getRequestCharge())
-                       .withDetail("CosmosUri", endpoint)
-                       .withDetail("database", database);
-            } else {
-                builder.down();
-            }
-        } catch (NotFoundException e) {
-            builder.status(Status.UNKNOWN).withDetail("Database not found",
-                "The option of `spring.cloud.azure.cosmos.database` is not configured correctly!");
+        if (response != null) {
+            LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
+                response.getRequestCharge(), endpoint, database);
+            builder.up()
+                   .withDetail("RUs", response.getRequestCharge())
+                   .withDetail("CosmosUri", endpoint)
+                   .withDetail("Database", database);
+        } else {
+            builder.down();
         }
-
     }
 
     /**
      * Set health check request timeout.
+     *
      * @param timeout the duration value.
      */
     public void setTimeout(Duration timeout) {

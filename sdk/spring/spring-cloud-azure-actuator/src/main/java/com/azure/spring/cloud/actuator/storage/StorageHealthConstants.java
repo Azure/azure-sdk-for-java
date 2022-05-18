@@ -15,5 +15,7 @@ final class StorageHealthConstants {
 
     static final String URL_FIELD = "URL";
 
+    static final String NOT_EXISTING_CONTAINER = "spring-cloud-azure-not-existing-container";
+
     static final Status NOT_CONFIGURED_STATUS = new Status("Not configured");
 }
