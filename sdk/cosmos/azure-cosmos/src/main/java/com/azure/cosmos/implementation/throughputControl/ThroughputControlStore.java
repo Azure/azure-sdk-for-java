@@ -121,8 +121,9 @@ public class ThroughputControlStore {
             boolean wasGroupConfigUpdated = stateAfterEnabling.getRight();
 
             if ((groupSizeAfter > groupSizeBefore && groupSizeAfter == 1) || wasGroupConfigUpdated) {
-                // This is the first enabled group for the target container
-                // Clean the current cache in case we have built EmptyThroughputContainerController.
+                // This is the first enabled group for the target container or an existing group was modified
+                // Clean the current cache in case we have built EmptyThroughputContainerController or an existing
+                // group was modified
                 this.containerControllerCache.remove(containerNameLink);
             }
 
