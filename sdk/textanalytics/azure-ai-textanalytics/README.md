@@ -256,7 +256,7 @@ TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuild
 ```
 
 ### Analyze sentiment
-Run a Language service predictive model to identify the positive, negative, neutral or mixed sentiment contained in the
+Run a predictive model to identify the positive, negative, neutral or mixed sentiment contained in the
 provided document or batch of documents.
 ``` java readme-sample-analyzeSentiment
 String document = "The hotel was dark and unclean. I like microsoft.";
@@ -348,7 +348,7 @@ For samples on using the production recommended option `RecognizeLinkedEntitiesB
 Please refer to the service documentation for a conceptual discussion of [entity linking][entity_linking].
 
 ### Analyze healthcare entities
-Language service for health is a containerized service that extracts and labels relevant medical information from 
+Text Analytics for health is a containerized service that extracts and labels relevant medical information from 
 unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
 For more information see [How to: Use Text Analytics for health][healthcare].
 ```java readme-sample-recognizeHealthcareEntities
