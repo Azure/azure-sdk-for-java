@@ -1,4 +1,4 @@
-# Azure Language service client library for Java
+# Azure Text Analytics client library for Java
 The Azure Cognitive Service for Language is a cloud-based service that provides Natural Language Processing (NLP) 
 features for understanding and analyzing text, and includes the following main features:
 
@@ -107,7 +107,7 @@ az cognitiveservices account create \
 For more information about creating the resource or how to get the location and sku information see [here][azure_cli]
 
 ### Authenticate the client
-In order to interact with the Language service, you will need to create an instance of the Language service client,
+In order to interact with the Language service, you will need to create an instance of the Text Analytics client,
 both the asynchronous and synchronous clients can be created by using `TextAnalyticsClientBuilder` invoking `buildClient()`
 creates a synchronous client while `buildAsyncClient()` creates its asynchronous counterpart.
 
@@ -121,7 +121,7 @@ You can find the **endpoint** for your Language service resource in the [Azure P
 az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "endpoint"
 ```
 
-#### Create a Language service client with key credential
+#### Create a Text Analytics client with key credential
 Once you have the value for the [key][key], provide it as a string to the [AzureKeyCredential][azure_key_credential].
 This can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Language 
 service resource or by running the following Azure CLI command:
@@ -138,7 +138,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .buildClient();
 ```
 
-The Azure Language service client library provides a way to **rotate the existing key**.
+The Azure Text Analytics client library provides a way to **rotate the existing key**.
 ```java readme-sample-rotatingAzureKeyCredential
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -149,7 +149,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 credential.update("{new_key}");
 ```
 
-#### Create a Language service client with Azure Active Directory credential
+#### Create a Text Analytics client with Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform. 
 
@@ -186,20 +186,20 @@ TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuild
 ```
 
 ## Key concepts
-### Language service client
-The Language service client library provides a [TextAnalyticsClient][text_analytics_sync_client] and 
+### Text Analytics client
+The Text Analytics client library provides a [TextAnalyticsClient][text_analytics_sync_client] and 
 [TextAnalyticsAsyncClient][text_analytics_async_client] to do analysis on batches of documents. It provides both synchronous and
 asynchronous operations to access a specific use of Language service, such as language detection or key phrase extraction.
 
 ### Input
 A **text input**, also called a **document**, is a single unit of document to be analyzed by the predictive models
-in the Language service. Operations on a Language service client may take a single document or a collection
+in the Language service. Operations on a Text Analytics client may take a single document or a collection
 of documents to be analyzed as a batch. 
 See [service limitations][service_input_limitation] for the document, including document length limits, maximum batch size,
 and supported text encoding.
 
 ### Operation on multiple documents
-For each supported operation, the Language service client provides method overloads to take a single document, a batch 
+For each supported operation, the Text Analytics client provides method overloads to take a single document, a batch 
 of documents as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
 taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
 indicate that the documents in the batch are written in different languages, or provide a country hint about the 
@@ -235,7 +235,7 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Healthcare Entities](#analyze-healthcare-entities "Analyze healthcare entities")
 * [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 
-### Language Service Client
+### Text Analytics Client
 Language service supports both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
@@ -350,7 +350,7 @@ Please refer to the service documentation for a conceptual discussion of [entity
 ### Analyze healthcare entities
 Language service for health is a containerized service that extracts and labels relevant medical information from 
 unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
-For more information see [How to: Use Language service for health][healthcare].
+For more information see [How to: Use Text Analytics for health][healthcare].
 ```java readme-sample-recognizeHealthcareEntities
 List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
     "RECORD #333582770390100 | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | "
@@ -473,7 +473,7 @@ For more examples, such as asynchronous samples, refer to [here][samples_readme]
 
 ## Troubleshooting
 ### General
-Language service clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
+Text Analytics clients raise exceptions. For example, if you try to detect the languages of a batch of text with same 
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
