@@ -12,7 +12,7 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
 public class TokenCredentialConfigurationProperties implements TokenCredentialOptionsProvider.TokenCredentialOptions {
 
     /**
-     * Client id to use when performing service principal authentication with Azure.
+     * Client ID to use when performing service principal authentication with Azure.
      */
     private String clientId;
 
@@ -43,7 +43,7 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
 
     /**
      * Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the
-     * client id as user assigned managed identity client id.
+     * client ID as user assigned managed identity client ID.
      */
     private boolean managedIdentityEnabled = false;
 
@@ -53,8 +53,8 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
     }
 
     /**
-     * Set the client id.
-     * @param clientId The client id.
+     * Set the client ID.
+     * @param clientId The client ID.
      */
     public void setClientId(String clientId) {
         this.clientId = clientId;
