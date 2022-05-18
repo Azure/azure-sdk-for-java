@@ -575,46 +575,50 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
-    public void createDatabaseWithMaxDegreeOfParallelism() throws ClassNotFoundException {
-        final String configuredThroughputDbName = TestConstants.DB_NAME + "-max-degree-parallel";
-        deleteDatabaseIfExists(configuredThroughputDbName);
+    public void queryWithMaxDegreeOfParallelism() throws ClassNotFoundException {
+        final String configuredMDPDbName = TestConstants.DB_NAME + "-max-degree-parallel";
+        deleteDatabaseIfExists(configuredMDPDbName);
 
-        Integer expectedRequestUnits = 700;
         final CosmosConfig config = CosmosConfig.builder()
-            .enableDatabaseThroughput(false, expectedRequestUnits)
             .setMaxDegreeOfParallelism(20)
             .build();
-        final ReactiveCosmosTemplate configuredThroughputCosmosTemplate = createReactiveCosmosTemplate(config, configuredThroughputDbName);
+        final ReactiveCosmosTemplate configuredMDPCosmosTemplate = createReactiveCosmosTemplate(config, configuredMDPDbName);
 
-        final CosmosEntityInformation<Person, String> personInfo =
-            new CosmosEntityInformation<>(Person.class);
-        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        final CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
+        configuredMDPCosmosTemplate.createContainerIfNotExists(personInfo).block();
 
-        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
-        final ThroughputResponse response = database.readThroughput().block();
-        assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        final CosmosAsyncDatabase database = client.getDatabase(configuredMDPDbName);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Flux<Person> personFlux = configuredMDPCosmosTemplate.find(query, Person.class,
+            Person.class.getSimpleName());
+
         assertEquals(config.getMaxDegreeOfParallelism(), 20);
     }
 
     @Test
-    public void createDatabaseWithQueryMerticsEnabled() throws ClassNotFoundException {
-        final String configuredThroughputDbName = TestConstants.DB_NAME + "-query-metrics-enabled";
-        deleteDatabaseIfExists(configuredThroughputDbName);
+    public void queryWithQueryMerticsEnabled() throws ClassNotFoundException {
+        final String configuredQMEDbName = TestConstants.DB_NAME + "-query-metrics-enabled";
+        deleteDatabaseIfExists(configuredQMEDbName);
 
-        Integer expectedRequestUnits = 700;
         final CosmosConfig config = CosmosConfig.builder()
-            .enableDatabaseThroughput(false, expectedRequestUnits)
             .enableQueryMetrics(true)
             .build();
-        final ReactiveCosmosTemplate configuredThroughputCosmosTemplate = createReactiveCosmosTemplate(config, configuredThroughputDbName);
+        final ReactiveCosmosTemplate configuredQMECosmosTemplate = createReactiveCosmosTemplate(config, configuredQMEDbName);
 
-        final CosmosEntityInformation<Person, String> personInfo =
-            new CosmosEntityInformation<>(Person.class);
-        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        final CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
+        configuredQMECosmosTemplate.createContainerIfNotExists(personInfo).block();
 
-        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
-        final ThroughputResponse response = database.readThroughput().block();
-        assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        final CosmosAsyncDatabase database = client.getDatabase(configuredQMEDbName);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Flux<Person> personFlux = configuredQMECosmosTemplate.find(query, Person.class,
+            Person.class.getSimpleName());
+
         assertEquals(config.isQueryMetricsEnabled(), true);
     }
 
