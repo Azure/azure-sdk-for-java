@@ -10,38 +10,19 @@ import java.util.List;
 
 /** The EntitiesResult model. */
 @Fluent
-public final class EntitiesResult {
+public final class EntitiesResult extends PreBuiltResult {
     /*
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<DocumentEntities> documents;
-
-    /*
-     * Errors by document id.
-     */
-    @JsonProperty(value = "errors", required = true)
-    private List<DocumentError> errors;
-
-    /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the request payload.
-     */
-    @JsonProperty(value = "statistics")
-    private RequestStatistics statistics;
-
-    /*
-     * This field indicates which model is used for scoring.
-     */
-    @JsonProperty(value = "modelVersion", required = true)
-    private String modelVersion;
+    private List<EntitiesResultDocumentsItem> documents;
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<DocumentEntities> getDocuments() {
+    public List<EntitiesResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -51,70 +32,8 @@ public final class EntitiesResult {
      * @param documents the documents value to set.
      * @return the EntitiesResult object itself.
      */
-    public EntitiesResult setDocuments(List<DocumentEntities> documents) {
+    public EntitiesResult setDocuments(List<EntitiesResultDocumentsItem> documents) {
         this.documents = documents;
-        return this;
-    }
-
-    /**
-     * Get the errors property: Errors by document id.
-     *
-     * @return the errors value.
-     */
-    public List<DocumentError> getErrors() {
-        return this.errors;
-    }
-
-    /**
-     * Set the errors property: Errors by document id.
-     *
-     * @param errors the errors value to set.
-     * @return the EntitiesResult object itself.
-     */
-    public EntitiesResult setErrors(List<DocumentError> errors) {
-        this.errors = errors;
-        return this;
-    }
-
-    /**
-     * Get the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @return the statistics value.
-     */
-    public RequestStatistics getStatistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Set the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @param statistics the statistics value to set.
-     * @return the EntitiesResult object itself.
-     */
-    public EntitiesResult setStatistics(RequestStatistics statistics) {
-        this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the EntitiesResult object itself.
-     */
-    public EntitiesResult setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
         return this;
     }
 }

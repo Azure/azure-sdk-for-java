@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/sentiment?showStats=false&loggingOptOut=false&opinionMining=false&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "616b9026-f5a6-46e5-904d-447192706eaf",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "33b5ced4-3323-4f95-9f7f-62094d4906b8",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
+      "content-length" : "264",
       "x-envoy-upstream-service-time" : "3",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b215c617-74d3-416a-83d0-8467c68e2cd7",
+      "apim-request-id" : "9535c416-142d-45ce-84ec-b402efe40042",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Tue, 19 Oct 2021 20:13:40 GMT",
+      "Body" : "{\"kind\":\"SentimentAnalysisResults\",\"results\":{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2021-10-01\"}}",
+      "Date" : "Fri, 06 May 2022 17:46:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

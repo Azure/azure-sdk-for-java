@@ -10,44 +10,19 @@ import java.util.List;
 
 /** The CustomEntitiesResult model. */
 @Fluent
-public final class CustomEntitiesResult {
+public final class CustomEntitiesResult extends CustomResult {
     /*
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<DocumentEntities> documents;
-
-    /*
-     * Errors by document id.
-     */
-    @JsonProperty(value = "errors", required = true)
-    private List<DocumentError> errors;
-
-    /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the request payload.
-     */
-    @JsonProperty(value = "statistics")
-    private RequestStatistics statistics;
-
-    /*
-     * This field indicates the project name for the model.
-     */
-    @JsonProperty(value = "projectName", required = true)
-    private String projectName;
-
-    /*
-     * This field indicates the deployment name for the model.
-     */
-    @JsonProperty(value = "deploymentName", required = true)
-    private String deploymentName;
+    private List<CustomEntitiesResultDocumentsItem> documents;
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<DocumentEntities> getDocuments() {
+    public List<CustomEntitiesResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -57,90 +32,8 @@ public final class CustomEntitiesResult {
      * @param documents the documents value to set.
      * @return the CustomEntitiesResult object itself.
      */
-    public CustomEntitiesResult setDocuments(List<DocumentEntities> documents) {
+    public CustomEntitiesResult setDocuments(List<CustomEntitiesResultDocumentsItem> documents) {
         this.documents = documents;
-        return this;
-    }
-
-    /**
-     * Get the errors property: Errors by document id.
-     *
-     * @return the errors value.
-     */
-    public List<DocumentError> getErrors() {
-        return this.errors;
-    }
-
-    /**
-     * Set the errors property: Errors by document id.
-     *
-     * @param errors the errors value to set.
-     * @return the CustomEntitiesResult object itself.
-     */
-    public CustomEntitiesResult setErrors(List<DocumentError> errors) {
-        this.errors = errors;
-        return this;
-    }
-
-    /**
-     * Get the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @return the statistics value.
-     */
-    public RequestStatistics getStatistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Set the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @param statistics the statistics value to set.
-     * @return the CustomEntitiesResult object itself.
-     */
-    public CustomEntitiesResult setStatistics(RequestStatistics statistics) {
-        this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the projectName property: This field indicates the project name for the model.
-     *
-     * @return the projectName value.
-     */
-    public String getProjectName() {
-        return this.projectName;
-    }
-
-    /**
-     * Set the projectName property: This field indicates the project name for the model.
-     *
-     * @param projectName the projectName value to set.
-     * @return the CustomEntitiesResult object itself.
-     */
-    public CustomEntitiesResult setProjectName(String projectName) {
-        this.projectName = projectName;
-        return this;
-    }
-
-    /**
-     * Get the deploymentName property: This field indicates the deployment name for the model.
-     *
-     * @return the deploymentName value.
-     */
-    public String getDeploymentName() {
-        return this.deploymentName;
-    }
-
-    /**
-     * Set the deploymentName property: This field indicates the deployment name for the model.
-     *
-     * @param deploymentName the deploymentName value to set.
-     * @return the CustomEntitiesResult object itself.
-     */
-    public CustomEntitiesResult setDeploymentName(String deploymentName) {
-        this.deploymentName = deploymentName;
         return this;
     }
 }

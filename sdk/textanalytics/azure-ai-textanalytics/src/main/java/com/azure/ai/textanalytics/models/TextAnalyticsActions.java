@@ -16,6 +16,7 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeEntitiesAction> recognizeEntitiesActions;
     private Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions;
     private Iterable<RecognizePiiEntitiesAction> recognizePiiEntitiesActions;
+    private Iterable<AnalyzeHealthcareEntitiesAction> analyzeHealthcareEntitiesActions;
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
     private Iterable<ExtractSummaryAction> extractSummaryActions;
@@ -109,6 +110,29 @@ public final class TextAnalyticsActions {
         RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
         this.recognizePiiEntitiesActions = recognizePiiEntitiesActions == null ? null
             : Arrays.asList(recognizePiiEntitiesActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link AnalyzeHealthcareEntitiesAction} to be executed.
+     *
+     * @return The list of {@link AnalyzeHealthcareEntitiesAction} to be executed.
+     */
+    public Iterable<AnalyzeHealthcareEntitiesAction> getAnalyzeHealthcareEntitiesActions() {
+        return this.analyzeHealthcareEntitiesActions;
+    }
+
+    /**
+     * Sets the list of {@link AnalyzeHealthcareEntitiesAction} to be executed.
+     *
+     * @param analyzeHealthcareEntitiesActions The list of {@link AnalyzeHealthcareEntitiesAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setAnalyzeHealthcareEntitiesActions(
+        AnalyzeHealthcareEntitiesAction... analyzeHealthcareEntitiesActions) {
+        this.analyzeHealthcareEntitiesActions = analyzeHealthcareEntitiesActions == null ? null
+                                               : Arrays.asList(analyzeHealthcareEntitiesActions);
         return this;
     }
 
