@@ -121,7 +121,7 @@ In addition to enabling logging, setting the log level to `VERBOSE` or `DEBUG` p
 
 ### Configuring logback
 
-1.  Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for logback" section.
+1. Add the dependencies in your pom.xml using ones from the [logging sample pom.xml][LoggingPom] under the "Dependencies required for logback" section.
 2. Add [logback.xml][logback] to your `src/main/resources`.
 
 ### Enable AMQP transport logging
