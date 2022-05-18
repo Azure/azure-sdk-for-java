@@ -200,7 +200,7 @@ High CPU usage is usually because an instance owns too many partitions.  We reco
 
 ### Processor client stops receiving
 
-Customers often run the processor client for days on end.  Sometimes, they notice that EventProcessorClient is not processing one or more partitions.  Usually, this is not enough information to determine why the exception occurred.  The EventProcessorClient stopping is the symptom of an underlying cause (i.e. race condition) that occurred while trying to recover from a transient error.  Please see [Filing Github issues](#filing-github-issues) for the information we require.
+The processor client often is continually running in a host application for days on end.  Sometimes, they notice that EventProcessorClient is not processing one or more partitions.  Usually, this is not enough information to determine why the exception occurred.  The EventProcessorClient stopping is the symptom of an underlying cause (i.e. race condition) that occurred while trying to recover from a transient error.  Please see [Filing Github issues](#filing-github-issues) for the information we require.
 
 ### Migrate from legacy to new client library
 
