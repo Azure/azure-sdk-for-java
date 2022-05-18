@@ -310,6 +310,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Should not be called form user-code. This method is a no-op and is just used internally
+     * to force loading this class
+     */
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         ImplementationBridgeHelpers.CosmosPageFluxHelper.setCosmosPageFluxAccessor(
             new ImplementationBridgeHelpers.CosmosPageFluxHelper.CosmosPageFluxAccessor() {
@@ -436,7 +442,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0
                 && clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
                 String eventName =
-                    "Diagnostics for PKRange " + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId;
+                    "Diagnostics for PKRange "
+                        + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId();
                 tracerProvider.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), parentContext);
             } else if (clientSideRequestStatistics.getGatewayStatistics() != null) {

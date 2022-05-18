@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
@@ -452,8 +451,7 @@ public class TracerProvider {
             Iterator<RequestTimeline.Event> eventIterator = null;
             try {
                 if (storeResponseStatistics.getStoreResult() != null) {
-                    eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
+                    eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 }
             } catch (CosmosException ex) {
                 eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
@@ -483,8 +481,7 @@ public class TracerProvider {
             OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.getRequestResponseTimeUTC(),
                 ZoneOffset.UTC);
             if (statistics.getStoreResult() != null) {
-                Iterator<RequestTimeline.Event> eventIterator =
-                    DirectBridgeInternal.getRequestTimeline(statistics.getStoreResult().toResponse()).iterator();
+                Iterator<RequestTimeline.Event> eventIterator = statistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {

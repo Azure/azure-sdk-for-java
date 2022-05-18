@@ -211,14 +211,7 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
     private Mono<BookmarkExpandResponseInner> expandAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, BookmarkExpandParameters parameters) {
         return expandWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, parameters)
-            .flatMap(
-                (Response<BookmarkExpandResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

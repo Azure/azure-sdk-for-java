@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2022-05-13)
 
 ### Features Added
 
@@ -12,9 +22,11 @@
 - Removed "MessageData" from `serializeMessageData`, `deserializeMessageData`, `serializeMessageDataAsync`, `deserializeMessageDataAsync`.
 - Removed old support for preamble deserialization.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.2.0`.
 
 ## 1.0.0-beta.11 (2022-04-07)
 

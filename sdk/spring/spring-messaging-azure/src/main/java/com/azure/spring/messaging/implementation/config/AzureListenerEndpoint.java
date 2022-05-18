@@ -14,7 +14,7 @@ import com.azure.spring.messaging.listener.MessageListenerContainer;
 public interface AzureListenerEndpoint {
 
     /**
-     * Return the id of this endpoint.
+     * Return the ID of this endpoint.
      *
      * @return String value
      */
