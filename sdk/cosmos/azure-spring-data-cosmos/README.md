@@ -89,7 +89,7 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 - Azure-spring-data-cosmos also supports `Response Diagnostics String`, `Query Metrics` and `Max Degree of Parallelism`.
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information.
-Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing.
+Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing; setting the value to -1 will lead to the SDK deciding the optimal value.
 
 ```java readme-sample-AppConfiguration
 @Configuration
