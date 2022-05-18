@@ -606,7 +606,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     Flux<ByteBuffer> encryptedTextFlux;
                     switch (version) {
                         case V1:
-                            Cipher cbcCipher = generateCBCCipher(aesKey);
+                            Cipher cbcCipher;
+                            try {
+                                cbcCipher = generateCBCCipher(aesKey);
+                            } catch (GeneralSecurityException e) {
+                                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                            }
                             // Build EncryptionData
                             encryptionData = new EncryptionDataV1()
                                 .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
@@ -676,21 +681,39 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                                 plainTextFlux.map(stagingArea::write)
                                     .index()
                                     .flatMapSequential(tuple -> {
-                                        Cipher gmcCipher = generateGMCCipher(aesKey, tuple.getT1());
+                                        Cipher gmcCipher;
+                                        try {
+                                            gmcCipher = generateGMCCipher(aesKey, tuple.getT1());
+                                        } catch (NoSuchPaddingException | NoSuchAlgorithmException
+                                            | InvalidAlgorithmParameterException | InvalidKeyException e) {
+                                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                                        }
+
+                                        // Expected size of each encryption region after calling doFinal. Last one may
+                                        // be less, will never be more.
+                                        ByteBuffer encryptedRegion = ByteBuffer.allocate(
+                                            CryptographyConstants.GMC_ENCRYPTION_REGION_LENGTH
+                                                + CryptographyConstants.TAG_LENGTH);
 
                                         // Each flux is at most 1 BufferAggregator of 4mb
                                         Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()
                                             .flatMap(BufferAggregator::asFlux)
                                             .map(buffer -> {
-                                                // Do these buffers have arrays? I don't think so. Whatever I do has to be replayable?
-                                                // Can I allocate 0 length BB to use that overload?
-                                                // Double check that output size for gmc is 0 until calling do final. Even if it's not that should be ok?
-                                                ByteBuffer placeHolder = ByteBuffer.allocate(0);
-                                                return gmcCipher.update(buffer, placeHolder);
-                                            });
-
-                                        cipherTextWithTag = Flux.concat(cipherTextWithTag,
-                                            Mono.fromCallable(() -> ByteBuffer.wrap(gmcCipher.doFinal())));
+                                                // Write into the preallocated buffer and always return this buffer.
+                                                try {
+                                                    gmcCipher.update(buffer, encryptedRegion);
+                                                } catch (ShortBufferException e) {
+                                                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                                                }
+                                                return encryptedRegion;
+                                            })
+                                            .then(Mono.fromCallable(() -> {
+                                            // We have already written all the data to the cipher. Passing in a final
+                                            // empty buffer allows us to force completion and return the filled buffer.
+                                            gmcCipher.doFinal(ByteBuffer.allocate(0), encryptedRegion);
+                                            encryptedRegion.flip();
+                                            return encryptedRegion;
+                                            })).flux();
 
                                         return Flux.concat(Flux.just(ByteBuffer.wrap(gmcCipher.getIV())),
                                             cipherTextWithTag);
