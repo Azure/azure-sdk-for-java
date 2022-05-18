@@ -10,6 +10,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Code snippets for {@link DataLakeDirectoryAsyncClient}
@@ -93,6 +94,32 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakeDirectoryAsyncClient#createFileWithResponse(String, DataLakePathCreateOptions)}
+     */
+    public void createFileWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Long duration = 15L;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
+            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+
+        DataLakeFileAsyncClient newFileClient = client.createFileWithResponse(fileName, options).block().getValue();
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions
+
+    }
+
+    /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#deleteFile(String)} and
      * {@link DataLakeDirectoryAsyncClient#deleteFileWithResponse(String, DataLakeRequestConditions)}
      */
@@ -139,6 +166,34 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
             requestConditions
         ).block().getValue();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakeDirectoryAsyncClient#createSubdirectoryIfNotExistsWithResponse(String, DataLakePathCreateOptions)}
+     */
+    public void createSubdirectoryWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Long duration = 15L;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
+            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+
+        DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryWithResponse(directoryName, options)
+            .block().getValue();
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions
+
+
     }
 
     /**
