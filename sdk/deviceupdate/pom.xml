@@ -43,6 +43,7 @@
       </activation>
       <modules>
         <module>azure-iot-deviceupdate</module>
+        <module>azure-resourcemanager-deviceupdate</module>
       </modules>
     </profile>
   </profiles>
