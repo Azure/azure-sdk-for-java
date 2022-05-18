@@ -44,7 +44,7 @@ public class ThreadInterruptedStatusRestoreTest {
 
         private final boolean restore;
 
-        public TestThread(CountDownLatch latch, boolean restore) {
+        TestThread(CountDownLatch latch, boolean restore) {
             this.latch = latch;
             this.restore = restore;
         }
