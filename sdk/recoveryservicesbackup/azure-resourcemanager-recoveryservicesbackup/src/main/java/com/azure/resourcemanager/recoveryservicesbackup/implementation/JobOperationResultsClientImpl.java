@@ -197,7 +197,7 @@ public final class JobOperationResultsClientImpl implements JobOperationResultsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getAsync(String vaultName, String resourceGroupName, String jobName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, jobName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

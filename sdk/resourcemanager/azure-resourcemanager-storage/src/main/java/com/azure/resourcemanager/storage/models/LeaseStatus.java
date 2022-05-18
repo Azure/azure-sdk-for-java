@@ -27,7 +27,11 @@ public final class LeaseStatus extends ExpandableStringEnum<LeaseStatus> {
         return fromString(name, LeaseStatus.class);
     }
 
-    /** @return known LeaseStatus values. */
+    /**
+     * Gets known LeaseStatus values.
+     *
+     * @return known LeaseStatus values.
+     */
     public static Collection<LeaseStatus> values() {
         return values(LeaseStatus.class);
     }

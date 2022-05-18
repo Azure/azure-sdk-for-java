@@ -27,7 +27,11 @@ public final class Schedule extends ExpandableStringEnum<Schedule> {
         return fromString(name, Schedule.class);
     }
 
-    /** @return known Schedule values. */
+    /**
+     * Gets known Schedule values.
+     *
+     * @return known Schedule values.
+     */
     public static Collection<Schedule> values() {
         return values(Schedule.class);
     }

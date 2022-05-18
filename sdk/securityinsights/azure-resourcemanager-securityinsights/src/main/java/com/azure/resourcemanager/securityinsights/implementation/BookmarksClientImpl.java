@@ -428,14 +428,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BookmarkInner> getAsync(String resourceGroupName, String workspaceName, String bookmarkId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, bookmarkId)
-            .flatMap(
-                (Response<BookmarkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -608,14 +601,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
     private Mono<BookmarkInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, BookmarkInner bookmark) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, bookmark)
-            .flatMap(
-                (Response<BookmarkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -772,8 +758,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String bookmarkId) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, bookmarkId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, bookmarkId).flatMap(ignored -> Mono.empty());
     }
 
     /**

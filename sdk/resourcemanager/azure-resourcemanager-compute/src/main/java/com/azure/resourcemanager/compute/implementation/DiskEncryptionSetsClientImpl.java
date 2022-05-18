@@ -972,14 +972,7 @@ public final class DiskEncryptionSetsClientImpl
     public Mono<DiskEncryptionSetInner> getByResourceGroupAsync(
         String resourceGroupName, String diskEncryptionSetName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, diskEncryptionSetName)
-            .flatMap(
-                (Response<DiskEncryptionSetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

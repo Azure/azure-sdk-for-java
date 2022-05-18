@@ -430,14 +430,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
     private Mono<EntityQueryTemplateInner> getAsync(
         String resourceGroupName, String workspaceName, String entityQueryTemplateId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, entityQueryTemplateId)
-            .flatMap(
-                (Response<EntityQueryTemplateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

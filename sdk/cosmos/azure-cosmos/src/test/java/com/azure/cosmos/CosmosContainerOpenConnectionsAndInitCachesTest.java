@@ -19,10 +19,9 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,56 +29,72 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBase {
     private CosmosAsyncClient directCosmosAsyncClient;
+    private CosmosAsyncDatabase directCosmosAsyncDatabase;
+    private CosmosAsyncContainer directCosmosAsyncContainer;
+
     private CosmosAsyncClient gatewayCosmosAsyncClient;
-    private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private CosmosAsyncContainer cosmosAsyncContainer;
+    private CosmosAsyncDatabase gatewayCosmosAsyncDatabase;
+    private CosmosAsyncContainer gatewayCosmosAsyncContainer;
 
     private CosmosClient directCosmosClient;
+    private CosmosDatabase directCosmosDatabase;
+    private CosmosContainer directCosmosContainer;
+
     private CosmosClient gatewayCosmosClient;
-    private CosmosDatabase cosmosDatabase;
-    private CosmosContainer cosmosContainer;
+    private CosmosDatabase gatewayCosmosDatabase;
+    private CosmosContainer gatewayCosmosContainer;
 
     private final static String CONTAINER_ID = "InitializedTestContainer";
 
     @BeforeClass(groups = {"simple"})
     public void beforeClass() {
+        // Enable the channel acquisition context,
+        // so that we can validate that a real request will reuse the channel established in openConnectionsAndInitCaches
+        System.setProperty("azure.cosmos.directTcp.defaultOptions", "{\"channelAcquisitionContextEnabled\":\"true\"}");
+
         directCosmosAsyncClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .directMode()
-            .buildAsyncClient();
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildAsyncClient();
+        directCosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
+        directCosmosAsyncDatabase.createContainerIfNotExists(CONTAINER_ID, "/mypk",
+                ThroughputProperties.createManualThroughput(20000)).block();
+        directCosmosAsyncContainer = directCosmosAsyncDatabase.getContainer(CONTAINER_ID);
+
         gatewayCosmosAsyncClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .gatewayMode()
-            .buildAsyncClient();
-        cosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
-        cosmosAsyncDatabase.createContainerIfNotExists(CONTAINER_ID, "/mypk",
-            ThroughputProperties.createManualThroughput(20000)).block();
-        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(CONTAINER_ID);
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .gatewayMode()
+                .buildAsyncClient();
+        gatewayCosmosAsyncDatabase = gatewayCosmosAsyncClient.getDatabase(directCosmosAsyncDatabase.getId());
+        gatewayCosmosAsyncContainer = gatewayCosmosAsyncDatabase.getContainer(directCosmosAsyncContainer.getId());
 
         directCosmosClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .directMode()
-            .buildClient();
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+        directCosmosDatabase = directCosmosClient.getDatabase(directCosmosAsyncDatabase.getId());
+        directCosmosContainer = directCosmosDatabase.getContainer(CONTAINER_ID);
+
         gatewayCosmosClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .gatewayMode()
-            .buildClient();
-        cosmosDatabase = directCosmosClient.getDatabase(cosmosAsyncDatabase.getId());
-        cosmosContainer = cosmosDatabase.getContainer(CONTAINER_ID);
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .gatewayMode()
+                .buildClient();
+        gatewayCosmosDatabase = gatewayCosmosClient.getDatabase(directCosmosAsyncDatabase.getId());
+        gatewayCosmosContainer = gatewayCosmosDatabase.getContainer(directCosmosAsyncContainer.getId());
     }
 
     @AfterClass(groups = {"simple"}, alwaysRun = true)
     public void afterClass() {
-        if (this.cosmosAsyncContainer != null) {
-            this.cosmosAsyncContainer.delete().block();
+        if (this.directCosmosAsyncContainer != null) {
+            this.directCosmosAsyncContainer.delete().block();
         }
 
         safeCloseAsync(directCosmosAsyncClient);
@@ -88,90 +103,27 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         safeCloseSyncClient(gatewayCosmosClient);
     }
 
-    @Test(groups = {"simple"})
-    public void loadCachesAndOpenConnectionsToServiceAsyncContainer() throws IllegalAccessException,
-        NoSuchFieldException, ClassNotFoundException {
-        RntbdTransportClient rntbdTransportClient =
-            (RntbdTransportClient) ReflectionUtils.getTransportClient(directCosmosAsyncClient);
-        RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
-        RxDocumentClientImpl rxDocumentClient =
-            (RxDocumentClientImpl) directCosmosAsyncClient.getDocClientWrapper();
-
-        GatewayServiceConfigurationReader configurationReader =
-            ReflectionUtils.getServiceConfigurationReader(rxDocumentClient);
-
-        ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
-        ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
-
-        assertThat(provider.count()).isEqualTo(0);
-        assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
-        assertThat(routingMap.size()).isEqualTo(0);
-        assertThat(ReflectionUtils.isInitialized(cosmosAsyncContainer).get()).isFalse();
-
-        // Calling it twice to make sure no side effect of second time no-op call
-        cosmosAsyncContainer.openConnectionsAndInitCaches().block();
-        cosmosAsyncContainer.openConnectionsAndInitCaches().block();
-
-        // Verifying collectionInfoByNameMap size
-        assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
-        // Verifying routingMap size
-        assertThat(routingMap.size()).isEqualTo(1);
-        // Verifying isInitialized is true
-        assertThat(ReflectionUtils.isInitialized(cosmosAsyncContainer).get()).isTrue();
-
-        List<FeedRange> feedRanges =
-            rxDocumentClient.getFeedRanges(cosmosAsyncContainer.getLink()).block();
-        int maxNumberOfConnection =
-            feedRanges.size() * configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize() / 2;
-        CollectionRoutingMap collectionRoutingMap = getCollectionRoutingMap(routingMap);
-        // Verifying tcp open connection count
-        assertThat(provider.count()).isGreaterThanOrEqualTo(feedRanges.size());
-        assertThat(provider.count()).isLessThanOrEqualTo(maxNumberOfConnection);
-        // Verifying partitionKeyRanges list size
-        assertThat(collectionRoutingMap.getOrderedPartitionKeyRanges().size()).isEqualTo(feedRanges.size());
-
-        rxDocumentClient =
-            (RxDocumentClientImpl) gatewayCosmosAsyncClient.getDocClientWrapper();
-        routingMap = getRoutingMap(rxDocumentClient);
-        collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
-        assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
-        assertThat(routingMap.size()).isEqualTo(0);
-        CosmosAsyncContainer gatewayAsyncContainer =
-            gatewayCosmosAsyncClient.getDatabase(cosmosDatabase.getId()).getContainer(cosmosContainer.getId());
-        assertThat(ReflectionUtils.isInitialized(gatewayAsyncContainer).get()).isFalse();
-
-        // Verifying no error when initializeContainer called on gateway mode
-        // Calling it twice to make sure no side effect of second time no-op call
-        gatewayAsyncContainer.openConnectionsAndInitCaches().block();
-        gatewayAsyncContainer.openConnectionsAndInitCaches().block();
-
-        // Verifying collectionInfoByNameMap size
-        assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
-        // Verifying routingMap size
-        assertThat(routingMap.size()).isEqualTo(1);
-        // Verifying isInitialized is true
-        assertThat(ReflectionUtils.isInitialized(gatewayAsyncContainer).get()).isTrue();
-
-
-        feedRanges =
-            rxDocumentClient.getFeedRanges(BridgeInternal.extractContainerSelfLink(cosmosAsyncContainer)).block();
-        collectionRoutingMap = getCollectionRoutingMap(routingMap);
-        // Verifying partitionKeyRanges list size
-        assertThat(collectionRoutingMap.getOrderedPartitionKeyRanges().size()).isEqualTo(feedRanges.size());
+    @DataProvider(name = "useAsyncParameterProvider")
+    public Object[][] useAsyncParameterProvider() {
+        return new Object[][]{
+                // flag to indicate whether it is sync or async call
+                { true },
+                { false }
+        };
     }
 
-    @Test(groups = {"simple"})
-    public void loadCachesAndOpenConnectionsToServiceSyncContainer() throws ClassNotFoundException,
-        NoSuchFieldException, IllegalAccessException {
+    @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
+    public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) {
+        CosmosAsyncContainer asyncContainer = useAsync ? directCosmosAsyncContainer : directCosmosContainer.asyncContainer;
+        CosmosAsyncClient asyncClient = useAsync ? directCosmosAsyncClient : directCosmosClient.asyncClient();
 
-        RntbdTransportClient rntbdTransportClient =
-            (RntbdTransportClient) ReflectionUtils.getTransportClient(directCosmosClient);
+        RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(asyncClient);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncClient.getDocClientWrapper();
         RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
-        RxDocumentClientImpl rxDocumentClient =
-            (RxDocumentClientImpl) directCosmosClient.asyncClient().getDocClientWrapper();
+        String containerLink = asyncContainer.getLink();
 
         GatewayServiceConfigurationReader configurationReader =
-            ReflectionUtils.getServiceConfigurationReader(rxDocumentClient);
+                ReflectionUtils.getServiceConfigurationReader(rxDocumentClient);
 
         ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
         ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
@@ -179,84 +131,84 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         assertThat(provider.count()).isEqualTo(0);
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
         assertThat(routingMap.size()).isEqualTo(0);
-        assertThat(ReflectionUtils.isInitialized(cosmosContainer.asyncContainer).get()).isFalse();
+        assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isFalse();
 
+        String diagnostics = "";
         // Calling it twice to make sure no side effect of second time no-op call
-        cosmosContainer.openConnectionsAndInitCaches();
-        cosmosContainer.openConnectionsAndInitCaches();
+        if (useAsync) {
+            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
 
-        // Verifying collectionInfoByNameMap size
+            TestObject newItem = TestObject.create();
+            diagnostics = directCosmosAsyncContainer.createItem(newItem).block().getDiagnostics().toString();
+
+        } else {
+            directCosmosContainer.openConnectionsAndInitCaches();
+            directCosmosContainer.openConnectionsAndInitCaches();
+
+            TestObject newItem = TestObject.create();
+            diagnostics = directCosmosAsyncContainer.createItem(newItem).block().getDiagnostics().toString();
+        }
+
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
-        // Verifying routingMap size
         assertThat(routingMap.size()).isEqualTo(1);
+        assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isTrue();
 
-        List<FeedRange> feedRanges =
-            rxDocumentClient.getFeedRanges(BridgeInternal.extractContainerSelfLink(cosmosAsyncContainer)).block();
-        int maxNumberOfConnection =
-            feedRanges.size() * configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize() / 2;
-        CollectionRoutingMap collectionRoutingMap = getCollectionRoutingMap(routingMap);
-        // Verifying tcp open connection count
-        assertThat(provider.count()).isGreaterThanOrEqualTo(feedRanges.size());
-        assertThat(provider.count()).isLessThanOrEqualTo(maxNumberOfConnection);
-        // Verifying partitionKeyRanges list size
-        assertThat(collectionRoutingMap.getOrderedPartitionKeyRanges().size()).isEqualTo(feedRanges.size());
-        // Verifying isInitialized is true
-        assertThat(ReflectionUtils.isInitialized(cosmosContainer.asyncContainer).get()).isTrue();
+        List<FeedRange> feedRanges = rxDocumentClient.getFeedRanges(containerLink).block();
+        // The goal is to have at most 1 connection to each replica
+        int numberOfReplicas = feedRanges.size() * configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize();
+        assertThat(provider.count()).isEqualTo(numberOfReplicas);
 
-        rxDocumentClient =
-            (RxDocumentClientImpl) gatewayCosmosClient.asyncClient().getDocClientWrapper();
-        routingMap = getRoutingMap(rxDocumentClient);
-        collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
+        assertThat(diagnostics).contains("transportRequestChannelAcquisitionContext");
+        assertThat(diagnostics).doesNotContain("startNew");
+        assertThat(diagnostics).contains("poll");
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
+    public void openConnectionsAndInitCachesForGatewayMode(boolean useAsync) {
+
+        CosmosAsyncContainer asyncContainer = useAsync ? gatewayCosmosAsyncContainer : gatewayCosmosContainer.asyncContainer;
+        CosmosAsyncClient asyncClient = useAsync ? gatewayCosmosAsyncClient : gatewayCosmosClient.asyncClient();
+
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncClient.getDocClientWrapper();
+
+        ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
+        ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
+
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
         assertThat(routingMap.size()).isEqualTo(0);
-        CosmosContainer gatewayContainer =
-            gatewayCosmosClient.getDatabase(cosmosDatabase.getId()).getContainer(cosmosContainer.getId());
-        assertThat(ReflectionUtils.isInitialized(gatewayContainer.asyncContainer).get()).isFalse();
+        assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isFalse();
 
         // Verifying no error when initializeContainer called on gateway mode
         // Calling it twice to make sure no side effect of second time no-op call
-        gatewayContainer.openConnectionsAndInitCaches();
-        gatewayContainer.openConnectionsAndInitCaches();
+        if (useAsync) {
+            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+        } else {
+            gatewayCosmosContainer.openConnectionsAndInitCaches();
+            gatewayCosmosContainer.openConnectionsAndInitCaches();
+        }
 
-        // Verifying collectionInfoByNameMap size
-        assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
-        // Verifying routingMap size
-        assertThat(routingMap.size()).isEqualTo(1);
-        // Verifying isInitialized is true
-        assertThat(ReflectionUtils.isInitialized(gatewayContainer.asyncContainer).get()).isTrue();
-
-        feedRanges =
-            rxDocumentClient.getFeedRanges(BridgeInternal.extractContainerSelfLink(cosmosAsyncContainer)).block();
-        collectionRoutingMap = getCollectionRoutingMap(routingMap);
-        // Verifying partitionKeyRanges list size
-        assertThat(collectionRoutingMap.getOrderedPartitionKeyRanges().size()).isEqualTo(feedRanges.size());
+        assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
+        assertThat(routingMap.size()).isEqualTo(0);
+        assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isTrue();
     }
 
     private ConcurrentHashMap<String, ?> getCollectionInfoByNameMap(RxDocumentClientImpl rxDocumentClient) {
         RxClientCollectionCache collectionCache =
-            ReflectionUtils.getClientCollectionCache(rxDocumentClient);
+                ReflectionUtils.getClientCollectionCache(rxDocumentClient);
         AsyncCache<String, DocumentCollection> collectionInfoByNameCache =
-            ReflectionUtils.getCollectionInfoByNameCache(collectionCache);
+                ReflectionUtils.getCollectionInfoByNameCache(collectionCache);
 
         return ReflectionUtils.getValueMap(collectionInfoByNameCache);
     }
 
     private ConcurrentHashMap<String, ?> getRoutingMap(RxDocumentClientImpl rxDocumentClient) {
         RxPartitionKeyRangeCache partitionKeyRangeCache =
-            ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
+                ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
         AsyncCache<String, CollectionRoutingMap> routingMapAsyncCache =
-            ReflectionUtils.getRoutingMapAsyncCache(partitionKeyRangeCache);
+                ReflectionUtils.getRoutingMapAsyncCache(partitionKeyRangeCache);
 
         return ReflectionUtils.getValueMap(routingMapAsyncCache);
-    }
-
-    @SuppressWarnings("unchecked")
-    private CollectionRoutingMap getCollectionRoutingMap(ConcurrentHashMap<String, ?> routingMap) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        Class<?> AsynLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
-        Field collectionRoutingMapField = AsynLazyClass.getDeclaredField("single");
-        collectionRoutingMapField.setAccessible(true);
-        CollectionRoutingMap collectionRoutingMap =
-            ((Mono<CollectionRoutingMap>) collectionRoutingMapField.get(routingMap.values().toArray()[0])).block();
-        return collectionRoutingMap;
     }
 }
