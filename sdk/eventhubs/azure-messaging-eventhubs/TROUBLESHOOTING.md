@@ -52,7 +52,7 @@ An [AmqpException][AmqpException] contains three fields which describe the error
 
 #### `amqp:connection:forced` and `amqp:link:detach-forced`
 
-When the connection to Event Hubs is idle, the service will disconnect the client after some time.  This is not a problem as the clients will re-establish a connection with the service.  More information for users is in the [AMQP troubleshooting documentation][AmqpTroubleshooting].
+When the connection to Event Hubs is idle, the service will disconnect the client after some time.  This is not a problem as the clients will re-establish a connection when a service operation is requested.  More information can be found in the [AMQP troubleshooting documentation][AmqpTroubleshooting].
 
 ## Permission issues
 
