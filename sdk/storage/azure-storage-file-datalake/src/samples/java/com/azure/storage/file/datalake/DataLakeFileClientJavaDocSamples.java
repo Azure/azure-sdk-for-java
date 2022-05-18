@@ -428,7 +428,7 @@ public class DataLakeFileClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
+        Response<Boolean> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {

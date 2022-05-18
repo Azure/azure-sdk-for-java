@@ -2834,6 +2834,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getHeaders()
 
         then:
+        response.getValue()
         response.getStatusCode() == 202
         headers.getValue("x-ms-request-id") != null
         headers.getValue("x-ms-version") != null
@@ -2853,6 +2854,7 @@ class BlobAPITest extends APISpec {
         def response = bc.deleteIfExistsWithResponse(null, null, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
@@ -2862,7 +2864,9 @@ class BlobAPITest extends APISpec {
         def secondResponse = bc.deleteIfExistsWithResponse(null, null, null, null)
 
         then:
+        initialResponse.getValue()
         initialResponse.getStatusCode() == 202
+        !secondResponse.getValue()
         secondResponse.getStatusCode() == 404
 
     }

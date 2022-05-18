@@ -380,7 +380,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context
         Context context = new Context("Key", "Value");
 
-        Response<Void> response = client.deleteBlobContainerIfExistsWithResponse("containerName", context);
+        Response<Boolean> response = client.deleteBlobContainerIfExistsWithResponse("containerName", context);
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {

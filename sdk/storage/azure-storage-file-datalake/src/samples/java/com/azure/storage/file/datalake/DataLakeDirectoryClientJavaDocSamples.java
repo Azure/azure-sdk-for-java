@@ -218,7 +218,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(recursive)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
+        Response<Boolean> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
@@ -269,7 +269,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteFileIfExistsWithResponse(fileName, options, timeout,
+        Response<Boolean> response = client.deleteFileIfExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
@@ -324,7 +324,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(recursive)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteSubdirectoryIfExistsWithResponse(directoryName, options,
+        Response<Boolean> response = client.deleteSubdirectoryIfExistsWithResponse(directoryName, options,
             timeout, new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");

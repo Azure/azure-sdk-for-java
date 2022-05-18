@@ -247,6 +247,7 @@ class DirectoryAPITest extends APISpec {
         def createResponse = dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
 
         then:
+        createResponse.getValue()
         createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.getHeaders())
     }
@@ -262,7 +263,9 @@ class DirectoryAPITest extends APISpec {
         def secondResponse = dc.createIfNotExistsWithResponse(options, null, null)
 
         then:
+        initialResponse.getValue()
         initialResponse.getStatusCode() == 201
+        !secondResponse.getValue()
         secondResponse.getStatusCode() == 409
     }
 
