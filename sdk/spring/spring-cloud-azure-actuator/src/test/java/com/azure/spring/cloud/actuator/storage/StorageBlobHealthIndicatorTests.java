@@ -36,7 +36,7 @@ class StorageBlobHealthIndicatorTests {
 
     @Test
     void storageBlobIsUp() {
-        when(containerAsyncClient.existsWithResponse()).thenReturn(Mono.just(new Response<>() {
+        when(containerAsyncClient.existsWithResponse()).thenReturn(Mono.just(new Response<Boolean>() {
 
             @Override
             public int getStatusCode() {
