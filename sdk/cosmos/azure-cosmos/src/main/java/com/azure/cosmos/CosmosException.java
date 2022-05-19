@@ -547,19 +547,15 @@ public class CosmosException extends AzureException {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
+     * Should not be called from user-code. This method is a no-op and is just used internally
      * to force loading this class
      */
-    public static void doNothingButEnsureLoadingClass() {}
+    public static void doNothingButEnsureLoadingClass() { initialize(); }
 
-    static {
+    private static void initialize() {
         ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
-            new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
-
-                @Override
-                public CosmosException createCosmosException(int statusCode, Exception innerException) {
-                    return new CosmosException(statusCode, innerException);
-                }
-            });
+            (statusCode, innerException) -> new CosmosException(statusCode, innerException));
     }
+
+    static { initialize(); }
 }

@@ -493,12 +493,12 @@ public final class CosmosChangeFeedRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
+     * Should not be called from user-code. This method is a no-op and is just used internally
      * to force loading this class
      */
-    public static void doNothingButEnsureLoadingClass() {}
+    public static void doNothingButEnsureLoadingClass() { initialize(); }
 
-    static {
+    private static void initialize() {
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.setCosmosChangeFeedRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor() {
 
@@ -514,19 +514,19 @@ public final class CosmosChangeFeedRequestOptions {
 
                 @Override
                 public void setOperationContext
-                (
-                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
-                    OperationContextAndListenerTuple operationContextAndListenerTuple
-                ) {
+                    (
+                        CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                        OperationContextAndListenerTuple operationContextAndListenerTuple
+                    ) {
 
                     changeFeedRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
                 }
 
                 @Override
                 public OperationContextAndListenerTuple getOperationContext
-                (
-                    CosmosChangeFeedRequestOptions changeFeedRequestOptions
-                ) {
+                    (
+                        CosmosChangeFeedRequestOptions changeFeedRequestOptions
+                    ) {
 
                     return changeFeedRequestOptions.getOperationContextAndListenerTuple();
                 }
@@ -548,4 +548,6 @@ public final class CosmosChangeFeedRequestOptions {
                 }
             });
     }
+
+    static { initialize(); }
 }
