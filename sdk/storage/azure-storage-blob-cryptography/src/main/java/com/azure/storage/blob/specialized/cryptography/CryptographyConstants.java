@@ -19,7 +19,7 @@ final class CryptographyConstants {
 
     static final String AES_CBC_NO_PADDING = "AES/CBC/NoPadding";
 
-    static final String AES_GMC_NO_PADDING = "AES/GMC/NoPadding";
+    static final String AES_GCM_NO_PADDING = "AES/GCM/NoPadding";
 
     static final String AES = "AES";
 
@@ -43,7 +43,7 @@ final class CryptographyConstants {
 
     static final int TAG_LENGTH = 16;
 
-    static final int GMC_ENCRYPTION_REGION_LENGTH = 4 * Constants.MB;
+    static final int GCM_ENCRYPTION_REGION_LENGTH = 4 * Constants.MB;
 
     static final String DECRYPT_UNENCRYPTED_BLOB = "Encryption client is being used but the blob metadata indicates "
         + "that it is not encrypted.";

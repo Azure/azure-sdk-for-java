@@ -30,8 +30,8 @@ public class EncryptionDataV2 implements EncryptionData{
     /**
      * The authentication block info.
      */
-    @JsonProperty(value = "AuthenticationBlockInfo")
-    private AuthenticationBlockInfo authenticationBlockInfo;
+    @JsonProperty(value = "AuthenticationRegionInfo")
+    private AuthenticationRegionInfo authenticationRegionInfo;
 
     /**
      * Metadata for encryption.  Currently used only for storing the encryption library, but may contain other data.
@@ -55,19 +55,20 @@ public class EncryptionDataV2 implements EncryptionData{
      * Initializes a new instance of the {@link EncryptionDataV1} class using the specified wrappedContentKey,
      * encryptionAgent, contentEncryptionIV, and keyWrappingMetadata.
      *
-     * @param agent The {@link EncryptionAgent}.
-     * @param mode The blob encryption mode.
-     * @param blockInfo The {@link AuthenticationBlockInfo}.
+     * @param encryptionAgent The {@link EncryptionAgent}.
+     * @param encryptionMode The blob encryption mode.
+     * @param authenticationRegionInfo The {@link AuthenticationRegionInfo}.
      * @param keyWrappingMetadata Metadata for encryption.`
-     * @param wrappedKey The {@link WrappedKey}.
+     * @param wrappedContentKey The {@link WrappedKey}.
      */
-    EncryptionDataV2(EncryptionAgent agent, String mode, AuthenticationBlockInfo blockInfo,
-        Map<String, String> keyWrappingMetadata, WrappedKey wrappedKey) {
-        this.encryptionAgent = agent;
-        this.encryptionMode = mode;
-        this.authenticationBlockInfo = blockInfo;
+    EncryptionDataV2(EncryptionAgent encryptionAgent, String encryptionMode,
+        AuthenticationRegionInfo authenticationRegionInfo, Map<String, String> keyWrappingMetadata,
+        WrappedKey wrappedContentKey) {
+        this.encryptionAgent = encryptionAgent;
+        this.encryptionMode = encryptionMode;
+        this.authenticationRegionInfo = authenticationRegionInfo;
         this.keyWrappingMetadata = keyWrappingMetadata;
-        this.wrappedContentKey = wrappedKey;
+        this.wrappedContentKey = wrappedContentKey;
     }
 
     /**
@@ -117,18 +118,18 @@ public class EncryptionDataV2 implements EncryptionData{
      *
      * @return The authenticationBlockInfo property.
      */
-    AuthenticationBlockInfo getAuthenticationBlockInfo() {
-        return authenticationBlockInfo;
+    AuthenticationRegionInfo getAuthenticationBlockInfo() {
+        return authenticationRegionInfo;
     }
 
     /**
      * Sets the authenticationBlockInfo property.
      *
-     * @param authenticationBlockInfo The authenticationBlockInfo value to set.
+     * @param authenticationRegionInfo The authenticationBlockInfo value to set.
      * @return The updated object
      */
-    EncryptionDataV2 setAuthenticationBlockInfo(AuthenticationBlockInfo authenticationBlockInfo) {
-        this.authenticationBlockInfo = authenticationBlockInfo;
+    EncryptionDataV2 setAuthenticationBlockInfo(AuthenticationRegionInfo authenticationRegionInfo) {
+        this.authenticationRegionInfo = authenticationRegionInfo;
         return this;
     }
 

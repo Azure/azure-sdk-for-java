@@ -6,20 +6,23 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class AuthenticationBlockInfo {
+public class AuthenticationRegionInfo {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * The cipher text length.
      */
-    @JsonProperty(value = "CipherTextLength")
-    private int encryptionRegionLength;
+    @JsonProperty(value = "EncryptionRegionLength")
+    private String encryptionRegionLength;
 
     /**
      * The nonce length.
      */
     @JsonProperty(value = "NonceLength")
-    private int nonceLength;
+    private String nonceLength;
+
+    AuthenticationRegionInfo() {
+    }
 
     /**
      * Creates a new AuthenticationBlockInfo.
@@ -27,7 +30,7 @@ public class AuthenticationBlockInfo {
      * @param ciphertextLength The length of the cipher text.
      * @param nonceLength The length of the nonce.
      */
-    AuthenticationBlockInfo(int ciphertextLength, int nonceLength) {
+    AuthenticationRegionInfo(String ciphertextLength, String nonceLength) {
         this.encryptionRegionLength = ciphertextLength;
         this.nonceLength = nonceLength;
     }
@@ -37,7 +40,7 @@ public class AuthenticationBlockInfo {
      *
      * @return The ciphertextLength property.
      */
-    public int getEncryptionRegionLength() {
+    public String getEncryptionRegionLength() {
         return encryptionRegionLength;
     }
 
@@ -46,7 +49,7 @@ public class AuthenticationBlockInfo {
      *
      * @return The nonceLength property.
      */
-    public int getNonceLength() {
+    public String getNonceLength() {
         return nonceLength;
     }
 }

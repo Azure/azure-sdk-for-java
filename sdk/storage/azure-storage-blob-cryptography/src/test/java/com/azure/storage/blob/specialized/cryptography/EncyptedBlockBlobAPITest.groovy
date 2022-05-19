@@ -28,6 +28,7 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
 import com.microsoft.azure.storage.blob.BlobRequestOptions
@@ -42,6 +43,9 @@ import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
+import javax.crypto.Cipher
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.SecretKeySpec
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
@@ -95,6 +99,50 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def cleanup() {
         cc.delete()
+    }
+
+    def "v2 Encryption Test"() {
+        setup:
+        def data = getRandomData(20 * 1024 * 1024 - 10)
+
+        // 3000 passes
+        // 5 * 1024 * 1024 - 10 passes
+        // 16 * 1024 * 1024 - 10 fails
+        when:
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)), EncryptionVersion.V2).block()
+
+        and:
+        def outStream = new ByteArrayOutputStream()
+        def downloadResponse = cc.getBlobClient(beac.getBlobName()).downloadStreamWithResponse(outStream, null, null, null, false, null, null)
+        def ciphertextRawBites = outStream.toByteArray()
+        def ciphertextInputStream = new ByteArrayInputStream(ciphertextRawBites)
+        def plaintextOriginal = data.array()
+        def plaintextOutputStream = new ByteArrayOutputStream()
+
+        def encryptionData = new ObjectMapper().readValue(downloadResponse.getDeserializedHeaders().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
+            EncryptionDataV2.class)
+        def cek = fakeKey.unwrapKey(
+            encryptionData.getWrappedContentKey().getAlgorithm(),
+            encryptionData.getWrappedContentKey().getEncryptedKey()).block()
+        def keySpec = new SecretKeySpec(cek, CryptographyConstants.AES)
+
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding")
+
+        int numChunks = (int) Math.ceil(data.array().length / (4 * 1024 * 1024.0));
+
+        for (int i=0; i < numChunks; i++) {
+            def IV = ciphertextInputStream.readNBytes(12)
+            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(16 * 8, IV)
+
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec)
+
+            plaintextOutputStream.write(cipher.doFinal(ciphertextInputStream.readNBytes((4 * 1024 * 1024) + 16)))
+        }
+        //ByteBuffer plaintextOut = ByteBuffer.allocate(3000)
+        //cipher.doFinal(ByteBuffer.wrap(ciphertextRawBites, 12, 3016), plaintextOut)
+
+        then:
+        ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
     }
 
     // Key and key resolver null
