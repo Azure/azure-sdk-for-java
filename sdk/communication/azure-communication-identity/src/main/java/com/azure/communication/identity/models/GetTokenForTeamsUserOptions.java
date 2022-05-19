@@ -19,7 +19,7 @@ public final class GetTokenForTeamsUserOptions {
     /**
      * Creates a GetTokenForTeamsUserOptions object
      *
-     * @param teamsUserAadToken AAD access token of a Teams User.
+     * @param teamsUserAadToken Azure AD access token of a Teams User.
      * @param clientId Client ID of an Azure AD application to be verified
      *                 against the appId claim in the Azure AD access token.
      * @param userObjectId Object ID of an Azure AD user (Teams User)
@@ -32,18 +32,18 @@ public final class GetTokenForTeamsUserOptions {
     }
 
     /**
-     * Gets the AAD access token of a Teams User.
+     * Gets the Azure AD access token of a Teams User.
      *
-     * @return the AAD access token of a Teams User.
+     * @return the Azure AD access token of a Teams User.
      */
     public String getTeamsUserAadToken() {
         return teamsUserAadToken;
     }
 
     /**
-     * Sets the AAD access token of a Teams User.
+     * Sets the Azure AD access token of a Teams User.
      *
-     * @param teamsUserAadToken the AAD access token of a Teams User.
+     * @param teamsUserAadToken the Azure AD access token of a Teams User.
      * @return the {@link GetTokenForTeamsUserOptions}.
      */
     public GetTokenForTeamsUserOptions setTeamsUserAadToken(String teamsUserAadToken) {

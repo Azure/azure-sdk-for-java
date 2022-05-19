@@ -61,7 +61,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for creating a sync Communication Identity Client using AAD authentication.
+     * Sample code for creating a sync Communication Identity Client using Azure AD authentication.
      *
      * @return the Communication Identity Client.
      */
@@ -166,7 +166,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for exchanging an AAD access token of a Teams User for a new Communication Identity access token.
+     * Sample code for exchanging an Azure AD access token of a Teams User for a new Communication Identity access token.
      */
     public void getTokenForTeamsUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
@@ -186,7 +186,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for generating an AAD access token of a Teams User
+     * Sample code for generating an Azure AD access token of a Teams User
      */
     private static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
         String teamsUserAadToken = "";

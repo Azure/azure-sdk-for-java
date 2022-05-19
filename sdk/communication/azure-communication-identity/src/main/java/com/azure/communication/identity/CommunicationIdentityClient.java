@@ -229,9 +229,9 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+     * Exchanges an Azure AD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param options {@link GetTokenForTeamsUserOptions} request options used to exchange an AAD access token of a Teams User for a new Communication Identity access token.
+     * @param options {@link GetTokenForTeamsUserOptions} request options used to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
      * @return Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -241,18 +241,10 @@ public final class CommunicationIdentityClient {
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
-    private TeamsUserExchangeTokenRequest createTeamsUserExchangeTokenRequest(GetTokenForTeamsUserOptions options) {
-        TeamsUserExchangeTokenRequest requestBody = new TeamsUserExchangeTokenRequest();
-        requestBody.setToken(options.getTeamsUserAadToken());
-        requestBody.setAppId(options.getClientId());
-        requestBody.setUserId(options.getUserObjectId());
-        return requestBody;
-    }
-
     /**
-     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+     * Exchanges an Azure AD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param options {@link GetTokenForTeamsUserOptions} request options used to exchange an AAD access token of a Teams User for a new Communication Identity access token.
+     * @param options {@link GetTokenForTeamsUserOptions} request options used to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
      * @param context the context of the request. Can also be null or
      *                          Context.NONE.
      * @return Communication Identity access token with response.
@@ -272,6 +264,12 @@ public final class CommunicationIdentityClient {
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
 
-
+    private TeamsUserExchangeTokenRequest createTeamsUserExchangeTokenRequest(GetTokenForTeamsUserOptions options) {
+        TeamsUserExchangeTokenRequest requestBody = new TeamsUserExchangeTokenRequest();
+        requestBody.setToken(options.getTeamsUserAadToken());
+        requestBody.setAppId(options.getClientId());
+        requestBody.setUserId(options.getUserObjectId());
+        return requestBody;
+    }
 
 }

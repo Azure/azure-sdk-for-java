@@ -164,8 +164,8 @@ Use the `deleteUser` function to delete a user.
 communicationIdentityClient.deleteUser(user);
 ```
 
-### Exchanging AAD access token of a Teams User for a Communication Identity access token
-Use the `getTokenForTeamsUser` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+### Exchanging Azure AD access token of a Teams User for a Communication Identity access token
+Use the `getTokenForTeamsUser` function to exchanges an Azure AD access token of a Teams User for a new Communication Identity access token.
 
 ```java readme-sample-getTokenForTeamsUser
 String clientId = "<Client ID of an Azure AD application>";

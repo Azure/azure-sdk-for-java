@@ -64,7 +64,7 @@ public class CteTestHelper {
     /**
      * Gets a CTE request parameters for unit tests.
      *
-     * @return the Teams User AAD token.
+     * @return the Teams User Azure AD token.
      */
     private static GetTokenForTeamsUserOptions createTeamsUserExchangeTokenRequest() throws MalformedURLException, ExecutionException, InterruptedException {
         GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions("Sanitized", "Sanitized", "Sanitized");
@@ -85,7 +85,7 @@ public class CteTestHelper {
                         .setUserObjectId(accountIds[0]);
             } catch (Exception e) {
                 ClientLogger logger = new ClientLogger(CommunicationIdentityClientTestBase.class);
-                logger.error("Could not generate Teams User AAD token, failed with '{}' ", e.getMessage());
+                logger.error("Could not generate Teams User Azure AD token, failed with '{}' ", e.getMessage());
                 throw e;
             }
         }
