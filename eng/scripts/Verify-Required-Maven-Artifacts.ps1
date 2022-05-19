@@ -11,13 +11,11 @@ param(
   # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
   [Parameter(Mandatory=$true)][array] $ArtifactsList
 )
-$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose']
-$StartTime = $(get-date)
 . "${PSScriptRoot}/../common/scripts/common.ps1"
 
 Write-Host "BuildOutputDirectory=$($BuildOutputDirectory)"
 Write-Host "BuildOutputDirectory contents"
-Get-ChildItem -Path $BuildOutputDirectory -Name
+Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name
 
 Write-Host ""
 Write-Host "ArtifactsList:"
@@ -91,7 +89,7 @@ foreach($artifact in $ArtifactsList) {
   $libHashKey = "$($artifact.groupId):$($artifact.name)"
   foreach ($fileType in $requiredFileTypes) {
     $fileName = "$($artifact.name)-$($libHash[$libHashKey].curVer)$($fileType)"
-    $file = @(Get-ChildItem -Path $BuildOutputDirectory -Name $fileName)
+    $file = @(Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name $fileName)
     if (!$file) {
       $foundError = $true
       LogError "Required file, $fileName, was not produced with the build."
@@ -101,13 +99,7 @@ foreach($artifact in $ArtifactsList) {
 
 if ($foundError) {
   LogError "One or more required Maven Artifacts were not produced with the build. If the missing files were javadoc.jar or sources.jar please contact the Azure SDK EngSys team through email or their channel (azuresdkengsysteam@microsoft.com or Azure SDK > Engineering System on teams) for assistance."
+  exit(1)
 } else {
   Write-Host "Success! All Maven required artifacts has been produced."
-}
-
-if ($UseVerboseLogging)
-{
-    $ElapsedTime = $(get-date) - $StartTime
-    $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
-    Write-Host "Total run time=$($TotalRunTime)"
 }
