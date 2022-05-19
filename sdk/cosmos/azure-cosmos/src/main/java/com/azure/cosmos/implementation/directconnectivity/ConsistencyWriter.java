@@ -202,7 +202,7 @@ public class ConsistencyWriter {
                                                                throw unwrappedException;
                                                            }
                                                        }
-                                                       
+
                                                        storeReader.createAndRecordStoreResult(
                                                            request,
                                                            null, ex != null ? ex: rawException,

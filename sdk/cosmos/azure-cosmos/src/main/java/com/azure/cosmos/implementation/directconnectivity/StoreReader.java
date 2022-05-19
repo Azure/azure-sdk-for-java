@@ -664,9 +664,6 @@ public class StoreReader {
         boolean useLocalLSNBasedHeaders,
         Uri storePhysicalAddress) {
 
-        if (storeResponse == null && responseException == null) {
-            System.out.println("What the hell ?!?!?!?");
-        }
         StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
 
         try {
