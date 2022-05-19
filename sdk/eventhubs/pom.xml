@@ -58,5 +58,8 @@
       </modules>
     </profile>
   </profiles>
+  <modules>
+    <module>azure-messaging-eventhubs-stress</module>
+  </modules>
 
 </project>
