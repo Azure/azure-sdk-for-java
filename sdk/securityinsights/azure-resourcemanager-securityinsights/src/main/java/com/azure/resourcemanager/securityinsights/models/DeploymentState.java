@@ -33,7 +33,11 @@ public final class DeploymentState extends ExpandableStringEnum<DeploymentState>
         return fromString(name, DeploymentState.class);
     }
 
-    /** @return known DeploymentState values. */
+    /**
+     * Gets known DeploymentState values.
+     *
+     * @return known DeploymentState values.
+     */
     public static Collection<DeploymentState> values() {
         return values(DeploymentState.class);
     }

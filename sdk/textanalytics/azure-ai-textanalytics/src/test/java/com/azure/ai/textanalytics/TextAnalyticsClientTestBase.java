@@ -21,6 +21,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -178,9 +179,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void detectLanguageEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void detectLanguageFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
     abstract void detectLanguageDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -198,9 +196,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -274,9 +269,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizePiiEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizePiiEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizePiiEntitiesDuplicateIdInput(HttpClient httpClient,
@@ -371,10 +363,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLinkedEntitiesForFaultyText(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
     abstract void recognizeLinkedEntitiesDuplicateIdInput(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
@@ -449,9 +437,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void extractKeyPhrasesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
     abstract void extractKeyPhrasesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -501,9 +486,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeSentimentForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeSentimentForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -641,6 +623,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeHealthcareEntitiesForFhirBundle(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
 
     // Healthcare LRO - Cancellation
 
@@ -983,10 +969,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(new ArrayList<>(), "'documents' cannot be empty.");
     }
 
-    void faultyTextRunner(Consumer<String> testRunner) {
-        testRunner.accept("!@#%%");
-    }
-
     void detectLanguageInputEmptyIdRunner(Consumer<List<DetectLanguageInput>> testRunner) {
         testRunner.accept(asList(new DetectLanguageInput("", DETECT_LANGUAGE_INPUTS.get(0))));
     }
@@ -1070,6 +1052,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             "All female participants that are premenopausal will be required to have a pregnancy test; "
                 + "any participant who is pregnant or breastfeeding will not be included"),
             new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(false));
+    }
+
+    void analyzeHealthcareEntitiesForFhirBundleRunner(
+        BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
+        testRunner.accept(asList(
+            "All female participants that are premenopausal will be required to have a pregnancy test; "
+                + "any participant who is pregnant or breastfeeding will not be included"),
+            new AnalyzeHealthcareEntitiesOptions().setFhirVersion(FhirVersion.V4_0_1));
     }
 
     // Healthcare LRO runner- Cancellation

@@ -41,12 +41,14 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -228,6 +230,11 @@ public class HttpTransportClient extends TransportClient {
         } catch (Exception e) {
             return Mono.error(e);
         }
+    }
+
+    @Override
+    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+        throw new NotImplementedException("openConnection is not supported in httpTransportClient");
     }
 
     @Override

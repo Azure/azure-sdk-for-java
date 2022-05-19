@@ -189,14 +189,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
     private Mono<TokenInformationInner> getAsync(
         String vaultName, String resourceGroupName, SecurityPinBase parameters) {
         return getWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<TokenInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -213,14 +206,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
     private Mono<TokenInformationInner> getAsync(String vaultName, String resourceGroupName) {
         final SecurityPinBase parameters = null;
         return getWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<TokenInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

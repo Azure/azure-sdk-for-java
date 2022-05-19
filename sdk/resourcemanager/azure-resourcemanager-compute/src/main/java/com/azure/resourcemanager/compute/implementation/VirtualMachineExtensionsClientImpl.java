@@ -1199,14 +1199,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     public Mono<VirtualMachineExtensionInner> getAsync(
         String resourceGroupName, String vmName, String vmExtensionName, String expand) {
         return getWithResponseAsync(resourceGroupName, vmName, vmExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1225,14 +1218,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         String resourceGroupName, String vmName, String vmExtensionName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, vmName, vmExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1388,14 +1374,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     public Mono<VirtualMachineExtensionsListResultInner> listAsync(
         String resourceGroupName, String vmName, String expand) {
         return listWithResponseAsync(resourceGroupName, vmName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1412,14 +1391,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     public Mono<VirtualMachineExtensionsListResultInner> listAsync(String resourceGroupName, String vmName) {
         final String expand = null;
         return listWithResponseAsync(resourceGroupName, vmName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

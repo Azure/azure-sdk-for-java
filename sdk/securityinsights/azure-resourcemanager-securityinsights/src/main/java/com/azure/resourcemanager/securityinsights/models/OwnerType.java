@@ -30,7 +30,11 @@ public final class OwnerType extends ExpandableStringEnum<OwnerType> {
         return fromString(name, OwnerType.class);
     }
 
-    /** @return known OwnerType values. */
+    /**
+     * Gets known OwnerType values.
+     *
+     * @return known OwnerType values.
+     */
     public static Collection<OwnerType> values() {
         return values(OwnerType.class);
     }

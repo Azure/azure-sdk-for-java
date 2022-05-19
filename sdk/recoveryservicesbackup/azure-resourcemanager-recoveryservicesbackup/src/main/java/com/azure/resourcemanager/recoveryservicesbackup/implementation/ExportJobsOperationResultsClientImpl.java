@@ -197,14 +197,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
     private Mono<OperationResultInfoBaseResourceInner> getAsync(
         String vaultName, String resourceGroupName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap(
-                (Response<OperationResultInfoBaseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
