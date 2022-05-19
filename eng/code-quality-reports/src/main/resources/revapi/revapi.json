@@ -391,7 +391,13 @@
           "code": "java.class.removed",
           "old": "class com.azure.spring.cloud.feature.manager.FeatureManagementWebConfiguration",
           "justification": "This is a non public API, moved into implementation folder"
-        }
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties",
+          "justification": "This is used by both Feature Management libraries and is Public."
+          }
       ]
     }
   }
