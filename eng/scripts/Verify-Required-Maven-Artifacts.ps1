@@ -21,10 +21,10 @@ Write-Host ""
 Write-Host "ArtifactsList:"
 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
 
-# These are the absolute mininum of the files required to publish to Maven
-$requiredFileTypes = (".pom", ".jar", "-javadoc.jar", "-sources.jar")
+# These are the absolute minimum of the files required to publish to Maven
+$requiredFileTypes = (".pom", ".jar", "-javadoc.jar", "-sources.jar", ".foo")
 
-# The expected format for a depenency, as found in the eng\versioning\version_*.txt files, is as follows:
+# The expected format for a dependency, as found in the eng\versioning\version_*.txt files, is as follows:
 # groupId:artifactId;dependency-version;current-version
 class Dependency {
   [string]$id
