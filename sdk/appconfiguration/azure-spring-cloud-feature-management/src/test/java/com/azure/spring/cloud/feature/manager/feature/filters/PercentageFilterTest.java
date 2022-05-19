@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.Test;
 
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 
 public class PercentageFilterTest {
 

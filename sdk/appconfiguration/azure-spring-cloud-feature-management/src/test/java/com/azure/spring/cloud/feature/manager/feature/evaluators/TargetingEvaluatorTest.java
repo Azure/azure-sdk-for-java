@@ -16,9 +16,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.feature.manager.TargetingException;
-import com.azure.spring.cloud.feature.manager.entities.FeatureDefinition;
-import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.GroupRollout;
+import com.azure.spring.cloud.feature.manager.models.FeatureDefinition;
+import com.azure.spring.cloud.feature.manager.models.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 

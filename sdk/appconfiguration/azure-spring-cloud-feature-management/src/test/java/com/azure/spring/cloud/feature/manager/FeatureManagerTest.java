@@ -24,13 +24,14 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-import com.azure.spring.cloud.feature.manager.entities.FeatureDefinition;
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
-import com.azure.spring.cloud.feature.manager.entities.IFeatureVariantAssigner;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
-import com.azure.spring.cloud.feature.manager.implementation.entities.Feature;
+import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
+import com.azure.spring.cloud.feature.manager.models.FeatureDefinition;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FeatureVariant;
+import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
+import com.azure.spring.cloud.feature.manager.models.IFeatureVariantAssigner;
 
 import reactor.core.publisher.Mono;
 
@@ -147,7 +148,7 @@ public class FeatureManagerTest {
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
 
-    class MockFilter implements FeatureFilter, IFeatureVariantAssigner {
+    class MockFilter implements IFeatureFilter, IFeatureVariantAssigner {
 
         @Override
         public Mono<FeatureVariant> assignVariantAsync(FeatureDefinition featureDefinition) {
@@ -161,7 +162,7 @@ public class FeatureManagerTest {
 
     }
 
-    class AlwaysOnFilter implements FeatureFilter {
+    class AlwaysOnFilter implements IFeatureFilter {
 
         @Override
         public boolean evaluate(FeatureFilterEvaluationContext context) {

@@ -26,13 +26,14 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-import com.azure.spring.cloud.feature.manager.entities.FeatureDefinition;
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
-import com.azure.spring.cloud.feature.manager.entities.IFeatureVariantAssigner;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
-import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.implementation.models.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.models.FeatureDefinition;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FeatureVariant;
+import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
+import com.azure.spring.cloud.feature.manager.models.IFeatureVariantAssigner;
 import com.azure.spring.cloud.feature.manager.testobjects.DiscountBanner;
 import com.azure.spring.cloud.feature.manager.testobjects.MockableProperties;
 
@@ -225,7 +226,7 @@ public class DynamicFeatureManagerTest {
         assertThat(e).hasMessage("The feature variant assigner FeatureAssignerThatDoesntExist specified for feature FeatureAssignerThatDoesntExist was not found.");
     }
 
-    class MockFilter implements FeatureFilter, IFeatureVariantAssigner {
+    class MockFilter implements IFeatureFilter, IFeatureVariantAssigner {
 
         @Override
         public Mono<FeatureVariant> assignVariantAsync(FeatureDefinition featureDefinition) {

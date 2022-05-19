@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.feature.manager.FeatureFilter;
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 
 /**
  * A feature filter that can be used at activate a feature based on a time window.
  */
 @Component("TimeWindowFilter")
-public final class TimeWindowFilter implements FeatureFilter {
+public final class TimeWindowFilter implements IFeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeWindowFilter.class);
 

@@ -13,10 +13,11 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
-import com.azure.spring.cloud.feature.manager.implementation.entities.Feature;
+import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 
 import reactor.core.publisher.Mono;
 
@@ -87,7 +88,7 @@ public class FeatureManager {
 
 	private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {
 		try {
-			FeatureFilter featureFilter = (FeatureFilter) context.getBean(filter.getName());
+			IFeatureFilter featureFilter = (IFeatureFilter) context.getBean(filter.getName());
 			filter.setFeatureName(feature);
 
 			return featureFilter.evaluate(filter);

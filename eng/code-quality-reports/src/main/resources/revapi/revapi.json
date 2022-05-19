@@ -393,6 +393,14 @@
           "justification": "This is a non public API, moved into implementation folder"
         },
         {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "old": "class com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot",
+          "new": "class com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot",
+          "annotation": "@org.springframework.context.annotation.Configuration",
+          "justification": "Shouldn't have been marked ask @Configuration, wasn't doing anything with it."
+        },
+        {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "interface com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties",

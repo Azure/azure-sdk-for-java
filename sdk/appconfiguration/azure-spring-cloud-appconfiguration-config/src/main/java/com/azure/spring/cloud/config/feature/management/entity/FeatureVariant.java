@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.validation.annotation.Validated;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A variant of a feature.
  */
-@Validated
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureVariant {
 

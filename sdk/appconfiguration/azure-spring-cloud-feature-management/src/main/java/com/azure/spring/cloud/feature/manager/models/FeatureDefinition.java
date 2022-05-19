@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.entities;
+package com.azure.spring.cloud.feature.manager.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
 
-import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.implementation.models.DynamicFeature;
 
 /**
  * The definition of a dynamic feature.

@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.azure.spring.cloud.feature.manager.TargetingException;
 import com.azure.spring.cloud.feature.manager.TestConfiguration;
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;

@@ -15,10 +15,10 @@ import java.util.concurrent.ExecutionException;
 import org.junit.jupiter.api.Test;
 
 import com.azure.spring.cloud.feature.manager.FilterNotFoundException;
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.entities.FeatureVariant;
-import com.azure.spring.cloud.feature.manager.implementation.entities.DynamicFeature;
-import com.azure.spring.cloud.feature.manager.implementation.entities.Feature;
+import com.azure.spring.cloud.feature.manager.implementation.models.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FeatureVariant;
 
 public class FeatureManagementPropertiesTest {
 

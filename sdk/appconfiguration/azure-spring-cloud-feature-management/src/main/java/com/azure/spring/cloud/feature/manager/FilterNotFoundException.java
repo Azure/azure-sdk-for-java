@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 
 /**
  * This class defines a custom exception type for when an expected Filter is not found when checking if a Feature is

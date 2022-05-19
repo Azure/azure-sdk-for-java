@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.azure.spring.cloud.feature.manager.FeatureFilter;
 import com.azure.spring.cloud.feature.manager.TargetingException;
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.Audience;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.GroupRollout;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.TargetingFilterSettings;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 /**
  * `Microsoft.TargetingFilter` enables evaluating a user/group/overall rollout of a feature.
  */
-public class TargetingFilter implements FeatureFilter {
+public class TargetingFilter implements IFeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetingFilter.class);
 
