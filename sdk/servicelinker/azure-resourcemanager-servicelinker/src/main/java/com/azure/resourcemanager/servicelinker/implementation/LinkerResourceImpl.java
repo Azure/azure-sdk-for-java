@@ -16,7 +16,7 @@ import com.azure.resourcemanager.servicelinker.models.SecretStore;
 import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.TargetServiceBase;
 import com.azure.resourcemanager.servicelinker.models.VNetSolution;
-import com.azure.resourcemanager.servicelinker.models.ValidateResult;
+import com.azure.resourcemanager.servicelinker.models.ValidateOperationResult;
 
 public final class LinkerResourceImpl implements LinkerResource, LinkerResource.Definition, LinkerResource.Update {
     private LinkerResourceInner innerObject;
@@ -161,11 +161,11 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
         return this;
     }
 
-    public ValidateResult validate() {
+    public ValidateOperationResult validate() {
         return serviceManager.linkers().validate(resourceUri, linkerName);
     }
 
-    public ValidateResult validate(Context context) {
+    public ValidateOperationResult validate(Context context) {
         return serviceManager.linkers().validate(resourceUri, linkerName, context);
     }
 

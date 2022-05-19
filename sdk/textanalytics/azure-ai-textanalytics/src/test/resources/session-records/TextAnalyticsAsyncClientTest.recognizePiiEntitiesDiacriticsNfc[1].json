@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/entities/recognition/pii?showStats=false&loggingOptOut=true&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c408157d-d1c5-4114-8743-986fc7df908d",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d79e5af4-6555-43cc-a6f8-eda99f654ff5",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "23",
+      "content-length" : "286",
+      "x-envoy-upstream-service-time" : "38",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "9c84179e-a3a9-421c-a47a-d4a517eb4110",
+      "apim-request-id" : "37314e8d-4fda-42d0-848a-629c219c713a",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"redactedText\":\"año SSN: ***********\",\"id\":\"0\",\"entities\":[{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":9,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
-      "Date" : "Tue, 19 Oct 2021 20:17:17 GMT",
+      "Body" : "{\"kind\":\"PiiEntityRecognitionResults\",\"results\":{\"documents\":[{\"redactedText\":\"año SSN: ***********\",\"id\":\"0\",\"entities\":[{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":9,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}",
+      "Date" : "Fri, 06 May 2022 17:51:49 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -33,7 +33,11 @@ public final class Bypass extends ExpandableStringEnum<Bypass> {
         return fromString(name, Bypass.class);
     }
 
-    /** @return known Bypass values. */
+    /**
+     * Gets known Bypass values.
+     *
+     * @return known Bypass values.
+     */
     public static Collection<Bypass> values() {
         return values(Bypass.class);
     }

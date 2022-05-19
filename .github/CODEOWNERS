@@ -44,7 +44,7 @@
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
 # PRLabel: %Communication - Calling Server
-/sdk/communication/sdk/communication/azure-communication-callingserver/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
 # PRLabel: %Communication - Chat
 /sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
@@ -102,7 +102,7 @@
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
+/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang @anushkasingh16
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak

@@ -9,7 +9,7 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 public class AadCredentialProperties {
 
     /**
-     * Client id to use when performing service principal authentication with Azure.
+     * Client ID to use when performing service principal authentication with Azure.
      */
     private String clientId;
 
@@ -20,7 +20,7 @@ public class AadCredentialProperties {
 
     /**
      *
-     * @return The client id.
+     * @return The client ID.
      */
     public String getClientId() {
         return clientId;
@@ -28,7 +28,7 @@ public class AadCredentialProperties {
 
     /**
      *
-     * @param clientId The client id.
+     * @param clientId The client ID.
      */
     public void setClientId(String clientId) {
         this.clientId = clientId;

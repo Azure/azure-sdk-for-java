@@ -88,7 +88,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createDocumentTimeout(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
-        Mono<CosmosItemResponse<InternalObjectNode>> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions()).timeout(Duration.ofMillis(1));
+        Mono<CosmosItemResponse<InternalObjectNode>> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions()).timeout(Duration.ofNanos(10));
         FailureValidator validator = new FailureValidator.Builder().instanceOf(TimeoutException.class).build();
         validateItemFailure(createObservable, validator);
     }

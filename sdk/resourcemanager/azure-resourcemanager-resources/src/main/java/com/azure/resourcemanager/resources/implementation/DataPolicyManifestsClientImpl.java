@@ -156,15 +156,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataPolicyManifestInner> getByPolicyModeAsync(String policyMode) {
-        return getByPolicyModeWithResponseAsync(policyMode)
-            .flatMap(
-                (Response<DataPolicyManifestInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByPolicyModeWithResponseAsync(policyMode).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -27,7 +27,11 @@ public final class EnforcementMode extends ExpandableStringEnum<EnforcementMode>
         return fromString(name, EnforcementMode.class);
     }
 
-    /** @return known EnforcementMode values. */
+    /**
+     * Gets known EnforcementMode values.
+     *
+     * @return known EnforcementMode values.
+     */
     public static Collection<EnforcementMode> values() {
         return values(EnforcementMode.class);
     }

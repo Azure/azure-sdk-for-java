@@ -45,6 +45,7 @@
       --add-opens com.azure.core/com.azure.core.http=com.azure.resourcemanager.resources
       --add-opens com.azure.core/com.azure.core.http.policy=com.azure.resourcemanager.resources
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

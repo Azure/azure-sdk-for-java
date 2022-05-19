@@ -36,7 +36,11 @@ public final class TopicTypePropertiesSupportedScopesForSourceItem
         return fromString(name, TopicTypePropertiesSupportedScopesForSourceItem.class);
     }
 
-    /** @return known TopicTypePropertiesSupportedScopesForSourceItem values. */
+    /**
+     * Gets known TopicTypePropertiesSupportedScopesForSourceItem values.
+     *
+     * @return known TopicTypePropertiesSupportedScopesForSourceItem values.
+     */
     public static Collection<TopicTypePropertiesSupportedScopesForSourceItem> values() {
         return values(TopicTypePropertiesSupportedScopesForSourceItem.class);
     }

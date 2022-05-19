@@ -63,8 +63,7 @@ stages:
     - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-          TestPipeline: true
+        TestPipeline: ${{ parameters.TestPipeline }}
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
@@ -111,8 +110,7 @@ stages:
           - ${{ each artifact in parameters.Artifacts }}:
             - ${{ if ne(artifact.releaseInBatch, 'false') }}:
               - ${{ artifact }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
+          TestPipeline: ${{ parameters.TestPipeline }}
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
     - ${{ else }}:
@@ -123,8 +121,7 @@ stages:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           Artifacts: ${{ parameters.Artifacts }}
-          ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-            TestPipeline: true
+          TestPipeline: ${{ parameters.TestPipeline }}
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 

@@ -24,7 +24,11 @@ public final class RestorePointExpandOptions extends ExpandableStringEnum<Restor
         return fromString(name, RestorePointExpandOptions.class);
     }
 
-    /** @return known RestorePointExpandOptions values. */
+    /**
+     * Gets known RestorePointExpandOptions values.
+     *
+     * @return known RestorePointExpandOptions values.
+     */
     public static Collection<RestorePointExpandOptions> values() {
         return values(RestorePointExpandOptions.class);
     }

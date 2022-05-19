@@ -31,7 +31,11 @@ variables:
 
   # This will be overwritten by the test matrix, if configured.
   TestOptions: ''
-
+  # TestFromSource is one of the cache keys but isn't set until the test matrix
+  # has been processed. Without a default value it'll be treated as a string literal
+  # "$(TestFromSource)" instead of true/false. It'll be overwritten when the test
+  # matrix has been processed
+  TestFromSource: false
   AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true

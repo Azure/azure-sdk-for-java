@@ -36,7 +36,11 @@ public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareActio
         return fromString(name, LeaseShareAction.class);
     }
 
-    /** @return known LeaseShareAction values. */
+    /**
+     * Gets known LeaseShareAction values.
+     *
+     * @return known LeaseShareAction values.
+     */
     public static Collection<LeaseShareAction> values() {
         return values(LeaseShareAction.class);
     }
