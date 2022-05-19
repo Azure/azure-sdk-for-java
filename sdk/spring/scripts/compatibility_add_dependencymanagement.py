@@ -35,6 +35,7 @@
 import os
 import time
 import argparse
+import json
 
 from log import log
 
@@ -45,8 +46,8 @@ def main():
     args = get_args()
     log.set_log_level(args.log)
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    spring_cloud_version = get_spring_cloud_version()
-    # add_dependency_management_for_all_poms_files_in_directory("./sdk/spring", spring_cloud_version)
+    spring_cloud_version = get_spring_cloud_version("./sdk/spring/compatibility-version-management.json")
+    add_dependency_management_for_all_poms_files_in_directory("./sdk/spring", spring_cloud_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
@@ -69,7 +70,7 @@ def change_to_root_dir():
     os.chdir('../../..')
 
 
-def get_spring_cloud_version():
+def get_spring_cloud_version(filepath):
     spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
     spring_cloud_version = "0"
     with open(filepath, 'r') as file:
