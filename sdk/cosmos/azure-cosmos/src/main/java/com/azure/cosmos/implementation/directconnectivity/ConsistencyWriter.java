@@ -199,9 +199,10 @@ public class ConsistencyWriter {
                                                            rawException = Utils.as(unwrappedException, Exception.class);
 
                                                            if (rawException == null) {
-                                                               throw rawException;
+                                                               throw unwrappedException;
                                                            }
                                                        }
+                                                       
                                                        storeReader.createAndRecordStoreResult(
                                                            request,
                                                            null, ex != null ? ex: rawException,
