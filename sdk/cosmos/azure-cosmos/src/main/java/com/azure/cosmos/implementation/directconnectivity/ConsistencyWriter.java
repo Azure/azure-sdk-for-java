@@ -209,7 +209,13 @@ public class ConsistencyWriter {
                                                            false,
                                                            false,
                                                            primaryUri);
-                                                       String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
+                                                       String value = ex != null ?
+                                                           ex
+                                                               .getResponseHeaders()
+                                                               .get(HttpConstants
+                                                                   .HttpHeaders
+                                                                   .WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH) :
+                                                           null;
                                                        if (!Strings.isNullOrWhiteSpace(value)) {
                                                            Integer result = Integers.tryParse(value);
                                                            if (result != null && result == 1) {
