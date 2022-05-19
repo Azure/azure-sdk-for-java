@@ -788,14 +788,12 @@ public class CosmosClientBuilder implements
     //  Connection policy has to be built before it can be used by this builder
     private void buildConnectionPolicy() {
         if (this.directConnectionConfig != null) {
-            this.connectionPolicy = new ConnectionPolicy(directConnectionConfig);
             //  Check if the user passed additional gateway connection configuration
-            if (this.gatewayConnectionConfig != null) {
-                this.connectionPolicy.setMaxConnectionPoolSize(this.gatewayConnectionConfig.getMaxConnectionPoolSize());
-                this.connectionPolicy.setHttpNetworkRequestTimeout(this.gatewayConnectionConfig.getNetworkRequestTimeout());
-                this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
-                this.connectionPolicy.setProxy(this.gatewayConnectionConfig.getProxy());
+            //  If this is null, initialize with default values
+            if (this.gatewayConnectionConfig == null) {
+                this.gatewayConnectionConfig = GatewayConnectionConfig.getDefaultConfig();
             }
+            this.connectionPolicy = new ConnectionPolicy(directConnectionConfig, gatewayConnectionConfig);
         } else if (gatewayConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
@@ -862,6 +860,12 @@ public class CosmosClientBuilder implements
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Should not be called form user-code. This method is a no-op and is just used internally
+     * to force loading this class
+     */
+    public static void doNothingButEnsureLoadingClass() {}
 
     static {
         CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(

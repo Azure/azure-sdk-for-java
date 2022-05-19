@@ -29,7 +29,7 @@ documentation.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 Also, include the `azure-aot-graalvm-support-netty` package to bring in the configuration files required for Netty HTTP
@@ -40,7 +40,7 @@ client.  For more details on this library, please refer to [this README](https:/
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support-netty</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 

@@ -37,7 +37,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: attestation
-    TestPipeline: true
     Artifacts:
       - name: azure-security-attestation
         groupId: com.azure

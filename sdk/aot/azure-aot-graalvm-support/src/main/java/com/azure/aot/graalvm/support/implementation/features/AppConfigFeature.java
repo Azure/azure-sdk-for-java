@@ -10,7 +10,6 @@ import java.util.Set;
 import static com.azure.aot.graalvm.support.implementation.GraalVMFeatureUtils.interfaces;
 import static com.azure.aot.graalvm.support.implementation.GraalVMFeatureUtils.setsOf;
 
-
 @AutomaticFeature
 public class AppConfigFeature implements GraalVMFeature {
 
@@ -22,7 +21,7 @@ public class AppConfigFeature implements GraalVMFeature {
     @Override
     public Set<String[]> getDynamicProxies() {
         return setsOf(
-                interfaces("com.azure.data.appconfiguration.ConfigurationService")
+                interfaces("com.azure.data.appconfiguration.implementation.ConfigurationService")
         );
     }
 }

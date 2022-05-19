@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appplatform;
 
 import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
@@ -51,16 +52,15 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private static final String PIGGYMETRICS_CONFIG_URL = "https://github.com/Azure-Samples/piggymetrics-config";
     private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
     private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
+    private static final String PETCLINIC_CONFIG_URL = "https://github.com/XiaofeiCao/spring-petclinic-microservices-config";
+    private static final String PETCLINIC_GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/api-gateway.jar";
+    private static final String PETCLINIC_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/petclinic.tar.gz";
 
     private static final String SPRING_CLOUD_SERVICE_OBJECT_ID = "938df8e2-2b9d-40b1-940c-c75c33494239";
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDDeployment() throws Exception {
-        if (skipInPlayback()) {
-            return;
-        }
-
         allowAllSSL();
 
         String serviceName = generateRandomResourceName("springsvc", 15);
@@ -74,16 +74,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withNewResourceGroup(rgName)
             .create();
 
-        File jarFile = new File("gateway.jar");
-        if (!jarFile.exists()) {
-            HttpURLConnection connection = (HttpURLConnection) new URL(GATEWAY_JAR_URL).openConnection();
-            connection.connect();
-            try (InputStream inputStream = connection.getInputStream();
-                 OutputStream outputStream = new FileOutputStream(jarFile)) {
-                IOUtils.copy(inputStream, outputStream);
-            }
-            connection.disconnect();
-        }
+        File jarFile = downloadFile(GATEWAY_JAR_URL);
 
         SpringApp app = service.apps().define(appName)
             .defineActiveDeployment(deploymentName)
@@ -92,6 +83,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withCpu(2)
             .withMemory(4)
             .withRuntime(RuntimeVersion.JAVA_11)
+            .withJvmOptions("-Xms512m")
             .attach()
             .withDefaultPublicEndpoint()
             .create();
@@ -100,26 +92,18 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         Assertions.assertNotNull(app.activeDeploymentName());
         Assertions.assertEquals(1, app.deployments().list().stream().count());
 
-        Assertions.assertTrue(requestSuccess(app.url()));
-
         SpringAppDeployment deployment = app.getActiveDeployment();
+        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.runtimeVersion());
+        Assertions.assertEquals("-Xms512m", deployment.jvmOptions());
+
+        Assertions.assertTrue(requestSuccess(app.url()));
 
         Assertions.assertEquals("2", deployment.settings().resourceRequests().cpu());
         Assertions.assertEquals("4Gi", deployment.settings().resourceRequests().memory());
 //        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
         Assertions.assertEquals(2, deployment.instances().size());
 
-        File gzFile = new File("piggymetrics.tar.gz");
-        if (!gzFile.exists()) {
-            allowAllSSL();
-            HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
-            connection.connect();
-            try (InputStream inputStream = connection.getInputStream();
-                 OutputStream outputStream = new FileOutputStream(gzFile)) {
-                IOUtils.copy(inputStream, outputStream);
-            }
-            connection.disconnect();
-        }
+        File gzFile = downloadFile(PIGGYMETRICS_TAR_GZ_URL);
 
         deployment = app.deployments().define(deploymentName1)
             .withSourceCodeTarGzFile(gzFile)
@@ -144,12 +128,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCreateCustomDomainWithSsl() throws Exception {
-        if (skipInPlayback()) {
-            return;
-        }
-
         String domainName = generateRandomResourceName("jsdkdemo-", 20) + ".com";
         String certOrderName = generateRandomResourceName("cert", 15);
         String vaultName = generateRandomResourceName("vault", 15);
@@ -254,8 +234,99 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         app.update()
             .withHttpsOnly()
+            .withoutCustomDomain(String.format("www.%s", domainName))
             .apply();
         Assertions.assertTrue(checkRedirect(String.format("http://ssl.%s", domainName)));
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void canCRUDEnterpriseTierDeployment() throws Exception {
+        allowAllSSL();
+        File tarGzFile = downloadFile(PETCLINIC_TAR_GZ_URL);
+        File jarFile = downloadFile(PETCLINIC_GATEWAY_JAR_URL);
+
+        String serviceName = generateRandomResourceName("springsvc", 15);
+        Region region = Region.US_EAST;
+
+        SpringService service = appPlatformManager.springServices().define(serviceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withEnterpriseTierSku()
+            .create();
+
+        String deploymentName = generateRandomResourceName("deploy", 15);
+
+        List<String> apiGatewayConfigFilePatterns = Arrays.asList("api-gateway");
+        String appName = "api-gateway";
+        SpringApp gatewayApp = service.apps().define(appName)
+            .defineActiveDeployment(deploymentName)
+            .withJarFile(jarFile)
+            .withInstance(2)
+            .withCpu(0.5)
+            .withMemory(0.5)
+            .withJvmOptions("-DskipTests=true")
+            .attach()
+            .withDefaultPublicEndpoint()
+            .withConfigurationServiceBinding()
+            .withServiceRegistryBinding()
+            .create();
+
+        SpringAppDeployment deployment = gatewayApp.deployments().getByName(deploymentName);
+        Assertions.assertTrue(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
+        String jvmOptions = deployment.jvmOptions();
+        Assertions.assertEquals(jvmOptions, "-DskipTests=true");
+
+        List<String> configFilePatterns = Arrays.asList("api-gateway", "customers-service");
+        service.update()
+            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns)
+            .apply();
+
+        deployment.update()
+            .withConfigFilePatterns(apiGatewayConfigFilePatterns)
+            .apply();
+
+        deployment.refresh();
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
+
+        Assertions.assertNotNull(gatewayApp.url());
+        Assertions.assertNotNull(gatewayApp.activeDeploymentName());
+        Assertions.assertEquals(1, gatewayApp.deployments().list().stream().count());
+
+        String appName2 = "customers-service";
+        String customerServiceModule = "spring-petclinic-customers-service";
+        List<String> customerServiceConfigFilePatterns = Arrays.asList("customers-service");
+        SpringApp customerServiceApp = service.apps().define(appName2)
+            .defineActiveDeployment(deploymentName)
+            .withSourceCodeTarGzFile(tarGzFile, customerServiceConfigFilePatterns)
+            .withTargetModule(customerServiceModule)
+            .attach()
+            .withConfigurationServiceBinding()
+            .withServiceRegistryBinding()
+            .create();
+
+        // no public endpoint
+        Assertions.assertNull(customerServiceApp.url());
+
+        SpringAppDeployment customersDeployment = customerServiceApp.deployments().getByName(deploymentName);
+        Assertions.assertEquals(customerServiceConfigFilePatterns, customersDeployment.configFilePatterns());
+    }
+
+    private File downloadFile(String remoteFileUrl) throws Exception {
+        String[] split = remoteFileUrl.split("/");
+        String filename = split[split.length - 1];
+        File downloaded = new File(filename);
+        if (!downloaded.exists()) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(remoteFileUrl).openConnection();
+            connection.connect();
+            try (InputStream inputStream = connection.getInputStream();
+                 OutputStream outputStream = new FileOutputStream(downloaded)) {
+                IOUtils.copy(inputStream, outputStream);
+            } finally {
+                connection.disconnect();
+            }
+        }
+        return downloaded;
     }
 
     private void extraTarGzSource(File folder, URL url) throws IOException {

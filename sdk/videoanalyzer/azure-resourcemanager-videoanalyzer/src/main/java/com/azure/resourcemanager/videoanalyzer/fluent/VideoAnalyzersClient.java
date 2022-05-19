@@ -36,7 +36,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VideoAnalyzerCollectionInner> listWithResponse(String resourceGroupName, Context context);
@@ -63,7 +63,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VideoAnalyzerInner> getByResourceGroupWithResponse(
@@ -78,7 +78,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Video Analyzer account.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
@@ -94,7 +94,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Video Analyzer account.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
@@ -151,7 +151,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
@@ -165,7 +165,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Video Analyzer account.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
@@ -181,7 +181,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Video Analyzer account.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
@@ -234,7 +234,7 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VideoAnalyzerCollectionInner> listBySubscriptionWithResponse(Context context);

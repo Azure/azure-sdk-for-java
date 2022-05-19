@@ -16,6 +16,12 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName S0 = fromString("S0");
 
     /**
+     * (Avoid using it. Instead, consider using {@link SpringService.DefinitionStages.WithSku#withEnterpriseTierSku})
+     * Static value E0 for SkuName. This stands for Enterprise Tier.
+     */
+    public static final SkuName E0 = fromString("E0");
+
+    /**
      * Creates or finds a SkuName from its string representation.
      *
      * @param name a name to look for.

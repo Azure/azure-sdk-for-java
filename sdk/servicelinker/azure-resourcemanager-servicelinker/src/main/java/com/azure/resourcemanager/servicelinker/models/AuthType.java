@@ -36,7 +36,11 @@ public final class AuthType extends ExpandableStringEnum<AuthType> {
         return fromString(name, AuthType.class);
     }
 
-    /** @return known AuthType values. */
+    /**
+     * Gets known AuthType values.
+     *
+     * @return known AuthType values.
+     */
     public static Collection<AuthType> values() {
         return values(AuthType.class);
     }

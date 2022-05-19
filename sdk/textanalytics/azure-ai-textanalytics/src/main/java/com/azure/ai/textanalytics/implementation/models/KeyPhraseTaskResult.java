@@ -6,14 +6,18 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The KeyPhraseTaskResult model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("KeyPhraseExtractionResults")
 @Fluent
-public class KeyPhraseTaskResult {
+public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
     /*
      * The results property.
      */
-    @JsonProperty(value = "results")
+    @JsonProperty(value = "results", required = true)
     private KeyPhraseResult results;
 
     /**

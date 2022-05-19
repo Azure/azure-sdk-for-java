@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sub-protection policy which includes schedule and retention. */
 @Fluent
 public final class SubProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubProtectionPolicy.class);
-
     /*
      * Type of backup policy type
      */

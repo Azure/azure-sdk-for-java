@@ -51,7 +51,11 @@ public final class RegistryHive extends ExpandableStringEnum<RegistryHive> {
         return fromString(name, RegistryHive.class);
     }
 
-    /** @return known RegistryHive values. */
+    /**
+     * Gets known RegistryHive values.
+     *
+     * @return known RegistryHive values.
+     */
     public static Collection<RegistryHive> values() {
         return values(RegistryHive.class);
     }

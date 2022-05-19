@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/languages?showStats=true&loggingOptOut=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f8ca1525-8af3-45a9-bece-633ba134fd6d",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f0351360-ff32-4b44-a040-c8c904b73d2d",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "11",
+      "content-length" : "694",
+      "x-envoy-upstream-service-time" : "10",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=3,CognitiveServices.TextAnalytics.TextRecords=3",
-      "apim-request-id" : "a70035a0-7bab-4ae0-b962-e068c93b8c11",
+      "apim-request-id" : "e38c7bd7-e1ac-4909-ae37-e6fe7e4fe82b",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"statistics\":{\"documentsCount\":3,\"validDocumentsCount\":3,\"erroneousDocumentsCount\":0,\"transactionsCount\":3},\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"statistics\":{\"charactersCount\":26,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":0.85},\"statistics\":{\"charactersCount\":40,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"Welsh\",\"iso6391Name\":\"cy\",\"confidenceScore\":0.99},\"statistics\":{\"charactersCount\":6,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-05\"}",
-      "Date" : "Tue, 19 Oct 2021 20:20:16 GMT",
+      "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"statistics\":{\"documentsCount\":3,\"validDocumentsCount\":3,\"erroneousDocumentsCount\":0,\"transactionsCount\":3},\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"statistics\":{\"charactersCount\":26,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":0.84},\"statistics\":{\"charactersCount\":40,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"Dari\",\"iso6391Name\":\"prs\",\"confidenceScore\":0.58},\"statistics\":{\"charactersCount\":6,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-11-20\"}}",
+      "Date" : "Fri, 06 May 2022 17:55:57 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

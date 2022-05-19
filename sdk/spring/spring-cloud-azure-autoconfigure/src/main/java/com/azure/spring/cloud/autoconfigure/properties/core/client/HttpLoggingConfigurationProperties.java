@@ -20,11 +20,11 @@ public class HttpLoggingConfigurationProperties implements HttpLoggingOptionsPro
      */
     private HttpLogDetailLevel level;
     /**
-     * Comma-delimited list of whitelisted headers that should be logged.
+     * Comma-delimited list of allowlist headers that should be logged.
      */
     private final Set<String> allowedHeaderNames = new HashSet<>();
     /**
-     * Comma-delimited list of whitelisted query parameters.
+     * Comma-delimited list of allowlist query parameters.
      */
     private final Set<String> allowedQueryParamNames = new HashSet<>();
     /**

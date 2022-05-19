@@ -426,14 +426,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
     public Mono<BlobServicePropertiesInner> setServicePropertiesAsync(
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<BlobServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -602,14 +595,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<BlobServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

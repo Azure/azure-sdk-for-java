@@ -6,15 +6,12 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Prepare DataMove Request. */
 @Fluent
 public final class PrepareDataMoveRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrepareDataMoveRequest.class);
-
     /*
      * ARM Id of target vault
      */
@@ -155,22 +152,24 @@ public final class PrepareDataMoveRequest {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceId in model PrepareDataMoveRequest"));
         }
         if (targetRegion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetRegion in model PrepareDataMoveRequest"));
         }
         if (dataMoveLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataMoveLevel in model PrepareDataMoveRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrepareDataMoveRequest.class);
 }

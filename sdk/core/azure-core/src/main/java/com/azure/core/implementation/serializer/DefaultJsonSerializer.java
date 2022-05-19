@@ -46,12 +46,12 @@ public final class DefaultJsonSerializer implements JsonSerializer {
 
     @Override
     public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
-        return Mono.defer(() -> Mono.fromCallable(() -> deserializeFromBytes(data, typeReference)));
+        return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
     }
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-        return Mono.defer(() -> Mono.fromCallable(() -> deserialize(stream, typeReference)));
+        return Mono.fromCallable(() -> deserialize(stream, typeReference));
     }
 
     @Override
@@ -74,7 +74,7 @@ public final class DefaultJsonSerializer implements JsonSerializer {
 
     @Override
     public Mono<byte[]> serializeToBytesAsync(Object value) {
-        return Mono.defer(() -> Mono.fromCallable(() -> serializeToBytes(value)));
+        return Mono.fromCallable(() -> serializeToBytes(value));
     }
 
     @Override

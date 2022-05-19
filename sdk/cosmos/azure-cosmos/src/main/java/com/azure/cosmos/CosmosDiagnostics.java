@@ -35,9 +35,9 @@ public final class CosmosDiagnostics {
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
 
-    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
+    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
-        this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext, globalEndpointManager);
+        this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
@@ -161,6 +161,12 @@ public final class CosmosDiagnostics {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Should not be called form user-code. This method is a no-op and is just used internally
+     * to force loading this class
+     */
+    public static void doNothingButEnsureLoadingClass() {}
 
     static {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(

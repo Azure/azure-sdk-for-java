@@ -3,36 +3,57 @@
 
 package com.azure.resourcemanager.appplatform.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
+import com.azure.resourcemanager.appplatform.fluent.models.BuildServiceAgentPoolResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.ConfigServerResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.MonitoringSettingResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolProperties;
+import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolSizeProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
+import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitProperty;
+import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitRepository;
 import com.azure.resourcemanager.appplatform.models.KeyVaultCertificateProperties;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
 import com.azure.resourcemanager.appplatform.models.RegenerateTestKeyRequestPayload;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SkuName;
 import com.azure.resourcemanager.appplatform.models.SpringApps;
+import com.azure.resourcemanager.appplatform.models.SpringConfigurationService;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
+import com.azure.resourcemanager.appplatform.models.SpringServiceRegistry;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class SpringServiceImpl
     extends GroupableResourceImpl<SpringService, ServiceResourceInner, SpringServiceImpl, AppPlatformManager>
     implements SpringService, SpringService.Definition, SpringService.Update {
     private final SpringServiceCertificatesImpl certificates = new SpringServiceCertificatesImpl(this);
     private final SpringAppsImpl apps = new SpringAppsImpl(this);
+    private final SpringConfigurationServicesImpl configurationServices = new SpringConfigurationServicesImpl(this);
+    private final SpringServiceRegistriesImpl serviceRegistries = new SpringServiceRegistriesImpl(this);
     private FunctionalTaskItem configServerTask = null;
     private FunctionalTaskItem monitoringSettingTask = null;
     private ServiceResourceInner patchToUpdate = new ServiceResourceInner();
     private boolean updated;
+    private final ConfigurationServiceConfig configurationServiceConfig = new ConfigurationServiceConfig();
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
@@ -121,6 +142,26 @@ public class SpringServiceImpl
     }
 
     @Override
+    public SpringConfigurationService getDefaultConfigurationService() {
+        return manager().serviceClient().getConfigurationServices().list(resourceGroupName(), name())
+            .stream()
+            .filter(inner -> Objects.equals(inner.name(), Constants.DEFAULT_TANZU_COMPONENT_NAME))
+            .map(inner -> new SpringConfigurationServiceImpl(inner.name(), this, inner))
+            .findFirst()
+            .orElse(null);
+    }
+
+    @Override
+    public SpringServiceRegistry getDefaultServiceRegistry() {
+        return manager().serviceClient().getServiceRegistries().list(resourceGroupName(), name())
+            .stream()
+            .filter(inner -> Objects.equals(inner.name(), Constants.DEFAULT_TANZU_COMPONENT_NAME))
+            .map(inner -> new SpringServiceRegistryImpl(inner.name(), this, inner))
+            .findFirst()
+            .orElse(null);
+    }
+
+    @Override
     public SpringServiceImpl withSku(String skuName) {
         return withSku(new Sku().withName(skuName));
     }
@@ -142,6 +183,12 @@ public class SpringServiceImpl
             patchToUpdate.withSku(sku);
             updated = true;
         }
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withEnterpriseTierSku() {
+        withSku(SkuName.E0);
         return this;
     }
 
@@ -225,6 +272,15 @@ public class SpringServiceImpl
         if (monitoringSettingTask != null) {
             this.addPostRunDependent(monitoringSettingTask);
         }
+        if (isEnterpriseTier()) {
+            if (configurationServiceConfig.needCreateOrUpdate()) {
+                prepareCreateOrUpdateConfigurationService();
+                configurationServiceConfig.clearUpdate();
+            }
+            if (isInCreateMode()) {
+                prepareCreateServiceRegistry();
+            }
+        }
         configServerTask = null;
         monitoringSettingTask = null;
     }
@@ -235,6 +291,23 @@ public class SpringServiceImpl
         if (isInCreateMode()) {
             createOrUpdate = manager().serviceClient().getServices()
                 .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
+            if (isEnterpriseTier()) {
+                createOrUpdate = createOrUpdate
+                    // initialize build service agent pool
+                    .flatMap(inner ->
+                        manager().serviceClient().getBuildServiceAgentPools().updatePutAsync(
+                            resourceGroupName(),
+                            name(),
+                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                            new BuildServiceAgentPoolResourceInner()
+                                .withProperties(
+                                    new BuildServiceAgentPoolProperties()
+                                        .withPoolSize(
+                                            new BuildServiceAgentPoolSizeProperties()
+                                                .withName("S1"))) // S1, S2, S3, S4, S5.
+                        ).then(Mono.just(inner)));
+            }
         } else if (updated) {
             createOrUpdate = manager().serviceClient().getServices().updateAsync(
                 resourceGroupName(), name(), patchToUpdate);
@@ -251,8 +324,24 @@ public class SpringServiceImpl
     }
 
     @Override
+    public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
+        return Mono
+            .just(true)
+            .map(
+                ignored -> {
+                    clearCache();
+                    return ignored;
+                })
+            .then();
+    }
+
+    @Override
     protected Mono<ServiceResourceInner> getInnerAsync() {
-        return manager().serviceClient().getServices().getByResourceGroupAsync(resourceGroupName(), name());
+        return manager().serviceClient().getServices().getByResourceGroupAsync(resourceGroupName(), name())
+            .map(inner -> {
+                clearCache();
+                return inner;
+            });
     }
 
     @Override
@@ -283,7 +372,135 @@ public class SpringServiceImpl
         return this;
     }
 
+    @Override
+    public SpringServiceImpl withDefaultGitRepository(String uri, String branch, List<String> filePatterns) {
+        return withGitRepository(Constants.DEFAULT_TANZU_COMPONENT_NAME, uri, branch, filePatterns);
+    }
+
+    @Override
+    public SpringServiceImpl withGitRepository(String name, String uri, String branch, List<String> filePatterns) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return this;
+        }
+        this.configurationServiceConfig.addRepository(
+            new ConfigurationServiceGitRepository()
+                .withName(name)
+                .withUri(uri)
+                .withPatterns(filePatterns)
+                .withLabel(branch));
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withGitRepositoryConfig(ConfigurationServiceGitProperty gitConfig) {
+        this.configurationServiceConfig.clearRepositories();
+        if (gitConfig != null && !CoreUtils.isNullOrEmpty(gitConfig.repositories())) {
+            for (ConfigurationServiceGitRepository repository : gitConfig.repositories()) {
+                this.configurationServiceConfig.addRepository(repository);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withoutGitRepository(String name) {
+        this.configurationServiceConfig.removeRepository(name);
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withoutGitRepositories() {
+        this.configurationServiceConfig.clearRepositories();
+        return this;
+    }
+
+    private void prepareCreateOrUpdateConfigurationService() {
+        List<ConfigurationServiceGitRepository> repositories = this.configurationServiceConfig.mergeRepositories();
+        this.configurationServices.prepareCreateOrUpdate(new ConfigurationServiceGitProperty().withRepositories(repositories));
+    }
+
+    private void prepareCreateServiceRegistry() {
+        this.serviceRegistries.prepareCreate();
+    }
+
     private boolean isInUpdateMode() {
         return !isInCreateMode();
+    }
+
+    boolean isEnterpriseTier() {
+        return innerModel().sku() != null && SkuName.E0.toString().equals(innerModel().sku().name());
+    }
+
+    private void clearCache() {
+        this.configurationServices.clear();
+        this.configurationServiceConfig.reset();
+        this.serviceRegistries.clear();
+    }
+
+    // Configuration Service config for Enterprise Tier
+    private class ConfigurationServiceConfig {
+        private final Map<String, ConfigurationServiceGitRepository> gitRepositoryMap = new ConcurrentHashMap<>();
+        private final Set<String> repositoriesToDelete = new HashSet<>();
+        private boolean update;
+        private boolean clearRepositories;
+
+        boolean needCreateOrUpdate() {
+            return update;
+        }
+
+        public void clearUpdate() {
+            this.update = false;
+        }
+
+        void reset() {
+            this.gitRepositoryMap.clear();
+            this.update = false;
+            this.repositoriesToDelete.clear();
+            this.clearRepositories = false;
+        }
+
+        public void addRepository(ConfigurationServiceGitRepository repository) {
+            this.gitRepositoryMap.putIfAbsent(repository.name(), repository);
+            this.update = true;
+        }
+
+        public void clearRepositories() {
+            this.gitRepositoryMap.clear();
+            this.clearRepositories = true;
+            this.update = true;
+        }
+
+        public void removeRepository(String name) {
+            this.repositoriesToDelete.add(name);
+            this.update = true;
+        }
+
+        public List<ConfigurationServiceGitRepository> mergeRepositories() {
+            if (this.clearRepositories) {
+                // in case addRepository() is called after calling clearRepositories()
+                return new ArrayList<>(this.gitRepositoryMap.values());
+            } else {
+                Map<String, ConfigurationServiceGitRepository> existingGitRepositories = new HashMap<>();
+                if (isInUpdateMode()) {
+                    // get existing git repositories
+                    SpringConfigurationService configurationService = getDefaultConfigurationService();
+                    if (configurationService != null) {
+                        List<ConfigurationServiceGitRepository> repositoryList =
+                            configurationService.innerModel().properties().settings() == null
+                                ? Collections.emptyList()
+                                : configurationService.innerModel().properties().settings().gitProperty().repositories();
+                        if (repositoryList != null) {
+                            repositoryList.forEach(repository -> existingGitRepositories.put(repository.name(), repository));
+                        }
+                    }
+                }
+                // merge with updated ones
+                existingGitRepositories.putAll(gitRepositoryMap);
+                for (String repositoryToDelete : repositoriesToDelete) {
+                    existingGitRepositories.remove(repositoryToDelete);
+                }
+                return new ArrayList<>(existingGitRepositories.values());
+            }
+        }
     }
 }

@@ -12,11 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicelinker.fluent.LinkersClient;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner;
-import com.azure.resourcemanager.servicelinker.fluent.models.ValidateResultInner;
+import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
 import com.azure.resourcemanager.servicelinker.models.LinkerResource;
 import com.azure.resourcemanager.servicelinker.models.Linkers;
 import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
-import com.azure.resourcemanager.servicelinker.models.ValidateResult;
+import com.azure.resourcemanager.servicelinker.models.ValidateOperationResult;
 
 public final class LinkersImpl implements Linkers {
     private static final ClientLogger LOGGER = new ClientLogger(LinkersImpl.class);
@@ -71,19 +71,19 @@ public final class LinkersImpl implements Linkers {
         this.serviceClient().delete(resourceUri, linkerName, context);
     }
 
-    public ValidateResult validate(String resourceUri, String linkerName) {
-        ValidateResultInner inner = this.serviceClient().validate(resourceUri, linkerName);
+    public ValidateOperationResult validate(String resourceUri, String linkerName) {
+        ValidateOperationResultInner inner = this.serviceClient().validate(resourceUri, linkerName);
         if (inner != null) {
-            return new ValidateResultImpl(inner, this.manager());
+            return new ValidateOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ValidateResult validate(String resourceUri, String linkerName, Context context) {
-        ValidateResultInner inner = this.serviceClient().validate(resourceUri, linkerName, context);
+    public ValidateOperationResult validate(String resourceUri, String linkerName, Context context) {
+        ValidateOperationResultInner inner = this.serviceClient().validate(resourceUri, linkerName, context);
         if (inner != null) {
-            return new ValidateResultImpl(inner, this.manager());
+            return new ValidateOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }

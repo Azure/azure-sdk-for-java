@@ -14,7 +14,7 @@ public final class KeyPhrasesTask {
      * The parameters property.
      */
     @JsonProperty(value = "parameters")
-    private KeyPhrasesTaskParameters parameters;
+    private KeyPhraseTaskParameters parameters;
 
     /*
      * The taskName property.
@@ -27,7 +27,7 @@ public final class KeyPhrasesTask {
      *
      * @return the parameters value.
      */
-    public KeyPhrasesTaskParameters getParameters() {
+    public KeyPhraseTaskParameters getParameters() {
         return this.parameters;
     }
 
@@ -37,7 +37,7 @@ public final class KeyPhrasesTask {
      * @param parameters the parameters value to set.
      * @return the KeyPhrasesTask object itself.
      */
-    public KeyPhrasesTask setParameters(KeyPhrasesTaskParameters parameters) {
+    public KeyPhrasesTask setParameters(KeyPhraseTaskParameters parameters) {
         this.parameters = parameters;
         return this;
     }

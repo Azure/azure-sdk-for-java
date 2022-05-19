@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A database geo backup policy. */
 @Fluent
 public final class GeoBackupPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoBackupPolicyInner.class);
-
     /*
      * The properties of the geo backup policy.
      */
@@ -101,7 +98,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model GeoBackupPolicyInner"));
@@ -109,4 +106,6 @@ public final class GeoBackupPolicyInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GeoBackupPolicyInner.class);
 }

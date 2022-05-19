@@ -52,6 +52,10 @@ public final class IncidentCommentImpl implements IncidentComment, IncidentComme
         return this.innerModel().author();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IncidentCommentInner innerModel() {
         return this.innerObject;
     }

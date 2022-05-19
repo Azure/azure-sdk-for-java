@@ -53,6 +53,9 @@ parameters:
 - name: AdditionalStagesAfterBuild
   type: object
   default: []
+- name: EnableBatchRelease
+  type: boolean
+  default: false
 
 stages:
   - stage: Build
@@ -60,8 +63,7 @@ stages:
     - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-          TestPipeline: true
+        TestPipeline: ${{ parameters.TestPipeline }}
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
@@ -92,15 +94,34 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-java-release.yml
-      parameters:
-        DependsOn:
-          - Build
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        SDKType: ${{ parameters.SDKType }}
-        Artifacts: ${{ parameters.Artifacts }}
-        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
-          TestPipeline: true
-        ArtifactName: packages
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
+      - template: archetype-java-release-batch.yml
+        parameters:
+          DependsOn:
+            - Build
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
+          # specifically, has releaseInBatch set to false. releaseInBatch should only be set libraries,
+          # not ready for release, in service directories that have batch release enabled. The if statement
+          # below, looking for releaseInBatch not equal false has to be set this way because if the library's
+          # metadata in the ci.yml doesn't have this variable then it defaults to being released.
+          Artifacts:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+              - ${{ artifact }}
+          TestPipeline: ${{ parameters.TestPipeline }}
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+    - ${{ else }}:
+      - template: archetype-java-release.yml
+        parameters:
+          DependsOn:
+            - Build
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          Artifacts: ${{ parameters.Artifacts }}
+          TestPipeline: ${{ parameters.TestPipeline }}
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 

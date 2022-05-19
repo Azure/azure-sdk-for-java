@@ -1,16 +1,26 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added new Azure region `Region.CHINA_NORTH3` and `Region.CHINA_EAST3` for Azure China.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0 (2022-05-06)
+
+### Features Added
+
+- Added new Azure region `Region.CHINA_NORTH3` and `Region.CHINA_EAST3` for Azure China.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
 
 ## 1.5.4 (2022-04-01)
 

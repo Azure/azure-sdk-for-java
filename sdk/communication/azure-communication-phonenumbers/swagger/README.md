@@ -34,6 +34,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.phonenumbers
 generate-client-as-impl: true
+service-interface-as-public: true
 sync-methods: all
 context-client-method-parameter: true
 ```

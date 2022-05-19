@@ -24,12 +24,12 @@ stages:
           vmImage: 'ubuntu-20.04'
 
         steps:
-        - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
+        - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
           parameters:
             JobType: 'Reporting'
-            SDKType: 'client'
-            ServiceDirectory: 'aggregate-report'
-
+            Artifacts:
+              - name: aggregate-reports # fake artifact name
+                groupId: reports # fake group Id
 
         # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
         # reports. This means it is available as part of that, but also so that this is not documented in the project report.

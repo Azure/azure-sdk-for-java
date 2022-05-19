@@ -1,6 +1,6 @@
 # Release History
 
-## 5.12.0-beta.1 (Unreleased)
+## 5.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,9 +10,24 @@
 
 ### Other Changes
 
-## 5.11.2 (2022-04-11)
+## 5.12.0 (2022-05-16)
+
+### Features Added
+
+- `EventData.setBodyAsBinaryData` is exposed.
+
+### Breaking Changes
+
+- `EventData` extends from `MessageContent`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.28.0`.
+- Upgraded `azure-core-amqp` to `2.5.0`.
+
+## 5.11.2 (2022-04-11)
 
 ### Other Changes
 

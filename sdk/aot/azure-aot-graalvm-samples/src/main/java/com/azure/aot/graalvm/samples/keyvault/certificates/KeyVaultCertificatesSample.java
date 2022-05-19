@@ -30,6 +30,9 @@ import java.util.UUID;
 public class KeyVaultCertificatesSample {
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");
 
+    /**
+     * The method to run Key Vault certificates sample.
+     */
     public static void runSample() {
         System.out.println("================================================================");
         System.out.println(" Starting Key Vault Certificates Sample");

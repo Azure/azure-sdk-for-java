@@ -30,7 +30,11 @@ public final class VMGuestPatchClassificationLinux extends ExpandableStringEnum<
         return fromString(name, VMGuestPatchClassificationLinux.class);
     }
 
-    /** @return known VMGuestPatchClassificationLinux values. */
+    /**
+     * Gets known VMGuestPatchClassificationLinux values.
+     *
+     * @return known VMGuestPatchClassificationLinux values.
+     */
     public static Collection<VMGuestPatchClassificationLinux> values() {
         return values(VMGuestPatchClassificationLinux.class);
     }
