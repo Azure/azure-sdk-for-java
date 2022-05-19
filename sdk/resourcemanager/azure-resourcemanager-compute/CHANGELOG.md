@@ -4,9 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported convenience layer code for disk encryption set.
 
 ### Other Changes
 
