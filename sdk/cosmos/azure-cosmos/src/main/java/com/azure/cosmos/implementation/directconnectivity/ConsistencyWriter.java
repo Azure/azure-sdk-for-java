@@ -194,7 +194,20 @@ public class ConsistencyWriter {
                                                    try {
                                                        Throwable unwrappedException = Exceptions.unwrap(t);
                                                        CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
-                                                       storeReader.createAndRecordStoreResult(request, null, ex, false, false, primaryUri);
+                                                       Exception rawException = null;
+                                                       if (ex == null) {
+                                                           rawException = Utils.as(unwrappedException, Exception.class);
+
+                                                           if (rawException == null) {
+                                                               throw rawException;
+                                                           }
+                                                       }
+                                                       storeReader.createAndRecordStoreResult(
+                                                           request,
+                                                           null, ex != null ? ex: rawException,
+                                                           false,
+                                                           false,
+                                                           primaryUri);
                                                        String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
                                                        if (!Strings.isNullOrWhiteSpace(value)) {
                                                            Integer result = Integers.tryParse(value);

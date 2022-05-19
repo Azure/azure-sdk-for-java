@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.util.Beta;
 
 /**
@@ -22,7 +23,7 @@ public final class ThroughputControlGroupConfig {
             Double targetThroughputThreshold,
             boolean isDefault,
             boolean continueOnInitError) {
-       this.groupName= groupName;
+       this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.isDefault = isDefault;

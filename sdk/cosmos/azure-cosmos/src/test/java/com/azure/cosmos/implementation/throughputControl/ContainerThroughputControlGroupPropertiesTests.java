@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
 import org.testng.annotations.Test;
 
@@ -39,11 +40,16 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     true,
                     false);
 
-            int currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup);
+            Pair<Integer, Boolean> stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup);
+            int currentGroupSize = stateAfterEnabling.getLeft();
+            boolean wasGroupConfigUpdated = stateAfterEnabling.getRight();
             assertThat(currentGroupSize).isEqualTo(1);
+            assertThat(wasGroupConfigUpdated).isEqualTo(false);
 
-            // Test 2: add throughput control group with same id
-            LocalThroughputControlGroup throughputControlGroupDuplciate = new LocalThroughputControlGroup(
+            // Test 2: add throughput control group with same id, but different values for immutable
+            // properties isDefault or continueOnError
+            LocalThroughputControlGroup throughputControlGroupDuplicate1 = new LocalThroughputControlGroup(
                     throughputControlDefaultGroup.getGroupName(),
                     container,
                     6,
@@ -51,8 +57,24 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     false,
                     false);
 
-            assertThatThrownBy(() -> throughputControlContainerProperties.enableThroughputControlGroup(throughputControlGroupDuplciate))
-                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(
+                () -> throughputControlContainerProperties
+                    .enableThroughputControlGroup(throughputControlGroupDuplicate1)
+            ).isInstanceOf(IllegalArgumentException.class);
+
+            LocalThroughputControlGroup throughputControlGroupDuplicate2 = new LocalThroughputControlGroup(
+                throughputControlDefaultGroup.getGroupName(),
+                container,
+                6,
+                null,
+                true,
+                true);
+
+            assertThatThrownBy(
+                () -> throughputControlContainerProperties
+                    .enableThroughputControlGroup(throughputControlGroupDuplicate2)
+            ).isInstanceOf(IllegalArgumentException.class);
+
 
             // Test 3: add another default group
             LocalThroughputControlGroup throughputControlDefaultGroup2 = new LocalThroughputControlGroup(
@@ -74,8 +96,12 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     null,
                     false,
                     false);
-            currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(newGroup);
+            stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(newGroup);
+            currentGroupSize = stateAfterEnabling.getLeft();
+            wasGroupConfigUpdated = stateAfterEnabling.getRight();
             assertThat(currentGroupSize).isEqualTo(2);
+            assertThat(wasGroupConfigUpdated).isEqualTo(false);
 
             // Test 5: add a same group as step 4
             LocalThroughputControlGroup newGroupDuplicate = new LocalThroughputControlGroup(
@@ -85,8 +111,27 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     newGroup.getTargetThroughputThreshold(),
                     newGroup.isDefault(),
                     newGroup.isContinueOnInitError());
-            currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(newGroupDuplicate);
+            stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(newGroupDuplicate);
+            currentGroupSize = stateAfterEnabling.getLeft();
+            wasGroupConfigUpdated = stateAfterEnabling.getRight();
             assertThat(currentGroupSize).isEqualTo(2);
+            assertThat(wasGroupConfigUpdated).isEqualTo(false);
+
+            // Test 6: add a same group as step 4 - but with modified target throughput
+            LocalThroughputControlGroup newGroupDuplicateModifiedTarget = new LocalThroughputControlGroup(
+                newGroup.getGroupName(),
+                container,
+                newGroup.getTargetThroughput() + 1,
+                newGroup.getTargetThroughputThreshold(),
+                newGroup.isDefault(),
+                newGroup.isContinueOnInitError());
+            stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(newGroupDuplicateModifiedTarget);
+            currentGroupSize = stateAfterEnabling.getLeft();
+            wasGroupConfigUpdated = stateAfterEnabling.getRight();
+            assertThat(currentGroupSize).isEqualTo(2);
+            assertThat(wasGroupConfigUpdated).isEqualTo(true);
         } finally {
             if (testClient != null) {
                 testClient.close();
