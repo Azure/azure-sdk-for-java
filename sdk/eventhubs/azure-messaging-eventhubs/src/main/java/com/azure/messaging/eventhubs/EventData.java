@@ -460,4 +460,11 @@ public class EventData extends MessageContent {
 
         return this;
     }
+
+    EventData setContext(Context context) {
+        Objects.requireNonNull(context, "The 'context' parameter cannot be null.");
+        this.context = context;
+
+        return this;
+    }
 }

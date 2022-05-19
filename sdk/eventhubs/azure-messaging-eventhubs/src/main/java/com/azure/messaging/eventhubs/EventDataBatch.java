@@ -155,13 +155,13 @@ public final class EventDataBatch {
                 .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
                 .addData(ENTITY_PATH_KEY, this.entityPath)
                 .addData(HOST_NAME_KEY, this.hostname);
-            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, eventContext,
+            eventContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, eventContext,
                 ProcessKind.MESSAGE);
-            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+            Optional<Object> eventDiagnosticIdOptional = eventContext.getData(DIAGNOSTIC_ID_KEY);
             if (eventDiagnosticIdOptional.isPresent()) {
                 eventData.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                eventData.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
+                tracerProvider.endSpan(eventContext, Signal.complete());
+                eventData.setContext(eventContext);
             }
         }
 
