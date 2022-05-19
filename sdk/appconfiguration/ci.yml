@@ -18,11 +18,6 @@ trigger:
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/
-      - sdk/appconfiguration/spring-cloud-azure-feature-management/
-      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/
-      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/
     exclude:
       - sdk/appconfiguration/pom.xml
       - sdk/appconfiguration/azure-data-appconfiguration/pom.xml
@@ -34,11 +29,6 @@ trigger:
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-feature-management/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/pom.xml
-      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/pom.xml
 
 pr:
   branches:
@@ -59,11 +49,6 @@ pr:
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/
-      - sdk/appconfiguration/spring-cloud-azure-feature-management/
-      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/
-      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/
     exclude:
       - sdk/appconfiguration/pom.xml
       - sdk/appconfiguration/azure-data-appconfiguration/pom.xml
@@ -75,11 +60,6 @@ pr:
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-feature-management/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/pom.xml
-      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -89,21 +69,6 @@ extends:
       - name: azure-data-appconfiguration
         groupId: com.azure
         safeName: azuredataappconfiguration
-      - name: spring-cloud-azure-appconfiguration-config
-        groupId: com.microsoft.azure
-        safeName: springcloudazureappconfigurationconfig
-      - name: spring-cloud-azure-appconfiguration-config-web
-        groupId: com.microsoft.azure
-        safeName: springcloudazureappconfigurationconfigweb
-      - name: spring-cloud-azure-feature-management
-        groupId: com.microsoft.azure
-        safeName: springcloudazurefeaturemanagement
-      - name: spring-cloud-azure-feature-management-web
-        groupId: com.microsoft.azure
-        safeName: springcloudazurefeaturemanagementweb
-      - name: spring-cloud-starter-azure-appconfiguration-config
-        groupId: com.microsoft.azure
-        safeName: springcloudstarterazureappconfigurationconfig
       - name: azure-spring-cloud-appconfiguration-config
         groupId: com.azure.spring
         safeName: azurespringcloudappconfigurationconfig
