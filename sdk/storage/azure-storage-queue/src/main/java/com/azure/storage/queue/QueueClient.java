@@ -300,7 +300,7 @@ public final class QueueClient {
      * <!-- src_embed com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context -->
      * <pre>
      * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
