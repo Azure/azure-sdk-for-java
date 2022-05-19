@@ -24,9 +24,9 @@ jobs:
           Paths:
             - 'sdk/spring'
             - 'sdk/boms/spring-cloud-azure-dependencies'
-#      - script: |
-#          pip install termcolor
-#        displayName: 'python module install'
+      - script: |
+          pip install termcolor
+        displayName: 'python module install'
       - script: |
           python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py
         displayName: 'add dependency management'
