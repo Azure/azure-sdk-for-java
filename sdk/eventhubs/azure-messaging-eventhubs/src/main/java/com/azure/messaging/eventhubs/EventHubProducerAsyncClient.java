@@ -538,17 +538,20 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         for (int i = 0; i < batch.getEvents().size(); i++) {
             final EventData event = batch.getEvents().get(i);
-            Context eventContext = event.getContext();
             if (isTracingEnabled) {
                 if (i == 0) {
-                    sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME,
-                        eventContext);
+                    sharedContext = event.getContext()
+                        .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
+                        .addData(ENTITY_PATH_KEY, eventHubName)
+                        .addData(HOST_NAME_KEY, fullyQualifiedNamespace);
 
-                    sharedContext = setSpanAttributesIfNeeded(sharedContext, eventContext);
+                    sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME, sharedContext);
+                    tracerProvider.addSpanLinks(sharedContext);
+                } else {
+                    // TODO (lmolkova) we need better addSpanLinks(Context shared, Context link)
+                    Object eventSpanContext = event.getContext().getData(SPAN_CONTEXT_KEY).orElse(Context.NONE);
+                    tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, eventSpanContext));
                 }
-
-                // TODO (lmolkova) we need better addSpanLinks(Context shared, Context link) to make it efficient
-                tracerProvider.addSpanLinks(i == 0 ? sharedContext : CoreUtils.mergeContexts(sharedContext, eventContext));
             }
 
             final Message message = messageSerializer.serialize(event);
@@ -581,23 +584,6 @@ public class EventHubProducerAsyncClient implements Closeable {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
             });
-    }
-
-    private Context setSpanAttributesIfNeeded(Context spanStartContext, Context eventContext) {
-        // if user set span context on the event, sharedContext might not have all the properties set
-        if (eventContext.getData(AZ_TRACING_NAMESPACE_KEY).isEmpty()) {
-            spanStartContext = spanStartContext.addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
-        }
-
-        if (eventContext.getData(ENTITY_PATH_KEY).isEmpty()) {
-            spanStartContext = spanStartContext.addData(ENTITY_PATH_KEY, eventHubName);
-        }
-
-        if (eventContext.getData(HOST_NAME_KEY).isEmpty()) {
-            spanStartContext = spanStartContext.addData(HOST_NAME_KEY, fullyQualifiedNamespace);
-        }
-
-        return spanStartContext;
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {

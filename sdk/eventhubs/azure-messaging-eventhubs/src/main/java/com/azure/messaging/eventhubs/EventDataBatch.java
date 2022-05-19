@@ -161,7 +161,7 @@ public final class EventDataBatch {
             if (eventDiagnosticIdOptional.isPresent()) {
                 eventData.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
                 tracerProvider.endSpan(eventContext, Signal.complete());
-                eventData.setContext(eventContext);
+                eventData.addContext(SPAN_CONTEXT_KEY, eventContext.getData(SPAN_CONTEXT_KEY).orElse(Context.NONE));
             }
         }
 

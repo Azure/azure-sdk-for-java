@@ -89,5 +89,11 @@
       <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>1.11.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

@@ -56,6 +56,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -204,14 +205,14 @@ public class EventHubProducerClientTest {
             invocation -> {
                 Context passed = invocation.getArgument(0, Context.class);
                 assertEquals("span-builder", passed.getData(SPAN_BUILDER_KEY).orElseGet(null));
-                assertEquals("diag-id", passed.getData(DIAGNOSTIC_ID_KEY).orElseGet(null));
-                assertEquals( "span-context", passed.getData(SPAN_CONTEXT_KEY).orElseGet(null));
+                assertEquals("span-context", passed.getData(SPAN_CONTEXT_KEY).orElseGet(null));
                 return null;
             }).when(tracer1).addLink(any());
 
         //Act
         try {
             producer.send(eventData);
+            assertEquals("diag-id", eventData.getProperties().get(DIAGNOSTIC_ID_KEY));
         } finally {
             producer.close();
         }
@@ -269,6 +270,7 @@ public class EventHubProducerClientTest {
         //Act
         try {
             producer.send(eventData);
+            assertFalse(eventData.getProperties().containsKey(DIAGNOSTIC_ID_KEY));
         } finally {
             producer.close();
         }
@@ -413,7 +415,7 @@ public class EventHubProducerClientTest {
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(PARENT_TRACE_CONTEXT_KEY, "span")
-                    .addData(DIAGNOSTIC_ID_KEY, eventInd.get())
+                    .addData(DIAGNOSTIC_ID_KEY, eventInd.get().toString())
                     .addData(SPAN_CONTEXT_KEY, eventInd.get());
             }
         );
@@ -431,7 +433,6 @@ public class EventHubProducerClientTest {
             invocation -> {
                 Context passed = invocation.getArgument(0, Context.class);
                 assertEquals("span-builder", passed.getData(SPAN_BUILDER_KEY).orElseGet(null));
-                assertEquals(linkNumber.get(), passed.getData(DIAGNOSTIC_ID_KEY).orElseGet(null));
                 assertEquals(linkNumber.get(), passed.getData(SPAN_CONTEXT_KEY).orElseGet(null));
                 linkNumber.set(linkNumber.get() + 1);
                 return null;
@@ -450,9 +451,14 @@ public class EventHubProducerClientTest {
         // Act & Assert
         try {
             final EventDataBatch batch = producer.createBatch();
-            Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
+            final EventData data0 = new EventData("Hello World".getBytes(UTF_8));
+            Assertions.assertTrue(batch.tryAdd(data0));
+            assertEquals("0", data0.getProperties().get(DIAGNOSTIC_ID_KEY));
+
             eventInd.set(1);
-            Assertions.assertTrue(batch.tryAdd(new EventData("Test World".getBytes(UTF_8))));
+            final EventData data1 = new EventData("Hello World".getBytes(UTF_8));
+            Assertions.assertTrue(batch.tryAdd(data1));
+            assertEquals("1", data1.getProperties().get(DIAGNOSTIC_ID_KEY));
             producer.send(batch);
         } finally {
             producer.close();
