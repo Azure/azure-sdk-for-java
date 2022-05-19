@@ -9,35 +9,35 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
-import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.jcraft.jsch.JSch;
-import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 
 public abstract class ComputeManagementTest extends ResourceManagerTestBase {
 
