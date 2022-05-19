@@ -10,13 +10,15 @@ import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure disk encryption set. */
 @Fluent
 public interface DiskEncryptionSet
     extends GroupableResource<ComputeManager, DiskEncryptionSetInner>,
-        Updatable<DiskEncryptionSet.UpdateStages.Update> {
+        Updatable<DiskEncryptionSet.Update>,
+        Refreshable<DiskEncryptionSet> {
     /** @return resource id of the Azure key vault containing the key or secret */
     String keyVaultId();
 
@@ -32,10 +34,21 @@ public interface DiskEncryptionSet
      *          if enabled, the system will automatically update all managed disks, snapshots, and images
      *          referencing the disk encryption set to use the new version of the key within one hour
      */
-    boolean isAutomaticKeyRotationEnabled();
+    Boolean isAutomaticKeyRotationEnabled();
 
     /** @return the type of key used to encrypt the data of the disk */
     DiskEncryptionSetType encryptionType();
+
+    /** The entirety of the disk encryption set definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithEncryptionType,
+        DefinitionStages.WithKeyVault,
+        DefinitionStages.WithKeyVaultKey,
+        DefinitionStages.WithSystemAssignedManagedServiceIdentity,
+        DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate,
+        DefinitionStages.WithCreate { }
 
     /** Grouping of disk encryption set definition stages */
     interface DefinitionStages {
@@ -62,7 +75,7 @@ public interface DiskEncryptionSet
          */
         interface WithKeyVault {
             /**
-             * Associates with the disk encryption set an Azure key vault by its resource id.
+             * Associates with the disk encryption set an Azure key vault by its resource ID.
              * @param keyVaultId resource ID of the Azure key vault
              * @return the next stage of the definition
              */
@@ -74,7 +87,7 @@ public interface DiskEncryptionSet
          */
         interface WithKeyVaultKey {
             /**
-             * Associate with the disk encryption set an Azure key vault key by its id.
+             * Associate with the disk encryption set an Azure key vault key by its ID.
              * @param keyId ID of the Azure key vault key
              * @return the next stage of the definition
              */
@@ -101,13 +114,12 @@ public interface DiskEncryptionSet
          */
         interface WithSystemAssignedIdentityBasedAccessOrCreate extends WithCreate {
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
-             * by the role) on an Azure key vault identified by the resource ID.
-             * @param keyVaultId resource ID of the Azure key vault
+             * Specifies that disk encryption set's system assigned (local) identity should have the given access
+             * (described by the role) on the current Azure key vault that's associated with it.
              * @param builtInRole access role to assigned to the disk encryption set's local identity
              * @return the next stage of the definition
              */
-            WithCreate withSystemAssignedIdentityBasedAccessToKeyVault(String keyVaultId, BuiltInRole builtInRole);
+            WithCreate withSystemAssignedIdentityBasedAccessToCurrentKeyVault(BuiltInRole builtInRole);
         }
 
         /**
@@ -131,6 +143,15 @@ public interface DiskEncryptionSet
             extends Creatable<DiskEncryptionSet>,
                 DefinitionWithTags<WithCreate>,
                 WithAutomaticKeyRotation { }
+    }
+
+    /** The template for an update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<DiskEncryptionSet>,
+        UpdateStages.WithSystemAssignedManagedServiceIdentity,
+        UpdateStages.WithSystemAssignedIdentityBasedAccess,
+        UpdateStages.WithKeyVault,
+        UpdateStages.WithAutomaticKeyRotation {
     }
 
     /** Grouping of disk encryption set update stages. */
@@ -160,7 +181,7 @@ public interface DiskEncryptionSet
          */
         interface WithKeyVault {
             /**
-             * Associates with the disk encryption set an Azure key vault by its resource id.
+             * Associates with the disk encryption set an Azure key vault by its resource ID.
              * @param keyVaultId resource ID of the Azure key vault
              * @return the next stage of the update
              */
@@ -172,7 +193,7 @@ public interface DiskEncryptionSet
          */
         interface WithKeyVaultKey {
             /**
-             * Associate with the disk encryption set an Azure key vault key by its id.
+             * Associate with the disk encryption set an Azure key vault key by its ID.
              * @param keyId ID of the Azure key vault key
              * @return the next stage of the update
              */
@@ -185,13 +206,12 @@ public interface DiskEncryptionSet
          */
         interface WithSystemAssignedIdentityBasedAccess {
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
-             * by the role) on an Azure key vault identified by the resource ID.
-             * @param keyVaultId resource ID of the Azure key vault
+             * Specifies that disk encryption set's system assigned (local) identity should have the given access
+             * (described by the role) on the current Azure key vault that's associated with it.
              * @param builtInRole access role to assigned to the disk encryption set's local identity
              * @return the next stage of the update
              */
-            Update withSystemAssignedIdentityBasedAccessToKeyVault(String keyVaultId, BuiltInRole builtInRole);
+            Update withSystemAssignedIdentityBasedAccessToCurrentKeyVault(BuiltInRole builtInRole);
         }
 
         /**
@@ -211,15 +231,6 @@ public interface DiskEncryptionSet
              * @return the next stage of the update
              */
             Update withoutAutomaticKeyRotation();
-        }
-
-        /** The template for an update operation, containing all the settings that can be modified. */
-        interface Update
-            extends Appliable<DiskEncryptionSet>,
-                WithSystemAssignedManagedServiceIdentity,
-                WithSystemAssignedIdentityBasedAccess,
-                WithKeyVault,
-                WithAutomaticKeyRotation {
         }
     }
 }

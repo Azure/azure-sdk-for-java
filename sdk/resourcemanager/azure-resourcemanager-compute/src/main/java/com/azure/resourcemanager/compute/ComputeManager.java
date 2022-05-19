@@ -5,11 +5,14 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
-import com.azure.resourcemanager.compute.implementation.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.AvailabilitySetsImpl;
+import com.azure.resourcemanager.compute.implementation.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.ComputeSkusImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeUsagesImpl;
+import com.azure.resourcemanager.compute.implementation.DiskEncryptionSetsImpl;
 import com.azure.resourcemanager.compute.implementation.DisksImpl;
 import com.azure.resourcemanager.compute.implementation.GalleriesImpl;
 import com.azure.resourcemanager.compute.implementation.GalleryImageVersionsImpl;
@@ -35,11 +38,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -267,7 +268,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return galleryImageVersions;
     }
 
+    /** @return the disk encryption set management entry point */
     public DiskEncryptionSets diskEncryptionSets() {
-        throw new UnsupportedOperationException();
+        if (diskEncryptionSets == null) {
+            diskEncryptionSets = new DiskEncryptionSetsImpl(this);
+        }
+        return diskEncryptionSets;
     }
 }

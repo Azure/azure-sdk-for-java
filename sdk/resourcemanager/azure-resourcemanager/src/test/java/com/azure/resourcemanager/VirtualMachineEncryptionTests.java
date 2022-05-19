@@ -3,10 +3,10 @@
 
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.Disk;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -29,10 +29,10 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
         VaultAndKey vaultAndKey = createVaultAndKey(vaultName, clientId);
 
         // create disk encryption set
-        DiskEncryptionSetInner diskEncryptionSet = createDiskEncryptionSet("des1",
+        DiskEncryptionSet diskEncryptionSet = createDiskEncryptionSet("des1",
             DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, vaultAndKey);
 
-        DiskEncryptionSetInner diskEncryptionSet2 = createDiskEncryptionSet("des2",
+        DiskEncryptionSet diskEncryptionSet2 = createDiskEncryptionSet("des2",
             DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY, vaultAndKey);
 
         // create disk
