@@ -42,6 +42,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-resourcemanager-confidentialledger</module>
         <module>azure-security-confidentialledger</module>
       </modules>
     </profile>
