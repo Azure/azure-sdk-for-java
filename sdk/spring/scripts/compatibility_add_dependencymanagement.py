@@ -70,7 +70,8 @@ def change_to_root_dir():
 
 
 def get_spring_cloud_version():
-    spring_cloud_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
+    spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
+    spring_cloud_version = os.getenv("spring_boot_version")
     # if spring_cloud_version is None:
         # os.environ["SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION"] = "2021.0.2"
     print(spring_cloud_version)
