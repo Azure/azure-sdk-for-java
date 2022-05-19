@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.SliceInputStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -18,7 +19,6 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,8 +28,10 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class FileContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final Path file;
     private final int chunkSize;
+    private final long position;
     private final long length;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
 
@@ -38,29 +40,65 @@ public final class FileContent extends BinaryDataContent {
      *
      * @param file The {@link Path} content.
      * @param chunkSize The requested size for each read of the path.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param length Total number of bytes to be read from the path.
      * @throws NullPointerException if {@code file} is null.
      * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero.
      */
-    public FileContent(Path file, int chunkSize) {
+    public FileContent(Path file, int chunkSize, Long position, Long length) {
+        this.file = validateFile(file);
+        this.chunkSize = validateChunkSize(chunkSize);
+        long fileLength = file.toFile().length();
+        this.position = validatePosition(position);
+        this.length = validateLength(length, fileLength, this.position);
+    }
+
+    private static Path validateFile(Path file) {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
-        if (chunkSize <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "'chunkSize' cannot be less than or equal to 0."));
-        }
-        this.file = file;
-        this.chunkSize = chunkSize;
         if (!file.toFile().exists()) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(
-                    new FileNotFoundException("File does not exist " + file)));
+                new FileNotFoundException("File does not exist " + file)));
         }
 
-        this.length = file.toFile().length();
+        return file;
+    }
+
+    private static int validateChunkSize(int chunkSize) {
+        if (chunkSize <= 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'chunkSize' cannot be less than or equal to 0."));
+        }
+
+        return chunkSize;
+    }
+
+    private static long validatePosition(Long position) {
+        if (position != null && position < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be negative."));
+        }
+
+        return (position != null) ? position : 0;
+    }
+
+    private static long validateLength(Long length, long fileLength, long position) {
+        if (length != null && length < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be negative."));
+        }
+
+        long maxAvailableLength = fileLength - position;
+
+        // If a size has been set use the minimum of the remaining file size and size to determine the length.
+        return (length == null) ? maxAvailableLength : Math.min(length, maxAvailableLength);
     }
 
     @Override
     public Long getLength() {
         return this.length;
+    }
+
+    public long getPosition() {
+        return position;
     }
 
     @Override
@@ -86,7 +124,9 @@ public final class FileContent extends BinaryDataContent {
     @Override
     public InputStream toStream() {
         try {
-            return new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize);
+            return new SliceInputStream(
+                new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize),
+                position, length);
         } catch (FileNotFoundException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
         }
@@ -96,7 +136,7 @@ public final class FileContent extends BinaryDataContent {
     public ByteBuffer toByteBuffer() {
         try {
             FileChannel fileChannel = FileChannel.open(file);
-            return fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, length);
+            return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
         }
@@ -112,7 +152,7 @@ public final class FileContent extends BinaryDataContent {
 
             int readCount = (int) Math.min(chunkSize, length - count);
             try {
-                sink.next(channel.map(FileChannel.MapMode.READ_ONLY, count, readCount));
+                sink.next(channel.map(FileChannel.MapMode.READ_ONLY, position + count, readCount));
             } catch (IOException ex) {
                 sink.error(ex);
             }
@@ -146,11 +186,14 @@ public final class FileContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
-        try {
-            return Files.readAllBytes(file);
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+        if (length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("'length' cannot be greater than %d when buffering content.",
+                    MAX_ARRAY_SIZE)));
         }
+        byte[] bytes = new byte[(int) length];
+        toByteBuffer().get(bytes);
+        return bytes;
     }
 }
 
