@@ -17,7 +17,6 @@ import java.time.Duration;
 
 import static com.azure.spring.cloud.actuator.cosmos.CosmosHealthConstants.DATA_BASE_FIELD;
 import static com.azure.spring.cloud.actuator.cosmos.CosmosHealthConstants.END_POINT_FIELD;
-import static com.azure.spring.cloud.actuator.cosmos.CosmosHealthConstants.RUS_FIELD;
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
@@ -63,7 +62,6 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
             LOGGER.info("The health indicator cost {} RUs, endpoint: {}, database: {}",
                 response.getRequestCharge(), endpoint, database);
             builder.up()
-                   .withDetail(RUS_FIELD, response.getRequestCharge())
                    .withDetail(END_POINT_FIELD, endpoint)
                    .withDetail(DATA_BASE_FIELD, database);
         } else {
