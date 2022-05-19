@@ -29,6 +29,8 @@ variables:
     value: 'none'
   - name: skipComponentGovernanceDetection
     value: 'true'
+  - name: DisableDockerDetector
+    value: 'true'
   - name: Pool
     value: 'azsdk-pool-mms-ubuntu-2004-perf'
   - name: OSVmImage
