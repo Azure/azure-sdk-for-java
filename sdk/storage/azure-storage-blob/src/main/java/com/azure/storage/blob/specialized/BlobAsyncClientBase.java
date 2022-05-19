@@ -1765,13 +1765,12 @@ public class BlobAsyncClientBase {
 
         return deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context)
             .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-            .onErrorResume(t -> t
-            instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((BlobStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), false));
-            });
+            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**

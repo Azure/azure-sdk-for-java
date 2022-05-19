@@ -299,13 +299,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return deleteWithResponse(options.getRequestConditions())
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t
-                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), false));
-                });
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -295,13 +295,12 @@ public final class QueueAsyncClient {
         try {
             return createWithResponse(metadata, context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof QueueStorageException
-                    && ((QueueStorageException) t).getStatusCode() == 409,
-                t -> {
-                    HttpResponse response = ((QueueStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), false));
-                });
+                .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((QueueStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -438,13 +437,12 @@ public final class QueueAsyncClient {
         context = context == null ? Context.NONE : context;
         return deleteWithResponse(context)
             .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-            .onErrorResume(t -> t instanceof QueueStorageException
-            && ((QueueStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((QueueStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), false));
-            });
+            .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((QueueStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**

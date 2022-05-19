@@ -571,13 +571,12 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return deleteWithResponse(context)
             .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-            .onErrorResume(t -> t instanceof ShareStorageException
-            && ((ShareStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((ShareStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), false));
-            });
+            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**

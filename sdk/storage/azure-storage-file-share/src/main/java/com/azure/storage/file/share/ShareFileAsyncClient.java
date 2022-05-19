@@ -1329,13 +1329,12 @@ public class ShareFileAsyncClient {
         try {
             return deleteWithResponse(requestConditions, context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof ShareStorageException
-                && ((ShareStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((ShareStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), false));
-                });
+                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

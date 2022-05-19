@@ -731,13 +731,12 @@ public class ShareAsyncClient {
     Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareDeleteOptions options, Context context) {
         return deleteWithResponse(options, context)
             .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-            .onErrorResume(t -> t instanceof ShareStorageException
-            && ((ShareStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((ShareStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), false));
-            });
+            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
@@ -1883,11 +1882,11 @@ public class ShareAsyncClient {
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t
                 instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((ShareStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), false));
-                });
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2041,6 +2040,7 @@ public class ShareAsyncClient {
      *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
      *             &#125;
      *         &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFileIfExistsWithResponse#string -->
      *
      * <p>For more information, see the
