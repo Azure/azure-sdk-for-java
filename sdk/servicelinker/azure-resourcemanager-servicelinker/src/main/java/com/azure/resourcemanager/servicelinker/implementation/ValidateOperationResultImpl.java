@@ -4,23 +4,32 @@
 
 package com.azure.resourcemanager.servicelinker.implementation;
 
-import com.azure.resourcemanager.servicelinker.fluent.models.ValidateResultInner;
+import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
 import com.azure.resourcemanager.servicelinker.models.AuthType;
-import com.azure.resourcemanager.servicelinker.models.ValidateResult;
+import com.azure.resourcemanager.servicelinker.models.ValidateOperationResult;
 import com.azure.resourcemanager.servicelinker.models.ValidationResultItem;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
-public final class ValidateResultImpl implements ValidateResult {
-    private ValidateResultInner innerObject;
+public final class ValidateOperationResultImpl implements ValidateOperationResult {
+    private ValidateOperationResultInner innerObject;
 
     private final com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager;
 
-    ValidateResultImpl(
-        ValidateResultInner innerObject, com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
+    ValidateOperationResultImpl(
+        ValidateOperationResultInner innerObject,
+        com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public String resourceId() {
+        return this.innerModel().resourceId();
+    }
+
+    public String status() {
+        return this.innerModel().status();
     }
 
     public String linkerName() {
@@ -60,7 +69,7 @@ public final class ValidateResultImpl implements ValidateResult {
         }
     }
 
-    public ValidateResultInner innerModel() {
+    public ValidateOperationResultInner innerModel() {
         return this.innerObject;
     }
 

@@ -4,12 +4,26 @@
 
 package com.azure.resourcemanager.servicelinker.models;
 
-import com.azure.resourcemanager.servicelinker.fluent.models.ValidateResultInner;
+import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of ValidateResult. */
-public interface ValidateResult {
+/** An immutable client-side representation of ValidateOperationResult. */
+public interface ValidateOperationResult {
+    /**
+     * Gets the resourceId property: Validated linker id.
+     *
+     * @return the resourceId value.
+     */
+    String resourceId();
+
+    /**
+     * Gets the status property: Validation operation status.
+     *
+     * @return the status value.
+     */
+    String status();
+
     /**
      * Gets the linkerName property: The linker name.
      *
@@ -67,9 +81,9 @@ public interface ValidateResult {
     List<ValidationResultItem> validationDetail();
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicelinker.fluent.models.ValidateResultInner object.
+     * Gets the inner com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner object.
      *
      * @return the inner object.
      */
-    ValidateResultInner innerModel();
+    ValidateOperationResultInner innerModel();
 }
