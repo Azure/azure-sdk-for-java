@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/analyze",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b14c970c-9636-4afc-bc21-54f0958c6b1d",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6503f8c2-5402-42d3-954c-bab0fb083b6f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "972",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "245",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/analyze/jobs/02126dc3-d46b-4bfe-bedf-5e5bda942961",
+      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/285db92e-cdb8-4d82-a249-4761fdb05b35?api-version=2022-04-01-preview",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dbfa76fa-403a-4651-9248-62943eceae91",
+      "apim-request-id" : "f8e3b3d0-4a93-434c-82f0-5ef32432610e",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Tue, 19 Oct 2021 20:10:30 GMT"
+      "Date" : "Fri, 13 May 2022 21:44:21 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/analyze/jobs/02126dc3-d46b-4bfe-bedf-5e5bda942961?showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/285db92e-cdb8-4d82-a249-4761fdb05b35?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "80995a25-b277-474c-a32b-784cab66108a"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3ce0e095-6de0-45c2-94a7-139ac5ac3eed"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "299",
+      "content-length" : "1243",
+      "x-envoy-upstream-service-time" : "32",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ceda2995-5ae1-48a2-9cef-adba599f7d8d",
+      "apim-request-id" : "3c4a19e4-dddb-4f87-9495-787d84777728",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"02126dc3-d46b-4bfe-bedf-5e5bda942961\",\"lastUpdateDateTime\":\"2021-10-19T20:10:32Z\",\"createdDateTime\":\"2021-10-19T20:10:30Z\",\"expirationDateTime\":\"2021-10-20T20:10:30Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"customEntityRecognitionTasks\":[{\"lastUpdateDateTime\":\"2021-10-19T20:10:32.6614821Z\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"David Schmidt\",\"category\":\"artist\",\"offset\":0,\"length\":13,\"confidenceScore\":0.8},{\"text\":\"Food\",\"category\":\"service\",\"offset\":38,\"length\":4,\"confidenceScore\":0.03},{\"text\":\"Safety\",\"category\":\"geographic_poi\",\"offset\":43,\"length\":6,\"confidenceScore\":0.06},{\"text\":\"International Food\",\"category\":\"geographic_poi\",\"offset\":51,\"length\":18,\"confidenceScore\":0.07},{\"text\":\"IFIC\",\"category\":\"geographic_poi\",\"offset\":91,\"length\":4,\"confidenceScore\":0.05},{\"text\":\"Information Council\",\"category\":\"restaurant_name\",\"offset\":70,\"length\":19,\"confidenceScore\":0.1},{\"text\":\"Washington, D.C.\",\"category\":\"state\",\"offset\":98,\"length\":16,\"confidenceScore\":0.49}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\",\"deploymentName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\"}}]}}",
-      "Date" : "Tue, 19 Oct 2021 20:10:35 GMT",
+      "Body" : "{\"jobId\":\"285db92e-cdb8-4d82-a249-4761fdb05b35\",\"lastUpdateDateTime\":\"2022-05-13T21:44:22Z\",\"createdDateTime\":\"2022-05-13T21:44:21Z\",\"expirationDateTime\":\"2022-05-14T21:44:21Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-05-13T21:44:22.3698594Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"David Schmidt\",\"category\":\"artist\",\"offset\":0,\"length\":13,\"confidenceScore\":0.8},{\"text\":\"Food\",\"category\":\"service\",\"offset\":38,\"length\":4,\"confidenceScore\":0.03},{\"text\":\"Safety\",\"category\":\"geographic_poi\",\"offset\":43,\"length\":6,\"confidenceScore\":0.06},{\"text\":\"International Food\",\"category\":\"geographic_poi\",\"offset\":51,\"length\":18,\"confidenceScore\":0.07},{\"text\":\"IFIC\",\"category\":\"geographic_poi\",\"offset\":91,\"length\":4,\"confidenceScore\":0.05},{\"text\":\"Information Council\",\"category\":\"restaurant_name\",\"offset\":70,\"length\":19,\"confidenceScore\":0.1},{\"text\":\"Washington, D.C.\",\"category\":\"state\",\"offset\":98,\"length\":16,\"confidenceScore\":0.49}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\",\"deploymentName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\"}}]}}",
+      "Date" : "Fri, 13 May 2022 21:44:51 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/analyze/jobs/02126dc3-d46b-4bfe-bedf-5e5bda942961?showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/285db92e-cdb8-4d82-a249-4761fdb05b35?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "78431658-edf6-4947-b860-6474e7be48c2"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2d2257b2-5509-4d47-8e9b-0e07c95eeb49"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "286",
+      "content-length" : "1243",
+      "x-envoy-upstream-service-time" : "218",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "3ec18391-f236-4cc2-ae60-2f3a96aca76d",
+      "apim-request-id" : "96950625-4be8-4841-9106-51bcb2f9f6c7",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"02126dc3-d46b-4bfe-bedf-5e5bda942961\",\"lastUpdateDateTime\":\"2021-10-19T20:10:32Z\",\"createdDateTime\":\"2021-10-19T20:10:30Z\",\"expirationDateTime\":\"2021-10-20T20:10:30Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"customEntityRecognitionTasks\":[{\"lastUpdateDateTime\":\"2021-10-19T20:10:32.6614821Z\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"David Schmidt\",\"category\":\"artist\",\"offset\":0,\"length\":13,\"confidenceScore\":0.8},{\"text\":\"Food\",\"category\":\"service\",\"offset\":38,\"length\":4,\"confidenceScore\":0.03},{\"text\":\"Safety\",\"category\":\"geographic_poi\",\"offset\":43,\"length\":6,\"confidenceScore\":0.06},{\"text\":\"International Food\",\"category\":\"geographic_poi\",\"offset\":51,\"length\":18,\"confidenceScore\":0.07},{\"text\":\"IFIC\",\"category\":\"geographic_poi\",\"offset\":91,\"length\":4,\"confidenceScore\":0.05},{\"text\":\"Information Council\",\"category\":\"restaurant_name\",\"offset\":70,\"length\":19,\"confidenceScore\":0.1},{\"text\":\"Washington, D.C.\",\"category\":\"state\",\"offset\":98,\"length\":16,\"confidenceScore\":0.49}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\",\"deploymentName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\"}}]}}",
-      "Date" : "Tue, 19 Oct 2021 20:10:36 GMT",
+      "Body" : "{\"jobId\":\"285db92e-cdb8-4d82-a249-4761fdb05b35\",\"lastUpdateDateTime\":\"2022-05-13T21:44:22Z\",\"createdDateTime\":\"2022-05-13T21:44:21Z\",\"expirationDateTime\":\"2022-05-14T21:44:21Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-05-13T21:44:22.3698594Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"David Schmidt\",\"category\":\"artist\",\"offset\":0,\"length\":13,\"confidenceScore\":0.8},{\"text\":\"Food\",\"category\":\"service\",\"offset\":38,\"length\":4,\"confidenceScore\":0.03},{\"text\":\"Safety\",\"category\":\"geographic_poi\",\"offset\":43,\"length\":6,\"confidenceScore\":0.06},{\"text\":\"International Food\",\"category\":\"geographic_poi\",\"offset\":51,\"length\":18,\"confidenceScore\":0.07},{\"text\":\"IFIC\",\"category\":\"geographic_poi\",\"offset\":91,\"length\":4,\"confidenceScore\":0.05},{\"text\":\"Information Council\",\"category\":\"restaurant_name\",\"offset\":70,\"length\":19,\"confidenceScore\":0.1},{\"text\":\"Washington, D.C.\",\"category\":\"state\",\"offset\":98,\"length\":16,\"confidenceScore\":0.49}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\",\"deploymentName\":\"88ee0f78-fbca-444d-98e2-7c4c8631e494\"}}]}}",
+      "Date" : "Fri, 13 May 2022 21:44:51 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

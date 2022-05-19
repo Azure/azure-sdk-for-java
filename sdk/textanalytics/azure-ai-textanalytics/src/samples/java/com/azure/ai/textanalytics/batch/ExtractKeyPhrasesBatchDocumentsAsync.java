@@ -49,7 +49,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
                 ExtractKeyPhrasesResultCollection keyPhrasesBatchResultCollection = keyPhrasesBatchResultResponse.getValue();
 
                 // Model version
-                System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());
+                System.out.printf("Results of \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = keyPhrasesBatchResultCollection.getStatistics();
