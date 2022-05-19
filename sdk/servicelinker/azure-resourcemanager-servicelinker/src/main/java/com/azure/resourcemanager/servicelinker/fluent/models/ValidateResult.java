@@ -13,7 +13,7 @@ import java.util.List;
 
 /** The validation result for a linker. */
 @Fluent
-public final class ValidateResultInner {
+public final class ValidateResult {
     /*
      * The linker name.
      */
@@ -75,9 +75,9 @@ public final class ValidateResultInner {
      * Set the linkerName property: The linker name.
      *
      * @param linkerName the linkerName value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withLinkerName(String linkerName) {
+    public ValidateResult withLinkerName(String linkerName) {
         this.linkerName = linkerName;
         return this;
     }
@@ -95,9 +95,9 @@ public final class ValidateResultInner {
      * Set the isConnectionAvailable property: A boolean value indicating whether the connection is available or not.
      *
      * @param isConnectionAvailable the isConnectionAvailable value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withIsConnectionAvailable(Boolean isConnectionAvailable) {
+    public ValidateResult withIsConnectionAvailable(Boolean isConnectionAvailable) {
         this.isConnectionAvailable = isConnectionAvailable;
         return this;
     }
@@ -115,9 +115,9 @@ public final class ValidateResultInner {
      * Set the reportStartTimeUtc property: The start time of the validation report.
      *
      * @param reportStartTimeUtc the reportStartTimeUtc value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withReportStartTimeUtc(OffsetDateTime reportStartTimeUtc) {
+    public ValidateResult withReportStartTimeUtc(OffsetDateTime reportStartTimeUtc) {
         this.reportStartTimeUtc = reportStartTimeUtc;
         return this;
     }
@@ -135,9 +135,9 @@ public final class ValidateResultInner {
      * Set the reportEndTimeUtc property: The end time of the validation report.
      *
      * @param reportEndTimeUtc the reportEndTimeUtc value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withReportEndTimeUtc(OffsetDateTime reportEndTimeUtc) {
+    public ValidateResult withReportEndTimeUtc(OffsetDateTime reportEndTimeUtc) {
         this.reportEndTimeUtc = reportEndTimeUtc;
         return this;
     }
@@ -155,9 +155,9 @@ public final class ValidateResultInner {
      * Set the sourceId property: The resource id of the linker source application.
      *
      * @param sourceId the sourceId value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withSourceId(String sourceId) {
+    public ValidateResult withSourceId(String sourceId) {
         this.sourceId = sourceId;
         return this;
     }
@@ -175,9 +175,9 @@ public final class ValidateResultInner {
      * Set the targetId property: The resource Id of target service.
      *
      * @param targetId the targetId value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withTargetId(String targetId) {
+    public ValidateResult withTargetId(String targetId) {
         this.targetId = targetId;
         return this;
     }
@@ -195,9 +195,9 @@ public final class ValidateResultInner {
      * Set the authType property: The authentication type.
      *
      * @param authType the authType value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withAuthType(AuthType authType) {
+    public ValidateResult withAuthType(AuthType authType) {
         this.authType = authType;
         return this;
     }
@@ -215,9 +215,9 @@ public final class ValidateResultInner {
      * Set the validationDetail property: The detail of validation result.
      *
      * @param validationDetail the validationDetail value to set.
-     * @return the ValidateResultInner object itself.
+     * @return the ValidateResult object itself.
      */
-    public ValidateResultInner withValidationDetail(List<ValidationResultItem> validationDetail) {
+    public ValidateResult withValidationDetail(List<ValidationResultItem> validationDetail) {
         this.validationDetail = validationDetail;
         return this;
     }

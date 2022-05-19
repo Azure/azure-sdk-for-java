@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner;
-import com.azure.resourcemanager.servicelinker.fluent.models.ValidateResultInner;
+import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
 import com.azure.resourcemanager.servicelinker.models.LinkerPatch;
 
 /** An instance of this class provides access to all the operations defined in LinkersClient. */
@@ -251,10 +251,10 @@ public interface LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the validation result for a linker.
+     * @return the {@link SyncPoller} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateResultInner>, ValidateResultInner> beginValidate(
+    SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner> beginValidate(
         String resourceUri, String linkerName);
 
     /**
@@ -266,10 +266,10 @@ public interface LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the validation result for a linker.
+     * @return the {@link SyncPoller} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateResultInner>, ValidateResultInner> beginValidate(
+    SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner> beginValidate(
         String resourceUri, String linkerName, Context context);
 
     /**
@@ -280,10 +280,10 @@ public interface LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation result for a linker.
+     * @return the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateResultInner validate(String resourceUri, String linkerName);
+    ValidateOperationResultInner validate(String resourceUri, String linkerName);
 
     /**
      * Validate a link.
@@ -294,10 +294,10 @@ public interface LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation result for a linker.
+     * @return the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateResultInner validate(String resourceUri, String linkerName, Context context);
+    ValidateOperationResultInner validate(String resourceUri, String linkerName, Context context);
 
     /**
      * list source configurations for a linker.
