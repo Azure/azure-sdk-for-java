@@ -63,6 +63,7 @@ public class DiskEncryptionSetTests extends ComputeManagementTest{
             .withoutAutomaticKeyRotation()
             .apply();
         Assertions.assertNull(diskEncryptionSet.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertFalse(diskEncryptionSet.isAutomaticKeyRotationEnabled());
     }
 
     static final class VaultAndKey {
