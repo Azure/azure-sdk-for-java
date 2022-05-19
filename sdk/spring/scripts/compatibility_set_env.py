@@ -15,8 +15,10 @@ def set_env_of_springcloud_version(filepath):
         data = json.load(file)
         # print(data)
     for key in data:
-        os.environ[key+".springCloud"] = data[key]
-        print("set env.${"+key+".springCloud}="+os.environ[key+".springCloud"])
+        os.environ[key] = data[key]
+        print("set ${env."+key+"}="+os.environ[key])
+        # os.environ[key+".springCloud"] = data[key]
+        # print("set env.${"+key+".springCloud}="+os.environ[key+".springCloud"])
     #     print(json.dumps(file))
 
 
