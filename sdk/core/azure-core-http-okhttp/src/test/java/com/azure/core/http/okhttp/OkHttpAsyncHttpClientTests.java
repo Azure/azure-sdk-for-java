@@ -219,7 +219,7 @@ public class OkHttpAsyncHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         int concurrency = 10;
         Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequestsPerHost(10); // this is 5 by default.
+        dispatcher.setMaxRequestsPerHost(concurrency); // this is 5 by default.
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
             .dispatcher(dispatcher)
             .build();
