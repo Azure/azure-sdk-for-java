@@ -664,7 +664,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context
-        Response<Void> response = shareDirectoryClient.deleteIfExistsWithResponse(Duration.ofSeconds(1),
+        Response<Boolean> response = shareDirectoryClient.deleteIfExistsWithResponse(Duration.ofSeconds(1),
             new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
@@ -713,7 +713,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context
-        Response<Void> response = shareDirectoryClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory",
+        Response<Boolean> response = shareDirectoryClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
@@ -736,7 +736,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-Duration-Context
-        Response<Void> response = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile",
+        Response<Boolean> response = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
@@ -749,7 +749,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         ShareDeleteOptions options = new ShareDeleteOptions().setRequestConditions(requestConditions);
 
-        Response<Void> fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile", options,
+        Response<Boolean> fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile", options,
             Duration.ofSeconds(1), new Context(key1, value1));
         if (fileResponse.getStatusCode() == 404) {
             System.out.println("Does not exist.");

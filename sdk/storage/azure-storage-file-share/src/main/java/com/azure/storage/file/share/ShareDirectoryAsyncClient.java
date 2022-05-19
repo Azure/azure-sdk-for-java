@@ -530,7 +530,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -559,7 +559,7 @@ public class ShareDirectoryAsyncClient {
      * successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse() {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse() {
         try {
             return withContext(this::deleteIfExistsWithResponse);
         } catch (RuntimeException ex) {
@@ -567,14 +567,16 @@ public class ShareDirectoryAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(Context context) {
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return deleteWithResponse(context).onErrorResume(t -> t instanceof ShareStorageException
+        return deleteWithResponse(context)
+            .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+            .onErrorResume(t -> t instanceof ShareStorageException
             && ((ShareStorageException) t).getStatusCode() == 404,
             t -> {
                 HttpResponse response = ((ShareStorageException) t).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
+                    response.getHeaders(), false));
             });
     }
 
@@ -1518,7 +1520,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
-        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName).map(response -> response.getStatusCode() != 404);
+        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1548,7 +1550,7 @@ public class ShareDirectoryAsyncClient {
      * successfully deleted. If status code is 404, the subdirectory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName) {
+    public Mono<Response<Boolean>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName) {
         try {
             return withContext(context -> deleteSubdirectoryIfExistsWithResponse(subdirectoryName,
                 context));
@@ -1557,7 +1559,7 @@ public class ShareDirectoryAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Context context) {
+    Mono<Response<Boolean>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Context context) {
         try {
             return getSubdirectoryClient(subdirectoryName).deleteIfExistsWithResponse(context);
         } catch (RuntimeException ex) {
@@ -1850,7 +1852,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName).map(response -> response.getStatusCode() != 404);
+        return deleteFileIfExistsWithResponse(fileName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1880,7 +1882,7 @@ public class ShareDirectoryAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName) {
         try {
             return this.deleteFileIfExistsWithResponse(fileName, null);
         } catch (RuntimeException ex) {
@@ -1919,7 +1921,7 @@ public class ShareDirectoryAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options) {
         try {
             return withContext(context -> deleteFileIfExistsWithResponse(fileName, options,
                 context));
@@ -1928,16 +1930,17 @@ public class ShareDirectoryAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options, Context context) {
+    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options, Context context) {
         try {
             options = options == null ? new ShareDeleteOptions() : options;
             return deleteFileWithResponse(fileName, options.getRequestConditions(), context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
                     .getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

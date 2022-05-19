@@ -1252,7 +1252,7 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1281,7 +1281,7 @@ public class ShareFileAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse() {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse() {
         try {
             return deleteIfExistsWithResponse(null);
         } catch (RuntimeException ex) {
@@ -1317,7 +1317,7 @@ public class ShareFileAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> this.deleteIfExistsWithResponse(requestConditions, context));
         } catch (RuntimeException ex) {
@@ -1325,14 +1325,16 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
         try {
-            return deleteWithResponse(requestConditions, context).onErrorResume(t -> t instanceof ShareStorageException
+            return deleteWithResponse(requestConditions, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof ShareStorageException
                 && ((ShareStorageException) t).getStatusCode() == 404,
                 t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
+                        response.getHeaders(), false));
                 });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

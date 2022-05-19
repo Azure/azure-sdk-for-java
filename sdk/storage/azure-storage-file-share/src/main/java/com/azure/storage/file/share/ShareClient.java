@@ -1707,8 +1707,7 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteFileIfExists(String fileName) {
-        Response<Void> response = deleteFileIfExistsWithResponse(fileName, null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteFileIfExistsWithResponse(fileName, null, Context.NONE).getValue();
     }
 
     /**
@@ -1720,7 +1719,7 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-duration-context -->
      * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;,
+     * Response&lt;Boolean&gt; response = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1742,7 +1741,7 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
+    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
         return this.deleteFileIfExistsWithResponse(fileName, null, timeout, context);
     }
 

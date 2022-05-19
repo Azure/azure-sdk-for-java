@@ -872,7 +872,7 @@ public class ShareJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareClient.deleteFileIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-duration-context
-        Response<Void> response = shareClient.deleteFileIfExistsWithResponse("myfile",
+        Response<Boolean> response = shareClient.deleteFileIfExistsWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
