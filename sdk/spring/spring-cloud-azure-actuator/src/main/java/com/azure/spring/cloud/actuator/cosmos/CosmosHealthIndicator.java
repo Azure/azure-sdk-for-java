@@ -62,7 +62,7 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
             builder.up()
                    .withDetail("RUs", response.getRequestCharge())
                    .withDetail("CosmosUri", endpoint)
-                   .withDetail("Database", database);
+                   .withDetail("database", database);
         } else {
             builder.down();
         }
