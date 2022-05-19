@@ -17,7 +17,7 @@ class DiskEncryptionSetMsiHandler extends RoleAssignmentHelper {
      * @param authorizationManager the graph rbac manager
      * @param diskEncryptionSet    disk encryption set
      */
-    public DiskEncryptionSetMsiHandler(AuthorizationManager authorizationManager, DiskEncryptionSetImpl diskEncryptionSet) {
+    DiskEncryptionSetMsiHandler(AuthorizationManager authorizationManager, DiskEncryptionSetImpl diskEncryptionSet) {
         super(authorizationManager, diskEncryptionSet.taskGroup(), diskEncryptionSet.idProvider());
     }
 }

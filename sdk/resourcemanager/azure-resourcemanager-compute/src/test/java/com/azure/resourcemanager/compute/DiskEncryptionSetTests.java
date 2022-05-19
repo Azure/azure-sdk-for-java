@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-public class DiskEncryptionSetTests extends ComputeManagementTest{
+public class DiskEncryptionSetTests extends ComputeManagementTest {
     String rgName = "";
 
     @Override
