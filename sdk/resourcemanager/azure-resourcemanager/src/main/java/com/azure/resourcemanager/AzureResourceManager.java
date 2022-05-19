@@ -28,7 +28,6 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
 import com.azure.resourcemanager.compute.models.ComputeUsages;
-import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSets;
 import com.azure.resourcemanager.compute.models.Disks;
 import com.azure.resourcemanager.compute.models.Galleries;
