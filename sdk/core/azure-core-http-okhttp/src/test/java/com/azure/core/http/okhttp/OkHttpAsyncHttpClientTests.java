@@ -232,7 +232,10 @@ public class OkHttpAsyncHttpClientTests {
             .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
-                    .doOnNext(buffer -> md.update(buffer.duplicate()))
+                    .map(buffer -> {
+                        md.update(buffer.duplicate());
+                        return buffer;
+                    })
                     .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest(), "wrong digest!"));
             }))
             .sequential()
