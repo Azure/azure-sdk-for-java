@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
