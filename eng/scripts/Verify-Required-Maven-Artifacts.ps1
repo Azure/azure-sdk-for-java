@@ -98,7 +98,7 @@ foreach($artifact in $ArtifactsList) {
 }
 
 if ($foundError) {
-  LogError "One or more required Maven Artifacts were not produced with the build. If the missing files were javadoc.jar or sources.jar please contact the Azure SDK EngSys team through email or their channel (azuresdkengsysteam@microsoft.com or Azure SDK > Engineering System on teams) for assistance."
+  LogError "One or more required Maven Artifacts were not produced with the build. If the missing files were javadoc.jar or sources.jar please contact the Azure SDK EngSys team through email or their Teams Channel (azuresdkengsysteam@microsoft.com or Azure SDK > Engineering System on teams) for assistance."
   exit(1)
 } else {
   Write-Host "Success! All Maven required artifacts has been produced."
