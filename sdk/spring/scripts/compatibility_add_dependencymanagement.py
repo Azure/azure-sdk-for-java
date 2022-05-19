@@ -46,7 +46,8 @@ def main():
     args = get_args()
     log.set_log_level(args.log)
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    spring_cloud_version = get_spring_cloud_version("./sdk/spring/compatibility-version-management.json")
+    spring_cloud_version = get_spring_cloud_version("https://github.com/Netyyyy/spring-cloud-azure-tools/blob/myao/addjson/compatibility-version-management.json")
+    # spring_cloud_version = get_spring_cloud_version("./sdk/spring/compatibility-version-management.json")
     add_dependency_management_for_all_poms_files_in_directory("./sdk/spring", spring_cloud_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
