@@ -200,7 +200,7 @@
     {
       "name": "azure.activedirectory.b2c.tenant-id",
       "type": "java.lang.String",
-      "description": "The name of the b2c tenant id.",
+      "description": "The name of the b2c tenant ID.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -613,7 +613,7 @@
     {
       "name": "azure.keyvault.tenant-id",
       "type": "java.lang.String",
-      "description": "Tenant id for the key vault.",
+      "description": "Tenant ID for the key vault.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Key Vault Secret Azure environment related under 'spring.cloud.azure.keyvault.secret.profile' prefix.",
@@ -683,7 +683,7 @@
     {
       "name": "spring.cloud.azure.client-id",
       "type": "java.lang.String",
-      "description": "Client id to use when performing service principal authentication with Azure. This is a legacy property.",
+      "description": "Client ID to use when performing service principal authentication with Azure. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all credential under 'spring.cloud.azure.credential' prefix.",
@@ -882,7 +882,7 @@
     {
       "name": "spring.cloud.azure.subscription-id",
       "type": "java.lang.String",
-      "description": "Subscription id to use when connecting to Azure resources. This is a legacy property.",
+      "description": "Subscription ID to use when connecting to Azure resources. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
@@ -892,7 +892,7 @@
     {
       "name": "spring.cloud.azure.tenant-id",
       "type": "java.lang.String",
-      "description": "Tenant id for Azure resources. This is a legacy property.",
+      "description": "Tenant ID for Azure resources. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
@@ -1119,13 +1119,13 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-header-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of whitelisted headers that should be logged.",
+      "description": "Comma-delimited list of allowlist headers that should be logged.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-query-param-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of whitelisted query parameters.",
+      "description": "Comma-delimited list of allowlist query parameters.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
@@ -1179,7 +1179,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-id",
       "type": "java.lang.String",
-      "description": "Client id to use when performing service principal authentication with Azure.",
+      "description": "Client ID to use when performing service principal authentication with Azure.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
     },
     {
@@ -1191,7 +1191,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.managed-identity-enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the client id as user assigned managed identity client id.",
+      "description": "Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the client ID as user assigned managed identity client ID.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties",
       "defaultValue": false
     },
@@ -1253,7 +1253,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-resource-id",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory resource id.",
+      "description": "The Azure Active Directory resource ID.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
@@ -1349,13 +1349,13 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.subscription-id",
       "type": "java.lang.String",
-      "description": "Subscription id to use when connecting to Azure resources.",
+      "description": "Subscription ID to use when connecting to Azure resources.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.tenant-id",
       "type": "java.lang.String",
-      "description": "Tenant id for Azure resources.",
+      "description": "Tenant ID for Azure resources.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {

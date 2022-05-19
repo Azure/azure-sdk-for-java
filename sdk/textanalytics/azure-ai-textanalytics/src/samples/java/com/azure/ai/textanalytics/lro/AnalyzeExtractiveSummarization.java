@@ -20,7 +20,7 @@ import com.azure.core.util.polling.SyncPoller;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Sample demonstrates how to synchronously execute an "Extractive Summarization" action in a batch of documents,
+ * Sample demonstrates how to synchronously execute an "Extractive Summarization" action in a batch of documents.
  */
 public class AnalyzeExtractiveSummarization {
     /**

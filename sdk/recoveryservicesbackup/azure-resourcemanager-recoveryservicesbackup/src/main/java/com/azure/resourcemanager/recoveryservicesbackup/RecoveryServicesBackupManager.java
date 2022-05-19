@@ -397,7 +397,7 @@ public final class RecoveryServicesBackupManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesbackup")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -469,7 +469,7 @@ public final class RecoveryServicesBackupManager {
     }
 
     /**
-     * Gets the resource collection API of ProtectionIntents.
+     * Gets the resource collection API of ProtectionIntents. It manages ProtectionIntentResource.
      *
      * @return Resource collection API of ProtectionIntents.
      */
@@ -568,7 +568,7 @@ public final class RecoveryServicesBackupManager {
     }
 
     /**
-     * Gets the resource collection API of PrivateEndpointConnections.
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnectionResource.
      *
      * @return Resource collection API of PrivateEndpointConnections.
      */
@@ -618,7 +618,7 @@ public final class RecoveryServicesBackupManager {
     }
 
     /**
-     * Gets the resource collection API of ProtectedItems.
+     * Gets the resource collection API of ProtectedItems. It manages ProtectedItemResource.
      *
      * @return Resource collection API of ProtectedItems.
      */
@@ -679,7 +679,7 @@ public final class RecoveryServicesBackupManager {
     }
 
     /**
-     * Gets the resource collection API of ProtectionPolicies.
+     * Gets the resource collection API of ProtectionPolicies. It manages ProtectionPolicyResource.
      *
      * @return Resource collection API of ProtectionPolicies.
      */
@@ -877,7 +877,7 @@ public final class RecoveryServicesBackupManager {
     }
 
     /**
-     * Gets the resource collection API of ProtectionContainers.
+     * Gets the resource collection API of ProtectionContainers. It manages ProtectionContainerResource.
      *
      * @return Resource collection API of ProtectionContainers.
      */
@@ -1055,7 +1055,7 @@ public final class RecoveryServicesBackupManager {
     }
 
     /**
-     * Gets the resource collection API of ResourceGuardProxyOperations.
+     * Gets the resource collection API of ResourceGuardProxyOperations. It manages ResourceGuardProxyBaseResource.
      *
      * @return Resource collection API of ResourceGuardProxyOperations.
      */

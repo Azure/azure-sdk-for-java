@@ -228,6 +228,12 @@ public final class CosmosClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this.asyncClientWrapper, databaseId, containerId);
     }
 
+    /**
+     * Should not be called form user-code. This method is a no-op and is just used internally
+     * to force loading this class
+     */
+    public static void doNothingButEnsureLoadingClass() {}
+
     static {
         ImplementationBridgeHelpers.CosmosClientHelper.setCosmosClientAccessor(
             cosmosClient -> cosmosClient.asyncClient());

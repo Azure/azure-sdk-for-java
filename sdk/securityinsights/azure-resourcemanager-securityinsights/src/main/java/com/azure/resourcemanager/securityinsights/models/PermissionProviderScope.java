@@ -30,7 +30,11 @@ public final class PermissionProviderScope extends ExpandableStringEnum<Permissi
         return fromString(name, PermissionProviderScope.class);
     }
 
-    /** @return known PermissionProviderScope values. */
+    /**
+     * Gets known PermissionProviderScope values.
+     *
+     * @return known PermissionProviderScope values.
+     */
     public static Collection<PermissionProviderScope> values() {
         return values(PermissionProviderScope.class);
     }

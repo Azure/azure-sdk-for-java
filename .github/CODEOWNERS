@@ -102,7 +102,7 @@
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
+/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang @anushkasingh16
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak

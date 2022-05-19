@@ -281,14 +281,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         String protectedItemName,
         String filter) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
-            .flatMap(
-                (Response<ProtectedItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -310,14 +303,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
         final String filter = null;
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
-            .flatMap(
-                (Response<ProtectedItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -549,14 +535,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         ProtectedItemResourceInner parameters) {
         return createOrUpdateWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
-            .flatMap(
-                (Response<ProtectedItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -768,7 +747,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     private Mono<Void> deleteAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

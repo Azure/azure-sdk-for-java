@@ -231,14 +231,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     private Mono<ProtectionPolicyResourceInner> getAsync(
         String vaultName, String resourceGroupName, String policyName) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName)
-            .flatMap(
-                (Response<ProtectionPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -418,14 +411,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     private Mono<ProtectionPolicyResourceInner> createOrUpdateAsync(
         String vaultName, String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters)
-            .flatMap(
-                (Response<ProtectionPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

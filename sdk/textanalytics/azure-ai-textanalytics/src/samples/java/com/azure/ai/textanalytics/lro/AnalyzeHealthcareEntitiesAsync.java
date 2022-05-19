@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -21,6 +22,7 @@ import com.azure.core.http.rest.PagedResponse;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,11 +35,10 @@ public class AnalyzeHealthcareEntitiesAsync {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsAsyncClient client =
-            new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
-                .buildAsyncClient();
+        TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
+                                              .credential(new AzureKeyCredential("{key}"))
+                                              .endpoint("{endpoint}")
+                                              .buildAsyncClient();
 
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
@@ -49,7 +50,9 @@ public class AnalyzeHealthcareEntitiesAsync {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
+                                                       .setFhirVersion(FhirVersion.V4_0_1)
+                                                       .setIncludeStatistics(true);
 
         client.beginAnalyzeHealthcareEntities(documents, options)
             .flatMap(pollResult -> {
@@ -80,7 +83,7 @@ public class AnalyzeHealthcareEntitiesAsync {
             perPage.getStatusCode(), perPage.getContinuationToken());
         for (AnalyzeHealthcareEntitiesResultCollection resultCollection : perPage.getElements()) {
             // Model version
-            System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
+            System.out.printf("Results of \"Analyze Healthcare\" Model, version: %s%n",
                 resultCollection.getModelVersion());
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -118,6 +121,11 @@ public class AnalyzeHealthcareEntitiesAsync {
                         System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     }
+                }
+                // FHIR bundle in JSON format
+                final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                if (fhirBundle != null) {
+                    System.out.printf("FHIR bundle: %s%n", fhirBundle);
                 }
             }
         }

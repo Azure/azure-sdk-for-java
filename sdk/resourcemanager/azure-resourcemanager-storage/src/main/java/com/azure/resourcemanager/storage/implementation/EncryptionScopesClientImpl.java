@@ -301,14 +301,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope) {
         return putWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope)
-            .flatMap(
-                (Response<EncryptionScopeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -531,14 +524,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope) {
         return patchWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope)
-            .flatMap(
-                (Response<EncryptionScopeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -729,14 +715,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
     public Mono<EncryptionScopeInner> getAsync(
         String resourceGroupName, String accountName, String encryptionScopeName) {
         return getWithResponseAsync(resourceGroupName, accountName, encryptionScopeName)
-            .flatMap(
-                (Response<EncryptionScopeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -30,7 +30,11 @@ public final class CloudServiceUpgradeMode extends ExpandableStringEnum<CloudSer
         return fromString(name, CloudServiceUpgradeMode.class);
     }
 
-    /** @return known CloudServiceUpgradeMode values. */
+    /**
+     * Gets known CloudServiceUpgradeMode values.
+     *
+     * @return known CloudServiceUpgradeMode values.
+     */
     public static Collection<CloudServiceUpgradeMode> values() {
         return values(CloudServiceUpgradeMode.class);
     }

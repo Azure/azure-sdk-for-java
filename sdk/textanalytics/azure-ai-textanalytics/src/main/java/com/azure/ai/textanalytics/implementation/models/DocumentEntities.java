@@ -27,7 +27,7 @@ public final class DocumentEntities {
      * Warnings encountered while processing document.
      */
     @JsonProperty(value = "warnings", required = true)
-    private List<TextAnalyticsWarning> warnings;
+    private List<DocumentWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -81,7 +81,7 @@ public final class DocumentEntities {
      *
      * @return the warnings value.
      */
-    public List<TextAnalyticsWarning> getWarnings() {
+    public List<DocumentWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -91,7 +91,7 @@ public final class DocumentEntities {
      * @param warnings the warnings value to set.
      * @return the DocumentEntities object itself.
      */
-    public DocumentEntities setWarnings(List<TextAnalyticsWarning> warnings) {
+    public DocumentEntities setWarnings(List<DocumentWarning> warnings) {
         this.warnings = warnings;
         return this;
     }
