@@ -29,7 +29,7 @@ Include both the packages below:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-support-netty;current})
@@ -37,7 +37,7 @@ Include both the packages below:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support-netty</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 ## Key concepts

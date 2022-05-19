@@ -19,9 +19,9 @@ public class RecognizeEntitiesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
-            .buildAsyncClient();
+                                              .credential(new AzureKeyCredential("{key}"))
+                                              .endpoint("{endpoint}")
+                                              .buildAsyncClient();
 
         // The document that needs be analyzed.
         String document = "Satya Nadella is the CEO of Microsoft";

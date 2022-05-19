@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 import org.springframework.util.ClassUtils;
 
 /**
- * AAD application type.
+ * Azure AD application type.
  * <p>The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.</p>
  * <pre>
  * | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server | Valid values of application type                                                                       | Default value               |

@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -50,4 +51,12 @@ public interface RxStoreModel {
      * @param throughputControlStore
      */
     void enableThroughputControl(ThroughputControlStore throughputControlStore);
+
+    /***
+     * Open connections and init caches.
+     *
+     * @param containerLink the container link.
+     * @return a flux of {@link OpenConnectionResponse}.
+     */
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
 }

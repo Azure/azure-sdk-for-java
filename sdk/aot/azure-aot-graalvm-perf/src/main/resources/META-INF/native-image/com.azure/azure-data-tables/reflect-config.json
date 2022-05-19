@@ -1,0 +1,38 @@
+[
+  {
+    "name": "com.azure.data.tables.perf.CreateEntityWithAllTypes",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.data.tables.perf.CreateEntityWithAllTypesUsingTransaction",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.data.tables.perf.CreateEntityWithStringsOnly",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.data.tables.perf.CreateEntityWithStringsOnlyUsingTransaction",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.data.tables.perf.ListEntitiesWithStringsOnlyTest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.data.tables.perf.ListEntitiesWithAllTypesTest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  }
+]

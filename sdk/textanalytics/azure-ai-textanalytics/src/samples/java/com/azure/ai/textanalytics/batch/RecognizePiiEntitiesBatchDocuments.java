@@ -60,7 +60,7 @@ public class RecognizePiiEntitiesBatchDocuments {
         RecognizePiiEntitiesResultCollection recognizePiiEntitiesResultCollection = piiEntitiesBatchResultResponse.getValue();
 
         // Model version
-        System.out.printf("Results of Azure Text Analytics \"Personally Identifiable Information Entities Recognition\" Model, version: %s%n", recognizePiiEntitiesResultCollection.getModelVersion());
+        System.out.printf("Results of \"Personally Identifiable Information Entities Recognition\" Model, version: %s%n", recognizePiiEntitiesResultCollection.getModelVersion());
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResultCollection.getStatistics();

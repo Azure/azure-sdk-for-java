@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -514,6 +515,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         @Override
         protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
             return Mono.empty();
+        }
+
+        @Override
+        public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+            throw new NotImplementedException("tryOpenConnection is not supported in RntbdTransportClientTest");
         }
 
         @Override
