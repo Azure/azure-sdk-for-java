@@ -69,9 +69,6 @@ extends:
       - name: azure-data-appconfiguration
         groupId: com.azure
         safeName: azuredataappconfiguration
-      - name: spring-cloud-azure-appconfiguration-config
-        groupId: com.microsoft.azure
-        safeName: springcloudazureappconfigurationconfig
       - name: azure-spring-cloud-appconfiguration-config
         groupId: com.azure.spring
         safeName: azurespringcloudappconfigurationconfig
