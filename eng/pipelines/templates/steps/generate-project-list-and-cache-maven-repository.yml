@@ -7,6 +7,7 @@
 # on whether we are doing a recorded test play back or a full live
 # test.
 
+# The project list is also being used as a cache key.
 parameters:
   - name: Artifacts
     type: object
@@ -17,20 +18,8 @@ parameters:
   - name: JobType
     type: string
     default: test
-  - name: SDKType
-    type: string
-    default: client
-  - name: ServiceDirectory
-    type: string
-    default: 'not-specified' # Set a default that breaks in obvious ways.
 
 steps:
-- template: ../steps/cache-maven-repository.yml
-  parameters:
-    JobType: ${{ parameters.JobType }}
-    SDKType: ${{ parameters.SDKType }}
-    ServiceDirectory: ${{ parameters.ServiceDirectory }}
-
 - pwsh: |
     $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
     $additionalModules = '${{ convertToJson(parameters.AdditionalModules) }}' | ConvertFrom-Json
@@ -47,3 +36,11 @@ steps:
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
   displayName: Initialize project list variable
+
+- task: Cache@2
+  inputs:
+  # Note: CacheSalt is only intented to be used in special cases, as a build is queued, to force a cache miss.
+  # This would be set as a variable in the UI when the run is queued.
+    key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "$(ProjectList)" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven local repo

@@ -1,7 +1,13 @@
 parameters:
-  SDKType: bom
-  ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
-  ValidationSteps: []
+  - name: SDKType
+    type: string
+    default: bom
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: Artifacts
+    type: object
+    default: []
 
 jobs:
   - job: 'BuildAndValidate'
@@ -45,11 +51,10 @@ jobs:
         parameters:
           ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
-      - template: ../steps/cache-maven-repository.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build and Validate'
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          Artifacts: ${{ parameters.Artifacts }}
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.

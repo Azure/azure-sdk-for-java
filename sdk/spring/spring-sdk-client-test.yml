@@ -87,13 +87,11 @@ jobs:
             - '.vscode/cspell.json'
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
-      - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'maven_dependency'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'
         inputs:
