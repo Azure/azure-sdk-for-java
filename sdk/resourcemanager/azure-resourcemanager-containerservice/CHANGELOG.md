@@ -10,7 +10,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2022-03-01`.
+- Updated `api-version` to `2022-04-01`.
 
 ## 2.14.0 (2022-04-11)
 
