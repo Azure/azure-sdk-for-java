@@ -120,7 +120,11 @@ public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<
         return fromString(name, OpenShiftContainerServiceVMSize.class);
     }
 
-    /** @return known OpenShiftContainerServiceVMSize values. */
+    /**
+     * Gets known OpenShiftContainerServiceVMSize values.
+     *
+     * @return known OpenShiftContainerServiceVMSize values.
+     */
     public static Collection<OpenShiftContainerServiceVMSize> values() {
         return values(OpenShiftContainerServiceVMSize.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for MaintenanceConfigurations Get. */
 public final class MaintenanceConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-03-01/examples/MaintenanceConfigurationsGet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/MaintenanceConfigurationsGet.json
      */
     /**
      * Sample code: Get Maintenance Configuration.

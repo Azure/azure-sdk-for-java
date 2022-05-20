@@ -157,17 +157,32 @@ public class ManagedClusterAgentPoolProfileProperties {
     private AgentPoolMode mode;
 
     /*
-     * The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same
-     * Kubernetes version. The node pool version must have the same major
-     * version as the control plane. The node pool minor version must be within
-     * two minor versions of the control plane version. The node pool version
-     * cannot be greater than the control plane version. For more information
-     * see [upgrading a node
+     * The version of Kubernetes specified by the user. Both patch version
+     * <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are
+     * supported. When <major.minor> is specified, the latest supported GA
+     * patch version is chosen automatically. Updating the cluster with the
+     * same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will
+     * not trigger an upgrade, even if a newer patch version is available. As a
+     * best practice, you should upgrade all node pools in an AKS cluster to
+     * the same Kubernetes version. The node pool version must have the same
+     * major version as the control plane. The node pool minor version must be
+     * within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more
+     * information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      */
     @JsonProperty(value = "orchestratorVersion")
     private String orchestratorVersion;
+
+    /*
+     * The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version <major.minor.patch>,
+     * this field will be exactly equal to it. If orchestratorVersion is
+     * <major.minor>, this field will contain the full <major.minor.patch>
+     * version being used.
+     */
+    @JsonProperty(value = "currentOrchestratorVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentOrchestratorVersion;
 
     /*
      * The version of node image
@@ -703,11 +718,14 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
+     * Get the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @return the orchestratorVersion value.
@@ -717,11 +735,14 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
+     * Set the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @param orchestratorVersion the orchestratorVersion value to set.
@@ -730,6 +751,18 @@ public class ManagedClusterAgentPoolProfileProperties {
     public ManagedClusterAgentPoolProfileProperties withOrchestratorVersion(String orchestratorVersion) {
         this.orchestratorVersion = orchestratorVersion;
         return this;
+    }
+
+    /**
+     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
+     *
+     * @return the currentOrchestratorVersion value.
+     */
+    public String currentOrchestratorVersion() {
+        return this.currentOrchestratorVersion;
     }
 
     /**

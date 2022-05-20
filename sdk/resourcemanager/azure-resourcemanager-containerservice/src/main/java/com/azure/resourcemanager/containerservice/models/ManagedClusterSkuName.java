@@ -24,7 +24,11 @@ public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClu
         return fromString(name, ManagedClusterSkuName.class);
     }
 
-    /** @return known ManagedClusterSkuName values. */
+    /**
+     * Gets known ManagedClusterSkuName values.
+     *
+     * @return known ManagedClusterSkuName values.
+     */
     public static Collection<ManagedClusterSkuName> values() {
         return values(ManagedClusterSkuName.class);
     }

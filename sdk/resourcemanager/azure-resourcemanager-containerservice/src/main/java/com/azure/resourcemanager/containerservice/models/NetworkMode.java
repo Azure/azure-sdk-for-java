@@ -27,7 +27,11 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
         return fromString(name, NetworkMode.class);
     }
 
-    /** @return known NetworkMode values. */
+    /**
+     * Gets known NetworkMode values.
+     *
+     * @return known NetworkMode values.
+     */
     public static Collection<NetworkMode> values() {
         return values(NetworkMode.class);
     }

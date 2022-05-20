@@ -36,7 +36,11 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
         return fromString(name, UpgradeChannel.class);
     }
 
-    /** @return known UpgradeChannel values. */
+    /**
+     * Gets known UpgradeChannel values.
+     *
+     * @return known UpgradeChannel values.
+     */
     public static Collection<UpgradeChannel> values() {
         return values(UpgradeChannel.class);
     }

@@ -24,7 +24,11 @@ public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
         return fromString(name, SnapshotType.class);
     }
 
-    /** @return known SnapshotType values. */
+    /**
+     * Gets known SnapshotType values.
+     *
+     * @return known SnapshotType values.
+     */
     public static Collection<SnapshotType> values() {
         return values(SnapshotType.class);
     }

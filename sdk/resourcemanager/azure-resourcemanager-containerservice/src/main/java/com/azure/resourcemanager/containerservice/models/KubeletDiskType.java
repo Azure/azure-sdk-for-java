@@ -27,7 +27,11 @@ public final class KubeletDiskType extends ExpandableStringEnum<KubeletDiskType>
         return fromString(name, KubeletDiskType.class);
     }
 
-    /** @return known KubeletDiskType values. */
+    /**
+     * Gets known KubeletDiskType values.
+     *
+     * @return known KubeletDiskType values.
+     */
     public static Collection<KubeletDiskType> values() {
         return values(KubeletDiskType.class);
     }

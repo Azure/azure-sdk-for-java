@@ -33,7 +33,11 @@ public final class Expander extends ExpandableStringEnum<Expander> {
         return fromString(name, Expander.class);
     }
 
-    /** @return known Expander values. */
+    /**
+     * Gets known Expander values.
+     *
+     * @return known Expander values.
+     */
     public static Collection<Expander> values() {
         return values(Expander.class);
     }

@@ -27,7 +27,11 @@ public final class OpenShiftAgentPoolProfileRole extends ExpandableStringEnum<Op
         return fromString(name, OpenShiftAgentPoolProfileRole.class);
     }
 
-    /** @return known OpenShiftAgentPoolProfileRole values. */
+    /**
+     * Gets known OpenShiftAgentPoolProfileRole values.
+     *
+     * @return known OpenShiftAgentPoolProfileRole values.
+     */
     public static Collection<OpenShiftAgentPoolProfileRole> values() {
         return values(OpenShiftAgentPoolProfileRole.class);
     }

@@ -27,7 +27,11 @@ public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
         return fromString(name, AgentPoolType.class);
     }
 
-    /** @return known AgentPoolType values. */
+    /**
+     * Gets known AgentPoolType values.
+     *
+     * @return known AgentPoolType values.
+     */
     public static Collection<AgentPoolType> values() {
         return values(AgentPoolType.class);
     }

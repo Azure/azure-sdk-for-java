@@ -27,7 +27,11 @@ public final class ScaleSetEvictionPolicy extends ExpandableStringEnum<ScaleSetE
         return fromString(name, ScaleSetEvictionPolicy.class);
     }
 
-    /** @return known ScaleSetEvictionPolicy values. */
+    /**
+     * Gets known ScaleSetEvictionPolicy values.
+     *
+     * @return known ScaleSetEvictionPolicy values.
+     */
     public static Collection<ScaleSetEvictionPolicy> values() {
         return values(ScaleSetEvictionPolicy.class);
     }

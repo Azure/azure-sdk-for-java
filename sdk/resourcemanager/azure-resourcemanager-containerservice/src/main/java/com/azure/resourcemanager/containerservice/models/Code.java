@@ -27,7 +27,11 @@ public final class Code extends ExpandableStringEnum<Code> {
         return fromString(name, Code.class);
     }
 
-    /** @return known Code values. */
+    /**
+     * Gets known Code values.
+     *
+     * @return known Code values.
+     */
     public static Collection<Code> values() {
         return values(Code.class);
     }

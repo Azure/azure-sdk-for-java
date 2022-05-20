@@ -27,7 +27,11 @@ public final class ScaleSetPriority extends ExpandableStringEnum<ScaleSetPriorit
         return fromString(name, ScaleSetPriority.class);
     }
 
-    /** @return known ScaleSetPriority values. */
+    /**
+     * Gets known ScaleSetPriority values.
+     *
+     * @return known ScaleSetPriority values.
+     */
     public static Collection<ScaleSetPriority> values() {
         return values(ScaleSetPriority.class);
     }

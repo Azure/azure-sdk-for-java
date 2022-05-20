@@ -34,7 +34,11 @@ public final class ManagedClusterPodIdentityProvisioningState
         return fromString(name, ManagedClusterPodIdentityProvisioningState.class);
     }
 
-    /** @return known ManagedClusterPodIdentityProvisioningState values. */
+    /**
+     * Gets known ManagedClusterPodIdentityProvisioningState values.
+     *
+     * @return known ManagedClusterPodIdentityProvisioningState values.
+     */
     public static Collection<ManagedClusterPodIdentityProvisioningState> values() {
         return values(ManagedClusterPodIdentityProvisioningState.class);
     }

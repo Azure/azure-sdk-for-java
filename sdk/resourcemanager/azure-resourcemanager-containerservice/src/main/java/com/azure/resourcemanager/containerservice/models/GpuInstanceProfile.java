@@ -36,7 +36,11 @@ public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstancePr
         return fromString(name, GpuInstanceProfile.class);
     }
 
-    /** @return known GpuInstanceProfile values. */
+    /**
+     * Gets known GpuInstanceProfile values.
+     *
+     * @return known GpuInstanceProfile values.
+     */
     public static Collection<GpuInstanceProfile> values() {
         return values(GpuInstanceProfile.class);
     }
