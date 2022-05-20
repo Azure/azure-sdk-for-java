@@ -34,11 +34,12 @@ final class EncryptedBlobRange {
      */
     private Long adjustedDownloadCount;
 
-    static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange) {
+    static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange, EncryptionData encryptionData) {
         // Null case
         if (CoreUtils.isNullOrEmpty(stringRange)) {
             return new EncryptedBlobRange(null);
         }
+
         // Non-null case
         String trimmed = stringRange.substring(stringRange.indexOf("=") + 1); // Trim off the "bytes=" part
         String[] pieces = trimmed.split("-"); // Split on the "-"

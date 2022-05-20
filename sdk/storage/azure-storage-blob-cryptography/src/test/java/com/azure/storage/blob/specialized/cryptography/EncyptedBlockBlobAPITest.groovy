@@ -107,7 +107,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         // 3000 passes
         // 5 * 1024 * 1024 - 10 passes
-        // 16 * 1024 * 1024 - 10 fails
+        // 16 * 1024 * 1024 - 10 passes
         when:
         beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)), EncryptionVersion.V2).block()
 

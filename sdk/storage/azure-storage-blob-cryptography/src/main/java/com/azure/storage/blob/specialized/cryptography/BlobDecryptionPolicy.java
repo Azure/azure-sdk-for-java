@@ -32,6 +32,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
@@ -56,12 +57,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private final AsyncKeyEncryptionKey keyWrapper;
 
     /**
-     * Whether encryption is enforced by this client. Throws an exception if data is downloaded and it is not
-     * encrypted.
-     */
-    private final boolean requiresEncryption;
-
-    /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
      * <p>
      * If the generated policy is intended to be used for encryption, users are expected to provide a key at the
@@ -73,27 +68,42 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption
      * key
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
-     * @param requiresEncryption Whether encryption is enforced by this client.
      */
-    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
-        boolean requiresEncryption) {
+    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver) {
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
-        this.requiresEncryption = requiresEncryption;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // 1. Expand the range of download for decryption
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
-        EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-            requestHeaders.getValue(CryptographyConstants.RANGE_HEADER));
-
-        // Assumption: Download is the only API on an encrypted client that sets x-ms-range
-        // Only set the x-ms-range header if it already exists
-        if (requestHeaders.getValue(CryptographyConstants.RANGE_HEADER) != null) {
-            requestHeaders.set(CryptographyConstants.RANGE_HEADER, encryptedRange.toBlobRange().toString());
+        // Assumption: Download is the only API on an encrypted client that sets x-ms-range. If not present,
+        // nothing to decrypt; short circuit.
+        if (requestHeaders.getValue(CryptographyConstants.RANGE_HEADER) == null) {
+            return next.process();
         }
+
+        EncryptionData encryptionData = (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY)
+            .orElse(null);
+
+        // If the blob is not encrypted, this policy is a no-op.
+        // Note we already checked for requiresEncryption when we fetched EncryptionData.
+        if (encryptionData == null) {
+            return next.process();
+        }
+
+        // Blob being downloaded is not null.
+        // Move this check and the whole getAndValidate into the FetchEncryptionVersionPolicy?
+        // Well this check has to stay here because of the requiresEncryption flag being here, but other validation can move
+        // But if encryption data is null and we don't require encryption, we can short circuit and just allow the request to pass through
+        // Make sure we have tests for these pass through cases
+
+
+        // 1. Expand the range of download for decryption
+        EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
+            requestHeaders.getValue(CryptographyConstants.RANGE_HEADER), encryptionData);
+
+        requestHeaders.set(CryptographyConstants.RANGE_HEADER, encryptedRange.toBlobRange().toString());
 
         // 2. Replace the body of the response with a decrypted version of the body
         return next.process().flatMap(httpResponse -> {
@@ -302,53 +312,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             totalOutputBytes.addAndGet(decryptedBytes);
             return plaintextByteBuffer;
         });
-    }
-
-    /**
-     * Gets and validates {@link EncryptionDataV1} from a Blob's metadata
-     *
-     * @param encryptedDataString {@code String} of encrypted metadata
-     * @return {@link EncryptionDataV1}
-     */
-    private EncryptionDataV1 getAndValidateEncryptionData(String encryptedDataString) {
-        if (encryptedDataString == null) {
-            if (requiresEncryption) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
-                    + "downloaded data is not encrypted."));
-            }
-            return null;
-        }
-
-        try {
-            EncryptionDataV1 encryptionData = EncryptionDataV1.fromJsonString(encryptedDataString);
-
-            // Blob being downloaded is not null.
-            if (encryptionData == null) {
-                if (requiresEncryption) {
-                    throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
-                        + "downloaded data is not encrypted."));
-                }
-                return null;
-            }
-
-            Objects.requireNonNull(encryptionData.getContentEncryptionIV(), "contentEncryptionIV in encryptionData "
-                + "cannot be null");
-            Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
-                + "encryptionData.wrappedContentKey cannot be null");
-
-            // Throw if the encryption protocol on the message doesn't match the version that this client library
-            // understands and is able to decrypt.
-            if (!CryptographyConstants.ENCRYPTION_PROTOCOL_V1
-                .equals(encryptionData.getEncryptionAgent().getProtocol())) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
-                    "Invalid Encryption Agent. This version of the client library does not understand the "
-                        + "Encryption Agent set on the blob message: %s",
-                    encryptionData.getEncryptionAgent())));
-            }
-            return encryptionData;
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
     }
 
     /**

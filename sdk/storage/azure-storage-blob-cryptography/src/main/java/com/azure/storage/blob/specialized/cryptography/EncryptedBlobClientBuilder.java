@@ -40,6 +40,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
@@ -235,6 +236,33 @@ public final class EncryptedBlobClientBuilder implements
             .build();
     }
 
+    private BlobAsyncClient getUnencryptedBlobClient() {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .containerName(containerName)
+            .blobName(blobName)
+            .snapshot(snapshot)
+            .customerProvidedKey(
+                customerProvidedKey == null ? null : new CustomerProvidedKey(customerProvidedKey.getEncryptionKey()))
+            .encryptionScope(encryptionScope == null ? null : encryptionScope.getEncryptionScope())
+            .versionId(versionId)
+            .serviceVersion(version)
+            .httpClient(httpClient);
+        // Is this missing some things? Refactor to use the pipeline builder code below?
+
+        if (storageSharedKeyCredential != null) {
+            builder.credential(storageSharedKeyCredential);
+        } else if (tokenCredential != null) {
+            builder.credential(tokenCredential);
+        } else if (azureSasCredential != null) {
+            builder.credential(azureSasCredential);
+        } else if (sasToken != null) {
+            builder.credential(new AzureSasCredential(sasToken));
+        }
+
+        return builder.buildAsyncClient();
+    }
+
     private HttpPipeline getHttpPipeline() {
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, LOGGER);
@@ -246,7 +274,7 @@ public final class EncryptedBlobClientBuilder implements
             boolean decryptionPolicyPresent = false;
             for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
                 HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
-                if (currPolicy instanceof BlobDecryptionPolicy) {
+                if (currPolicy instanceof BlobDecryptionPolicy || currPolicy instanceof FetchEncryptionVersionPolicy) {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException("The passed pipeline was already"
                         + " configured for encryption/decryption in a way that might conflict with the passed key "
                         + "information. Please ensure that the passed pipeline is not already configured for "
@@ -255,7 +283,8 @@ public final class EncryptedBlobClientBuilder implements
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
-            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            policies.add(0, new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
 
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
@@ -265,53 +294,54 @@ public final class EncryptedBlobClientBuilder implements
 
         Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
 
-        // Closest to API goes first, closest to wire goes last.
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
+            // Closest to API goes first, closest to wire goes last.
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
-        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
-            : logOptions.getApplicationId();
-        policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
-        policies.add(new RequestIdPolicy());
+            policies.add(new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
+            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
+                : logOptions.getApplicationId();
+            policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
+            policies.add(new RequestIdPolicy());
 
-        policies.addAll(perCallPolicies);
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, LOGGER));
+            policies.addAll(perCallPolicies);
+            HttpPolicyProviders.addBeforeRetryPolicies(policies);
+            policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, LOGGER));
 
-        policies.add(new AddDatePolicy());
+            policies.add(new AddDatePolicy());
 
-        // We need to place this policy right before the credential policy since headers may affect the string to sign
-        // of the request.
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
-            policies.add(new AddHeadersPolicy(headers));
-        }
-        policies.add(new MetadataValidationPolicy());
+            // We need to place this policy right before the credential policy since headers may affect the string to sign
+            // of the request.
+            HttpHeaders headers = new HttpHeaders();
+            clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
+            if (headers.getSize() > 0) {
+                policies.add(new AddHeadersPolicy(headers));
+            }
+            policies.add(new MetadataValidationPolicy());
 
-        if (storageSharedKeyCredential != null) {
-            policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
-        } else if (tokenCredential != null) {
-            BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, LOGGER);
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
-        } else if (azureSasCredential != null) {
-            policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
-        } else if (sasToken != null) {
-            policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
-        }
+            if (storageSharedKeyCredential != null) {
+                policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
+            } else if (tokenCredential != null) {
+                BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, LOGGER);
+                policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
+            } else if (azureSasCredential != null) {
+                policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
+            } else if (sasToken != null) {
+                policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
+            }
 
-        policies.addAll(perRetryPolicies);
+            policies.addAll(perRetryPolicies);
 
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
+            HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        policies.add(new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-            .build());
+            policies.add(new ResponseValidationPolicyBuilder()
+                .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
+                .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+                .build());
 
-        policies.add(new HttpLoggingPolicy(logOptions));
+            policies.add(new HttpLoggingPolicy(logOptions));
 
-        policies.add(new ScrubEtagPolicy());
+            policies.add(new ScrubEtagPolicy());
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
