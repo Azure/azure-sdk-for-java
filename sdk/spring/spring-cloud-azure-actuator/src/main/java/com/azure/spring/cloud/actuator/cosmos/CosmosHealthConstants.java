@@ -11,7 +11,5 @@ final class CosmosHealthConstants {
     private CosmosHealthConstants() {
     }
 
-    static final String END_POINT_FIELD = "endpoint";
-
     static final String DATA_BASE_FIELD = "database";
 }
