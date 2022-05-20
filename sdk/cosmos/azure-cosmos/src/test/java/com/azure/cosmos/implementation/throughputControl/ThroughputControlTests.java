@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlClientItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -31,6 +32,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
@@ -40,6 +42,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -111,36 +114,118 @@ public class ThroughputControlTests extends TestSuiteBase {
     public void throughputGlobalControl(OperationType operationType) {
         String controlContainerId = "throughputControlContainer";
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
+        database
+            .createContainerIfNotExists(
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+            .block();
 
-        // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
-        ThroughputControlGroupConfig groupConfig =
-            new ThroughputControlGroupConfigBuilder()
-                .groupName("group-" + UUID.randomUUID())
-                .targetThroughput(6)
-                .build();
+        try {
+            // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+            ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName("group-" + UUID.randomUUID())
+                    .targetThroughput(6)
+                    .build();
 
-        GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
-            .setControlItemRenewInterval(Duration.ofSeconds(5))
-            .setControlItemExpireInterval(Duration.ofSeconds(20))
-            .build();
-        container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+            GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                                                                           .setControlItemRenewInterval(Duration.ofSeconds(5))
+                                                                           .setControlItemExpireInterval(Duration.ofSeconds(20))
+                                                                           .build();
+            container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
 
-        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-        requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setContentResponseOnWriteEnabled(true);
+            requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
-        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
-        TestItem createdItem = createItemResponse.getItem();
-        this.validateRequestNotThrottled(
-            createItemResponse.getDiagnostics().toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+            TestItem createdItem = createItemResponse.getItem();
+            this.validateRequestNotThrottled(
+                createItemResponse.getDiagnostics().toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-        // second request to same group. which will get throttled
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
-        this.validateRequestThrottled(
-            cosmosDiagnostics.toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            // second request to same group. which will get throttled
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
+            this.validateRequestThrottled(
+                cosmosDiagnostics.toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+        } finally {
+            controlContainer
+                .delete()
+                .block();
+        }
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputGlobalControlCanUpdateConfig(OperationType operationType) {
+        String controlContainerId = "throughputControlContainer";
+        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
+        database
+            .createContainerIfNotExists(
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+            .block();
+
+        try {
+            List<Pair<Integer, Boolean>> testCases = new ArrayList<>(
+                Arrays.asList(
+                    Pair.of(6, true),
+                    Pair.of(100, false)
+                )
+            );
+
+            UUID randomId = UUID.randomUUID();
+
+            for (Pair<Integer, Boolean> testCase : testCases) {
+                int targetThroughput = testCase.getLeft();
+                boolean shouldThrottleSecondRequest = testCase.getRight();
+
+                logger.info(
+                    "TESTCASE - TargetThroughput: {}. ShouldThrottleSecondRequest: {}",
+                    targetThroughput,
+                    shouldThrottleSecondRequest);
+
+                // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+                ThroughputControlGroupConfig groupConfig =
+                    new ThroughputControlGroupConfigBuilder()
+                        .groupName("group-" + randomId)
+                        .targetThroughput(targetThroughput)
+                        .build();
+
+                GlobalThroughputControlConfig globalControlConfig =
+                    this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                               .setControlItemRenewInterval(Duration.ofSeconds(5))
+                               .setControlItemExpireInterval(Duration.ofSeconds(20))
+                               .build();
+                container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+                requestOptions.setContentResponseOnWriteEnabled(true);
+                requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+                CosmosItemResponse<TestItem> createItemResponse = container
+                    .createItem(getDocumentDefinition(), requestOptions)
+                    .block();
+                TestItem createdItem = createItemResponse.getItem();
+                this.validateRequestNotThrottled(
+                    createItemResponse.getDiagnostics().toString(),
+                    BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+                CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
+
+                if (shouldThrottleSecondRequest) {
+                    this.validateRequestThrottled(
+                        cosmosDiagnostics.toString(),
+                        BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+                } else {
+                    this.validateRequestNotThrottled(
+                        cosmosDiagnostics.toString(),
+                        BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+                }
+            }
+        } finally {
+            controlContainer
+                .delete()
+                .block();
+        }
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
@@ -155,50 +240,59 @@ public class ThroughputControlTests extends TestSuiteBase {
         // step1: create container
         String testContainerId = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId);
-        CosmosAsyncContainer createdContainer = createCollection(this.database, containerProperties, new CosmosContainerRequestOptions());
+        CosmosAsyncContainer createdContainer = createCollection(
+            this.database,
+            containerProperties,
+            new CosmosContainerRequestOptions(),
+            10000);
 
-        // The create document in this test usually takes around 6.29RU,
-        // pick a RU super small here so we know it will throttle requests for several cycles/seconds
-        ThroughputControlGroupConfig groupConfig =
-            new ThroughputControlGroupConfigBuilder()
-                .groupName("group-" + UUID.randomUUID())
-                .targetThroughput(1)
-                .build();
-        container.enableLocalThroughputControlGroup(groupConfig);
-        createdContainer.enableLocalThroughputControlGroup(groupConfig);
+        try {
+            // The create document in this test usually takes around 6.29RU,
+            // pick a RU super small here so we know it will throttle requests for several cycles/seconds
+            ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName("group-" + UUID.randomUUID())
+                    .targetThroughput(1)
+                    .build();
+            container.enableLocalThroughputControlGroup(groupConfig);
+            createdContainer.enableLocalThroughputControlGroup(groupConfig);
 
-        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-        requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setContentResponseOnWriteEnabled(true);
+            requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
-        // Step2: first request to group-1, which will not get throttled, but will consume all the rus of the throughput control group.
-        CosmosItemResponse<TestItem> createItemResponse = createdContainer.createItem(getDocumentDefinition(), requestOptions).block();
-        TestItem createdItem = createItemResponse.getItem();
-        this.validateRequestNotThrottled(
-            createItemResponse.getDiagnostics().toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            // Step2: first request to group-1, which will not get throttled, but will consume all the rus of the throughput control group.
+            CosmosItemResponse<TestItem> createItemResponse = createdContainer.createItem(getDocumentDefinition(), requestOptions).block();
+            TestItem createdItem = createItemResponse.getItem();
+            this.validateRequestNotThrottled(
+                createItemResponse.getDiagnostics().toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-        // Step 3: delete the container
-        safeDeleteCollection(createdContainer);
-        Thread.sleep(COLLECTION_RECREATION_TIME_DELAY);
+            // Step 3: delete the container
+            safeDeleteCollection(createdContainer);
+            Thread.sleep(COLLECTION_RECREATION_TIME_DELAY);
 
-        // step 4: recreate the container with the same name
-        createdContainer = createCollection(this.database, containerProperties, new CosmosContainerRequestOptions());
+            // step 4: recreate the container with the same name
+            createdContainer = createCollection(
+                this.database, containerProperties, new CosmosContainerRequestOptions(), 10000);
 
-        // Step 5: operation which will trigger cache refresh and a new container controller to be built
-        createdItem = createdContainer.createItem(getDocumentDefinition()).block().getItem();
+            // Step 5: operation which will trigger cache refresh and a new container controller to be built
+            createdItem = createdContainer.createItem(getDocumentDefinition()).block().getItem();
 
-        // Step 6: second request to group-1. which will not get throttled because new container controller will be built.
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
-        this.validateRequestNotThrottled(
-            cosmosDiagnostics.toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            // Step 6: second request to group-1. which will not get throttled because new container controller will be built.
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
+            this.validateRequestNotThrottled(
+                cosmosDiagnostics.toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-        // Step 7: third request to group-1, which will get throttled
-        cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
-        this.validateRequestThrottled(
-            cosmosDiagnostics.toString(),
-            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+            // Step 7: third request to group-1, which will get throttled
+            cosmosDiagnostics = performDocumentOperation(createdContainer, operationType, createdItem, groupConfig.getGroupName());
+            this.validateRequestThrottled(
+                cosmosDiagnostics.toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+        } finally {
+            createdContainer.delete().block();
+        }
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -278,11 +372,15 @@ public class ThroughputControlTests extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT * 4)
     public void throughputGlobalControlMultipleClients() throws InterruptedException {
         List<CosmosAsyncClient> clients = new ArrayList<>();
-        try{
-            // and do not enable ttl on the container so to test how many items are created.
-            String controlContainerId = "throughputControlContainer";
-            CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-            database.createContainerIfNotExists(controlContainerId, "/groupId").block();
+        // and do not enable ttl on the container so to test how many items are created.
+        String controlContainerId = "throughputControlContainer";
+        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
+        database
+            .createContainerIfNotExists(
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+            .block();
+
+        try {
             ThroughputControlGroupConfig groupConfig =
                     new ThroughputControlGroupConfigBuilder()
                             .groupName("group-" + UUID.randomUUID())
@@ -298,8 +396,11 @@ public class ThroughputControlTests extends TestSuiteBase {
 
                 clients.add(testClient);
 
-                CosmosAsyncContainer testContainer = testClient.getDatabase(this.database.getId()).getContainer(container.getId());
-                GlobalThroughputControlConfig globalControlConfig1 = testClient.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                CosmosAsyncContainer testContainer =
+                    testClient.getDatabase(this.database.getId()).getContainer(container.getId());
+                GlobalThroughputControlConfig globalControlConfig1 =
+                    testClient
+                        .createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
                         .setControlItemRenewInterval(Duration.ofSeconds(5))
                         .setControlItemExpireInterval(Duration.ofSeconds(20))
                         .build();
@@ -316,6 +417,8 @@ public class ThroughputControlTests extends TestSuiteBase {
             assertThat(clientItems.size()).isEqualTo(clientCount);
 
         } finally {
+            controlContainer.delete().block();
+
             for (CosmosAsyncClient client : clients) {
                 if (client != null) {
                     client.close();
@@ -330,37 +433,73 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         String controlContainerId = "throughputControlContainer";
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database.createContainerIfNotExists(controlContainer.getId(), "/groupId").block();
+        database
+            .createContainerIfNotExists(
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(100000))
+            .block();
 
-        ThroughputControlGroupConfig groupConfig =
+        try {
+            UUID randomId = UUID.randomUUID();
+
+            ThroughputControlGroupConfig groupConfig =
                 new ThroughputControlGroupConfigBuilder()
-                        .groupName("group-" + UUID.randomUUID())
-                        .targetThroughputThreshold(1)
-                        .build();
+                    .groupName("group-" + randomId)
+                    .targetThroughputThreshold(1)
+                    .build();
 
-        GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
-                .setControlItemRenewInterval(Duration.ofSeconds(5))
-                .setControlItemExpireInterval(Duration.ofSeconds(20))
-                .build();
-        container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+            GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                                                                           .setControlItemRenewInterval(Duration.ofSeconds(5))
+                                                                           .setControlItemExpireInterval(Duration.ofSeconds(20))
+                                                                           .build();
+            container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
 
-        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-        requestOptions.setContentResponseOnWriteEnabled(true);
-        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
-        container.createItem(getDocumentDefinition(), requestOptions).block();
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setContentResponseOnWriteEnabled(true);
+            requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+            container.createItem(getDocumentDefinition(), requestOptions).block();
 
-        List<GlobalThroughputControlClientItem> clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
-        assertThat(clientItems.size()).isEqualTo(1);
-        String clientId = clientItems.get(0).getId();
+            List<GlobalThroughputControlClientItem> clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
+            assertThat(clientItems.size()).isEqualTo(1);
+            String clientId = clientItems.get(0).getId();
 
-        // now enable the same group again
-        container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
-        container.createItem(getDocumentDefinition(), requestOptions).block();
-        clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
+            // now enable the same group again
+            container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+            container.createItem(getDocumentDefinition(), requestOptions).block();
+            clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
 
-        // validate no new client item being created
-        assertThat(clientItems.size()).isEqualTo(1);
-        assertThat(clientItems.get(0).getId()).isEqualTo(clientId);
+            // validate no new client item being created
+            assertThat(clientItems.size()).isEqualTo(1);
+            assertThat(clientItems.get(0).getId()).isEqualTo(clientId);
+
+            // create group with same name but different target throughput
+            ThroughputControlGroupConfig groupConfigDifferentTargetThroughput =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName("group-" + randomId)
+                    .targetThroughputThreshold(0.99)
+                    .build();
+
+            // now enable the group with same name but different target throughput
+            container.enableGlobalThroughputControlGroup(groupConfigDifferentTargetThroughput, globalControlConfig);
+            container.createItem(getDocumentDefinition(), requestOptions).block();
+            clientItems = this.getClientItems(groupConfigDifferentTargetThroughput.getGroupName(), controlContainer);
+
+            // validate that a new client item gets created for the group with same name but modified target throughput
+            assertThat(clientItems.size()).isEqualTo(2);
+
+            // validate that only one client has the original clientId
+            assertThat(
+                clientItems.stream().filter(clientItem -> clientItem.getId().equals(clientId)).count())
+                .isEqualTo(1);
+
+            // validate that both clientIds have even different prefix (besides the random UUID suffix)
+            // because the target throughput s encoded in the id prefix
+            String clientIdPrefix = clientId.substring(0, clientId.length() - randomId.toString().length());
+            assertThat(
+                clientItems.stream().filter(clientItem -> clientItem.getId().startsWith(clientIdPrefix)).count())
+                .isEqualTo(1);
+        } finally {
+            controlContainer.delete().block();
+        }
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
@@ -475,6 +614,17 @@ public class ThroughputControlTests extends TestSuiteBase {
         return controlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
                 .collectList()
                 .block();
+    }
+
+    private List<GlobalThroughputControlClientItem> getClientItems(CosmosAsyncContainer controlContainer) {
+        String query = "SELECT * FROM c WHERE CONTAINS(c.groupId, @CLIENTITEMSUFFIX)";
+        List<SqlParameter> parameters = new ArrayList<>();
+        parameters.add(new SqlParameter("@CLIENTITEMSUFFIX", ".client"));
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, parameters);
+
+        return controlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
+                               .collectList()
+                               .block();
     }
 
     // TODO: add tests split
