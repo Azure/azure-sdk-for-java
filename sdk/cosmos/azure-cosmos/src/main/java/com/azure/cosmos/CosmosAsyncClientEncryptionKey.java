@@ -110,13 +110,7 @@ public final class CosmosAsyncClientEncryptionKey {
         return builder.toString();
     }
 
-    /**
-     * Should not be called from user-code. This method is a no-op and is just used internally
-     * to force loading this class
-     */
-    public static void doNothingButEnsureLoadingClass() { initialize(); }
-
-    private static void initialize() {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.setCosmosAsyncClientEncryptionKeyAccessor(
             (cosmosAsyncClientEncryptionKey, requestOptions) -> cosmosAsyncClientEncryptionKey.read(requestOptions));
     }
