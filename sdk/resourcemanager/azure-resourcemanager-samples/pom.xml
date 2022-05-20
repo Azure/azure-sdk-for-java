@@ -172,7 +172,7 @@
         <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <excludePackageNames>
-            *.implementation*:
+            com.azure.resourcemanager.*.samples:
           </excludePackageNames>
         </configuration>
       </plugin>
