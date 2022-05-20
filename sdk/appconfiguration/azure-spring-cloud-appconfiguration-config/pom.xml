@@ -144,7 +144,7 @@
                                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                                 <include>org.springframework.cloud:spring-cloud-context:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
                                 <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
-                                <include>org.springframework:spring-web:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                                <include>org.springframework:spring-web:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>

@@ -29,12 +29,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -75,8 +75,8 @@
               <includes>
                 <include>com.azure.spring:azure-spring-cloud-feature-management:[2.6.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-webmvc:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
