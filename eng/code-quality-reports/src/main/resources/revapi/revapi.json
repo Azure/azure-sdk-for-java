@@ -263,7 +263,6 @@
           "new": "class com.azure.messaging.eventhubs.EventData",
           "superClass": "com.azure.core.models.MessageContent",
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
-        }
         },
         {
           "regex": true,
