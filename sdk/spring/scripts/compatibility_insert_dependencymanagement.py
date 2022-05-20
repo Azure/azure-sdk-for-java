@@ -1,29 +1,6 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# This script is used to insert dependency management into ./sdk/spring/**/pom*.xml.
-#
-# Here is sample of inserted fragment:
-#    <properties>
-#       <spring-boot-dependencies-version>${spring_boot_dependencies_version}</spring-boot-dependencies-version>
-#       <spring-cloud-dependencies-version>${spring_cloud_dependencies_version}</spring-cloud-dependencies-version>
-#    </properties>
-#
-#    <dependencyManagement>
-#       <dependency>
-#         <groupId>org.springframework.boot</groupId>
-#         <artifactId>spring-boot-dependencies</artifactId>
-#         <version>${spring_boot_dependencies_version}</version>
-#         <type>pom</type>
-#         <scope>import</scope>
-#       </dependency>
-#       <dependency>
-#         <groupId>org.springframework.cloud</groupId>
-#         <artifactId>spring-cloud-dependencies</artifactId>
-#         <version>${spring_cloud_dependencies_version}</version>
-#         <type>pom</type>
-#         <scope>import</scope>
-#       </dependency>
-#    </dependencyManagement>
+# This script is used to insert dependency management, properties and repositories into ./sdk/spring/**/pom*.xml.
 #
 # Sample:
 # 1. python .\sdk\spring\scripts\compatibility_insert_dependencymanagement.py
@@ -67,33 +44,84 @@ def get_spring_cloud_version(filepath):
     return spring_cloud_version
 
 
-def add_dependency_management_for_all_poms_files_in_directory(directory, spring_boot_version):
+def add_dependency_management_for_all_poms_files_in_directory(directory, spring_cloud_version):
     for root, dirs, files in os.walk(directory):
         for file_name in files:
             if file_name.startswith('pom') and file_name.endswith('.xml'):
                 file_path = root + os.sep + file_name
-                add_dependency_management_for_file(file_path, spring_boot_version)
+                add_dependency_management_for_file(file_path, spring_cloud_version)
 
 
-def add_dependency_management_for_file(file_path, spring_boot_version):
+def contains_repositories(pom_file_content):
+    return pom_file_content.find("<repositories>") != -1
+
+
+def get_repo_position(pom_file_content):
+    if contains_repositories(pom_file_content):
+        return pom_file_content.find("</repositories>")
+    else:
+        return pom_file_content.find("<properties>")
+
+
+def get_repo_content_without_tag():
+    return """
+    <repository>
+      <id>repository.springframework.maven.milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>https://repo.spring.io/milestone/</url>
+    </repository>
+  """
+
+
+def get_repo_content(pom_file_content):
+    if contains_repositories(pom_file_content):
+        return get_repo_content_without_tag()
+    else:
+        return """  
+  <repositories>
+    {}
+  </repositories>
+  """.format(get_repo_content_without_tag())
+
+
+def contains_properties(pom_file_content):
+    return pom_file_content.find("<properties>") != -1
+
+
+def get_prop_position(pom_file_content):
+    if contains_properties(pom_file_content):
+        return pom_file_content.find("</properties>")
+    else:
+        return pom_file_content.find("<name>")
+
+
+def get_prop_content(pom_file_content, spring_cloud_version):
+    if contains_properties(pom_file_content):
+        return get_properties_contend(spring_cloud_version)
+    else:
+        return get_properties_contend_with_tag(spring_cloud_version)
+
+
+def add_dependency_management_for_file(file_path, spring_cloud_version):
     log.info("Add dependency management for file: " + file_path)
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
         pom_file_content = pom_file.read()
         insert_position = pom_file_content.find('<dependencies>')
         insert_content = get_dependency_management_content()
-        new_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
-        if '<properties>' not in pom_file_content:
-            insert_position = pom_file_content.find('<name>')
-            insert_content = get_properties_contend_with_tag(spring_boot_version)
-            finally_content = new_content[:insert_position] + insert_content + new_content[insert_position:]
+        dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
+        insert_position = get_prop_position(pom_file_content)
+        insert_content = get_prop_content(pom_file_content, spring_cloud_version)
+        prop_content = dependency_content[:insert_position] + insert_content + dependency_content[insert_position:]
+        with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
+            updated_pom_file.writelines(prop_content)
+    if spring_cloud_version.endswith("-SNAPSHOT"):
+        with open(file_path, 'r', encoding = 'utf-8') as pom_file:
+            pom_file_content = pom_file.read()
+            insert_position = get_repo_position(pom_file_content)
+            insert_content = get_repo_content(pom_file_content)
+            repo_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
             with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
-                updated_pom_file.writelines(finally_content)
-        else:
-            insert_position = pom_file_content.find('</properties>')
-            insert_content = get_properties_contend(spring_boot_version)
-            finally_content = new_content[:insert_position] + insert_content + new_content[insert_position:]
-            with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
-                updated_pom_file.writelines(finally_content)
+                updated_pom_file.writelines(repo_content)
 
 
 def get_dependency_management_content():
@@ -120,21 +148,20 @@ def get_dependency_management_content():
 """
 
 
-def get_properties_contend_with_tag(spring_boot_version):
+def get_properties_contend_with_tag(spring_cloud_version):
     return """
   <properties>
-    <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    <spring.cloud.version>""" + spring_boot_version + """</spring.cloud.version>
+    {}
   </properties>
   
-    """
+  """.format(get_properties_contend(spring_cloud_version))
 
 
-def get_properties_contend(spring_boot_version):
+def get_properties_contend(spring_cloud_version):
     return """
     <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    <spring.cloud.version>""" + spring_boot_version + """</spring.cloud.version>
-    """
+    <spring.cloud.version>""" + spring_cloud_version + """</spring.cloud.version>
+  """
 
 
 if __name__ == '__main__':
