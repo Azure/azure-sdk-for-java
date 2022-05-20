@@ -16,8 +16,8 @@ stages:
           ServiceDirectory: spring
         MatrixConfigs:
           - Name: spring_boot_supported_version_tests
-            Path: https://github.com/Netyyyy/spring-cloud-azure-tools/blob/myao/addjson/supported-version-matrix.json
-#            Path: sdk/spring/supported-version-matrix.json
+#            Path: https://github.com/Netyyyy/spring-cloud-azure-tools/blob/myao/addjson/supported-version-matrix.json
+            Path: sdk/spring/supported-version-matrix.json
 #            Path: sdk/spring/testJson.json
             Selection: sparse
             NonSparseParameters:
