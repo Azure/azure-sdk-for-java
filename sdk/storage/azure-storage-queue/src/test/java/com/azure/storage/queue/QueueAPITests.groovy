@@ -109,6 +109,8 @@ class QueueAPITests extends APISpec {
         then:
         initialResponse.getStatusCode() == 201
         secondResponse.getStatusCode() == 409
+        initialResponse.getValue()
+        !secondResponse.getValue()
     }
 
     def "Delete exist queue"() {
@@ -137,7 +139,7 @@ class QueueAPITests extends APISpec {
         def result = queueClient.deleteIfExists()
 
         then:
-        result == true
+        result
     }
 
     def "Delete if exists queue"() {
@@ -162,6 +164,7 @@ class QueueAPITests extends APISpec {
         then:
         thrown(QueueStorageException)
         response.getStatusCode() == 404
+        !response.getValue()
     }
 
     def "Get properties"() {

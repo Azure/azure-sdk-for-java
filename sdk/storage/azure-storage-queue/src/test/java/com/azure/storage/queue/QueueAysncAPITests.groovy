@@ -140,6 +140,7 @@ class QueueAysncAPITests extends APISpec {
         def response = queueAsyncClient.deleteIfExistsWithResponse().block()
         then:
         response.getStatusCode() == 404
+        !response.getValue()
     }
 
     def "Get properties"() {

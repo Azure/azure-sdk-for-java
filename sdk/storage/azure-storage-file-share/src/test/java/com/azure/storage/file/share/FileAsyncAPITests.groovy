@@ -886,6 +886,7 @@ class FileAsyncAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists().block()
     }

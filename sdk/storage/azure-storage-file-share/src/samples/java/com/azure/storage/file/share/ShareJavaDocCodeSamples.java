@@ -789,7 +789,7 @@ public class ShareJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#Duration-Context
-        Response<Void> response = shareClient.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Boolean> response = shareClient.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
@@ -798,7 +798,7 @@ public class ShareJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#Duration-Context
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#ShareDeleteOptions-Duration-Context
-        Response<Void> res = shareClient.deleteIfExistsWithResponse(new ShareDeleteOptions()
+        Response<Boolean> res = shareClient.deleteIfExistsWithResponse(new ShareDeleteOptions()
                 .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)),
             Duration.ofSeconds(1), new Context(key1, value1));
         if (res.getStatusCode() == 404) {
@@ -849,7 +849,7 @@ public class ShareJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExistsWithResponse#string-duration-context
-        Response<Void> response = shareClient.deleteDirectoryIfExistsWithResponse("mydirectory",
+        Response<Boolean> response = shareClient.deleteDirectoryIfExistsWithResponse("mydirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
@@ -872,7 +872,7 @@ public class ShareJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareClient.deleteFileIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-duration-context
-        Response<Void> response = shareClient.deleteFileIfExistsWithResponse("myfile",
+        Response<Boolean> response = shareClient.deleteFileIfExistsWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
@@ -885,7 +885,7 @@ public class ShareJavaDocCodeSamples {
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         ShareDeleteOptions options = new ShareDeleteOptions().setRequestConditions(requestConditions);
 
-        Response<Void> res = shareClient.deleteFileIfExistsWithResponse("myfile", options,
+        Response<Boolean> res = shareClient.deleteFileIfExistsWithResponse("myfile", options,
             Duration.ofSeconds(1), new Context(key1, value1));
         if (res.getStatusCode() == 404) {
             System.out.println("Does not exist.");

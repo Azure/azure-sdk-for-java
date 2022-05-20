@@ -393,6 +393,7 @@ class DirectoryAPITests extends APISpec {
         def response = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !primaryDirectoryClient.exists()
     }
@@ -408,6 +409,8 @@ class DirectoryAPITests extends APISpec {
         then:
         initialResponse.getStatusCode() == 202
         secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
 
     }
 
@@ -1228,6 +1231,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         response.getStatusCode() == 404
+        !response.getValue()
     }
 
 
@@ -1345,6 +1349,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         response.getStatusCode() == 404
+        !response.getValue()
     }
 
     def "Get snapshot id"() {

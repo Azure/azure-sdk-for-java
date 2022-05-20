@@ -476,7 +476,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
             .setPublicAccessType(PublicAccessType.CONTAINER);
 
-        Response<Void> response = client.createIfNotExistsWithResponse(options, timeout, context);
+        Response<Boolean> response = client.createIfNotExistsWithResponse(options, timeout, context);
         if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
@@ -501,7 +501,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
-        Response<Void> response = client.deleteIfExistsWithResponse(requestConditions, timeout, context);
+        Response<Boolean> response = client.deleteIfExistsWithResponse(requestConditions, timeout, context);
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {

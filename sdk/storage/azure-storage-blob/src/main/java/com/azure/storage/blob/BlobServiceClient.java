@@ -268,8 +268,7 @@ public final class BlobServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteBlobContainerIfExists(String containerName) {
-        Response<Void> response = deleteBlobContainerIfExistsWithResponse(containerName, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteBlobContainerIfExistsWithResponse(containerName, Context.NONE).getValue();
     }
 
     /**
@@ -283,7 +282,7 @@ public final class BlobServiceClient {
      * <pre>
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;, context&#41;;
+     * Response&lt;Boolean&gt; response = client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;, context&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
@@ -298,7 +297,7 @@ public final class BlobServiceClient {
      * container was successfully deleted. If status code is 404, the container does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
+    public Response<Boolean> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
         return blobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(containerName, context).block();
     }
 
