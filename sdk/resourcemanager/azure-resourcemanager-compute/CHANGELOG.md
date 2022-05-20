@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported convenience layer code for disk encryption set.
+- Supported `DiskEncryptionSet` for disk encryption set.
 
 ### Other Changes
 
