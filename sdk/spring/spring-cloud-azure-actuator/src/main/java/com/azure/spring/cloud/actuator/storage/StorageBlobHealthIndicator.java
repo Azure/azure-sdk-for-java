@@ -43,7 +43,9 @@ public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
         BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(
             NOT_EXISTING_CONTAINER);
         Response<Boolean> exists = containerAsyncClient.existsWithResponse().block(timeout);
-        Objects.requireNonNull(exists, "Error occurred checking the container existence!");
+        if (exists == null) {
+            throw new RuntimeException("Error occurred checking the container existence!");
+        }
 
         builder.up()
                .withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
