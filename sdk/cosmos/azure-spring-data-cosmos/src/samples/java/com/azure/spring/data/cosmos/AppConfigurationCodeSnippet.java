@@ -39,7 +39,7 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
-    @Value("${azure.cosmos.maxDegreeOfParallelism:0}")
+    @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
     // BEGIN: readme-sample-AppConfigurationCodeSnippet

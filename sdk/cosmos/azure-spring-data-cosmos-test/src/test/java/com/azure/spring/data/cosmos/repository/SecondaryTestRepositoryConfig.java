@@ -34,7 +34,7 @@ public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
-    @Value("${cosmos.secondary.maxDegreeOfParallelism:0}")
+    @Value("${cosmos.secondary.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
     @Bean
