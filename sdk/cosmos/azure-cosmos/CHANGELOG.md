@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.30.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.30.0 (2022-05-20)
 
 #### Bugs Fixed
 * Fixed bubbling of Errors in case of any `java.lang.Error` - See [PR 28620](https://github.com/Azure/azure-sdk-for-java/pull/28620)
