@@ -8,12 +8,9 @@ jobs:
   - job: 'compatibility_test'
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
-
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
-    pool:
-      vmImage: "ubuntu-latest"
     variables:
       - template: ../../eng/pipelines/templates/variables/globals.yml
     steps:
