@@ -11,7 +11,6 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
-import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -887,8 +886,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName,
-            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))))
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareRequestConditions().setLeaseId(leaseId)))
             .expectNextCount(1).verifyComplete()
     }
 
@@ -900,9 +898,8 @@ class DirectoryAsyncAPITests extends APISpec {
         createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName,
-            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions()
-                .setLeaseId(namer.getRandomUuid())))).verifyError(ShareStorageException)
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareRequestConditions()
+                .setLeaseId(namer.getRandomUuid()))).verifyError(ShareStorageException)
     }
 
     def "Delete if exists file that does not exist"() {
