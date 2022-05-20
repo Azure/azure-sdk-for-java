@@ -39,7 +39,6 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
-
       --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
@@ -50,13 +49,11 @@
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>5.13.0-beta.1</version>
     </dependency>
-
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
       <version>4.1.0</version>
     </dependency>
-
   </dependencies>
 
 
