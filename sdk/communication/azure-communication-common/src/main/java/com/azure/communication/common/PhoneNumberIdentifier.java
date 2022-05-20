@@ -15,7 +15,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
      * Creates a PhoneNumberIdentifier object
      *
      * @param phoneNumber the string identifier representing the PhoneNumber in E.164 format.
-     * E.164 is a phone number formatted as +[CountryCode][AreaCode][LocalNumber] eg. "+18005555555"
+     *                    E.164 is a phone number formatted as +[CountryCode][AreaCode][LocalNumber] eg. "+18005555555"
      * @throws IllegalArgumentException thrown if phoneNumber parameter fail the validation.
      */
     public PhoneNumberIdentifier(String phoneNumber) {
@@ -35,6 +35,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     /**
      * Set full id of the identifier
+     *
      * @param rawId full id of the identifier
      * @return PhoneNumberIdentifier object itself
      */

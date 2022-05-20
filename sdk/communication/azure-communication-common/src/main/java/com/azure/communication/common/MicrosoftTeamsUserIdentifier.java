@@ -17,11 +17,11 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
+     * @param userId      Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
      * @param isAnonymous set this to true if the user is anonymous,
      *                    for example when joining a meeting with a share link
      * @throws IllegalArgumentException thrown if userId parameter fail the validation.
-    */
+     */
     public MicrosoftTeamsUserIdentifier(String userId, boolean isAnonymous) {
         if (CoreUtils.isNullOrEmpty(userId)) {
             throw new IllegalArgumentException("The initialization parameter [userId] cannot be null or empty.");
@@ -37,13 +37,14 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
      *
      * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
      * @throws IllegalArgumentException thrown if userId parameter fail the validation.
-    */
+     */
     public MicrosoftTeamsUserIdentifier(String userId) {
         this(userId, false);
     }
 
     /**
      * Get Teams User Id
+     *
      * @return userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
      */
     public String getUserId() {
@@ -58,7 +59,17 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     }
 
     /**
+     * Get cloud environment of the Teams user identifier
+     *
+     * @return cloud environment in which this identifier is created
+     */
+    public CommunicationCloudEnvironment getCloudEnvironment() {
+        return cloudEnvironment;
+    }
+
+    /**
      * Set cloud environment of the Teams user identifier
+     *
      * @param cloudEnvironment the cloud environment in which this identifier is created
      * @return this object
      */
@@ -69,15 +80,8 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     }
 
     /**
-     * Get cloud environment of the Teams user identifier
-     * @return cloud environment in which this identifier is created
-     */
-    public CommunicationCloudEnvironment getCloudEnvironment() {
-        return cloudEnvironment;
-    }
-
-    /**
      * Set full id of the identifier
+     *
      * @param rawId full id of the identifier
      * @return CommunicationIdentifier object itself
      */
@@ -112,13 +116,11 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     }
 
     private void setRawId() {
-        if(this.isAnonymous) {
+        if (this.isAnonymous) {
             this.rawId = "8:teamsvisitor:" + this.userId;
-        }
-        else if(cloudEnvironment == CommunicationCloudEnvironment.DOD) {
+        } else if (cloudEnvironment == CommunicationCloudEnvironment.DOD) {
             this.rawId = "8:dod:" + this.userId;
-        }
-        else if(cloudEnvironment == CommunicationCloudEnvironment.GCCH) {
+        } else if (cloudEnvironment == CommunicationCloudEnvironment.GCCH) {
             this.rawId = "8:gcch:" + this.userId;
         } else {
             this.rawId = "8:orgid:" + this.userId;

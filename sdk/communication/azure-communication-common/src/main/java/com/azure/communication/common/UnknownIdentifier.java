@@ -27,6 +27,7 @@ public final class UnknownIdentifier extends CommunicationIdentifier {
 
     /**
      * Get id of this identifier
+     *
      * @return id of this identifier
      */
     public String getId() {

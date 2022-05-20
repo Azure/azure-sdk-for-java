@@ -27,6 +27,7 @@ public final class CommunicationUserIdentifier extends CommunicationIdentifier {
 
     /**
      * Get id of the communication user.
+     *
      * @return id of the communication user.
      */
     public String getId() {
