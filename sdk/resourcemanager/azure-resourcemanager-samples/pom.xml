@@ -36,6 +36,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <jacoco.skip>true</jacoco.skip>
+  </properties>
+
   <developers>
     <developer>
       <id>microsoft</id>
@@ -145,32 +149,6 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>java8</id>
-      <activation>
-        <jdk>[1.8,9)</jdk>
-      </activation>
-      <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-          </resource>
-        </resources>
-      </build>
-    </profile>
-    <profile>
-      <id>java9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-          </resource>
-        </resources>
-      </build>
-    </profile>
-    <profile>
       <id>azure-mgmt-sdk-test-jar</id>
       <activation>
         <property>
@@ -210,14 +188,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>
