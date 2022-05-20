@@ -10,7 +10,6 @@ import com.azure.core.util.CoreUtils;
 public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     private final String phoneNumber;
-    private String rawId;
 
     /**
      * Creates a PhoneNumberIdentifier object
@@ -24,6 +23,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
             throw new IllegalArgumentException("The initialization parameter [phoneNumber] cannot be null to empty.");
         }
         this.phoneNumber = phoneNumber;
+        this.rawId = "4:" + phoneNumber.replaceAll("^[+]", "");
     }
 
     /**
@@ -31,14 +31,6 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
      */
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    /**
-     * Get full id of the identifier. This id is optional.
-     * @return full id of the identifier
-     */
-    public String getRawId() {
-        return rawId;
     }
 
     /**
@@ -69,10 +61,5 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
         return getRawId() == null
             || phoneId.getRawId() == null
             || getRawId().equals(phoneId.getRawId());
-    }
-
-    @Override
-    public int hashCode() {
-        return phoneNumber.hashCode();
     }
 }

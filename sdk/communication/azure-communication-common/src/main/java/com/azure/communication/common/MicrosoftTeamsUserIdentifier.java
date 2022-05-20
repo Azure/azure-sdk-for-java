@@ -14,8 +14,6 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     private final boolean isAnonymous;
     private CommunicationCloudEnvironment cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
 
-    private String rawId;
-
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
@@ -30,6 +28,8 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
         }
         this.userId = userId;
         this.isAnonymous = isAnonymous;
+
+        setRawId();
     }
 
     /**
@@ -64,6 +64,7 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
      */
     public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
         this.cloudEnvironment = cloudEnvironment;
+        setRawId();
         return this;
     }
 
@@ -73,14 +74,6 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
      */
     public CommunicationCloudEnvironment getCloudEnvironment() {
         return cloudEnvironment;
-    }
-
-    /**
-     * Get full id of the identifier. This id is optional.
-     * @return full id of the identifier
-     */
-    public String getRawId() {
-        return rawId;
     }
 
     /**
@@ -104,10 +97,6 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
         }
 
         MicrosoftTeamsUserIdentifier thatId = (MicrosoftTeamsUserIdentifier) that;
-        if (!thatId.getUserId().equals(this.getUserId())
-            || thatId.isAnonymous != this.isAnonymous) {
-            return false;
-        }
 
         if (cloudEnvironment != null && !cloudEnvironment.equals(thatId.cloudEnvironment)) {
             return false;
@@ -122,10 +111,17 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
             || thatId.getRawId().equals(this.getRawId());
     }
 
-
-    @Override
-    public int hashCode() {
-        return userId.hashCode();
+    private void setRawId() {
+        if(this.isAnonymous) {
+            this.rawId = "8:teamsvisitor:" + this.userId;
+        }
+        else if(cloudEnvironment == CommunicationCloudEnvironment.DOD) {
+            this.rawId = "8:dod:" + this.userId;
+        }
+        else if(cloudEnvironment == CommunicationCloudEnvironment.GCCH) {
+            this.rawId = "8:gcch:" + this.userId;
+        } else {
+            this.rawId = "8:orgid:" + this.userId;
+        }
     }
-
 }
