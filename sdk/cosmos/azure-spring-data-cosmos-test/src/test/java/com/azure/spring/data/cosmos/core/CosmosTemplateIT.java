@@ -51,6 +51,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Flux;
 
 import java.lang.reflect.InvocationTargetException;
@@ -711,52 +712,34 @@ public class CosmosTemplateIT {
 
     @Test
     public void queryWithMaxDegreeOfParallelism() throws ClassNotFoundException {
-        final String configuredMDPDbName = TestConstants.DB_NAME + "-max-degree-parallel";
-        deleteDatabaseIfExists(configuredMDPDbName);
-
         final CosmosConfig config = CosmosConfig.builder()
             .setMaxDegreeOfParallelism(20)
             .build();
-        final CosmosTemplate configuredMDPCosmosTemplate = createCosmosTemplate(config, configuredMDPDbName);
-
-        final CosmosEntityInformation<Person, String> personInfo =
-            new CosmosEntityInformation<>(Person.class);
-        configuredMDPCosmosTemplate.createContainerIfNotExists(personInfo);
-
-        final CosmosAsyncDatabase database = client.getDatabase(configuredMDPDbName);
+        final CosmosTemplate maxDegreeOfParallelismCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
 
-        final long count = cosmosTemplate.count(query, containerName);
+        final long count = maxDegreeOfParallelismCosmosTemplate.count(query, containerName);
 
-        assertEquals(config.getMaxDegreeOfParallelism(), 20);
+        assertEquals((int) ReflectionTestUtils.getField(maxDegreeOfParallelismCosmosTemplate, "maxDegreeOfParallelism"), 20);
     }
 
     @Test
     public void queryDatabaseWithQueryMerticsEnabled() throws ClassNotFoundException {
-        final String configuredQMEDbName = TestConstants.DB_NAME + "-query-metrics-enabled";
-        deleteDatabaseIfExists(configuredQMEDbName);
-
         final CosmosConfig config = CosmosConfig.builder()
             .enableQueryMetrics(true)
             .build();
-        final CosmosTemplate configuredQMECosmosTemplate = createCosmosTemplate(config, configuredQMEDbName);
-
-        final CosmosEntityInformation<Person, String> personInfo =
-            new CosmosEntityInformation<>(Person.class);
-        configuredQMECosmosTemplate.createContainerIfNotExists(personInfo);
-
-        final CosmosAsyncDatabase database = client.getDatabase(configuredQMEDbName);
+        final CosmosTemplate queryMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
 
-        final long count = cosmosTemplate.count(query, containerName);
+        final long count = queryMetricsEnabledCosmosTemplate.count(query, containerName);
 
-        assertEquals(config.isQueryMetricsEnabled(), true);
+        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
     }
 
     @Test

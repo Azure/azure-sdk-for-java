@@ -48,6 +48,7 @@ import org.springframework.data.annotation.Persistent;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -576,50 +577,42 @@ public class ReactiveCosmosTemplateIT {
 
     @Test
     public void queryWithMaxDegreeOfParallelism() throws ClassNotFoundException {
-        final String configuredMDPDbName = TestConstants.DB_NAME + "-max-degree-parallel";
-        deleteDatabaseIfExists(configuredMDPDbName);
-
         final CosmosConfig config = CosmosConfig.builder()
             .setMaxDegreeOfParallelism(20)
             .build();
-        final ReactiveCosmosTemplate configuredMDPCosmosTemplate = createReactiveCosmosTemplate(config, configuredMDPDbName);
+        final ReactiveCosmosTemplate maxDegreeOfParallelismCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
 
-        final CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
-        configuredMDPCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
 
-        final CosmosAsyncDatabase database = client.getDatabase(configuredMDPDbName);
+        auditableRepository.save(entity);
 
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
-        final CosmosQuery query = new CosmosQuery(criteria);
-        final Flux<Person> personFlux = configuredMDPCosmosTemplate.find(query, Person.class,
-            Person.class.getSimpleName());
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        final Flux<AuditableEntity> flux = maxDegreeOfParallelismCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
 
-        assertEquals(config.getMaxDegreeOfParallelism(), 20);
+        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+        assertEquals((int) ReflectionTestUtils.getField(maxDegreeOfParallelismCosmosTemplate, "maxDegreeOfParallelism"), 20);
     }
 
     @Test
     public void queryWithQueryMerticsEnabled() throws ClassNotFoundException {
-        final String configuredQMEDbName = TestConstants.DB_NAME + "-query-metrics-enabled";
-        deleteDatabaseIfExists(configuredQMEDbName);
-
         final CosmosConfig config = CosmosConfig.builder()
             .enableQueryMetrics(true)
             .build();
-        final ReactiveCosmosTemplate configuredQMECosmosTemplate = createReactiveCosmosTemplate(config, configuredQMEDbName);
+        final ReactiveCosmosTemplate queryMetricsEnabledCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
 
-        final CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
-        configuredQMECosmosTemplate.createContainerIfNotExists(personInfo).block();
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
 
-        final CosmosAsyncDatabase database = client.getDatabase(configuredQMEDbName);
+        auditableRepository.save(entity);
 
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
-        final CosmosQuery query = new CosmosQuery(criteria);
-        final Flux<Person> personFlux = configuredQMECosmosTemplate.find(query, Person.class,
-            Person.class.getSimpleName());
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        final Flux<AuditableEntity> flux = queryMetricsEnabledCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
 
-        assertEquals(config.isQueryMetricsEnabled(), true);
+        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
     }
 
     @Test

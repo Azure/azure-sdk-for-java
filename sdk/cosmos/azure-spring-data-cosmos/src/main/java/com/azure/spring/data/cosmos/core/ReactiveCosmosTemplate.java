@@ -672,6 +672,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private Flux<JsonNode> runQuery(SqlQuerySpec querySpec, Class<?> domainType) {
         String containerName = getContainerName(domainType);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
         return cosmosAsyncClient.getDatabase(this.databaseName)
                    .getContainer(containerName)
                    .queryItems(querySpec, options, JsonNode.class)
