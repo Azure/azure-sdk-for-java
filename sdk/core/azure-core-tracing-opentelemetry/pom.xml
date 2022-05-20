@@ -34,6 +34,7 @@
   <properties>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.tracing.opentelemetry/com.azure.core.tracing.opentelemetry.implementation=ALL-UNNAMED
+      --add-opens com.azure.core.tracing.opentelemetry/com.azure.core.tracing.opentelemetry=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
