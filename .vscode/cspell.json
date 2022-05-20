@@ -36,6 +36,7 @@
     "*.x509",
     "*.certificate",
     "*.crt",
+    "*.yml",
     ".vscode/cspell.json"
   ],
   "words": [
