@@ -196,14 +196,7 @@ public final class CosmosBatchResponse {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Should not be called from user-code. This method is a no-op and is just used internally
-     * to force loading this class
-     */
-    public static void doNothingButEnsureLoadingClass() { initialize(); }
-
-    private static void initialize() {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(
             cosmosBatchResponse -> cosmosBatchResponse.results);
     }
