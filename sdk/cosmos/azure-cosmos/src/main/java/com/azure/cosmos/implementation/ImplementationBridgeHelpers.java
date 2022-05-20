@@ -48,32 +48,36 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
     public static final class CosmosClientBuilderHelper {
-        private static CosmosClientBuilderAccessor accessor;
+        private static final AtomicReference<CosmosClientBuilderAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosClientBuilderClassLoaded = new AtomicBoolean(false);
 
         private CosmosClientBuilderHelper() {}
-        static {
-            ensureClassLoaded(CosmosClientBuilder.class);
-        }
 
         public static void setCosmosClientBuilderAccessor(final CosmosClientBuilderAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosClientBuilder accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosClientBuilderAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosClientBuilderClassLoaded.set(true);
         }
 
         public static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosClientBuilder accessor is not initialized yet!");
+            if (cosmosClientBuilderClassLoaded.compareAndSet(false, true)) {
+                CosmosClientBuilder.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosClientBuilderAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosClientBuilderAccessor is not initialized yet!");
+                System.exit(9700); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosClientBuilderAccessor {
@@ -95,27 +99,30 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class PartitionKeyHelper {
-        static {
-            ensureClassLoaded(PartitionKey.class);
-        }
-        private static PartitionKeyAccessor accessor;
+        private final static AtomicBoolean partitionKeyClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<PartitionKeyAccessor> accessor = new AtomicReference<>();
 
         private PartitionKeyHelper() {}
 
         public static void setPartitionKeyAccessor(final PartitionKeyAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("PartitionKey accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("PartitionKeyAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            partitionKeyClassLoaded.set(true);
         }
 
         public static PartitionKeyAccessor getPartitionKeyAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("PartitionKey accessor is not initialized!");
+            if (partitionKeyClassLoaded.compareAndSet(false, true)) {
+                PartitionKey.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            PartitionKeyAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("PartitionKeyAccessor is not initialized yet!");
+                System.exit(9701); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface PartitionKeyAccessor {
@@ -124,27 +131,30 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class DirectConnectionConfigHelper {
-        static {
-            ensureClassLoaded(DirectConnectionConfig.class);
-        }
-        private static DirectConnectionConfigAccessor accessor;
+        private final static AtomicBoolean directConnectionConfigClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<DirectConnectionConfigAccessor> accessor = new AtomicReference<>();
 
         private DirectConnectionConfigHelper() {}
 
         public static void setDirectConnectionConfigAccessor(final DirectConnectionConfigAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("DirectConnectionConfig accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("DirectConnectionConfigAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            directConnectionConfigClassLoaded.set(true);
         }
 
         public static DirectConnectionConfigAccessor getDirectConnectionConfigAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("DirectConnectionConfig accessor is not initialized!");
+            if (directConnectionConfigClassLoaded.compareAndSet(false, true)) {
+                DirectConnectionConfig.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            DirectConnectionConfigAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("DirectConnectionConfigAccessor is not initialized yet!");
+                System.exit(9702); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface DirectConnectionConfigAccessor {
@@ -158,27 +168,30 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosQueryRequestOptionsHelper {
-        private static CosmosQueryRequestOptionsAccessor accessor;
+        private final static AtomicBoolean cosmosQueryRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosQueryRequestOptionsAccessor> accessor = new AtomicReference<>();
 
         private CosmosQueryRequestOptionsHelper() {}
-        static {
-            ensureClassLoaded(CosmosQueryRequestOptions.class);
-        }
 
         public static void setCosmosQueryRequestOptionsAccessor(final CosmosQueryRequestOptionsAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosQueryRequestOptions accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosQueryRequestOptionsAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosQueryRequestOptionsClassLoaded.set(true);
         }
 
         public static CosmosQueryRequestOptionsAccessor getCosmosQueryRequestOptionsAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosQueryRequestOptions accessor is not initialized yet!");
+            if (cosmosQueryRequestOptionsClassLoaded.compareAndSet(false, true)) {
+                CosmosQueryRequestOptions.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosQueryRequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosQueryRequestOptionsAccessor is not initialized yet!");
+                System.exit(9703); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosQueryRequestOptionsAccessor {
@@ -198,27 +211,30 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosChangeFeedRequestOptionsHelper {
-        private static CosmosChangeFeedRequestOptionsAccessor accessor;
+        private final static AtomicBoolean cosmosChangeFeedRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosChangeFeedRequestOptionsAccessor> accessor = new AtomicReference<>();
 
         private CosmosChangeFeedRequestOptionsHelper() {}
-        static {
-            ensureClassLoaded(CosmosChangeFeedRequestOptions.class);
-        }
 
         public static void setCosmosChangeFeedRequestOptionsAccessor(final CosmosChangeFeedRequestOptionsAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosChangeFeedRequestOptions accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosChangeFeedRequestOptionsAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosChangeFeedRequestOptionsClassLoaded.set(true);
         }
 
         public static CosmosChangeFeedRequestOptionsAccessor getCosmosChangeFeedRequestOptionsAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosChangeFeedRequestOptions accessor is not initialized yet!");
+            if (cosmosChangeFeedRequestOptionsClassLoaded.compareAndSet(false, true)) {
+                CosmosChangeFeedRequestOptions.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosChangeFeedRequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosChangeFeedRequestOptionsAccessor is not initialized yet!");
+                System.exit(9704); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosChangeFeedRequestOptionsAccessor {
@@ -232,27 +248,30 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosItemRequestOptionsHelper {
-        private static CosmosItemRequestOptionsAccessor accessor;
+        private final static AtomicBoolean cosmosItemRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosItemRequestOptionsAccessor> accessor = new AtomicReference<>();
 
         private CosmosItemRequestOptionsHelper() {}
-        static {
-            ensureClassLoaded(CosmosItemRequestOptions.class);
-        }
 
         public static void setCosmosItemRequestOptionsAccessor(final CosmosItemRequestOptionsAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosItemRequestOptions accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosItemRequestOptionsAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosItemRequestOptionsClassLoaded.set(true);
         }
 
         public static CosmosItemRequestOptionsAccessor getCosmosItemRequestOptionsAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosItemRequestOptions accessor is not initialized yet!");
+            if (cosmosItemRequestOptionsClassLoaded.compareAndSet(false, true)) {
+                CosmosItemRequestOptions.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosItemRequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosItemRequestOptionsAccessor is not initialized yet!");
+                System.exit(9705); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosItemRequestOptionsAccessor {
@@ -265,27 +284,30 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosBulkExecutionOptionsHelper {
-        private static CosmosBulkExecutionOptionsAccessor accessor;
+        private final static AtomicBoolean cosmosBulkExecutionOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosBulkExecutionOptionsAccessor> accessor = new AtomicReference<>();
 
         private CosmosBulkExecutionOptionsHelper() {}
-        static {
-            ensureClassLoaded(CosmosBulkExecutionOptions.class);
-        }
 
         public static void setCosmosBulkExecutionOptionsAccessor(final CosmosBulkExecutionOptionsAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosBulkExecutionOptions accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosBulkExecutionOptionsAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosBulkExecutionOptionsClassLoaded.set(true);
         }
 
         public static CosmosBulkExecutionOptionsAccessor getCosmosBulkExecutionOptionsAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosBulkExecutionOptions accessor is not initialized yet!");
+            if (cosmosBulkExecutionOptionsClassLoaded.compareAndSet(false, true)) {
+                CosmosBulkExecutionOptions.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosBulkExecutionOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosBulkExecutionOptionsAccessor is not initialized yet!");
+                System.exit(9706); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosBulkExecutionOptionsAccessor {
@@ -329,29 +351,32 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosItemResponseHelper {
-        private static CosmosItemResponseBuilderAccessor accessor;
+        private final static AtomicBoolean cosmosItemResponseClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosItemResponseBuilderAccessor> accessor = new AtomicReference<>();
 
         private CosmosItemResponseHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosItemResponse.class);
-        }
 
         public static void setCosmosItemResponseBuilderAccessor(final CosmosItemResponseBuilderAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosItemResponse accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosItemResponseBuilderAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosItemResponseClassLoaded.set(true);
         }
 
         public static CosmosItemResponseBuilderAccessor getCosmosItemResponseBuilderAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosItemResponse accessor is not initialized yet!");
+            if (cosmosItemResponseClassLoaded.compareAndSet(false, true)) {
+                CosmosItemResponse.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosItemResponseBuilderAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosItemResponseBuilderAccessor is not initialized yet!");
+                System.exit(9707); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosItemResponseBuilderAccessor {
@@ -368,29 +393,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosClientHelper {
-        private static CosmosClientAccessor accessor;
+        private final static AtomicBoolean cosmosClientClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosClientAccessor> accessor = new AtomicReference<>();
 
         private CosmosClientHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosClient.class);
-        }
-
         public static void setCosmosClientAccessor(final CosmosClientAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosClient accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosClientAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosClientClassLoaded.set(true);
         }
 
-        public static CosmosClientAccessor geCosmosClientAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosClient accessor is not initialized yet!");
+        public static CosmosClientAccessor getCosmosClientAccessor() {
+            if (cosmosClientClassLoaded.compareAndSet(false, true)) {
+                CosmosClient.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosClientAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosClientAccessor is not initialized yet!");
+                System.exit(9708); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosClientAccessor {
@@ -399,29 +426,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosContainerPropertiesHelper {
-        private static CosmosContainerPropertiesAccessor accessor;
+        private final static AtomicBoolean cosmosContainerPropertiesClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosContainerPropertiesAccessor> accessor = new AtomicReference<>();
 
         private CosmosContainerPropertiesHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosContainerProperties.class);
-        }
-
         public static void setCosmosContainerPropertiesAccessor(final CosmosContainerPropertiesAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosContainerProperties already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosContainerPropertiesAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosContainerPropertiesClassLoaded.set(true);
         }
 
         public static CosmosContainerPropertiesAccessor getCosmosContainerPropertiesAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosContainerProperties is not initialized yet!");
+            if (cosmosContainerPropertiesClassLoaded.compareAndSet(false, true)) {
+                CosmosContainerProperties.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosContainerPropertiesAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosContainerPropertiesAccessor is not initialized yet!");
+                System.exit(9709); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosContainerPropertiesAccessor {
@@ -431,29 +460,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosPageFluxHelper {
-        private static CosmosPageFluxAccessor accessor;
+        private final static AtomicBoolean cosmosPagedFluxClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosPageFluxAccessor> accessor = new AtomicReference<>();
 
         private CosmosPageFluxHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosContainerProperties.class);
-        }
-
         public static <T> void setCosmosPageFluxAccessor(final CosmosPageFluxAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosPageFluxAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosPageFluxAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosPagedFluxClassLoaded.set(true);
         }
 
         public static <T> CosmosPageFluxAccessor getCosmosPageFluxAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosPageFluxAccessor is not initialized yet!");
+            if (cosmosPagedFluxClassLoaded.compareAndSet(false, true)) {
+                CosmosPagedFlux.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosPageFluxAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosPageFluxAccessor is not initialized yet!");
+                System.exit(9710); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosPageFluxAccessor {
@@ -462,29 +493,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosAsyncDatabaseHelper {
-        private static CosmosAsyncDatabaseAccessor accessor;
+        private final static AtomicBoolean cosmosAsyncDatabaseClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosAsyncDatabaseAccessor> accessor = new AtomicReference<>();
 
         private CosmosAsyncDatabaseHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosAsyncDatabase.class);
-        }
-
         public static <T> void setCosmosAsyncDatabaseAccessor(final CosmosAsyncDatabaseAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosAsyncDatabaseAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosAsyncDatabaseAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosAsyncDatabaseClassLoaded.set(true);
         }
 
-        public static <T> CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor getCosmosAsyncDatabaseAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosAsyncDatabaseAccessor is not initialized yet!");
+        public static <T> CosmosAsyncDatabaseAccessor getCosmosAsyncDatabaseAccessor() {
+            if (cosmosAsyncDatabaseClassLoaded.compareAndSet(false, true)) {
+                CosmosAsyncDatabase.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosAsyncDatabaseAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosAsyncDatabaseAccessor is not initialized yet!");
+                System.exit(9711); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosAsyncDatabaseAccessor {
@@ -494,29 +527,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosBulkExecutionThresholdsStateHelper {
-        private static CosmosBulkExecutionThresholdsStateAccessor accessor;
+        private final static AtomicBoolean cosmosBulkExecutionThresholdsStateClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosBulkExecutionThresholdsStateAccessor> accessor = new AtomicReference<>();
 
         private CosmosBulkExecutionThresholdsStateHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosBulkExecutionThresholdsState.class);
-        }
-
         public static void setBulkExecutionThresholdsAccessor(final CosmosBulkExecutionThresholdsStateAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("BulkExecutionThresholds accessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosBulkExecutionThresholdsStateAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosBulkExecutionThresholdsStateClassLoaded.set(true);
         }
 
         public static CosmosBulkExecutionThresholdsStateAccessor getBulkExecutionThresholdsAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("BulkExecutionThresholds accessor is not initialized yet!");
+            if (cosmosBulkExecutionThresholdsStateClassLoaded.compareAndSet(false, true)) {
+                CosmosBulkExecutionThresholdsState.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosBulkExecutionThresholdsStateAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosBulkExecutionThresholdsStateAccessor is not initialized yet!");
+                System.exit(9712); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosBulkExecutionThresholdsStateAccessor {
@@ -528,29 +563,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosDiagnosticsHelper {
-        private static CosmosDiagnosticsAccessor accessor;
+        private final static AtomicBoolean cosmosDiagnosticsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosDiagnosticsAccessor> accessor = new AtomicReference<>();
 
         private CosmosDiagnosticsHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosDiagnostics.class);
-        }
-
         public static void setCosmosDiagnosticsAccessor(final CosmosDiagnosticsAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosDiagnosticsAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosDiagnosticsAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosDiagnosticsClassLoaded.set(true);
         }
 
         public static CosmosDiagnosticsAccessor getCosmosDiagnosticsAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosDiagnosticsAccessor is not initialized yet!");
+            if (cosmosDiagnosticsClassLoaded.compareAndSet(false, true)) {
+                CosmosDiagnostics.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosDiagnosticsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosDiagnosticsAccessor is not initialized yet!");
+                System.exit(9713); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosDiagnosticsAccessor {
@@ -560,7 +597,8 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosAsyncContainerHelper {
-        private static CosmosAsyncContainerAccessor accessor;
+        private final static AtomicBoolean cosmosAsyncContainerClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosAsyncContainerAccessor> accessor = new AtomicReference<>();
 
         private CosmosAsyncContainerHelper() {
         }
@@ -570,19 +608,24 @@ public class ImplementationBridgeHelpers {
         }
 
         public static void setCosmosAsyncContainerAccessor(final CosmosAsyncContainerAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosAsyncContainerAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosAsyncContainerAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosAsyncContainerClassLoaded.set(true);
         }
 
         public static CosmosAsyncContainerAccessor getCosmosAsyncContainerAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosAsyncContainerAccessor is not initialized yet!");
+            if (cosmosAsyncContainerClassLoaded.compareAndSet(false, true)) {
+                CosmosAsyncContainer.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosAsyncContainerAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosAsyncContainerAccessor is not initialized yet!");
+                System.exit(9714); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface CosmosAsyncContainerAccessor {
@@ -594,29 +637,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class FeedResponseHelper {
-        private static FeedResponseAccessor accessor;
+        private final static AtomicBoolean feedResponseClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<FeedResponseAccessor> accessor = new AtomicReference<>();
 
         private FeedResponseHelper() {
         }
 
-        static {
-            ensureClassLoaded(FeedResponse.class);
-        }
-
         public static void setFeedResponseAccessor(final FeedResponseAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("FeedResponseAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("FeedResponseAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            feedResponseClassLoaded.set(true);
         }
 
         public static FeedResponseAccessor getFeedResponseAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("FeedResponseAccessor is not initialized yet!");
+            if (feedResponseClassLoaded.compareAndSet(false, true)) {
+                FeedResponse.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            FeedResponseAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("FeedResponseAccessor is not initialized yet!");
+                System.exit(9715); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public interface FeedResponseAccessor {
@@ -626,29 +671,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosBatchRequestOptionsHelper {
-        private static CosmosBatchRequestOptionsAccessor accessor;
+        private final static AtomicBoolean cosmosBatchRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosBatchRequestOptionsAccessor> accessor = new AtomicReference<>();
 
         private CosmosBatchRequestOptionsHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosBatchRequestOptions.class);
-        }
-
         public static CosmosBatchRequestOptionsAccessor getCosmosBatchRequestOptionsAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosBatchRequestOptionsAccessor is not initialized yet!");
+            if (cosmosBatchRequestOptionsClassLoaded.compareAndSet(false, true)) {
+                CosmosBatchRequestOptions.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosBatchRequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosBatchRequestOptionsAccessor is not initialized yet!");
+                System.exit(9716); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public static void setCosmosBatchRequestOptionsAccessor(final CosmosBatchRequestOptionsAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosBatchRequestOptionsAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosBatchRequestOptionsAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosBatchRequestOptionsClassLoaded.set(true);
         }
 
         public interface CosmosBatchRequestOptionsAccessor {
@@ -661,29 +708,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosBatchOperationResultHelper {
-        private static CosmosBatchOperationResultAccessor accessor;
+        private final static AtomicBoolean cosmosBatchOperationResultClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosBatchOperationResultAccessor> accessor = new AtomicReference<>();
 
         private CosmosBatchOperationResultHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosBatchOperationResult.class);
-        }
-
         public static CosmosBatchOperationResultAccessor getCosmosBatchOperationResultAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosBatchOperationResultAccessor is not initialized yet!");
+            if (cosmosBatchOperationResultClassLoaded.compareAndSet(false, true)) {
+                CosmosBatchOperationResult.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosBatchOperationResultAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosBatchOperationResultAccessor is not initialized yet!");
+                System.exit(9717); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public static void setCosmosBatchOperationResultAccessor(final CosmosBatchOperationResultAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosBatchOperationResultAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosBatchOperationResultAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosBatchOperationResultClassLoaded.set(true);
         }
 
         public interface CosmosBatchOperationResultAccessor {
@@ -693,21 +742,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosPatchOperationsHelper {
-        private static CosmosPatchOperationsAccessor accessor;
+        private final static AtomicBoolean cosmosPatchOperationsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosPatchOperationsAccessor> accessor = new AtomicReference<>();
 
         private CosmosPatchOperationsHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosPatchOperations.class);
-        }
-
         public static CosmosPatchOperationsAccessor getCosmosPatchOperationsAccessor() {
-            return accessor;
+            if (cosmosPatchOperationsClassLoaded.compareAndSet(false, true)) {
+                CosmosPatchOperations.doNothingButEnsureLoadingClass();
+            }
+
+            CosmosPatchOperationsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosPatchOperationsAccessor is not initialized yet!");
+                System.exit(9718); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
-        public static void setCosmosPatchOperationsAccessor(CosmosPatchOperationsAccessor accessor) {
-            CosmosPatchOperationsHelper.accessor = accessor;
+        public static void setCosmosPatchOperationsAccessor(CosmosPatchOperationsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosPatchOperationsAccessor already initialized!");
+            }
+            cosmosPatchOperationsClassLoaded.set(true);
         }
 
         public interface CosmosPatchOperationsAccessor {
@@ -716,21 +775,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosBatchHelper {
-        private static CosmosBatchAccessor accessor;
+        private static AtomicBoolean cosmosBatchClassLoaded = new AtomicBoolean(false);
+        private static AtomicReference<CosmosBatchAccessor> accessor = new AtomicReference<>();
 
         private CosmosBatchHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosBatch.class);
-        }
-
         public static CosmosBatchAccessor getCosmosBatchAccessor() {
-            return accessor;
+            if (cosmosBatchClassLoaded.compareAndSet(false, true)) {
+                CosmosBatch.doNothingButEnsureLoadingClass();
+            }
+
+            CosmosBatchAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosBatchAccessor is not initialized yet!");
+                System.exit(9719); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
-        public static void setCosmosBatchAccessor(CosmosBatchAccessor accessor) {
-            CosmosBatchHelper.accessor = accessor;
+        public static void setCosmosBatchAccessor(CosmosBatchAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosBatchAccessor already initialized!");
+            }
+            cosmosBatchClassLoaded.set(true);
         }
 
         public interface CosmosBatchAccessor {
@@ -739,21 +808,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosBulkItemResponseHelper {
-        private static CosmosBulkItemResponseAccessor accessor;
+        private final static AtomicBoolean cosmosBulkItemResponseClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosBulkItemResponseAccessor> accessor = new AtomicReference<>();
 
         private CosmosBulkItemResponseHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosBulkItemResponse.class);
-        }
-
         public static CosmosBulkItemResponseAccessor getCosmosBulkItemResponseAccessor() {
-            return accessor;
+            if (cosmosBulkItemResponseClassLoaded.compareAndSet(false, true)) {
+                CosmosBulkItemResponse.doNothingButEnsureLoadingClass();
+            }
+
+            CosmosBulkItemResponseAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosBulkItemResponseAccessor is not initialized yet!");
+                System.exit(9720); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
-        public static void setCosmosBulkItemResponseAccessor(CosmosBulkItemResponseAccessor accessor) {
-            CosmosBulkItemResponseHelper.accessor = accessor;
+        public static void setCosmosBulkItemResponseAccessor(CosmosBulkItemResponseAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosBulkItemResponseAccessor already initialized!");
+            }
+            cosmosBulkItemResponseClassLoaded.set(true);
         }
 
         public interface CosmosBulkItemResponseAccessor {
@@ -765,29 +844,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosBatchResponseHelper {
-        private static CosmosBatchResponseAccessor accessor;
+        private final static AtomicBoolean cosmosBatchResponseClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosBatchResponseAccessor> accessor = new AtomicReference<>();
 
         private CosmosBatchResponseHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosBatchResponse.class);
-        }
-
         public static CosmosBatchResponseAccessor getCosmosBatchResponseAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosBatchResponseAccessor is not initialized yet!");
+            if (cosmosBatchResponseClassLoaded.compareAndSet(false, true)) {
+                CosmosBatchResponse.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosBatchResponseAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosBatchResponseAccessor is not initialized yet!");
+                System.exit(9721); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public static void setCosmosBatchResponseAccessor(final CosmosBatchResponseAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosBatchResponseAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosBatchResponseAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosBatchResponseClassLoaded.set(true);
         }
 
         public interface CosmosBatchResponseAccessor {
@@ -796,29 +877,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosAsyncClientEncryptionKeyHelper {
-        private static CosmosAsyncClientEncryptionKeyAccessor accessor;
+        private final static AtomicBoolean cosmosAsyncClientEncryptionKeyClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosAsyncClientEncryptionKeyAccessor> accessor = new AtomicReference<>();
 
         private CosmosAsyncClientEncryptionKeyHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosAsyncClientEncryptionKey.class);
-        }
-
         public static CosmosAsyncClientEncryptionKeyAccessor getCosmosAsyncClientEncryptionKeyAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosAsyncClientEncryptionKeyAccessor is not initialized yet!");
+            if (cosmosAsyncClientEncryptionKeyClassLoaded.compareAndSet(false, true)) {
+                CosmosAsyncClientEncryptionKey.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosAsyncClientEncryptionKeyAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosAsyncClientEncryptionKeyAccessor is not initialized yet!");
+                System.exit(9722); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public static void setCosmosAsyncClientEncryptionKeyAccessor(final CosmosAsyncClientEncryptionKeyAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosAsyncClientEncryptionKeyAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosAsyncClientEncryptionKeyAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosAsyncClientEncryptionKeyClassLoaded.set(true);
         }
 
         public interface CosmosAsyncClientEncryptionKeyAccessor {
@@ -828,29 +911,31 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosExceptionHelper {
-        private static CosmosExceptionAccessor accessor;
+        private final static AtomicBoolean cosmosExceptionClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosExceptionAccessor> accessor = new AtomicReference<>();
 
         private CosmosExceptionHelper() {
         }
 
-        static {
-            ensureClassLoaded(CosmosException.class);
-        }
-
         public static CosmosExceptionAccessor getCosmosExceptionAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("CosmosExceptionAccessor is not initialized yet!");
+            if (cosmosExceptionClassLoaded.compareAndSet(false, true)) {
+                CosmosException.doNothingButEnsureLoadingClass();
             }
 
-            return accessor;
+            CosmosExceptionAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosExceptionAccessor is not initialized yet!");
+                System.exit(9800); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
         }
 
         public static void setCosmosExceptionAccessor(final CosmosExceptionAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("CosmosExceptionAccessor already initialized!");
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.warn("CosmosExceptionAccessor already initialized!");
             }
-
-            accessor = newAccessor;
+            cosmosExceptionClassLoaded.set(true);
         }
 
         public interface CosmosExceptionAccessor {
@@ -860,11 +945,21 @@ public class ImplementationBridgeHelpers {
 
     private static <T> void ensureClassLoaded(Class<T> classType) {
         try {
+            try {
+                ClassLoader classLoader = classType.getClassLoader();
+                logger.info(
+                        "Calling ensureClassLoaded for class {} with classLoader {}",
+                        classType,
+                        classLoader);
+            } catch (Throwable e) {
+                logger.warn("Failed to get class loader", e);
+            }
+
             // ensures the class is loaded
             Class.forName(classType.getName());
-        } catch (ClassNotFoundException e) {
-            logger.error("cannot load class {}", classType.getName());
-            throw new RuntimeException(e);
+        } catch (Throwable e) {
+            logger.error("Can not load class {}", classType.getName(), e);
+            System.exit(9801); // Using a unique status code here to help debug the issue.
         }
     }
 }

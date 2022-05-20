@@ -80,13 +80,11 @@ jobs:
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
 
-      - template: ../steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
           JobType: 'Build'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -260,13 +258,11 @@ jobs:
           filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
-      - template: ../steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'

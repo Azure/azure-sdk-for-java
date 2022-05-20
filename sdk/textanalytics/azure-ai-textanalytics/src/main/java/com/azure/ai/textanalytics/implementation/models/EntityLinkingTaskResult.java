@@ -6,14 +6,18 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The EntityLinkingTaskResult model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("EntityLinkingResults")
 @Fluent
-public class EntityLinkingTaskResult {
+public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
     /*
      * The results property.
      */
-    @JsonProperty(value = "results")
+    @JsonProperty(value = "results", required = true)
     private EntityLinkingResult results;
 
     /**

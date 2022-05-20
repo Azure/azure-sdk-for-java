@@ -258,6 +258,14 @@
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
         },
         {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.messaging.eventhubs.EventData",
+          "new": "class com.azure.messaging.eventhubs.EventData",
+          "superClass": "com.azure.core.models.MessageContent",
+          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
+        }
+        },
+        {
           "regex": true,
           "code": "java.annotation.attributeValueChanged",
           "old": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\..*",

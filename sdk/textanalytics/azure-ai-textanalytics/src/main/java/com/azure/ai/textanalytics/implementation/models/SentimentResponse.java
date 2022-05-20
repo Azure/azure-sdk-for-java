@@ -10,38 +10,19 @@ import java.util.List;
 
 /** The SentimentResponse model. */
 @Fluent
-public final class SentimentResponse {
+public final class SentimentResponse extends PreBuiltResult {
     /*
      * Sentiment analysis per document.
      */
     @JsonProperty(value = "documents", required = true)
-    private List<DocumentSentiment> documents;
-
-    /*
-     * Errors by document id.
-     */
-    @JsonProperty(value = "errors", required = true)
-    private List<DocumentError> errors;
-
-    /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the request payload.
-     */
-    @JsonProperty(value = "statistics")
-    private RequestStatistics statistics;
-
-    /*
-     * This field indicates which model is used for scoring.
-     */
-    @JsonProperty(value = "modelVersion", required = true)
-    private String modelVersion;
+    private List<SentimentResponseDocumentsItem> documents;
 
     /**
      * Get the documents property: Sentiment analysis per document.
      *
      * @return the documents value.
      */
-    public List<DocumentSentiment> getDocuments() {
+    public List<SentimentResponseDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -51,70 +32,8 @@ public final class SentimentResponse {
      * @param documents the documents value to set.
      * @return the SentimentResponse object itself.
      */
-    public SentimentResponse setDocuments(List<DocumentSentiment> documents) {
+    public SentimentResponse setDocuments(List<SentimentResponseDocumentsItem> documents) {
         this.documents = documents;
-        return this;
-    }
-
-    /**
-     * Get the errors property: Errors by document id.
-     *
-     * @return the errors value.
-     */
-    public List<DocumentError> getErrors() {
-        return this.errors;
-    }
-
-    /**
-     * Set the errors property: Errors by document id.
-     *
-     * @param errors the errors value to set.
-     * @return the SentimentResponse object itself.
-     */
-    public SentimentResponse setErrors(List<DocumentError> errors) {
-        this.errors = errors;
-        return this;
-    }
-
-    /**
-     * Get the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @return the statistics value.
-     */
-    public RequestStatistics getStatistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Set the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @param statistics the statistics value to set.
-     * @return the SentimentResponse object itself.
-     */
-    public SentimentResponse setStatistics(RequestStatistics statistics) {
-        this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the SentimentResponse object itself.
-     */
-    public SentimentResponse setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
         return this;
     }
 }

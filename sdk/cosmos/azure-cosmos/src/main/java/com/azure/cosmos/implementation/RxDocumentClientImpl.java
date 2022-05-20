@@ -4129,6 +4129,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.throughputControlStore.enableThroughputControlGroup(group);
     }
 
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
+
+        return this.storeModel.openConnectionsAndInitCaches(containerLink);
+    }
+
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
         PartitionKey partitionKey,
         String partitionKeySelector) {

@@ -7,6 +7,7 @@
 
 # Format;
 # groupId:artifactId;dependency-version
+ch.qos.logback:logback-classic;1.2.11
 com.fasterxml.jackson.core:jackson-annotations;2.13.2
 com.fasterxml.jackson.core:jackson-core;2.13.2
 com.fasterxml.jackson.core:jackson-databind;2.13.2.2
@@ -92,6 +93,8 @@ org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;1.13.0
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
+org.codehaus.groovy:groovy-jsr223;3.0.10
+org.codehaus.janino:janino;3.1.6
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-container-grizzly;1.2.1
 org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16

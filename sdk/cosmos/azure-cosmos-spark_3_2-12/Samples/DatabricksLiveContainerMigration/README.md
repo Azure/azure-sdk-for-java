@@ -50,7 +50,7 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
 ## Validation
 
-* Open the `CosmosDBLiveContainerMigrationValidation` notebook, and attache the same cluster. Replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). 
+* Open the `CosmosDBLiveContainerMigrationValidation` notebook, and attach the same cluster. Replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as appropriate that are contained within each cell (see comments in each cell for guidance). 
 
 * Select "Run All". The final two cells will show any records still present in the source container which are not yet in target container, and a count of those records. The closer this is to zero, the closer the process is to having migrated all of the historic data in the source container. 
 
