@@ -852,6 +852,7 @@
         <module>sdk/automanage</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
+        <module>sdk/azureactivedirectory</module>
         <module>sdk/azureadexternalidentities</module>
         <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
