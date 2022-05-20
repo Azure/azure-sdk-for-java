@@ -1721,20 +1721,15 @@ public class CosmosAsyncContainer {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
+     * Should not be called from user-code. This method is a no-op and is just used internally
      * to force loading this class
      */
-    public static void doNothingButEnsureLoadingClass() {}
+    public static void doNothingButEnsureLoadingClass() { initialize(); }
 
-    static {
+    private static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncContainerHelper.setCosmosAsyncContainerAccessor(
-            new ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor() {
-                @Override
-                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(CosmosAsyncContainer cosmosAsyncContainer,
-                                                                                                               CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
-                                                                                                               Class<T> classType) {
-                    return cosmosAsyncContainer.queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType);
-                }
-            });
+            CosmosAsyncContainer::queryChangeFeedInternalFunc);
     }
+
+    static { initialize(); }
 }

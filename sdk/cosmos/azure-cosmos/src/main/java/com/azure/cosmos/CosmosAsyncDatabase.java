@@ -1080,12 +1080,12 @@ public class CosmosAsyncDatabase {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
+     * Should not be called from user-code. This method is a no-op and is just used internally
      * to force loading this class
      */
-    public static void doNothingButEnsureLoadingClass() {}
+    public static void doNothingButEnsureLoadingClass() { initialize(); }
 
-    static {
+    private static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.setCosmosAsyncDatabaseAccessor(
             new ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor() {
 
@@ -1100,4 +1100,6 @@ public class CosmosAsyncDatabase {
                 }
             });
     }
+
+    static { initialize(); }
 }
