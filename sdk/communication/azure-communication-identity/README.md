@@ -165,7 +165,7 @@ communicationIdentityClient.deleteUser(user);
 ```
 
 ### Exchanging Azure AD access token of a Teams User for a Communication Identity access token
-Use the `getTokenForTeamsUser` function to exchanges an Azure AD access token of a Teams User for a new Communication Identity access token.
+Use the `getTokenForTeamsUser` function to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
 
 ```java readme-sample-getTokenForTeamsUser
 String clientId = "<Client ID of an Azure AD application>";

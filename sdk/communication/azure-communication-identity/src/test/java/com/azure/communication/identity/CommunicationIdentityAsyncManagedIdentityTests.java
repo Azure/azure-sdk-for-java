@@ -59,22 +59,6 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     }
 
     @Test
-    public void createUserWithContext() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserWithContextUsingManagedIdentity");
-
-        // Action & Assert
-        Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
-        StepVerifier.create(response)
-                .assertNext(user -> {
-                    assertNotNull(user.getId());
-                    assertFalse(user.getId().isEmpty());
-                })
-                .verifyComplete();
-    }
-
-    @Test
     public void deleteUser() {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
