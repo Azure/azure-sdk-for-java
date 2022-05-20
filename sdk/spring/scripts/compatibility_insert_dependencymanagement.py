@@ -68,7 +68,7 @@ def get_repo_content_without_tag():
     <repository>
       <id>repository.springframework.maven.milestone</id>
       <name>Spring Framework Maven Milestone Repository</name>
-      <url>https://repo.spring.io/milestone/</url>
+      <url>https://repo.spring.io/snapshot/</url>
     </repository>
   """
 
