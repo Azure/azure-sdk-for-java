@@ -27,14 +27,12 @@
 #
 # Sample:
 # 1. python .\sdk\spring\scripts\compatibility_add_dependencymanagement.py
-# 2. python .\sdk\spring\scripts\compatibility_add_dependencymanagement.py
 #
 # The script must be run at the root of azure-sdk-for-java.
 
 
 import os
 import time
-import argparse
 import json
 
 from log import log
@@ -43,27 +41,11 @@ from log import log
 def main():
     start_time = time.time()
     change_to_root_dir()
-    args = get_args()
-    log.set_log_level(args.log)
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    spring_cloud_version = get_spring_cloud_version("https://github.com/Netyyyy/spring-cloud-azure-tools/blob/myao/addjson/compatibility-version-management.json")
-    # spring_cloud_version = get_spring_cloud_version("./sdk/spring/compatibility-version-management.json")
+    spring_cloud_version = get_spring_cloud_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
     add_dependency_management_for_all_poms_files_in_directory("./sdk/spring", spring_cloud_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
-
-
-def get_args():
-    parser = argparse.ArgumentParser(description='Insert dependencyManagement in pom files.')
-    parser.add_argument(
-        '--log',
-        type=str,
-        choices=['debug', 'info', 'warn', 'error', 'none'],
-        required=False,
-        default='info',
-        help='Set log level.'
-    )
-    return parser.parse_args()
 
 
 def change_to_root_dir():
@@ -76,22 +58,15 @@ def get_spring_cloud_version(filepath):
     spring_cloud_version = "0"
     with open(filepath, 'r') as file:
         data = json.load(file)
-        # print(data)
-    for key in data:
-        if key == spring_boot_version:
-            spring_cloud_version = data[key]
+    for entry in data:
+        for key in entry:
+            if entry[key] == spring_boot_version:
+            # if entry[key] == "2.6.7":
+                spring_cloud_version = entry["spring-cloud-version"]
+                print("Get spring-cloud version:"+spring_cloud_version)
+                break
     return spring_cloud_version
-    # os.environ[key] = data[key]
-        # print("set ${env."+key+"}="+os.getenv(key))
-    # spring_cloud_version = os.getenv("spring_boot_version")
-    # os.environ["2.6.7"] = "1"
-    # spring_cloud_version = os.getenv("2.6.7")
-    # if spring_cloud_version is None:
-        # os.environ["SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION"] = "2021.0.2"
-    # print(spring_cloud_version)
-    # return str(os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION"))
-    # return str(spring_cloud_version)
-    # return os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
+
 
 
 def add_dependency_management_for_all_poms_files_in_directory(directory, spring_boot_version):
