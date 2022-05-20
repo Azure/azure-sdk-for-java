@@ -117,12 +117,12 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 // use previously created span builder from the LINK process.
                 spanBuilder = getOrNull(context, SPAN_BUILDER_KEY, SpanBuilder.class);
                 if (spanBuilder == null) {
-                    // we can't return context here, because called would not know that span was not created.
-                    // will add attributes, events to parent span and end parent span.
+                    // we can't return context here, because caller would not know that span was not created.
+                    // it will add attributes or events to parent span and end parent span.
                     LOGGER.atWarning()
                         .addKeyValue("spanName", spanName)
                         .addKeyValue("processKind", processKind)
-                        .log("start span is called without builder on the context, creating default builder");
+                        .log("Start span is called without builder on the context, creating default builder.");
                     spanBuilder = createSpanBuilder(spanName, null, SHARED_SPAN_BUILDER_KIND, null, context);
                 }
 
@@ -143,7 +143,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 LOGGER.atWarning()
                     .addKeyValue("spanName", spanName)
                     .addKeyValue("processKind", processKind)
-                    .log("start span is called with unknown process kind, suppressing the span");
+                    .log("Start span is called with unknown process kind, suppressing the span.");
                 return startSuppressedSpan(context);
         }
     }
