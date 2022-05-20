@@ -1023,7 +1023,7 @@
               <argLine>
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
-                <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
+                <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by Intellij when running tests with later versions of Java. -->
                 <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
                 --add-opens java.base/java.lang.invoke=com.azure.core
                 ${additionalSurefireArgLine}
