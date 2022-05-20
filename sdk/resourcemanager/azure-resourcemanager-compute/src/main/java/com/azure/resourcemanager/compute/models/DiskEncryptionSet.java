@@ -22,17 +22,18 @@ public interface DiskEncryptionSet
     /** @return resource id of the Azure key vault containing the key or secret */
     String keyVaultId();
 
-    /** @return id representing the key in KeyVault */
-    String keyId();
+    /** @return id representing the encryption key in KeyVault */
+    String encryptionKeyId();
 
     /** @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
      *          assigned to the disk encryption set.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return whether automatic key rotation is enabled
-     *          if enabled, the system will automatically update all managed disks, snapshots, and images
-     *          referencing the disk encryption set to use the new version of the key within one hour
+    /**
+     * If automatic key rotation is enabled, the system will automatically update all managed disks, snapshots,
+     * and images referencing the disk encryption set to use the new version of the key within one hour.
+     * @return whether automatic key rotation is enabled
      */
     Boolean isAutomaticKeyRotationEnabled();
 
@@ -95,12 +96,12 @@ public interface DiskEncryptionSet
         }
 
         /**
-         * The stage of a disk encryption set definition allowing to enable System Assigned (Local) Managed Service
+         * The stage of a disk encryption set definition allowing to enable System Assigned Managed Service
          * Identity.
          */
         interface WithSystemAssignedManagedServiceIdentity {
             /**
-             * Specifies that System Assigned (Local) Managed Service Identity needs to be enabled in the disk
+             * Specifies that System Assigned Managed Service Identity needs to be enabled in the disk
              * encryption set.
              *
              * @return the next stage of the definition
@@ -109,17 +110,33 @@ public interface DiskEncryptionSet
         }
 
         /**
-         * The stage of the System Assigned (Local) Managed Service Identity enabled disk encryption set allowing to set
+         * The stage of the System Assigned Managed Service Identity enabled disk encryption set allowing to set
          * access role for the key vault.
          */
         interface WithSystemAssignedIdentityBasedAccessOrCreate extends WithCreate {
             /**
-             * Specifies that disk encryption set's system assigned (local) identity should have the given access
+             * Specifies that disk encryption set's system assigned identity should have the given RBAC based access
              * (described by the role) on the current Azure key vault that's associated with it.
+             * Only works for key vaults that use the 'Azure role-based access control' permission model.
+             * If you prefer Access Policy based access for Azure Key Vault (like the examples from Portal or CLI),
+             * instead of calling this method, you may want to call Vault-related methods after creating the
+             * {@link DiskEncryptionSet} instance.
              * @param builtInRole access role to assigned to the disk encryption set's local identity
              * @return the next stage of the definition
              */
-            WithCreate withSystemAssignedIdentityBasedAccessToCurrentKeyVault(BuiltInRole builtInRole);
+            WithCreate withRBACBasedAccessToCurrentKeyVault(BuiltInRole builtInRole);
+
+            /**
+             * Specifies that disk encryption set's system assigned identity should have the RBAC based access
+             * with default {@link BuiltInRole#KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER} on the current Azure key vault
+             * that's associated with it.
+             * Only works for key vaults that use the 'Azure role-based access control' permission model.
+             * If you prefer Access Policy based access for Azure Key Vault (like the examples from Portal or CLI),
+             * instead of calling this method, you may want to call Vault-related methods after creating the
+             * {@link DiskEncryptionSet} instance.
+             * @return the next stage of the definition
+             */
+            WithCreate withRBACBasedAccessToCurrentKeyVault();
         }
 
         /**
@@ -148,25 +165,24 @@ public interface DiskEncryptionSet
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
         extends Appliable<DiskEncryptionSet>,
+        UpdateWithTags<Update>,
         UpdateStages.WithSystemAssignedManagedServiceIdentity,
-        UpdateStages.WithSystemAssignedIdentityBasedAccess,
-        UpdateStages.WithKeyVault,
         UpdateStages.WithAutomaticKeyRotation {
     }
 
     /** Grouping of disk encryption set update stages. */
     interface UpdateStages {
         /**
-         * The stage of a disk encryption set update allowing to enable System Assigned (Local) Managed Service
+         * The stage of a disk encryption set update allowing to enable System Assigned Managed Service
          * Identity.
          */
         interface WithSystemAssignedManagedServiceIdentity {
             /**
-             * Specifies that System Assigned (Local) Managed Service Identity needs to be enabled in the disk
+             * Specifies that System Assigned Managed Service Identity needs to be enabled in the disk
              * encryption set.
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccess withSystemAssignedManagedServiceIdentity();
+            Update withSystemAssignedManagedServiceIdentity();
 
             /**
              * Specifies that System Assigned (Local) Managed Service Identity needs to be disabled in the disk
@@ -174,44 +190,6 @@ public interface DiskEncryptionSet
              * @return the next stage of the update
              */
             Update withoutSystemAssignedManagedServiceIdentity();
-        }
-
-        /**
-         * The stage of a disk encryption set update allowing to associate with an Azure key vault.
-         */
-        interface WithKeyVault {
-            /**
-             * Associates with the disk encryption set an Azure key vault by its resource ID.
-             * @param keyVaultId resource ID of the Azure key vault
-             * @return the next stage of the update
-             */
-            WithKeyVaultKey withExistingKeyVault(String keyVaultId);
-        }
-
-        /**
-         * The stage of a disk encryption set update allowing to associate with an Azure key vault key.
-         */
-        interface WithKeyVaultKey {
-            /**
-             * Associate with the disk encryption set an Azure key vault key by its ID.
-             * @param keyId ID of the Azure key vault key
-             * @return the next stage of the update
-             */
-            Update withExistingKey(String keyId);
-        }
-
-        /**
-         * The stage of the System Assigned (Local) Managed Service Identity enabled disk encryption set allowing to set
-         * access role for the key vault.
-         */
-        interface WithSystemAssignedIdentityBasedAccess {
-            /**
-             * Specifies that disk encryption set's system assigned (local) identity should have the given access
-             * (described by the role) on the current Azure key vault that's associated with it.
-             * @param builtInRole access role to assigned to the disk encryption set's local identity
-             * @return the next stage of the update
-             */
-            Update withSystemAssignedIdentityBasedAccessToCurrentKeyVault(BuiltInRole builtInRole);
         }
 
         /**

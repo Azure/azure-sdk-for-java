@@ -43,17 +43,17 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         DiskEncryptionSet diskEncryptionSet = computeManager.diskEncryptionSets()
             .define(name)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
             .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
             .withExistingKeyVault(vaultAndKey.vault.id())
             .withExistingKey(vaultAndKey.key.id())
             .withSystemAssignedManagedServiceIdentity()
-            .withSystemAssignedIdentityBasedAccessToCurrentKeyVault(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
+            .withRBACBasedAccessToCurrentKeyVault()
             .withAutomaticKeyRotation()
             .create();
 
         Assertions.assertEquals(vaultAndKey.vault.id(), diskEncryptionSet.keyVaultId());
-        Assertions.assertEquals(vaultAndKey.key.id(), diskEncryptionSet.keyId());
+        Assertions.assertEquals(vaultAndKey.key.id(), diskEncryptionSet.encryptionKeyId());
         Assertions.assertNotNull(diskEncryptionSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertTrue(diskEncryptionSet.isAutomaticKeyRotationEnabled());
         Assertions.assertEquals(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY, diskEncryptionSet.encryptionType());
@@ -96,11 +96,15 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
         // create key
-        Key key = vault.keys().define("key1")
+        Key key = createKey(vault);
+
+        return new VaultAndKey(vault, key);
+    }
+
+    Key createKey(Vault vault) {
+        return vault.keys().define("key1")
             .withKeyTypeToCreate(KeyType.RSA)
             .withKeySize(4096)
             .create();
-
-        return new VaultAndKey(vault, key);
     }
 }

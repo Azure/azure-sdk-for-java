@@ -21,9 +21,7 @@ public class DiskEncryptionSetImpl
     extends GroupableResourceImpl<DiskEncryptionSet, DiskEncryptionSetInner, DiskEncryptionSetImpl, ComputeManager>
     implements DiskEncryptionSet,
         DiskEncryptionSet.Definition,
-        DiskEncryptionSet.Update,
-        DiskEncryptionSet.UpdateStages.WithKeyVaultKey,
-        DiskEncryptionSet.UpdateStages.WithSystemAssignedIdentityBasedAccess {
+        DiskEncryptionSet.Update {
     private DiskEncryptionSetUpdate patchToUpdate = new DiskEncryptionSetUpdate();
     private boolean updated;
     private final DiskEncryptionSetMsiHandler msiHandler;
@@ -42,7 +40,7 @@ public class DiskEncryptionSetImpl
     }
 
     @Override
-    public String keyId() {
+    public String encryptionKeyId() {
         if (innerModel().activeKey() == null) {
             return null;
         }
@@ -120,11 +118,16 @@ public class DiskEncryptionSetImpl
     }
 
     @Override
-    public DiskEncryptionSetImpl withSystemAssignedIdentityBasedAccessToCurrentKeyVault(BuiltInRole builtInRole) {
+    public DiskEncryptionSetImpl withRBACBasedAccessToCurrentKeyVault(BuiltInRole builtInRole) {
         if (keyVaultId() != null) {
             msiHandler.withAccessTo(keyVaultId(), builtInRole);
         }
         return this;
+    }
+
+    @Override
+    public DiskEncryptionSetImpl withRBACBasedAccessToCurrentKeyVault() {
+        return withRBACBasedAccessToCurrentKeyVault(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER);
     }
 
     @Override
