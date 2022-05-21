@@ -1,8 +1,10 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `CommunicationIdentityClientBuilder`.
+- Added `retryOptions` to `CommunicationIdentityClientBuilder`.
 
 ### Breaking Changes
 
@@ -60,8 +62,13 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` to 1.0.6
-- Upgraded `azure-core` to 1.22.0
+- Upgraded `azure-core` to `1.22.0`.
+- Upgraded `azure-communication-common` to `1.0.6`.
+
+## 1.2.0-beta.1 (2021-10-29)
+
+### Features Added
+- Added support for Microsoft 365 Teams identities
 
 ## 1.1.3 (2021-10-08)
 

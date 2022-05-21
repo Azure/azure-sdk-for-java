@@ -411,12 +411,12 @@ public class ShareAsyncClient {
      * shareAsyncClient.createIfNotExistsWithResponse&#40;new ShareCreateOptions&#40;&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;&#41;.setQuotaInGb&#40;1&#41;
      *     .setAccessTier&#40;ShareAccessTier.HOT&#41;&#41;.subscribe&#40;response -&gt; &#123;
-     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
-     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     *         if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *             System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions -->
      *
@@ -655,7 +655,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -668,12 +668,12 @@ public class ShareAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse -->
      * <pre>
      * shareAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse -->
      *
@@ -684,7 +684,7 @@ public class ShareAsyncClient {
      * successfully deleted. If status code is 404, the share does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse() {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse() {
         try {
             return deleteIfExistsWithResponse(new ShareDeleteOptions());
         } catch (RuntimeException ex) {
@@ -703,12 +703,12 @@ public class ShareAsyncClient {
      * <pre>
      * shareAsyncClient.deleteIfExistsWithResponse&#40;new ShareDeleteOptions&#40;&#41;
      *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *         if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *             System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteIfExistsWithResponse#ShareDeleteOptions -->
      *
@@ -720,7 +720,7 @@ public class ShareAsyncClient {
      * successfully deleted. If status code is 404, the share does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(ShareDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareDeleteOptions options) {
         try {
             return withContext(context -> deleteIfExistsWithResponse(options, context));
         } catch (RuntimeException ex) {
@@ -728,14 +728,15 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(ShareDeleteOptions options, Context context) {
-        return deleteWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException
-            && ((ShareStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((ShareStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
-            });
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareDeleteOptions options, Context context) {
+        return deleteWithResponse(options, context)
+            .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
@@ -1850,12 +1851,12 @@ public class ShareAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteDirectoryIfExistsWithResponse#string -->
      * <pre>
      * shareAsyncClient.deleteDirectoryIfExistsWithResponse&#40;&quot;mydirectory&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteDirectoryIfExistsWithResponse#string -->
      *
@@ -1867,7 +1868,7 @@ public class ShareAsyncClient {
      * successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName) {
+    public Mono<Response<Boolean>> deleteDirectoryIfExistsWithResponse(String directoryName) {
         try {
             return withContext(context -> deleteDirectoryIfExistsWithResponse(directoryName, context));
         } catch (RuntimeException ex) {
@@ -1875,15 +1876,17 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName, Context context) {
+    Mono<Response<Boolean>> deleteDirectoryIfExistsWithResponse(String directoryName, Context context) {
         try {
-            return deleteDirectoryWithResponse(directoryName, context).onErrorResume(t -> t
+            return deleteDirectoryWithResponse(directoryName, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t
                 instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((ShareStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2018,7 +2021,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, null).map(response -> response.getStatusCode() != 404);
+        return deleteFileIfExistsWithResponse(fileName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2031,12 +2034,13 @@ public class ShareAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteFileIfExistsWithResponse#string -->
      * <pre>
      * shareAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFileIfExistsWithResponse#string -->
      *
      * <p>For more information, see the
@@ -2047,7 +2051,7 @@ public class ShareAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName) {
         try {
             return deleteFileIfExistsWithResponse(fileName, null);
         } catch (RuntimeException ex) {
@@ -2068,12 +2072,12 @@ public class ShareAsyncClient {
      * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
      * shareAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions -->
      *
@@ -2086,7 +2090,7 @@ public class ShareAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options) {
         try {
             return withContext(context -> deleteFileIfExistsWithResponse(fileName, options, context));
         } catch (RuntimeException ex) {
@@ -2094,16 +2098,17 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options, Context context) {
+    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options, Context context) {
         try {
             options = options == null ? new ShareDeleteOptions() : options;
             return deleteFileWithResponse(fileName, options.getRequestConditions(), context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
                     .getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

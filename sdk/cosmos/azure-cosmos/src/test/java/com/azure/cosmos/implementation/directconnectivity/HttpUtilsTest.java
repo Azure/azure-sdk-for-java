@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -33,8 +33,8 @@ public class HttpUtilsTest {
         assertThat(entry.getKey()).isEqualTo(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
         
-        List<Entry<String, String>> resultHeadersList = HttpUtils.unescape(httpResponseHeaders.toMap().entrySet());
-        assertThat(resultHeadersList.size()).isEqualTo(1);
+        Map<String, String> resultHeaders = HttpUtils.unescape(httpResponseHeaders.toMap());
+        assertThat(resultHeaders.size()).isEqualTo(1);
         entry = resultHeadersSet.iterator().next();
         assertThat(entry.getKey()).isEqualTo(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
