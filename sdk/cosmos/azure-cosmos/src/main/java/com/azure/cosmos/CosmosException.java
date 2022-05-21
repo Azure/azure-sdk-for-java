@@ -545,21 +545,10 @@ public class CosmosException extends AzureException {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
-     * to force loading this class
-     */
-    public static void doNothingButEnsureLoadingClass() {}
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
-            new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
-
-                @Override
-                public CosmosException createCosmosException(int statusCode, Exception innerException) {
-                    return new CosmosException(statusCode, innerException);
-                }
-            });
+            (statusCode, innerException) -> new CosmosException(statusCode, innerException));
     }
+
+    static { initialize(); }
 }
