@@ -873,7 +873,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         expect:
-        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse())
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(null))
             .assertNext {
                 assert assertResponseStatusCode(it, 202)
             }.verifyComplete()

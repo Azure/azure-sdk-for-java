@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.options;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 /**
  * Extended options that may be passed when getting the page ranges of a page blob.
  */
+@Fluent
 public class ListPageRangesOptions {
     private final BlobRange range;
     private BlobRequestConditions requestConditions;
