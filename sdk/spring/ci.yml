@@ -115,6 +115,20 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-active-directory
+        groupId: com.azure.spring
+        safeName: springcloudazurestarteractivedirectory
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-active-directory-b2c
+        groupId: com.azure.spring
+        safeName: springcloudazurestarteractivedirectoryb2c
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-appconfiguration
         groupId: com.azure.spring
         safeName: springcloudazurestarterappconfiguration
@@ -243,20 +257,6 @@ extends:
       - name: spring-cloud-azure-starter-stream-servicebus
         groupId: com.azure.spring
         safeName: springcloudazurestarterstreamservicebus
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-active-directory
-        groupId: com.azure.spring
-        safeName: springcloudazurestarteractivedirectory
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-active-directory-b2c
-        groupId: com.azure.spring
-        safeName: springcloudazurestarteractivedirectoryb2c
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         skipUpdatePackageJson: true
