@@ -55,9 +55,6 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
         }
 
         PhoneNumberIdentifier phoneId = (PhoneNumberIdentifier) that;
-        if (!phoneNumber.equals(phoneId.phoneNumber)) {
-            return false;
-        }
 
         return getRawId() == null
             || phoneId.getRawId() == null

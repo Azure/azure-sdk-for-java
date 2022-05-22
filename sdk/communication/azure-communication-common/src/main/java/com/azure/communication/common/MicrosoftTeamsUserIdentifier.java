@@ -28,7 +28,6 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
         }
         this.userId = userId;
         this.isAnonymous = isAnonymous;
-
         setRawId();
     }
 
