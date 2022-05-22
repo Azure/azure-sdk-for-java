@@ -17,7 +17,7 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId      Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
      * @param isAnonymous set this to true if the user is anonymous,
      *                    for example when joining a meeting with a share link
      * @throws IllegalArgumentException thrown if userId parameter fail the validation.
@@ -112,6 +112,11 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
         return getRawId() == null
             || thatId.getRawId() == null
             || thatId.getRawId().equals(this.getRawId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getRawId().hashCode();
     }
 
     private void setRawId() {

@@ -15,6 +15,7 @@ public abstract class CommunicationIdentifier {
      *
      * @param rawId raw id.
      * @return CommunicationIdentifier
+     * @throws IllegalArgumentException raw id is null or empty.
      */
     public static CommunicationIdentifier fromRawId(String rawId) {
         if (CoreUtils.isNullOrEmpty(rawId)) {
@@ -29,18 +30,18 @@ public abstract class CommunicationIdentifier {
             return new UnknownIdentifier(rawId);
         }
 
-        final String prefix = segments[0] + ":" + segments[1]+":";
+        final String prefix = segments[0] + ":" + segments[1] + ":";
         final String suffix = rawId.substring(prefix.length());
 
-        if (prefix.equals("8:teamsvisitor:")) {
+        if ("8:teamsvisitor:".equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, true);
-        } else if (prefix.equals("8:orgid:")) {
+        } else if ("8:orgid:".equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false);
-        } else if (prefix.equals("8:dod:")) {
+        } else if ("8:dod:".equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-        } else if (prefix.equals("8:gcch:")) {
+        } else if ("8:gcch:".equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-        } else if (prefix.equals("8:acs:") || prefix.equals("8:spool:") || prefix.equals("8:dod-acs:") || prefix.equals("8:gcch-acs:")) {
+        } else if ("8:acs:".equals(prefix) || "8:spool:".equals(prefix) || "8:dod-acs:".equals(prefix) || "8:gcch-acs:".equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
         }
 
@@ -57,6 +58,21 @@ public abstract class CommunicationIdentifier {
         return rawId;
     }
 
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof CommunicationIdentifier)) {
+            return false;
+        }
+
+        CommunicationIdentifier thatId = (CommunicationIdentifier) that;
+        return this.getRawId().equals(thatId.getRawId());
+    }
+
+    @Override
     public int hashCode() {
         return getRawId().hashCode();
     }

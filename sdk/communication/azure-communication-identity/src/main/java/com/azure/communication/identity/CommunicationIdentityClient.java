@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
@@ -38,6 +39,7 @@ public final class CommunicationIdentityClient {
 
     CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {
         client = communicationIdentityClient.getCommunicationIdentities();
+
     }
 
     /**
