@@ -53,6 +53,11 @@ public class CommunicationIdentifierTests {
         assertEquals(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  true),
             new MicrosoftTeamsUserIdentifier("override", false)
                 .setRawId("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130"));
+        assertEquals(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  true)
+                .setRawId("test raw id")
+                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH),
+            new MicrosoftTeamsUserIdentifier("override", false)
+                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH).setRawId("test raw id"));
 
         // Phone numbers
         assertEquals(new PhoneNumberIdentifier("+14255550123"), new PhoneNumberIdentifier("+14255550123"));
