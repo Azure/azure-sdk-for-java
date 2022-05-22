@@ -170,7 +170,11 @@ public class CommunicationIdentifierConverterTests {
 
         assertNotNull(model.getMicrosoftTeamsUser());
         assertEquals(teamsUserId, model.getMicrosoftTeamsUser().getUserId());
-        assertEquals(rawId, model.getRawId());
+        if (isAnonymous) {
+            assertEquals("8:teamsvisitor:" + teamsUserId, model.getRawId());
+        } else {
+            assertEquals("8:dod:" + teamsUserId, model.getRawId());
+        }
         assertEquals(CommunicationCloudEnvironmentModel.DOD, model.getMicrosoftTeamsUser().getCloud());
         assertEquals(isAnonymous, model.getMicrosoftTeamsUser().isAnonymous());
     }
@@ -186,7 +190,11 @@ public class CommunicationIdentifierConverterTests {
 
         assertEquals(MicrosoftTeamsUserIdentifier.class, identifier.getClass());
         assertEquals(teamsUserId, identifier.getUserId());
-        assertEquals(rawId, identifier.getRawId());
+        if (isAnonymous) {
+            assertEquals("8:teamsvisitor:" + teamsUserId, identifier.getRawId());
+        } else {
+            assertEquals("8:gcch:" + teamsUserId, identifier.getRawId());
+        }
         assertEquals(CommunicationCloudEnvironment.GCCH, identifier.getCloudEnvironment());
         assertEquals(isAnonymous, identifier.isAnonymous());
     }

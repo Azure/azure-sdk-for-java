@@ -122,9 +122,9 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     private void setRawId() {
         if (this.isAnonymous) {
             this.rawId = "8:teamsvisitor:" + this.userId;
-        } else if (cloudEnvironment == CommunicationCloudEnvironment.DOD) {
+        } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
             this.rawId = "8:dod:" + this.userId;
-        } else if (cloudEnvironment == CommunicationCloudEnvironment.GCCH) {
+        } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
             this.rawId = "8:gcch:" + this.userId;
         } else {
             this.rawId = "8:orgid:" + this.userId;
