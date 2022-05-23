@@ -87,6 +87,10 @@ public final class CommunicationServiceResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CommunicationServiceResourceInner innerModel() {
         return this.innerObject;
     }

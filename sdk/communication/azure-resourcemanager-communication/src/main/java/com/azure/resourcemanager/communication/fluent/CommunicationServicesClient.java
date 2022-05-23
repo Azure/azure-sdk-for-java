@@ -18,7 +18,6 @@ import com.azure.resourcemanager.communication.fluent.models.NameAvailabilityInn
 import com.azure.resourcemanager.communication.models.LinkNotificationHubParameters;
 import com.azure.resourcemanager.communication.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CommunicationServicesClient. */
 public interface CommunicationServicesClient {
@@ -83,7 +82,8 @@ public interface CommunicationServicesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> list();
@@ -95,7 +95,8 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> list(Context context);
@@ -107,7 +108,8 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName);
@@ -120,7 +122,8 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -194,8 +197,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginCreateOrUpdate(
@@ -211,8 +213,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginCreateOrUpdate(
@@ -276,7 +277,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationServiceName);
@@ -290,7 +291,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(

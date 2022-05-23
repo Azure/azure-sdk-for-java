@@ -7,9 +7,7 @@ package com.azure.resourcemanager.communication.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.communication.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** A class representing a CommunicationService resource. */
 @Fluent
 public final class CommunicationServiceResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationServiceResourceInner.class);
-
     /*
      * The properties of the service.
      */

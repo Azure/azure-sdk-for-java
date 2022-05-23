@@ -22,10 +22,9 @@ import com.azure.resourcemanager.communication.models.LinkedNotificationHub;
 import com.azure.resourcemanager.communication.models.NameAvailability;
 import com.azure.resourcemanager.communication.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CommunicationServicesImpl implements CommunicationServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationServicesImpl.class);
 
     private final CommunicationServicesClient innerClient;
 
@@ -207,7 +206,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     public CommunicationServiceResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -215,7 +214,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
         String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -231,7 +230,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     public Response<CommunicationServiceResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -239,7 +238,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
         String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -253,7 +252,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -261,7 +260,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
         String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -275,7 +274,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -283,7 +282,7 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
         String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
