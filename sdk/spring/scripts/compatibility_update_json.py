@@ -3,7 +3,6 @@ import time
 from log import log
 import os
 import json
-import pandas as pd
 
 
 def change_to_root_dir():
@@ -12,7 +11,15 @@ def change_to_root_dir():
 
 
 def update_json_file(filepath, suppoerted_spring_boot_version):
-    pass
+    names = {}
+    for version in suppoerted_spring_boot_version:
+        names[version] = "springboot"+version.replace(".", "_")
+    with open(filepath, 'r') as file:
+        data = json.load(file)
+        data['displayNames'] = names
+        data['matrix']['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'] = suppoerted_spring_boot_version
+    with open(filepath, 'w') as file:
+        json.dump(data, file, indent = 2)
 
 
 def get_supported_spring_boot_version(filepath):
