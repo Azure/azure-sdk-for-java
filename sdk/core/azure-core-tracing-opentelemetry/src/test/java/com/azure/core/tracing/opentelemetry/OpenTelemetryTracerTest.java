@@ -20,14 +20,14 @@ import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.ReadWriteSpan;
+import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +89,7 @@ public class OpenTelemetryTracerTest {
     private OpenTelemetryTracer openTelemetryTracer;
     private static final SpanContext TEST_CONTEXT = SpanContext.create("0123456789abcdef0123456789abcdef", "0123456789abcdef", TraceFlags.getSampled(), TraceState.getDefault());
 
-    private TestExporter testExporter;
+    private InMemorySpanExporter testExporter;
     private Tracer tracer;
     private SpanProcessor spanProcessor;
     private Context tracingContext;
@@ -104,39 +103,10 @@ public class OpenTelemetryTracerTest {
         }
     };
 
-    class TestSpanProcessor implements SpanProcessor {
-
-        private final SpanExporter exporter;
-
-        TestSpanProcessor(SpanExporter exporter) {
-            this.exporter = exporter;
-        }
-
-        @Override
-        public void onStart(io.opentelemetry.context.Context parentContext, ReadWriteSpan span) {
-
-        }
-
-        @Override
-        public boolean isStartRequired() {
-            return false;
-        }
-
-        @Override
-        public void onEnd(ReadableSpan span) {
-            exporter.export(Collections.singletonList(span.toSpanData()));
-        }
-
-        @Override
-        public boolean isEndRequired() {
-            return true;
-        }
-    }
-
     @BeforeEach
     public void setUp() {
-        testExporter = new TestExporter();
-        spanProcessor = new TestSpanProcessor(testExporter);
+        testExporter = InMemorySpanExporter.create();
+        spanProcessor = SimpleSpanProcessor.create(testExporter);
         tracer = OpenTelemetrySdk.builder()
             .setTracerProvider(SdkTracerProvider.builder()
                 .addSpanProcessor(spanProcessor)
@@ -852,16 +822,16 @@ public class OpenTelemetryTracerTest {
         Context innerNotSuppressed = openTelemetryTracer.start("innerNotSuppressed", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.PRODUCER), innerSuppressed);
 
         openTelemetryTracer.end("ok", null, innerNotSuppressed);
-        assertEquals(1, testExporter.getSpans().size());
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
         openTelemetryTracer.end("ok", null, innerSuppressed);
 
-        assertEquals(1, testExporter.getSpans().size());
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
         openTelemetryTracer.end("ok", null, outer);
 
-        assertEquals(2, testExporter.getSpans().size());
+        assertEquals(2, testExporter.getFinishedSpanItems().size());
 
-        SpanData innerNotSuppressedSpan = testExporter.getSpans().get(0);
-        SpanData outerSpan = testExporter.getSpans().get(1);
+        SpanData innerNotSuppressedSpan = testExporter.getFinishedSpanItems().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
         assertEquals(innerNotSuppressedSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
         assertEquals(innerNotSuppressedSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
     }
@@ -877,15 +847,15 @@ public class OpenTelemetryTracerTest {
         Context inner2Suppressed = openTelemetryTracer.start("innerSuppressed", inner1NotSuppressed);
 
         openTelemetryTracer.end("ok", null, inner2Suppressed);
-        assertEquals(0, testExporter.getSpans().size());
+        assertEquals(0, testExporter.getFinishedSpanItems().size());
 
         openTelemetryTracer.end("ok", null, inner1NotSuppressed);
         openTelemetryTracer.end("ok", null, inner1Suppressed);
         openTelemetryTracer.end("ok", null, outer);
-        assertEquals(2, testExporter.getSpans().size());
+        assertEquals(2, testExporter.getFinishedSpanItems().size());
 
-        SpanData innerNotSuppressedSpan = testExporter.getSpans().get(0);
-        SpanData outerSpan = testExporter.getSpans().get(1);
+        SpanData innerNotSuppressedSpan = testExporter.getFinishedSpanItems().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
         assertEquals(innerNotSuppressedSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
         assertEquals(innerNotSuppressedSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
     }
@@ -898,10 +868,10 @@ public class OpenTelemetryTracerTest {
 
         openTelemetryTracer.end("ok", null, inner2Suppressed);
         openTelemetryTracer.end("ok", null, inner1Suppressed);
-        assertEquals(0, testExporter.getSpans().size());
+        assertEquals(0, testExporter.getFinishedSpanItems().size());
 
         openTelemetryTracer.end("ok", null, outer);
-        assertEquals(1, testExporter.getSpans().size());
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
     }
 
     @ParameterizedTest
@@ -912,22 +882,22 @@ public class OpenTelemetryTracerTest {
         Context neverSuppressed = openTelemetryTracer.start("innerNotSuppressed", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.PRODUCER), inner);
 
         openTelemetryTracer.end("ok", null, neverSuppressed);
-        assertEquals(1, testExporter.getSpans().size());
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
 
         openTelemetryTracer.end("ok", null, inner);
-        assertEquals(shouldSuppressInner ? 1 : 2, testExporter.getSpans().size());
+        assertEquals(shouldSuppressInner ? 1 : 2, testExporter.getFinishedSpanItems().size());
 
         openTelemetryTracer.end("ok", null, outer);
-        assertEquals(shouldSuppressInner ? 2 : 3, testExporter.getSpans().size());
+        assertEquals(shouldSuppressInner ? 2 : 3, testExporter.getFinishedSpanItems().size());
 
-        SpanData neverSuppressedSpan = testExporter.getSpans().get(0);
+        SpanData neverSuppressedSpan = testExporter.getFinishedSpanItems().get(0);
 
         if (shouldSuppressInner) {
-            SpanData outerSpan = testExporter.getSpans().get(1);
+            SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
             assertEquals(neverSuppressedSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
         } else {
-            SpanData innerSpan = testExporter.getSpans().get(1);
-            SpanData outerSpan = testExporter.getSpans().get(2);
+            SpanData innerSpan = testExporter.getFinishedSpanItems().get(1);
+            SpanData outerSpan = testExporter.getFinishedSpanItems().get(2);
             assertEquals(neverSuppressedSpan.getParentSpanId(), innerSpan.getSpanContext().getSpanId());
             assertEquals(innerSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
         }
@@ -975,7 +945,7 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer.end("ok", null, innerSuppressed);
         openTelemetryTracer.end("ok", null, outer);
 
-        SpanData outerSpan = testExporter.getSpans().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(0);
         assertEquals("outer", outerSpan.getName());
 
         Map<String, Object> outerAttributesExpected = new HashMap<String, Object>() {{
@@ -998,7 +968,7 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer.end("ok", null, innerSuppressed);
         openTelemetryTracer.end("ok", null, outer);
 
-        SpanData outerSpan = testExporter.getSpans().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(0);
         assertEquals(2, outerSpan.getEvents().size());
         assertEquals("outer1", outerSpan.getEvents().get(0).getName());
         assertEquals("outer2", outerSpan.getEvents().get(1).getName());
@@ -1013,7 +983,7 @@ public class OpenTelemetryTracerTest {
 
         openTelemetryTracer.end("ok", null, innerSuppressed);
 
-        assertTrue(testExporter.getSpans().isEmpty());
+        assertTrue(testExporter.getFinishedSpanItems().isEmpty());
     }
 
     @Test
@@ -1028,7 +998,7 @@ public class OpenTelemetryTracerTest {
         innerScope.close();
         assertSame(outerSpan, Span.current());
         openTelemetryTracer.end("ok", null, inner);
-        assertTrue(testExporter.getSpans().isEmpty());
+        assertTrue(testExporter.getFinishedSpanItems().isEmpty());
     }
 
     @Test
@@ -1040,10 +1010,10 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer.end("ok", null, sendNoBuilder);
         openTelemetryTracer.end("ok", null, outer);
 
-        assertEquals(2, testExporter.getSpans().size());
+        assertEquals(2, testExporter.getFinishedSpanItems().size());
 
-        SpanData sendNoBuilderSpan = testExporter.getSpans().get(0);
-        SpanData outerSpan = testExporter.getSpans().get(1);
+        SpanData sendNoBuilderSpan = testExporter.getFinishedSpanItems().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
         assertEquals(sendNoBuilderSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
         assertEquals(sendNoBuilderSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
     }
