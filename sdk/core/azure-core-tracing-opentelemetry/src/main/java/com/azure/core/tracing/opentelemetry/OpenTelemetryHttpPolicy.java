@@ -19,6 +19,7 @@ import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.context.propagation.TextMapSetter;
 import reactor.core.CoreSubscriber;
@@ -227,20 +228,21 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      */
     static final class ScalarPropagatingMono extends Mono<Object> {
         public static final Mono<Object> INSTANCE = new ScalarPropagatingMono();
-        private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
         private final Object value = new Object();
 
         private ScalarPropagatingMono() {
         }
 
         @Override
+        @SuppressWarnings("try")
         public void subscribe(CoreSubscriber<? super Object> actual) {
             Context traceContext = actual.currentContext().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, null);
-            AutoCloseable closeable = traceContext != null ? traceContext.makeCurrent() : NOOP_CLOSEABLE;
-            actual.onSubscribe(Operators.scalarSubscription(actual, value));
-            try {
-                closeable.close();
-            } catch (Exception ignored) {
+            if (traceContext != null) {
+                try (Scope scope = traceContext.makeCurrent()) {
+                    actual.onSubscribe(Operators.scalarSubscription(actual, value));
+                }
+            } else {
+                actual.onSubscribe(Operators.scalarSubscription(actual, value));
             }
         }
     }
