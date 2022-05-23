@@ -6,9 +6,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.ClientTelemetryConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -159,8 +161,12 @@ public class BarrierRequestHelperTest {
     public void barrierWithAadAuthorizationTokenProviderType() throws URISyntaxException {
 
         TokenCredential tokenCredential = new AadSimpleTokenCredential(TestConfigurations.MASTER_KEY);
-
-        IAuthorizationTokenProvider authTokenProvider = new RxDocumentClientImpl(new URI(TestConfigurations.HOST),
+        ClientTelemetryConfig clientTelemetryConfig = new ClientTelemetryConfig(
+                false,
+                ClientTelemetryConnectionConfig.getDefaultConfig()
+        );
+        IAuthorizationTokenProvider authTokenProvider = new RxDocumentClientImpl(
+                new URI(TestConfigurations.HOST),
                 null,
                 null,
                 null,
@@ -173,7 +179,8 @@ public class BarrierRequestHelperTest {
                 false,
                 false,
                 null,
-                null);
+                null,
+                clientTelemetryConfig);
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;

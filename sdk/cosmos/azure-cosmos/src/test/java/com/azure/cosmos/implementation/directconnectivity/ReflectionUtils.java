@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -177,8 +178,16 @@ public class ReflectionUtils {
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }
 
+    public static ClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
+        return get(ClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
+    }
+
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
         invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildConnectionPolicy");
+    }
+
+    public static void buildClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder) {
+        invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildClientTelemetryConfig");
     }
 
     public static UserAgentContainer getUserAgentContainer(RxDocumentClientImpl rxDocumentClient) {

@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -203,6 +204,34 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(gatewayConnectionConfig.getNetworkRequestTimeout().equals(networkRequestTimeout));
     }
 
+    @Test(groups = { "unit" })
+    public void buildClientTelemetryConfig_withClientTelemetryConnectionConfig() throws Exception {
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.0", 8080));
+        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+
+        ClientTelemetryConnectionConfig clientTelemetryConnectionConfig = ClientTelemetryConnectionConfig.getDefaultConfig();
+        clientTelemetryConnectionConfig.setProxy(proxyOptions);
+
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .directMode(directConnectionConfig, gatewayConnectionConfig)
+                .clientTelemetryEnabled(true)
+                .clientTelemetryConnectionConfig(clientTelemetryConnectionConfig);
+
+        ReflectionUtils.buildConnectionPolicy(cosmosClientBuilder);
+        ReflectionUtils.buildClientTelemetryConfig(cosmosClientBuilder);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(cosmosClientBuilder);
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
+        validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
+
+        ClientTelemetryConfig clientTelemetryConfig = ReflectionUtils.getClientTelemetryConfig(cosmosClientBuilder);
+        assertThat(clientTelemetryConfig.isClientTelemetryEnabled()).isTrue();
+        this.validateClientTelemetryConfig(clientTelemetryConfig, clientTelemetryConnectionConfig);
+    }
+
     private void validateDirectAndGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder,
                                                           DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
         validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
@@ -245,5 +274,15 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(connectionPolicy.getIdleTcpEndpointTimeout()).isEqualTo(directConnectionConfig.getIdleEndpointTimeout());
         assertThat(connectionPolicy.getMaxConnectionsPerEndpoint()).isEqualTo(directConnectionConfig.getMaxConnectionsPerEndpoint());
         assertThat(connectionPolicy.getMaxRequestsPerConnection()).isEqualTo(directConnectionConfig.getMaxRequestsPerConnection());
+    }
+
+    private void validateClientTelemetryConfig(ClientTelemetryConfig clientTelemetryConfig, ClientTelemetryConnectionConfig clientTelemetryConnectionConfig) {
+        assertThat(clientTelemetryConfig).isNotNull();
+        assertThat(clientTelemetryConnectionConfig).isNotNull();
+
+        assertThat(clientTelemetryConfig.getMaxConnectionPoolSize()).isEqualTo(clientTelemetryConnectionConfig.getMaxConnectionPoolSize());
+        assertThat(clientTelemetryConfig.getIdleHttpConnectionTimeout()).isEqualTo(clientTelemetryConnectionConfig.getIdleConnectionTimeout());
+        assertThat(clientTelemetryConfig.getHttpNetworkRequestTimeout()).isEqualTo(clientTelemetryConnectionConfig.getNetworkRequestTimeout());
+        assertThat(clientTelemetryConfig.getProxy()).isEqualTo(clientTelemetryConfig.getProxy());
     }
 }

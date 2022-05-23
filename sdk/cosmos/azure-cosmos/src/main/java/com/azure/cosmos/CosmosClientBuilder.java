@@ -9,6 +9,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -20,6 +21,7 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.util.Beta;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -117,6 +119,8 @@ public class CosmosClientBuilder implements
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
+    private ClientTelemetryConnectionConfig clientTelemetryConnectionConfig;
+    private ClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
 
     /**
@@ -128,6 +132,7 @@ public class CosmosClientBuilder implements
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.clientTelemetryConnectionConfig = ClientTelemetryConnectionConfig.getDefaultConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -663,6 +668,19 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /***
+     * Set the client telemetry connection config.
+     *
+     * @param clientTelemetryConnectionConfig the {@link ClientTelemetryConnectionConfig}.
+     * @return the current CosmosClientBuilder.
+     */
+    public CosmosClientBuilder clientTelemetryConnectionConfig(ClientTelemetryConnectionConfig clientTelemetryConnectionConfig) {
+        checkNotNull(clientTelemetryConnectionConfig, "Argument 'clientTelemetryConnectionConfig' can not be null");
+        this.clientTelemetryConnectionConfig = clientTelemetryConnectionConfig;
+
+        return this;
+    }
+
     /**
      * Gets the GATEWAY connection configuration to be used.
      *
@@ -742,7 +760,7 @@ public class CosmosClientBuilder implements
      * @return flag to enable client telemetry.
      */
     boolean isClientTelemetryEnabled() {
-        return clientTelemetryEnabled;
+        return this.clientTelemetryEnabled;
     }
 
     /**
@@ -761,6 +779,10 @@ public class CosmosClientBuilder implements
         return readRequestsFallbackEnabled;
     }
 
+    ClientTelemetryConfig getClientTelemetryConfig() {
+        return this.clientTelemetryConfig;
+    }
+
     /**
      * Builds a cosmos async client with the provided properties
      *
@@ -770,6 +792,7 @@ public class CosmosClientBuilder implements
 
         validateConfig();
         buildConnectionPolicy();
+        buildClientTelemetryConfig();
         return new CosmosAsyncClient(this);
     }
 
@@ -782,6 +805,7 @@ public class CosmosClientBuilder implements
 
         validateConfig();
         buildConnectionPolicy();
+        buildClientTelemetryConfig();
         return new CosmosClient(this);
     }
 
@@ -803,7 +827,16 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
-        this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
+    }
+
+    private void buildClientTelemetryConfig() {
+        // There are two ways customer can enable the client telemetry:
+        // 1. Enable through CosmosClientBuilder
+        // 2. Enabled by system property
+
+        this.clientTelemetryConfig = new ClientTelemetryConfig(
+                Configs.isClientTelemetryEnabled(this.clientTelemetryEnabled),
+                this.clientTelemetryConnectionConfig);
     }
 
     private void validateConfig() {
