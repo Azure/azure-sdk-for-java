@@ -1,18 +1,18 @@
-## Azure Cache For Redis AAD With Lettuce Client Library
+## Azure Cache For Redis Azure AD With Lettuce Client Library
 
 ### Table of contents
 
 - [Lettuce Library](#lettuce-library)
     - [Dependency Requirements](#dependency-requirements)
-    - [Authenticate with AAD - Hello World](#authenticate-with-aad-hello-world)
-    - [Authenticate with AAD - Handle Re-Authentication](#authenticate-with-aad-handle-re-authentication)
-    - [Authenticate with AAD - Azure Lettuce Client Wrapper](#authenticate-with-aad-azure-lettuce-wrapper)
+    - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
+    - [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
+    - [Authenticate with Azure AD - Azure Lettuce Client Wrapper](#authenticate-with-azure-ad-azure-lettuce-wrapper)
 
 
 ### Lettuce Library
 
 #### Dependency Requirements
-````
+````xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
@@ -48,20 +48,20 @@ walmart-demo.redis.cache.windows.net:6379> HELLO 3 AUTH walmartdummyuser eyJ0eXA
 
 ```
 
-##### Authenticate with AAD Hello World
-This sample is intended to assist in authenticating with AAD via Lettuce client library. It focuses on displaying the logic required to fetch an AAD Access token and to use it as password when setting up the Lettuce Redis Client instance.
+##### Authenticate with Azure AD Hello World
+This sample is intended to assist in authenticating with Azure AD via Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD Access token and to use it as password when setting up the Lettuce Redis Client instance.
 
 Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Lettuce](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
 
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with Azure Active Directory Token.
-Integrate the logic in your application code to fetch an AAD Access Token via Identity SDK as shown below and replace the password configuring/retrieving logic in your application code.
+Integrate the logic in your application code to fetch an Azure AD Access Token via Identity SDK as shown below and replace the password configuring/retrieving logic in your application code.
 
 **Note:** The below sample uses `ClientCertificateCredential` from our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK, the credential can be replaced with any of the other `TokenCredential` implementations offered by our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK.
 
 ##### Version 6.1.8.RELEASE or less
-```
+```xml
   <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
@@ -79,7 +79,7 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
                 .tenantId("YOUR-TENANT-ID")
                 .build();
 
-        // Fetch an AAD token to be used for authentication. The AAD token will be used as password.
+        // Fetch an Azure AD token to be used for authentication. The Azure AD token will be used as password.
         String token = clientCertificateCredential
                 .getToken(new TokenRequestContext()
                         .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
@@ -115,12 +115,12 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
 ```
 
 ##### Version 6.2.0-BUILD-SNAPSHOT
-```
-  <dependency>
-      <groupId>io.lettuce</groupId>
-      <artifactId>lettuce-core</artifactId>
-      <version>6.2.0-BUILD-SNAPSHOT</version>
-  </dependency>
+```xml
+<dependency>
+  <groupId>io.lettuce</groupId>
+  <artifactId>lettuce-core</artifactId>
+  <version>6.2.0-BUILD-SNAPSHOT</version>
+</dependency>
 ```
 
 ```java
@@ -206,20 +206,20 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
 ```
 
 
-##### Authenticate with AAD Handle Re Authentication.
-This sample is intended to assist in authenticating with AAD via Lettuce client library. It focuses on displaying the logic required to fetch an AAD Access token and to use it as password when setting up the Lettuce Redis Clientt instance. It Further shows how to recreate and authenticate the Lettuce Redis Client instance when its connection is broken in Error/Exception scenarios.
+##### Authenticate with Azure AD Handle Re Authentication.
+This sample is intended to assist in authenticating with Azure AD via Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD Access token and to use it as password when setting up the Lettuce Redis Clientt instance. It Further shows how to recreate and authenticate the Lettuce Redis Client instance when its connection is broken in Error/Exception scenarios.
 
 Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
 
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with Azure Active Directory Token.
-Integrate the logic in your application code to fetch an AAD Access Token via Identity SDK as shown below and replace the password configuring/retrieving logic in your application code.
+Integrate the logic in your application code to fetch an Azure AD Access Token via Identity SDK as shown below and replace the password configuring/retrieving logic in your application code.
 
 **Note:** The below sample uses `ClientCertificateCredential` from our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK, the credential can be replaced with any of the other `TokenCredential` implementations offered by our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK.
 
 ##### Version 6.1.8.RELEASE or less
-```
+```xml
   <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
@@ -259,7 +259,7 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
 
 
 ##### Version 6.2.0-BUILD-SNAPSHOT
-```
+```xml
   <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
@@ -360,7 +360,7 @@ Integrate the logic in your application code to fetch an AAD Access Token via Id
     }
 ```
 
-#### Authenticate with AAD Azure Lettuce Client Wrapper
+#### Authenticate with Azure AD Azure Lettuce Client Wrapper
 This sample is intended to assist in the migration from RedisClient to `AzureLettuceRedisClient`. It focuses on side-by-side comparisons for similar operations between the two libraries.
 
 Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Lettuce](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
@@ -419,7 +419,7 @@ See the following example of setting up the Azure Jedis client.
 
 
 ##### Version 6.1.8.RELEASE or less
-```
+```xml
   <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
@@ -437,7 +437,7 @@ See the following example of setting up the Azure Jedis client.
                 .tenantId("YOUR-TENANT-ID")
                 .build();
 
-        // Fetch an AAD token to be used for authentication. The AAD token will be used as password.
+        // Fetch an Azure AD token to be used for authentication. The Azure AD token will be used as password.
         String token = clientCertificateCredential
                 .getToken(new TokenRequestContext()
                         .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
@@ -477,7 +477,7 @@ See the following example of setting up the Azure Jedis client.
 ```
 
 ##### Lettuce Version 6.2.0-BUILD-SNAPSHOT
-```
+```xml
   <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
