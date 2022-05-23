@@ -69,7 +69,8 @@ private case class ItemsScan(session: SparkSession,
       clientConfiguration,
       Some(cosmosClientStateHandle),
       containerConfig,
-      partitioningConfig
+      partitioningConfig,
+      false
     )
 
     Loan(CosmosClientCache.apply(
@@ -89,7 +90,8 @@ private case class ItemsScan(session: SparkSession,
             partitionMetadata,
             defaultMinPartitionCount,
             CosmosPartitionPlanner.DefaultPartitionSizeInMB,
-            ReadLimit.allAvailable()
+            ReadLimit.allAvailable(),
+            false
           )
           .map(_.asInstanceOf[InputPartition])
       })

@@ -180,15 +180,7 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureVMResourceFeatureSupportResponseInner> validateAsync(
         String azureRegion, FeatureSupportRequest parameters) {
-        return validateWithResponseAsync(azureRegion, parameters)
-            .flatMap(
-                (Response<AzureVMResourceFeatureSupportResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return validateWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

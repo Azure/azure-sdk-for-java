@@ -27,7 +27,11 @@ public final class EncryptionScopeState extends ExpandableStringEnum<EncryptionS
         return fromString(name, EncryptionScopeState.class);
     }
 
-    /** @return known EncryptionScopeState values. */
+    /**
+     * Gets known EncryptionScopeState values.
+     *
+     * @return known EncryptionScopeState values.
+     */
     public static Collection<EncryptionScopeState> values() {
         return values(EncryptionScopeState.class);
     }

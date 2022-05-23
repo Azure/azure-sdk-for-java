@@ -161,7 +161,7 @@ def generate(
         # use readme from spec repo
         readme_file_path = readme
 
-        require_sdk_integration = not os.path.exists(path.join(output_dir, 'src'))
+        require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 

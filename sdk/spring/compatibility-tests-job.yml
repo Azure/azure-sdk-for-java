@@ -1,23 +1,19 @@
 parameters:
   Matrix: ''
   MaxParallel: 10
-  SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
+  SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true
+  -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
   BuildParallelization: '2C'
-
 
 jobs:
   - job: 'compatibility_test'
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
-
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
-    pool:
-      vmImage: "ubuntu-latest"
     variables:
       - template: ../../eng/pipelines/templates/variables/globals.yml
-
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
@@ -28,19 +24,19 @@ jobs:
           pip install termcolor
         displayName: 'python module install'
       - script: |
-          python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py
-        displayName: 'add dependency management'
+          python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py
+        displayName: 'insert dependency management'
       - script: |
-          python ./sdk/spring/scripts/compatibility_deleted_version.py
-        displayName: 'remove version'
+          python ./sdk/spring/scripts/compatibility_delete_version.py
+        displayName: 'remove unused version'
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}}
+          ${{parameters.SkipOptions}}'
           mavenPomFile: sdk/spring/pom.xml
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean test -Pdev '
-

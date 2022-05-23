@@ -161,8 +161,7 @@ public final class CosmosDiagnostics {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
                 @Override
@@ -184,4 +183,6 @@ public final class CosmosDiagnostics {
                 }
             });
     }
+
+    static { initialize(); }
 }

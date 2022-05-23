@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.12.1</version>
+  <version>12.12.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

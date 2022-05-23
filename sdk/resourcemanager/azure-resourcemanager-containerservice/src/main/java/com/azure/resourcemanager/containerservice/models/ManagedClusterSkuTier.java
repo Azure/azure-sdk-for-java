@@ -27,7 +27,11 @@ public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClu
         return fromString(name, ManagedClusterSkuTier.class);
     }
 
-    /** @return known ManagedClusterSkuTier values. */
+    /**
+     * Gets known ManagedClusterSkuTier values.
+     *
+     * @return known ManagedClusterSkuTier values.
+     */
     public static Collection<ManagedClusterSkuTier> values() {
         return values(ManagedClusterSkuTier.class);
     }

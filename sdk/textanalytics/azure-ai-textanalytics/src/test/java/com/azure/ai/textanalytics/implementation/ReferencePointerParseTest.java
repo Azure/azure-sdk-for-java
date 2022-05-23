@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentiment;
+import com.azure.ai.textanalytics.implementation.models.SentimentResponseDocumentsItem;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -89,12 +89,13 @@ public class ReferencePointerParseTest {
         assertEquals(String.format(INVALID_OPINION_INDEX_EXCEPTION, 6, referencePointer), illegalStateException.getMessage());
     }
 
-    private List<DocumentSentiment> getDocumentSentiments() {
-        List<DocumentSentiment> documentSentiments = new ArrayList<>();
+    private List<SentimentResponseDocumentsItem> getDocumentSentiments() {
+        List<SentimentResponseDocumentsItem> documentSentiments = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            documentSentiments.add(new DocumentSentiment()
-                .setId(Integer.toString(i))
-                .setSentences(getSentenceSentiments()));
+            final SentimentResponseDocumentsItem documentsItem =
+                (SentimentResponseDocumentsItem) new SentimentResponseDocumentsItem().setId(Integer.toString(i));
+            documentsItem.setSentences(getSentenceSentiments());
+            documentSentiments.add(documentsItem);
         }
         return documentSentiments;
     }

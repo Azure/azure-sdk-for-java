@@ -143,6 +143,10 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TopicInner innerModel() {
         return this.innerObject;
     }

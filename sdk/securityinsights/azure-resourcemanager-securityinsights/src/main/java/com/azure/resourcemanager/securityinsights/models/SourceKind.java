@@ -33,7 +33,11 @@ public final class SourceKind extends ExpandableStringEnum<SourceKind> {
         return fromString(name, SourceKind.class);
     }
 
-    /** @return known SourceKind values. */
+    /**
+     * Gets known SourceKind values.
+     *
+     * @return known SourceKind values.
+     */
     public static Collection<SourceKind> values() {
         return values(SourceKind.class);
     }

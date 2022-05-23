@@ -27,7 +27,11 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
         return fromString(name, NetworkPolicy.class);
     }
 
-    /** @return known NetworkPolicy values. */
+    /**
+     * Gets known NetworkPolicy values.
+     *
+     * @return known NetworkPolicy values.
+     */
     public static Collection<NetworkPolicy> values() {
         return values(NetworkPolicy.class);
     }

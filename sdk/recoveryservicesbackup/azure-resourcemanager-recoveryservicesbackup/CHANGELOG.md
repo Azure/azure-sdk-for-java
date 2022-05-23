@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,98 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2022-05-16)
+
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2022-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.TieringPolicy` was removed
+
+* `models.TieringMode` was removed
+
+#### `models.SubProtectionPolicy` was modified
+
+* `tieringPolicy()` was removed
+* `withTieringPolicy(java.util.Map)` was removed
+
+#### `models.AzureIaaSvmProtectionPolicy` was modified
+
+* `tieringPolicy()` was removed
+* `withTieringPolicy(java.util.Map)` was removed
+
+#### `models.AzureVmWorkloadProtectedItemExtendedInfo` was modified
+
+* `withNewestRecoveryPointInArchive(java.time.OffsetDateTime)` was removed
+* `newestRecoveryPointInArchive()` was removed
+* `withOldestRecoveryPointInVault(java.time.OffsetDateTime)` was removed
+* `oldestRecoveryPointInVault()` was removed
+* `oldestRecoveryPointInArchive()` was removed
+* `withOldestRecoveryPointInArchive(java.time.OffsetDateTime)` was removed
+
+#### `models.AzureIaaSvmProtectedItemExtendedInfo` was modified
+
+* `withOldestRecoveryPointInVault(java.time.OffsetDateTime)` was removed
+* `oldestRecoveryPointInVault()` was removed
+* `withNewestRecoveryPointInArchive(java.time.OffsetDateTime)` was removed
+* `newestRecoveryPointInArchive()` was removed
+* `withOldestRecoveryPointInArchive(java.time.OffsetDateTime)` was removed
+* `oldestRecoveryPointInArchive()` was removed
+
+#### `models.ResourceGuardProxyOperations` was modified
+
+* `put(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `putWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.ResourceGuardProxyBaseResource$DefinitionStages` was added
+
+* `models.ResourceGuardProxyBaseResource$Definition` was added
+
+* `models.ResourceGuardProxyBaseResource$UpdateStages` was added
+
+* `models.ResourceGuardProxyBaseResource$Update` was added
+
+#### `models.ProtectedItemResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnectionResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ResourceGuardProxyBaseResource` was modified
+
+* `refresh(com.azure.core.util.Context)` was added
+* `regionName()` was added
+* `unlockDelete(models.UnlockDeleteRequest)` was added
+* `refresh()` was added
+* `update()` was added
+* `resourceGroupName()` was added
+* `region()` was added
+* `unlockDeleteWithResponse(models.UnlockDeleteRequest,com.azure.core.util.Context)` was added
+
+#### `models.ProtectionIntentResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ProtectionContainerResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ProtectionPolicyResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ResourceGuardProxyOperations` was modified
+
+* `deleteById(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.4 (2022-04-29)
 

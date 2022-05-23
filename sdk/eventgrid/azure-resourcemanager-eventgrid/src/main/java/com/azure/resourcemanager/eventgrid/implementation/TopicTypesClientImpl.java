@@ -263,15 +263,7 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicTypeInfoInner> getAsync(String topicTypeName) {
-        return getWithResponseAsync(topicTypeName)
-            .flatMap(
-                (Response<TopicTypeInfoInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(topicTypeName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

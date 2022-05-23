@@ -13,7 +13,7 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.streaming.{ReadAllAvailable, ReadLimit, ReadMaxFiles, ReadMaxRows}
-import reactor.core.scala.publisher.SFlux
+import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.time.Duration
@@ -37,7 +37,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionMetadata: Array[PartitionMetadata],
     defaultMinimalPartitionCount: Int,
     defaultMaxPartitionSizeInMB: Int,
-    readLimit: ReadLimit
+    readLimit: ReadLimit,
+    isChangeFeed: Boolean
   ): Array[CosmosInputPartition] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
@@ -47,7 +48,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         partitionMetadata,
         defaultMinimalPartitionCount,
         defaultMaxPartitionSizeInMB,
-        readLimit))
+        readLimit,
+        isChangeFeed))
   }
 
   private[this] def createInputPartitionsImpl
@@ -57,7 +59,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionMetadata: Array[PartitionMetadata],
     defaultMinimalPartitionCount: Int,
     defaultMaxPartitionSizeInMB: Int,
-    readLimit: ReadLimit
+    readLimit: ReadLimit,
+    isChangeFeed: Boolean
   ): Array[CosmosInputPartition] = {
     assertOnSparkDriver()
     //scalastyle:off multiple.string.literals
@@ -66,30 +69,34 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     require(defaultMinimalPartitionCount >= 1, "Argument 'defaultMinimalPartitionCount' must at least be 1")
     //scalastyle:on multiple.string.literals
 
-    val planningInfo = this.getPartitionPlanningInfo(partitionMetadata, readLimit)
+    val inputPartitions = if (!isChangeFeed && cosmosPartitioningConfig.partitioningStrategy == PartitioningStrategies.Restrictive) {
+      partitionMetadata.map(metadata => CosmosInputPartition(metadata.feedRange, None))
+    } else {
+      val planningInfo = this.getPartitionPlanningInfo(partitionMetadata, readLimit)
 
-    val inputPartitions = cosmosPartitioningConfig.partitioningStrategy match {
-      case PartitioningStrategies.Restrictive =>
-        applyRestrictiveStrategy(planningInfo)
-      case PartitioningStrategies.Custom =>
-        applyCustomStrategy(
-          container,
-          planningInfo,
-          cosmosPartitioningConfig.targetedPartitionCount.get)
-      case PartitioningStrategies.Default =>
-        applyStorageAlignedStrategy(
-          container,
-          planningInfo,
-          1 / defaultMaxPartitionSizeInMB.toDouble,
-          defaultMinimalPartitionCount
-        )
-      case PartitioningStrategies.Aggressive =>
-        applyStorageAlignedStrategy(
-          container,
-          planningInfo,
-          5 / defaultMaxPartitionSizeInMB.toDouble,
-          defaultMinimalPartitionCount
-        )
+      cosmosPartitioningConfig.partitioningStrategy match {
+        case PartitioningStrategies.Restrictive =>
+          applyRestrictiveStrategy(planningInfo)
+        case PartitioningStrategies.Custom =>
+          applyCustomStrategy(
+            container,
+            planningInfo,
+            cosmosPartitioningConfig.targetedPartitionCount.get)
+        case PartitioningStrategies.Default =>
+          applyStorageAlignedStrategy(
+            container,
+            planningInfo,
+            1 / defaultMaxPartitionSizeInMB.toDouble,
+            defaultMinimalPartitionCount
+          )
+        case PartitioningStrategies.Aggressive =>
+          applyStorageAlignedStrategy(
+            container,
+            planningInfo,
+            5 / defaultMaxPartitionSizeInMB.toDouble,
+            defaultMinimalPartitionCount
+          )
+      }
     }
 
     cosmosPartitioningConfig.feedRangeFiler match {
@@ -298,6 +305,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       Some(cosmosClientStateHandle),
       containerConfig,
       partitioningConfig,
+      true,
       Some(maxStaleness)
     )
 
@@ -313,7 +321,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       orderedMetadataWithStartLsn,
       defaultMinPartitionCount,
       defaultMaxPartitionSizeInMB,
-      readLimit
+      readLimit,
+      true
     )
 
     if (isDebugLogEnabled) {
@@ -417,6 +426,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       CosmosInputPartition(
         info.feedRange,
         info.endLsn))
+  }
+
+  private[this] def applyRestrictiveQueryStrategy
+  (
+    ranges: Array[NormalizedRange]
+  ): Array[CosmosInputPartition] = {
+    ranges.map(range => CosmosInputPartition(range, None))
   }
 
   private[this] def applyStorageAlignedStrategy(
@@ -617,6 +633,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
                             cosmosContainerConfig: CosmosContainerConfig,
                             partitionConfig: CosmosPartitioningConfig,
+                            isChangeFeed: Boolean,
                             maxStaleness: Option[Duration] = None
                           ): Array[PartitionMetadata] = {
 
@@ -626,7 +643,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         cosmosClientConfig,
         cosmosClientStateHandle,
         cosmosContainerConfig,
-        partitionConfig.feedRangeFiler,
+        partitionConfig,
+        isChangeFeed,
         maxStaleness))
   }
 
@@ -635,7 +653,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       cosmosClientConfig: CosmosClientConfiguration,
       cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
       cosmosContainerConfig: CosmosContainerConfig,
-      feedRangeFilter: Option[Array[NormalizedRange]],
+      partitionConfig: CosmosPartitioningConfig,
+      isChangeFeed: Boolean,
       maxStaleness: Option[Duration] = None
   ): Array[PartitionMetadata] = {
 
@@ -647,7 +666,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         cosmosClientStateHandle,
         cosmosContainerConfig)
       .map(feedRangeList =>
-        feedRangeFilter match {
+        partitionConfig.feedRangeFiler match {
           case Some(epkRangesInScope) => feedRangeList
             .filter(feedRange => {
               epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(
@@ -661,14 +680,34 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
           .fromArray(feedRanges)
           .flatMap(
             normalizedRange =>
-              PartitionMetadataCache.apply(
-                userConfig,
-                cosmosClientConfig,
-                cosmosClientStateHandle,
-                cosmosContainerConfig,
-                normalizedRange,
-                maxStaleness
-            ))
+              // for change feed we always need min and max LSN - even with `Restrictive` partitioning strategy
+              // for query we need metadata for any partitioning strategy but `Restrictive`
+              if (isChangeFeed || partitionConfig.partitioningStrategy != PartitioningStrategies.Restrictive) {
+                PartitionMetadataCache.apply(
+                  userConfig,
+                  cosmosClientConfig,
+                  cosmosClientStateHandle,
+                  cosmosContainerConfig,
+                  normalizedRange,
+                  maxStaleness
+                )
+              } else {
+                SMono.just(new PartitionMetadata(
+                  userConfig,
+                  cosmosClientConfig,
+                  cosmosClientStateHandle,
+                  cosmosContainerConfig,
+                  normalizedRange,
+                  0,
+                  0,
+                  None,
+                  0,
+                  0,
+                  None,
+                  new AtomicLong(0),
+                  new AtomicLong(0)
+                ))
+              })
           .collectSeq()
       })
       .block()

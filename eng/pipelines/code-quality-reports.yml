@@ -41,7 +41,7 @@ jobs:
           scriptPath: 'eng/versioning/update_versions.py'
           arguments: '--update-type library --build-type client --sr'
 
-      - template: /eng/pipelines/templates/steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts:
             - name: azure-core
@@ -51,8 +51,6 @@ jobs:
             - name: perf-test-core
               groupId: com.azure
           JobType: 'linting'
-          SDKType: tools
-          ServiceDirectory: code-quality-reports
 
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'

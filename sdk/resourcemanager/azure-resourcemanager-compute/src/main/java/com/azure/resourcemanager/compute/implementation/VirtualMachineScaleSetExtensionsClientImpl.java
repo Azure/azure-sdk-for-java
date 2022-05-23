@@ -1232,14 +1232,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
     public Mono<VirtualMachineScaleSetExtensionInner> getAsync(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName, String expand) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1258,14 +1251,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

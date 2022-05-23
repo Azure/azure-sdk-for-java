@@ -27,7 +27,11 @@ public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocol
         return fromString(name, EnabledProtocols.class);
     }
 
-    /** @return known EnabledProtocols values. */
+    /**
+     * Gets known EnabledProtocols values.
+     *
+     * @return known EnabledProtocols values.
+     */
     public static Collection<EnabledProtocols> values() {
         return values(EnabledProtocols.class);
     }

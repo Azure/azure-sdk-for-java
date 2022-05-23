@@ -959,14 +959,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageInner> getAsync(String resourceGroupName, String galleryName, String galleryImageName) {
         return getWithResponseAsync(resourceGroupName, galleryName, galleryImageName)
-            .flatMap(
-                (Response<GalleryImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

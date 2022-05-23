@@ -7,89 +7,23 @@ variables:
 stages:
   - stage: "spring_boot_compatibility_tests"
     jobs:
-    - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-      parameters:
-        SparseCheckout: true
-        JobTemplatePath: ../../../../../sdk/spring/compatibility-tests-job.yml
-#        JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
-        AdditionalParameters:
-          ServiceDirectory: spring
-        MatrixConfigs:
-          - Name: spring_boot_supported_version_tests
-#            Path: https://github.com/Netyyyy/spring-cloud-azure-tools/blob/myao/addjson/supported-version-matrix.json
-            Path: sdk/spring/supported-version-matrix.json
-#            Path: sdk/spring/testJson.json
-            Selection: sparse
-            NonSparseParameters:
-              - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
-#              - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION
-            GenerateVMJobs: true
-        PreGenerationSteps:
-          - script: |
-              pip install termcolor
-            displayName: 'python module install'
-          - script: |
-              python ./sdk/spring/scripts/compatibility_update_json.py
-            displayName: 'update test version'
-
-        #      - job:
-#        dependsOn:
-#          jobs:
-#          - task: Powershell@2
-#            inputs:
-#              pwsh: true
-#              filePath: eng/common/scripts/job-matrix/Create-JobMatrix.ps1
-#              arguments: >
-#                -ConfigPath 'sdk/spring/supported-version-matrix.json'
-#                -Selection ${{ config.Selection }}
-#                -DisplayNameFilter '$(displayNameFilter)'
-#                -Filters '${{ join(''',''', parameters.MatrixFilters) }}','container=^$','SupportedClouds=^$|${{ parameters.CloudConfig.Cloud }}'
-#                -Replace '${{ join(''',''', parameters.MatrixReplace) }}'
-#                -NonSparseParameters '${{ join(''',''', 'sb-v', 'sc-v') }}'
-#            displayName: Generate VM Job Matrix
-#            name: generate_vm_job_matrix
-#        strategy:
-#          matrix: dependencies.Generate VM Job Matrix.outputs['generate_vm_job_matrix.matrix']
-        #          matrix:
-#            2.6.6:
-#              sb-v: '2.6.6'
-#              sc-v: '2021.0.1'
-#            2.6.7:
-#              sb-v: '2.6.7'
-#              sc-v: '2021.0.1'
-#        pool:
-#          vmImage: "ubuntu-latest"
-#        steps:
-#          - script: |
-#              pip install termcolor
-#            displayName: 'python module install'
-#          - script: |
-#              python ./sdk/spring/scripts/compatibility_add_dependencymanagement.py -b $(sb-v) -c $(sc-v)
-#            displayName: 'add dependency management'
-#          - script: |
-#              python ./sdk/spring/scripts/compatibility_deleted_version.py
-#            displayName: 'remove version'
-#          - task: Maven@3
-#            displayName: 'Run tests'
-#            inputs:
-#              mavenPomFile: sdk/spring/pom.xml
-#              mavenOptions: '$(MemoryOptions)'
-#              javaHomeOption: 'JDKVersion'
-#              jdkVersionOption: $(JavaTestVersion)
-#              jdkArchitectureOption: 'x64'
-#              goals: 'clean test -Pdev'
-#  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-#    parameters:
-#      ServiceDirectory: spring
-#      TestName: 'spring_boot_supported_versions'
-#      MatrixConfigs:
-#        - Name: spring_boot_supported_version_tests
-#          Path: sdk/spring/supported-version-matrix.json
-#          Selection: sparse
-#          NonSparseParameters:
-#            - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
-#          GenerateVMJobs: true
-#      Artifacts:
-#        - name: spring-cloud-azure-autoconfigure
-#          groupId: com.azure.spring
-#          safeName: springcloudazureautoconfigure
+      - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+        parameters:
+          SparseCheckout: true
+          JobTemplatePath: ../../../../../sdk/spring/compatibility-tests-job.yml
+          AdditionalParameters:
+            ServiceDirectory: spring
+          MatrixConfigs:
+            - Name: spring_boot_supported_version_tests
+              Path: sdk/spring/supported-version-matrix.json
+              Selection: sparse
+              NonSparseParameters:
+                - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
+              GenerateVMJobs: true
+          PreGenerationSteps:
+            - script: |
+                pip install termcolor
+              displayName: 'python module install'
+            - script: |
+                python ./sdk/spring/scripts/compatibility_update_json.py
+              displayName: 'update test version'
