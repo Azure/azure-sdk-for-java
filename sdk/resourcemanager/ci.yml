@@ -49,6 +49,7 @@ pr:
   paths:
     include:
       - sdk/resourcemanager/
+      - sdk/spring
     exclude:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
