@@ -382,10 +382,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 .runOn(Schedulers.boundedElastic(), 1)
                 .subscribe(subscribers);
         } else {
-            // There is no need to incur the above cost of the parallel operator
-            // and associated thread hopping (via runOn) when the max-concurrent-call
-            // is default (one), the low-level receiver i.e. receiverClient object
-            // already publisheOn a Bounded-Elastic thread, which is good enough.
+            // For the default case, i.e., when max-concurrent-call is one, the Processor handler can be invoked on
+            // the same Bounded-Elastic thread that the Low-Level Receiver obtained. This way, we can avoid
+            // the unnecessary thread hopping and allocation that otherwise would have been introduced by the parallel
+            // and runOn operators for this code path.
             receiverClient.receiveMessagesWithContext()
                 .subscribe(subscribers[0]);
         }
