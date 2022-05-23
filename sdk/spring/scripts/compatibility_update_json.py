@@ -1,3 +1,11 @@
+# Python version 3.4 or higher is required to run this script.
+#
+# This script is used to update sdk\spring\supported-version-matrix.json before compatibility check.
+# Sample:
+# 1. python .\sdk\spring\scripts\supported-version-matrix.py
+#
+# The script must be run at the root of azure-sdk-for-java.import time
+
 
 import time
 from log import log
