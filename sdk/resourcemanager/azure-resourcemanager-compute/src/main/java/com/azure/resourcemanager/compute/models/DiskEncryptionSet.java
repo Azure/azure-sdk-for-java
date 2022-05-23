@@ -8,6 +8,7 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -158,14 +159,14 @@ public interface DiskEncryptionSet
          */
         interface WithCreate
             extends Creatable<DiskEncryptionSet>,
-                DefinitionWithTags<WithCreate>,
+                Resource.DefinitionWithTags<WithCreate>,
                 WithAutomaticKeyRotation { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
         extends Appliable<DiskEncryptionSet>,
-        UpdateWithTags<Update>,
+        Resource.UpdateWithTags<Update>,
         UpdateStages.WithSystemAssignedManagedServiceIdentity,
         UpdateStages.WithAutomaticKeyRotation {
     }
