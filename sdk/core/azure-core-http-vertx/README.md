@@ -10,6 +10,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
 
 ### Include the package
 
+[//]: # ({x-version-update-start;com.azure:azure-core-http-vertx;current})
 ```xml
 <dependencies>
   <dependency>
@@ -19,6 +20,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   </dependency>
 </dependencies>
 ```
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 
