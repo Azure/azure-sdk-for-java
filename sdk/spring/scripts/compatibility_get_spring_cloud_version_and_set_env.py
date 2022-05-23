@@ -21,16 +21,16 @@ def get_spring_cloud_version_and_set_as_env(filepath):
                 # os.environ['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION'] = spring_cloud_version
                 print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION='{}'".format(spring_cloud_version))
                 # print("export env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(spring_cloud_version))
-                print("Spring-cloud version:" + spring_cloud_version)
+                # print("Spring-cloud version:" + spring_cloud_version)
 
 
 def main():
-    start_time = time.time()
+    # start_time = time.time()
     change_to_root_dir()
-    log.debug('Current working directory = {}.'.format(os.getcwd()))
+    # log.debug('Current working directory = {}.'.format(os.getcwd()))
     get_spring_cloud_version_and_set_as_env("./sdk/spring/spring-cloud-azure-supported-spring.json")
-    elapsed_time = time.time() - start_time
-    log.info('elapsed_time = {}'.format(elapsed_time))
+    # elapsed_time = time.time() - start_time
+    # log.info('elapsed_time = {}'.format(elapsed_time))
 
 
 if __name__ == '__main__':
