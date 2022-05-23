@@ -31,6 +31,9 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry=ALL-UNNAMED
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.models=ALL-UNNAMED
