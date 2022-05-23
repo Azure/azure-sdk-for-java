@@ -1,6 +1,7 @@
 import time
 import os
 import json
+from pipes import quote
 
 from log import log
 
@@ -19,7 +20,7 @@ def get_spring_cloud_version_and_set_as_env(filepath):
             if spring_boot_version == entry[key]:
                 spring_cloud_version = entry["spring-cloud-version"]
                 # os.environ['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION'] = spring_cloud_version
-                print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION='{}'".format(spring_cloud_version))
+                print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(quote(spring_cloud_version)))
                 # print("export env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(spring_cloud_version))
                 # print("Spring-cloud version:" + spring_cloud_version)
 
