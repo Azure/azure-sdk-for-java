@@ -6,7 +6,6 @@ package com.azure.core.http.okhttp.implementation;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okio.BufferedSink;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -16,7 +15,6 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -30,36 +28,36 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpFluxRequestBody.class);
 
     private final AtomicBoolean bodySent = new AtomicBoolean(false);
-    private final OkHttpClient okHttpClient;
+    private final int callTimeoutMillis;
 
     public OkHttpFluxRequestBody(
-        BinaryDataContent content, long effectiveContentLength, MediaType mediaType, OkHttpClient okHttpClient) {
+        BinaryDataContent content, long effectiveContentLength, MediaType mediaType, int callTimeoutMillis) {
         super(content, effectiveContentLength, mediaType);
-        this.okHttpClient = Objects.requireNonNull(okHttpClient, "'okHttpClient' cannot be null.");
+        this.callTimeoutMillis = callTimeoutMillis;
     }
 
     @Override
     public void writeTo(BufferedSink bufferedSink) throws IOException {
         if (bodySent.compareAndSet(false, true)) {
-            Mono<BufferedSink> requestSendMono = content.toFluxByteBuffer()
-                .publishOn(Schedulers.boundedElastic())
-                .reduce(bufferedSink, (sink, buffer) -> {
-                    try {
-                        while (buffer.hasRemaining()) {
-                            sink.write(buffer);
-                        }
-                        return sink;
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
+            Mono<Void> requestSendMono = content.toFluxByteBuffer()
+                .flatMapSequential(buffer -> {
+                    if (Schedulers.isInNonBlockingThread()) {
+                        return Mono.just(buffer)
+                            .publishOn(Schedulers.boundedElastic())
+                            .map(b -> writeBuffer(bufferedSink, b))
+                            .then();
+                    } else {
+                        writeBuffer(bufferedSink, buffer);
+                        return Mono.empty();
                     }
-                });
+                }, 1, 1)
+                .then();
 
             // The blocking happens on OkHttp thread pool.
-            int callTimeoutMillis = okHttpClient.callTimeoutMillis();
             if (callTimeoutMillis > 0) {
                 /*
                  * Default call timeout (in milliseconds). By default there is no timeout for complete calls, but
-                 * there is for the connect, write, and read actions within a call.
+                 * there is for the connection, write, and read actions within a call.
                  */
                 requestSendMono.block(Duration.ofMillis(callTimeoutMillis));
             } else {
@@ -68,6 +66,17 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
         } else {
             // Prevent OkHttp from potentially re-sending non-repeatable body outside of retry policies.
             throw LOGGER.logThrowableAsError(new IOException("Re-attempt to send Flux body is not supported"));
+        }
+    }
+
+    private ByteBuffer writeBuffer(BufferedSink sink, ByteBuffer buffer) {
+        try {
+            while (buffer.hasRemaining()) {
+                sink.write(buffer);
+            }
+            return buffer;
+        } catch (IOException e) {
+            throw Exceptions.propagate(e);
         }
     }
 }
