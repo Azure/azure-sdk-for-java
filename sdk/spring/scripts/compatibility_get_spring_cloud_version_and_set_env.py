@@ -11,8 +11,7 @@ def change_to_root_dir():
 
 
 def get_spring_cloud_version_and_set_as_env(filepath):
-    # spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
-    spring_boot_version = "2.6.8"
+    spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
     with open(filepath, 'r') as file:
         data = json.load(file)
     for entry in data:
