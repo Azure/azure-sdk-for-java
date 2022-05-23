@@ -29,7 +29,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okio.ByteString;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
@@ -40,6 +39,8 @@ import java.util.Objects;
  * HttpClient implementation for OkHttp.
  */
 class OkHttpAsyncHttpClient implements HttpClient {
+
+    private static final Mono<RequestBody> EMPTY_REQUEST_BODY_MONO = Mono.just(RequestBody.create(new byte[0]));
 
     final OkHttpClient httpClient;
 
@@ -122,7 +123,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
         if (bodyContent == null) {
-            return Mono.just(RequestBody.create(ByteString.EMPTY, mediaType));
+            return EMPTY_REQUEST_BODY_MONO;
         }
 
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
@@ -177,13 +178,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @SuppressWarnings("NullableProblems")
         @Override
         public void onFailure(okhttp3.Call call, IOException e) {
-            if (e.getMessage().startsWith("canceled due to") && e.getSuppressed().length == 1) {
-                // This block maintains error experience for unbuffered request bodies.
-                // If Flux or Stream throws in RequestBody.writeTo the original exception is wrapped into IOException.
-                sink.error(e.getSuppressed()[0]);
-            } else {
-                sink.error(e);
-            }
+            sink.error(e);
         }
 
         @SuppressWarnings("NullableProblems")

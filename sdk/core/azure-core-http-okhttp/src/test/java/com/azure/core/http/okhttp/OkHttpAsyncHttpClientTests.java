@@ -144,7 +144,7 @@ public class OkHttpAsyncHttpClientTests {
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
+            .expectErrorMatches(e -> e.getMessage().contains("boo"))
             .verify();
     }
 
@@ -162,7 +162,7 @@ public class OkHttpAsyncHttpClientTests {
 
         try {
             StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
+                .expectErrorMatches(e -> e.getMessage().contains("boo"))
                 .verify(Duration.ofSeconds(10));
         } catch (Exception ex) {
             assertEquals("boo", ex.getMessage());
