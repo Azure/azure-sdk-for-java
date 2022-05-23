@@ -133,7 +133,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
-                           .setMaxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
@@ -175,7 +175,7 @@ public CosmosClientBuilder getCosmosClientBuilder() {
 public CosmosConfig cosmosConfig() {
     return CosmosConfig.builder()
                        .enableQueryMetrics(queryMetricsEnabled)
-                       .setMaxDegreeOfParallelism(maxDegreeOfParallelism)
+                       .maxDegreeOfParallelism(maxDegreeOfParallelism)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                        .build();
 }
@@ -652,7 +652,7 @@ public class SecondaryDatasourceConfiguration {
     public CosmosConfig getCosmosConfig() {
         return CosmosConfig.builder()
             .enableQueryMetrics(true)
-            .setMaxDegreeOfParallelism(0)
+            .maxDegreeOfParallelism(0)
             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
             .build();
     }
@@ -688,7 +688,7 @@ public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProp
 public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
-        .setMaxDegreeOfParallelism(0)
+        .maxDegreeOfParallelism(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
@@ -701,7 +701,7 @@ public CosmosConfig getCosmosConfig() {
 public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
-        .setMaxDegreeOfParallelism(0)
+        .maxDegreeOfParallelism(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }

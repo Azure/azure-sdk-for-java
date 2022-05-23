@@ -60,7 +60,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
-                           .setMaxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
