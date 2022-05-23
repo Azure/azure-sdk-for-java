@@ -5,6 +5,7 @@
 1. Install VS Code.
 2. Install the Code Spell Checker by Street Side Software.
 This will allow testing of the changes locally with minimal effort. Literally, you'll just need to load a file and anything it flags will be underlined in blue. The configuration definition can be found at <https://cspell.org/configuration/>
+3. The main spellcheck document can be found [here](https://github.com/Azure/azure-sdk-tools/blob/main/doc/common/spellcheck.md) in the [azure-sdk-tools](https://github.com/Azure/azure-sdk-tools) repository.
 
 ## Words and word boundaries
 
