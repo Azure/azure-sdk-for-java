@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.11.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.10.0 (2022-05-20)
 #### Features Added
 * Added the ability to change the target throughput control (`spark.cosmos.throughputControl.targetThroughputThreshold` or `spark.cosmos.throughputControl.targetThroughput`) when throughput control is enabled without having to also change the throughput control group name (`spark.cosmos.throughputControl.name`). - See [PR 28969](https://github.com/Azure/azure-sdk-for-java/pull/28969)
