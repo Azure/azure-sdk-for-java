@@ -7,14 +7,11 @@ package com.azure.resourcemanager.communication.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.communication.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class that describes the properties of the CommunicationService. */
 @Fluent
 public final class CommunicationServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationServiceProperties.class);
-
     /*
      * Provisioning state of the resource.
      */
@@ -125,10 +122,12 @@ public final class CommunicationServiceProperties {
      */
     public void validate() {
         if (dataLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataLocation in model CommunicationServiceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationServiceProperties.class);
 }

@@ -67,7 +67,8 @@ public interface CommunicationServices {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> list();
 
@@ -78,7 +79,8 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> list(Context context);
 
@@ -89,7 +91,8 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName);
 
@@ -101,7 +104,8 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName, Context context);
 
