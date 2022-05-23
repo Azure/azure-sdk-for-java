@@ -548,7 +548,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                     sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME, sharedContext);
                     tracerProvider.addSpanLinks(sharedContext);
                 } else {
-                    // TODO (lmolkova) we need better addSpanLinks(Context shared, Context link)
+                    // TODO (lmolkova) we need better addSpanLinks - https://github.com/Azure/azure-sdk-for-java/issues/28953
                     Object eventSpanContext = event.getContext().getData(SPAN_CONTEXT_KEY).orElse(Context.NONE);
                     tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, eventSpanContext));
                 }
