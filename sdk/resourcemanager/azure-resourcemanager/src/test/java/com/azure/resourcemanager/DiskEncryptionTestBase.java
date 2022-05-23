@@ -118,7 +118,7 @@ public class DiskEncryptionTestBase extends ResourceManagerTestBase {
             .withExistingKeyVault(vaultAndKey.vault.id())
             .withExistingKey(vaultAndKey.key.id())
             .withSystemAssignedManagedServiceIdentity()
-            .withRBACBasedAccessToCurrentKeyVault(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
+            .withRoleBasedAccessToCurrentKeyVault(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
             .create();
     }
 }

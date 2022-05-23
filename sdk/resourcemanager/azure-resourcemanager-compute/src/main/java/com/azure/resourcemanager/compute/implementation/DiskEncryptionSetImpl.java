@@ -118,7 +118,7 @@ public class DiskEncryptionSetImpl
     }
 
     @Override
-    public DiskEncryptionSetImpl withRBACBasedAccessToCurrentKeyVault(BuiltInRole builtInRole) {
+    public DiskEncryptionSetImpl withRoleBasedAccessToCurrentKeyVault(BuiltInRole builtInRole) {
         if (keyVaultId() != null) {
             msiHandler.withAccessTo(keyVaultId(), builtInRole);
         }
@@ -126,8 +126,8 @@ public class DiskEncryptionSetImpl
     }
 
     @Override
-    public DiskEncryptionSetImpl withRBACBasedAccessToCurrentKeyVault() {
-        return withRBACBasedAccessToCurrentKeyVault(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER);
+    public DiskEncryptionSetImpl withRoleBasedAccessToCurrentKeyVault() {
+        return withRoleBasedAccessToCurrentKeyVault(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER);
     }
 
     @Override

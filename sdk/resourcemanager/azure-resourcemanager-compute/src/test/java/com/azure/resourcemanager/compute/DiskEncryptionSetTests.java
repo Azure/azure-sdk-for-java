@@ -48,7 +48,7 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
             .withExistingKeyVault(vaultAndKey.vault.id())
             .withExistingKey(vaultAndKey.key.id())
             .withSystemAssignedManagedServiceIdentity()
-            .withRBACBasedAccessToCurrentKeyVault()
+            .withRoleBasedAccessToCurrentKeyVault()
             .withAutomaticKeyRotation()
             .create();
 

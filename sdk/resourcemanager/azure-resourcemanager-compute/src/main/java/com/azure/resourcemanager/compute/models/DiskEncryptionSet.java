@@ -112,32 +112,32 @@ public interface DiskEncryptionSet
 
         /**
          * The stage of the System Assigned Managed Service Identity enabled disk encryption set allowing to set
-         * access role for the key vault.
+         * access methods for the key vault.
          */
         interface WithSystemAssignedIdentityBasedAccessOrCreate extends WithCreate {
             /**
-             * Specifies that disk encryption set's system assigned identity should have the given RBAC based access
-             * (described by the role) on the current Azure key vault that's associated with it.
-             * Only works for key vaults that use the 'Azure role-based access control' permission model.
-             * If you prefer Access Policy based access for Azure Key Vault (like the examples from Portal or CLI),
+             * <p>Specifies that disk encryption set's system assigned identity should have the given RBAC based access
+             * (described by the role) on the current Azure key vault that's associated with it. </p>
+             * <p>Only works for key vaults that use the 'Azure role-based access control' permission model. </p>
+             * <p>If you prefer Access Policy based access for Azure Key Vault (like the examples from Portal or CLI),
              * instead of calling this method, you may want to call Vault-related methods after creating the
-             * {@link DiskEncryptionSet} instance.
+             * {@link DiskEncryptionSet} instance. </p>
              * @param builtInRole access role to assigned to the disk encryption set's local identity
              * @return the next stage of the definition
              */
-            WithCreate withRBACBasedAccessToCurrentKeyVault(BuiltInRole builtInRole);
+            WithCreate withRoleBasedAccessToCurrentKeyVault(BuiltInRole builtInRole);
 
             /**
-             * Specifies that disk encryption set's system assigned identity should have the RBAC based access
+             * <p>Specifies that disk encryption set's system assigned identity should have the RBAC based access
              * with default {@link BuiltInRole#KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER} on the current Azure key vault
-             * that's associated with it.
-             * Only works for key vaults that use the 'Azure role-based access control' permission model.
-             * If you prefer Access Policy based access for Azure Key Vault (like the examples from Portal or CLI),
+             * that's associated with it. </p>
+             * <p>Only works for key vaults that use the 'Azure role-based access control' permission model.</p>
+             * <p>If you prefer Access Policy based access for Azure Key Vault (like the examples from Portal or CLI),
              * instead of calling this method, you may want to call Vault-related methods after creating the
-             * {@link DiskEncryptionSet} instance.
+             * {@link DiskEncryptionSet} instance. </p>
              * @return the next stage of the definition
              */
-            WithCreate withRBACBasedAccessToCurrentKeyVault();
+            WithCreate withRoleBasedAccessToCurrentKeyVault();
         }
 
         /**
@@ -146,8 +146,8 @@ public interface DiskEncryptionSet
         interface WithAutomaticKeyRotation {
             /**
              * Enable automatic key rotation.
-             * If enabled, the system will automatically update all managed disks, snapshots, and images
-             * referencing the disk encryption set to use the new version of the key within one hour.
+             * <p>If enabled, the system will automatically update all managed disks, snapshots, and images
+             * referencing the disk encryption set to use the new version of the key within one hour. </p>
              * @return the next stage of the definition
              */
             WithCreate withAutomaticKeyRotation();
@@ -199,8 +199,8 @@ public interface DiskEncryptionSet
         interface WithAutomaticKeyRotation {
             /**
              * Enable automatic key rotation.
-             * If enabled, the system will automatically update all managed disks, snapshots, and images
-             * referencing the disk encryption set to use the new version of the key within one hour.
+             * <p>If enabled, the system will automatically update all managed disks, snapshots, and images
+             * referencing the disk encryption set to use the new version of the key within one hour. </p>
              * @return the next stage of the update
              */
             Update withAutomaticKeyRotation();
