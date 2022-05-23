@@ -87,6 +87,8 @@ def get_prop_content(pom_file_content):
 
 
 def add_dependency_management_for_file(file_path):
+    spring_cloud_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION")
+    print(spring_cloud_version)
     log.info("Add dependency management for file: " + file_path)
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
         pom_file_content = pom_file.read()
@@ -98,7 +100,7 @@ def add_dependency_management_for_file(file_path):
         prop_content = dependency_content[:insert_position] + insert_content + dependency_content[insert_position:]
         with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
             updated_pom_file.writelines(prop_content)
-    if os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION").endswith("-SNAPSHOT"):
+    if spring_cloud_version.endswith("-SNAPSHOT"):
         with open(file_path, 'r', encoding = 'utf-8') as pom_file:
             pom_file_content = pom_file.read()
             insert_position = get_repo_position(pom_file_content)
