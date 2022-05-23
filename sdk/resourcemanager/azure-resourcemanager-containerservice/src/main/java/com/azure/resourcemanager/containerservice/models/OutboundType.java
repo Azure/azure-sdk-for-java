@@ -33,7 +33,11 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
         return fromString(name, OutboundType.class);
     }
 
-    /** @return known OutboundType values. */
+    /**
+     * Gets known OutboundType values.
+     *
+     * @return known OutboundType values.
+     */
     public static Collection<OutboundType> values() {
         return values(OutboundType.class);
     }

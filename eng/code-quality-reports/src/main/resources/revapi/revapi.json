@@ -251,6 +251,13 @@
           "code": "java.annotation.added",
           "new": "class com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration",
           "justification": "Fixes a bug."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.messaging.eventhubs.EventData",
+          "new": "class com.azure.messaging.eventhubs.EventData",
+          "superClass": "com.azure.core.models.MessageContent",
+          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
         }
       ]
     }

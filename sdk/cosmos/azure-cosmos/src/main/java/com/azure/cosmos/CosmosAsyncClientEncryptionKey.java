@@ -110,14 +110,10 @@ public final class CosmosAsyncClientEncryptionKey {
         return builder.toString();
     }
 
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.setCosmosAsyncClientEncryptionKeyAccessor(
-            new ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor() {
-
-                @Override
-                public Mono<CosmosClientEncryptionKeyResponse> readClientEncryptionKey(CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey, RequestOptions requestOptions) {
-                    return cosmosAsyncClientEncryptionKey.read(requestOptions);
-                }
-            });
+            (cosmosAsyncClientEncryptionKey, requestOptions) -> cosmosAsyncClientEncryptionKey.read(requestOptions));
     }
+
+    static { initialize(); }
 }

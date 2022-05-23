@@ -99,8 +99,7 @@ public final class CosmosBatchRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.setCosmosBatchRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor() {
                 @Override
@@ -126,4 +125,6 @@ public final class CosmosBatchRequestOptions {
             }
         );
     }
+
+    static { initialize(); }
 }

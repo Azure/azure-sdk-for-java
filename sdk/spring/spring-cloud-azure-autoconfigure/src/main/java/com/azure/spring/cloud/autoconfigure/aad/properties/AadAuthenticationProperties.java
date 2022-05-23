@@ -130,7 +130,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
-     * Type of the AAD application.
+     * Type of the Azure AD application.
      */
     private AadApplicationType applicationType;
 
@@ -193,7 +193,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         private List<String> allowedGroupNames = new ArrayList<>();
 
         /**
-         * The group ids can be used to construct GrantedAuthority.
+         * The group IDs can be used to construct GrantedAuthority.
          */
         private Set<String> allowedGroupIds = new HashSet<>();
 
@@ -212,9 +212,9 @@ public class AadAuthenticationProperties implements InitializingBean {
         }
 
         /**
-         * Set the allowed group ids.
+         * Set the allowed group IDs.
          *
-         * @param allowedGroupIds Allowed group ids.
+         * @param allowedGroupIds Allowed group IDs.
          */
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
             this.allowedGroupIds = allowedGroupIds;

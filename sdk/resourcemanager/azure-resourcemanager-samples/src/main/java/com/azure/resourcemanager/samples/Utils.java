@@ -1625,7 +1625,7 @@ public final class Utils {
      *
      * @param envSecondaryServicePrincipal an Azure Container Registry
      * @return a service principal client ID
-     * @throws Exception exception
+     * @throws IOException exception
      */
     public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
@@ -1648,7 +1648,7 @@ public final class Utils {
      *
      * @param envSecondaryServicePrincipal an Azure Container Registry
      * @return a service principal secret
-     * @throws Exception exception
+     * @throws IOException exception
      */
     public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
@@ -1685,7 +1685,6 @@ public final class Utils {
      * @param password alias password
      * @param cnName domain name
      * @param dnsName dns name in subject alternate name
-     * @throws Exception exceptions from the creation
      * @throws IOException IO Exception
      */
     public static void createCertificate(String certPath, String pfxPath, String alias,
@@ -1753,7 +1752,7 @@ public final class Utils {
      * @param ignoreErrorStream : Boolean which controls whether to throw exception or not
      *                          based on error stream.
      * @return result :- depending on the method invocation.
-     * @throws Exception exceptions thrown from the execution
+     * @throws IOException exceptions thrown from the execution
      */
     public static String cmdInvocation(String[] command,
                                        boolean ignoreErrorStream) throws IOException {

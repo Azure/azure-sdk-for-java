@@ -13,11 +13,11 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdapter {
 
     /**
-     * Tenant id for Azure resources.
+     * Tenant ID for Azure resources.
      */
     private String tenantId;
     /**
-     * Subscription id to use when connecting to Azure resources.
+     * Subscription ID to use when connecting to Azure resources.
      */
     private String subscriptionId;
     /**
@@ -49,8 +49,8 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
     }
 
     /**
-     * Set the tenant id.
-     * @param tenantId The tenant id.
+     * Set the tenant ID.
+     * @param tenantId The tenant ID.
      */
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
@@ -62,8 +62,8 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
     }
 
     /**
-     * Set the subscription id.
-     * @param subscriptionId The subscription id.
+     * Set the subscription ID.
+     * @param subscriptionId The subscription ID.
      */
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
@@ -111,7 +111,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
          */
         private String activeDirectoryEndpoint;
         /**
-         * The Azure Active Directory resource id.
+         * The Azure Active Directory resource ID.
          */
         private String activeDirectoryResourceId;
         /**

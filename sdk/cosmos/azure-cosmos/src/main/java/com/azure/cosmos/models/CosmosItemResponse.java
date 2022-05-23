@@ -205,8 +205,7 @@ public class CosmosItemResponse<T> {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
             new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
                 public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
@@ -229,4 +228,6 @@ public class CosmosItemResponse<T> {
                 }
             });
     }
+
+    static { initialize(); }
 }

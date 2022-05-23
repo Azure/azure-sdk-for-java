@@ -486,7 +486,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.(DataChangeDetectionPolicy|DataDeletionDetectionPolicy|SearchIndexerDataIdentity|SimilarityAlgorithm)"/>
 
   <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
-  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020, 1024"/>
+  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1002, 1006"/>
 
   <!-- These APIs have already leaked implementation and cannot be changed -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>

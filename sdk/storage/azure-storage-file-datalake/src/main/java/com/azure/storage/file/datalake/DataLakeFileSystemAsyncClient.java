@@ -356,7 +356,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null, null).map(response -> response.getStatusCode() != 409);
+        return createIfNotExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -386,12 +386,13 @@ public class DataLakeFileSystemAsyncClient {
      * successfully created. If status code is 409, a file system already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata,
+    public Mono<Response<Boolean>> createIfNotExistsWithResponse(Map<String, String> metadata,
         PublicAccessType accessType) {
         try {
             BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
                 .setPublicAccessType(Transforms.toBlobPublicAccessType(accessType));
             return blobContainerAsyncClient.createIfNotExistsWithResponse(options)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -473,7 +474,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -508,11 +509,12 @@ public class DataLakeFileSystemAsyncClient {
      * {@link DataLakeRequestConditions#getIfNoneMatch()} is set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return blobContainerAsyncClient.deleteIfExistsWithResponse(
                     Transforms.toBlobRequestConditions(options.getRequestConditions()))
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1071,8 +1073,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).map(response ->
-            response.getStatusCode() != 404);
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1106,7 +1107,7 @@ public class DataLakeFileSystemAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
         try {
             return getFileAsyncClient(fileName).deleteIfExistsWithResponse(options);
         } catch (RuntimeException ex) {
@@ -1377,8 +1378,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteDirectoryIfExists(String directoryName) {
-        return deleteDirectoryIfExistsWithResponse(directoryName, new DataLakePathDeleteOptions()).map(response ->
-            response.getStatusCode() != 404);
+        return deleteDirectoryIfExistsWithResponse(directoryName, new DataLakePathDeleteOptions())
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1413,7 +1414,7 @@ public class DataLakeFileSystemAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName,
+    public Mono<Response<Boolean>> deleteDirectoryIfExistsWithResponse(String directoryName,
         DataLakePathDeleteOptions options) {
         try {
             return getDirectoryAsyncClient(directoryName).deleteIfExistsWithResponse(options);

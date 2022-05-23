@@ -145,7 +145,9 @@ public class WebAppsImpl
 
     private static boolean isWebApp(SiteInner inner) {
         boolean ret = false;
-        if (inner.kind() == null) {
+        if (inner.kind() == null || inner.kind().isEmpty() || "linux".equals(inner.kind())) {
+            // a few known legacy kind for webapp
+            // see https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md
             ret = true;
         } else {
             List<String> kinds = Arrays.asList(inner.kind().split(Pattern.quote(",")));

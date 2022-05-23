@@ -18,11 +18,11 @@ public enum State {
     /** Enum value succeeded. */
     SUCCEEDED("succeeded"),
 
+    /** Enum value partiallySucceeded. */
+    PARTIALLY_SUCCEEDED("partiallySucceeded"),
+
     /** Enum value failed. */
     FAILED("failed"),
-
-    /** Enum value rejected. */
-    REJECTED("rejected"),
 
     /** Enum value cancelled. */
     CANCELLED("cancelled"),
