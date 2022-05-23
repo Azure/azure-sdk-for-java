@@ -16,7 +16,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>azure-messaging-eventhubs-checkpointstore-redis</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-redis;current} -->
 
   <name>Microsoft Azure client library for storing checkpoints in Azure Redis</name>
   <description>Library for using storing checkpoints in Azure Redis</description>
@@ -47,12 +47,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.13.0-beta.1</version>
+      <version>5.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>4.1.0</version>
+      <version>3.7.1</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
     </dependency>
   </dependencies>
 
