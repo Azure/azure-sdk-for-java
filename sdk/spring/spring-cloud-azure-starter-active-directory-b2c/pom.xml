@@ -177,11 +177,11 @@
                   <fileset dir="${project.basedir}/javadocTemp"/>
                   <fileset dir="${project.basedir}/sourceTemp"/>
                 </delete>
-                <echo>Copying ${project.basedir}/README.md to
+                <echo>Copying ${project.basedir}/../README.md to
                   ${project.basedir}/javadocTemp/README.md
                 </echo>
                 <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/javadocTemp/README.md" failonerror="false"/>
-                <echo>Copying ${project.basedir}/README.md to
+                <echo>Copying ${project.basedir}/../README.md to
                   ${project.basedir}/sourceTemp/README.md
                 </echo>
                 <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/sourceTemp/README.md" failonerror="false"/>
