@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Snapshots GetByResourceGroup. */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-03-01/examples/SnapshotsGet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/SnapshotsGet.json
      */
     /**
      * Sample code: Get Snapshot.

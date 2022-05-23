@@ -776,7 +776,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
         // END: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists
 
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
-        Response<Void> response = client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
+        Response<Boolean> response = client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
             new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");

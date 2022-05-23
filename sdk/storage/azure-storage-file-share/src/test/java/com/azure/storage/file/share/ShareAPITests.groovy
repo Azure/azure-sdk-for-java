@@ -405,6 +405,7 @@ class ShareAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists()
     }
@@ -423,6 +424,8 @@ class ShareAPITests extends APISpec {
         then:
         initialResponse.getStatusCode() == 202
         secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
     }
 
 
@@ -1124,6 +1127,7 @@ class ShareAPITests extends APISpec {
         def response = primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
@@ -1179,6 +1183,7 @@ class ShareAPITests extends APISpec {
         def response = primaryShareClient.deleteFileIfExistsWithResponse("testCreateFile", null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 

@@ -19,7 +19,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class DirectConnectionConfig {
     //  Constants
-    private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = false;
+    private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = true;
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(1l);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
@@ -315,14 +315,7 @@ public final class DirectConnectionConfig {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
-     * to force loading this class
-     */
-    public static void doNothingButEnsureLoadingClass() {}
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.DirectConnectionConfigHelper.setDirectConnectionConfigAccessor(
             new ImplementationBridgeHelpers.DirectConnectionConfigHelper.DirectConnectionConfigAccessor() {
                 @Override
@@ -348,4 +341,6 @@ public final class DirectConnectionConfig {
                 }
             });
     }
+
+    static { initialize(); }
 }

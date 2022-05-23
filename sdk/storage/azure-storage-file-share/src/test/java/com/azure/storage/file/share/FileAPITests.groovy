@@ -1097,6 +1097,7 @@ class FileAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists()
     }

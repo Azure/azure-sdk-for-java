@@ -1,18 +1,17 @@
 ## Release History
 
-### 4.10.0-beta.1 (Unreleased)
-
+### 4.10.0 (2022-05-20)
 #### Features Added
-
-#### Breaking Changes
+* Added the ability to change the target throughput control (`spark.cosmos.throughputControl.targetThroughputThreshold` or `spark.cosmos.throughputControl.targetThroughput`) when throughput control is enabled without having to also change the throughput control group name (`spark.cosmos.throughputControl.name`). - See [PR 28969](https://github.com/Azure/azure-sdk-for-java/pull/28969)
 
 #### Bugs Fixed
 * Fixed an issue with creating new Throughput control client item when `enableThroughputControlGroup` is being called multiple times with the same throughput control group. - See [PR 28905](https://github.com/Azure/azure-sdk-for-java/pull/28905)
-* Fixed a possible dead-lock on static ctor for CosmosException when the runtime is using custom class loaders. - See [PR 28912](https://github.com/Azure/azure-sdk-for-java/pull/28912)
+* Fixed a possible dead-lock on static ctor for CosmosException when the runtime is using custom class loaders. - See [PR 28912](https://github.com/Azure/azure-sdk-for-java/pull/28912) and [PR 28961](https://github.com/Azure/azure-sdk-for-java/pull/28961)
 
 #### Other Changes
 * Changed 429 (Throttling) retry policy to have an upper bound for the back-off time of 5 seconds - See [PR 28764](https://github.com/Azure/azure-sdk-for-java/pull/28764)
 * Improved efficiency of spark partitioning for queries with partitioning strategy `Restrictive` by skipping I/O calls to retrieve metadata (min. LSN, max. LSN, document count and total document size). - See [PR 28764](https://github.com/Azure/azure-sdk-for-java/pull/28764)
+* Enabled `connectionEndpointRediscoveryEnabled` by default - See [PR 28471](https://github.com/Azure/azure-sdk-for-java/pull/28471)
 
 ### 4.9.0 (2022-04-22)
 

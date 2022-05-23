@@ -98,20 +98,10 @@ public class PartitionKey {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
-     * to force loading this class
-     */
-    public static void doNothingButEnsureLoadingClass() {}
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.PartitionKeyHelper.setPartitionKeyAccessor(
-            new ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor() {
-                @Override
-                public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
-                    return new PartitionKey(partitionKeyInternal);
-                }
-            });
+            partitionKeyInternal -> new PartitionKey(partitionKeyInternal));
     }
+
+    static { initialize(); }
 }

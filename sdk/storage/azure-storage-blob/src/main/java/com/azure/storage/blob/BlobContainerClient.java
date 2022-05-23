@@ -337,7 +337,7 @@ public final class BlobContainerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
-        return createIfNotExistsWithResponse(null, null, null).getStatusCode() == 201;
+        return createIfNotExistsWithResponse(null, null, null).getValue();
     }
 
     /**
@@ -353,7 +353,7 @@ public final class BlobContainerClient {
      * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
      *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
      *
-     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, context&#41;;
+     * Response&lt;Boolean&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, context&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
@@ -369,7 +369,7 @@ public final class BlobContainerClient {
      * container was successfully created. If status code is 409, a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,
+    public Response<Boolean> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,
         Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(client.
             createIfNotExistsWithResponse(options, context), timeout);
@@ -449,8 +449,7 @@ public final class BlobContainerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(null, null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteIfExistsWithResponse(null, null, Context.NONE).getValue();
     }
 
     /**
@@ -467,7 +466,7 @@ public final class BlobContainerClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, context&#41;;
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, context&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
@@ -483,7 +482,7 @@ public final class BlobContainerClient {
      * was successfully deleted. If status code is 404, the container does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Duration timeout,
+    public Response<Boolean> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Duration timeout,
         Context context) {
         return blockWithOptionalTimeout(client.deleteIfExistsWithResponse(requestConditions, context), timeout);
     }

@@ -3,9 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextEntityLinkingInput;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
+import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -37,15 +41,16 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizeLinkedEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizeLinkedEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create a {@link RecognizeLinkedEntityAsyncClient} that sends requests to the Text Analytics services's recognize
-     * linked entity endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl service) {
+    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
+    }
+
+    RecognizeLinkedEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.legacyService = null;
         this.service = service;
     }
 
@@ -132,13 +137,41 @@ class RecognizeLinkedEntityAsyncClient {
     private Mono<Response<RecognizeLinkedEntitiesResultCollection>> getRecognizedLinkedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        return service.entitiesLinkingWithResponseAsync(
+        final Context finalContext = getNotNullContext(context)
+                                         .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
+        final String finalModelVersion = options.getModelVersion();
+        final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+        final boolean finalIncludeStatistics = options.isIncludeStatistics();
+        if (service != null) {
+            return service
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextEntityLinkingInput()
+                               .setParameters(
+                                   (EntityLinkingTaskParameters) new EntityLinkingTaskParameters()
+                                                                     .setStringIndexType(finalStringIndexType)
+                                                                     .setModelVersion(finalModelVersion)
+                                                                     .setLoggingOptOut(finalLoggingOptOut))
+                               .setAnalysisInput(
+                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                           finalIncludeStatistics,
+                           finalContext)
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
+                           response.getValue()))
+                       .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
+                       .map(Utility::toRecognizeLinkedEntitiesResultCollection)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
+        return legacyService.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(),
-            options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            StringIndexType.UTF16CODE_UNIT,
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            finalModelVersion,
+            finalIncludeStatistics,
+            finalLoggingOptOut,
+            finalStringIndexType,
+            finalContext)
                    .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                        getDocumentCount(documents)))
                    .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
