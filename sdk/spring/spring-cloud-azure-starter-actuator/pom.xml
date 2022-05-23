@@ -162,17 +162,15 @@
             <phase>prepare-package</phase>
             <configuration>
               <target>
-                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                <echo>Deleting existing ${project.basedir}/javadocTemp and
+                  ${project.basedir}/sourceTemp</echo>
                 <delete includeEmptyDirs="true" quiet="true">
                   <fileset dir="${project.basedir}/javadocTemp"/>
+                  <fileset dir="${project.basedir}/sourceTemp"/>
                 </delete>
                 <echo>Copying ${project.basedir}/../README.md to
                   ${project.basedir}/javadocTemp/README.md
                 </echo>
-                <echo>Deleting existing ${project.basedir}/sourceTemp</echo>
-                <delete includeEmptyDirs="true" quiet="true">
-                  <fileset dir="${project.basedir}/sourceTemp"/>
-                </delete>
                 <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/javadocTemp/README.md" failonerror="false"/>
                 <echo>Copying ${project.basedir}/../README.md to
                   ${project.basedir}/sourceTemp/README.md
